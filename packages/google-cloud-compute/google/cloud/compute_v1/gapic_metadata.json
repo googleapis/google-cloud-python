@@ -980,6 +980,45 @@
         }
       }
     },
+    "GlobalVmExtensionPolicies": {
+      "clients": {
+        "rest": {
+          "libraryClient": "GlobalVmExtensionPoliciesClient",
+          "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Update": {
+              "methods": [
+                "update"
+              ]
+            }
+          }
+        }
+      }
+    },
     "HealthChecks": {
       "clients": {
         "rest": {
@@ -2013,6 +2052,16 @@
                 "get"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
@@ -2427,6 +2476,11 @@
             "AddPeering": {
               "methods": [
                 "add_peering"
+              ]
+            },
+            "CancelRequestRemovePeering": {
+              "methods": [
+                "cancel_request_remove_peering"
               ]
             },
             "Delete": {
@@ -4676,6 +4730,79 @@
         }
       }
     },
+    "RolloutPlans": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RolloutPlansClient",
+          "rpcs": {
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "Rollouts": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RolloutsClient",
+          "rpcs": {
+            "Advance": {
+              "methods": [
+                "advance"
+              ]
+            },
+            "Cancel": {
+              "methods": [
+                "cancel"
+              ]
+            },
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Pause": {
+              "methods": [
+                "pause"
+              ]
+            },
+            "Resume": {
+              "methods": [
+                "resume"
+              ]
+            }
+          }
+        }
+      }
+    },
     "Routers": {
       "clients": {
         "rest": {
@@ -4691,6 +4818,11 @@
                 "delete"
               ]
             },
+            "DeleteNamedSet": {
+              "methods": [
+                "delete_named_set"
+              ]
+            },
             "DeleteRoutePolicy": {
               "methods": [
                 "delete_route_policy"
@@ -4699,6 +4831,11 @@
             "Get": {
               "methods": [
                 "get"
+              ]
+            },
+            "GetNamedSet": {
+              "methods": [
+                "get_named_set"
               ]
             },
             "GetNatIpInfo": {
@@ -4736,6 +4873,11 @@
                 "list_bgp_routes"
               ]
             },
+            "ListNamedSets": {
+              "methods": [
+                "list_named_sets"
+              ]
+            },
             "ListRoutePolicies": {
               "methods": [
                 "list_route_policies"
@@ -4744,6 +4886,11 @@
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "PatchNamedSet": {
+              "methods": [
+                "patch_named_set"
               ]
             },
             "PatchRoutePolicy": {
@@ -4759,6 +4906,11 @@
             "Update": {
               "methods": [
                 "update"
+              ]
+            },
+            "UpdateNamedSet": {
+              "methods": [
+                "update_named_set"
               ]
             },
             "UpdateRoutePolicy": {

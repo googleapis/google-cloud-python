@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -254,6 +254,10 @@ class VerifyAttestationRequest(proto.Message):
         attester (str):
             Optional. An optional indicator of the
             attester, only applies to certain products.
+        instance (str):
+            Optional. Optional resource link of the Compute Engine
+            instance. Format:
+            ``projects/{project_number}/zones/{zone}/instances/{instance_id}``
     """
 
     td_ccel: "TdxCcelAttestation" = proto.Field(
@@ -301,6 +305,10 @@ class VerifyAttestationRequest(proto.Message):
     attester: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    instance: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -66,9 +66,9 @@ class FirewallEndpoint(proto.Message):
             progress, recommended per
             https://google.aip.dev/128.
         associated_networks (MutableSequence[str]):
-            Output only. List of networks that are
-            associated with this endpoint in the local zone.
-            This is a projection of the
+            Output only. Deprecated: List of networks
+            that are associated with this endpoint in the
+            local zone. This is a projection of the
             FirewallEndpointAssociations pointing at this
             endpoint. A network will only appear in this
             list after traffic routing is fully configured.

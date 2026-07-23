@@ -14,16 +14,18 @@
 
 from __future__ import absolute_import
 
-from functools import wraps
+import contextlib
 import os
 import pathlib
 import re
 import shutil
 import time
+from functools import wraps
+from typing import Generator
 
 import nox
 
-MYPY_VERSION = "mypy==1.6.1"
+MYPY_VERSION = "mypy<1.16.0"
 BLACK_VERSION = "black==23.7.0"
 ISORT_VERSION = "isort==5.10.1"
 BLACK_PATHS = (
@@ -36,8 +38,20 @@ BLACK_PATHS = (
 )
 
 DEFAULT_PYTHON_VERSION = "3.14"
-UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS = ALL_PYTHON
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 SYSTEM_TEST_PYTHON_VERSIONS = UNIT_TEST_PYTHON_VERSIONS
 
@@ -77,6 +91,25 @@ nox.options.sessions = [
     "core_deps_from_source",
     "format",
 ]
+
+
+@contextlib.contextmanager
+def log_package_context(session: nox.Session) -> Generator[None, None, None]:
+    """Logs a highly visible package context banner right before a session exits.
+
+    Ensures metadata is printed adjacent to Nox's final status log,
+    even if the session fails or raises an exception.
+    """
+    # Dynamically extract current folder name (e.g., 'google-cloud-bigquery')
+    package_name = CURRENT_DIRECTORY.name
+
+    try:
+        # Hands control back to the session code block
+        yield
+    finally:
+        # This executes AFTER test output finishes, immediately above Nox's summary line
+        banner_text = f"Finished session for {package_name.lower()}"
+        session.log(banner_text)
 
 
 def default(session, install_extras=True):
@@ -170,12 +203,12 @@ def unit(session, test_type):
         # so that it continues to be an optional dependency.
         # https://github.com/googleapis/google-cloud-python/issues/1877
         if session.python == UNIT_TEST_PYTHON_VERSIONS[0]:
-            session.install("pyarrow==4.0.0", "numpy==1.20.2")
+            session.install("pyarrow==6.0.0", "numpy==1.22.0")
 
     default(session, install_extras=install_extras)
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=ALL_PYTHON)
 @_calculate_duration
 def mypy(session):
     """Run type checks with mypy."""
@@ -192,7 +225,14 @@ def mypy(session):
         "types-setuptools",
     )
     session.run("python", "-m", "pip", "freeze")
-    session.run("mypy", "-p", "google", "--show-traceback")
+    with log_package_context(session):
+        session.run(
+            "mypy",
+            f"--config-file={MYPY_CONFIG_FILE}",
+            "-p",
+            "google",
+            "--show-traceback",
+        )
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)

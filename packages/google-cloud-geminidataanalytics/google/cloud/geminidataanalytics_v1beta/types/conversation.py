@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,6 +36,8 @@ __protobuf__ = proto.module(
 class Conversation(proto.Message):
     r"""Message for a conversation.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Optional. Identifier. The unique resource name of a
@@ -67,6 +69,20 @@ class Conversation(proto.Message):
             that can be set by the client to tag a
             conversation (e.g. to filter conversations for
             specific surfaces/products).
+        kms_key (str):
+            Optional. Customer managed encryption key (CMEK) to use for
+            encrypting the Conversation resources. Encryption will
+            happen at Titan layer, we will pass the KMS key to Titan.
+
+            Format:
+            projects/{project_id}/locations/{location}/keyRings/{key_ring_name}/cryptoKeys/{key_name}.
+
+            This field is a member of `oneof`_ ``_kms_key``.
+        memory_paused (bool):
+            Optional. Whether memory is paused for this
+            conversation.
+
+            This field is a member of `oneof`_ ``_memory_paused``.
     """
 
     name: str = proto.Field(
@@ -91,6 +107,16 @@ class Conversation(proto.Message):
         proto.STRING,
         proto.STRING,
         number=9,
+    )
+    kms_key: str = proto.Field(
+        proto.STRING,
+        number=10,
+        optional=True,
+    )
+    memory_paused: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+        optional=True,
     )
 
 
@@ -160,11 +186,10 @@ class ListConversationsRequest(proto.Message):
             Required. Parent value for ListConversationsRequest. Format:
             ``projects/{project}/locations/{location}``
         page_size (int):
-            Optional. Requested page size. Server may
-            return fewer items than requested. The max page
-            size is 100. All larger page sizes will be
-            coerced to 100. If unspecified, server will pick
-            50 as an approperiate default.
+            Optional. Requested page size. Server may return fewer items
+            than requested. The max page size is ``100``. All larger
+            page sizes will be coerced to ``100``. If unspecified,
+            server will pick ``50`` as an appropriate default.
         page_token (str):
             Optional. A token identifying a page of
             results the server should return.

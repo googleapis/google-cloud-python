@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -84,6 +84,10 @@ class SessionServiceAsyncClient:
 
     answer_path = staticmethod(SessionServiceClient.answer_path)
     parse_answer_path = staticmethod(SessionServiceClient.parse_answer_path)
+    assist_answer_path = staticmethod(SessionServiceClient.assist_answer_path)
+    parse_assist_answer_path = staticmethod(
+        SessionServiceClient.parse_assist_answer_path
+    )
     chunk_path = staticmethod(SessionServiceClient.chunk_path)
     parse_chunk_path = staticmethod(SessionServiceClient.parse_chunk_path)
     data_store_path = staticmethod(SessionServiceClient.data_store_path)

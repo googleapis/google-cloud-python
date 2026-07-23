@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -257,6 +257,34 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
         """Parses a answer path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/sessions/(?P<session>.+?)/answers/(?P<answer>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def assist_answer_path(
+        project: str,
+        location: str,
+        collection: str,
+        engine: str,
+        session: str,
+        assist_answer: str,
+    ) -> str:
+        """Returns a fully-qualified assist_answer string."""
+        return "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/sessions/{session}/assistAnswers/{assist_answer}".format(
+            project=project,
+            location=location,
+            collection=collection,
+            engine=engine,
+            session=session,
+            assist_answer=assist_answer,
+        )
+
+    @staticmethod
+    def parse_assist_answer_path(path: str) -> Dict[str, str]:
+        """Parses a assist_answer path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/collections/(?P<collection>.+?)/engines/(?P<engine>.+?)/sessions/(?P<session>.+?)/assistAnswers/(?P<assist_answer>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

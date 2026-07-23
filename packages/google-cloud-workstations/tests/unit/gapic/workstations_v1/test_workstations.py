@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -127,6 +122,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1309,8 +1319,8 @@ def test_workstations_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.GetWorkstationClusterRequest,
-        dict,
+        workstations.GetWorkstationClusterRequest(),
+        {},
     ],
 )
 def test_get_workstation_cluster(request_type, transport: str = "grpc"):
@@ -1321,7 +1331,7 @@ def test_get_workstation_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1338,6 +1348,8 @@ def test_get_workstation_cluster(request_type, transport: str = "grpc"):
             subnetwork="subnetwork_value",
             control_plane_ip="control_plane_ip_value",
             degraded=True,
+            workstation_authorization_url="workstation_authorization_url_value",
+            workstation_launch_url="workstation_launch_url_value",
         )
         response = client.get_workstation_cluster(request)
 
@@ -1358,6 +1370,10 @@ def test_get_workstation_cluster(request_type, transport: str = "grpc"):
     assert response.subnetwork == "subnetwork_value"
     assert response.control_plane_ip == "control_plane_ip_value"
     assert response.degraded is True
+    assert (
+        response.workstation_authorization_url == "workstation_authorization_url_value"
+    )
+    assert response.workstation_launch_url == "workstation_launch_url_value"
 
 
 def test_get_workstation_cluster_non_empty_request_with_auto_populated_field():
@@ -1385,9 +1401,10 @@ def test_get_workstation_cluster_non_empty_request_with_auto_populated_field():
         client.get_workstation_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.GetWorkstationClusterRequest(
+        request_msg = workstations.GetWorkstationClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_workstation_cluster_use_cached_wrapped_rpc():
@@ -1473,9 +1490,15 @@ async def test_get_workstation_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.GetWorkstationClusterRequest(),
+        {},
+    ],
+)
 async def test_get_workstation_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.GetWorkstationClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1484,7 +1507,7 @@ async def test_get_workstation_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1502,6 +1525,8 @@ async def test_get_workstation_cluster_async(
                 subnetwork="subnetwork_value",
                 control_plane_ip="control_plane_ip_value",
                 degraded=True,
+                workstation_authorization_url="workstation_authorization_url_value",
+                workstation_launch_url="workstation_launch_url_value",
             )
         )
         response = await client.get_workstation_cluster(request)
@@ -1523,11 +1548,10 @@ async def test_get_workstation_cluster_async(
     assert response.subnetwork == "subnetwork_value"
     assert response.control_plane_ip == "control_plane_ip_value"
     assert response.degraded is True
-
-
-@pytest.mark.asyncio
-async def test_get_workstation_cluster_async_from_dict():
-    await test_get_workstation_cluster_async(request_type=dict)
+    assert (
+        response.workstation_authorization_url == "workstation_authorization_url_value"
+    )
+    assert response.workstation_launch_url == "workstation_launch_url_value"
 
 
 def test_get_workstation_cluster_field_headers():
@@ -1684,8 +1708,8 @@ async def test_get_workstation_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.ListWorkstationClustersRequest,
-        dict,
+        workstations.ListWorkstationClustersRequest(),
+        {},
     ],
 )
 def test_list_workstation_clusters(request_type, transport: str = "grpc"):
@@ -1696,7 +1720,7 @@ def test_list_workstation_clusters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1735,6 +1759,7 @@ def test_list_workstation_clusters_non_empty_request_with_auto_populated_field()
     request = workstations.ListWorkstationClustersRequest(
         parent="parent_value",
         page_token="page_token_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1747,10 +1772,12 @@ def test_list_workstation_clusters_non_empty_request_with_auto_populated_field()
         client.list_workstation_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListWorkstationClustersRequest(
+        request_msg = workstations.ListWorkstationClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
+            filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_workstation_clusters_use_cached_wrapped_rpc():
@@ -1836,9 +1863,15 @@ async def test_list_workstation_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.ListWorkstationClustersRequest(),
+        {},
+    ],
+)
 async def test_list_workstation_clusters_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.ListWorkstationClustersRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1847,7 +1880,7 @@ async def test_list_workstation_clusters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1872,11 +1905,6 @@ async def test_list_workstation_clusters_async(
     assert isinstance(response, pagers.ListWorkstationClustersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_workstation_clusters_async_from_dict():
-    await test_list_workstation_clusters_async(request_type=dict)
 
 
 def test_list_workstation_clusters_field_headers():
@@ -2083,6 +2111,9 @@ def test_list_workstation_clusters_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, workstations.WorkstationCluster) for i in results)
@@ -2175,6 +2206,8 @@ async def test_list_workstation_clusters_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2224,11 +2257,7 @@ async def test_list_workstation_clusters_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_workstation_clusters(request={})
-        ).pages:
+        async for page_ in (await client.list_workstation_clusters(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2237,8 +2266,8 @@ async def test_list_workstation_clusters_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.CreateWorkstationClusterRequest,
-        dict,
+        workstations.CreateWorkstationClusterRequest(),
+        {},
     ],
 )
 def test_create_workstation_cluster(request_type, transport: str = "grpc"):
@@ -2249,7 +2278,7 @@ def test_create_workstation_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2295,10 +2324,11 @@ def test_create_workstation_cluster_non_empty_request_with_auto_populated_field(
         client.create_workstation_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.CreateWorkstationClusterRequest(
+        request_msg = workstations.CreateWorkstationClusterRequest(
             parent="parent_value",
             workstation_cluster_id="workstation_cluster_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_workstation_cluster_use_cached_wrapped_rpc():
@@ -2394,9 +2424,15 @@ async def test_create_workstation_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.CreateWorkstationClusterRequest(),
+        {},
+    ],
+)
 async def test_create_workstation_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.CreateWorkstationClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2405,7 +2441,7 @@ async def test_create_workstation_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2425,11 +2461,6 @@ async def test_create_workstation_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_workstation_cluster_async_from_dict():
-    await test_create_workstation_cluster_async(request_type=dict)
 
 
 def test_create_workstation_cluster_field_headers():
@@ -2606,8 +2637,8 @@ async def test_create_workstation_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.UpdateWorkstationClusterRequest,
-        dict,
+        workstations.UpdateWorkstationClusterRequest(),
+        {},
     ],
 )
 def test_update_workstation_cluster(request_type, transport: str = "grpc"):
@@ -2618,7 +2649,7 @@ def test_update_workstation_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2661,7 +2692,8 @@ def test_update_workstation_cluster_non_empty_request_with_auto_populated_field(
         client.update_workstation_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.UpdateWorkstationClusterRequest()
+        request_msg = workstations.UpdateWorkstationClusterRequest()
+        assert args[0] == request_msg
 
 
 def test_update_workstation_cluster_use_cached_wrapped_rpc():
@@ -2757,9 +2789,15 @@ async def test_update_workstation_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.UpdateWorkstationClusterRequest(),
+        {},
+    ],
+)
 async def test_update_workstation_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.UpdateWorkstationClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2768,7 +2806,7 @@ async def test_update_workstation_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2788,11 +2826,6 @@ async def test_update_workstation_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_workstation_cluster_async_from_dict():
-    await test_update_workstation_cluster_async(request_type=dict)
 
 
 def test_update_workstation_cluster_field_headers():
@@ -2959,8 +2992,8 @@ async def test_update_workstation_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.DeleteWorkstationClusterRequest,
-        dict,
+        workstations.DeleteWorkstationClusterRequest(),
+        {},
     ],
 )
 def test_delete_workstation_cluster(request_type, transport: str = "grpc"):
@@ -2971,7 +3004,7 @@ def test_delete_workstation_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3017,10 +3050,11 @@ def test_delete_workstation_cluster_non_empty_request_with_auto_populated_field(
         client.delete_workstation_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.DeleteWorkstationClusterRequest(
+        request_msg = workstations.DeleteWorkstationClusterRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_workstation_cluster_use_cached_wrapped_rpc():
@@ -3116,9 +3150,15 @@ async def test_delete_workstation_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.DeleteWorkstationClusterRequest(),
+        {},
+    ],
+)
 async def test_delete_workstation_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.DeleteWorkstationClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3127,7 +3167,7 @@ async def test_delete_workstation_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3147,11 +3187,6 @@ async def test_delete_workstation_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_workstation_cluster_async_from_dict():
-    await test_delete_workstation_cluster_async(request_type=dict)
 
 
 def test_delete_workstation_cluster_field_headers():
@@ -3308,8 +3343,8 @@ async def test_delete_workstation_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.GetWorkstationConfigRequest,
-        dict,
+        workstations.GetWorkstationConfigRequest(),
+        {},
     ],
 )
 def test_get_workstation_config(request_type, transport: str = "grpc"):
@@ -3320,7 +3355,7 @@ def test_get_workstation_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3333,8 +3368,12 @@ def test_get_workstation_config(request_type, transport: str = "grpc"):
             uid="uid_value",
             reconciling=True,
             etag="etag_value",
+            max_usable_workstations=2488,
             replica_zones=["replica_zones_value"],
             degraded=True,
+            enable_audit_agent=True,
+            disable_tcp_connections=True,
+            grant_workstation_admin_role_on_create=True,
         )
         response = client.get_workstation_config(request)
 
@@ -3351,8 +3390,12 @@ def test_get_workstation_config(request_type, transport: str = "grpc"):
     assert response.uid == "uid_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
+    assert response.max_usable_workstations == 2488
     assert response.replica_zones == ["replica_zones_value"]
     assert response.degraded is True
+    assert response.enable_audit_agent is True
+    assert response.disable_tcp_connections is True
+    assert response.grant_workstation_admin_role_on_create is True
 
 
 def test_get_workstation_config_non_empty_request_with_auto_populated_field():
@@ -3380,9 +3423,10 @@ def test_get_workstation_config_non_empty_request_with_auto_populated_field():
         client.get_workstation_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.GetWorkstationConfigRequest(
+        request_msg = workstations.GetWorkstationConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_workstation_config_use_cached_wrapped_rpc():
@@ -3468,9 +3512,15 @@ async def test_get_workstation_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.GetWorkstationConfigRequest(),
+        {},
+    ],
+)
 async def test_get_workstation_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.GetWorkstationConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3479,7 +3529,7 @@ async def test_get_workstation_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3493,8 +3543,12 @@ async def test_get_workstation_config_async(
                 uid="uid_value",
                 reconciling=True,
                 etag="etag_value",
+                max_usable_workstations=2488,
                 replica_zones=["replica_zones_value"],
                 degraded=True,
+                enable_audit_agent=True,
+                disable_tcp_connections=True,
+                grant_workstation_admin_role_on_create=True,
             )
         )
         response = await client.get_workstation_config(request)
@@ -3512,13 +3566,12 @@ async def test_get_workstation_config_async(
     assert response.uid == "uid_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
+    assert response.max_usable_workstations == 2488
     assert response.replica_zones == ["replica_zones_value"]
     assert response.degraded is True
-
-
-@pytest.mark.asyncio
-async def test_get_workstation_config_async_from_dict():
-    await test_get_workstation_config_async(request_type=dict)
+    assert response.enable_audit_agent is True
+    assert response.disable_tcp_connections is True
+    assert response.grant_workstation_admin_role_on_create is True
 
 
 def test_get_workstation_config_field_headers():
@@ -3675,8 +3728,8 @@ async def test_get_workstation_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.ListWorkstationConfigsRequest,
-        dict,
+        workstations.ListWorkstationConfigsRequest(),
+        {},
     ],
 )
 def test_list_workstation_configs(request_type, transport: str = "grpc"):
@@ -3687,7 +3740,7 @@ def test_list_workstation_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3726,6 +3779,7 @@ def test_list_workstation_configs_non_empty_request_with_auto_populated_field():
     request = workstations.ListWorkstationConfigsRequest(
         parent="parent_value",
         page_token="page_token_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3738,10 +3792,12 @@ def test_list_workstation_configs_non_empty_request_with_auto_populated_field():
         client.list_workstation_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListWorkstationConfigsRequest(
+        request_msg = workstations.ListWorkstationConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
+            filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_workstation_configs_use_cached_wrapped_rpc():
@@ -3827,9 +3883,15 @@ async def test_list_workstation_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.ListWorkstationConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_workstation_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.ListWorkstationConfigsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3838,7 +3900,7 @@ async def test_list_workstation_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3863,11 +3925,6 @@ async def test_list_workstation_configs_async(
     assert isinstance(response, pagers.ListWorkstationConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_workstation_configs_async_from_dict():
-    await test_list_workstation_configs_async(request_type=dict)
 
 
 def test_list_workstation_configs_field_headers():
@@ -4074,6 +4131,9 @@ def test_list_workstation_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, workstations.WorkstationConfig) for i in results)
@@ -4166,6 +4226,8 @@ async def test_list_workstation_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4215,11 +4277,7 @@ async def test_list_workstation_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_workstation_configs(request={})
-        ).pages:
+        async for page_ in (await client.list_workstation_configs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4228,8 +4286,8 @@ async def test_list_workstation_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.ListUsableWorkstationConfigsRequest,
-        dict,
+        workstations.ListUsableWorkstationConfigsRequest(),
+        {},
     ],
 )
 def test_list_usable_workstation_configs(request_type, transport: str = "grpc"):
@@ -4240,7 +4298,7 @@ def test_list_usable_workstation_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4291,10 +4349,11 @@ def test_list_usable_workstation_configs_non_empty_request_with_auto_populated_f
         client.list_usable_workstation_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListUsableWorkstationConfigsRequest(
+        request_msg = workstations.ListUsableWorkstationConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_usable_workstation_configs_use_cached_wrapped_rpc():
@@ -4380,9 +4439,15 @@ async def test_list_usable_workstation_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.ListUsableWorkstationConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_usable_workstation_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.ListUsableWorkstationConfigsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4391,7 +4456,7 @@ async def test_list_usable_workstation_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4416,11 +4481,6 @@ async def test_list_usable_workstation_configs_async(
     assert isinstance(response, pagers.ListUsableWorkstationConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_usable_workstation_configs_async_from_dict():
-    await test_list_usable_workstation_configs_async(request_type=dict)
 
 
 def test_list_usable_workstation_configs_field_headers():
@@ -4627,6 +4687,9 @@ def test_list_usable_workstation_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, workstations.WorkstationConfig) for i in results)
@@ -4719,6 +4782,8 @@ async def test_list_usable_workstation_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4768,9 +4833,7 @@ async def test_list_usable_workstation_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_usable_workstation_configs(request={})
         ).pages:
             pages.append(page_)
@@ -4781,8 +4844,8 @@ async def test_list_usable_workstation_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.CreateWorkstationConfigRequest,
-        dict,
+        workstations.CreateWorkstationConfigRequest(),
+        {},
     ],
 )
 def test_create_workstation_config(request_type, transport: str = "grpc"):
@@ -4793,7 +4856,7 @@ def test_create_workstation_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4839,10 +4902,11 @@ def test_create_workstation_config_non_empty_request_with_auto_populated_field()
         client.create_workstation_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.CreateWorkstationConfigRequest(
+        request_msg = workstations.CreateWorkstationConfigRequest(
             parent="parent_value",
             workstation_config_id="workstation_config_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_workstation_config_use_cached_wrapped_rpc():
@@ -4938,9 +5002,15 @@ async def test_create_workstation_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.CreateWorkstationConfigRequest(),
+        {},
+    ],
+)
 async def test_create_workstation_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.CreateWorkstationConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4949,7 +5019,7 @@ async def test_create_workstation_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4969,11 +5039,6 @@ async def test_create_workstation_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_workstation_config_async_from_dict():
-    await test_create_workstation_config_async(request_type=dict)
 
 
 def test_create_workstation_config_field_headers():
@@ -5150,8 +5215,8 @@ async def test_create_workstation_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.UpdateWorkstationConfigRequest,
-        dict,
+        workstations.UpdateWorkstationConfigRequest(),
+        {},
     ],
 )
 def test_update_workstation_config(request_type, transport: str = "grpc"):
@@ -5162,7 +5227,7 @@ def test_update_workstation_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5205,7 +5270,8 @@ def test_update_workstation_config_non_empty_request_with_auto_populated_field()
         client.update_workstation_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.UpdateWorkstationConfigRequest()
+        request_msg = workstations.UpdateWorkstationConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_workstation_config_use_cached_wrapped_rpc():
@@ -5301,9 +5367,15 @@ async def test_update_workstation_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.UpdateWorkstationConfigRequest(),
+        {},
+    ],
+)
 async def test_update_workstation_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.UpdateWorkstationConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5312,7 +5384,7 @@ async def test_update_workstation_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5332,11 +5404,6 @@ async def test_update_workstation_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_workstation_config_async_from_dict():
-    await test_update_workstation_config_async(request_type=dict)
 
 
 def test_update_workstation_config_field_headers():
@@ -5503,8 +5570,8 @@ async def test_update_workstation_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.DeleteWorkstationConfigRequest,
-        dict,
+        workstations.DeleteWorkstationConfigRequest(),
+        {},
     ],
 )
 def test_delete_workstation_config(request_type, transport: str = "grpc"):
@@ -5515,7 +5582,7 @@ def test_delete_workstation_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5561,10 +5628,11 @@ def test_delete_workstation_config_non_empty_request_with_auto_populated_field()
         client.delete_workstation_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.DeleteWorkstationConfigRequest(
+        request_msg = workstations.DeleteWorkstationConfigRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_workstation_config_use_cached_wrapped_rpc():
@@ -5660,9 +5728,15 @@ async def test_delete_workstation_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.DeleteWorkstationConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_workstation_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.DeleteWorkstationConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5671,7 +5745,7 @@ async def test_delete_workstation_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5691,11 +5765,6 @@ async def test_delete_workstation_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_workstation_config_async_from_dict():
-    await test_delete_workstation_config_async(request_type=dict)
 
 
 def test_delete_workstation_config_field_headers():
@@ -5852,8 +5921,8 @@ async def test_delete_workstation_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.GetWorkstationRequest,
-        dict,
+        workstations.GetWorkstationRequest(),
+        {},
     ],
 )
 def test_get_workstation(request_type, transport: str = "grpc"):
@@ -5864,7 +5933,7 @@ def test_get_workstation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workstation), "__call__") as call:
@@ -5877,6 +5946,8 @@ def test_get_workstation(request_type, transport: str = "grpc"):
             etag="etag_value",
             state=workstations.Workstation.State.STATE_STARTING,
             host="host_value",
+            kms_key="kms_key_value",
+            source_workstation="source_workstation_value",
         )
         response = client.get_workstation(request)
 
@@ -5895,6 +5966,8 @@ def test_get_workstation(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.state == workstations.Workstation.State.STATE_STARTING
     assert response.host == "host_value"
+    assert response.kms_key == "kms_key_value"
+    assert response.source_workstation == "source_workstation_value"
 
 
 def test_get_workstation_non_empty_request_with_auto_populated_field():
@@ -5920,9 +5993,10 @@ def test_get_workstation_non_empty_request_with_auto_populated_field():
         client.get_workstation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.GetWorkstationRequest(
+        request_msg = workstations.GetWorkstationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_workstation_use_cached_wrapped_rpc():
@@ -6003,9 +6077,14 @@ async def test_get_workstation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_workstation_async(
-    transport: str = "grpc_asyncio", request_type=workstations.GetWorkstationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.GetWorkstationRequest(),
+        {},
+    ],
+)
+async def test_get_workstation_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6013,7 +6092,7 @@ async def test_get_workstation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workstation), "__call__") as call:
@@ -6027,6 +6106,8 @@ async def test_get_workstation_async(
                 etag="etag_value",
                 state=workstations.Workstation.State.STATE_STARTING,
                 host="host_value",
+                kms_key="kms_key_value",
+                source_workstation="source_workstation_value",
             )
         )
         response = await client.get_workstation(request)
@@ -6046,11 +6127,8 @@ async def test_get_workstation_async(
     assert response.etag == "etag_value"
     assert response.state == workstations.Workstation.State.STATE_STARTING
     assert response.host == "host_value"
-
-
-@pytest.mark.asyncio
-async def test_get_workstation_async_from_dict():
-    await test_get_workstation_async(request_type=dict)
+    assert response.kms_key == "kms_key_value"
+    assert response.source_workstation == "source_workstation_value"
 
 
 def test_get_workstation_field_headers():
@@ -6199,8 +6277,8 @@ async def test_get_workstation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.ListWorkstationsRequest,
-        dict,
+        workstations.ListWorkstationsRequest(),
+        {},
     ],
 )
 def test_list_workstations(request_type, transport: str = "grpc"):
@@ -6211,7 +6289,7 @@ def test_list_workstations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6250,6 +6328,7 @@ def test_list_workstations_non_empty_request_with_auto_populated_field():
     request = workstations.ListWorkstationsRequest(
         parent="parent_value",
         page_token="page_token_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6262,10 +6341,12 @@ def test_list_workstations_non_empty_request_with_auto_populated_field():
         client.list_workstations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListWorkstationsRequest(
+        request_msg = workstations.ListWorkstationsRequest(
             parent="parent_value",
             page_token="page_token_value",
+            filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_workstations_use_cached_wrapped_rpc():
@@ -6348,9 +6429,14 @@ async def test_list_workstations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_workstations_async(
-    transport: str = "grpc_asyncio", request_type=workstations.ListWorkstationsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.ListWorkstationsRequest(),
+        {},
+    ],
+)
+async def test_list_workstations_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6358,7 +6444,7 @@ async def test_list_workstations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6383,11 +6469,6 @@ async def test_list_workstations_async(
     assert isinstance(response, pagers.ListWorkstationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_workstations_async_from_dict():
-    await test_list_workstations_async(request_type=dict)
 
 
 def test_list_workstations_field_headers():
@@ -6592,6 +6673,9 @@ def test_list_workstations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, workstations.Workstation) for i in results)
@@ -6684,6 +6768,8 @@ async def test_list_workstations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6733,11 +6819,7 @@ async def test_list_workstations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_workstations(request={})
-        ).pages:
+        async for page_ in (await client.list_workstations(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6746,8 +6828,8 @@ async def test_list_workstations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.ListUsableWorkstationsRequest,
-        dict,
+        workstations.ListUsableWorkstationsRequest(),
+        {},
     ],
 )
 def test_list_usable_workstations(request_type, transport: str = "grpc"):
@@ -6758,7 +6840,7 @@ def test_list_usable_workstations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6809,10 +6891,11 @@ def test_list_usable_workstations_non_empty_request_with_auto_populated_field():
         client.list_usable_workstations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListUsableWorkstationsRequest(
+        request_msg = workstations.ListUsableWorkstationsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_usable_workstations_use_cached_wrapped_rpc():
@@ -6898,9 +6981,15 @@ async def test_list_usable_workstations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.ListUsableWorkstationsRequest(),
+        {},
+    ],
+)
 async def test_list_usable_workstations_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.ListUsableWorkstationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6909,7 +6998,7 @@ async def test_list_usable_workstations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6934,11 +7023,6 @@ async def test_list_usable_workstations_async(
     assert isinstance(response, pagers.ListUsableWorkstationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_usable_workstations_async_from_dict():
-    await test_list_usable_workstations_async(request_type=dict)
 
 
 def test_list_usable_workstations_field_headers():
@@ -7145,6 +7229,9 @@ def test_list_usable_workstations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, workstations.Workstation) for i in results)
@@ -7237,6 +7324,8 @@ async def test_list_usable_workstations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7286,11 +7375,7 @@ async def test_list_usable_workstations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_usable_workstations(request={})
-        ).pages:
+        async for page_ in (await client.list_usable_workstations(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7299,8 +7384,8 @@ async def test_list_usable_workstations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.CreateWorkstationRequest,
-        dict,
+        workstations.CreateWorkstationRequest(),
+        {},
     ],
 )
 def test_create_workstation(request_type, transport: str = "grpc"):
@@ -7311,7 +7396,7 @@ def test_create_workstation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7357,10 +7442,11 @@ def test_create_workstation_non_empty_request_with_auto_populated_field():
         client.create_workstation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.CreateWorkstationRequest(
+        request_msg = workstations.CreateWorkstationRequest(
             parent="parent_value",
             workstation_id="workstation_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_workstation_use_cached_wrapped_rpc():
@@ -7455,9 +7541,14 @@ async def test_create_workstation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_workstation_async(
-    transport: str = "grpc_asyncio", request_type=workstations.CreateWorkstationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.CreateWorkstationRequest(),
+        {},
+    ],
+)
+async def test_create_workstation_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7465,7 +7556,7 @@ async def test_create_workstation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7485,11 +7576,6 @@ async def test_create_workstation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_workstation_async_from_dict():
-    await test_create_workstation_async(request_type=dict)
 
 
 def test_create_workstation_field_headers():
@@ -7666,8 +7752,8 @@ async def test_create_workstation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.UpdateWorkstationRequest,
-        dict,
+        workstations.UpdateWorkstationRequest(),
+        {},
     ],
 )
 def test_update_workstation(request_type, transport: str = "grpc"):
@@ -7678,7 +7764,7 @@ def test_update_workstation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7721,7 +7807,8 @@ def test_update_workstation_non_empty_request_with_auto_populated_field():
         client.update_workstation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.UpdateWorkstationRequest()
+        request_msg = workstations.UpdateWorkstationRequest()
+        assert args[0] == request_msg
 
 
 def test_update_workstation_use_cached_wrapped_rpc():
@@ -7816,9 +7903,14 @@ async def test_update_workstation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_workstation_async(
-    transport: str = "grpc_asyncio", request_type=workstations.UpdateWorkstationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.UpdateWorkstationRequest(),
+        {},
+    ],
+)
+async def test_update_workstation_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7826,7 +7918,7 @@ async def test_update_workstation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7846,11 +7938,6 @@ async def test_update_workstation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_workstation_async_from_dict():
-    await test_update_workstation_async(request_type=dict)
 
 
 def test_update_workstation_field_headers():
@@ -8017,8 +8104,8 @@ async def test_update_workstation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.DeleteWorkstationRequest,
-        dict,
+        workstations.DeleteWorkstationRequest(),
+        {},
     ],
 )
 def test_delete_workstation(request_type, transport: str = "grpc"):
@@ -8029,7 +8116,7 @@ def test_delete_workstation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8075,10 +8162,11 @@ def test_delete_workstation_non_empty_request_with_auto_populated_field():
         client.delete_workstation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.DeleteWorkstationRequest(
+        request_msg = workstations.DeleteWorkstationRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_workstation_use_cached_wrapped_rpc():
@@ -8173,9 +8261,14 @@ async def test_delete_workstation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_workstation_async(
-    transport: str = "grpc_asyncio", request_type=workstations.DeleteWorkstationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.DeleteWorkstationRequest(),
+        {},
+    ],
+)
+async def test_delete_workstation_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8183,7 +8276,7 @@ async def test_delete_workstation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8203,11 +8296,6 @@ async def test_delete_workstation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_workstation_async_from_dict():
-    await test_delete_workstation_async(request_type=dict)
 
 
 def test_delete_workstation_field_headers():
@@ -8364,8 +8452,8 @@ async def test_delete_workstation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.StartWorkstationRequest,
-        dict,
+        workstations.StartWorkstationRequest(),
+        {},
     ],
 )
 def test_start_workstation(request_type, transport: str = "grpc"):
@@ -8376,7 +8464,7 @@ def test_start_workstation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8410,6 +8498,7 @@ def test_start_workstation_non_empty_request_with_auto_populated_field():
     request = workstations.StartWorkstationRequest(
         name="name_value",
         etag="etag_value",
+        boost_config="boost_config_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8422,10 +8511,12 @@ def test_start_workstation_non_empty_request_with_auto_populated_field():
         client.start_workstation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.StartWorkstationRequest(
+        request_msg = workstations.StartWorkstationRequest(
             name="name_value",
             etag="etag_value",
+            boost_config="boost_config_value",
         )
+        assert args[0] == request_msg
 
 
 def test_start_workstation_use_cached_wrapped_rpc():
@@ -8518,9 +8609,14 @@ async def test_start_workstation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_start_workstation_async(
-    transport: str = "grpc_asyncio", request_type=workstations.StartWorkstationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.StartWorkstationRequest(),
+        {},
+    ],
+)
+async def test_start_workstation_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8528,7 +8624,7 @@ async def test_start_workstation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8548,11 +8644,6 @@ async def test_start_workstation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_start_workstation_async_from_dict():
-    await test_start_workstation_async(request_type=dict)
 
 
 def test_start_workstation_field_headers():
@@ -8709,8 +8800,8 @@ async def test_start_workstation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.StopWorkstationRequest,
-        dict,
+        workstations.StopWorkstationRequest(),
+        {},
     ],
 )
 def test_stop_workstation(request_type, transport: str = "grpc"):
@@ -8721,7 +8812,7 @@ def test_stop_workstation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_workstation), "__call__") as call:
@@ -8763,10 +8854,11 @@ def test_stop_workstation_non_empty_request_with_auto_populated_field():
         client.stop_workstation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.StopWorkstationRequest(
+        request_msg = workstations.StopWorkstationRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_stop_workstation_use_cached_wrapped_rpc():
@@ -8859,9 +8951,14 @@ async def test_stop_workstation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_stop_workstation_async(
-    transport: str = "grpc_asyncio", request_type=workstations.StopWorkstationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.StopWorkstationRequest(),
+        {},
+    ],
+)
+async def test_stop_workstation_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8869,7 +8966,7 @@ async def test_stop_workstation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_workstation), "__call__") as call:
@@ -8887,11 +8984,6 @@ async def test_stop_workstation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_stop_workstation_async_from_dict():
-    await test_stop_workstation_async(request_type=dict)
 
 
 def test_stop_workstation_field_headers():
@@ -9040,8 +9132,8 @@ async def test_stop_workstation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workstations.GenerateAccessTokenRequest,
-        dict,
+        workstations.GenerateAccessTokenRequest(),
+        {},
     ],
 )
 def test_generate_access_token(request_type, transport: str = "grpc"):
@@ -9052,7 +9144,7 @@ def test_generate_access_token(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9100,9 +9192,10 @@ def test_generate_access_token_non_empty_request_with_auto_populated_field():
         client.generate_access_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.GenerateAccessTokenRequest(
+        request_msg = workstations.GenerateAccessTokenRequest(
             workstation="workstation_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_access_token_use_cached_wrapped_rpc():
@@ -9188,9 +9281,15 @@ async def test_generate_access_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.GenerateAccessTokenRequest(),
+        {},
+    ],
+)
 async def test_generate_access_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.GenerateAccessTokenRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9199,7 +9298,7 @@ async def test_generate_access_token_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9222,11 +9321,6 @@ async def test_generate_access_token_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, workstations.GenerateAccessTokenResponse)
     assert response.access_token == "access_token_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_access_token_async_from_dict():
-    await test_generate_access_token_async(request_type=dict)
 
 
 def test_generate_access_token_field_headers():
@@ -9493,7 +9587,7 @@ def test_get_workstation_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_workstation_cluster_rest_unset_required_fields():
@@ -9636,6 +9730,7 @@ def test_list_workstation_clusters_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "filter",
             "page_size",
             "page_token",
         )
@@ -9685,7 +9780,7 @@ def test_list_workstation_clusters_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_workstation_clusters_rest_unset_required_fields():
@@ -9697,6 +9792,7 @@ def test_list_workstation_clusters_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "filter",
                 "pageSize",
                 "pageToken",
             )
@@ -9816,6 +9912,9 @@ def test_list_workstation_clusters_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_workstation_clusters(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -9964,7 +10063,7 @@ def test_create_workstation_cluster_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_workstation_cluster_rest_unset_required_fields():
@@ -10168,7 +10267,7 @@ def test_update_workstation_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_workstation_cluster_rest_unset_required_fields():
@@ -10378,7 +10477,7 @@ def test_delete_workstation_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_workstation_cluster_rest_unset_required_fields():
@@ -10570,7 +10669,7 @@ def test_get_workstation_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_workstation_config_rest_unset_required_fields():
@@ -10713,6 +10812,7 @@ def test_list_workstation_configs_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "filter",
             "page_size",
             "page_token",
         )
@@ -10762,7 +10862,7 @@ def test_list_workstation_configs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_workstation_configs_rest_unset_required_fields():
@@ -10774,6 +10874,7 @@ def test_list_workstation_configs_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "filter",
                 "pageSize",
                 "pageToken",
             )
@@ -10897,6 +10998,9 @@ def test_list_workstation_configs_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_workstation_configs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -11029,7 +11133,7 @@ def test_list_usable_workstation_configs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_usable_workstation_configs_rest_unset_required_fields():
@@ -11169,6 +11273,9 @@ def test_list_usable_workstation_configs_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_usable_workstation_configs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -11319,7 +11426,7 @@ def test_create_workstation_config_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_workstation_config_rest_unset_required_fields():
@@ -11525,7 +11632,7 @@ def test_update_workstation_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_workstation_config_rest_unset_required_fields():
@@ -11735,7 +11842,7 @@ def test_delete_workstation_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_workstation_config_rest_unset_required_fields():
@@ -11922,7 +12029,7 @@ def test_get_workstation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_workstation_rest_unset_required_fields():
@@ -12062,6 +12169,7 @@ def test_list_workstations_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "filter",
             "page_size",
             "page_token",
         )
@@ -12111,7 +12219,7 @@ def test_list_workstations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_workstations_rest_unset_required_fields():
@@ -12123,6 +12231,7 @@ def test_list_workstations_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "filter",
                 "pageSize",
                 "pageToken",
             )
@@ -12246,6 +12355,9 @@ def test_list_workstations_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_workstations(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -12376,7 +12488,7 @@ def test_list_usable_workstations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_usable_workstations_rest_unset_required_fields():
@@ -12511,6 +12623,9 @@ def test_list_usable_workstations_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_usable_workstations(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -12655,7 +12770,7 @@ def test_create_workstation_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_workstation_rest_unset_required_fields():
@@ -12860,7 +12975,7 @@ def test_update_workstation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_workstation_rest_unset_required_fields():
@@ -13068,7 +13183,7 @@ def test_delete_workstation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_workstation_rest_unset_required_fields():
@@ -13258,7 +13373,7 @@ def test_start_workstation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_start_workstation_rest_unset_required_fields():
@@ -13440,7 +13555,7 @@ def test_stop_workstation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_stop_workstation_rest_unset_required_fields():
@@ -13624,7 +13739,7 @@ def test_generate_access_token_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_access_token_rest_unset_required_fields():
@@ -13821,7 +13936,6 @@ def test_get_workstation_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.GetWorkstationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13844,7 +13958,6 @@ def test_list_workstation_clusters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListWorkstationClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -13867,7 +13980,6 @@ def test_create_workstation_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.CreateWorkstationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13890,7 +14002,6 @@ def test_update_workstation_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.UpdateWorkstationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13913,7 +14024,6 @@ def test_delete_workstation_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.DeleteWorkstationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13936,7 +14046,6 @@ def test_get_workstation_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.GetWorkstationConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13959,7 +14068,6 @@ def test_list_workstation_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListWorkstationConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13982,7 +14090,6 @@ def test_list_usable_workstation_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListUsableWorkstationConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14005,7 +14112,6 @@ def test_create_workstation_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.CreateWorkstationConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14028,7 +14134,6 @@ def test_update_workstation_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.UpdateWorkstationConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14051,7 +14156,6 @@ def test_delete_workstation_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.DeleteWorkstationConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14072,7 +14176,6 @@ def test_get_workstation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.GetWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14095,7 +14198,6 @@ def test_list_workstations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListWorkstationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14118,7 +14220,6 @@ def test_list_usable_workstations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListUsableWorkstationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14141,7 +14242,6 @@ def test_create_workstation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.CreateWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14164,7 +14264,6 @@ def test_update_workstation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.UpdateWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14187,7 +14286,6 @@ def test_delete_workstation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.DeleteWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14210,7 +14308,6 @@ def test_start_workstation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.StartWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14231,7 +14328,6 @@ def test_stop_workstation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.StopWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14254,7 +14350,6 @@ def test_generate_access_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.GenerateAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -14297,6 +14392,8 @@ async def test_get_workstation_cluster_empty_call_grpc_asyncio():
                 subnetwork="subnetwork_value",
                 control_plane_ip="control_plane_ip_value",
                 degraded=True,
+                workstation_authorization_url="workstation_authorization_url_value",
+                workstation_launch_url="workstation_launch_url_value",
             )
         )
         await client.get_workstation_cluster(request=None)
@@ -14305,7 +14402,6 @@ async def test_get_workstation_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.GetWorkstationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -14335,7 +14431,6 @@ async def test_list_workstation_clusters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListWorkstationClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -14362,7 +14457,6 @@ async def test_create_workstation_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.CreateWorkstationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -14389,7 +14483,6 @@ async def test_update_workstation_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.UpdateWorkstationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -14416,7 +14509,6 @@ async def test_delete_workstation_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.DeleteWorkstationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -14441,8 +14533,12 @@ async def test_get_workstation_config_empty_call_grpc_asyncio():
                 uid="uid_value",
                 reconciling=True,
                 etag="etag_value",
+                max_usable_workstations=2488,
                 replica_zones=["replica_zones_value"],
                 degraded=True,
+                enable_audit_agent=True,
+                disable_tcp_connections=True,
+                grant_workstation_admin_role_on_create=True,
             )
         )
         await client.get_workstation_config(request=None)
@@ -14451,7 +14547,6 @@ async def test_get_workstation_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.GetWorkstationConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14481,7 +14576,6 @@ async def test_list_workstation_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListWorkstationConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14511,7 +14605,6 @@ async def test_list_usable_workstation_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListUsableWorkstationConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14538,7 +14631,6 @@ async def test_create_workstation_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.CreateWorkstationConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14565,7 +14657,6 @@ async def test_update_workstation_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.UpdateWorkstationConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14592,7 +14683,6 @@ async def test_delete_workstation_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.DeleteWorkstationConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14617,6 +14707,8 @@ async def test_get_workstation_empty_call_grpc_asyncio():
                 etag="etag_value",
                 state=workstations.Workstation.State.STATE_STARTING,
                 host="host_value",
+                kms_key="kms_key_value",
+                source_workstation="source_workstation_value",
             )
         )
         await client.get_workstation(request=None)
@@ -14625,7 +14717,6 @@ async def test_get_workstation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.GetWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14655,7 +14746,6 @@ async def test_list_workstations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListWorkstationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14685,7 +14775,6 @@ async def test_list_usable_workstations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListUsableWorkstationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14712,7 +14801,6 @@ async def test_create_workstation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.CreateWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14739,7 +14827,6 @@ async def test_update_workstation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.UpdateWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14766,7 +14853,6 @@ async def test_delete_workstation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.DeleteWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14793,7 +14879,6 @@ async def test_start_workstation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.StartWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14818,7 +14903,6 @@ async def test_stop_workstation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.StopWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14847,7 +14931,6 @@ async def test_generate_access_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.GenerateAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -14917,6 +15000,8 @@ def test_get_workstation_cluster_rest_call_success(request_type):
             subnetwork="subnetwork_value",
             control_plane_ip="control_plane_ip_value",
             degraded=True,
+            workstation_authorization_url="workstation_authorization_url_value",
+            workstation_launch_url="workstation_launch_url_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -14942,6 +15027,10 @@ def test_get_workstation_cluster_rest_call_success(request_type):
     assert response.subnetwork == "subnetwork_value"
     assert response.control_plane_ip == "control_plane_ip_value"
     assert response.degraded is True
+    assert (
+        response.workstation_authorization_url == "workstation_authorization_url_value"
+    )
+    assert response.workstation_launch_url == "workstation_launch_url_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -15209,6 +15298,7 @@ def test_create_workstation_cluster_rest_call_success(request_type):
             "service_attachment_uri": "service_attachment_uri_value",
             "allowed_projects": ["allowed_projects_value1", "allowed_projects_value2"],
         },
+        "domain_config": {"domain": "domain_value"},
         "degraded": True,
         "conditions": [
             {
@@ -15222,6 +15312,10 @@ def test_create_workstation_cluster_rest_call_success(request_type):
                 ],
             }
         ],
+        "tags": {},
+        "gateway_config": {"http2_enabled": True},
+        "workstation_authorization_url": "workstation_authorization_url_value",
+        "workstation_launch_url": "workstation_launch_url_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15446,6 +15540,7 @@ def test_update_workstation_cluster_rest_call_success(request_type):
             "service_attachment_uri": "service_attachment_uri_value",
             "allowed_projects": ["allowed_projects_value1", "allowed_projects_value2"],
         },
+        "domain_config": {"domain": "domain_value"},
         "degraded": True,
         "conditions": [
             {
@@ -15459,6 +15554,10 @@ def test_update_workstation_cluster_rest_call_success(request_type):
                 ],
             }
         ],
+        "tags": {},
+        "gateway_config": {"http2_enabled": True},
+        "workstation_authorization_url": "workstation_authorization_url_value",
+        "workstation_launch_url": "workstation_launch_url_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15800,8 +15899,12 @@ def test_get_workstation_config_rest_call_success(request_type):
             uid="uid_value",
             reconciling=True,
             etag="etag_value",
+            max_usable_workstations=2488,
             replica_zones=["replica_zones_value"],
             degraded=True,
+            enable_audit_agent=True,
+            disable_tcp_connections=True,
+            grant_workstation_admin_role_on_create=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -15823,8 +15926,12 @@ def test_get_workstation_config_rest_call_success(request_type):
     assert response.uid == "uid_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
+    assert response.max_usable_workstations == 2488
     assert response.replica_zones == ["replica_zones_value"]
     assert response.degraded is True
+    assert response.enable_audit_agent is True
+    assert response.disable_tcp_connections is True
+    assert response.grant_workstation_admin_role_on_create is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -16239,6 +16346,7 @@ def test_create_workstation_config_rest_call_success(request_type):
         "etag": "etag_value",
         "idle_timeout": {"seconds": 751, "nanos": 543},
         "running_timeout": {},
+        "max_usable_workstations": 2488,
         "host": {
             "gce_instance": {
                 "machine_type": "machine_type_value",
@@ -16259,16 +16367,51 @@ def test_create_workstation_config_rest_call_success(request_type):
                 },
                 "confidential_instance_config": {"enable_confidential_compute": True},
                 "boot_disk_size_gb": 1792,
+                "accelerators": [{"type_": "type__value", "count": 553}],
+                "boost_configs": [
+                    {
+                        "id": "id_value",
+                        "machine_type": "machine_type_value",
+                        "accelerators": {},
+                        "boot_disk_size_gb": 1792,
+                        "enable_nested_virtualization": True,
+                        "pool_size": 980,
+                    }
+                ],
+                "disable_ssh": True,
+                "vm_tags": {},
+                "startup_script_uri": "startup_script_uri_value",
+                "instance_metadata": {},
             }
         },
         "persistent_directories": [
             {
                 "gce_pd": {
                     "size_gb": 739,
+                    "max_size_gb": 1160,
                     "fs_type": "fs_type_value",
                     "disk_type": "disk_type_value",
                     "source_snapshot": "source_snapshot_value",
                     "reclaim_policy": 1,
+                    "archive_timeout": {},
+                },
+                "gce_hd": {
+                    "size_gb": 739,
+                    "max_size_gb": 1160,
+                    "source_snapshot": "source_snapshot_value",
+                    "reclaim_policy": 1,
+                    "archive_timeout": {},
+                },
+                "mount_path": "mount_path_value",
+            }
+        ],
+        "ephemeral_directories": [
+            {
+                "gce_pd": {
+                    "disk_type": "disk_type_value",
+                    "source_snapshot": "source_snapshot_value",
+                    "source_image": "source_image_value",
+                    "read_only": True,
                 },
                 "mount_path": "mount_path_value",
             }
@@ -16300,6 +16443,10 @@ def test_create_workstation_config_rest_call_success(request_type):
                 ],
             }
         ],
+        "enable_audit_agent": True,
+        "disable_tcp_connections": True,
+        "allowed_ports": [{"first": 552, "last": 436}],
+        "grant_workstation_admin_role_on_create": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -16517,6 +16664,7 @@ def test_update_workstation_config_rest_call_success(request_type):
         "etag": "etag_value",
         "idle_timeout": {"seconds": 751, "nanos": 543},
         "running_timeout": {},
+        "max_usable_workstations": 2488,
         "host": {
             "gce_instance": {
                 "machine_type": "machine_type_value",
@@ -16537,16 +16685,51 @@ def test_update_workstation_config_rest_call_success(request_type):
                 },
                 "confidential_instance_config": {"enable_confidential_compute": True},
                 "boot_disk_size_gb": 1792,
+                "accelerators": [{"type_": "type__value", "count": 553}],
+                "boost_configs": [
+                    {
+                        "id": "id_value",
+                        "machine_type": "machine_type_value",
+                        "accelerators": {},
+                        "boot_disk_size_gb": 1792,
+                        "enable_nested_virtualization": True,
+                        "pool_size": 980,
+                    }
+                ],
+                "disable_ssh": True,
+                "vm_tags": {},
+                "startup_script_uri": "startup_script_uri_value",
+                "instance_metadata": {},
             }
         },
         "persistent_directories": [
             {
                 "gce_pd": {
                     "size_gb": 739,
+                    "max_size_gb": 1160,
                     "fs_type": "fs_type_value",
                     "disk_type": "disk_type_value",
                     "source_snapshot": "source_snapshot_value",
                     "reclaim_policy": 1,
+                    "archive_timeout": {},
+                },
+                "gce_hd": {
+                    "size_gb": 739,
+                    "max_size_gb": 1160,
+                    "source_snapshot": "source_snapshot_value",
+                    "reclaim_policy": 1,
+                    "archive_timeout": {},
+                },
+                "mount_path": "mount_path_value",
+            }
+        ],
+        "ephemeral_directories": [
+            {
+                "gce_pd": {
+                    "disk_type": "disk_type_value",
+                    "source_snapshot": "source_snapshot_value",
+                    "source_image": "source_image_value",
+                    "read_only": True,
                 },
                 "mount_path": "mount_path_value",
             }
@@ -16578,6 +16761,10 @@ def test_update_workstation_config_rest_call_success(request_type):
                 ],
             }
         ],
+        "enable_audit_agent": True,
+        "disable_tcp_connections": True,
+        "allowed_ports": [{"first": 552, "last": 436}],
+        "grant_workstation_admin_role_on_create": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -16921,6 +17108,8 @@ def test_get_workstation_rest_call_success(request_type):
             etag="etag_value",
             state=workstations.Workstation.State.STATE_STARTING,
             host="host_value",
+            kms_key="kms_key_value",
+            source_workstation="source_workstation_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -16944,6 +17133,8 @@ def test_get_workstation_rest_call_success(request_type):
     assert response.etag == "etag_value"
     assert response.state == workstations.Workstation.State.STATE_STARTING
     assert response.host == "host_value"
+    assert response.kms_key == "kms_key_value"
+    assert response.source_workstation == "source_workstation_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -17350,8 +17541,19 @@ def test_create_workstation_rest_call_success(request_type):
         "start_time": {},
         "delete_time": {},
         "etag": "etag_value",
+        "persistent_directories": [{"mount_path": "mount_path_value", "size_gb": 739}],
         "state": 1,
         "host": "host_value",
+        "env": {},
+        "kms_key": "kms_key_value",
+        "source_workstation": "source_workstation_value",
+        "runtime_host": {
+            "gce_instance_host": {
+                "name": "name_value",
+                "id": "id_value",
+                "zone": "zone_value",
+            }
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -17566,8 +17768,19 @@ def test_update_workstation_rest_call_success(request_type):
         "start_time": {},
         "delete_time": {},
         "etag": "etag_value",
+        "persistent_directories": [{"mount_path": "mount_path_value", "size_gb": 739}],
         "state": 1,
         "host": "host_value",
+        "env": {},
+        "kms_key": "kms_key_value",
+        "source_workstation": "source_workstation_value",
+        "runtime_host": {
+            "gce_instance_host": {
+                "name": "name_value",
+                "id": "id_value",
+                "zone": "zone_value",
+            }
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -18733,7 +18946,6 @@ def test_get_workstation_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.GetWorkstationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -18755,7 +18967,6 @@ def test_list_workstation_clusters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListWorkstationClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -18777,7 +18988,6 @@ def test_create_workstation_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.CreateWorkstationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -18799,7 +19009,6 @@ def test_update_workstation_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.UpdateWorkstationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -18821,7 +19030,6 @@ def test_delete_workstation_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.DeleteWorkstationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -18843,7 +19051,6 @@ def test_get_workstation_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.GetWorkstationConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -18865,7 +19072,6 @@ def test_list_workstation_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListWorkstationConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18887,7 +19093,6 @@ def test_list_usable_workstation_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListUsableWorkstationConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18909,7 +19114,6 @@ def test_create_workstation_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.CreateWorkstationConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -18931,7 +19135,6 @@ def test_update_workstation_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.UpdateWorkstationConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -18953,7 +19156,6 @@ def test_delete_workstation_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.DeleteWorkstationConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -18973,7 +19175,6 @@ def test_get_workstation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.GetWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18995,7 +19196,6 @@ def test_list_workstations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListWorkstationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19017,7 +19217,6 @@ def test_list_usable_workstations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.ListUsableWorkstationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19039,7 +19238,6 @@ def test_create_workstation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.CreateWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -19061,7 +19259,6 @@ def test_update_workstation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.UpdateWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -19083,7 +19280,6 @@ def test_delete_workstation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.DeleteWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -19105,7 +19301,6 @@ def test_start_workstation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.StartWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -19125,7 +19320,6 @@ def test_stop_workstation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.StopWorkstationRequest()
-
         assert args[0] == request_msg
 
 
@@ -19147,7 +19341,6 @@ def test_generate_access_token_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workstations.GenerateAccessTokenRequest()
-
         assert args[0] == request_msg
 
 

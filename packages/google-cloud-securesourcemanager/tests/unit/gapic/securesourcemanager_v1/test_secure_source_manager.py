@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -129,6 +124,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1394,8 +1404,8 @@ def test_secure_source_manager_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.ListInstancesRequest,
-        dict,
+        secure_source_manager.ListInstancesRequest(),
+        {},
     ],
 )
 def test_list_instances(request_type, transport: str = "grpc"):
@@ -1406,7 +1416,7 @@ def test_list_instances(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -1455,12 +1465,13 @@ def test_list_instances_non_empty_request_with_auto_populated_field():
         client.list_instances(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.ListInstancesRequest(
+        request_msg = secure_source_manager.ListInstancesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_instances_use_cached_wrapped_rpc():
@@ -1541,10 +1552,14 @@ async def test_list_instances_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_instances_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.ListInstancesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.ListInstancesRequest(),
+        {},
+    ],
+)
+async def test_list_instances_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1552,7 +1567,7 @@ async def test_list_instances_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -1575,11 +1590,6 @@ async def test_list_instances_async(
     assert isinstance(response, pagers.ListInstancesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_instances_async_from_dict():
-    await test_list_instances_async(request_type=dict)
 
 
 def test_list_instances_field_headers():
@@ -1774,6 +1784,9 @@ def test_list_instances_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.Instance) for i in results)
@@ -1862,6 +1875,8 @@ async def test_list_instances_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1909,11 +1924,7 @@ async def test_list_instances_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_instances(request={})
-        ).pages:
+        async for page_ in (await client.list_instances(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1922,8 +1933,8 @@ async def test_list_instances_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.GetInstanceRequest,
-        dict,
+        secure_source_manager.GetInstanceRequest(),
+        {},
     ],
 )
 def test_get_instance(request_type, transport: str = "grpc"):
@@ -1934,7 +1945,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -1987,9 +1998,10 @@ def test_get_instance_non_empty_request_with_auto_populated_field():
         client.get_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.GetInstanceRequest(
+        request_msg = secure_source_manager.GetInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_instance_use_cached_wrapped_rpc():
@@ -2070,10 +2082,14 @@ async def test_get_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.GetInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.GetInstanceRequest(),
+        {},
+    ],
+)
+async def test_get_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2081,7 +2097,7 @@ async def test_get_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -2111,11 +2127,6 @@ async def test_get_instance_async(
         == secure_source_manager.Instance.StateNote.PAUSED_CMEK_UNAVAILABLE
     )
     assert response.kms_key == "kms_key_value"
-
-
-@pytest.mark.asyncio
-async def test_get_instance_async_from_dict():
-    await test_get_instance_async(request_type=dict)
 
 
 def test_get_instance_field_headers():
@@ -2264,8 +2275,8 @@ async def test_get_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.CreateInstanceRequest,
-        dict,
+        secure_source_manager.CreateInstanceRequest(),
+        {},
     ],
 )
 def test_create_instance(request_type, transport: str = "grpc"):
@@ -2276,7 +2287,7 @@ def test_create_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -2318,10 +2329,11 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
         client.create_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.CreateInstanceRequest(
+        request_msg = secure_source_manager.CreateInstanceRequest(
             parent="parent_value",
             instance_id="instance_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_instance_use_cached_wrapped_rpc():
@@ -2412,10 +2424,14 @@ async def test_create_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.CreateInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.CreateInstanceRequest(),
+        {},
+    ],
+)
+async def test_create_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2423,7 +2439,7 @@ async def test_create_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -2441,11 +2457,6 @@ async def test_create_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_instance_async_from_dict():
-    await test_create_instance_async(request_type=dict)
 
 
 def test_create_instance_field_headers():
@@ -2614,8 +2625,8 @@ async def test_create_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.DeleteInstanceRequest,
-        dict,
+        secure_source_manager.DeleteInstanceRequest(),
+        {},
     ],
 )
 def test_delete_instance(request_type, transport: str = "grpc"):
@@ -2626,7 +2637,7 @@ def test_delete_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -2667,9 +2678,10 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
         client.delete_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.DeleteInstanceRequest(
+        request_msg = secure_source_manager.DeleteInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_instance_use_cached_wrapped_rpc():
@@ -2760,10 +2772,14 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.DeleteInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.DeleteInstanceRequest(),
+        {},
+    ],
+)
+async def test_delete_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2771,7 +2787,7 @@ async def test_delete_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -2789,11 +2805,6 @@ async def test_delete_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_instance_async_from_dict():
-    await test_delete_instance_async(request_type=dict)
 
 
 def test_delete_instance_field_headers():
@@ -2942,8 +2953,8 @@ async def test_delete_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.ListRepositoriesRequest,
-        dict,
+        secure_source_manager.ListRepositoriesRequest(),
+        {},
     ],
 )
 def test_list_repositories(request_type, transport: str = "grpc"):
@@ -2954,7 +2965,7 @@ def test_list_repositories(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3005,12 +3016,13 @@ def test_list_repositories_non_empty_request_with_auto_populated_field():
         client.list_repositories(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.ListRepositoriesRequest(
+        request_msg = secure_source_manager.ListRepositoriesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             instance="instance_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_repositories_use_cached_wrapped_rpc():
@@ -3093,10 +3105,14 @@ async def test_list_repositories_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_repositories_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.ListRepositoriesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.ListRepositoriesRequest(),
+        {},
+    ],
+)
+async def test_list_repositories_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3104,7 +3120,7 @@ async def test_list_repositories_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3127,11 +3143,6 @@ async def test_list_repositories_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRepositoriesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_repositories_async_from_dict():
-    await test_list_repositories_async(request_type=dict)
 
 
 def test_list_repositories_field_headers():
@@ -3336,6 +3347,9 @@ def test_list_repositories_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.Repository) for i in results)
@@ -3428,6 +3442,8 @@ async def test_list_repositories_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3477,11 +3493,7 @@ async def test_list_repositories_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_repositories(request={})
-        ).pages:
+        async for page_ in (await client.list_repositories(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3490,8 +3502,8 @@ async def test_list_repositories_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.GetRepositoryRequest,
-        dict,
+        secure_source_manager.GetRepositoryRequest(),
+        {},
     ],
 )
 def test_get_repository(request_type, transport: str = "grpc"):
@@ -3502,7 +3514,7 @@ def test_get_repository(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_repository), "__call__") as call:
@@ -3513,6 +3525,7 @@ def test_get_repository(request_type, transport: str = "grpc"):
             instance="instance_value",
             uid="uid_value",
             etag="etag_value",
+            service_account="service_account_value",
         )
         response = client.get_repository(request)
 
@@ -3529,6 +3542,7 @@ def test_get_repository(request_type, transport: str = "grpc"):
     assert response.instance == "instance_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
+    assert response.service_account == "service_account_value"
 
 
 def test_get_repository_non_empty_request_with_auto_populated_field():
@@ -3554,9 +3568,10 @@ def test_get_repository_non_empty_request_with_auto_populated_field():
         client.get_repository(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.GetRepositoryRequest(
+        request_msg = secure_source_manager.GetRepositoryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_repository_use_cached_wrapped_rpc():
@@ -3637,10 +3652,14 @@ async def test_get_repository_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_repository_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.GetRepositoryRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.GetRepositoryRequest(),
+        {},
+    ],
+)
+async def test_get_repository_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3648,7 +3667,7 @@ async def test_get_repository_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_repository), "__call__") as call:
@@ -3660,6 +3679,7 @@ async def test_get_repository_async(
                 instance="instance_value",
                 uid="uid_value",
                 etag="etag_value",
+                service_account="service_account_value",
             )
         )
         response = await client.get_repository(request)
@@ -3677,11 +3697,7 @@ async def test_get_repository_async(
     assert response.instance == "instance_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_repository_async_from_dict():
-    await test_get_repository_async(request_type=dict)
+    assert response.service_account == "service_account_value"
 
 
 def test_get_repository_field_headers():
@@ -3830,8 +3846,8 @@ async def test_get_repository_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.CreateRepositoryRequest,
-        dict,
+        secure_source_manager.CreateRepositoryRequest(),
+        {},
     ],
 )
 def test_create_repository(request_type, transport: str = "grpc"):
@@ -3842,7 +3858,7 @@ def test_create_repository(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3888,10 +3904,11 @@ def test_create_repository_non_empty_request_with_auto_populated_field():
         client.create_repository(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.CreateRepositoryRequest(
+        request_msg = secure_source_manager.CreateRepositoryRequest(
             parent="parent_value",
             repository_id="repository_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_repository_use_cached_wrapped_rpc():
@@ -3984,10 +4001,14 @@ async def test_create_repository_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_repository_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.CreateRepositoryRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.CreateRepositoryRequest(),
+        {},
+    ],
+)
+async def test_create_repository_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3995,7 +4016,7 @@ async def test_create_repository_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4015,11 +4036,6 @@ async def test_create_repository_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_repository_async_from_dict():
-    await test_create_repository_async(request_type=dict)
 
 
 def test_create_repository_field_headers():
@@ -4196,8 +4212,8 @@ async def test_create_repository_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.UpdateRepositoryRequest,
-        dict,
+        secure_source_manager.UpdateRepositoryRequest(),
+        {},
     ],
 )
 def test_update_repository(request_type, transport: str = "grpc"):
@@ -4208,7 +4224,7 @@ def test_update_repository(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4251,7 +4267,8 @@ def test_update_repository_non_empty_request_with_auto_populated_field():
         client.update_repository(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.UpdateRepositoryRequest()
+        request_msg = secure_source_manager.UpdateRepositoryRequest()
+        assert args[0] == request_msg
 
 
 def test_update_repository_use_cached_wrapped_rpc():
@@ -4344,10 +4361,14 @@ async def test_update_repository_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_repository_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.UpdateRepositoryRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.UpdateRepositoryRequest(),
+        {},
+    ],
+)
+async def test_update_repository_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4355,7 +4376,7 @@ async def test_update_repository_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4375,11 +4396,6 @@ async def test_update_repository_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_repository_async_from_dict():
-    await test_update_repository_async(request_type=dict)
 
 
 def test_update_repository_field_headers():
@@ -4546,8 +4562,8 @@ async def test_update_repository_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.DeleteRepositoryRequest,
-        dict,
+        secure_source_manager.DeleteRepositoryRequest(),
+        {},
     ],
 )
 def test_delete_repository(request_type, transport: str = "grpc"):
@@ -4558,7 +4574,7 @@ def test_delete_repository(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4603,9 +4619,10 @@ def test_delete_repository_non_empty_request_with_auto_populated_field():
         client.delete_repository(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.DeleteRepositoryRequest(
+        request_msg = secure_source_manager.DeleteRepositoryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_repository_use_cached_wrapped_rpc():
@@ -4698,10 +4715,14 @@ async def test_delete_repository_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_repository_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.DeleteRepositoryRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.DeleteRepositoryRequest(),
+        {},
+    ],
+)
+async def test_delete_repository_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4709,7 +4730,7 @@ async def test_delete_repository_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4729,11 +4750,6 @@ async def test_delete_repository_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_repository_async_from_dict():
-    await test_delete_repository_async(request_type=dict)
 
 
 def test_delete_repository_field_headers():
@@ -4890,8 +4906,8 @@ async def test_delete_repository_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.ListHooksRequest,
-        dict,
+        secure_source_manager.ListHooksRequest(),
+        {},
     ],
 )
 def test_list_hooks(request_type, transport: str = "grpc"):
@@ -4902,7 +4918,7 @@ def test_list_hooks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_hooks), "__call__") as call:
@@ -4947,10 +4963,11 @@ def test_list_hooks_non_empty_request_with_auto_populated_field():
         client.list_hooks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.ListHooksRequest(
+        request_msg = secure_source_manager.ListHooksRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_hooks_use_cached_wrapped_rpc():
@@ -5029,9 +5046,14 @@ async def test_list_hooks_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_hooks_async(
-    transport: str = "grpc_asyncio", request_type=secure_source_manager.ListHooksRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.ListHooksRequest(),
+        {},
+    ],
+)
+async def test_list_hooks_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5039,7 +5061,7 @@ async def test_list_hooks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_hooks), "__call__") as call:
@@ -5060,11 +5082,6 @@ async def test_list_hooks_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListHooksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_hooks_async_from_dict():
-    await test_list_hooks_async(request_type=dict)
 
 
 def test_list_hooks_field_headers():
@@ -5259,6 +5276,9 @@ def test_list_hooks_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.Hook) for i in results)
@@ -5347,6 +5367,8 @@ async def test_list_hooks_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5394,11 +5416,7 @@ async def test_list_hooks_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_hooks(request={})
-        ).pages:
+        async for page_ in (await client.list_hooks(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5407,8 +5425,8 @@ async def test_list_hooks_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.GetHookRequest,
-        dict,
+        secure_source_manager.GetHookRequest(),
+        {},
     ],
 )
 def test_get_hook(request_type, transport: str = "grpc"):
@@ -5419,7 +5437,7 @@ def test_get_hook(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_hook), "__call__") as call:
@@ -5473,9 +5491,10 @@ def test_get_hook_non_empty_request_with_auto_populated_field():
         client.get_hook(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.GetHookRequest(
+        request_msg = secure_source_manager.GetHookRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_hook_use_cached_wrapped_rpc():
@@ -5554,9 +5573,14 @@ async def test_get_hook_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_hook_async(
-    transport: str = "grpc_asyncio", request_type=secure_source_manager.GetHookRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.GetHookRequest(),
+        {},
+    ],
+)
+async def test_get_hook_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5564,7 +5588,7 @@ async def test_get_hook_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_hook), "__call__") as call:
@@ -5595,11 +5619,6 @@ async def test_get_hook_async(
     assert response.events == [secure_source_manager.Hook.HookEventType.PUSH]
     assert response.uid == "uid_value"
     assert response.sensitive_query_string == "sensitive_query_string_value"
-
-
-@pytest.mark.asyncio
-async def test_get_hook_async_from_dict():
-    await test_get_hook_async(request_type=dict)
 
 
 def test_get_hook_field_headers():
@@ -5748,8 +5767,8 @@ async def test_get_hook_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.CreateHookRequest,
-        dict,
+        secure_source_manager.CreateHookRequest(),
+        {},
     ],
 )
 def test_create_hook(request_type, transport: str = "grpc"):
@@ -5760,7 +5779,7 @@ def test_create_hook(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_hook), "__call__") as call:
@@ -5802,10 +5821,11 @@ def test_create_hook_non_empty_request_with_auto_populated_field():
         client.create_hook(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.CreateHookRequest(
+        request_msg = secure_source_manager.CreateHookRequest(
             parent="parent_value",
             hook_id="hook_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_hook_use_cached_wrapped_rpc():
@@ -5896,10 +5916,14 @@ async def test_create_hook_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_hook_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.CreateHookRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.CreateHookRequest(),
+        {},
+    ],
+)
+async def test_create_hook_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5907,7 +5931,7 @@ async def test_create_hook_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_hook), "__call__") as call:
@@ -5925,11 +5949,6 @@ async def test_create_hook_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_hook_async_from_dict():
-    await test_create_hook_async(request_type=dict)
 
 
 def test_create_hook_field_headers():
@@ -6098,8 +6117,8 @@ async def test_create_hook_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.UpdateHookRequest,
-        dict,
+        secure_source_manager.UpdateHookRequest(),
+        {},
     ],
 )
 def test_update_hook(request_type, transport: str = "grpc"):
@@ -6110,7 +6129,7 @@ def test_update_hook(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_hook), "__call__") as call:
@@ -6149,7 +6168,8 @@ def test_update_hook_non_empty_request_with_auto_populated_field():
         client.update_hook(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.UpdateHookRequest()
+        request_msg = secure_source_manager.UpdateHookRequest()
+        assert args[0] == request_msg
 
 
 def test_update_hook_use_cached_wrapped_rpc():
@@ -6240,10 +6260,14 @@ async def test_update_hook_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_hook_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.UpdateHookRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.UpdateHookRequest(),
+        {},
+    ],
+)
+async def test_update_hook_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6251,7 +6275,7 @@ async def test_update_hook_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_hook), "__call__") as call:
@@ -6269,11 +6293,6 @@ async def test_update_hook_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_hook_async_from_dict():
-    await test_update_hook_async(request_type=dict)
 
 
 def test_update_hook_field_headers():
@@ -6432,8 +6451,8 @@ async def test_update_hook_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.DeleteHookRequest,
-        dict,
+        secure_source_manager.DeleteHookRequest(),
+        {},
     ],
 )
 def test_delete_hook(request_type, transport: str = "grpc"):
@@ -6444,7 +6463,7 @@ def test_delete_hook(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_hook), "__call__") as call:
@@ -6485,9 +6504,10 @@ def test_delete_hook_non_empty_request_with_auto_populated_field():
         client.delete_hook(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.DeleteHookRequest(
+        request_msg = secure_source_manager.DeleteHookRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_hook_use_cached_wrapped_rpc():
@@ -6578,10 +6598,14 @@ async def test_delete_hook_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_hook_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.DeleteHookRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.DeleteHookRequest(),
+        {},
+    ],
+)
+async def test_delete_hook_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6589,7 +6613,7 @@ async def test_delete_hook_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_hook), "__call__") as call:
@@ -6607,11 +6631,6 @@ async def test_delete_hook_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_hook_async_from_dict():
-    await test_delete_hook_async(request_type=dict)
 
 
 def test_delete_hook_field_headers():
@@ -6760,8 +6779,8 @@ async def test_delete_hook_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy_repo(request_type, transport: str = "grpc"):
@@ -6772,7 +6791,7 @@ def test_get_iam_policy_repo(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6822,9 +6841,10 @@ def test_get_iam_policy_repo_non_empty_request_with_auto_populated_field():
         client.get_iam_policy_repo(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_repo_use_cached_wrapped_rpc():
@@ -6909,9 +6929,14 @@ async def test_get_iam_policy_repo_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_repo_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_repo_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6919,7 +6944,7 @@ async def test_get_iam_policy_repo_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6944,11 +6969,6 @@ async def test_get_iam_policy_repo_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_repo_async_from_dict():
-    await test_get_iam_policy_repo_async(request_type=dict)
 
 
 def test_get_iam_policy_repo_field_headers():
@@ -7120,8 +7140,8 @@ async def test_get_iam_policy_repo_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy_repo(request_type, transport: str = "grpc"):
@@ -7132,7 +7152,7 @@ def test_set_iam_policy_repo(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7182,9 +7202,10 @@ def test_set_iam_policy_repo_non_empty_request_with_auto_populated_field():
         client.set_iam_policy_repo(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_repo_use_cached_wrapped_rpc():
@@ -7269,9 +7290,14 @@ async def test_set_iam_policy_repo_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_repo_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_repo_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7279,7 +7305,7 @@ async def test_set_iam_policy_repo_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7304,11 +7330,6 @@ async def test_set_iam_policy_repo_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_repo_async_from_dict():
-    await test_set_iam_policy_repo_async(request_type=dict)
 
 
 def test_set_iam_policy_repo_field_headers():
@@ -7481,8 +7502,8 @@ async def test_set_iam_policy_repo_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions_repo(request_type, transport: str = "grpc"):
@@ -7493,7 +7514,7 @@ def test_test_iam_permissions_repo(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7541,9 +7562,10 @@ def test_test_iam_permissions_repo_non_empty_request_with_auto_populated_field()
         client.test_iam_permissions_repo(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_repo_use_cached_wrapped_rpc():
@@ -7629,9 +7651,15 @@ async def test_test_iam_permissions_repo_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_repo_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7640,7 +7668,7 @@ async def test_test_iam_permissions_repo_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7663,11 +7691,6 @@ async def test_test_iam_permissions_repo_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_repo_async_from_dict():
-    await test_test_iam_permissions_repo_async(request_type=dict)
 
 
 def test_test_iam_permissions_repo_field_headers():
@@ -7843,8 +7866,8 @@ async def test_test_iam_permissions_repo_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.CreateBranchRuleRequest,
-        dict,
+        secure_source_manager.CreateBranchRuleRequest(),
+        {},
     ],
 )
 def test_create_branch_rule(request_type, transport: str = "grpc"):
@@ -7855,7 +7878,7 @@ def test_create_branch_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7901,10 +7924,11 @@ def test_create_branch_rule_non_empty_request_with_auto_populated_field():
         client.create_branch_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.CreateBranchRuleRequest(
+        request_msg = secure_source_manager.CreateBranchRuleRequest(
             parent="parent_value",
             branch_rule_id="branch_rule_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_branch_rule_use_cached_wrapped_rpc():
@@ -7999,10 +8023,14 @@ async def test_create_branch_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_branch_rule_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.CreateBranchRuleRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.CreateBranchRuleRequest(),
+        {},
+    ],
+)
+async def test_create_branch_rule_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8010,7 +8038,7 @@ async def test_create_branch_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8030,11 +8058,6 @@ async def test_create_branch_rule_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_branch_rule_async_from_dict():
-    await test_create_branch_rule_async(request_type=dict)
 
 
 def test_create_branch_rule_field_headers():
@@ -8211,8 +8234,8 @@ async def test_create_branch_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.ListBranchRulesRequest,
-        dict,
+        secure_source_manager.ListBranchRulesRequest(),
+        {},
     ],
 )
 def test_list_branch_rules(request_type, transport: str = "grpc"):
@@ -8223,7 +8246,7 @@ def test_list_branch_rules(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8272,10 +8295,11 @@ def test_list_branch_rules_non_empty_request_with_auto_populated_field():
         client.list_branch_rules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.ListBranchRulesRequest(
+        request_msg = secure_source_manager.ListBranchRulesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_branch_rules_use_cached_wrapped_rpc():
@@ -8358,10 +8382,14 @@ async def test_list_branch_rules_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_branch_rules_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.ListBranchRulesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.ListBranchRulesRequest(),
+        {},
+    ],
+)
+async def test_list_branch_rules_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8369,7 +8397,7 @@ async def test_list_branch_rules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8392,11 +8420,6 @@ async def test_list_branch_rules_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBranchRulesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_branch_rules_async_from_dict():
-    await test_list_branch_rules_async(request_type=dict)
 
 
 def test_list_branch_rules_field_headers():
@@ -8601,6 +8624,9 @@ def test_list_branch_rules_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.BranchRule) for i in results)
@@ -8693,6 +8719,8 @@ async def test_list_branch_rules_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8742,11 +8770,7 @@ async def test_list_branch_rules_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_branch_rules(request={})
-        ).pages:
+        async for page_ in (await client.list_branch_rules(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8755,8 +8779,8 @@ async def test_list_branch_rules_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.GetBranchRuleRequest,
-        dict,
+        secure_source_manager.GetBranchRuleRequest(),
+        {},
     ],
 )
 def test_get_branch_rule(request_type, transport: str = "grpc"):
@@ -8767,7 +8791,7 @@ def test_get_branch_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_branch_rule), "__call__") as call:
@@ -8833,9 +8857,10 @@ def test_get_branch_rule_non_empty_request_with_auto_populated_field():
         client.get_branch_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.GetBranchRuleRequest(
+        request_msg = secure_source_manager.GetBranchRuleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_branch_rule_use_cached_wrapped_rpc():
@@ -8916,10 +8941,14 @@ async def test_get_branch_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_branch_rule_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.GetBranchRuleRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.GetBranchRuleRequest(),
+        {},
+    ],
+)
+async def test_get_branch_rule_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8927,7 +8956,7 @@ async def test_get_branch_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_branch_rule), "__call__") as call:
@@ -8970,11 +8999,6 @@ async def test_get_branch_rule_async(
     assert response.require_comments_resolved is True
     assert response.allow_stale_reviews is True
     assert response.require_linear_history is True
-
-
-@pytest.mark.asyncio
-async def test_get_branch_rule_async_from_dict():
-    await test_get_branch_rule_async(request_type=dict)
 
 
 def test_get_branch_rule_field_headers():
@@ -9123,8 +9147,8 @@ async def test_get_branch_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.UpdateBranchRuleRequest,
-        dict,
+        secure_source_manager.UpdateBranchRuleRequest(),
+        {},
     ],
 )
 def test_update_branch_rule(request_type, transport: str = "grpc"):
@@ -9135,7 +9159,7 @@ def test_update_branch_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9178,7 +9202,8 @@ def test_update_branch_rule_non_empty_request_with_auto_populated_field():
         client.update_branch_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.UpdateBranchRuleRequest()
+        request_msg = secure_source_manager.UpdateBranchRuleRequest()
+        assert args[0] == request_msg
 
 
 def test_update_branch_rule_use_cached_wrapped_rpc():
@@ -9273,10 +9298,14 @@ async def test_update_branch_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_branch_rule_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.UpdateBranchRuleRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.UpdateBranchRuleRequest(),
+        {},
+    ],
+)
+async def test_update_branch_rule_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9284,7 +9313,7 @@ async def test_update_branch_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9304,11 +9333,6 @@ async def test_update_branch_rule_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_branch_rule_async_from_dict():
-    await test_update_branch_rule_async(request_type=dict)
 
 
 def test_update_branch_rule_field_headers():
@@ -9475,8 +9499,8 @@ async def test_update_branch_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.DeleteBranchRuleRequest,
-        dict,
+        secure_source_manager.DeleteBranchRuleRequest(),
+        {},
     ],
 )
 def test_delete_branch_rule(request_type, transport: str = "grpc"):
@@ -9487,7 +9511,7 @@ def test_delete_branch_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9532,9 +9556,10 @@ def test_delete_branch_rule_non_empty_request_with_auto_populated_field():
         client.delete_branch_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.DeleteBranchRuleRequest(
+        request_msg = secure_source_manager.DeleteBranchRuleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_branch_rule_use_cached_wrapped_rpc():
@@ -9629,10 +9654,14 @@ async def test_delete_branch_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_branch_rule_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.DeleteBranchRuleRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.DeleteBranchRuleRequest(),
+        {},
+    ],
+)
+async def test_delete_branch_rule_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9640,7 +9669,7 @@ async def test_delete_branch_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9660,11 +9689,6 @@ async def test_delete_branch_rule_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_branch_rule_async_from_dict():
-    await test_delete_branch_rule_async(request_type=dict)
 
 
 def test_delete_branch_rule_field_headers():
@@ -9821,8 +9845,8 @@ async def test_delete_branch_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.CreatePullRequestRequest,
-        dict,
+        secure_source_manager.CreatePullRequestRequest(),
+        {},
     ],
 )
 def test_create_pull_request(request_type, transport: str = "grpc"):
@@ -9833,7 +9857,7 @@ def test_create_pull_request(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9878,9 +9902,10 @@ def test_create_pull_request_non_empty_request_with_auto_populated_field():
         client.create_pull_request(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.CreatePullRequestRequest(
+        request_msg = secure_source_manager.CreatePullRequestRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_pull_request_use_cached_wrapped_rpc():
@@ -9975,10 +10000,14 @@ async def test_create_pull_request_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_pull_request_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.CreatePullRequestRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.CreatePullRequestRequest(),
+        {},
+    ],
+)
+async def test_create_pull_request_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9986,7 +10015,7 @@ async def test_create_pull_request_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10006,11 +10035,6 @@ async def test_create_pull_request_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_pull_request_async_from_dict():
-    await test_create_pull_request_async(request_type=dict)
 
 
 def test_create_pull_request_field_headers():
@@ -10177,8 +10201,8 @@ async def test_create_pull_request_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.GetPullRequestRequest,
-        dict,
+        secure_source_manager.GetPullRequestRequest(),
+        {},
     ],
 )
 def test_get_pull_request(request_type, transport: str = "grpc"):
@@ -10189,7 +10213,7 @@ def test_get_pull_request(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_pull_request), "__call__") as call:
@@ -10239,9 +10263,10 @@ def test_get_pull_request_non_empty_request_with_auto_populated_field():
         client.get_pull_request(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.GetPullRequestRequest(
+        request_msg = secure_source_manager.GetPullRequestRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_pull_request_use_cached_wrapped_rpc():
@@ -10324,10 +10349,14 @@ async def test_get_pull_request_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_pull_request_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.GetPullRequestRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.GetPullRequestRequest(),
+        {},
+    ],
+)
+async def test_get_pull_request_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10335,7 +10364,7 @@ async def test_get_pull_request_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_pull_request), "__call__") as call:
@@ -10362,11 +10391,6 @@ async def test_get_pull_request_async(
     assert response.title == "title_value"
     assert response.body == "body_value"
     assert response.state == secure_source_manager.PullRequest.State.OPEN
-
-
-@pytest.mark.asyncio
-async def test_get_pull_request_async_from_dict():
-    await test_get_pull_request_async(request_type=dict)
 
 
 def test_get_pull_request_field_headers():
@@ -10515,8 +10539,8 @@ async def test_get_pull_request_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.ListPullRequestsRequest,
-        dict,
+        secure_source_manager.ListPullRequestsRequest(),
+        {},
     ],
 )
 def test_list_pull_requests(request_type, transport: str = "grpc"):
@@ -10527,7 +10551,7 @@ def test_list_pull_requests(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10576,10 +10600,11 @@ def test_list_pull_requests_non_empty_request_with_auto_populated_field():
         client.list_pull_requests(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.ListPullRequestsRequest(
+        request_msg = secure_source_manager.ListPullRequestsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_pull_requests_use_cached_wrapped_rpc():
@@ -10664,10 +10689,14 @@ async def test_list_pull_requests_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_pull_requests_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.ListPullRequestsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.ListPullRequestsRequest(),
+        {},
+    ],
+)
+async def test_list_pull_requests_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10675,7 +10704,7 @@ async def test_list_pull_requests_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10698,11 +10727,6 @@ async def test_list_pull_requests_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPullRequestsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_pull_requests_async_from_dict():
-    await test_list_pull_requests_async(request_type=dict)
 
 
 def test_list_pull_requests_field_headers():
@@ -10907,6 +10931,9 @@ def test_list_pull_requests_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.PullRequest) for i in results)
@@ -10999,6 +11026,8 @@ async def test_list_pull_requests_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11048,11 +11077,7 @@ async def test_list_pull_requests_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_pull_requests(request={})
-        ).pages:
+        async for page_ in (await client.list_pull_requests(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -11061,8 +11086,8 @@ async def test_list_pull_requests_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.UpdatePullRequestRequest,
-        dict,
+        secure_source_manager.UpdatePullRequestRequest(),
+        {},
     ],
 )
 def test_update_pull_request(request_type, transport: str = "grpc"):
@@ -11073,7 +11098,7 @@ def test_update_pull_request(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11116,7 +11141,8 @@ def test_update_pull_request_non_empty_request_with_auto_populated_field():
         client.update_pull_request(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.UpdatePullRequestRequest()
+        request_msg = secure_source_manager.UpdatePullRequestRequest()
+        assert args[0] == request_msg
 
 
 def test_update_pull_request_use_cached_wrapped_rpc():
@@ -11211,10 +11237,14 @@ async def test_update_pull_request_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_pull_request_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.UpdatePullRequestRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.UpdatePullRequestRequest(),
+        {},
+    ],
+)
+async def test_update_pull_request_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11222,7 +11252,7 @@ async def test_update_pull_request_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11242,11 +11272,6 @@ async def test_update_pull_request_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_pull_request_async_from_dict():
-    await test_update_pull_request_async(request_type=dict)
 
 
 def test_update_pull_request_field_headers():
@@ -11413,8 +11438,8 @@ async def test_update_pull_request_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.MergePullRequestRequest,
-        dict,
+        secure_source_manager.MergePullRequestRequest(),
+        {},
     ],
 )
 def test_merge_pull_request(request_type, transport: str = "grpc"):
@@ -11425,7 +11450,7 @@ def test_merge_pull_request(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11470,9 +11495,10 @@ def test_merge_pull_request_non_empty_request_with_auto_populated_field():
         client.merge_pull_request(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.MergePullRequestRequest(
+        request_msg = secure_source_manager.MergePullRequestRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_merge_pull_request_use_cached_wrapped_rpc():
@@ -11567,10 +11593,14 @@ async def test_merge_pull_request_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_merge_pull_request_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.MergePullRequestRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.MergePullRequestRequest(),
+        {},
+    ],
+)
+async def test_merge_pull_request_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11578,7 +11608,7 @@ async def test_merge_pull_request_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11598,11 +11628,6 @@ async def test_merge_pull_request_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_merge_pull_request_async_from_dict():
-    await test_merge_pull_request_async(request_type=dict)
 
 
 def test_merge_pull_request_field_headers():
@@ -11759,8 +11784,8 @@ async def test_merge_pull_request_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.OpenPullRequestRequest,
-        dict,
+        secure_source_manager.OpenPullRequestRequest(),
+        {},
     ],
 )
 def test_open_pull_request(request_type, transport: str = "grpc"):
@@ -11771,7 +11796,7 @@ def test_open_pull_request(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11816,9 +11841,10 @@ def test_open_pull_request_non_empty_request_with_auto_populated_field():
         client.open_pull_request(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.OpenPullRequestRequest(
+        request_msg = secure_source_manager.OpenPullRequestRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_open_pull_request_use_cached_wrapped_rpc():
@@ -11911,10 +11937,14 @@ async def test_open_pull_request_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_open_pull_request_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.OpenPullRequestRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.OpenPullRequestRequest(),
+        {},
+    ],
+)
+async def test_open_pull_request_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11922,7 +11952,7 @@ async def test_open_pull_request_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11942,11 +11972,6 @@ async def test_open_pull_request_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_open_pull_request_async_from_dict():
-    await test_open_pull_request_async(request_type=dict)
 
 
 def test_open_pull_request_field_headers():
@@ -12103,8 +12128,8 @@ async def test_open_pull_request_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.ClosePullRequestRequest,
-        dict,
+        secure_source_manager.ClosePullRequestRequest(),
+        {},
     ],
 )
 def test_close_pull_request(request_type, transport: str = "grpc"):
@@ -12115,7 +12140,7 @@ def test_close_pull_request(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12160,9 +12185,10 @@ def test_close_pull_request_non_empty_request_with_auto_populated_field():
         client.close_pull_request(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.ClosePullRequestRequest(
+        request_msg = secure_source_manager.ClosePullRequestRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_close_pull_request_use_cached_wrapped_rpc():
@@ -12257,10 +12283,14 @@ async def test_close_pull_request_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_close_pull_request_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.ClosePullRequestRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.ClosePullRequestRequest(),
+        {},
+    ],
+)
+async def test_close_pull_request_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12268,7 +12298,7 @@ async def test_close_pull_request_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12288,11 +12318,6 @@ async def test_close_pull_request_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_close_pull_request_async_from_dict():
-    await test_close_pull_request_async(request_type=dict)
 
 
 def test_close_pull_request_field_headers():
@@ -12449,8 +12474,8 @@ async def test_close_pull_request_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.ListPullRequestFileDiffsRequest,
-        dict,
+        secure_source_manager.ListPullRequestFileDiffsRequest(),
+        {},
     ],
 )
 def test_list_pull_request_file_diffs(request_type, transport: str = "grpc"):
@@ -12461,7 +12486,7 @@ def test_list_pull_request_file_diffs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12510,10 +12535,11 @@ def test_list_pull_request_file_diffs_non_empty_request_with_auto_populated_fiel
         client.list_pull_request_file_diffs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.ListPullRequestFileDiffsRequest(
+        request_msg = secure_source_manager.ListPullRequestFileDiffsRequest(
             name="name_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_pull_request_file_diffs_use_cached_wrapped_rpc():
@@ -12599,9 +12625,15 @@ async def test_list_pull_request_file_diffs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.ListPullRequestFileDiffsRequest(),
+        {},
+    ],
+)
 async def test_list_pull_request_file_diffs_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.ListPullRequestFileDiffsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12610,7 +12642,7 @@ async def test_list_pull_request_file_diffs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12633,11 +12665,6 @@ async def test_list_pull_request_file_diffs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPullRequestFileDiffsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_pull_request_file_diffs_async_from_dict():
-    await test_list_pull_request_file_diffs_async(request_type=dict)
 
 
 def test_list_pull_request_file_diffs_field_headers():
@@ -12844,6 +12871,9 @@ def test_list_pull_request_file_diffs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.FileDiff) for i in results)
@@ -12936,6 +12966,8 @@ async def test_list_pull_request_file_diffs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12985,9 +13017,7 @@ async def test_list_pull_request_file_diffs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_pull_request_file_diffs(request={})
         ).pages:
             pages.append(page_)
@@ -12998,8 +13028,8 @@ async def test_list_pull_request_file_diffs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.FetchTreeRequest,
-        dict,
+        secure_source_manager.FetchTreeRequest(),
+        {},
     ],
 )
 def test_fetch_tree(request_type, transport: str = "grpc"):
@@ -13010,7 +13040,7 @@ def test_fetch_tree(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_tree), "__call__") as call:
@@ -13056,11 +13086,12 @@ def test_fetch_tree_non_empty_request_with_auto_populated_field():
         client.fetch_tree(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.FetchTreeRequest(
+        request_msg = secure_source_manager.FetchTreeRequest(
             repository="repository_value",
             ref="ref_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_tree_use_cached_wrapped_rpc():
@@ -13139,9 +13170,14 @@ async def test_fetch_tree_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_fetch_tree_async(
-    transport: str = "grpc_asyncio", request_type=secure_source_manager.FetchTreeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.FetchTreeRequest(),
+        {},
+    ],
+)
+async def test_fetch_tree_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13149,7 +13185,7 @@ async def test_fetch_tree_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_tree), "__call__") as call:
@@ -13170,11 +13206,6 @@ async def test_fetch_tree_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchTreeAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_tree_async_from_dict():
-    await test_fetch_tree_async(request_type=dict)
 
 
 def test_fetch_tree_field_headers():
@@ -13287,6 +13318,9 @@ def test_fetch_tree_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.TreeEntry) for i in results)
@@ -13375,6 +13409,8 @@ async def test_fetch_tree_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -13422,11 +13458,7 @@ async def test_fetch_tree_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.fetch_tree(request={})
-        ).pages:
+        async for page_ in (await client.fetch_tree(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13435,8 +13467,8 @@ async def test_fetch_tree_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.FetchBlobRequest,
-        dict,
+        secure_source_manager.FetchBlobRequest(),
+        {},
     ],
 )
 def test_fetch_blob(request_type, transport: str = "grpc"):
@@ -13447,7 +13479,7 @@ def test_fetch_blob(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_blob), "__call__") as call:
@@ -13494,10 +13526,11 @@ def test_fetch_blob_non_empty_request_with_auto_populated_field():
         client.fetch_blob(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.FetchBlobRequest(
+        request_msg = secure_source_manager.FetchBlobRequest(
             repository="repository_value",
             sha="sha_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_blob_use_cached_wrapped_rpc():
@@ -13576,9 +13609,14 @@ async def test_fetch_blob_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_fetch_blob_async(
-    transport: str = "grpc_asyncio", request_type=secure_source_manager.FetchBlobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.FetchBlobRequest(),
+        {},
+    ],
+)
+async def test_fetch_blob_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13586,7 +13624,7 @@ async def test_fetch_blob_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_blob), "__call__") as call:
@@ -13609,11 +13647,6 @@ async def test_fetch_blob_async(
     assert isinstance(response, secure_source_manager.FetchBlobResponse)
     assert response.sha == "sha_value"
     assert response.content == "content_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_blob_async_from_dict():
-    await test_fetch_blob_async(request_type=dict)
 
 
 def test_fetch_blob_field_headers():
@@ -13680,8 +13713,8 @@ async def test_fetch_blob_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.CreateIssueRequest,
-        dict,
+        secure_source_manager.CreateIssueRequest(),
+        {},
     ],
 )
 def test_create_issue(request_type, transport: str = "grpc"):
@@ -13692,7 +13725,7 @@ def test_create_issue(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_issue), "__call__") as call:
@@ -13733,9 +13766,10 @@ def test_create_issue_non_empty_request_with_auto_populated_field():
         client.create_issue(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.CreateIssueRequest(
+        request_msg = secure_source_manager.CreateIssueRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_issue_use_cached_wrapped_rpc():
@@ -13826,10 +13860,14 @@ async def test_create_issue_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_issue_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.CreateIssueRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.CreateIssueRequest(),
+        {},
+    ],
+)
+async def test_create_issue_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13837,7 +13875,7 @@ async def test_create_issue_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_issue), "__call__") as call:
@@ -13855,11 +13893,6 @@ async def test_create_issue_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_issue_async_from_dict():
-    await test_create_issue_async(request_type=dict)
 
 
 def test_create_issue_field_headers():
@@ -14018,8 +14051,8 @@ async def test_create_issue_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.GetIssueRequest,
-        dict,
+        secure_source_manager.GetIssueRequest(),
+        {},
     ],
 )
 def test_get_issue(request_type, transport: str = "grpc"):
@@ -14030,7 +14063,7 @@ def test_get_issue(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_issue), "__call__") as call:
@@ -14082,9 +14115,10 @@ def test_get_issue_non_empty_request_with_auto_populated_field():
         client.get_issue(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.GetIssueRequest(
+        request_msg = secure_source_manager.GetIssueRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_issue_use_cached_wrapped_rpc():
@@ -14163,9 +14197,14 @@ async def test_get_issue_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_issue_async(
-    transport: str = "grpc_asyncio", request_type=secure_source_manager.GetIssueRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.GetIssueRequest(),
+        {},
+    ],
+)
+async def test_get_issue_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14173,7 +14212,7 @@ async def test_get_issue_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_issue), "__call__") as call:
@@ -14202,11 +14241,6 @@ async def test_get_issue_async(
     assert response.body == "body_value"
     assert response.state == secure_source_manager.Issue.State.OPEN
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_issue_async_from_dict():
-    await test_get_issue_async(request_type=dict)
 
 
 def test_get_issue_field_headers():
@@ -14355,8 +14389,8 @@ async def test_get_issue_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.ListIssuesRequest,
-        dict,
+        secure_source_manager.ListIssuesRequest(),
+        {},
     ],
 )
 def test_list_issues(request_type, transport: str = "grpc"):
@@ -14367,7 +14401,7 @@ def test_list_issues(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_issues), "__call__") as call:
@@ -14413,11 +14447,12 @@ def test_list_issues_non_empty_request_with_auto_populated_field():
         client.list_issues(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.ListIssuesRequest(
+        request_msg = secure_source_manager.ListIssuesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_issues_use_cached_wrapped_rpc():
@@ -14498,10 +14533,14 @@ async def test_list_issues_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_issues_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.ListIssuesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.ListIssuesRequest(),
+        {},
+    ],
+)
+async def test_list_issues_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14509,7 +14548,7 @@ async def test_list_issues_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_issues), "__call__") as call:
@@ -14530,11 +14569,6 @@ async def test_list_issues_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIssuesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_issues_async_from_dict():
-    await test_list_issues_async(request_type=dict)
 
 
 def test_list_issues_field_headers():
@@ -14729,6 +14763,9 @@ def test_list_issues_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.Issue) for i in results)
@@ -14817,6 +14854,8 @@ async def test_list_issues_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14864,11 +14903,7 @@ async def test_list_issues_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_issues(request={})
-        ).pages:
+        async for page_ in (await client.list_issues(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -14877,8 +14912,8 @@ async def test_list_issues_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.UpdateIssueRequest,
-        dict,
+        secure_source_manager.UpdateIssueRequest(),
+        {},
     ],
 )
 def test_update_issue(request_type, transport: str = "grpc"):
@@ -14889,7 +14924,7 @@ def test_update_issue(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_issue), "__call__") as call:
@@ -14928,7 +14963,8 @@ def test_update_issue_non_empty_request_with_auto_populated_field():
         client.update_issue(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.UpdateIssueRequest()
+        request_msg = secure_source_manager.UpdateIssueRequest()
+        assert args[0] == request_msg
 
 
 def test_update_issue_use_cached_wrapped_rpc():
@@ -15019,10 +15055,14 @@ async def test_update_issue_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_issue_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.UpdateIssueRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.UpdateIssueRequest(),
+        {},
+    ],
+)
+async def test_update_issue_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15030,7 +15070,7 @@ async def test_update_issue_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_issue), "__call__") as call:
@@ -15048,11 +15088,6 @@ async def test_update_issue_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_issue_async_from_dict():
-    await test_update_issue_async(request_type=dict)
 
 
 def test_update_issue_field_headers():
@@ -15211,8 +15246,8 @@ async def test_update_issue_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.DeleteIssueRequest,
-        dict,
+        secure_source_manager.DeleteIssueRequest(),
+        {},
     ],
 )
 def test_delete_issue(request_type, transport: str = "grpc"):
@@ -15223,7 +15258,7 @@ def test_delete_issue(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_issue), "__call__") as call:
@@ -15265,10 +15300,11 @@ def test_delete_issue_non_empty_request_with_auto_populated_field():
         client.delete_issue(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.DeleteIssueRequest(
+        request_msg = secure_source_manager.DeleteIssueRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_issue_use_cached_wrapped_rpc():
@@ -15359,10 +15395,14 @@ async def test_delete_issue_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_issue_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.DeleteIssueRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.DeleteIssueRequest(),
+        {},
+    ],
+)
+async def test_delete_issue_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15370,7 +15410,7 @@ async def test_delete_issue_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_issue), "__call__") as call:
@@ -15388,11 +15428,6 @@ async def test_delete_issue_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_issue_async_from_dict():
-    await test_delete_issue_async(request_type=dict)
 
 
 def test_delete_issue_field_headers():
@@ -15541,8 +15576,8 @@ async def test_delete_issue_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.OpenIssueRequest,
-        dict,
+        secure_source_manager.OpenIssueRequest(),
+        {},
     ],
 )
 def test_open_issue(request_type, transport: str = "grpc"):
@@ -15553,7 +15588,7 @@ def test_open_issue(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.open_issue), "__call__") as call:
@@ -15595,10 +15630,11 @@ def test_open_issue_non_empty_request_with_auto_populated_field():
         client.open_issue(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.OpenIssueRequest(
+        request_msg = secure_source_manager.OpenIssueRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_open_issue_use_cached_wrapped_rpc():
@@ -15687,9 +15723,14 @@ async def test_open_issue_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_open_issue_async(
-    transport: str = "grpc_asyncio", request_type=secure_source_manager.OpenIssueRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.OpenIssueRequest(),
+        {},
+    ],
+)
+async def test_open_issue_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15697,7 +15738,7 @@ async def test_open_issue_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.open_issue), "__call__") as call:
@@ -15715,11 +15756,6 @@ async def test_open_issue_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_open_issue_async_from_dict():
-    await test_open_issue_async(request_type=dict)
 
 
 def test_open_issue_field_headers():
@@ -15868,8 +15904,8 @@ async def test_open_issue_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.CloseIssueRequest,
-        dict,
+        secure_source_manager.CloseIssueRequest(),
+        {},
     ],
 )
 def test_close_issue(request_type, transport: str = "grpc"):
@@ -15880,7 +15916,7 @@ def test_close_issue(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.close_issue), "__call__") as call:
@@ -15922,10 +15958,11 @@ def test_close_issue_non_empty_request_with_auto_populated_field():
         client.close_issue(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.CloseIssueRequest(
+        request_msg = secure_source_manager.CloseIssueRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_close_issue_use_cached_wrapped_rpc():
@@ -16016,10 +16053,14 @@ async def test_close_issue_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_close_issue_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.CloseIssueRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.CloseIssueRequest(),
+        {},
+    ],
+)
+async def test_close_issue_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16027,7 +16068,7 @@ async def test_close_issue_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.close_issue), "__call__") as call:
@@ -16045,11 +16086,6 @@ async def test_close_issue_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_close_issue_async_from_dict():
-    await test_close_issue_async(request_type=dict)
 
 
 def test_close_issue_field_headers():
@@ -16198,8 +16234,8 @@ async def test_close_issue_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.GetPullRequestCommentRequest,
-        dict,
+        secure_source_manager.GetPullRequestCommentRequest(),
+        {},
     ],
 )
 def test_get_pull_request_comment(request_type, transport: str = "grpc"):
@@ -16210,7 +16246,7 @@ def test_get_pull_request_comment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16258,9 +16294,10 @@ def test_get_pull_request_comment_non_empty_request_with_auto_populated_field():
         client.get_pull_request_comment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.GetPullRequestCommentRequest(
+        request_msg = secure_source_manager.GetPullRequestCommentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_pull_request_comment_use_cached_wrapped_rpc():
@@ -16346,9 +16383,15 @@ async def test_get_pull_request_comment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.GetPullRequestCommentRequest(),
+        {},
+    ],
+)
 async def test_get_pull_request_comment_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.GetPullRequestCommentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16357,7 +16400,7 @@ async def test_get_pull_request_comment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16380,11 +16423,6 @@ async def test_get_pull_request_comment_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, secure_source_manager.PullRequestComment)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_pull_request_comment_async_from_dict():
-    await test_get_pull_request_comment_async(request_type=dict)
 
 
 def test_get_pull_request_comment_field_headers():
@@ -16541,8 +16579,8 @@ async def test_get_pull_request_comment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.ListPullRequestCommentsRequest,
-        dict,
+        secure_source_manager.ListPullRequestCommentsRequest(),
+        {},
     ],
 )
 def test_list_pull_request_comments(request_type, transport: str = "grpc"):
@@ -16553,7 +16591,7 @@ def test_list_pull_request_comments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16602,10 +16640,11 @@ def test_list_pull_request_comments_non_empty_request_with_auto_populated_field(
         client.list_pull_request_comments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.ListPullRequestCommentsRequest(
+        request_msg = secure_source_manager.ListPullRequestCommentsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_pull_request_comments_use_cached_wrapped_rpc():
@@ -16691,9 +16730,15 @@ async def test_list_pull_request_comments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.ListPullRequestCommentsRequest(),
+        {},
+    ],
+)
 async def test_list_pull_request_comments_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.ListPullRequestCommentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16702,7 +16747,7 @@ async def test_list_pull_request_comments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16725,11 +16770,6 @@ async def test_list_pull_request_comments_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPullRequestCommentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_pull_request_comments_async_from_dict():
-    await test_list_pull_request_comments_async(request_type=dict)
 
 
 def test_list_pull_request_comments_field_headers():
@@ -16936,6 +16976,9 @@ def test_list_pull_request_comments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -17030,6 +17073,8 @@ async def test_list_pull_request_comments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -17081,11 +17126,7 @@ async def test_list_pull_request_comments_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_pull_request_comments(request={})
-        ).pages:
+        async for page_ in (await client.list_pull_request_comments(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -17094,8 +17135,8 @@ async def test_list_pull_request_comments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.CreatePullRequestCommentRequest,
-        dict,
+        secure_source_manager.CreatePullRequestCommentRequest(),
+        {},
     ],
 )
 def test_create_pull_request_comment(request_type, transport: str = "grpc"):
@@ -17106,7 +17147,7 @@ def test_create_pull_request_comment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17151,9 +17192,10 @@ def test_create_pull_request_comment_non_empty_request_with_auto_populated_field
         client.create_pull_request_comment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.CreatePullRequestCommentRequest(
+        request_msg = secure_source_manager.CreatePullRequestCommentRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_pull_request_comment_use_cached_wrapped_rpc():
@@ -17249,9 +17291,15 @@ async def test_create_pull_request_comment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.CreatePullRequestCommentRequest(),
+        {},
+    ],
+)
 async def test_create_pull_request_comment_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.CreatePullRequestCommentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17260,7 +17308,7 @@ async def test_create_pull_request_comment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17280,11 +17328,6 @@ async def test_create_pull_request_comment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_pull_request_comment_async_from_dict():
-    await test_create_pull_request_comment_async(request_type=dict)
 
 
 def test_create_pull_request_comment_field_headers():
@@ -17459,8 +17502,8 @@ async def test_create_pull_request_comment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.UpdatePullRequestCommentRequest,
-        dict,
+        secure_source_manager.UpdatePullRequestCommentRequest(),
+        {},
     ],
 )
 def test_update_pull_request_comment(request_type, transport: str = "grpc"):
@@ -17471,7 +17514,7 @@ def test_update_pull_request_comment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17514,7 +17557,8 @@ def test_update_pull_request_comment_non_empty_request_with_auto_populated_field
         client.update_pull_request_comment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.UpdatePullRequestCommentRequest()
+        request_msg = secure_source_manager.UpdatePullRequestCommentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_pull_request_comment_use_cached_wrapped_rpc():
@@ -17610,9 +17654,15 @@ async def test_update_pull_request_comment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.UpdatePullRequestCommentRequest(),
+        {},
+    ],
+)
 async def test_update_pull_request_comment_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.UpdatePullRequestCommentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17621,7 +17671,7 @@ async def test_update_pull_request_comment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17641,11 +17691,6 @@ async def test_update_pull_request_comment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_pull_request_comment_async_from_dict():
-    await test_update_pull_request_comment_async(request_type=dict)
 
 
 def test_update_pull_request_comment_field_headers():
@@ -17820,8 +17865,8 @@ async def test_update_pull_request_comment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.DeletePullRequestCommentRequest,
-        dict,
+        secure_source_manager.DeletePullRequestCommentRequest(),
+        {},
     ],
 )
 def test_delete_pull_request_comment(request_type, transport: str = "grpc"):
@@ -17832,7 +17877,7 @@ def test_delete_pull_request_comment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17877,9 +17922,10 @@ def test_delete_pull_request_comment_non_empty_request_with_auto_populated_field
         client.delete_pull_request_comment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.DeletePullRequestCommentRequest(
+        request_msg = secure_source_manager.DeletePullRequestCommentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_pull_request_comment_use_cached_wrapped_rpc():
@@ -17975,9 +18021,15 @@ async def test_delete_pull_request_comment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.DeletePullRequestCommentRequest(),
+        {},
+    ],
+)
 async def test_delete_pull_request_comment_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.DeletePullRequestCommentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17986,7 +18038,7 @@ async def test_delete_pull_request_comment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18006,11 +18058,6 @@ async def test_delete_pull_request_comment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_pull_request_comment_async_from_dict():
-    await test_delete_pull_request_comment_async(request_type=dict)
 
 
 def test_delete_pull_request_comment_field_headers():
@@ -18167,8 +18214,8 @@ async def test_delete_pull_request_comment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.BatchCreatePullRequestCommentsRequest,
-        dict,
+        secure_source_manager.BatchCreatePullRequestCommentsRequest(),
+        {},
     ],
 )
 def test_batch_create_pull_request_comments(request_type, transport: str = "grpc"):
@@ -18179,7 +18226,7 @@ def test_batch_create_pull_request_comments(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18224,9 +18271,10 @@ def test_batch_create_pull_request_comments_non_empty_request_with_auto_populate
         client.batch_create_pull_request_comments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.BatchCreatePullRequestCommentsRequest(
+        request_msg = secure_source_manager.BatchCreatePullRequestCommentsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_create_pull_request_comments_use_cached_wrapped_rpc():
@@ -18322,9 +18370,15 @@ async def test_batch_create_pull_request_comments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.BatchCreatePullRequestCommentsRequest(),
+        {},
+    ],
+)
 async def test_batch_create_pull_request_comments_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.BatchCreatePullRequestCommentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18333,7 +18387,7 @@ async def test_batch_create_pull_request_comments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18353,11 +18407,6 @@ async def test_batch_create_pull_request_comments_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_batch_create_pull_request_comments_async_from_dict():
-    await test_batch_create_pull_request_comments_async(request_type=dict)
 
 
 def test_batch_create_pull_request_comments_field_headers():
@@ -18544,8 +18593,8 @@ async def test_batch_create_pull_request_comments_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.ResolvePullRequestCommentsRequest,
-        dict,
+        secure_source_manager.ResolvePullRequestCommentsRequest(),
+        {},
     ],
 )
 def test_resolve_pull_request_comments(request_type, transport: str = "grpc"):
@@ -18556,7 +18605,7 @@ def test_resolve_pull_request_comments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18601,9 +18650,10 @@ def test_resolve_pull_request_comments_non_empty_request_with_auto_populated_fie
         client.resolve_pull_request_comments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.ResolvePullRequestCommentsRequest(
+        request_msg = secure_source_manager.ResolvePullRequestCommentsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_resolve_pull_request_comments_use_cached_wrapped_rpc():
@@ -18699,9 +18749,15 @@ async def test_resolve_pull_request_comments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.ResolvePullRequestCommentsRequest(),
+        {},
+    ],
+)
 async def test_resolve_pull_request_comments_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.ResolvePullRequestCommentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18710,7 +18766,7 @@ async def test_resolve_pull_request_comments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18730,11 +18786,6 @@ async def test_resolve_pull_request_comments_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_resolve_pull_request_comments_async_from_dict():
-    await test_resolve_pull_request_comments_async(request_type=dict)
 
 
 def test_resolve_pull_request_comments_field_headers():
@@ -18901,8 +18952,8 @@ async def test_resolve_pull_request_comments_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.UnresolvePullRequestCommentsRequest,
-        dict,
+        secure_source_manager.UnresolvePullRequestCommentsRequest(),
+        {},
     ],
 )
 def test_unresolve_pull_request_comments(request_type, transport: str = "grpc"):
@@ -18913,7 +18964,7 @@ def test_unresolve_pull_request_comments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18958,9 +19009,10 @@ def test_unresolve_pull_request_comments_non_empty_request_with_auto_populated_f
         client.unresolve_pull_request_comments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.UnresolvePullRequestCommentsRequest(
+        request_msg = secure_source_manager.UnresolvePullRequestCommentsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_unresolve_pull_request_comments_use_cached_wrapped_rpc():
@@ -19056,9 +19108,15 @@ async def test_unresolve_pull_request_comments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.UnresolvePullRequestCommentsRequest(),
+        {},
+    ],
+)
 async def test_unresolve_pull_request_comments_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.UnresolvePullRequestCommentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -19067,7 +19125,7 @@ async def test_unresolve_pull_request_comments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19087,11 +19145,6 @@ async def test_unresolve_pull_request_comments_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_unresolve_pull_request_comments_async_from_dict():
-    await test_unresolve_pull_request_comments_async(request_type=dict)
 
 
 def test_unresolve_pull_request_comments_field_headers():
@@ -19258,8 +19311,8 @@ async def test_unresolve_pull_request_comments_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.CreateIssueCommentRequest,
-        dict,
+        secure_source_manager.CreateIssueCommentRequest(),
+        {},
     ],
 )
 def test_create_issue_comment(request_type, transport: str = "grpc"):
@@ -19270,7 +19323,7 @@ def test_create_issue_comment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19315,9 +19368,10 @@ def test_create_issue_comment_non_empty_request_with_auto_populated_field():
         client.create_issue_comment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.CreateIssueCommentRequest(
+        request_msg = secure_source_manager.CreateIssueCommentRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_issue_comment_use_cached_wrapped_rpc():
@@ -19412,9 +19466,15 @@ async def test_create_issue_comment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.CreateIssueCommentRequest(),
+        {},
+    ],
+)
 async def test_create_issue_comment_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.CreateIssueCommentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -19423,7 +19483,7 @@ async def test_create_issue_comment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19443,11 +19503,6 @@ async def test_create_issue_comment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_issue_comment_async_from_dict():
-    await test_create_issue_comment_async(request_type=dict)
 
 
 def test_create_issue_comment_field_headers():
@@ -19614,8 +19669,8 @@ async def test_create_issue_comment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.GetIssueCommentRequest,
-        dict,
+        secure_source_manager.GetIssueCommentRequest(),
+        {},
     ],
 )
 def test_get_issue_comment(request_type, transport: str = "grpc"):
@@ -19626,7 +19681,7 @@ def test_get_issue_comment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19676,9 +19731,10 @@ def test_get_issue_comment_non_empty_request_with_auto_populated_field():
         client.get_issue_comment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.GetIssueCommentRequest(
+        request_msg = secure_source_manager.GetIssueCommentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_issue_comment_use_cached_wrapped_rpc():
@@ -19761,10 +19817,14 @@ async def test_get_issue_comment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_issue_comment_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.GetIssueCommentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.GetIssueCommentRequest(),
+        {},
+    ],
+)
+async def test_get_issue_comment_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -19772,7 +19832,7 @@ async def test_get_issue_comment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19797,11 +19857,6 @@ async def test_get_issue_comment_async(
     assert isinstance(response, secure_source_manager.IssueComment)
     assert response.name == "name_value"
     assert response.body == "body_value"
-
-
-@pytest.mark.asyncio
-async def test_get_issue_comment_async_from_dict():
-    await test_get_issue_comment_async(request_type=dict)
 
 
 def test_get_issue_comment_field_headers():
@@ -19958,8 +20013,8 @@ async def test_get_issue_comment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.ListIssueCommentsRequest,
-        dict,
+        secure_source_manager.ListIssueCommentsRequest(),
+        {},
     ],
 )
 def test_list_issue_comments(request_type, transport: str = "grpc"):
@@ -19970,7 +20025,7 @@ def test_list_issue_comments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20019,10 +20074,11 @@ def test_list_issue_comments_non_empty_request_with_auto_populated_field():
         client.list_issue_comments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.ListIssueCommentsRequest(
+        request_msg = secure_source_manager.ListIssueCommentsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_issue_comments_use_cached_wrapped_rpc():
@@ -20107,10 +20163,14 @@ async def test_list_issue_comments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_issue_comments_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.ListIssueCommentsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.ListIssueCommentsRequest(),
+        {},
+    ],
+)
+async def test_list_issue_comments_async(request_type, transport: str = "grpc_asyncio"):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -20118,7 +20178,7 @@ async def test_list_issue_comments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20141,11 +20201,6 @@ async def test_list_issue_comments_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIssueCommentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_issue_comments_async_from_dict():
-    await test_list_issue_comments_async(request_type=dict)
 
 
 def test_list_issue_comments_field_headers():
@@ -20350,6 +20405,9 @@ def test_list_issue_comments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.IssueComment) for i in results)
@@ -20442,6 +20500,8 @@ async def test_list_issue_comments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -20491,11 +20551,7 @@ async def test_list_issue_comments_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_issue_comments(request={})
-        ).pages:
+        async for page_ in (await client.list_issue_comments(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -20504,8 +20560,8 @@ async def test_list_issue_comments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.UpdateIssueCommentRequest,
-        dict,
+        secure_source_manager.UpdateIssueCommentRequest(),
+        {},
     ],
 )
 def test_update_issue_comment(request_type, transport: str = "grpc"):
@@ -20516,7 +20572,7 @@ def test_update_issue_comment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20559,7 +20615,8 @@ def test_update_issue_comment_non_empty_request_with_auto_populated_field():
         client.update_issue_comment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.UpdateIssueCommentRequest()
+        request_msg = secure_source_manager.UpdateIssueCommentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_issue_comment_use_cached_wrapped_rpc():
@@ -20654,9 +20711,15 @@ async def test_update_issue_comment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.UpdateIssueCommentRequest(),
+        {},
+    ],
+)
 async def test_update_issue_comment_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.UpdateIssueCommentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -20665,7 +20728,7 @@ async def test_update_issue_comment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20685,11 +20748,6 @@ async def test_update_issue_comment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_issue_comment_async_from_dict():
-    await test_update_issue_comment_async(request_type=dict)
 
 
 def test_update_issue_comment_field_headers():
@@ -20856,8 +20914,8 @@ async def test_update_issue_comment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        secure_source_manager.DeleteIssueCommentRequest,
-        dict,
+        secure_source_manager.DeleteIssueCommentRequest(),
+        {},
     ],
 )
 def test_delete_issue_comment(request_type, transport: str = "grpc"):
@@ -20868,7 +20926,7 @@ def test_delete_issue_comment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20913,9 +20971,10 @@ def test_delete_issue_comment_non_empty_request_with_auto_populated_field():
         client.delete_issue_comment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == secure_source_manager.DeleteIssueCommentRequest(
+        request_msg = secure_source_manager.DeleteIssueCommentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_issue_comment_use_cached_wrapped_rpc():
@@ -21010,9 +21069,15 @@ async def test_delete_issue_comment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        secure_source_manager.DeleteIssueCommentRequest(),
+        {},
+    ],
+)
 async def test_delete_issue_comment_async(
-    transport: str = "grpc_asyncio",
-    request_type=secure_source_manager.DeleteIssueCommentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecureSourceManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -21021,7 +21086,7 @@ async def test_delete_issue_comment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21041,11 +21106,6 @@ async def test_delete_issue_comment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_issue_comment_async_from_dict():
-    await test_delete_issue_comment_async(request_type=dict)
 
 
 def test_delete_issue_comment_field_headers():
@@ -21316,7 +21376,7 @@ def test_list_instances_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_instances_rest_unset_required_fields():
@@ -21449,6 +21509,9 @@ def test_list_instances_rest_pager(transport: str = "rest"):
 
         pager = client.list_instances(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.Instance) for i in results)
@@ -21566,7 +21629,7 @@ def test_get_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_instance_rest_unset_required_fields():
@@ -21767,7 +21830,7 @@ def test_create_instance_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_instance_rest_unset_required_fields():
@@ -21968,7 +22031,7 @@ def test_delete_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_instance_rest_unset_required_fields():
@@ -22166,7 +22229,7 @@ def test_list_repositories_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_repositories_rest_unset_required_fields():
@@ -22300,6 +22363,9 @@ def test_list_repositories_rest_pager(transport: str = "rest"):
 
         pager = client.list_repositories(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.Repository) for i in results)
@@ -22417,7 +22483,7 @@ def test_get_repository_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_repository_rest_unset_required_fields():
@@ -22616,7 +22682,7 @@ def test_create_repository_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_repository_rest_unset_required_fields():
@@ -22811,7 +22877,7 @@ def test_update_repository_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_repository_rest_unset_required_fields():
@@ -23006,7 +23072,7 @@ def test_delete_repository_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_repository_rest_unset_required_fields():
@@ -23191,7 +23257,7 @@ def test_list_hooks_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_hooks_rest_unset_required_fields():
@@ -23327,6 +23393,9 @@ def test_list_hooks_rest_pager(transport: str = "rest"):
 
         pager = client.list_hooks(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.Hook) for i in results)
@@ -23444,7 +23513,7 @@ def test_get_hook_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_hook_rest_unset_required_fields():
@@ -23641,7 +23710,7 @@ def test_create_hook_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_hook_rest_unset_required_fields():
@@ -23831,7 +23900,7 @@ def test_update_hook_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_hook_rest_unset_required_fields():
@@ -24014,7 +24083,7 @@ def test_delete_hook_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_hook_rest_unset_required_fields():
@@ -24196,7 +24265,7 @@ def test_get_iam_policy_repo_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_iam_policy_repo_rest_unset_required_fields():
@@ -24377,7 +24446,7 @@ def test_set_iam_policy_repo_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_iam_policy_repo_rest_unset_required_fields():
@@ -24571,7 +24640,7 @@ def test_test_iam_permissions_repo_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_repo_rest_unset_required_fields():
@@ -24778,7 +24847,7 @@ def test_create_branch_rule_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_branch_rule_rest_unset_required_fields():
@@ -24980,7 +25049,7 @@ def test_list_branch_rules_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_branch_rules_rest_unset_required_fields():
@@ -25116,6 +25185,9 @@ def test_list_branch_rules_rest_pager(transport: str = "rest"):
 
         pager = client.list_branch_rules(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.BranchRule) for i in results)
@@ -25233,7 +25305,7 @@ def test_get_branch_rule_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_branch_rule_rest_unset_required_fields():
@@ -25421,7 +25493,7 @@ def test_update_branch_rule_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_branch_rule_rest_unset_required_fields():
@@ -25618,7 +25690,7 @@ def test_delete_branch_rule_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_branch_rule_rest_unset_required_fields():
@@ -25802,7 +25874,7 @@ def test_create_pull_request_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_pull_request_rest_unset_required_fields():
@@ -25992,7 +26064,7 @@ def test_get_pull_request_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_pull_request_rest_unset_required_fields():
@@ -26185,7 +26257,7 @@ def test_list_pull_requests_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_pull_requests_rest_unset_required_fields():
@@ -26321,6 +26393,9 @@ def test_list_pull_requests_rest_pager(transport: str = "rest"):
 
         pager = client.list_pull_requests(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.PullRequest) for i in results)
@@ -26441,7 +26516,7 @@ def test_update_pull_request_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_pull_request_rest_unset_required_fields():
@@ -26629,7 +26704,7 @@ def test_merge_pull_request_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_merge_pull_request_rest_unset_required_fields():
@@ -26811,7 +26886,7 @@ def test_open_pull_request_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_open_pull_request_rest_unset_required_fields():
@@ -26995,7 +27070,7 @@ def test_close_pull_request_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_close_pull_request_rest_unset_required_fields():
@@ -27187,7 +27262,7 @@ def test_list_pull_request_file_diffs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_pull_request_file_diffs_rest_unset_required_fields():
@@ -27326,6 +27401,9 @@ def test_list_pull_request_file_diffs_rest_pager(transport: str = "rest"):
 
         pager = client.list_pull_request_file_diffs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.FileDiff) for i in results)
@@ -27452,7 +27530,7 @@ def test_fetch_tree_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_tree_rest_unset_required_fields():
@@ -27529,6 +27607,9 @@ def test_fetch_tree_rest_pager(transport: str = "rest"):
         }
 
         pager = client.fetch_tree(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -27662,7 +27743,7 @@ def test_fetch_blob_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_blob_rest_unset_required_fields():
@@ -27792,7 +27873,7 @@ def test_create_issue_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_issue_rest_unset_required_fields():
@@ -27980,7 +28061,7 @@ def test_get_issue_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_issue_rest_unset_required_fields():
@@ -28168,7 +28249,7 @@ def test_list_issues_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_issues_rest_unset_required_fields():
@@ -28305,6 +28386,9 @@ def test_list_issues_rest_pager(transport: str = "rest"):
 
         pager = client.list_issues(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.Issue) for i in results)
@@ -28421,7 +28505,7 @@ def test_update_issue_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_issue_rest_unset_required_fields():
@@ -28606,7 +28690,7 @@ def test_delete_issue_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_issue_rest_unset_required_fields():
@@ -28786,7 +28870,7 @@ def test_open_issue_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_open_issue_rest_unset_required_fields():
@@ -28966,7 +29050,7 @@ def test_close_issue_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_close_issue_rest_unset_required_fields():
@@ -29149,7 +29233,7 @@ def test_get_pull_request_comment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_pull_request_comment_rest_unset_required_fields():
@@ -29343,7 +29427,7 @@ def test_list_pull_request_comments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_pull_request_comments_rest_unset_required_fields():
@@ -29482,6 +29566,9 @@ def test_list_pull_request_comments_rest_pager(transport: str = "rest"):
 
         pager = client.list_pull_request_comments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -29608,7 +29695,7 @@ def test_create_pull_request_comment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_pull_request_comment_rest_unset_required_fields():
@@ -29804,7 +29891,7 @@ def test_update_pull_request_comment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_pull_request_comment_rest_unset_required_fields():
@@ -29996,7 +30083,7 @@ def test_delete_pull_request_comment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_pull_request_comment_rest_unset_required_fields():
@@ -30181,7 +30268,7 @@ def test_batch_create_pull_request_comments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_create_pull_request_comments_rest_unset_required_fields():
@@ -30392,7 +30479,7 @@ def test_resolve_pull_request_comments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resolve_pull_request_comments_rest_unset_required_fields():
@@ -30593,7 +30680,7 @@ def test_unresolve_pull_request_comments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_unresolve_pull_request_comments_rest_unset_required_fields():
@@ -30789,7 +30876,7 @@ def test_create_issue_comment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_issue_comment_rest_unset_required_fields():
@@ -30979,7 +31066,7 @@ def test_get_issue_comment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_issue_comment_rest_unset_required_fields():
@@ -31172,7 +31259,7 @@ def test_list_issue_comments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_issue_comments_rest_unset_required_fields():
@@ -31308,6 +31395,9 @@ def test_list_issue_comments_rest_pager(transport: str = "rest"):
 
         pager = client.list_issue_comments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, secure_source_manager.IssueComment) for i in results)
@@ -31428,7 +31518,7 @@ def test_update_issue_comment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_issue_comment_rest_unset_required_fields():
@@ -31615,7 +31705,7 @@ def test_delete_issue_comment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_issue_comment_rest_unset_required_fields():
@@ -31808,7 +31898,6 @@ def test_list_instances_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -31829,7 +31918,6 @@ def test_get_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -31850,7 +31938,6 @@ def test_create_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -31871,7 +31958,6 @@ def test_delete_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -31894,7 +31980,6 @@ def test_list_repositories_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListRepositoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -31915,7 +32000,6 @@ def test_get_repository_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -31938,7 +32022,6 @@ def test_create_repository_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -31961,7 +32044,6 @@ def test_update_repository_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -31984,7 +32066,6 @@ def test_delete_repository_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -32005,7 +32086,6 @@ def test_list_hooks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListHooksRequest()
-
         assert args[0] == request_msg
 
 
@@ -32026,7 +32106,6 @@ def test_get_hook_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetHookRequest()
-
         assert args[0] == request_msg
 
 
@@ -32047,7 +32126,6 @@ def test_create_hook_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateHookRequest()
-
         assert args[0] == request_msg
 
 
@@ -32068,7 +32146,6 @@ def test_update_hook_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateHookRequest()
-
         assert args[0] == request_msg
 
 
@@ -32089,7 +32166,6 @@ def test_delete_hook_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteHookRequest()
-
         assert args[0] == request_msg
 
 
@@ -32112,7 +32188,6 @@ def test_get_iam_policy_repo_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -32135,7 +32210,6 @@ def test_set_iam_policy_repo_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -32158,7 +32232,6 @@ def test_test_iam_permissions_repo_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32181,7 +32254,6 @@ def test_create_branch_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateBranchRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -32204,7 +32276,6 @@ def test_list_branch_rules_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListBranchRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -32225,7 +32296,6 @@ def test_get_branch_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetBranchRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -32248,7 +32318,6 @@ def test_update_branch_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateBranchRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -32271,7 +32340,6 @@ def test_delete_branch_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteBranchRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -32294,7 +32362,6 @@ def test_create_pull_request_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreatePullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -32315,7 +32382,6 @@ def test_get_pull_request_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetPullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -32338,7 +32404,6 @@ def test_list_pull_requests_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListPullRequestsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32361,7 +32426,6 @@ def test_update_pull_request_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdatePullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -32384,7 +32448,6 @@ def test_merge_pull_request_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.MergePullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -32407,7 +32470,6 @@ def test_open_pull_request_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.OpenPullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -32430,7 +32492,6 @@ def test_close_pull_request_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ClosePullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -32453,7 +32514,6 @@ def test_list_pull_request_file_diffs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListPullRequestFileDiffsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32474,7 +32534,6 @@ def test_fetch_tree_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.FetchTreeRequest()
-
         assert args[0] == request_msg
 
 
@@ -32495,7 +32554,6 @@ def test_fetch_blob_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.FetchBlobRequest()
-
         assert args[0] == request_msg
 
 
@@ -32516,7 +32574,6 @@ def test_create_issue_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -32537,7 +32594,6 @@ def test_get_issue_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -32558,7 +32614,6 @@ def test_list_issues_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListIssuesRequest()
-
         assert args[0] == request_msg
 
 
@@ -32579,7 +32634,6 @@ def test_update_issue_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -32600,7 +32654,6 @@ def test_delete_issue_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -32621,7 +32674,6 @@ def test_open_issue_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.OpenIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -32642,7 +32694,6 @@ def test_close_issue_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CloseIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -32665,7 +32716,6 @@ def test_get_pull_request_comment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetPullRequestCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32688,7 +32738,6 @@ def test_list_pull_request_comments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListPullRequestCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32711,7 +32760,6 @@ def test_create_pull_request_comment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreatePullRequestCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32734,7 +32782,6 @@ def test_update_pull_request_comment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdatePullRequestCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32757,7 +32804,6 @@ def test_delete_pull_request_comment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeletePullRequestCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32780,7 +32826,6 @@ def test_batch_create_pull_request_comments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.BatchCreatePullRequestCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32803,7 +32848,6 @@ def test_resolve_pull_request_comments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ResolvePullRequestCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32826,7 +32870,6 @@ def test_unresolve_pull_request_comments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UnresolvePullRequestCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32849,7 +32892,6 @@ def test_create_issue_comment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateIssueCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32872,7 +32914,6 @@ def test_get_issue_comment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetIssueCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32895,7 +32936,6 @@ def test_list_issue_comments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListIssueCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32918,7 +32958,6 @@ def test_update_issue_comment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateIssueCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32941,7 +32980,6 @@ def test_delete_issue_comment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteIssueCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32983,7 +33021,6 @@ async def test_list_instances_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -33013,7 +33050,6 @@ async def test_get_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33038,7 +33074,6 @@ async def test_create_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33063,7 +33098,6 @@ async def test_delete_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33092,7 +33126,6 @@ async def test_list_repositories_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListRepositoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -33115,6 +33148,7 @@ async def test_get_repository_empty_call_grpc_asyncio():
                 instance="instance_value",
                 uid="uid_value",
                 etag="etag_value",
+                service_account="service_account_value",
             )
         )
         await client.get_repository(request=None)
@@ -33123,7 +33157,6 @@ async def test_get_repository_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -33150,7 +33183,6 @@ async def test_create_repository_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -33177,7 +33209,6 @@ async def test_update_repository_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -33204,7 +33235,6 @@ async def test_delete_repository_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -33231,7 +33261,6 @@ async def test_list_hooks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListHooksRequest()
-
         assert args[0] == request_msg
 
 
@@ -33263,7 +33292,6 @@ async def test_get_hook_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetHookRequest()
-
         assert args[0] == request_msg
 
 
@@ -33288,7 +33316,6 @@ async def test_create_hook_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateHookRequest()
-
         assert args[0] == request_msg
 
 
@@ -33313,7 +33340,6 @@ async def test_update_hook_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateHookRequest()
-
         assert args[0] == request_msg
 
 
@@ -33338,7 +33364,6 @@ async def test_delete_hook_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteHookRequest()
-
         assert args[0] == request_msg
 
 
@@ -33368,7 +33393,6 @@ async def test_get_iam_policy_repo_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -33398,7 +33422,6 @@ async def test_set_iam_policy_repo_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -33427,7 +33450,6 @@ async def test_test_iam_permissions_repo_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -33454,7 +33476,6 @@ async def test_create_branch_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateBranchRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -33483,7 +33504,6 @@ async def test_list_branch_rules_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListBranchRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -33521,7 +33541,6 @@ async def test_get_branch_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetBranchRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -33548,7 +33567,6 @@ async def test_update_branch_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateBranchRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -33575,7 +33593,6 @@ async def test_delete_branch_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteBranchRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -33602,7 +33619,6 @@ async def test_create_pull_request_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreatePullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -33632,7 +33648,6 @@ async def test_get_pull_request_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetPullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -33661,7 +33676,6 @@ async def test_list_pull_requests_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListPullRequestsRequest()
-
         assert args[0] == request_msg
 
 
@@ -33688,7 +33702,6 @@ async def test_update_pull_request_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdatePullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -33715,7 +33728,6 @@ async def test_merge_pull_request_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.MergePullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -33742,7 +33754,6 @@ async def test_open_pull_request_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.OpenPullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -33769,7 +33780,6 @@ async def test_close_pull_request_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ClosePullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -33798,7 +33808,6 @@ async def test_list_pull_request_file_diffs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListPullRequestFileDiffsRequest()
-
         assert args[0] == request_msg
 
 
@@ -33825,7 +33834,6 @@ async def test_fetch_tree_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.FetchTreeRequest()
-
         assert args[0] == request_msg
 
 
@@ -33853,7 +33861,6 @@ async def test_fetch_blob_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.FetchBlobRequest()
-
         assert args[0] == request_msg
 
 
@@ -33878,7 +33885,6 @@ async def test_create_issue_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -33909,7 +33915,6 @@ async def test_get_issue_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -33936,7 +33941,6 @@ async def test_list_issues_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListIssuesRequest()
-
         assert args[0] == request_msg
 
 
@@ -33961,7 +33965,6 @@ async def test_update_issue_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -33986,7 +33989,6 @@ async def test_delete_issue_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -34011,7 +34013,6 @@ async def test_open_issue_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.OpenIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -34036,7 +34037,6 @@ async def test_close_issue_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CloseIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -34065,7 +34065,6 @@ async def test_get_pull_request_comment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetPullRequestCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -34094,7 +34093,6 @@ async def test_list_pull_request_comments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListPullRequestCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -34121,7 +34119,6 @@ async def test_create_pull_request_comment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreatePullRequestCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -34148,7 +34145,6 @@ async def test_update_pull_request_comment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdatePullRequestCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -34175,7 +34171,6 @@ async def test_delete_pull_request_comment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeletePullRequestCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -34202,7 +34197,6 @@ async def test_batch_create_pull_request_comments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.BatchCreatePullRequestCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -34229,7 +34223,6 @@ async def test_resolve_pull_request_comments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ResolvePullRequestCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -34256,7 +34249,6 @@ async def test_unresolve_pull_request_comments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UnresolvePullRequestCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -34283,7 +34275,6 @@ async def test_create_issue_comment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateIssueCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -34313,7 +34304,6 @@ async def test_get_issue_comment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetIssueCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -34342,7 +34332,6 @@ async def test_list_issue_comments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListIssueCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -34369,7 +34358,6 @@ async def test_update_issue_comment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateIssueCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -34396,7 +34384,6 @@ async def test_delete_issue_comment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteIssueCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -35225,6 +35212,7 @@ def test_get_repository_rest_call_success(request_type):
             instance="instance_value",
             uid="uid_value",
             etag="etag_value",
+            service_account="service_account_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -35246,6 +35234,7 @@ def test_get_repository_rest_call_success(request_type):
     assert response.instance == "instance_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
+    assert response.service_account == "service_account_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -35373,6 +35362,13 @@ def test_create_repository_rest_call_success(request_type):
             "gitignores": ["gitignores_value1", "gitignores_value2"],
             "license_": "license__value",
             "readme": "readme_value",
+        },
+        "service_account": "service_account_value",
+        "scan_config": {
+            "secret_scan_config": {
+                "enabled": True,
+                "inspect_template": "inspect_template_value",
+            }
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -35594,6 +35590,13 @@ def test_update_repository_rest_call_success(request_type):
             "gitignores": ["gitignores_value1", "gitignores_value2"],
             "license_": "license__value",
             "readme": "readme_value",
+        },
+        "service_account": "service_account_value",
+        "scan_config": {
+            "secret_scan_config": {
+                "enabled": True,
+                "inspect_template": "inspect_template_value",
+            }
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -43228,7 +43231,6 @@ def test_list_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43248,7 +43250,6 @@ def test_get_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -43268,7 +43269,6 @@ def test_create_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -43288,7 +43288,6 @@ def test_delete_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -43310,7 +43309,6 @@ def test_list_repositories_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListRepositoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43330,7 +43328,6 @@ def test_get_repository_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -43352,7 +43349,6 @@ def test_create_repository_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -43374,7 +43370,6 @@ def test_update_repository_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -43396,7 +43391,6 @@ def test_delete_repository_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -43416,7 +43410,6 @@ def test_list_hooks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListHooksRequest()
-
         assert args[0] == request_msg
 
 
@@ -43436,7 +43429,6 @@ def test_get_hook_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetHookRequest()
-
         assert args[0] == request_msg
 
 
@@ -43456,7 +43448,6 @@ def test_create_hook_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateHookRequest()
-
         assert args[0] == request_msg
 
 
@@ -43476,7 +43467,6 @@ def test_update_hook_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateHookRequest()
-
         assert args[0] == request_msg
 
 
@@ -43496,7 +43486,6 @@ def test_delete_hook_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteHookRequest()
-
         assert args[0] == request_msg
 
 
@@ -43518,7 +43507,6 @@ def test_get_iam_policy_repo_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -43540,7 +43528,6 @@ def test_set_iam_policy_repo_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -43562,7 +43549,6 @@ def test_test_iam_permissions_repo_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -43584,7 +43570,6 @@ def test_create_branch_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateBranchRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -43606,7 +43591,6 @@ def test_list_branch_rules_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListBranchRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43626,7 +43610,6 @@ def test_get_branch_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetBranchRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -43648,7 +43631,6 @@ def test_update_branch_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateBranchRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -43670,7 +43652,6 @@ def test_delete_branch_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteBranchRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -43692,7 +43673,6 @@ def test_create_pull_request_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreatePullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -43712,7 +43692,6 @@ def test_get_pull_request_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetPullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -43734,7 +43713,6 @@ def test_list_pull_requests_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListPullRequestsRequest()
-
         assert args[0] == request_msg
 
 
@@ -43756,7 +43734,6 @@ def test_update_pull_request_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdatePullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -43778,7 +43755,6 @@ def test_merge_pull_request_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.MergePullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -43800,7 +43776,6 @@ def test_open_pull_request_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.OpenPullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -43822,7 +43797,6 @@ def test_close_pull_request_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ClosePullRequestRequest()
-
         assert args[0] == request_msg
 
 
@@ -43844,7 +43818,6 @@ def test_list_pull_request_file_diffs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListPullRequestFileDiffsRequest()
-
         assert args[0] == request_msg
 
 
@@ -43864,7 +43837,6 @@ def test_fetch_tree_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.FetchTreeRequest()
-
         assert args[0] == request_msg
 
 
@@ -43884,7 +43856,6 @@ def test_fetch_blob_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.FetchBlobRequest()
-
         assert args[0] == request_msg
 
 
@@ -43904,7 +43875,6 @@ def test_create_issue_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -43924,7 +43894,6 @@ def test_get_issue_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -43944,7 +43913,6 @@ def test_list_issues_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListIssuesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43964,7 +43932,6 @@ def test_update_issue_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -43984,7 +43951,6 @@ def test_delete_issue_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -44004,7 +43970,6 @@ def test_open_issue_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.OpenIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -44024,7 +43989,6 @@ def test_close_issue_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CloseIssueRequest()
-
         assert args[0] == request_msg
 
 
@@ -44046,7 +44010,6 @@ def test_get_pull_request_comment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetPullRequestCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -44068,7 +44031,6 @@ def test_list_pull_request_comments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListPullRequestCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -44090,7 +44052,6 @@ def test_create_pull_request_comment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreatePullRequestCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -44112,7 +44073,6 @@ def test_update_pull_request_comment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdatePullRequestCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -44134,7 +44094,6 @@ def test_delete_pull_request_comment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeletePullRequestCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -44156,7 +44115,6 @@ def test_batch_create_pull_request_comments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.BatchCreatePullRequestCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -44178,7 +44136,6 @@ def test_resolve_pull_request_comments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ResolvePullRequestCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -44200,7 +44157,6 @@ def test_unresolve_pull_request_comments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UnresolvePullRequestCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -44222,7 +44178,6 @@ def test_create_issue_comment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.CreateIssueCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -44244,7 +44199,6 @@ def test_get_issue_comment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.GetIssueCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -44266,7 +44220,6 @@ def test_list_issue_comments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.ListIssueCommentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -44288,7 +44241,6 @@ def test_update_issue_comment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.UpdateIssueCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -44310,7 +44262,6 @@ def test_delete_issue_comment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = secure_source_manager.DeleteIssueCommentRequest()
-
         assert args[0] == request_msg
 
 
@@ -45133,10 +45084,38 @@ def test_parse_hook_path():
     assert expected == actual
 
 
-def test_instance_path():
+def test_inspect_template_path():
     project = "cuttlefish"
     location = "mussel"
-    instance = "winkle"
+    inspect_template = "winkle"
+    expected = "projects/{project}/locations/{location}/inspectTemplates/{inspect_template}".format(
+        project=project,
+        location=location,
+        inspect_template=inspect_template,
+    )
+    actual = SecureSourceManagerClient.inspect_template_path(
+        project, location, inspect_template
+    )
+    assert expected == actual
+
+
+def test_parse_inspect_template_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "inspect_template": "abalone",
+    }
+    path = SecureSourceManagerClient.inspect_template_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecureSourceManagerClient.parse_inspect_template_path(path)
+    assert expected == actual
+
+
+def test_instance_path():
+    project = "squid"
+    location = "clam"
+    instance = "whelk"
     expected = "projects/{project}/locations/{location}/instances/{instance}".format(
         project=project,
         location=location,
@@ -45148,9 +45127,9 @@ def test_instance_path():
 
 def test_parse_instance_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "instance": "abalone",
+        "project": "octopus",
+        "location": "oyster",
+        "instance": "nudibranch",
     }
     path = SecureSourceManagerClient.instance_path(**expected)
 
@@ -45160,10 +45139,10 @@ def test_parse_instance_path():
 
 
 def test_issue_path():
-    project = "squid"
-    location = "clam"
-    repository = "whelk"
-    issue = "octopus"
+    project = "cuttlefish"
+    location = "mussel"
+    repository = "winkle"
+    issue = "nautilus"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/issues/{issue}".format(
         project=project,
         location=location,
@@ -45176,10 +45155,10 @@ def test_issue_path():
 
 def test_parse_issue_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "repository": "cuttlefish",
-        "issue": "mussel",
+        "project": "scallop",
+        "location": "abalone",
+        "repository": "squid",
+        "issue": "clam",
     }
     path = SecureSourceManagerClient.issue_path(**expected)
 
@@ -45189,11 +45168,11 @@ def test_parse_issue_path():
 
 
 def test_issue_comment_path():
-    project = "winkle"
-    location = "nautilus"
-    repository = "scallop"
-    issue = "abalone"
-    comment = "squid"
+    project = "whelk"
+    location = "octopus"
+    repository = "oyster"
+    issue = "nudibranch"
+    comment = "cuttlefish"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/issues/{issue}/issueComments/{comment}".format(
         project=project,
         location=location,
@@ -45209,11 +45188,11 @@ def test_issue_comment_path():
 
 def test_parse_issue_comment_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "repository": "octopus",
-        "issue": "oyster",
-        "comment": "nudibranch",
+        "project": "mussel",
+        "location": "winkle",
+        "repository": "nautilus",
+        "issue": "scallop",
+        "comment": "abalone",
     }
     path = SecureSourceManagerClient.issue_comment_path(**expected)
 
@@ -45223,10 +45202,10 @@ def test_parse_issue_comment_path():
 
 
 def test_pull_request_path():
-    project = "cuttlefish"
-    location = "mussel"
-    repository = "winkle"
-    pull_request = "nautilus"
+    project = "squid"
+    location = "clam"
+    repository = "whelk"
+    pull_request = "octopus"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/pullRequests/{pull_request}".format(
         project=project,
         location=location,
@@ -45241,10 +45220,10 @@ def test_pull_request_path():
 
 def test_parse_pull_request_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "repository": "squid",
-        "pull_request": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "repository": "cuttlefish",
+        "pull_request": "mussel",
     }
     path = SecureSourceManagerClient.pull_request_path(**expected)
 
@@ -45254,11 +45233,11 @@ def test_parse_pull_request_path():
 
 
 def test_pull_request_comment_path():
-    project = "whelk"
-    location = "octopus"
-    repository = "oyster"
-    pull_request = "nudibranch"
-    comment = "cuttlefish"
+    project = "winkle"
+    location = "nautilus"
+    repository = "scallop"
+    pull_request = "abalone"
+    comment = "squid"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/pullRequests/{pull_request}/pullRequestComments/{comment}".format(
         project=project,
         location=location,
@@ -45274,11 +45253,11 @@ def test_pull_request_comment_path():
 
 def test_parse_pull_request_comment_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "repository": "nautilus",
-        "pull_request": "scallop",
-        "comment": "abalone",
+        "project": "clam",
+        "location": "whelk",
+        "repository": "octopus",
+        "pull_request": "oyster",
+        "comment": "nudibranch",
     }
     path = SecureSourceManagerClient.pull_request_comment_path(**expected)
 
@@ -45288,9 +45267,9 @@ def test_parse_pull_request_comment_path():
 
 
 def test_repository_path():
-    project = "squid"
-    location = "clam"
-    repository = "whelk"
+    project = "cuttlefish"
+    location = "mussel"
+    repository = "winkle"
     expected = (
         "projects/{project}/locations/{location}/repositories/{repository}".format(
             project=project,
@@ -45304,9 +45283,9 @@ def test_repository_path():
 
 def test_parse_repository_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "repository": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "repository": "abalone",
     }
     path = SecureSourceManagerClient.repository_path(**expected)
 
@@ -45315,10 +45294,33 @@ def test_parse_repository_path():
     assert expected == actual
 
 
+def test_service_account_path():
+    project = "squid"
+    service_account = "clam"
+    expected = "projects/{project}/serviceAccounts/{service_account}".format(
+        project=project,
+        service_account=service_account,
+    )
+    actual = SecureSourceManagerClient.service_account_path(project, service_account)
+    assert expected == actual
+
+
+def test_parse_service_account_path():
+    expected = {
+        "project": "whelk",
+        "service_account": "octopus",
+    }
+    path = SecureSourceManagerClient.service_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecureSourceManagerClient.parse_service_account_path(path)
+    assert expected == actual
+
+
 def test_service_attachment_path():
-    project = "cuttlefish"
-    region = "mussel"
-    service_attachment = "winkle"
+    project = "oyster"
+    region = "nudibranch"
+    service_attachment = "cuttlefish"
     expected = "projects/{project}/regions/{region}/serviceAttachments/{service_attachment}".format(
         project=project,
         region=region,
@@ -45332,9 +45334,9 @@ def test_service_attachment_path():
 
 def test_parse_service_attachment_path():
     expected = {
-        "project": "nautilus",
-        "region": "scallop",
-        "service_attachment": "abalone",
+        "project": "mussel",
+        "region": "winkle",
+        "service_attachment": "nautilus",
     }
     path = SecureSourceManagerClient.service_attachment_path(**expected)
 
@@ -45344,7 +45346,7 @@ def test_parse_service_attachment_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -45354,7 +45356,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "abalone",
     }
     path = SecureSourceManagerClient.common_billing_account_path(**expected)
 
@@ -45364,7 +45366,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -45374,7 +45376,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "clam",
     }
     path = SecureSourceManagerClient.common_folder_path(**expected)
 
@@ -45384,7 +45386,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -45394,7 +45396,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "octopus",
     }
     path = SecureSourceManagerClient.common_organization_path(**expected)
 
@@ -45404,7 +45406,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -45414,7 +45416,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "nudibranch",
     }
     path = SecureSourceManagerClient.common_project_path(**expected)
 
@@ -45424,8 +45426,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -45436,8 +45438,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = SecureSourceManagerClient.common_location_path(**expected)
 

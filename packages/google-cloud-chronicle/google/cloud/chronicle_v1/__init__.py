@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,13 +21,7 @@ from google.cloud.chronicle_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
-
+from importlib import metadata
 
 from .services.big_query_export_service import (
     BigQueryExportServiceAsyncClient,
@@ -54,6 +48,10 @@ from .services.featured_content_native_dashboard_service import (
     FeaturedContentNativeDashboardServiceAsyncClient,
     FeaturedContentNativeDashboardServiceClient,
 )
+from .services.findings_refinement_service import (
+    FindingsRefinementServiceAsyncClient,
+    FindingsRefinementServiceClient,
+)
 from .services.instance_service import InstanceServiceAsyncClient, InstanceServiceClient
 from .services.native_dashboard_service import (
     NativeDashboardServiceAsyncClient,
@@ -62,6 +60,10 @@ from .services.native_dashboard_service import (
 from .services.reference_list_service import (
     ReferenceListServiceAsyncClient,
     ReferenceListServiceClient,
+)
+from .services.rule_execution_error_service import (
+    RuleExecutionErrorServiceAsyncClient,
+    RuleExecutionErrorServiceClient,
 )
 from .services.rule_service import RuleServiceAsyncClient, RuleServiceClient
 from .types.big_query_export import (
@@ -179,6 +181,28 @@ from .types.featured_content_native_dashboard import (
     ListFeaturedContentNativeDashboardsRequest,
     ListFeaturedContentNativeDashboardsResponse,
 )
+from .types.findings_refinement import (
+    ComputeAllFindingsRefinementActivitiesRequest,
+    ComputeAllFindingsRefinementActivitiesResponse,
+    ComputeFindingsRefinementActivityRequest,
+    ComputeFindingsRefinementActivityResponse,
+    CreateFindingsRefinementRequest,
+    DetectionExclusionActivity,
+    DetectionExclusionApplication,
+    FindingsRefinement,
+    FindingsRefinementActivity,
+    FindingsRefinementDeployment,
+    FindingsRefinementType,
+    GetFindingsRefinementDeploymentRequest,
+    GetFindingsRefinementRequest,
+    ListAllFindingsRefinementDeploymentsRequest,
+    ListAllFindingsRefinementDeploymentsResponse,
+    ListFindingsRefinementsRequest,
+    ListFindingsRefinementsResponse,
+    OutcomeFilter,
+    UpdateFindingsRefinementDeploymentRequest,
+    UpdateFindingsRefinementRequest,
+)
 from .types.instance import GetInstanceRequest, Instance
 from .types.native_dashboard import (
     AddChartRequest,
@@ -217,11 +241,14 @@ from .types.reference_list import (
     ListReferenceListsResponse,
     ReferenceList,
     ReferenceListEntry,
+    ReferenceListError,
     ReferenceListScope,
     ReferenceListSyntaxType,
     ReferenceListView,
     ScopeInfo,
     UpdateReferenceListRequest,
+    VerifyReferenceListRequest,
+    VerifyReferenceListResponse,
 )
 from .types.rule import (
     CompilationDiagnostic,
@@ -251,6 +278,13 @@ from .types.rule import (
     Severity,
     UpdateRuleDeploymentRequest,
     UpdateRuleRequest,
+    VerifyRuleTextRequest,
+    VerifyRuleTextResponse,
+)
+from .types.rule_execution_error import (
+    ListRuleExecutionErrorsRequest,
+    ListRuleExecutionErrorsResponse,
+    RuleExecutionError,
 )
 
 if hasattr(api_core, "check_python_version") and hasattr(
@@ -262,34 +296,23 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.chronicle_v1"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -318,9 +341,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -355,9 +378,11 @@ __all__ = (
     "DataTableServiceAsyncClient",
     "EntityServiceAsyncClient",
     "FeaturedContentNativeDashboardServiceAsyncClient",
+    "FindingsRefinementServiceAsyncClient",
     "InstanceServiceAsyncClient",
     "NativeDashboardServiceAsyncClient",
     "ReferenceListServiceAsyncClient",
+    "RuleExecutionErrorServiceAsyncClient",
     "RuleServiceAsyncClient",
     "AddChartRequest",
     "AddChartResponse",
@@ -381,10 +406,15 @@ __all__ = (
     "ColumnMetadata",
     "CompilationDiagnostic",
     "CompilationPosition",
+    "ComputeAllFindingsRefinementActivitiesRequest",
+    "ComputeAllFindingsRefinementActivitiesResponse",
+    "ComputeFindingsRefinementActivityRequest",
+    "ComputeFindingsRefinementActivityResponse",
     "CreateDataAccessLabelRequest",
     "CreateDataAccessScopeRequest",
     "CreateDataTableRequest",
     "CreateDataTableRowRequest",
+    "CreateFindingsRefinementRequest",
     "CreateNativeDashboardRequest",
     "CreateReferenceListRequest",
     "CreateRetrohuntRequest",
@@ -419,6 +449,8 @@ __all__ = (
     "DeleteNativeDashboardRequest",
     "DeleteRuleRequest",
     "DeleteWatchlistRequest",
+    "DetectionExclusionActivity",
+    "DetectionExclusionApplication",
     "DuplicateChartRequest",
     "DuplicateChartResponse",
     "DuplicateNativeDashboardRequest",
@@ -434,6 +466,11 @@ __all__ = (
     "FeaturedContentNativeDashboardServiceClient",
     "FilterOperator",
     "FilterOperatorAndValues",
+    "FindingsRefinement",
+    "FindingsRefinementActivity",
+    "FindingsRefinementDeployment",
+    "FindingsRefinementServiceClient",
+    "FindingsRefinementType",
     "GetBigQueryExportRequest",
     "GetDashboardChartRequest",
     "GetDashboardQueryRequest",
@@ -443,6 +480,8 @@ __all__ = (
     "GetDataTableRequest",
     "GetDataTableRowRequest",
     "GetFeaturedContentNativeDashboardRequest",
+    "GetFindingsRefinementDeploymentRequest",
+    "GetFindingsRefinementRequest",
     "GetInstanceRequest",
     "GetNativeDashboardRequest",
     "GetReferenceListRequest",
@@ -466,6 +505,8 @@ __all__ = (
     "LatestExportJobState",
     "LegendAlign",
     "LegendOrient",
+    "ListAllFindingsRefinementDeploymentsRequest",
+    "ListAllFindingsRefinementDeploymentsResponse",
     "ListDataAccessLabelsRequest",
     "ListDataAccessLabelsResponse",
     "ListDataAccessScopesRequest",
@@ -476,6 +517,8 @@ __all__ = (
     "ListDataTablesResponse",
     "ListFeaturedContentNativeDashboardsRequest",
     "ListFeaturedContentNativeDashboardsResponse",
+    "ListFindingsRefinementsRequest",
+    "ListFindingsRefinementsResponse",
     "ListNativeDashboardsRequest",
     "ListNativeDashboardsResponse",
     "ListReferenceListsRequest",
@@ -484,6 +527,8 @@ __all__ = (
     "ListRetrohuntsResponse",
     "ListRuleDeploymentsRequest",
     "ListRuleDeploymentsResponse",
+    "ListRuleExecutionErrorsRequest",
+    "ListRuleExecutionErrorsResponse",
     "ListRuleRevisionsRequest",
     "ListRuleRevisionsResponse",
     "ListRulesRequest",
@@ -498,12 +543,14 @@ __all__ = (
     "NativeDashboardServiceClient",
     "NativeDashboardView",
     "NativeDashboardWithChartsAndQueries",
+    "OutcomeFilter",
     "PlotMode",
     "PointSizeType",
     "ProvisionBigQueryExportRequest",
     "QueryRuntimeError",
     "ReferenceList",
     "ReferenceListEntry",
+    "ReferenceListError",
     "ReferenceListScope",
     "ReferenceListServiceClient",
     "ReferenceListSyntaxType",
@@ -514,6 +561,8 @@ __all__ = (
     "RetrohuntMetadata",
     "Rule",
     "RuleDeployment",
+    "RuleExecutionError",
+    "RuleExecutionErrorServiceClient",
     "RuleServiceClient",
     "RuleType",
     "RuleView",
@@ -531,11 +580,17 @@ __all__ = (
     "UpdateDataAccessScopeRequest",
     "UpdateDataTableRequest",
     "UpdateDataTableRowRequest",
+    "UpdateFindingsRefinementDeploymentRequest",
+    "UpdateFindingsRefinementRequest",
     "UpdateNativeDashboardRequest",
     "UpdateReferenceListRequest",
     "UpdateRuleDeploymentRequest",
     "UpdateRuleRequest",
     "UpdateWatchlistRequest",
+    "VerifyReferenceListRequest",
+    "VerifyReferenceListResponse",
+    "VerifyRuleTextRequest",
+    "VerifyRuleTextResponse",
     "VisualMapType",
     "Watchlist",
     "WatchlistUserPreferences",

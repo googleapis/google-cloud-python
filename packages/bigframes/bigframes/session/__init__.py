@@ -71,7 +71,6 @@ import bigframes.core.indexes
 import bigframes.core.indexes.multi
 import bigframes.core.pyformat
 import bigframes.formatting_helpers
-import bigframes.functions._function_session as bff_session
 import bigframes.functions.function as bff
 import bigframes.session._io.bigquery as bf_io_bigquery
 import bigframes.session.clients
@@ -80,6 +79,7 @@ from bigframes import exceptions as bfe
 from bigframes import version
 from bigframes.core import blocks, utils
 from bigframes.core.logging import log_adapter
+from bigframes.functions import _function_client, _function_session
 from bigframes.session import bigquery_session, executor, proxy_executor
 
 # Avoid circular imports.
@@ -113,6 +113,18 @@ logger = logging.getLogger(__name__)
 class _ExecutionHistory:
     def __init__(self, jobs: list[dict]):
         self._df = pandas.DataFrame(jobs)
+        if self._df.empty:
+            self._df = pandas.DataFrame(
+                columns=[
+                    "job_id",
+                    "query_id",
+                    "job_type",
+                    "status",
+                    "query",
+                    "total_bytes_processed",
+                    "job_url",
+                ]
+            )
 
     def to_dataframe(self) -> pandas.DataFrame:
         """Returns the execution history as a pandas DataFrame."""
@@ -183,7 +195,9 @@ class Session(
         # Publisher needs to be created before the other objects, especially
         # the executors, because they access it.
         self._publisher = bigframes.core.events.Publisher()
-        self._publisher.subscribe(bigframes.formatting_helpers.progress_callback)
+        self._publisher.subscribe(
+            bigframes.formatting_helpers.create_progress_callback()
+        )
 
         if context is None:
             context = bigquery_options.BigQueryOptions()
@@ -196,10 +210,12 @@ class Session(
             # this path is only for unit testing. Not meant to be used by end users.
             self._clients_provider = clients_provider
             self._location = context.location or "US"
+            project = "test_project"
         else:
-            credentials, project = (
-                bigframes._config.auth.resolve_credentials_and_project(context)
-            )
+            (
+                credentials,
+                project,
+            ) = bigframes._config.auth.resolve_credentials_and_project(context)
             if context.location is None:
                 with bigquery.Client(
                     project=project,
@@ -290,13 +306,30 @@ class Session(
 
         self._metrics = metrics.ExecutionMetrics()
         self._publisher.subscribe(self._metrics.on_event)
-        self._function_session = bff_session.FunctionSession()
         self._anon_dataset_manager = anonymous_dataset.AnonymousDatasetManager(
             self._clients_provider.bqclient,
             location=self._location,
             session_id=self._session_id,
             kms_key=self._bq_kms_key_name,
             publisher=self._publisher,
+        )
+        self._function_session = _function_session.FunctionSession(
+            _function_client.FunctionClient(
+                gcp_project_id=project,
+                bq_location=self._location,
+                bq_client=self._clients_provider.bqclient,
+                bq_connection_manager=bigframes.clients.BqConnectionManager(
+                    self._clients_provider.bqconnectionclient,
+                    self._clients_provider.resourcemanagerclient,
+                ),
+                cloud_functions_client=self._clients_provider.cloudfunctionsclient,
+                publisher=self._publisher,
+            ),
+            dataset_manager=self._anon_dataset_manager,
+            default_connection=self._bq_connection,
+            location=self._location,
+            session_id=self._session_id,
+            manage_connections=not self._skip_bq_connection_check,
         )
         # Session temp tables don't support specifying kms key, so use anon dataset if kms key specified
         self._session_resource_manager = (
@@ -336,6 +369,7 @@ class Session(
             enable_polars_execution=context.enable_polars_execution,
             publisher=self._publisher,
             labels=tuple(labels.items()),
+            function_manager=self._function_session,
         )
 
     def __del__(self):
@@ -428,12 +462,79 @@ class Session(
         """The sum of all slot time used by bigquery jobs in this session."""
         return self._metrics.slot_millis
 
-    def execution_history(self) -> _ExecutionHistory:
+    def execution_history(
+        self,
+        *,
+        events: Optional[Iterable[bigframes.core.events.Event]] = None,
+        job_ids: Optional[Iterable[str]] = None,
+        all_cells: bool = True,
+    ) -> _ExecutionHistory:
         """Returns the history of executions initiated by BigFrames in the current session.
 
         Use `.to_dataframe()` on the result to get a pandas DataFrame.
+
+        Args:
+            events (Iterable[Event], optional):
+                Filter execution history to only include jobs associated with the given events.
+            job_ids (Iterable[str], optional):
+                Filter execution history to only include jobs matching the given job IDs.
+            all_cells (bool, optional):
+                If True, do not filter execution history by notebook cell. If False,
+                and running in Colab/Jupyter, automatically filter history to only include
+                jobs executed within the current cell. Defaults to True.
         """
-        return _ExecutionHistory([job.__dict__ for job in self._metrics.jobs])
+        jobs = [job.__dict__ for job in self._metrics.jobs]
+
+        if events is not None:
+            event_job_ids = {
+                getattr(event, "job_id", None)
+                for event in events
+                if getattr(event, "job_id", None) is not None
+            }
+            event_query_ids = {
+                getattr(event, "query_id", None)
+                for event in events
+                if getattr(event, "query_id", None) is not None
+            }
+            jobs = [
+                job
+                for job in jobs
+                if (
+                    job.get("job_id") is not None and job.get("job_id") in event_job_ids
+                )
+                or (
+                    job.get("query_id") is not None
+                    and job.get("query_id") in event_query_ids
+                )
+            ]
+
+        elif job_ids is not None:
+            target_job_ids = set(job_ids)
+            jobs = [
+                job
+                for job in jobs
+                if (
+                    job.get("job_id") is not None
+                    and job.get("job_id") in target_job_ids
+                )
+                or (
+                    job.get("query_id") is not None
+                    and job.get("query_id") in target_job_ids
+                )
+            ]
+
+        elif not all_cells:
+            from bigframes.core.utils import get_ipython_execution_count
+
+            current_count = get_ipython_execution_count()
+            if current_count is not None:
+                jobs = [
+                    job
+                    for job in jobs
+                    if job.get("cell_execution_count") == current_count
+                ]
+
+        return _ExecutionHistory(jobs)
 
     @property
     def _allows_ambiguity(self) -> bool:
@@ -472,9 +573,7 @@ class Session(
 
         remote_function_session = getattr(self, "_function_session", None)
         if remote_function_session:
-            remote_function_session.clean_up(
-                self.bqclient, self.cloudfunctionsclient, self.session_id
-            )
+            remote_function_session.clean_up()
 
         publisher_session = getattr(self, "_publisher", None)
         if publisher_session:
@@ -582,6 +681,7 @@ class Session(
         self,
         query: str,
         *,
+        callback: Optional[Callable[[bigframes.core.events.EventEnvelope], None]] = ...,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[False] = ...,
     ) -> dataframe.DataFrame: ...
@@ -591,6 +691,7 @@ class Session(
         self,
         query: str,
         *,
+        callback: Optional[Callable[[bigframes.core.events.EventEnvelope], None]] = ...,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[True] = ...,
     ) -> pandas.Series: ...
@@ -599,8 +700,10 @@ class Session(
     def _read_gbq_colab(
         self,
         query: str,
-        # TODO: Add a callback parameter that takes some kind of Event object.
         *,
+        callback: Optional[
+            Callable[[bigframes.core.events.EventEnvelope], None]
+        ] = None,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: bool = False,
     ) -> Union[dataframe.DataFrame, pandas.Series]:
@@ -613,6 +716,8 @@ class Session(
             query (str):
                 A SQL query string to execute. Results (if any) are turned into
                 a DataFrame.
+            callback (Optional[Callable[[bigframes.core.events.EventEnvelope], None]]):
+                Callback to receive query execution events.
             pyformat_args (dict):
                 A dictionary of potential variables to replace in ``query``.
                 Note: strings are _not_ escaped. Use query parameters for these,
@@ -632,13 +737,19 @@ class Session(
             dry_run=dry_run,
         )
 
-        return self._loader.read_gbq_query(
-            query=query,
-            index_col=bigframes.enums.DefaultIndexKind.NULL,
-            force_total_order=False,
-            dry_run=typing.cast(Union[Literal[False], Literal[True]], dry_run),
-            allow_large_results=allow_large_results,
-        )
+        def _run_query():
+            return self._loader.read_gbq_query(
+                query=query,
+                index_col=bigframes.enums.DefaultIndexKind.NULL,
+                force_total_order=False,
+                dry_run=typing.cast(Union[Literal[False], Literal[True]], dry_run),
+                allow_large_results=allow_large_results,
+            )
+
+        if callback is not None:
+            with self._publisher.subscribe(callback):
+                return _run_query()
+        return _run_query()
 
     @overload
     def read_gbq_query(  # type: ignore[overload-overlap]
@@ -1643,13 +1754,6 @@ class Session(
         """
         return self._function_session.deploy_remote_function(
             func,
-            # Session-provided arguments.
-            session=self,
-            bigquery_client=self._clients_provider.bqclient,
-            bigquery_connection_client=self._clients_provider.bqconnectionclient,
-            cloud_functions_client=self._clients_provider.cloudfunctionsclient,
-            resource_manager_client=self._clients_provider.resourcemanagerclient,
-            # User-provided arguments.
             **kwargs,
         )
 
@@ -1890,12 +1994,6 @@ class Session(
                 `bigframes_remote_function` - The bigquery remote function capable of calling into `bigframes_cloud_function`.
         """
         return self._function_session.remote_function(
-            # Session-provided arguments.
-            session=self,
-            bigquery_client=self._clients_provider.bqclient,
-            bigquery_connection_client=self._clients_provider.bqconnectionclient,
-            cloud_functions_client=self._clients_provider.cloudfunctionsclient,
-            resource_manager_client=self._clients_provider.resourcemanagerclient,
             # User-provided arguments.
             input_types=input_types,
             output_type=output_type,
@@ -1942,10 +2040,6 @@ class Session(
         """
         return self._function_session.deploy_udf(
             func,
-            # Session-provided arguments.
-            session=self,
-            bigquery_client=self._clients_provider.bqclient,
-            # User-provided arguments.
             **kwargs,
         )
 
@@ -1954,9 +2048,9 @@ class Session(
         *,
         input_types: Union[None, type, Sequence[type]] = None,
         output_type: Optional[type] = None,
-        dataset: str,
+        dataset: Optional[str] = None,
         bigquery_connection: Optional[str] = None,
-        name: str,
+        name: Optional[str] = None,
         packages: Optional[Sequence[str]] = None,
         max_batching_rows: Optional[int] = None,
         container_cpu: Optional[float] = None,
@@ -2048,7 +2142,7 @@ class Session(
                 be specified. The supported output types are `bool`, `bytes`,
                 `float`, `int`, `str`, `list[bool]`, `list[float]`, `list[int]`
                 and `list[str]`.
-            dataset (str):
+            dataset (str, Optional):
                 Dataset in which to create a BigQuery managed function. It
                 should be in `<project_id>.<dataset_name>` or `<dataset_name>`
                 format.
@@ -2106,10 +2200,6 @@ class Session(
                 deployed for the user defined code.
         """
         return self._function_session.udf(
-            # Session-provided arguments.
-            session=self,
-            bigquery_client=self._clients_provider.bqclient,
-            # User-provided arguments.
             input_types=input_types,
             output_type=output_type,
             dataset=dataset,
@@ -2310,7 +2400,7 @@ class Session(
         # so we must reset any encryption set in the job config
         # https://cloud.google.com/bigquery/docs/customer-managed-encryption#encrypt-model
         job_config.destination_encryption_configuration = None
-        iterator, query_job = bf_io_bigquery.start_query_with_client(
+        iterator, query_job = bf_io_bigquery.start_query_with_job(
             self.bqclient,
             sql,
             job_config=job_config,
@@ -2318,12 +2408,24 @@ class Session(
             location=None,
             project=None,
             timeout=None,
-            query_with_job=True,
             job_retry=third_party_gcb_retry.DEFAULT_ML_JOB_RETRY,
             publisher=self._publisher,
             session=self,
         )
         return iterator, query_job
+
+    def _from_glob_path(
+        self, path: str, *, connection: Optional[str] = None, name: Optional[str] = None
+    ) -> dataframe.DataFrame:
+        """Create a BigFrames DataFrame that contains a BigFrames ObjectRef column from a global wildcard path."""
+        import bigframes.bigquery as bq
+
+        connection = self._create_bq_connection(connection=connection)
+        table = self._create_object_table(path, connection)
+        s = bq.obj.make_ref(
+            self._loader.read_gbq_table(table)["uri"], authorizer=connection
+        )
+        return s.rename(name).to_frame()
 
     def _create_object_table(self, path: str, connection: str) -> str:
         """Create a random id Object Table from the input path and connection."""
@@ -2340,7 +2442,7 @@ class Session(
                 uris = ['{path}']);
             """
         )
-        bf_io_bigquery.start_query_with_client(
+        bf_io_bigquery.start_query_with_job(
             self.bqclient,
             sql,
             job_config=bigquery.QueryJobConfig(),
@@ -2348,7 +2450,6 @@ class Session(
             location=None,
             project=None,
             timeout=None,
-            query_with_job=True,
             publisher=self._publisher,
             session=self,
         )
@@ -2366,40 +2467,6 @@ class Session(
         return self._temp_storage_manager.create_temp_table(
             schema=schema, cluster_cols=cluster_cols
         )
-
-    def from_glob_path(
-        self, path: str, *, connection: Optional[str] = None, name: Optional[str] = None
-    ) -> dataframe.DataFrame:
-        r"""Create a BigFrames DataFrame that contains a BigFrames `ObjectRef column <https://docs.cloud.google.com/bigquery/docs/objectref-columns>`_ from a global wildcard path.
-        This operation creates a temporary BQ Object Table under the hood and requires bigquery.connections.delegate permission or BigQuery Connection Admin role.
-        If you have an existing BQ Object Table, use read_gbq_object_table().
-
-        .. note::
-            BigFrames ObjectRef is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-            Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-            and might have limited support. For more information, see the launch stage descriptions
-            (https://cloud.google.com/products#product-launch-stages).
-
-        Args:
-            path (str):
-                The wildcard global path, such as "gs://<bucket>/<folder>/\*".
-            connection (str or None, default None):
-                Connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
-                If None, use default connection in session context. BigQuery DataFrame will try to create the connection and attach
-                permission if the connection isn't fully set up.
-            name (str):
-                The column name of the ObjectRef column.
-        Returns:
-            bigframes.pandas.DataFrame:
-                Result BigFrames DataFrame.
-        """
-        # TODO(garrettwu): switch to pseudocolumn when b/374988109 is done.
-        connection = self._create_bq_connection(connection=connection)
-
-        table = self._create_object_table(path, connection)
-
-        s = self._loader.read_gbq_table(table)["uri"].str.to_blob(connection)
-        return s.rename(name).to_frame()
 
     def _create_bq_connection(
         self,
@@ -2427,38 +2494,6 @@ class Session(
         )
 
         return connection
-
-    def read_gbq_object_table(
-        self, object_table: str, *, name: Optional[str] = None
-    ) -> dataframe.DataFrame:
-        """Read an existing object table to create a BigFrames `ObjectRef <https://docs.cloud.google.com/bigquery/docs/objectref-columns>`_ DataFrame. Use the connection of the object table for the connection of the ObjectRef.
-        This function dosen't retrieve the object table data. If you want to read the data, use read_gbq() instead.
-
-        .. note::
-            BigFrames ObjectRef is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-            Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-            and might have limited support. For more information, see the launch stage descriptions
-            (https://cloud.google.com/products#product-launch-stages).
-
-        Args:
-            object_table (str): name of the object table of form <PROJECT_ID>.<DATASET_ID>.<TABLE_ID>.
-            name (str or None): the returned ObjectRef column name.
-
-        Returns:
-            bigframes.pandas.DataFrame:
-                Result BigFrames DataFrame.
-        """
-        warnings.warn(
-            "read_gbq_object_table is deprecated and will be removed in a future release. Use read_gbq with 'ref' column instead.",
-            category=bfe.ApiDeprecationWarning,
-            stacklevel=2,
-        )
-        # TODO(garrettwu): switch to pseudocolumn when b/374988109 is done.
-        table = self.bqclient.get_table(object_table)
-        connection = table._properties["externalDataConfiguration"]["connectionId"]
-
-        s = self._loader.read_gbq_table(object_table)["uri"].str.to_blob(connection)
-        return s.rename(name).to_frame()
 
     # =========================================================================
     # bigframes.pandas attributes

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -108,6 +103,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1227,7 +1237,7 @@ def test_disable_xpn_host_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_disable_xpn_host_rest_unset_required_fields():
@@ -1412,7 +1422,7 @@ def test_disable_xpn_host_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_disable_xpn_host_unary_rest_unset_required_fields():
@@ -1600,7 +1610,7 @@ def test_disable_xpn_resource_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_disable_xpn_resource_rest_unset_required_fields():
@@ -1803,7 +1813,7 @@ def test_disable_xpn_resource_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_disable_xpn_resource_unary_rest_unset_required_fields():
@@ -2001,7 +2011,7 @@ def test_enable_xpn_host_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_enable_xpn_host_rest_unset_required_fields():
@@ -2184,7 +2194,7 @@ def test_enable_xpn_host_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_enable_xpn_host_unary_rest_unset_required_fields():
@@ -2372,7 +2382,7 @@ def test_enable_xpn_resource_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_enable_xpn_resource_rest_unset_required_fields():
@@ -2575,7 +2585,7 @@ def test_enable_xpn_resource_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_enable_xpn_resource_unary_rest_unset_required_fields():
@@ -2765,7 +2775,7 @@ def test_get_rest_required_fields(request_type=compute.GetProjectRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rest_unset_required_fields():
@@ -2941,7 +2951,7 @@ def test_get_xpn_host_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_xpn_host_rest_unset_required_fields():
@@ -3130,7 +3140,7 @@ def test_get_xpn_resources_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_xpn_resources_rest_unset_required_fields():
@@ -3262,6 +3272,9 @@ def test_get_xpn_resources_rest_pager(transport: str = "rest"):
 
         pager = client.get_xpn_resources(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.XpnResourceId) for i in results)
@@ -3390,7 +3403,7 @@ def test_list_xpn_hosts_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_xpn_hosts_rest_unset_required_fields():
@@ -3536,6 +3549,9 @@ def test_list_xpn_hosts_rest_pager(transport: str = "rest"):
 
         pager = client.list_xpn_hosts(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.Project) for i in results)
@@ -3658,7 +3674,7 @@ def test_move_disk_rest_required_fields(request_type=compute.MoveDiskProjectRequ
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_move_disk_rest_unset_required_fields():
@@ -3856,7 +3872,7 @@ def test_move_disk_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_move_disk_unary_rest_unset_required_fields():
@@ -4054,7 +4070,7 @@ def test_move_instance_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_move_instance_rest_unset_required_fields():
@@ -4252,7 +4268,7 @@ def test_move_instance_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_move_instance_unary_rest_unset_required_fields():
@@ -4454,7 +4470,7 @@ def test_set_cloud_armor_tier_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_cloud_armor_tier_rest_unset_required_fields():
@@ -4657,7 +4673,7 @@ def test_set_cloud_armor_tier_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_cloud_armor_tier_unary_rest_unset_required_fields():
@@ -4861,7 +4877,7 @@ def test_set_common_instance_metadata_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_common_instance_metadata_rest_unset_required_fields():
@@ -5061,7 +5077,7 @@ def test_set_common_instance_metadata_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_common_instance_metadata_unary_rest_unset_required_fields():
@@ -5263,7 +5279,7 @@ def test_set_default_network_tier_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_default_network_tier_rest_unset_required_fields():
@@ -5467,7 +5483,7 @@ def test_set_default_network_tier_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_default_network_tier_unary_rest_unset_required_fields():
@@ -5671,7 +5687,7 @@ def test_set_usage_export_bucket_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_usage_export_bucket_rest_unset_required_fields():
@@ -5875,7 +5891,7 @@ def test_set_usage_export_bucket_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_usage_export_bucket_unary_rest_unset_required_fields():
@@ -9049,7 +9065,6 @@ def test_disable_xpn_host_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DisableXpnHostProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9071,7 +9086,6 @@ def test_disable_xpn_resource_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DisableXpnResourceProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9091,7 +9105,6 @@ def test_enable_xpn_host_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.EnableXpnHostProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9113,7 +9126,6 @@ def test_enable_xpn_resource_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.EnableXpnResourceProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9133,7 +9145,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9153,7 +9164,6 @@ def test_get_xpn_host_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetXpnHostProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9175,7 +9185,6 @@ def test_get_xpn_resources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetXpnResourcesProjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9195,7 +9204,6 @@ def test_list_xpn_hosts_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListXpnHostsProjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9215,7 +9223,6 @@ def test_move_disk_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.MoveDiskProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9235,7 +9242,6 @@ def test_move_instance_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.MoveInstanceProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9257,7 +9263,6 @@ def test_set_cloud_armor_tier_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetCloudArmorTierProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9279,7 +9284,6 @@ def test_set_common_instance_metadata_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetCommonInstanceMetadataProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9301,7 +9305,6 @@ def test_set_default_network_tier_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetDefaultNetworkTierProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9323,7 +9326,6 @@ def test_set_usage_export_bucket_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetUsageExportBucketProjectRequest()
-
         assert args[0] == request_msg
 
 

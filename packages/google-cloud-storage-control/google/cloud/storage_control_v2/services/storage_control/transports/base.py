@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -560,6 +560,96 @@ class StorageControlTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_intelligence_finding: gapic_v1.method.wrap_method(
+                self.get_intelligence_finding,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_intelligence_findings: gapic_v1.method.wrap_method(
+                self.list_intelligence_findings,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.summarize_intelligence_findings: gapic_v1.method.wrap_method(
+                self.summarize_intelligence_findings,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_intelligence_finding_revision: gapic_v1.method.wrap_method(
+                self.get_intelligence_finding_revision,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_intelligence_finding_revisions: gapic_v1.method.wrap_method(
+                self.list_intelligence_finding_revisions,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -845,6 +935,66 @@ class StorageControlTransport(abc.ABC):
         Union[
             iam_policy_pb2.TestIamPermissionsResponse,
             Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_intelligence_finding(
+        self,
+    ) -> Callable[
+        [storage_control.GetIntelligenceFindingRequest],
+        Union[
+            storage_control.IntelligenceFinding,
+            Awaitable[storage_control.IntelligenceFinding],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_intelligence_findings(
+        self,
+    ) -> Callable[
+        [storage_control.ListIntelligenceFindingsRequest],
+        Union[
+            storage_control.ListIntelligenceFindingsResponse,
+            Awaitable[storage_control.ListIntelligenceFindingsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def summarize_intelligence_findings(
+        self,
+    ) -> Callable[
+        [storage_control.SummarizeIntelligenceFindingsRequest],
+        Union[
+            storage_control.SummarizeIntelligenceFindingsResponse,
+            Awaitable[storage_control.SummarizeIntelligenceFindingsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_intelligence_finding_revision(
+        self,
+    ) -> Callable[
+        [storage_control.GetIntelligenceFindingRevisionRequest],
+        Union[
+            storage_control.IntelligenceFindingRevision,
+            Awaitable[storage_control.IntelligenceFindingRevision],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_intelligence_finding_revisions(
+        self,
+    ) -> Callable[
+        [storage_control.ListIntelligenceFindingRevisionsRequest],
+        Union[
+            storage_control.ListIntelligenceFindingRevisionsResponse,
+            Awaitable[storage_control.ListIntelligenceFindingRevisionsResponse],
         ],
     ]:
         raise NotImplementedError()

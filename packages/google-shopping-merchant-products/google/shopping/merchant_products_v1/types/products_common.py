@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,7 +62,9 @@ __protobuf__ = proto.module(
         "CloudExportAdditionalProperties",
         "ProductSustainabilityIncentive",
         "AutomatedDiscounts",
+        "PickupCost",
         "HandlingCutoffTime",
+        "ProductMinimumOrderValue",
     },
 )
 
@@ -990,6 +992,13 @@ class ProductAttributes(proto.Message):
             SLA <https://support.google.com/merchants/answer/14635400>`__.
 
             This field is a member of `oneof`_ ``_pickup_sla``.
+        pickup_cost (google.shopping.merchant_products_v1.types.PickupCost):
+            Optional. The `pickup
+            cost <https://support.google.com/merchants/answer/16988704>`__
+            for an item when a customer buys it online and picks it up
+            at a store.
+
+            This field is a member of `oneof`_ ``_pickup_cost``.
         link_template (str):
             `Link
             template <https://support.google.com/merchants/answer/13871172>`__
@@ -1122,6 +1131,202 @@ class ProductAttributes(proto.Message):
             your image attributes. See the `Help Center
             article <https://support.google.com/merchants/answer/15216925>`__
             for more information.
+        minimum_order_values (MutableSequence[google.shopping.merchant_products_v1.types.ProductMinimumOrderValue]):
+            The `minimum
+            value <https://support.google.com/merchants/answer/16989009>`__
+            in the cart before a customer can initiate checkout.
+            Supports multiple minimum order values. Different minimum
+            order values can be specified per country, service and
+            surface. Maximum entries: 100.
+        vin (str):
+            The `Vehicle Identification Number
+            (VIN) <https://support.google.com/google-ads/answer/14154510>`__
+            of the vehicle.
+        model (str):
+            The
+            `Model <https://support.google.com/google-ads/answer/14154511>`__
+            of the vehicle, such as ``LX``, ``EX``, and others.
+        trim (str):
+            The
+            `Trim <https://support.google.com/google-ads/answer/14154176>`__
+            of the vehicle model, such as ``S``, ``SV``, ``SL`` and
+            others.
+        body_style (google.shopping.merchant_products_v1.types.ProductAttributes.VehicleBodyStyle):
+            The `body
+            style <https://support.google.com/google-ads/answer/14157085>`__
+            of the vehicle.
+        year (int):
+            The
+            `Year <https://support.google.com/google-ads/answer/14152816>`__
+            of the vehicle model.
+        mileage (google.shopping.merchant_products_v1.types.ProductAttributes.Mileage):
+            The number of miles/kms on the vehicle. See the
+            `Mileage <https://support.google.com/google-ads/answer/14156166>`__
+            for more information.
+        electric_range (google.shopping.merchant_products_v1.types.ProductAttributes.Mileage):
+            The `electric
+            range <https://support.google.com/google-ads/answer/15162232>`__
+            of the vehicle in miles/kms.
+        fuel_consumption (google.shopping.merchant_products_v1.types.ProductAttributes.FuelConsumption):
+            The `fuel
+            consumption <https://support.google.com/google-ads/answer/14543580>`__
+            of the vehicle.
+        fuel_consumption_discharged_battery (google.shopping.merchant_products_v1.types.ProductAttributes.FuelConsumption):
+            The fuel consumption of the vehicle when the hybrid battery
+            is discharged. See the `Help Center
+            article <https://support.google.com/google-ads/answer/15162033>`__
+            for more information.
+        energy_consumption (google.shopping.merchant_products_v1.types.ProductAttributes.EnergyConsumption):
+            The `energy
+            consumption <https://support.google.com/google-ads/answer/14546149>`__
+            of the vehicle.
+        co2_emissions (google.shopping.merchant_products_v1.types.ProductAttributes.Co2Emissions):
+            The `co2
+            emission <https://support.google.com/google-ads/answer/14546146>`__
+            of the vehicle.
+        date_first_registered (str):
+            The date the vehicle was first registered. Format:
+            ``YYYY-MM``. See the `Date first
+            registered <https://support.google.com/google-ads/answer/14546138>`__
+            for more information.
+        engine (google.shopping.merchant_products_v1.types.ProductAttributes.EngineType):
+            The
+            `engine <https://support.google.com/google-ads/answer/14156068>`__
+            type of the vehicle.
+        emissions_standard (google.shopping.merchant_products_v1.types.ProductAttributes.EmissionsStandard):
+            The `emission
+            standard <https://support.google.com/google-ads/answer/14869021>`__
+            of the vehicle.
+        certified_pre_owned (bool):
+            Whether the vehicle is OEM `certified
+            pre-owned <https://support.google.com/google-ads/answer/14156475>`__.
+        vehicle_msrp (google.shopping.type.types.Price):
+            The MSRP (Manufacturer Suggested Retail Price) for the
+            vehicle in its current configuration. See the `Vehicle
+            MSRP <https://support.google.com/google-ads/answer/14154171>`__
+            for more information.
+        vehicle_all_in_price (google.shopping.type.types.Price):
+            The all-in advertised price for a vehicle, which includes
+            costs for the following – any accessories attached to the
+            vehicle, environmental levies, extra warranty, fuel,
+            freight, pre-delivery inspection (PDI), dealer fees for
+            handling licensing, provincial regulatory fees,
+            miscellaneous dealer charges for security etching and
+            nitrogen tire fill, and factory-to-customer or
+            dealer-to-customer discounts or incentives. See the `Vehicle
+            all-in
+            price <https://support.google.com/google-ads/answer/14156981>`__
+            for more information.
+        vehicle_price_type (google.shopping.merchant_products_v1.types.ProductAttributes.VehiclePriceType):
+            The `price
+            type <https://support.google.com/google-ads/answer/14592783>`__
+            of the vehicle.
+        vehicle_mandatory_inspection_included (bool):
+            Whether the vehicle is sold with mandatory inspection and
+            maintenance performed before delivery. See the `Vehicle
+            mandatory inspection
+            included <https://support.google.com/google-ads/answer/15956630>`__
+            for more information.\`
+        vehicle_expenses (google.shopping.type.types.Price):
+            The miscellaneous expenses like insurance and registration
+            fees of the vehicle. See the `Vehicle
+            expenses <https://support.google.com/google-ads/answer/15957154>`__
+            for more information.
+        warranty (google.shopping.merchant_products_v1.types.ProductAttributes.Warranty):
+            The
+            `warranty <https://support.google.com/google-ads/answer/15957626>`__
+            of the vehicle.
+        display_address (google.shopping.merchant_products_v1.types.ProductAttributes.DisplayAddress):
+            The display address of the property.
+        latitude (float):
+            The latitude of the property. The value must
+            be between -90 (inclusive) and 90 (inclusive),
+            up to 6 decimal places.
+
+            This field is a member of `oneof`_ ``_latitude``.
+        longitude (float):
+            The longitude of the property. The value must
+            be between -180 (inclusive) and 180 (inclusive),
+            up to 6 decimal places.
+
+            This field is a member of `oneof`_ ``_longitude``.
+        neighborhood (str):
+            The neighborhood (locality) of the property, such as
+            ``Wallingford``, ``Greenwood``, etc.
+        unit_area (google.shopping.merchant_products_v1.types.ProductAttributes.UnitArea):
+            The unit area of the property, such as ``1000 sqft``.
+        number_of_units (int):
+            The number of units available for a specific
+            floor plan of the property. The value must be
+            greater than 0.
+
+            This field is a member of `oneof`_ ``_number_of_units``.
+        property_name (str):
+            The name of the property.
+        number_of_bedrooms (float):
+            The number of bedrooms in the property. The
+            value must be greater than or equal to 0 and a
+            multiple of 1.0.
+
+            This field is a member of `oneof`_ ``_number_of_bedrooms``.
+        number_of_bathrooms (float):
+            The number of bathrooms in the property. The
+            value must be greater than 0 and a multiple of
+            0.5.
+
+            This field is a member of `oneof`_ ``_number_of_bathrooms``.
+        property_type (google.shopping.merchant_products_v1.types.ProductAttributes.PropertyType):
+            The type of property.
+        amenity_feature (MutableSequence[google.shopping.merchant_products_v1.types.ProductAttributes.AmenityFeature]):
+            The amenity features for the property.
+        utilities_included (MutableSequence[google.shopping.merchant_products_v1.types.ProductAttributes.UtilitiesIncluded]):
+            The utilities included for the property.
+        pet_policy (google.shopping.merchant_products_v1.types.ProductAttributes.PetPolicy):
+            The pet policy for the property.
+        specialty_housing_type (google.shopping.merchant_products_v1.types.ProductAttributes.SpecialtyHousingType):
+            The specialty housing type for the property.
+        product_fee (MutableSequence[google.shopping.merchant_products_v1.types.ProductAttributes.ProductFee]):
+            The product fee for the property.
+        short_title (str):
+            The short title of the item.
+
+            This field is a member of `oneof`_ ``_short_title``.
+        questions_and_answers (MutableSequence[google.shopping.merchant_products_v1.types.ProductAttributes.QuestionAndAnswer]):
+            Optional. Contains user-, merchant-, and
+            manufacturer-authored `questions and
+            answers <https://support.google.com/merchants/answer/17085211>`__
+            about the product. Max 30 question and answer pairs. Max
+            10000 characters total. Each question can have max 1000
+            characters. Each answer can have max 1000 characters.
+        popularity_rank (float):
+            Optional. Indicates the
+            `popularity <https://support.google.com/merchants/answer/17085297>`__
+            of the product in a merchant's inventory. Using a scale of
+            0.0 (lowest) to 100.0 (highest).
+        item_group_title (str):
+            Optional. Represents the `title of the product
+            group <https://support.google.com/merchants/answer/17085146>`__
+            to which this variant product belongs. This can be used
+            along with the `item group
+            id <https://support.google.com/merchants/answer/6324507>`__
+            attribute. It lets you perform better grouping of variant
+            products, and helps identifying common product
+            characteristics more efficiently.
+        document_links (MutableSequence[str]):
+            Optional. Contains a list of PDF `document
+            URLs <https://support.google.com/merchants/answer/17084656>`__
+            for the product. Examples are training manuals, user guides,
+            assembly instructions, package inserts, etc. Must start with
+            "http://" or "https://"), ASCII characters only, and RFC
+            3986 compliant.
+        variant_options (MutableSequence[google.shopping.merchant_products_v1.types.ProductAttributes.VariantOption]):
+            Optional. Contains the `list of all variant-identifying
+            options <https://support.google.com/merchants/answer/17085214>`__
+            of this product.
+        related_products (MutableSequence[google.shopping.merchant_products_v1.types.ProductAttributes.RelatedProduct]):
+            Optional. Specifies how other `products are
+            related <https://support.google.com/merchants/answer/17085213>`__
+            to this product.
     """
 
     class CarrierPriceOption(proto.Enum):
@@ -1324,6 +1529,421 @@ class ProductAttributes(proto.Message):
         USPS_GROUND_ADVANTAGE_RETAIL = 59
         USPS_PRIORITY_MAIL = 60
         USPS_GROUND_ADVANTAGE_COMMERCIAL = 61
+
+    class VehicleBodyStyle(proto.Enum):
+        r"""The vehicle body style. See the `Body
+        style <https://support.google.com/google-ads/answer/14157085>`__ for
+        more information.
+
+        Values:
+            VEHICLE_BODY_STYLE_UNSPECIFIED (0):
+                Unspecified vehicle body style.
+            ATV_SPORT (1):
+                ATV Sport.
+            ATV_TOURING (2):
+                ATV Touring.
+            ATV_UTILITY (3):
+                ATV Utility.
+            ATV_YOUTH (4):
+                ATV Youth.
+            CITY_CAR (5):
+                City car.
+            CLASS_A_MOTORHOME (6):
+                Class A motorhome.
+            CLASS_B_MOTORHOME (7):
+                Class B motorhome.
+            CLASS_C_MOTORHOME (8):
+                Class C motorhome.
+            COMPACT_SUV (9):
+                Compact SUV.
+            CONVERTIBLE (10):
+                Convertible.
+            COUPE (11):
+                Coupe.
+            CROSSOVER (12):
+                Crossover.
+            FIFTH_WHEEL (13):
+                Fifth wheel.
+            FULL_SIZE_VAN (14):
+                Full size van.
+            HATCHBACK (15):
+                Hatchback.
+            LIMOUSINE (16):
+                Limousine.
+            MINIVAN (17):
+                Minivan.
+            NOTCHBACK (18):
+                Notchback.
+            POP_UP_CAMPER (19):
+                Pop up camper.
+            SEDAN (20):
+                Sedan.
+            SIDE_BY_SIDE (21):
+                Side by side.
+            STATION_WAGON (22):
+                Station wagon.
+            SUV (23):
+                SUV.
+            TRAVEL_TRAILER (24):
+                Travel trailer.
+            TRUCK (25):
+                Truck.
+            TRUCK_CAMPER (26):
+                Truck camper.
+            UTE (27):
+                Ute.
+            UTV_RECREATIONAL_UTILITY (28):
+                UTV Recreational utility.
+            UTV_SPORT (29):
+                UTV Sport.
+            UTV_UTILITY (30):
+                UTV Utility.
+            UTV_YOUTH (31):
+                UTV Youth.
+        """
+
+        VEHICLE_BODY_STYLE_UNSPECIFIED = 0
+        ATV_SPORT = 1
+        ATV_TOURING = 2
+        ATV_UTILITY = 3
+        ATV_YOUTH = 4
+        CITY_CAR = 5
+        CLASS_A_MOTORHOME = 6
+        CLASS_B_MOTORHOME = 7
+        CLASS_C_MOTORHOME = 8
+        COMPACT_SUV = 9
+        CONVERTIBLE = 10
+        COUPE = 11
+        CROSSOVER = 12
+        FIFTH_WHEEL = 13
+        FULL_SIZE_VAN = 14
+        HATCHBACK = 15
+        LIMOUSINE = 16
+        MINIVAN = 17
+        NOTCHBACK = 18
+        POP_UP_CAMPER = 19
+        SEDAN = 20
+        SIDE_BY_SIDE = 21
+        STATION_WAGON = 22
+        SUV = 23
+        TRAVEL_TRAILER = 24
+        TRUCK = 25
+        TRUCK_CAMPER = 26
+        UTE = 27
+        UTV_RECREATIONAL_UTILITY = 28
+        UTV_SPORT = 29
+        UTV_UTILITY = 30
+        UTV_YOUTH = 31
+
+    class EngineType(proto.Enum):
+        r"""The engine type of the vehicle.
+
+        Values:
+            ENGINE_TYPE_UNSPECIFIED (0):
+                Unspecified engine type.
+            GASOLINE (1):
+                Gasoline.
+            DIESEL (2):
+                Diesel.
+            ELECTRIC (3):
+                Electric.
+            HYBRID (4):
+                Hybrid.
+            PLUG_IN_HYBRID (5):
+                Plug-in hybrid.
+            NATURAL_GAS (6):
+                Natural gas.
+            LPG (7):
+                LPG.
+            METHANE (8):
+                Methane.
+            OTHER (9):
+                Other.
+        """
+
+        ENGINE_TYPE_UNSPECIFIED = 0
+        GASOLINE = 1
+        DIESEL = 2
+        ELECTRIC = 3
+        HYBRID = 4
+        PLUG_IN_HYBRID = 5
+        NATURAL_GAS = 6
+        LPG = 7
+        METHANE = 8
+        OTHER = 9
+
+    class EmissionsStandard(proto.Enum):
+        r"""The emission standard of the vehicle.
+
+        Values:
+            EMISSIONS_STANDARD_UNSPECIFIED (0):
+                Unspecified emission standard.
+            ZERO_EMISSIONS (1):
+                Zero emissions.
+            EURO1 (2):
+                Euro 1.
+            EURO2 (3):
+                Euro 2.
+            EURO3 (4):
+                Euro 3.
+            EURO4 (5):
+                Euro 4.
+            EURO5 (6):
+                Euro 5.
+            EURO5B (7):
+                Euro 5b.
+            EURO6 (8):
+                Euro 6.
+            EURO6C (9):
+                Euro 6c.
+            EURO6D (10):
+                Euro 6d.
+            EURO6D_TEMP (11):
+                Euro 6d-TEMP.
+            EURO6E (12):
+                Euro 6e.
+        """
+
+        EMISSIONS_STANDARD_UNSPECIFIED = 0
+        ZERO_EMISSIONS = 1
+        EURO1 = 2
+        EURO2 = 3
+        EURO3 = 4
+        EURO4 = 5
+        EURO5 = 6
+        EURO5B = 7
+        EURO6 = 8
+        EURO6C = 9
+        EURO6D = 10
+        EURO6D_TEMP = 11
+        EURO6E = 12
+
+    class VehiclePriceType(proto.Enum):
+        r"""The vehicle price type.
+
+        Values:
+            VEHICLE_PRICE_TYPE_UNSPECIFIED (0):
+                Unspecified vehicle price type.
+            ALL_IN_PRICE (1):
+                All in price.
+            DRIVE_AWAY_PRICE (2):
+                Drive away price.
+            ESTIMATED_DRIVE_AWAY_PRICE (3):
+                Estimated drive away price.
+            EXCLUDING_GOVERNMENT_CHARGES_PRICE (4):
+                Excluding government charges price.
+            VEHICLE_BASE_PRICE (5):
+                Vehicle base price.
+        """
+
+        VEHICLE_PRICE_TYPE_UNSPECIFIED = 0
+        ALL_IN_PRICE = 1
+        DRIVE_AWAY_PRICE = 2
+        ESTIMATED_DRIVE_AWAY_PRICE = 3
+        EXCLUDING_GOVERNMENT_CHARGES_PRICE = 4
+        VEHICLE_BASE_PRICE = 5
+
+    class PropertyType(proto.Enum):
+        r"""The property type.
+
+        Values:
+            PROPERTY_TYPE_UNSPECIFIED (0):
+                Unspecified property type.
+            APARTMENT (1):
+                Apartment.
+            CONDO (2):
+                Condo.
+            LOFT (3):
+                Loft.
+            MULTI_FAMILY_HOME (4):
+                Multi-family home.
+            PENTHOUSE (5):
+                Penthouse.
+            ROOM (6):
+                Room.
+            SINGLE_FAMILY_HOME (7):
+                Single-family home.
+            STUDIO (8):
+                Studio.
+            TOWNHOUSE (9):
+                Townhouse.
+        """
+
+        PROPERTY_TYPE_UNSPECIFIED = 0
+        APARTMENT = 1
+        CONDO = 2
+        LOFT = 3
+        MULTI_FAMILY_HOME = 4
+        PENTHOUSE = 5
+        ROOM = 6
+        SINGLE_FAMILY_HOME = 7
+        STUDIO = 8
+        TOWNHOUSE = 9
+
+    class AmenityFeature(proto.Enum):
+        r"""The amenity features for the property.
+
+        Values:
+            AMENITY_FEATURE_UNSPECIFIED (0):
+                Unspecified amenity feature.
+            BALCONY (1):
+                Balcony.
+            BASEMENT (2):
+                Basement.
+            BASKETBALL_COURT (3):
+                Basketball court.
+            BIKE_STORAGE (4):
+                Bike storage.
+            CENTRAL_AC (5):
+                Central air conditioning.
+            DISHWASHER (6):
+                Dishwasher.
+            DOG_PARK (7):
+                Dog park.
+            ELEVATOR (8):
+                Elevator.
+            EV_CHARGING (9):
+                EV charging.
+            FENCED_LOT (10):
+                Fenced lot.
+            FIREPLACE (11):
+                Fireplace.
+            FITNESS_CENTER (12):
+                Fitness center.
+            FORCED_AIR_HEATING (13):
+                Forced air heating.
+            FULLY_FURNISHED (14):
+                Fully furnished.
+            GARAGE (15):
+                Garage.
+            GATED_COMMUNITY (16):
+                Gated community.
+            HARDWOOD_FLOORS (17):
+                Hardwood floors.
+            HIGH_SPEED_INTERNET (18):
+                High speed internet.
+            INTERCOM (19):
+                Intercom.
+            IN_UNIT_WASHER_DRYER (20):
+                In-unit washer and dryer.
+            KITCHEN (21):
+                Kitchen.
+            LARGE_CLOSETS (22):
+                Large closets.
+            MULTISPORT_COURT (23):
+                Multisport court.
+            ONSITE_LAUNDRY (24):
+                Onsite laundry.
+            OUTDOOR_LOUNGE (25):
+                Outdoor lounge.
+            PARKING (26):
+                Parking.
+            PATIO (27):
+                Patio.
+            PICKLEBALL_COURT (28):
+                Pickleball court.
+            POOL (29):
+                Pool.
+            REFRIGERATOR (30):
+                Refrigerator.
+            SOCCER_FIELD (31):
+                Soccer field.
+            TENNIS_COURT (32):
+                Tennis court.
+            WALK_IN_CLOSETS (33):
+                Walk-in closets.
+            WHEELCHAIR_ACCESS (34):
+                Wheelchair accessibility.
+        """
+
+        AMENITY_FEATURE_UNSPECIFIED = 0
+        BALCONY = 1
+        BASEMENT = 2
+        BASKETBALL_COURT = 3
+        BIKE_STORAGE = 4
+        CENTRAL_AC = 5
+        DISHWASHER = 6
+        DOG_PARK = 7
+        ELEVATOR = 8
+        EV_CHARGING = 9
+        FENCED_LOT = 10
+        FIREPLACE = 11
+        FITNESS_CENTER = 12
+        FORCED_AIR_HEATING = 13
+        FULLY_FURNISHED = 14
+        GARAGE = 15
+        GATED_COMMUNITY = 16
+        HARDWOOD_FLOORS = 17
+        HIGH_SPEED_INTERNET = 18
+        INTERCOM = 19
+        IN_UNIT_WASHER_DRYER = 20
+        KITCHEN = 21
+        LARGE_CLOSETS = 22
+        MULTISPORT_COURT = 23
+        ONSITE_LAUNDRY = 24
+        OUTDOOR_LOUNGE = 25
+        PARKING = 26
+        PATIO = 27
+        PICKLEBALL_COURT = 28
+        POOL = 29
+        REFRIGERATOR = 30
+        SOCCER_FIELD = 31
+        TENNIS_COURT = 32
+        WALK_IN_CLOSETS = 33
+        WHEELCHAIR_ACCESS = 34
+
+    class UtilitiesIncluded(proto.Enum):
+        r"""The utilities included for the property.
+
+        Values:
+            UTILITIES_INCLUDED_UNSPECIFIED (0):
+                Unspecified utilities included.
+            ELECTRICITY (1):
+                Electricity.
+            GAS (2):
+                Gas.
+            INTERNET (3):
+                Internet.
+            TRASH (4):
+                Trash.
+            WATER (5):
+                Water.
+        """
+
+        UTILITIES_INCLUDED_UNSPECIFIED = 0
+        ELECTRICITY = 1
+        GAS = 2
+        INTERNET = 3
+        TRASH = 4
+        WATER = 5
+
+    class SpecialtyHousingType(proto.Enum):
+        r"""The specialty housing type for the property.
+
+        Values:
+            SPECIALTY_HOUSING_TYPE_UNSPECIFIED (0):
+                Unspecified specialty housing type.
+            CORPORATE (1):
+                Corporate housing.
+            LOW_INCOME (2):
+                Low income housing.
+            MILITARY (3):
+                Military housing.
+            SENIOR (4):
+                Senior housing.
+            SHORT_TERM (5):
+                Short term housing.
+            STUDENT (6):
+                Student housing.
+        """
+
+        SPECIALTY_HOUSING_TYPE_UNSPECIFIED = 0
+        CORPORATE = 1
+        LOW_INCOME = 2
+        MILITARY = 3
+        SENIOR = 4
+        SHORT_TERM = 5
+        STUDENT = 6
 
     class ShippingBusinessDaysConfig(proto.Message):
         r"""The business days during which orders are on their path to
@@ -1572,6 +2192,472 @@ class ProductAttributes(proto.Message):
             number=13,
             optional=True,
             enum="CarrierTransitTimeOption",
+        )
+
+    class Mileage(proto.Message):
+        r"""The mileage of the vehicle.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            value (int):
+                The distance value.
+
+                This field is a member of `oneof`_ ``_value``.
+            unit (google.shopping.merchant_products_v1.types.ProductAttributes.Mileage.Unit):
+                The unit of the mileage.
+        """
+
+        class Unit(proto.Enum):
+            r"""The unit of the mileage.
+
+            Values:
+                UNIT_UNSPECIFIED (0):
+                    Unspecified unit.
+                MILES (1):
+                    Miles.
+                KM (2):
+                    Kilometers.
+            """
+
+            UNIT_UNSPECIFIED = 0
+            MILES = 1
+            KM = 2
+
+        value: int = proto.Field(
+            proto.INT64,
+            number=1,
+            optional=True,
+        )
+        unit: "ProductAttributes.Mileage.Unit" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ProductAttributes.Mileage.Unit",
+        )
+
+    class FuelConsumption(proto.Message):
+        r"""The fuel consumption of the vehicle.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            value (float):
+                The fuel consumption value.
+
+                This field is a member of `oneof`_ ``_value``.
+            unit (google.shopping.merchant_products_v1.types.ProductAttributes.FuelConsumption.Unit):
+                The unit of the fuel consumption.
+        """
+
+        class Unit(proto.Enum):
+            r"""The unit of the fuel consumption.
+
+            Values:
+                UNIT_UNSPECIFIED (0):
+                    Unspecified unit.
+                LPER100KM (1):
+                    Liter per 100 kilometers.
+                KGPER100KM (2):
+                    Kilograms per 100 kilometers.
+            """
+
+            UNIT_UNSPECIFIED = 0
+            LPER100KM = 1
+            KGPER100KM = 2
+
+        value: float = proto.Field(
+            proto.DOUBLE,
+            number=1,
+            optional=True,
+        )
+        unit: "ProductAttributes.FuelConsumption.Unit" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ProductAttributes.FuelConsumption.Unit",
+        )
+
+    class EnergyConsumption(proto.Message):
+        r"""The energy consumption of the vehicle.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            value (float):
+                The energy consumption value.
+
+                This field is a member of `oneof`_ ``_value``.
+            unit (google.shopping.merchant_products_v1.types.ProductAttributes.EnergyConsumption.Unit):
+                The unit of the energy consumption.
+        """
+
+        class Unit(proto.Enum):
+            r"""The unit of the energy consumption.
+
+            Values:
+                UNIT_UNSPECIFIED (0):
+                    Unspecified unit.
+                KWHPER100KM (1):
+                    Kilowatt hours per 100 kilometers.
+            """
+
+            UNIT_UNSPECIFIED = 0
+            KWHPER100KM = 1
+
+        value: float = proto.Field(
+            proto.DOUBLE,
+            number=1,
+            optional=True,
+        )
+        unit: "ProductAttributes.EnergyConsumption.Unit" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ProductAttributes.EnergyConsumption.Unit",
+        )
+
+    class Co2Emissions(proto.Message):
+        r"""The co2 emission of the vehicle.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            value (int):
+                The co2 emission value.
+
+                This field is a member of `oneof`_ ``_value``.
+            unit (google.shopping.merchant_products_v1.types.ProductAttributes.Co2Emissions.Unit):
+                The unit of the co2 emission.
+        """
+
+        class Unit(proto.Enum):
+            r"""The unit of the co2 emission.
+
+            Values:
+                UNIT_UNSPECIFIED (0):
+                    Unspecified unit.
+                GPERKM (1):
+                    Grams per kilometer.
+            """
+
+            UNIT_UNSPECIFIED = 0
+            GPERKM = 1
+
+        value: int = proto.Field(
+            proto.INT64,
+            number=1,
+            optional=True,
+        )
+        unit: "ProductAttributes.Co2Emissions.Unit" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ProductAttributes.Co2Emissions.Unit",
+        )
+
+    class Warranty(proto.Message):
+        r"""The warranty of the vehicle.
+
+        Attributes:
+            duration (int):
+                The warranty duration in months.
+            mileage (google.shopping.merchant_products_v1.types.ProductAttributes.Mileage):
+                The warranty mileage.
+        """
+
+        duration: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        mileage: "ProductAttributes.Mileage" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="ProductAttributes.Mileage",
+        )
+
+    class ProductFee(proto.Message):
+        r"""The product fee attribute containing type and amount.
+
+        Attributes:
+            type_ (google.shopping.merchant_products_v1.types.ProductAttributes.ProductFee.FeeType):
+                The type of product fee.
+            amount (google.shopping.type.types.Price):
+                The amount of product fee.
+        """
+
+        class FeeType(proto.Enum):
+            r"""The type of product fee.
+
+            Values:
+                FEE_TYPE_UNSPECIFIED (0):
+                    Unspecified fee type.
+                ADMIN_FEE (1):
+                    Admin fee.
+                APPLICATION_FEE (2):
+                    Application fee.
+                SECURITY_DEPOSIT (3):
+                    Security deposit.
+            """
+
+            FEE_TYPE_UNSPECIFIED = 0
+            ADMIN_FEE = 1
+            APPLICATION_FEE = 2
+            SECURITY_DEPOSIT = 3
+
+        type_: "ProductAttributes.ProductFee.FeeType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="ProductAttributes.ProductFee.FeeType",
+        )
+        amount: types.Price = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=types.Price,
+        )
+
+    class DisplayAddress(proto.Message):
+        r"""The display address of the property.
+
+        Attributes:
+            street_number (str):
+                The street number.
+            street_name (str):
+                The street name.
+            city (str):
+                The city such as Seattle, New York, etc.
+            region (str):
+                The region(state), such as WA, OH, etc.
+            postal_code (str):
+                The postal code, such as 94043.
+        """
+
+        street_number: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        street_name: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        city: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        region: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        postal_code: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+
+    class UnitArea(proto.Message):
+        r"""The unit area of the property.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            value (float):
+                The area value.
+
+                This field is a member of `oneof`_ ``_value``.
+            unit (google.shopping.merchant_products_v1.types.ProductAttributes.UnitArea.Unit):
+                The unit of area.
+        """
+
+        class Unit(proto.Enum):
+            r"""The unit of area.
+
+            Values:
+                UNIT_UNSPECIFIED (0):
+                    Unspecified unit.
+                SQM (1):
+                    Square meters.
+                SQFT (2):
+                    Square feet.
+            """
+
+            UNIT_UNSPECIFIED = 0
+            SQM = 1
+            SQFT = 2
+
+        value: float = proto.Field(
+            proto.DOUBLE,
+            number=1,
+            optional=True,
+        )
+        unit: "ProductAttributes.UnitArea.Unit" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ProductAttributes.UnitArea.Unit",
+        )
+
+    class PetPolicy(proto.Message):
+        r"""The pet policy of the property.
+
+        Attributes:
+            pets_allowed (bool):
+                Whether pets are allowed.
+            pet_types (MutableSequence[google.shopping.merchant_products_v1.types.ProductAttributes.PetPolicy.PetType]):
+                The pet types allowed.
+        """
+
+        class PetType(proto.Enum):
+            r"""The pet types.
+
+            Values:
+                PET_TYPE_UNSPECIFIED (0):
+                    Unspecified pet type.
+                CATS (1):
+                    Cats.
+                LARGE_DOGS (2):
+                    Large dogs.
+                SMALL_DOGS (3):
+                    Small dogs.
+            """
+
+            PET_TYPE_UNSPECIFIED = 0
+            CATS = 1
+            LARGE_DOGS = 2
+            SMALL_DOGS = 3
+
+        pets_allowed: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        pet_types: MutableSequence["ProductAttributes.PetPolicy.PetType"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=2,
+                enum="ProductAttributes.PetPolicy.PetType",
+            )
+        )
+
+    class QuestionAndAnswer(proto.Message):
+        r"""The question and answer for the product.
+
+        Attributes:
+            question (str):
+                Required. The question text.
+            answer (str):
+                Required. The answer text.
+        """
+
+        question: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        answer: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class VariantOption(proto.Message):
+        r"""Additional product variants for the product.
+
+        Attributes:
+            name (str):
+                Required. The name of the variant. For
+                example, "Color", "Memory", "Size", "Length".
+            value (str):
+                Required. The value of the variant. For
+                example, "Red", "128GB", "XL", "100cm".
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class RelatedProduct(proto.Message):
+        r"""Specifies how other products are related to this product.
+
+        Attributes:
+            relationship_type (google.shopping.merchant_products_v1.types.ProductAttributes.RelatedProduct.RelationshipType):
+                Required. The type of the relationship
+                between this product and the related product.
+            id_type (google.shopping.merchant_products_v1.types.ProductAttributes.RelatedProduct.IdType):
+                Required. The type of the identifier of the related product.
+                For example,
+                `GTIN <https://support.google.com/merchants/answer/6219078>`__
+                or `product
+                ID <https://support.google.com/merchants/answer/6324405>`__.
+            id (str):
+                Required. The identifier of the related
+                product.
+        """
+
+        class RelationshipType(proto.Enum):
+            r"""The various types of the relationships between this product
+            and the related product.
+
+            Values:
+                RELATIONSHIP_TYPE_UNSPECIFIED (0):
+                    The relationship type is unspecified.
+                PART_OF_SET (1):
+                    Part of a set of products that are often
+                    purchased together.
+                REQUIRED_PART (2):
+                    Part that is necessary for the product to
+                    function, for example a battery for a
+                    battery-operated lamp.
+                OFTEN_BOUGHT_WITH (3):
+                    A product that this product is often
+                    purchased together with, for example a phone
+                    case with a phone.
+                SUBSTITUTE (4):
+                    Product that this product can be substituted
+                    for. For example a printer comparable in
+                    function to another printer.
+                DIFFERENT_BRAND (5):
+                    An identical product sold under a different
+                    brand, for example a cheaper house brand.
+                ACCESSORY (6):
+                    An accessory to this product, for example a
+                    side table that matches the style of a couch.
+            """
+
+            RELATIONSHIP_TYPE_UNSPECIFIED = 0
+            PART_OF_SET = 1
+            REQUIRED_PART = 2
+            OFTEN_BOUGHT_WITH = 3
+            SUBSTITUTE = 4
+            DIFFERENT_BRAND = 5
+            ACCESSORY = 6
+
+        class IdType(proto.Enum):
+            r"""The type of the identifier of the related product.
+
+            Values:
+                ID_TYPE_UNSPECIFIED (0):
+                    The identifier type is unspecified.
+                GTIN (1):
+                    The identifier is a GTIN.
+                ID (2):
+                    The identifier is a product ID in the feed.
+            """
+
+            ID_TYPE_UNSPECIFIED = 0
+            GTIN = 1
+            ID = 2
+
+        relationship_type: "ProductAttributes.RelatedProduct.RelationshipType" = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="ProductAttributes.RelatedProduct.RelationshipType",
+            )
+        )
+        id_type: "ProductAttributes.RelatedProduct.IdType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ProductAttributes.RelatedProduct.IdType",
+        )
+        id: str = proto.Field(
+            proto.STRING,
+            number=3,
         )
 
     identifier_exists: bool = proto.Field(
@@ -1968,6 +3054,12 @@ class ProductAttributes(proto.Message):
         optional=True,
         enum="PickupSla",
     )
+    pickup_cost: "PickupCost" = proto.Field(
+        proto.MESSAGE,
+        number=172,
+        optional=True,
+        message="PickupCost",
+    )
     link_template: str = proto.Field(
         proto.STRING,
         number=82,
@@ -2080,6 +3172,216 @@ class ProductAttributes(proto.Message):
     video_links: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=169,
+    )
+    minimum_order_values: MutableSequence["ProductMinimumOrderValue"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=146,
+            message="ProductMinimumOrderValue",
+        )
+    )
+    vin: str = proto.Field(
+        proto.STRING,
+        number=147,
+    )
+    model: str = proto.Field(
+        proto.STRING,
+        number=148,
+    )
+    trim: str = proto.Field(
+        proto.STRING,
+        number=149,
+    )
+    body_style: VehicleBodyStyle = proto.Field(
+        proto.ENUM,
+        number=150,
+        enum=VehicleBodyStyle,
+    )
+    year: int = proto.Field(
+        proto.INT64,
+        number=151,
+    )
+    mileage: Mileage = proto.Field(
+        proto.MESSAGE,
+        number=152,
+        message=Mileage,
+    )
+    electric_range: Mileage = proto.Field(
+        proto.MESSAGE,
+        number=153,
+        message=Mileage,
+    )
+    fuel_consumption: FuelConsumption = proto.Field(
+        proto.MESSAGE,
+        number=154,
+        message=FuelConsumption,
+    )
+    fuel_consumption_discharged_battery: FuelConsumption = proto.Field(
+        proto.MESSAGE,
+        number=155,
+        message=FuelConsumption,
+    )
+    energy_consumption: EnergyConsumption = proto.Field(
+        proto.MESSAGE,
+        number=156,
+        message=EnergyConsumption,
+    )
+    co2_emissions: Co2Emissions = proto.Field(
+        proto.MESSAGE,
+        number=157,
+        message=Co2Emissions,
+    )
+    date_first_registered: str = proto.Field(
+        proto.STRING,
+        number=158,
+    )
+    engine: EngineType = proto.Field(
+        proto.ENUM,
+        number=159,
+        enum=EngineType,
+    )
+    emissions_standard: EmissionsStandard = proto.Field(
+        proto.ENUM,
+        number=160,
+        enum=EmissionsStandard,
+    )
+    certified_pre_owned: bool = proto.Field(
+        proto.BOOL,
+        number=161,
+    )
+    vehicle_msrp: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=162,
+        message=types.Price,
+    )
+    vehicle_all_in_price: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=163,
+        message=types.Price,
+    )
+    vehicle_price_type: VehiclePriceType = proto.Field(
+        proto.ENUM,
+        number=164,
+        enum=VehiclePriceType,
+    )
+    vehicle_mandatory_inspection_included: bool = proto.Field(
+        proto.BOOL,
+        number=166,
+    )
+    vehicle_expenses: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=167,
+        message=types.Price,
+    )
+    warranty: Warranty = proto.Field(
+        proto.MESSAGE,
+        number=168,
+        message=Warranty,
+    )
+    display_address: DisplayAddress = proto.Field(
+        proto.MESSAGE,
+        number=179,
+        message=DisplayAddress,
+    )
+    latitude: float = proto.Field(
+        proto.DOUBLE,
+        number=180,
+        optional=True,
+    )
+    longitude: float = proto.Field(
+        proto.DOUBLE,
+        number=181,
+        optional=True,
+    )
+    neighborhood: str = proto.Field(
+        proto.STRING,
+        number=182,
+    )
+    unit_area: UnitArea = proto.Field(
+        proto.MESSAGE,
+        number=183,
+        message=UnitArea,
+    )
+    number_of_units: int = proto.Field(
+        proto.INT64,
+        number=184,
+        optional=True,
+    )
+    property_name: str = proto.Field(
+        proto.STRING,
+        number=185,
+    )
+    number_of_bedrooms: float = proto.Field(
+        proto.DOUBLE,
+        number=186,
+        optional=True,
+    )
+    number_of_bathrooms: float = proto.Field(
+        proto.DOUBLE,
+        number=187,
+        optional=True,
+    )
+    property_type: PropertyType = proto.Field(
+        proto.ENUM,
+        number=188,
+        enum=PropertyType,
+    )
+    amenity_feature: MutableSequence[AmenityFeature] = proto.RepeatedField(
+        proto.ENUM,
+        number=189,
+        enum=AmenityFeature,
+    )
+    utilities_included: MutableSequence[UtilitiesIncluded] = proto.RepeatedField(
+        proto.ENUM,
+        number=190,
+        enum=UtilitiesIncluded,
+    )
+    pet_policy: PetPolicy = proto.Field(
+        proto.MESSAGE,
+        number=191,
+        message=PetPolicy,
+    )
+    specialty_housing_type: SpecialtyHousingType = proto.Field(
+        proto.ENUM,
+        number=192,
+        enum=SpecialtyHousingType,
+    )
+    product_fee: MutableSequence[ProductFee] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=193,
+        message=ProductFee,
+    )
+    short_title: str = proto.Field(
+        proto.STRING,
+        number=194,
+        optional=True,
+    )
+    questions_and_answers: MutableSequence[QuestionAndAnswer] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=173,
+        message=QuestionAndAnswer,
+    )
+    popularity_rank: float = proto.Field(
+        proto.FLOAT,
+        number=174,
+    )
+    item_group_title: str = proto.Field(
+        proto.STRING,
+        number=175,
+    )
+    document_links: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=176,
+    )
+    variant_options: MutableSequence[VariantOption] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=177,
+        message=VariantOption,
+    )
+    related_products: MutableSequence[RelatedProduct] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=178,
+        message=RelatedProduct,
     )
 
 
@@ -2223,6 +3525,11 @@ class ProductInstallment(proto.Message):
             Optional. Annual percentage rate for ``credit_type`` finance
 
             This field is a member of `oneof`_ ``_annual_percentage_rate``.
+        total_amount (google.shopping.type.types.Price):
+            Optional. Total amount the buyer has to pay,
+            including interest.
+
+            This field is a member of `oneof`_ ``_total_amount``.
     """
 
     months: int = proto.Field(
@@ -2250,6 +3557,12 @@ class ProductInstallment(proto.Message):
         proto.DOUBLE,
         number=5,
         optional=True,
+    )
+    total_amount: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        optional=True,
+        message=types.Price,
     )
 
 
@@ -2488,6 +3801,25 @@ class Shipping(proto.Message):
             handling cutoff time will default to 8AM PST.
 
             This field is a member of `oneof`_ ``_handling_cutoff_timezone``.
+        loyalty_program_label (str):
+            Optional. The label of the `loyalty
+            program <https://support.google.com/merchants/answer/6324484>`__.
+            Must match one of the program labels set in
+            [loyalty_programs][google.shopping.merchant.products.v1.LoyaltyProgram].
+            When set (in combination with
+            `loyalty_tier_label <https://support.google.com/merchants/answer/6324484>`__),
+            this shipping option is only applicable to loyalty program
+            members of the specified tier.
+        loyalty_tier_label (str):
+            Optional. The label of the `loyalty
+            tier <https://support.google.com/merchants/answer/6324484>`__
+            within the loyalty program. Must match one of the tiers set
+            in the
+            [loyalty_programs][google.shopping.merchant.products.v1.LoyaltyProgram].
+            When set (in combination with
+            `loyalty_program_label <https://support.google.com/merchants/answer/6324484>`__),
+            this shipping option is only applicable to loyalty program
+            members of the specified tier.
     """
 
     price: types.Price = proto.Field(
@@ -2548,6 +3880,14 @@ class Shipping(proto.Message):
         proto.STRING,
         number=13,
         optional=True,
+    )
+    loyalty_program_label: str = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    loyalty_tier_label: str = proto.Field(
+        proto.STRING,
+        number=15,
     )
 
 
@@ -3161,6 +4501,38 @@ class AutomatedDiscounts(proto.Message):
     )
 
 
+class PickupCost(proto.Message):
+    r"""The pickup cost of the item.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        flat_rate (google.shopping.type.types.Price):
+            Required. The flat rate pickup cost of the
+            item.
+
+            This field is a member of `oneof`_ ``_flat_rate``.
+        free_threshold (google.shopping.type.types.Price):
+            Optional. The price threshold above which
+            pickup is free of charge.
+
+            This field is a member of `oneof`_ ``_free_threshold``.
+    """
+
+    flat_rate: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        optional=True,
+        message=types.Price,
+    )
+    free_threshold: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        optional=True,
+        message=types.Price,
+    )
+
+
 class HandlingCutoffTime(proto.Message):
     r"""Configuration for offer or offer-country level shipping
     handling cutoff time.
@@ -3218,6 +4590,83 @@ class HandlingCutoffTime(proto.Message):
         proto.BOOL,
         number=4,
         optional=True,
+    )
+
+
+class ProductMinimumOrderValue(proto.Message):
+    r"""The minimum order value in the cart before the checkout is
+    permitted.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        country (str):
+            Required. The `CLDR territory
+            code <http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml>`__
+            of the country to which an item will ship.
+
+            This field is a member of `oneof`_ ``_country``.
+        service (str):
+            A free-form description of the service class or delivery
+            speed. This should match the service value set for the
+            Shipping attribute. See
+            [service][google.shopping.merchant.products.v1.Shipping.service].
+
+            This field is a member of `oneof`_ ``_service``.
+        surface (google.shopping.merchant_products_v1.types.ProductMinimumOrderValue.Surface):
+            The surface to which the minimum order value applies.
+            Defaults to ``ONLINE_LOCAL`` if not configured.
+
+            This field is a member of `oneof`_ ``_surface``.
+        price (google.shopping.type.types.Price):
+            Required. The minimum cart or basket value
+            before the checkout is permitted.
+
+            This field is a member of `oneof`_ ``_price``.
+    """
+
+    class Surface(proto.Enum):
+        r"""The surface values to which the minimum order value applies.
+
+        Values:
+            SURFACE_UNSPECIFIED (0):
+                Surface is unspecified.
+            ONLINE (1):
+                Surface value to indicate online purchases.
+            LOCAL (2):
+                Surface value to indicate local purchases.
+            ONLINE_LOCAL (3):
+                Surface value to indicate online and local
+                purchases.
+        """
+
+        SURFACE_UNSPECIFIED = 0
+        ONLINE = 1
+        LOCAL = 2
+        ONLINE_LOCAL = 3
+
+    country: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    service: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+    surface: Surface = proto.Field(
+        proto.ENUM,
+        number=3,
+        optional=True,
+        enum=Surface,
+    )
+    price: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message=types.Price,
     )
 
 

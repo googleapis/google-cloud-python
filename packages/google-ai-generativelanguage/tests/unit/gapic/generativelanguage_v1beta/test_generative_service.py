@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -122,6 +117,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1365,8 +1375,8 @@ def test_generative_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_service.GenerateContentRequest,
-        dict,
+        generative_service.GenerateContentRequest(),
+        {},
     ],
 )
 def test_generate_content(request_type, transport: str = "grpc"):
@@ -1377,7 +1387,7 @@ def test_generate_content(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.generate_content), "__call__") as call:
@@ -1424,10 +1434,11 @@ def test_generate_content_non_empty_request_with_auto_populated_field():
         client.generate_content(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateContentRequest(
+        request_msg = generative_service.GenerateContentRequest(
             model="model_value",
             cached_content="cached_content_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_content_use_cached_wrapped_rpc():
@@ -1510,10 +1521,14 @@ async def test_generate_content_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_generate_content_async(
-    transport: str = "grpc_asyncio",
-    request_type=generative_service.GenerateContentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_service.GenerateContentRequest(),
+        {},
+    ],
+)
+async def test_generate_content_async(request_type, transport: str = "grpc_asyncio"):
     client = GenerativeServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1521,7 +1536,7 @@ async def test_generate_content_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.generate_content), "__call__") as call:
@@ -1544,11 +1559,6 @@ async def test_generate_content_async(
     assert isinstance(response, generative_service.GenerateContentResponse)
     assert response.model_version == "model_version_value"
     assert response.response_id == "response_id_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_content_async_from_dict():
-    await test_generate_content_async(request_type=dict)
 
 
 def test_generate_content_field_headers():
@@ -1707,8 +1717,8 @@ async def test_generate_content_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_service.GenerateAnswerRequest,
-        dict,
+        generative_service.GenerateAnswerRequest(),
+        {},
     ],
 )
 def test_generate_answer(request_type, transport: str = "grpc"):
@@ -1719,7 +1729,7 @@ def test_generate_answer(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.generate_answer), "__call__") as call:
@@ -1763,9 +1773,10 @@ def test_generate_answer_non_empty_request_with_auto_populated_field():
         client.generate_answer(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateAnswerRequest(
+        request_msg = generative_service.GenerateAnswerRequest(
             model="model_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_answer_use_cached_wrapped_rpc():
@@ -1846,10 +1857,14 @@ async def test_generate_answer_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_generate_answer_async(
-    transport: str = "grpc_asyncio",
-    request_type=generative_service.GenerateAnswerRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_service.GenerateAnswerRequest(),
+        {},
+    ],
+)
+async def test_generate_answer_async(request_type, transport: str = "grpc_asyncio"):
     client = GenerativeServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1857,7 +1872,7 @@ async def test_generate_answer_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.generate_answer), "__call__") as call:
@@ -1878,11 +1893,6 @@ async def test_generate_answer_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.GenerateAnswerResponse)
     assert math.isclose(response.answerable_probability, 0.234, rel_tol=1e-6)
-
-
-@pytest.mark.asyncio
-async def test_generate_answer_async_from_dict():
-    await test_generate_answer_async(request_type=dict)
 
 
 def test_generate_answer_field_headers():
@@ -2081,8 +2091,8 @@ async def test_generate_answer_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_service.GenerateContentRequest,
-        dict,
+        generative_service.GenerateContentRequest(),
+        {},
     ],
 )
 def test_stream_generate_content(request_type, transport: str = "grpc"):
@@ -2093,7 +2103,7 @@ def test_stream_generate_content(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2140,10 +2150,11 @@ def test_stream_generate_content_non_empty_request_with_auto_populated_field():
         client.stream_generate_content(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.GenerateContentRequest(
+        request_msg = generative_service.GenerateContentRequest(
             model="model_value",
             cached_content="cached_content_value",
         )
+        assert args[0] == request_msg
 
 
 def test_stream_generate_content_use_cached_wrapped_rpc():
@@ -2229,9 +2240,15 @@ async def test_stream_generate_content_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_service.GenerateContentRequest(),
+        {},
+    ],
+)
 async def test_stream_generate_content_async(
-    transport: str = "grpc_asyncio",
-    request_type=generative_service.GenerateContentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GenerativeServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2240,7 +2257,7 @@ async def test_stream_generate_content_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2262,11 +2279,6 @@ async def test_stream_generate_content_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, generative_service.GenerateContentResponse)
-
-
-@pytest.mark.asyncio
-async def test_stream_generate_content_async_from_dict():
-    await test_stream_generate_content_async(request_type=dict)
 
 
 def test_stream_generate_content_field_headers():
@@ -2432,8 +2444,8 @@ async def test_stream_generate_content_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_service.EmbedContentRequest,
-        dict,
+        generative_service.EmbedContentRequest(),
+        {},
     ],
 )
 def test_embed_content(request_type, transport: str = "grpc"):
@@ -2444,7 +2456,7 @@ def test_embed_content(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.embed_content), "__call__") as call:
@@ -2486,10 +2498,11 @@ def test_embed_content_non_empty_request_with_auto_populated_field():
         client.embed_content(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.EmbedContentRequest(
+        request_msg = generative_service.EmbedContentRequest(
             model="model_value",
             title="title_value",
         )
+        assert args[0] == request_msg
 
 
 def test_embed_content_use_cached_wrapped_rpc():
@@ -2570,9 +2583,14 @@ async def test_embed_content_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_embed_content_async(
-    transport: str = "grpc_asyncio", request_type=generative_service.EmbedContentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_service.EmbedContentRequest(),
+        {},
+    ],
+)
+async def test_embed_content_async(request_type, transport: str = "grpc_asyncio"):
     client = GenerativeServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2580,7 +2598,7 @@ async def test_embed_content_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.embed_content), "__call__") as call:
@@ -2598,11 +2616,6 @@ async def test_embed_content_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.EmbedContentResponse)
-
-
-@pytest.mark.asyncio
-async def test_embed_content_async_from_dict():
-    await test_embed_content_async(request_type=dict)
 
 
 def test_embed_content_field_headers():
@@ -2761,8 +2774,8 @@ async def test_embed_content_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_service.BatchEmbedContentsRequest,
-        dict,
+        generative_service.BatchEmbedContentsRequest(),
+        {},
     ],
 )
 def test_batch_embed_contents(request_type, transport: str = "grpc"):
@@ -2773,7 +2786,7 @@ def test_batch_embed_contents(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2818,9 +2831,10 @@ def test_batch_embed_contents_non_empty_request_with_auto_populated_field():
         client.batch_embed_contents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.BatchEmbedContentsRequest(
+        request_msg = generative_service.BatchEmbedContentsRequest(
             model="model_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_embed_contents_use_cached_wrapped_rpc():
@@ -2905,9 +2919,15 @@ async def test_batch_embed_contents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_service.BatchEmbedContentsRequest(),
+        {},
+    ],
+)
 async def test_batch_embed_contents_async(
-    transport: str = "grpc_asyncio",
-    request_type=generative_service.BatchEmbedContentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GenerativeServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2916,7 +2936,7 @@ async def test_batch_embed_contents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2936,11 +2956,6 @@ async def test_batch_embed_contents_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, generative_service.BatchEmbedContentsResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_embed_contents_async_from_dict():
-    await test_batch_embed_contents_async(request_type=dict)
 
 
 def test_batch_embed_contents_field_headers():
@@ -3107,8 +3122,8 @@ async def test_batch_embed_contents_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_service.CountTokensRequest,
-        dict,
+        generative_service.CountTokensRequest(),
+        {},
     ],
 )
 def test_count_tokens(request_type, transport: str = "grpc"):
@@ -3119,7 +3134,7 @@ def test_count_tokens(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.count_tokens), "__call__") as call:
@@ -3165,9 +3180,10 @@ def test_count_tokens_non_empty_request_with_auto_populated_field():
         client.count_tokens(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generative_service.CountTokensRequest(
+        request_msg = generative_service.CountTokensRequest(
             model="model_value",
         )
+        assert args[0] == request_msg
 
 
 def test_count_tokens_use_cached_wrapped_rpc():
@@ -3248,9 +3264,14 @@ async def test_count_tokens_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_count_tokens_async(
-    transport: str = "grpc_asyncio", request_type=generative_service.CountTokensRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_service.CountTokensRequest(),
+        {},
+    ],
+)
+async def test_count_tokens_async(request_type, transport: str = "grpc_asyncio"):
     client = GenerativeServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3258,7 +3279,7 @@ async def test_count_tokens_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.count_tokens), "__call__") as call:
@@ -3281,11 +3302,6 @@ async def test_count_tokens_async(
     assert isinstance(response, generative_service.CountTokensResponse)
     assert response.total_tokens == 1303
     assert response.cached_content_token_count == 2746
-
-
-@pytest.mark.asyncio
-async def test_count_tokens_async_from_dict():
-    await test_count_tokens_async(request_type=dict)
 
 
 def test_count_tokens_field_headers():
@@ -3444,8 +3460,8 @@ async def test_count_tokens_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_service.BidiGenerateContentClientMessage,
-        dict,
+        generative_service.BidiGenerateContentClientMessage(),
+        {},
     ],
 )
 def test_bidi_generate_content(request_type, transport: str = "grpc"):
@@ -3456,7 +3472,7 @@ def test_bidi_generate_content(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3562,9 +3578,15 @@ async def test_bidi_generate_content_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_service.BidiGenerateContentClientMessage(),
+        {},
+    ],
+)
 async def test_bidi_generate_content_async(
-    transport: str = "grpc_asyncio",
-    request_type=generative_service.BidiGenerateContentClientMessage,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GenerativeServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3573,7 +3595,7 @@ async def test_bidi_generate_content_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3595,11 +3617,6 @@ async def test_bidi_generate_content_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, generative_service.BidiGenerateContentServerMessage)
-
-
-@pytest.mark.asyncio
-async def test_bidi_generate_content_async_from_dict():
-    await test_bidi_generate_content_async(request_type=dict)
 
 
 def test_generate_content_rest_use_cached_wrapped_rpc():
@@ -3713,7 +3730,7 @@ def test_generate_content_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_content_rest_unset_required_fields():
@@ -3901,7 +3918,7 @@ def test_generate_answer_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_answer_rest_unset_required_fields():
@@ -4110,7 +4127,7 @@ def test_stream_generate_content_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_stream_generate_content_rest_unset_required_fields():
@@ -4301,7 +4318,7 @@ def test_embed_content_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_embed_content_rest_unset_required_fields():
@@ -4494,7 +4511,7 @@ def test_batch_embed_contents_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_embed_contents_rest_unset_required_fields():
@@ -4682,7 +4699,7 @@ def test_count_tokens_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_count_tokens_rest_unset_required_fields():
@@ -4899,7 +4916,6 @@ def test_generate_content_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.GenerateContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -4920,7 +4936,6 @@ def test_generate_answer_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.GenerateAnswerRequest()
-
         assert args[0] == request_msg
 
 
@@ -4943,7 +4958,6 @@ def test_stream_generate_content_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.GenerateContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -4964,7 +4978,6 @@ def test_embed_content_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.EmbedContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -4987,7 +5000,6 @@ def test_batch_embed_contents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.BatchEmbedContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5008,7 +5020,6 @@ def test_count_tokens_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.CountTokensRequest()
-
         assert args[0] == request_msg
 
 
@@ -5050,7 +5061,6 @@ async def test_generate_content_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.GenerateContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -5077,7 +5087,6 @@ async def test_generate_answer_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.GenerateAnswerRequest()
-
         assert args[0] == request_msg
 
 
@@ -5105,7 +5114,6 @@ async def test_stream_generate_content_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.GenerateContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -5130,7 +5138,6 @@ async def test_embed_content_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.EmbedContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -5157,7 +5164,6 @@ async def test_batch_embed_contents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.BatchEmbedContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5185,7 +5191,6 @@ async def test_count_tokens_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.CountTokensRequest()
-
         assert args[0] == request_msg
 
 
@@ -6297,7 +6302,6 @@ def test_generate_content_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.GenerateContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -6317,7 +6321,6 @@ def test_generate_answer_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.GenerateAnswerRequest()
-
         assert args[0] == request_msg
 
 
@@ -6339,7 +6342,6 @@ def test_stream_generate_content_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.GenerateContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -6359,7 +6361,6 @@ def test_embed_content_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.EmbedContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -6381,7 +6382,6 @@ def test_batch_embed_contents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.BatchEmbedContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6401,7 +6401,6 @@ def test_count_tokens_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_service.CountTokensRequest()
-
         assert args[0] == request_msg
 
 

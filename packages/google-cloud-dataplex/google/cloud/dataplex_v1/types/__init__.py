@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,10 @@ from .analyze import (
     Content,
     Environment,
     Session,
+)
+from .approval_workflow import (
+    ChangeRequest,
+    DataProductAccessRequest,
 )
 from .business_glossary import (
     CreateGlossaryCategoryRequest,
@@ -92,6 +96,7 @@ from .catalog import (
     LookupEntryRequest,
     MetadataFeed,
     MetadataJob,
+    ModifyEntryRequest,
     SearchEntriesRequest,
     SearchEntriesResponse,
     SearchEntriesResult,
@@ -133,6 +138,8 @@ from .data_products import (
     ListDataAssetsResponse,
     ListDataProductsRequest,
     ListDataProductsResponse,
+    RequestDataProductAccessRequest,
+    RequestDataProductAccessResponse,
     UpdateDataAssetRequest,
     UpdateDataProductRequest,
 )
@@ -148,6 +155,9 @@ from .data_quality import (
     DataQualityRule,
     DataQualityRuleResult,
     DataQualitySpec,
+)
+from .data_quality_rule_template import (
+    DataQualityRuleTemplate,
 )
 from .data_taxonomy import (
     CreateDataAttributeBindingRequest,
@@ -173,11 +183,14 @@ from .data_taxonomy import (
     UpdateDataTaxonomyRequest,
 )
 from .datascans import (
+    CancelDataScanJobRequest,
+    CancelDataScanJobResponse,
     CreateDataScanRequest,
     DataScan,
     DataScanJob,
     DataScanType,
     DeleteDataScanRequest,
+    ExecutionIdentity,
     GenerateDataQualityRulesRequest,
     GenerateDataQualityRulesResponse,
     GetDataScanJobRequest,
@@ -285,6 +298,8 @@ __all__ = (
     "Content",
     "Environment",
     "Session",
+    "ChangeRequest",
+    "DataProductAccessRequest",
     "CreateGlossaryCategoryRequest",
     "CreateGlossaryRequest",
     "CreateGlossaryTermRequest",
@@ -355,6 +370,7 @@ __all__ = (
     "LookupEntryRequest",
     "MetadataFeed",
     "MetadataJob",
+    "ModifyEntryRequest",
     "SearchEntriesRequest",
     "SearchEntriesResponse",
     "SearchEntriesResult",
@@ -389,6 +405,8 @@ __all__ = (
     "ListDataAssetsResponse",
     "ListDataProductsRequest",
     "ListDataProductsResponse",
+    "RequestDataProductAccessRequest",
+    "RequestDataProductAccessResponse",
     "UpdateDataAssetRequest",
     "UpdateDataProductRequest",
     "DataProfileResult",
@@ -400,6 +418,7 @@ __all__ = (
     "DataQualityRule",
     "DataQualityRuleResult",
     "DataQualitySpec",
+    "DataQualityRuleTemplate",
     "CreateDataAttributeBindingRequest",
     "CreateDataAttributeRequest",
     "CreateDataTaxonomyRequest",
@@ -421,10 +440,13 @@ __all__ = (
     "UpdateDataAttributeBindingRequest",
     "UpdateDataAttributeRequest",
     "UpdateDataTaxonomyRequest",
+    "CancelDataScanJobRequest",
+    "CancelDataScanJobResponse",
     "CreateDataScanRequest",
     "DataScan",
     "DataScanJob",
     "DeleteDataScanRequest",
+    "ExecutionIdentity",
     "GenerateDataQualityRulesRequest",
     "GenerateDataQualityRulesResponse",
     "GetDataScanJobRequest",

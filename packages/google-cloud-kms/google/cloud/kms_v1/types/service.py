@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,6 +48,9 @@ __protobuf__ = proto.module(
         "DeleteCryptoKeyRequest",
         "DeleteCryptoKeyVersionRequest",
         "ImportCryptoKeyVersionRequest",
+        "ImportTrustedKeyWrappedCryptoKeyVersionRequest",
+        "ExportTrustedKeyWrappedCryptoKeyVersionRequest",
+        "ExportTrustedKeyWrappedCryptoKeyVersionResponse",
         "CreateImportJobRequest",
         "UpdateCryptoKeyRequest",
         "UpdateCryptoKeyVersionRequest",
@@ -644,11 +647,28 @@ class GetImportJobRequest(proto.Message):
         name (str):
             Required. The [name][google.cloud.kms.v1.ImportJob.name] of
             the [ImportJob][google.cloud.kms.v1.ImportJob] to get.
+        public_key_format (google.cloud.kms_v1.types.PublicKey.PublicKeyFormat):
+            Optional. Specifies the [WrappingPublicKey][] format. If not
+            specified:
+
+            - For RSA-based import methods, the wrapping key will be
+              returned in PEM format
+            - For pure ML-KEM-based import methods, the wrapping key
+              will be returned in the raw bytes format specified in
+              FIPS-203
+            - For X-Wing-based import methods, the wrapping key will be
+              returned in the raw bytes format specified in
+              https://datatracker.ietf.org/doc/draft-connolly-cfrg-xwing-kem.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    public_key_format: resources.PublicKey.PublicKeyFormat = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=resources.PublicKey.PublicKeyFormat,
     )
 
 
@@ -727,6 +747,18 @@ class CreateCryptoKeyRequest(proto.Message):
             [ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion]
             before you can use this
             [CryptoKey][google.cloud.kms.v1.CryptoKey].
+        trusted_wrapping_enabled (bool):
+            Optional. Whether trusted wrapping will be enabled on the
+            first
+            [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+            created for this [CryptoKey][google.cloud.kms.v1.CryptoKey].
+            This field is only supported for keys with
+            [CryptoKeyVersionTemplate.protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level]
+            [HSM_SINGLE_TENANT][google.cloud.kms.v1.ProtectionLevel.HSM_SINGLE_TENANT].
+            This field is supported for all
+            [CryptoKeyPurposes][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose]
+            except
+            [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
     """
 
     parent: str = proto.Field(
@@ -745,6 +777,10 @@ class CreateCryptoKeyRequest(proto.Message):
     skip_initial_version_creation: bool = proto.Field(
         proto.BOOL,
         number=5,
+    )
+    trusted_wrapping_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 
@@ -919,6 +955,16 @@ class ImportCryptoKeyVersionRequest(proto.Message):
             this field (but not both) must be specified.
 
             This field is a member of `oneof`_ ``wrapped_key_material``.
+        trusted_wrapping_enabled (bool):
+            Optional. Whether trusted wrapping will be enabled on the
+            imported [CryptoKeyVersion]. This field is only supported
+            for keys with
+            [CryptoKeyVersionTemplate.protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level]
+            [HSM_SINGLE_TENANT][google.cloud.kms.v1.ProtectionLevel.HSM_SINGLE_TENANT].
+            This field is supported for all
+            [CryptoKeyPurposes][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose]
+            besides
+            [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
     """
 
     parent: str = proto.Field(
@@ -946,6 +992,160 @@ class ImportCryptoKeyVersionRequest(proto.Message):
         proto.BYTES,
         number=5,
         oneof="wrapped_key_material",
+    )
+    trusted_wrapping_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
+
+
+class ImportTrustedKeyWrappedCryptoKeyVersionRequest(proto.Message):
+    r"""Request message for
+    [KeyManagementService.ImportTrustedKeyWrappedCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportTrustedKeyWrappedCryptoKeyVersion].
+
+    Attributes:
+        parent (str):
+            Required. The [name][google.cloud.kms.v1.CryptoKey.name] of
+            the [CryptoKey][google.cloud.kms.v1.CryptoKey] to be
+            imported into.
+        importing_key (str):
+            Required. Required - the CKV of the trusted
+            key used to import. This can be the name of a
+            CryptoKeyVersion or a CryptoKey.
+        crypto_key_version (str):
+            Optional. The optional
+            [name][google.cloud.kms.v1.CryptoKeyVersion.name] of an
+            existing
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
+            target for an import operation. If this field is not
+            present, a new
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+            containing the supplied key material is created.
+
+            If this field is present, the supplied key material is
+            imported into the existing
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]. To
+            import into an existing
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion],
+            the [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+            must be a child of
+            [ImportTrustedKeyWrappedCryptoKeyVersionRequest.parent][google.cloud.kms.v1.ImportTrustedKeyWrappedCryptoKeyVersionRequest.parent],
+            have been previously created via
+            [ImportTrustedKeyWrappedCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportTrustedKeyWrappedCryptoKeyVersion],
+            and be in
+            [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED]
+            or
+            [IMPORT_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.IMPORT_FAILED]
+            state. The key material and algorithm must match the
+            previous
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+            exactly if the
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] has
+            ever contained key material
+        wrapped_key (bytes):
+            Required. The target key pre-wrapped on
+            premises.
+        algorithm (google.cloud.kms_v1.types.CryptoKeyVersion.CryptoKeyVersionAlgorithm):
+            Required. Required - The
+            [algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
+            of the key being imported. This does not need to match the
+            [version_template][google.cloud.kms.v1.CryptoKey.version_template]
+            of the [CryptoKey][google.cloud.kms.v1.CryptoKey] this
+            version imports into.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    importing_key: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    crypto_key_version: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    wrapped_key: bytes = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
+    algorithm: resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm,
+    )
+
+
+class ExportTrustedKeyWrappedCryptoKeyVersionRequest(proto.Message):
+    r"""Request message for
+    [KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion].
+
+    Attributes:
+        name (str):
+            Required. The
+            [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
+            export. The
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+            must have
+            [trusted_wrapping_enabled][google.cloud.kms.v1.CryptoKeyVersion.trusted_wrapping_enabled]
+            set to true.
+        wrapping_key (str):
+            Required. The
+            [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
+            use as a wrapping key. The
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+            must have
+            [hsm_trusted][google.cloud.kms.v1.CryptoKeyVersion.hsm_trusted]
+            set to true.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    wrapping_key: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ExportTrustedKeyWrappedCryptoKeyVersionResponse(proto.Message):
+    r"""Response message for
+    [KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion].
+
+    Attributes:
+        wrapped_key (bytes):
+            The wrapped key material.
+        wrapped_key_crc32c (google.protobuf.wrappers_pb2.Int64Value):
+            Integrity verification field. A CRC32C checksum of the
+            returned
+            [ExportTrustedKeyWrappedCryptoKeyVersionResponse.wrapped_key][google.cloud.kms.v1.ExportTrustedKeyWrappedCryptoKeyVersionResponse.wrapped_key].
+            An integrity check of
+            [ExportTrustedKeyWrappedCryptoKeyVersionResponse.wrapped_key][google.cloud.kms.v1.ExportTrustedKeyWrappedCryptoKeyVersionResponse.wrapped_key]
+            can be performed by computing the CRC32C checksum of
+            [ExportTrustedKeyWrappedCryptoKeyVersionResponse.wrapped_key][google.cloud.kms.v1.ExportTrustedKeyWrappedCryptoKeyVersionResponse.wrapped_key]
+            and comparing your results to this field. Discard the
+            response in case of non-matching checksum values, and
+            perform a limited number of retries. A persistent mismatch
+            may indicate an issue in your computation of the CRC32C
+            checksum. Note: This field is defined as int64 for reasons
+            of compatibility across different languages. However, it is
+            a non-negative integer, which will never exceed 2^32-1, and
+            can be safely downconverted to uint32 in languages that
+            support this type.
+    """
+
+    wrapped_key: bytes = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    wrapped_key_crc32c: wrappers_pb2.Int64Value = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=wrappers_pb2.Int64Value,
     )
 
 

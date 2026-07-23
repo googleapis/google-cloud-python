@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -615,6 +615,10 @@ class AllocationPolicy(proto.Message):
             The tags identify valid sources or targets for network
             firewalls. Each tag must be 1-63 characters long, and comply
             with `RFC1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
+        instance_flexibility_policy (google.cloud.batch_v1alpha.types.AllocationPolicy.InstanceFlexibilityPolicy):
+            Optional. The instance flexibility policy for the job. This
+            configuration overrides the ``instances`` configuration.
+            Only allowed in job level. Not allowed in task group level.
     """
 
     class ProvisioningModel(proto.Enum):
@@ -1033,6 +1037,8 @@ class AllocationPolicy(proto.Message):
     class NetworkInterface(proto.Message):
         r"""A network interface.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             network (str):
                 The URL of an existing network resource. You can specify the
@@ -1063,7 +1069,31 @@ class AllocationPolicy(proto.Message):
                 and
                 https://cloud.google.com/nat/docs/gce-example#create-nat
                 for more information.
+            nic_type (google.cloud.batch_v1alpha.types.AllocationPolicy.NetworkInterface.NicType):
+                Optional. The NIC type of the network
+                interface.
+
+                This field is a member of `oneof`_ ``_nic_type``.
         """
+
+        class NicType(proto.Enum):
+            r"""Compute Engine VM instance NIC type.
+
+            Values:
+                NIC_TYPE_UNSPECIFIED (0):
+                    No type specified.
+                GVNIC (1):
+                    GVNIC
+                IRDMA (2):
+                    IRDMA
+                MRDMA (3):
+                    MRDMA
+            """
+
+            NIC_TYPE_UNSPECIFIED = 0
+            GVNIC = 1
+            IRDMA = 2
+            MRDMA = 3
 
         network: str = proto.Field(
             proto.STRING,
@@ -1076,6 +1106,12 @@ class AllocationPolicy(proto.Message):
         no_external_ip_address: bool = proto.Field(
             proto.BOOL,
             number=3,
+        )
+        nic_type: "AllocationPolicy.NetworkInterface.NicType" = proto.Field(
+            proto.ENUM,
+            number=7,
+            optional=True,
+            enum="AllocationPolicy.NetworkInterface.NicType",
         )
 
     class NetworkPolicy(proto.Message):
@@ -1122,6 +1158,71 @@ class AllocationPolicy(proto.Message):
         max_distance: int = proto.Field(
             proto.INT64,
             number=2,
+        )
+
+    class InstanceFlexibilityPolicy(proto.Message):
+        r"""Allows creating VMs from multiple types of machines. Instance
+        flexibility configuration overrides instances configuration.
+
+        Attributes:
+            instance_selections (MutableMapping[str, google.cloud.batch_v1alpha.types.AllocationPolicy.InstanceSelection]):
+                Required. Named instance selections configuring properties
+                that the group will use when creating new VMs. The map key
+                is a user-specified name for the instance selection. The key
+                must be 1-63 characters long, and comply with
+                `RFC1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
+                Specifically, the key must consist of lowercase letters,
+                numbers, and hyphens. The first character must be a
+                lowercase letter, and the last character must be a lowercase
+                letter or number. The maximum number of instance selections
+                is 50. Exceeding this limit results in a validation error
+                with code ``INVALID_ARGUMENT``.
+        """
+
+        instance_selections: MutableMapping[
+            str, "AllocationPolicy.InstanceSelection"
+        ] = proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=1,
+            message="AllocationPolicy.InstanceSelection",
+        )
+
+    class InstanceSelection(proto.Message):
+        r"""Defines an instance selection for a given instance
+        flexibility policy.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            machine_types (MutableSequence[str]):
+                Required. The Compute Engine machine type IDs. Only the
+                machine type ID is supported, such as ``n1-standard-16``.
+                Full or partial URLs are not accepted. The total maximum
+                number of machine types across all instance selections is
+                200. Exceeding this limit results in a validation error with
+                code ``INVALID_ARGUMENT``.
+            rank (int):
+                Optional. Indicates the preference of this
+                instance selection. Lower number means higher
+                preference. First try is to create a VM based on
+                the machine-type with lowest rank and fallback
+                to next rank based on availability. Machine
+                types and instance selections with the same rank
+                have the same preference.
+
+                This field is a member of `oneof`_ ``_rank``.
+        """
+
+        machine_types: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        rank: int = proto.Field(
+            proto.INT32,
+            number=2,
+            optional=True,
         )
 
     location: LocationPolicy = proto.Field(
@@ -1175,6 +1276,11 @@ class AllocationPolicy(proto.Message):
     tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=11,
+    )
+    instance_flexibility_policy: InstanceFlexibilityPolicy = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=InstanceFlexibilityPolicy,
     )
 
 

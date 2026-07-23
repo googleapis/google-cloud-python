@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -92,6 +92,8 @@ class DataChatServiceAsyncClient:
     parse_conversation_path = staticmethod(
         DataChatServiceClient.parse_conversation_path
     )
+    crypto_key_path = staticmethod(DataChatServiceClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(DataChatServiceClient.parse_crypto_key_path)
     data_agent_path = staticmethod(DataChatServiceClient.data_agent_path)
     parse_data_agent_path = staticmethod(DataChatServiceClient.parse_data_agent_path)
     common_billing_account_path = staticmethod(
@@ -323,8 +325,7 @@ class DataChatServiceAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Awaitable[AsyncIterable[data_chat_service.Message]]:
         r"""Answers a data question by generating a stream of
-        [Message][google.cloud.geminidataanalytics.v1alpha.Message]
-        objects.
+        [Message][google.cloud.geminidataanalytics.v1.Message] objects.
 
         .. code-block:: python
 

@@ -36,6 +36,7 @@ from typing import Optional, TYPE_CHECKING
 
 from google.auth import _exponential_backoff
 from google.auth import _helpers
+from google.auth import _regional_access_boundary_utils
 from google.auth import credentials
 from google.auth import exceptions
 from google.auth import iam
@@ -361,15 +362,19 @@ class Credentials(
 
         Returns:
             Optional[str]: The URL for the Regional Access Boundary lookup endpoint, or None
-                 if the service account email is missing.
+                 if the service account email is missing. Returns None if the subject is populated.
         """
+        if self._subject:
+            # RAB does not apply to Workspace User Accounts via Domain-wide Delegation.
+            return None
+
         if not self.service_account_email:
             _LOGGER.error(
                 "Service account email is required to build the Regional Access Boundary lookup URL for impersonated credentials."
             )
             return None
-        return iam._SERVICE_ACCOUNT_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
-            service_account_email=self.service_account_email
+        return _regional_access_boundary_utils.get_service_account_rab_endpoint(
+            self.service_account_email
         )
 
     def sign_bytes(self, message):
@@ -387,6 +392,7 @@ class Credentials(
         headers = {"Content-Type": "application/json"}
 
         authed_session = AuthorizedSession(self._source_credentials)
+        authed_session.configure_mtls_channel()
 
         try:
             retries = _exponential_backoff.ExponentialBackoff()
@@ -626,6 +632,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
         authed_session = AuthorizedSession(
             self._target_credentials._source_credentials, auth_request=request
         )
+        authed_session.configure_mtls_channel()
 
         try:
             response = authed_session.post(

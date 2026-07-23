@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ __protobuf__ = proto.module(
         "DeleteMessageRequest",
         "UpdateMessageRequest",
         "CreateMessageRequest",
+        "CreateMessageNotificationOptions",
         "ListMessagesRequest",
         "ListMessagesResponse",
         "DialogAction",
@@ -205,6 +206,10 @@ class Message(proto.Message):
 
             If the space doesn't support reply in threads, this field is
             always ``false``.
+        silent (bool):
+            Output only. Whether this is a silent
+            message. Silent messages are messages where Chat
+            suppresses push notifications for recipients.
         client_assigned_message_id (str):
             Optional. A custom ID for the message. You can use field to
             identify a message, or to get, delete, or update a message.
@@ -352,6 +357,10 @@ class Message(proto.Message):
         proto.BOOL,
         number=25,
     )
+    silent: bool = proto.Field(
+        proto.BOOL,
+        number=46,
+    )
     client_assigned_message_id: str = proto.Field(
         proto.STRING,
         number=32,
@@ -408,10 +417,6 @@ class AttachedGif(proto.Message):
 class QuotedMessageMetadata(proto.Message):
     r"""Information about a message that another message quotes.
 
-    When you create a message, you can quote messages within the same
-    thread, or quote a root message to create a new root message.
-    However, you can't quote a message reply from a different thread.
-
     When you update a message, you can't add or replace the
     ``quotedMessageMetadata`` field, but you can remove it.
 
@@ -453,19 +458,24 @@ class QuotedMessageMetadata(proto.Message):
             QUOTE_TYPE_UNSPECIFIED (0):
                 Reserved. This value is unused.
             REPLY (1):
-                If quote_type is ``REPLY``, you can do the following:
+                When ``quote_type`` is ``REPLY``, you can do the following:
 
                 - If you're replying in a thread, you can quote another
                   message in that thread.
 
                 - If you're creating a root message, you can quote another
                   root message in that space.
+            FORWARD (2):
+                When ``quote_type`` is ``FORWARD``, you can quote a:
 
-                You can't quote a message reply from a different thread.
+                - Message from a different space.
+
+                - Message reply from a different thread in the same space.
         """
 
         QUOTE_TYPE_UNSPECIFIED = 0
         REPLY = 1
+        FORWARD = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -911,6 +921,11 @@ class CreateMessageRequest(proto.Message):
 
             For details, see `Name a
             message <https://developers.google.com/workspace/chat/create-messages#name_a_created_message>`__.
+        create_message_notification_options (google.apps.chat_v1.types.CreateMessageNotificationOptions):
+            Optional. Controls the notification behavior when the
+            message is posted. To learn more, see `Force notifications
+            or send silent
+            messages <https://developer.google.com/workspace/chat/create-messages#force-notify-silent>`__.
     """
 
     class MessageReplyOption(proto.Enum):
@@ -966,6 +981,61 @@ class CreateMessageRequest(proto.Message):
     message_id: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    create_message_notification_options: "CreateMessageNotificationOptions" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=10,
+            message="CreateMessageNotificationOptions",
+        )
+    )
+
+
+class CreateMessageNotificationOptions(proto.Message):
+    r"""Options for the notification behavior when the message is
+    posted.
+
+    Attributes:
+        notification_type (google.apps.chat_v1.types.CreateMessageNotificationOptions.NotificationType):
+            The notification type for the message.
+    """
+
+    class NotificationType(proto.Enum):
+        r"""The notification types options for the message.
+
+        Values:
+            NOTIFICATION_TYPE_NONE (0):
+                Default behavior. Notification behavior is
+                similar to when the human user sends the message
+                using the Chat UI: no notification is sent to
+                the human sender.
+            NOTIFICATION_TYPE_FORCE_NOTIFY (2):
+                Force notify recipients. This bypasses users' space
+                notification settings and `Chat Do Not Disturb
+                settings <https://support.google.com/chat/answer/9093489>`__.
+                This option does not bypass device-level Do Not Disturb
+                settings.
+
+                Requires [app authentication]
+                (https://developers.google.com/workspace/chat/authenticate-authorize-chat-app).
+            NOTIFICATION_TYPE_SILENT (3):
+                Silence the notification as if the recipients have `Chat Do
+                Not
+                Disturb <https://support.google.com/chat/answer/9093489>`__
+                enabled or have muted the space.
+
+                Requires [app authentication]
+                (https://developers.google.com/workspace/chat/authenticate-authorize-chat-app).
+        """
+
+        NOTIFICATION_TYPE_NONE = 0
+        NOTIFICATION_TYPE_FORCE_NOTIFY = 2
+        NOTIFICATION_TYPE_SILENT = 3
+
+    notification_type: NotificationType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=NotificationType,
     )
 
 

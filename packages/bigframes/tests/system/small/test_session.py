@@ -114,11 +114,10 @@ def test_read_gbq_tokyo(
     df.sort_index(inplace=True)
     expected = scalars_pandas_df_index
 
-    # use_explicit_destination=True, otherwise might use path with no query_job
     exec_result = session_tokyo._executor.execute(
         df._block.expr,
         bigframes.session.execution_spec.ExecutionSpec(
-            bigframes.session.execution_spec.CacheSpec(()), promise_under_10gb=False
+            destination_spec=bigframes.session.execution_spec.EphemeralTableSpec()
         ),
     )
     assert exec_result.query_job is not None
@@ -951,7 +950,7 @@ def test_read_pandas_tokyo(
     result = session_tokyo._executor.execute(
         df._block.expr,
         bigframes.session.execution_spec.ExecutionSpec(
-            bigframes.session.execution_spec.CacheSpec(()), promise_under_10gb=False
+            destination_spec=bigframes.session.execution_spec.EphemeralTableSpec()
         ),
     )
     assert result.query_job is not None

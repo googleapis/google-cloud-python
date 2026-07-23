@@ -14,41 +14,22 @@
 
 """Utilities for Regional Access Boundary management."""
 
+import asyncio
 import copy
 import datetime
 import functools
+import inspect
 import logging
-import os
 import threading
 from typing import NamedTuple, Optional, TYPE_CHECKING
 
 from google.auth import _helpers
-from google.auth import environment_vars
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: NO COVER
     import google.auth.credentials
     import google.auth.transport
 
 _LOGGER = logging.getLogger(__name__)
-
-
-@functools.lru_cache()
-def is_regional_access_boundary_enabled():
-    """Checks if Regional Access Boundary is enabled via environment variable.
-
-    The environment variable is interpreted as a boolean with the following
-    (case-insensitive) rules:
-    - "true", "1" are considered true.
-    - Any other value (or unset) is considered false.
-
-    Returns:
-        bool: True if Regional Access Boundary is enabled, False otherwise.
-    """
-    value = os.environ.get(environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED)
-    if value is None:
-        return False
-
-    return value.lower() in ("true", "1")
 
 
 # The default lifetime for a cached Regional Access Boundary.
@@ -134,7 +115,7 @@ class _RegionalAccessBoundaryManager(object):
         self._use_blocking_regional_access_boundary_lookup = True
 
     def set_initial_regional_access_boundary(self, encoded_locations=None, expiry=None):
-        """Manually sets the regional access boundary to the client provided seed.
+        """Manually sets the regional access boundary to the client provided initial values.
 
         Args:
             encoded_locations (Optional[str]): The encoded locations string.
@@ -170,12 +151,11 @@ class _RegionalAccessBoundaryManager(object):
         else:
             headers.pop(_REGIONAL_ACCESS_BOUNDARY_HEADER, None)
 
-    def maybe_start_refresh(self, credentials, request):
-        """Starts a background thread to refresh the Regional Access Boundary if needed.
+    def _should_refresh(self):
+        """Checks if the Regional Access Boundary data needs a refresh and is not in cooldown.
 
-        Args:
-            credentials (google.auth.credentials.Credentials): The credentials to refresh.
-            request (google.auth.transport.Request): The object used to make HTTP requests.
+        Returns:
+            bool: True if a refresh is required, False otherwise.
         """
         rab_data = self._data
 
@@ -186,15 +166,43 @@ class _RegionalAccessBoundaryManager(object):
             and _helpers.utcnow()
             < (rab_data.expiry - REGIONAL_ACCESS_BOUNDARY_REFRESH_THRESHOLD)
         ):
-            return
+            return False
 
         # Don't start a new refresh if the cooldown is still in effect.
         if rab_data.cooldown_expiry and _helpers.utcnow() < rab_data.cooldown_expiry:
+            return False
+
+        return True
+
+    def maybe_start_refresh(self, credentials, request):
+        """Starts a background thread to refresh the Regional Access Boundary if needed.
+
+        Args:
+            credentials (google.auth.credentials.Credentials): The credentials to refresh.
+            request (google.auth.transport.Request): The object used to make HTTP requests.
+        """
+        if not self._should_refresh():
             return
 
         # If all checks pass, start the background refresh.
         if self._use_blocking_regional_access_boundary_lookup:
             self.start_blocking_refresh(credentials, request)
+        else:
+            self.refresh_manager.start_refresh(credentials, request, self)
+
+    async def maybe_start_refresh_async(self, credentials, request):
+        """Starts a background refresh or performs a blocking refresh asynchronously.
+
+        Args:
+            credentials (google.auth.credentials.Credentials): The credentials to refresh.
+            request (google.auth.aio.transport.Request): The object used to make HTTP requests.
+        """
+        if not self._should_refresh():
+            return
+
+        # If all checks pass, start the refresh.
+        if self._use_blocking_regional_access_boundary_lookup:
+            await self.start_blocking_refresh_async(credentials, request)
         else:
             self.refresh_manager.start_refresh(credentials, request, self)
 
@@ -209,6 +217,14 @@ class _RegionalAccessBoundaryManager(object):
             credentials (google.auth.credentials.Credentials): The credentials to refresh.
             request (google.auth.transport.Request): The object used to make HTTP requests.
         """
+        # Async credentials do not support blocking lookups.
+        if inspect.iscoroutinefunction(credentials._lookup_regional_access_boundary):
+            _LOGGER.debug(
+                "Blocking Regional Access Boundary lookup is not supported for async credentials."
+            )
+            self.process_regional_access_boundary_info(None)
+            return
+
         try:
             # The fail_fast parameter is set to True to ensure we don't block the calling
             # thread for too long. This will do two things: 1) set a timeout to 3s
@@ -217,12 +233,41 @@ class _RegionalAccessBoundaryManager(object):
                 credentials._lookup_regional_access_boundary(request, fail_fast=True)
             )
         except Exception as e:
-            if _helpers.is_logging_enabled(_LOGGER):
-                _LOGGER.warning(
-                    "Blocking Regional Access Boundary lookup raised an exception: %s",
-                    e,
-                    exc_info=True,
+            _LOGGER.debug(
+                "Blocking Regional Access Boundary lookup raised an exception: %s",
+                e,
+                exc_info=True,
+            )
+            regional_access_boundary_info = None
+
+        self.process_regional_access_boundary_info(regional_access_boundary_info)
+
+    async def start_blocking_refresh_async(self, credentials, request):
+        """Initiates a blocking lookup of the Regional Access Boundary asynchronously.
+
+        If the lookup raises an exception, it is caught and logged as a warning,
+        and the lookup is treated as a failure (entering cooldown). Exceptions
+        are not propagated to the caller.
+
+        Args:
+            credentials (google.auth.credentials.Credentials): The credentials to refresh.
+            request (google.auth.aio.transport.Request): The object used to make HTTP requests.
+        """
+        try:
+            # The fail_fast parameter is set to True to ensure we don't block the calling
+            # thread for too long. This will do two things: 1) set a timeout to 3s
+            # instead of the default 120s and 2) ensure we do not retry at all
+            regional_access_boundary_info = (
+                await credentials._lookup_regional_access_boundary(
+                    request, fail_fast=True
                 )
+            )
+        except Exception as e:
+            _LOGGER.debug(
+                "Regional Access Boundary lookup raised an exception: %s",
+                e,
+                exc_info=True,
+            )
             regional_access_boundary_info = None
 
         self.process_regional_access_boundary_info(regional_access_boundary_info)
@@ -249,14 +294,12 @@ class _RegionalAccessBoundaryManager(object):
                     cooldown_expiry=None,
                     cooldown_duration=DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
                 )
-                if _helpers.is_logging_enabled(_LOGGER):
-                    _LOGGER.debug("Regional Access Boundary lookup successful.")
+                _LOGGER.debug("Regional Access Boundary lookup successful.")
             else:
                 # On failure, calculate cooldown and update state.
-                if _helpers.is_logging_enabled(_LOGGER):
-                    _LOGGER.warning(
-                        "Regional Access Boundary lookup failed. Entering cooldown."
-                    )
+                _LOGGER.debug(
+                    "Regional Access Boundary lookup failed. Entering cooldown."
+                )
 
                 next_cooldown_expiry = (
                     _helpers.utcnow() + current_data.cooldown_duration
@@ -319,12 +362,11 @@ class _RegionalAccessBoundaryRefreshThread(threading.Thread):
                 self._credentials._lookup_regional_access_boundary(self._request)
             )
         except Exception as e:
-            if _helpers.is_logging_enabled(_LOGGER):
-                _LOGGER.warning(
-                    "Asynchronous Regional Access Boundary lookup raised an exception: %s",
-                    e,
-                    exc_info=True,
-                )
+            _LOGGER.debug(
+                "Asynchronous Regional Access Boundary lookup raised an exception: %s",
+                e,
+                exc_info=True,
+            )
             regional_access_boundary_info = None
 
         self._rab_manager.process_regional_access_boundary_info(
@@ -371,16 +413,211 @@ class _RegionalAccessBoundaryRefreshManager(object):
             try:
                 copied_request = copy.deepcopy(request)
             except Exception as e:
-                if _helpers.is_logging_enabled(_LOGGER):
-                    _LOGGER.warning(
-                        "Could not deepcopy transport for background RAB refresh. "
-                        "Skipping background refresh to avoid thread safety issues. "
-                        "Exception: %s",
-                        e,
-                    )
+                _LOGGER.debug(
+                    "Could not deepcopy transport for background RAB refresh. "
+                    "Skipping background refresh to avoid thread safety issues. "
+                    "Exception: %s",
+                    e,
+                )
                 return
 
             self._worker = _RegionalAccessBoundaryRefreshThread(
                 credentials, copied_request, rab_manager
             )
             self._worker.start()
+
+
+def _prepare_async_lookup_callable(request):
+    """Unwraps a request callable, clones the transport, and returns the new callable.
+
+    Args:
+        request: The original request callable (e.g. functools.partial or raw Request).
+
+    Returns:
+        Tuple[Callable, Any, bool]: A tuple containing the new lookup callable, the
+            underlying request object, and a boolean indicating if it was cloned.
+    """
+    is_partial = isinstance(request, functools.partial)
+    base_callable = request.func if is_partial else request
+
+    if not hasattr(base_callable, "_clone"):
+        return request, base_callable, False
+
+    cloned_callable = base_callable._clone()
+    is_cloned = cloned_callable is not base_callable
+
+    if is_partial:
+        new_request = functools.partial(
+            cloned_callable, *request.args, **request.keywords
+        )
+    else:
+        new_request = cloned_callable
+
+    return new_request, cloned_callable, is_cloned
+
+
+async def _close_cloned_request(lookup_request, is_cloned):
+    """Safely closes the underlying cloned request transport, if applicable.
+
+    Args:
+        lookup_request (Any): The request object/transport to close.
+        is_cloned (bool): Whether the request was actually cloned.
+    """
+    if not is_cloned or not hasattr(lookup_request, "close"):
+        return
+
+    is_async = False
+    try:
+        maybe_coro = lookup_request.close()
+        if is_async := inspect.isawaitable(maybe_coro):
+            await maybe_coro
+    except Exception as e:
+        adapter_type = " asynchronous " if is_async else " "
+        _LOGGER.debug(
+            "Failed to cleanly close cloned%srequest transport: %s",
+            adapter_type,
+            e,
+            exc_info=True,
+        )
+
+
+class _AsyncRegionalAccessBoundaryRefreshManager(object):
+    """Manages a task for background refreshing of the Regional Access Boundary in async flows."""
+
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._worker_task = None
+
+    def __getstate__(self):
+        """Pickle helper that excludes the un-picklable _lock and _worker_task attributes from serialization."""
+        state = self.__dict__.copy()
+        state["_lock"] = None
+        state["_worker_task"] = None
+        return state
+
+    def __setstate__(self, state):
+        """Pickle helper that restores state and re-initializes the _lock and _worker_task attributes."""
+        self.__dict__.update(state)
+        self._lock = threading.Lock()
+        self._worker_task = None
+
+    def start_refresh(self, credentials, request, rab_manager):
+        """
+        Starts a background task to refresh the Regional Access Boundary if one is not already running.
+
+        Args:
+            credentials (CredentialsWithRegionalAccessBoundary): The credentials
+                to refresh.
+            request (google.auth.aio.transport.Request): The object used to make
+                HTTP requests.
+            rab_manager (_RegionalAccessBoundaryManager): The manager container to update.
+        """
+        with self._lock:
+            if self._worker_task and not self._worker_task.done():
+                # A refresh is already in progress.
+                return
+
+            try:
+                (
+                    lookup_callable,
+                    lookup_request,
+                    is_cloned,
+                ) = _prepare_async_lookup_callable(request)
+            except Exception as e:
+                _LOGGER.debug(
+                    "Synchronous cloning of request for Regional Access Boundary lookup failed: %s",
+                    e,
+                    exc_info=True,
+                )
+                rab_manager.process_regional_access_boundary_info(None)
+                return
+
+            async def _worker():
+                try:
+                    regional_access_boundary_info = (
+                        await credentials._lookup_regional_access_boundary(
+                            lookup_callable
+                        )
+                    )
+                except Exception as e:
+                    _LOGGER.debug(
+                        "Asynchronous Regional Access Boundary lookup raised an exception: %s",
+                        e,
+                        exc_info=True,
+                    )
+                    regional_access_boundary_info = None
+                finally:
+                    await _close_cloned_request(lookup_request, is_cloned)
+
+                rab_manager.process_regional_access_boundary_info(
+                    regional_access_boundary_info
+                )
+
+            coro = _worker()
+            try:
+                self._worker_task = asyncio.create_task(coro)
+            except Exception:
+                # Clean up cloned request if task creation fails
+                coro.close()
+                try:
+                    asyncio.get_running_loop().create_task(
+                        _close_cloned_request(lookup_request, is_cloned)
+                    )
+                except RuntimeError:
+                    pass
+                rab_manager.process_regional_access_boundary_info(None)
+                raise
+
+
+def _get_domain() -> str:
+    """Dynamically determines the domain for IAM credentials based on active mTLS configuration.
+
+    Returns:
+        str: The dynamic domain string.
+    """
+    from google.auth.transport import _mtls_helper
+
+    if (
+        hasattr(_mtls_helper, "check_use_client_cert")
+        and _mtls_helper.check_use_client_cert()
+    ):
+        return f"iamcredentials.mtls.{_helpers.DEFAULT_UNIVERSE_DOMAIN}"
+    else:
+        return f"iamcredentials.{_helpers.DEFAULT_UNIVERSE_DOMAIN}"
+
+
+def get_service_account_rab_endpoint(service_account_email: str) -> str:
+    """Builds the Regional Access Boundary lookup URL for service accounts.
+
+    Args:
+        service_account_email: The service account email.
+
+    Returns:
+        str: The complete lookup URL.
+    """
+    return f"https://{_get_domain()}/v1/projects/-/serviceAccounts/{service_account_email}/allowedLocations"
+
+
+def get_workforce_pool_rab_endpoint(pool_id: str) -> str:
+    """Builds the Regional Access Boundary lookup URL for workforce pools.
+
+    Args:
+        pool_id: The workforce pool ID.
+
+    Returns:
+        str: The complete lookup URL.
+    """
+    return f"https://{_get_domain()}/v1/locations/global/workforcePools/{pool_id}/allowedLocations"
+
+
+def get_workload_identity_pool_rab_endpoint(project_number: str, pool_id: str) -> str:
+    """Builds the Regional Access Boundary lookup URL for workload identity pools.
+
+    Args:
+        project_number: The Google Cloud project number.
+        pool_id: The workload identity pool ID.
+
+    Returns:
+        str: The complete lookup URL.
+    """
+    return f"https://{_get_domain()}/v1/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/allowedLocations"

@@ -87,6 +87,16 @@
               "methods": [
                 "calendar_mode"
               ]
+            },
+            "Capacity": {
+              "methods": [
+                "capacity"
+              ]
+            },
+            "CapacityHistory": {
+              "methods": [
+                "capacity_history"
+              ]
             }
           }
         }
@@ -1117,10 +1127,48 @@
         }
       }
     },
+    "Hosts": {
+      "clients": {
+        "rest": {
+          "libraryClient": "HostsClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "GetVersion": {
+              "methods": [
+                "get_version"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            }
+          }
+        }
+      }
+    },
     "ImageFamilyViews": {
       "clients": {
         "rest": {
           "libraryClient": "ImageFamilyViewsClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ImageViews": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ImageViewsClient",
           "rpcs": {
             "Get": {
               "methods": [
@@ -2166,6 +2214,16 @@
                 "get"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
@@ -2808,6 +2866,79 @@
         }
       }
     },
+    "OrganizationRolloutPlans": {
+      "clients": {
+        "rest": {
+          "libraryClient": "OrganizationRolloutPlansClient",
+          "rpcs": {
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "OrganizationRollouts": {
+      "clients": {
+        "rest": {
+          "libraryClient": "OrganizationRolloutsClient",
+          "rpcs": {
+            "Advance": {
+              "methods": [
+                "advance"
+              ]
+            },
+            "Cancel": {
+              "methods": [
+                "cancel"
+              ]
+            },
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Pause": {
+              "methods": [
+                "pause"
+              ]
+            },
+            "Resume": {
+              "methods": [
+                "resume"
+              ]
+            }
+          }
+        }
+      }
+    },
     "OrganizationSecurityPolicies": {
       "clients": {
         "rest": {
@@ -2959,6 +3090,20 @@
             "Update": {
               "methods": [
                 "update"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ProjectViews": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ProjectViewsClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
               ]
             }
           }
@@ -4825,6 +4970,25 @@
         }
       }
     },
+    "ReliabilityRisks": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ReliabilityRisksClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            }
+          }
+        }
+      }
+    },
     "ReservationBlocks": {
       "clients": {
         "rest": {
@@ -5094,6 +5258,11 @@
         "rest": {
           "libraryClient": "RolloutsClient",
           "rpcs": {
+            "Advance": {
+              "methods": [
+                "advance"
+              ]
+            },
             "Cancel": {
               "methods": [
                 "cancel"
@@ -5112,6 +5281,16 @@
             "List": {
               "methods": [
                 "list"
+              ]
+            },
+            "Pause": {
+              "methods": [
+                "pause"
+              ]
+            },
+            "Resume": {
+              "methods": [
+                "resume"
               ]
             }
           }

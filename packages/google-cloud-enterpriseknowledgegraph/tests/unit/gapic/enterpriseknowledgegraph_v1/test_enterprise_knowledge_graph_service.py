@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -117,6 +112,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1456,8 +1466,8 @@ def test_enterprise_knowledge_graph_service_client_create_channel_credentials_fi
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateEntityReconciliationJobRequest,
-        dict,
+        service.CreateEntityReconciliationJobRequest(),
+        {},
     ],
 )
 def test_create_entity_reconciliation_job(request_type, transport: str = "grpc"):
@@ -1468,7 +1478,7 @@ def test_create_entity_reconciliation_job(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1518,9 +1528,10 @@ def test_create_entity_reconciliation_job_non_empty_request_with_auto_populated_
         client.create_entity_reconciliation_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateEntityReconciliationJobRequest(
+        request_msg = service.CreateEntityReconciliationJobRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_entity_reconciliation_job_use_cached_wrapped_rpc():
@@ -1606,9 +1617,15 @@ async def test_create_entity_reconciliation_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateEntityReconciliationJobRequest(),
+        {},
+    ],
+)
 async def test_create_entity_reconciliation_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.CreateEntityReconciliationJobRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EnterpriseKnowledgeGraphServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1617,7 +1634,7 @@ async def test_create_entity_reconciliation_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1642,11 +1659,6 @@ async def test_create_entity_reconciliation_job_async(
     assert isinstance(response, service.EntityReconciliationJob)
     assert response.name == "name_value"
     assert response.state == job_state.JobState.JOB_STATE_PENDING
-
-
-@pytest.mark.asyncio
-async def test_create_entity_reconciliation_job_async_from_dict():
-    await test_create_entity_reconciliation_job_async(request_type=dict)
 
 
 def test_create_entity_reconciliation_job_field_headers():
@@ -1821,8 +1833,8 @@ async def test_create_entity_reconciliation_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetEntityReconciliationJobRequest,
-        dict,
+        service.GetEntityReconciliationJobRequest(),
+        {},
     ],
 )
 def test_get_entity_reconciliation_job(request_type, transport: str = "grpc"):
@@ -1833,7 +1845,7 @@ def test_get_entity_reconciliation_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1883,9 +1895,10 @@ def test_get_entity_reconciliation_job_non_empty_request_with_auto_populated_fie
         client.get_entity_reconciliation_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetEntityReconciliationJobRequest(
+        request_msg = service.GetEntityReconciliationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_entity_reconciliation_job_use_cached_wrapped_rpc():
@@ -1971,9 +1984,15 @@ async def test_get_entity_reconciliation_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetEntityReconciliationJobRequest(),
+        {},
+    ],
+)
 async def test_get_entity_reconciliation_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.GetEntityReconciliationJobRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EnterpriseKnowledgeGraphServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1982,7 +2001,7 @@ async def test_get_entity_reconciliation_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2007,11 +2026,6 @@ async def test_get_entity_reconciliation_job_async(
     assert isinstance(response, service.EntityReconciliationJob)
     assert response.name == "name_value"
     assert response.state == job_state.JobState.JOB_STATE_PENDING
-
-
-@pytest.mark.asyncio
-async def test_get_entity_reconciliation_job_async_from_dict():
-    await test_get_entity_reconciliation_job_async(request_type=dict)
 
 
 def test_get_entity_reconciliation_job_field_headers():
@@ -2168,8 +2182,8 @@ async def test_get_entity_reconciliation_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListEntityReconciliationJobsRequest,
-        dict,
+        service.ListEntityReconciliationJobsRequest(),
+        {},
     ],
 )
 def test_list_entity_reconciliation_jobs(request_type, transport: str = "grpc"):
@@ -2180,7 +2194,7 @@ def test_list_entity_reconciliation_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2230,11 +2244,12 @@ def test_list_entity_reconciliation_jobs_non_empty_request_with_auto_populated_f
         client.list_entity_reconciliation_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListEntityReconciliationJobsRequest(
+        request_msg = service.ListEntityReconciliationJobsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_entity_reconciliation_jobs_use_cached_wrapped_rpc():
@@ -2320,9 +2335,15 @@ async def test_list_entity_reconciliation_jobs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListEntityReconciliationJobsRequest(),
+        {},
+    ],
+)
 async def test_list_entity_reconciliation_jobs_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.ListEntityReconciliationJobsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EnterpriseKnowledgeGraphServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2331,7 +2352,7 @@ async def test_list_entity_reconciliation_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2354,11 +2375,6 @@ async def test_list_entity_reconciliation_jobs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntityReconciliationJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_entity_reconciliation_jobs_async_from_dict():
-    await test_list_entity_reconciliation_jobs_async(request_type=dict)
 
 
 def test_list_entity_reconciliation_jobs_field_headers():
@@ -2565,6 +2581,9 @@ def test_list_entity_reconciliation_jobs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service.EntityReconciliationJob) for i in results)
@@ -2657,6 +2676,8 @@ async def test_list_entity_reconciliation_jobs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2706,9 +2727,7 @@ async def test_list_entity_reconciliation_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_entity_reconciliation_jobs(request={})
         ).pages:
             pages.append(page_)
@@ -2719,8 +2738,8 @@ async def test_list_entity_reconciliation_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CancelEntityReconciliationJobRequest,
-        dict,
+        service.CancelEntityReconciliationJobRequest(),
+        {},
     ],
 )
 def test_cancel_entity_reconciliation_job(request_type, transport: str = "grpc"):
@@ -2731,7 +2750,7 @@ def test_cancel_entity_reconciliation_job(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2776,9 +2795,10 @@ def test_cancel_entity_reconciliation_job_non_empty_request_with_auto_populated_
         client.cancel_entity_reconciliation_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CancelEntityReconciliationJobRequest(
+        request_msg = service.CancelEntityReconciliationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_entity_reconciliation_job_use_cached_wrapped_rpc():
@@ -2864,9 +2884,15 @@ async def test_cancel_entity_reconciliation_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CancelEntityReconciliationJobRequest(),
+        {},
+    ],
+)
 async def test_cancel_entity_reconciliation_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.CancelEntityReconciliationJobRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EnterpriseKnowledgeGraphServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2875,7 +2901,7 @@ async def test_cancel_entity_reconciliation_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2893,11 +2919,6 @@ async def test_cancel_entity_reconciliation_job_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_cancel_entity_reconciliation_job_async_from_dict():
-    await test_cancel_entity_reconciliation_job_async(request_type=dict)
 
 
 def test_cancel_entity_reconciliation_job_field_headers():
@@ -3050,8 +3071,8 @@ async def test_cancel_entity_reconciliation_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteEntityReconciliationJobRequest,
-        dict,
+        service.DeleteEntityReconciliationJobRequest(),
+        {},
     ],
 )
 def test_delete_entity_reconciliation_job(request_type, transport: str = "grpc"):
@@ -3062,7 +3083,7 @@ def test_delete_entity_reconciliation_job(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3107,9 +3128,10 @@ def test_delete_entity_reconciliation_job_non_empty_request_with_auto_populated_
         client.delete_entity_reconciliation_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteEntityReconciliationJobRequest(
+        request_msg = service.DeleteEntityReconciliationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_entity_reconciliation_job_use_cached_wrapped_rpc():
@@ -3195,9 +3217,15 @@ async def test_delete_entity_reconciliation_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteEntityReconciliationJobRequest(),
+        {},
+    ],
+)
 async def test_delete_entity_reconciliation_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.DeleteEntityReconciliationJobRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EnterpriseKnowledgeGraphServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3206,7 +3234,7 @@ async def test_delete_entity_reconciliation_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3224,11 +3252,6 @@ async def test_delete_entity_reconciliation_job_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_entity_reconciliation_job_async_from_dict():
-    await test_delete_entity_reconciliation_job_async(request_type=dict)
 
 
 def test_delete_entity_reconciliation_job_field_headers():
@@ -3381,8 +3404,8 @@ async def test_delete_entity_reconciliation_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.LookupRequest,
-        dict,
+        service.LookupRequest(),
+        {},
     ],
 )
 def test_lookup(request_type, transport: str = "grpc"):
@@ -3393,7 +3416,7 @@ def test_lookup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup), "__call__") as call:
@@ -3434,9 +3457,10 @@ def test_lookup_non_empty_request_with_auto_populated_field():
         client.lookup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.LookupRequest(
+        request_msg = service.LookupRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_lookup_use_cached_wrapped_rpc():
@@ -3515,9 +3539,14 @@ async def test_lookup_async_use_cached_wrapped_rpc(transport: str = "grpc_asynci
 
 
 @pytest.mark.asyncio
-async def test_lookup_async(
-    transport: str = "grpc_asyncio", request_type=service.LookupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.LookupRequest(),
+        {},
+    ],
+)
+async def test_lookup_async(request_type, transport: str = "grpc_asyncio"):
     client = EnterpriseKnowledgeGraphServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3525,7 +3554,7 @@ async def test_lookup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup), "__call__") as call:
@@ -3543,11 +3572,6 @@ async def test_lookup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.LookupResponse)
-
-
-@pytest.mark.asyncio
-async def test_lookup_async_from_dict():
-    await test_lookup_async(request_type=dict)
 
 
 def test_lookup_field_headers():
@@ -3706,8 +3730,8 @@ async def test_lookup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.SearchRequest,
-        dict,
+        service.SearchRequest(),
+        {},
     ],
 )
 def test_search(request_type, transport: str = "grpc"):
@@ -3718,7 +3742,7 @@ def test_search(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search), "__call__") as call:
@@ -3760,10 +3784,11 @@ def test_search_non_empty_request_with_auto_populated_field():
         client.search(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.SearchRequest(
+        request_msg = service.SearchRequest(
             parent="parent_value",
             query="query_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_use_cached_wrapped_rpc():
@@ -3842,9 +3867,14 @@ async def test_search_async_use_cached_wrapped_rpc(transport: str = "grpc_asynci
 
 
 @pytest.mark.asyncio
-async def test_search_async(
-    transport: str = "grpc_asyncio", request_type=service.SearchRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SearchRequest(),
+        {},
+    ],
+)
+async def test_search_async(request_type, transport: str = "grpc_asyncio"):
     client = EnterpriseKnowledgeGraphServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3852,7 +3882,7 @@ async def test_search_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search), "__call__") as call:
@@ -3870,11 +3900,6 @@ async def test_search_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.SearchResponse)
-
-
-@pytest.mark.asyncio
-async def test_search_async_from_dict():
-    await test_search_async(request_type=dict)
 
 
 def test_search_field_headers():
@@ -4033,8 +4058,8 @@ async def test_search_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.LookupPublicKgRequest,
-        dict,
+        service.LookupPublicKgRequest(),
+        {},
     ],
 )
 def test_lookup_public_kg(request_type, transport: str = "grpc"):
@@ -4045,7 +4070,7 @@ def test_lookup_public_kg(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_public_kg), "__call__") as call:
@@ -4086,9 +4111,10 @@ def test_lookup_public_kg_non_empty_request_with_auto_populated_field():
         client.lookup_public_kg(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.LookupPublicKgRequest(
+        request_msg = service.LookupPublicKgRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_lookup_public_kg_use_cached_wrapped_rpc():
@@ -4171,9 +4197,14 @@ async def test_lookup_public_kg_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_lookup_public_kg_async(
-    transport: str = "grpc_asyncio", request_type=service.LookupPublicKgRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.LookupPublicKgRequest(),
+        {},
+    ],
+)
+async def test_lookup_public_kg_async(request_type, transport: str = "grpc_asyncio"):
     client = EnterpriseKnowledgeGraphServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4181,7 +4212,7 @@ async def test_lookup_public_kg_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_public_kg), "__call__") as call:
@@ -4199,11 +4230,6 @@ async def test_lookup_public_kg_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.LookupPublicKgResponse)
-
-
-@pytest.mark.asyncio
-async def test_lookup_public_kg_async_from_dict():
-    await test_lookup_public_kg_async(request_type=dict)
 
 
 def test_lookup_public_kg_field_headers():
@@ -4362,8 +4388,8 @@ async def test_lookup_public_kg_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.SearchPublicKgRequest,
-        dict,
+        service.SearchPublicKgRequest(),
+        {},
     ],
 )
 def test_search_public_kg(request_type, transport: str = "grpc"):
@@ -4374,7 +4400,7 @@ def test_search_public_kg(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_public_kg), "__call__") as call:
@@ -4416,10 +4442,11 @@ def test_search_public_kg_non_empty_request_with_auto_populated_field():
         client.search_public_kg(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.SearchPublicKgRequest(
+        request_msg = service.SearchPublicKgRequest(
             parent="parent_value",
             query="query_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_public_kg_use_cached_wrapped_rpc():
@@ -4502,9 +4529,14 @@ async def test_search_public_kg_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_public_kg_async(
-    transport: str = "grpc_asyncio", request_type=service.SearchPublicKgRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SearchPublicKgRequest(),
+        {},
+    ],
+)
+async def test_search_public_kg_async(request_type, transport: str = "grpc_asyncio"):
     client = EnterpriseKnowledgeGraphServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4512,7 +4544,7 @@ async def test_search_public_kg_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_public_kg), "__call__") as call:
@@ -4530,11 +4562,6 @@ async def test_search_public_kg_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.SearchPublicKgResponse)
-
-
-@pytest.mark.asyncio
-async def test_search_public_kg_async_from_dict():
-    await test_search_public_kg_async(request_type=dict)
 
 
 def test_search_public_kg_field_headers():
@@ -4804,7 +4831,7 @@ def test_create_entity_reconciliation_job_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_entity_reconciliation_job_rest_unset_required_fields():
@@ -5003,7 +5030,7 @@ def test_get_entity_reconciliation_job_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_entity_reconciliation_job_rest_unset_required_fields():
@@ -5198,7 +5225,7 @@ def test_list_entity_reconciliation_jobs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_entity_reconciliation_jobs_rest_unset_required_fields():
@@ -5333,6 +5360,9 @@ def test_list_entity_reconciliation_jobs_rest_pager(transport: str = "rest"):
 
         pager = client.list_entity_reconciliation_jobs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service.EntityReconciliationJob) for i in results)
@@ -5455,7 +5485,7 @@ def test_cancel_entity_reconciliation_job_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_cancel_entity_reconciliation_job_rest_unset_required_fields():
@@ -5637,7 +5667,7 @@ def test_delete_entity_reconciliation_job_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_entity_reconciliation_job_rest_unset_required_fields():
@@ -5835,7 +5865,7 @@ def test_lookup_rest_required_fields(request_type=service.LookupRequest):
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_lookup_rest_unset_required_fields():
@@ -6048,7 +6078,7 @@ def test_search_rest_required_fields(request_type=service.SearchRequest):
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_search_rest_unset_required_fields():
@@ -6265,7 +6295,7 @@ def test_lookup_public_kg_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_lookup_public_kg_rest_unset_required_fields():
@@ -6482,7 +6512,7 @@ def test_search_public_kg_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_search_public_kg_rest_unset_required_fields():
@@ -6694,7 +6724,6 @@ def test_create_entity_reconciliation_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateEntityReconciliationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -6717,7 +6746,6 @@ def test_get_entity_reconciliation_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetEntityReconciliationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -6740,7 +6768,6 @@ def test_list_entity_reconciliation_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListEntityReconciliationJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6763,7 +6790,6 @@ def test_cancel_entity_reconciliation_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CancelEntityReconciliationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -6786,7 +6812,6 @@ def test_delete_entity_reconciliation_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteEntityReconciliationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -6807,7 +6832,6 @@ def test_lookup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.LookupRequest()
-
         assert args[0] == request_msg
 
 
@@ -6828,7 +6852,6 @@ def test_search_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -6849,7 +6872,6 @@ def test_lookup_public_kg_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.LookupPublicKgRequest()
-
         assert args[0] == request_msg
 
 
@@ -6870,7 +6892,6 @@ def test_search_public_kg_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SearchPublicKgRequest()
-
         assert args[0] == request_msg
 
 
@@ -6914,7 +6935,6 @@ async def test_create_entity_reconciliation_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateEntityReconciliationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -6944,7 +6964,6 @@ async def test_get_entity_reconciliation_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetEntityReconciliationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -6973,7 +6992,6 @@ async def test_list_entity_reconciliation_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListEntityReconciliationJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6998,7 +7016,6 @@ async def test_cancel_entity_reconciliation_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CancelEntityReconciliationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -7023,7 +7040,6 @@ async def test_delete_entity_reconciliation_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteEntityReconciliationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -7048,7 +7064,6 @@ async def test_lookup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.LookupRequest()
-
         assert args[0] == request_msg
 
 
@@ -7073,7 +7088,6 @@ async def test_search_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -7098,7 +7112,6 @@ async def test_lookup_public_kg_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.LookupPublicKgRequest()
-
         assert args[0] == request_msg
 
 
@@ -7123,7 +7136,6 @@ async def test_search_public_kg_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SearchPublicKgRequest()
-
         assert args[0] == request_msg
 
 
@@ -8416,7 +8428,6 @@ def test_create_entity_reconciliation_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateEntityReconciliationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -8438,7 +8449,6 @@ def test_get_entity_reconciliation_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetEntityReconciliationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -8460,7 +8470,6 @@ def test_list_entity_reconciliation_jobs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListEntityReconciliationJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8482,7 +8491,6 @@ def test_cancel_entity_reconciliation_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CancelEntityReconciliationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -8504,7 +8512,6 @@ def test_delete_entity_reconciliation_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteEntityReconciliationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -8524,7 +8531,6 @@ def test_lookup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.LookupRequest()
-
         assert args[0] == request_msg
 
 
@@ -8544,7 +8550,6 @@ def test_search_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -8564,7 +8569,6 @@ def test_lookup_public_kg_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.LookupPublicKgRequest()
-
         assert args[0] == request_msg
 
 
@@ -8584,7 +8588,6 @@ def test_search_public_kg_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SearchPublicKgRequest()
-
         assert args[0] == request_msg
 
 

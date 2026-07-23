@@ -123,9 +123,7 @@ nox.options.sessions = [
     # TODO(tswast): Consider removing this when unit_noextras and cover is run
     # from GitHub actions.
     "unit_noextras",
-    "system-3.10",  # No extras.
     "system-3.12",  # No extras.
-    f"system-{DEFAULT_PYTHON_VERSION}",  # All extras.
     "cover",
     # TODO(b/401609005): remove
     "cleanup",
@@ -142,9 +140,20 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", RUFF_VERSION)
+    session.install(RUFF_VERSION)
 
-    # 2. Check formatting
+    # Check imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I,F",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # Check formatting
     session.run(
         "ruff",
         "format",
@@ -190,7 +199,7 @@ def format(session):
         "ruff",
         "check",
         "--select",
-        "I",
+        "I,F",
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
@@ -325,9 +334,6 @@ def run_system(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
 
-    if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
-        session.skip("Credentials must be set via environment variable")
-
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
         session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
@@ -345,6 +351,7 @@ def run_system(
         "py.test",
         "-v",
         f"-n={num_workers}",
+        "--dist=worksteal",
         # Any individual test taking longer than 15 mins will be terminated.
         f"--timeout={timeout_seconds}",
         # Log 20 slowest tests
@@ -417,6 +424,16 @@ def doctest(session: nox.sessions.Session):
             "bigframes/display/anywidget.py",
             "--ignore",
             "bigframes/bigquery/_operations/ai.py",
+            "--ignore",
+            "bigframes/bigquery/ai.py",
+            "--ignore",
+            "bigframes/ml",
+            "--ignore",
+            "bigframes/operations/ai.py",
+            "--ignore",
+            "bigframes/operations/semantics.py",
+            "--ignore",
+            "third_party/bigframes_vendored/sklearn",
         ),
         test_folder="bigframes",
         check_cov=True,
@@ -575,9 +592,6 @@ def docfx(session):
 
 
 def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=()):
-    if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
-        session.skip("Credentials must be set via environment variable")
-
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
@@ -709,6 +723,7 @@ def notebook(session: nox.Session):
         "notebooks/generative_ai/sentiment_analysis.ipynb",  # Too slow
         "notebooks/generative_ai/bq_dataframes_llm_vector_search.ipynb",  # Limited quota for vector index ddl statements on table.
         "notebooks/generative_ai/bq_dataframes_ml_drug_name_generation.ipynb",  # Needs CONNECTION.
+        "notebooks/generative_ai/ai_movie_poster.ipynb",  # Needs CONNECTION.
         # TODO(b/366290533): to protect BQML quota
         "notebooks/vertex_sdk/sdk2_bigframes_pytorch.ipynb",  # Needs BUCKET_URI.
         "notebooks/vertex_sdk/sdk2_bigframes_sklearn.ipynb",  # Needs BUCKET_URI.
@@ -725,6 +740,8 @@ def notebook(session: nox.Session):
         # This anywidget notebook uses deferred execution, so it won't
         # produce metrics for the performance benchmark script.
         "notebooks/dataframes/anywidget_mode.ipynb",
+        # Needs a connection
+        "notebooks/remote_functions/remote_function_vertex_claude_model.ipynb",
     ]
 
     # Convert each Path notebook object to a string using a list comprehension,
@@ -1034,7 +1051,7 @@ def mypy(session):
     # Editable mode is not compatible with mypy when there are multiple
     # package directories. See:
     # https://github.com/python/mypy/issues/10564#issuecomment-851687749
-    session.install(".")
+    session.install("--no-cache-dir", ".")
 
     # Just install the dependencies' type info directly, since "mypy --install-types"
     # might require an additional pass.

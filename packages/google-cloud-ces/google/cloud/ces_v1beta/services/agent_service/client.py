@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -63,6 +63,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
@@ -73,6 +74,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.cloud.ces_v1beta.services.agent_service import pagers
 from google.cloud.ces_v1beta.types import (
     agent,
+    agent_card,
     agent_service,
     agent_tool,
     agent_transfers,

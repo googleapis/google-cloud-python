@@ -1374,6 +1374,218 @@ class Test_Blob(unittest.TestCase):
             w_range=True, raw_download=True, headers={"If-Match": "kittens"}
         )
 
+    @mock.patch("google.cloud.storage.blob._logger")
+    def test__do_download_log_extra_bytes_singleshot(self, mock_logger):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        blob.chunk_size = None
+
+        transport = object()
+        file_obj = io.BytesIO()
+        download_url = "http://test.invalid"
+
+        patch = mock.patch("google.cloud.storage.blob.Download")
+        with patch as patched:
+            download = patched.return_value
+            download._bytes_downloaded = 10
+
+            mock_response = mock.Mock()
+            mock_response.headers = {}
+            download.consume.return_value = mock_response
+            download._get_headers.return_value = {}
+
+            blob._do_download(
+                transport,
+                file_obj,
+                download_url,
+                {},
+                start=0,
+                end=4,
+            )
+
+        mock_logger.warning.assert_called_once_with(
+            "storage: received %d more bytes than requested from GCS for bucket %r, object %r",
+            5,
+            "name",
+            "blob-name",
+        )
+
+    @mock.patch("google.cloud.storage.blob._logger")
+    def test__do_download_log_extra_bytes_chunked(self, mock_logger):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        blob.chunk_size = 262144
+
+        transport = object()
+        file_obj = io.BytesIO()
+        download_url = "http://test.invalid"
+
+        patch = mock.patch("google.cloud.storage.blob.ChunkedDownload")
+        with patch as patched:
+            download = patched.return_value
+            download._bytes_downloaded = 10
+            type(download).finished = mock.PropertyMock(side_effect=[False, True])
+
+            mock_response = mock.Mock()
+            mock_response.headers = {}
+            download.consume_next_chunk.return_value = mock_response
+            download._get_headers.return_value = {}
+
+            blob._do_download(
+                transport,
+                file_obj,
+                download_url,
+                {},
+                start=0,
+                end=4,
+            )
+
+        mock_logger.warning.assert_called_once_with(
+            "storage: received %d more bytes than requested from GCS for bucket %r, object %r",
+            5,
+            "name",
+            "blob-name",
+        )
+
+    @mock.patch("google.cloud.storage.blob._logger")
+    def test__do_download_log_extra_bytes_positive_start(self, mock_logger):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        blob.chunk_size = None
+
+        transport = object()
+        file_obj = io.BytesIO()
+        download_url = "http://test.invalid"
+
+        patch = mock.patch("google.cloud.storage.blob.Download")
+        with patch as patched:
+            download = patched.return_value
+            download._bytes_downloaded = 310
+            download.total_bytes = 500
+
+            mock_response = mock.Mock()
+            mock_response.headers = {}
+            download.consume.return_value = mock_response
+            download._get_headers.return_value = {}
+
+            blob._do_download(
+                transport,
+                file_obj,
+                download_url,
+                {},
+                start=200,
+                end=None,
+            )
+
+        mock_logger.warning.assert_not_called()
+
+    @mock.patch("google.cloud.storage.blob._logger")
+    def test__do_download_log_extra_bytes_negative_start(self, mock_logger):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        blob.chunk_size = None
+
+        transport = object()
+        file_obj = io.BytesIO()
+        download_url = "http://test.invalid"
+
+        patch = mock.patch("google.cloud.storage.blob.Download")
+        with patch as patched:
+            download = patched.return_value
+            download._bytes_downloaded = 15
+
+            mock_response = mock.Mock()
+            mock_response.headers = {}
+            download.consume.return_value = mock_response
+            download._get_headers.return_value = {}
+
+            blob._do_download(
+                transport,
+                file_obj,
+                download_url,
+                {},
+                start=-10,
+                end=None,
+            )
+
+        mock_logger.warning.assert_not_called()
+
+    @mock.patch("google.cloud.storage.blob._logger")
+    def test__do_download_log_extra_bytes_whole_file(self, mock_logger):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        blob.chunk_size = None
+
+        transport = object()
+        file_obj = io.BytesIO()
+        download_url = "http://test.invalid"
+
+        patch = mock.patch("google.cloud.storage.blob.Download")
+        with patch as patched:
+            download = patched.return_value
+            download._bytes_downloaded = 550
+            download.total_bytes = 500
+
+            mock_response = mock.Mock()
+            mock_response.headers = {}
+            download.consume.return_value = mock_response
+            download._get_headers.return_value = {}
+
+            blob._do_download(
+                transport,
+                file_obj,
+                download_url,
+                {},
+                start=None,
+                end=None,
+            )
+
+        mock_logger.warning.assert_not_called()
+
+    @mock.patch("google.cloud.storage.blob._logger")
+    def test__do_download_no_log_exact_bytes(self, mock_logger):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        blob.chunk_size = None
+
+        transport = object()
+        file_obj = io.BytesIO()
+        download_url = "http://test.invalid"
+
+        patch = mock.patch("google.cloud.storage.blob.Download")
+        with patch as patched:
+            download = patched.return_value
+            download._bytes_downloaded = 300
+            download.total_bytes = 500
+
+            mock_response = mock.Mock()
+            mock_response.headers = {}
+            download.consume.return_value = mock_response
+            download._get_headers.return_value = {}
+
+            blob._do_download(
+                transport,
+                file_obj,
+                download_url,
+                {},
+                start=200,
+                end=None,
+            )
+
+        mock_logger.warning.assert_not_called()
+
     def test__do_download_wo_chunks_w_custom_timeout(self):
         self._do_download_helper_wo_chunks(
             w_range=False, raw_download=False, timeout=9.58
@@ -4874,6 +5086,88 @@ class Test_Blob(unittest.TestCase):
             _target_object=destination,
         )
 
+    def test_compose_w_delete_source_objects(self):
+        source_1_name = "source-1"
+        source_2_name = "source-2"
+        destination_name = "destination"
+        delete_source_objects = True
+        api_response = {}
+        client = mock.Mock(spec=["_post_resource"])
+        client._post_resource.return_value = api_response
+        bucket = _Bucket(client=client)
+        source_1 = self._make_one(source_1_name, bucket=bucket)
+        source_2 = self._make_one(source_2_name, bucket=bucket)
+        destination = self._make_one(destination_name, bucket=bucket)
+
+        destination.compose(
+            sources=[source_1, source_2],
+            delete_source_objects=delete_source_objects,
+        )
+
+        expected_path = f"/b/name/o/{destination_name}/compose"
+        expected_data = {
+            "sourceObjects": [
+                {"name": source_1.name, "generation": source_1.generation},
+                {"name": source_2.name, "generation": source_2.generation},
+            ],
+            "destination": {},
+            "deleteSourceObjects": delete_source_objects,
+        }
+        expected_query_params = {}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            _target_object=destination,
+        )
+
+    def test_compose_w_destination_contexts(self):
+        from google.cloud.storage.blob import (
+            ObjectContexts,
+            ObjectCustomContextPayload,
+        )
+
+        source_1_name = "source-1"
+        source_2_name = "source-2"
+        destination_name = "destination"
+        api_response = {"contexts": {"custom": {"foo": {"value": "bar"}}}}
+        client = mock.Mock(spec=["_post_resource"])
+        client._post_resource.return_value = api_response
+        bucket = _Bucket(client=client)
+        source_1 = self._make_one(source_1_name, bucket=bucket)
+        source_2 = self._make_one(source_2_name, bucket=bucket)
+        destination = self._make_one(destination_name, bucket=bucket)
+
+        payload = ObjectCustomContextPayload(value="bar")
+        contexts = ObjectContexts(None, custom={"foo": payload})
+
+        destination.compose(
+            sources=[source_1, source_2],
+            destination_contexts=contexts,
+        )
+
+        self.assertEqual(destination.contexts.custom["foo"].value, "bar")
+
+        expected_path = f"/b/name/o/{destination_name}/compose"
+        expected_data = {
+            "sourceObjects": [
+                {"name": source_1.name, "generation": source_1.generation},
+                {"name": source_2.name, "generation": source_2.generation},
+            ],
+            "destination": {"contexts": {"custom": {"foo": {"value": "bar"}}}},
+        }
+        expected_query_params = {}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            _target_object=destination,
+        )
+
     def test_rewrite_w_response_wo_resource(self):
         source_name = "source"
         dest_name = "dest"
@@ -5262,6 +5556,56 @@ class Test_Blob(unittest.TestCase):
             "X-Goog-Copy-Source-Encryption-Key": source_key_b64,
             "X-Goog-Copy-Source-Encryption-Key-Sha256": source_key_hash_b64,
         }
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            _target_object=dest,
+        )
+
+    def test_rewrite_w_destination_contexts(self):
+        from google.cloud.storage.blob import (
+            ObjectContexts,
+            ObjectCustomContextPayload,
+        )
+
+        blob_name = "blob"
+        bytes_rewritten = object_size = 42
+        api_response = {
+            "totalBytesRewritten": bytes_rewritten,
+            "objectSize": object_size,
+            "done": True,
+            "resource": {
+                "etag": "DEADBEEF",
+                "contexts": {"custom": {"foo": {"value": "bar"}}},
+            },
+        }
+        client = mock.Mock(spec=["_post_resource"])
+        client._post_resource.return_value = api_response
+        bucket = _Bucket(client=client)
+        source = self._make_one(blob_name, bucket=bucket)
+        dest = self._make_one(blob_name, bucket=bucket)
+
+        payload = ObjectCustomContextPayload(value="bar")
+        contexts = ObjectContexts(None, custom={"foo": payload})
+
+        token, rewritten, size = dest.rewrite(
+            source,
+            destination_contexts=contexts,
+        )
+
+        self.assertIsNone(token)
+        self.assertEqual(rewritten, bytes_rewritten)
+        self.assertEqual(size, object_size)
+        self.assertEqual(dest.contexts.custom["foo"].value, "bar")
+
+        expected_path = f"/b/name/o/{blob_name}/rewriteTo/b/name/o/{blob_name}"
+        expected_data = {"contexts": {"custom": {"foo": {"value": "bar"}}}}
+        expected_query_params = {}
+        expected_headers = {}
         client._post_resource.assert_called_once_with(
             expected_path,
             expected_data,
@@ -6204,6 +6548,112 @@ class Test_Blob(unittest.TestCase):
         blob.retention.retain_until_time = None
         self.assertIsNone(blob.retention.retain_until_time)
         self.assertIn("retention", blob._changes)
+
+    def test_object_contexts_payload_ctor(self):
+        from google.cloud.storage.blob import ObjectCustomContextPayload
+
+        payload = ObjectCustomContextPayload(value="foo")
+        self.assertEqual(payload.value, "foo")
+
+    def test_object_contexts_ctor(self):
+        from google.cloud.storage.blob import (
+            Blob,
+            ObjectContexts,
+            ObjectCustomContextPayload,
+        )
+
+        blob = mock.Mock(spec=Blob)
+        custom = {"key": ObjectCustomContextPayload(value="val")}
+        contexts = ObjectContexts(blob, custom=custom)
+        self.assertIs(contexts.blob, blob)
+        self.assertEqual(contexts.custom, custom)
+
+    def test_object_contexts_from_api_repr(self):
+        from google.cloud.storage.blob import Blob, ObjectContexts
+
+        blob = mock.Mock(spec=Blob)
+        resource = {
+            "custom": {
+                "key": {
+                    "value": "val",
+                    "createTime": "2025-01-01T00:00:00Z",
+                    "updateTime": "2025-01-02T00:00:00Z",
+                }
+            }
+        }
+        contexts = ObjectContexts.from_api_repr(resource, blob)
+        self.assertIs(contexts.blob, blob)
+        self.assertIn("key", contexts.custom)
+        payload = contexts.custom["key"]
+        self.assertEqual(payload.value, "val")
+        self.assertEqual(
+            payload.create_time, datetime.datetime(2025, 1, 1, tzinfo=_UTC)
+        )
+        self.assertEqual(
+            payload.update_time, datetime.datetime(2025, 1, 2, tzinfo=_UTC)
+        )
+
+    def test_object_contexts_property(self):
+        from google.cloud.storage.blob import (
+            Blob,
+            ObjectContexts,
+            ObjectCustomContextPayload,
+        )
+
+        bucket = mock.Mock()
+        bucket.name = "b"
+        bucket.__getitem__ = mock.Mock(
+            side_effect=lambda x: "b" if x in (0, -1) else None
+        )
+        blob = Blob("blob-name", bucket=bucket)
+        self.assertIsInstance(blob.contexts, ObjectContexts)
+        self.assertEqual(blob.contexts.custom, {})
+
+        custom = {"key": ObjectCustomContextPayload(value="val")}
+        blob.contexts = ObjectContexts(blob, custom=custom)
+        self.assertEqual(blob.contexts.custom, custom)
+
+        blob.contexts = None
+        self.assertIsNone(blob._properties["contexts"])
+
+    def test_patch_contexts(self):
+        from google.cloud.storage.blob import (
+            Blob,
+            ObjectContexts,
+            ObjectCustomContextPayload,
+        )
+        from google.cloud.storage.bucket import Bucket
+
+        client = self._make_client(project="p")
+        bucket = Bucket(client, name="b")
+        blob = Blob("blob-name", bucket=bucket)
+
+        custom = {"key": ObjectCustomContextPayload(value="val")}
+        blob.contexts = ObjectContexts(blob, custom=custom)
+
+        with mock.patch.object(client, "_patch_resource") as mocked:
+            blob.patch()
+            mocked.assert_called_once()
+            args, kwargs = mocked.call_args
+            sent_resource = args[1]
+            self.assertEqual(sent_resource["contexts"]["custom"]["key"]["value"], "val")
+
+    def test_patch_contexts_none(self):
+        from google.cloud.storage.blob import Blob
+        from google.cloud.storage.bucket import Bucket
+
+        client = self._make_client(project="p")
+        bucket = Bucket(client, name="b")
+        blob = Blob("blob-name", bucket=bucket)
+
+        blob.contexts = None
+
+        with mock.patch.object(client, "_patch_resource") as mocked:
+            blob.patch()
+            mocked.assert_called_once()
+            args, kwargs = mocked.call_args
+            sent_resource = args[1]
+            self.assertIsNone(sent_resource["contexts"])
 
 
 class Test__quote(unittest.TestCase):

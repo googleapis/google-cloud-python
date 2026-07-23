@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.apps.chat_v1.types import audience as gc_audience
 from google.apps.chat_v1.types import history_state
 
 __protobuf__ = proto.module(
@@ -428,6 +429,11 @@ class Space(proto.Message):
 
                 Setting the target audience requires `user
                 authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+            access_permission_settings (google.apps.chat_v1.types.Space.AccessPermissionSettings):
+                Optional. Access permission settings for the space.
+
+                To set the target audience when creating a space, specify
+                the ``accessSettings.audience`` field in your request.
         """
 
         class AccessState(proto.Enum):
@@ -466,6 +472,68 @@ class Space(proto.Message):
         audience: str = proto.Field(
             proto.STRING,
             number=3,
+        )
+        access_permission_settings: "Space.AccessPermissionSettings" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message="Space.AccessPermissionSettings",
+        )
+
+    class AccessPermissionSettings(proto.Message):
+        r"""Access permission settings for a space.
+
+        Attributes:
+            discover_space_setting (google.apps.chat_v1.types.Space.AccessPermissionSetting):
+                Optional. Access permission setting for
+                discovering the space.
+            join_space_setting (google.apps.chat_v1.types.Space.AccessPermissionSetting):
+                Optional. Access permission setting for
+                joining the space.
+        """
+
+        discover_space_setting: "Space.AccessPermissionSetting" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Space.AccessPermissionSetting",
+        )
+        join_space_setting: "Space.AccessPermissionSetting" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Space.AccessPermissionSetting",
+        )
+
+    class AccessPermissionSetting(proto.Message):
+        r"""An access permission setting.
+
+        Attributes:
+            principals (MutableSequence[google.apps.chat_v1.types.Space.Principal]):
+                Optional. Unordered list. Allowed principals
+                for this permission.
+        """
+
+        principals: MutableSequence["Space.Principal"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Space.Principal",
+        )
+
+    class Principal(proto.Message):
+        r"""A principal representing an entity granted access.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            audience (google.apps.chat_v1.types.Audience):
+                An audience.
+
+                This field is a member of `oneof`_ ``principal_type``.
+        """
+
+        audience: gc_audience.Audience = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="principal_type",
+            message=gc_audience.Audience,
         )
 
     class PermissionSettings(proto.Message):
@@ -1058,6 +1126,26 @@ class UpdateSpaceRequest(proto.Message):
             users <https://developers.google.com/workspace/chat/space-target-audience>`__.
             ``access_settings.audience`` is not supported with
             ``useAdminAccess``.
+
+            ``access_settings.access_permission_settings``: Updates the
+            `access permission
+            settings <https://support.google.com/chat/answer/11971020>`__
+            of who can discover and join the space where ``spaceType``
+            field is ``SPACE``. Principals allowed to join the space
+            must also be allowed to discover it. To update access
+            permission settings for a space, the authenticating user
+            must be a space manager or assistant manager and omit all
+            other field masks in the request. You can't update this
+            field if the space is in `import
+            mode <https://developers.google.com/workspace/chat/import-data-overview>`__.
+            To learn more, see `Make a space discoverable to specific
+            users <https://developers.google.com/workspace/chat/space-target-audience>`__.
+            ``access_settings.access_permission_settings`` is not
+            supported with ``useAdminAccess``. The supported field masks
+            include:
+
+            - ``access_settings.access_permission_settings.discoverSpaceSetting``
+            - ``access_settings.access_permission_settings.joinSpaceSetting``
 
             ``permission_settings``: Supports changing the `permission
             settings <https://support.google.com/chat/answer/13340792>`__

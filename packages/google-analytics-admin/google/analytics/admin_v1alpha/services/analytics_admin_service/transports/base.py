@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -931,6 +931,11 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             ),
             self.get_reporting_identity_settings: gapic_v1.method.wrap_method(
                 self.get_reporting_identity_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_reporting_identity_settings: gapic_v1.method.wrap_method(
+                self.update_reporting_identity_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -2566,6 +2571,18 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.GetReportingIdentitySettingsRequest],
+        Union[
+            resources.ReportingIdentitySettings,
+            Awaitable[resources.ReportingIdentitySettings],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_reporting_identity_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateReportingIdentitySettingsRequest],
         Union[
             resources.ReportingIdentitySettings,
             Awaitable[resources.ReportingIdentitySettings],

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -66,7 +66,12 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.services.conversations import pagers
-from google.cloud.dialogflow_v2beta1.types import conversation, generator, participant
+from google.cloud.dialogflow_v2beta1.types import (
+    conversation,
+    conversation_profile,
+    generator,
+    participant,
+)
 from google.cloud.dialogflow_v2beta1.types import conversation as gcd_conversation
 
 from .transports.base import DEFAULT_CLIENT_INFO, ConversationsTransport
@@ -268,6 +273,52 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def app_path(
+        project: str,
+        location: str,
+        app: str,
+    ) -> str:
+        """Returns a fully-qualified app string."""
+        return "projects/{project}/locations/{location}/apps/{app}".format(
+            project=project,
+            location=location,
+            app=app,
+        )
+
+    @staticmethod
+    def parse_app_path(path: str) -> Dict[str, str]:
+        """Parses a app path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def ces_tool_path(
+        project: str,
+        location: str,
+        app: str,
+        tool: str,
+    ) -> str:
+        """Returns a fully-qualified ces_tool string."""
+        return "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
+            project=project,
+            location=location,
+            app=app,
+            tool=tool,
+        )
+
+    @staticmethod
+    def parse_ces_tool_path(path: str) -> Dict[str, str]:
+        """Parses a ces_tool path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/tools/(?P<tool>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def conversation_path(
         project: str,
         conversation: str,
@@ -283,28 +334,6 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         """Parses a conversation path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/conversations/(?P<conversation>.+?)$", path
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def conversation_model_path(
-        project: str,
-        location: str,
-        conversation_model: str,
-    ) -> str:
-        """Returns a fully-qualified conversation_model string."""
-        return "projects/{project}/locations/{location}/conversationModels/{conversation_model}".format(
-            project=project,
-            location=location,
-            conversation_model=conversation_model,
-        )
-
-    @staticmethod
-    def parse_conversation_model_path(path: str) -> Dict[str, str]:
-        """Parses a conversation_model path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/conversationModels/(?P<conversation_model>.+?)$",
-            path,
         )
         return m.groupdict() if m else {}
 
@@ -501,6 +530,30 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         """Parses a tool path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/tools/(?P<tool>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def toolset_path(
+        project: str,
+        location: str,
+        app: str,
+        toolset: str,
+    ) -> str:
+        """Returns a fully-qualified toolset string."""
+        return "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}".format(
+            project=project,
+            location=location,
+            app=app,
+            toolset=toolset,
+        )
+
+    @staticmethod
+    def parse_toolset_path(path: str) -> Dict[str, str]:
+        """Parses a toolset path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/toolsets/(?P<toolset>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

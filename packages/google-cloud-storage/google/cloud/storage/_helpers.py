@@ -19,20 +19,32 @@ These are *not* part of the API.
 
 import base64
 import datetime
+import logging
 import os
 import secrets
 import sys
+from contextlib import contextmanager
 from hashlib import md5
 from urllib.parse import urlsplit, urlunsplit
 from uuid import uuid4
 
+from google.api_core import exceptions as api_exceptions
 from google.auth import environment_vars
+from google.cloud.exceptions import NotFound
 
+from google.cloud.storage._opentelemetry_tracing import (
+    _is_bucket_metadata_disabled,
+)
+from google.cloud.storage._opentelemetry_tracing import (
+    create_trace_span as _base_create_trace_span,
+)
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import (
     DEFAULT_RETRY,
     DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
 )
+
+_logger = logging.getLogger(__name__)
 
 STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"  # Despite name, includes scheme.
 """Environment variable defining host for Storage emulator."""
@@ -137,6 +149,63 @@ def _validate_name(name):
     return name
 
 
+@contextmanager
+def create_trace_span_helper(client, bucket_name, name, attributes=None, **kwargs):
+    span_attrs = dict(attributes) if attributes else {}
+
+    if (
+        bucket_name
+        and isinstance(bucket_name, str)
+        and client
+        and hasattr(client, "_bucket_metadata_cache")
+        and client._bucket_metadata_cache
+        and not _is_bucket_metadata_disabled()
+    ):
+        try:
+            if name in (
+                "Storage.Client.getBucket",
+                "Storage.Client.lookupBucket",
+                "Storage.Bucket.reload",
+                "Storage.Bucket.exists",
+            ):
+                cached = client._bucket_metadata_cache.get(bucket_name)
+            else:
+                cached = client._bucket_metadata_cache.get_or_queue_fetch(bucket_name)
+
+            if cached and isinstance(cached, tuple) and len(cached) == 2:
+                dest_id, loc = cached
+                span_attrs.update(
+                    {
+                        "gcp.resource.destination.id": dest_id,
+                        "gcp.resource.destination.location": loc,
+                    }
+                )
+        except Exception as e:
+            _logger.debug(f"Failed cache lookup in create_trace_span_helper: {e}")
+
+    if "client" not in kwargs and client:
+        kwargs["client"] = client
+
+    with _base_create_trace_span(name, attributes=span_attrs, **kwargs) as span:
+        try:
+            yield span
+        except (NotFound, api_exceptions.NotFound):
+            if (
+                bucket_name
+                and isinstance(bucket_name, str)
+                and client
+                and hasattr(client, "_bucket_metadata_cache")
+                and client._bucket_metadata_cache
+            ):
+                try:
+                    client._bucket_metadata_cache.check_and_evict(bucket_name)
+                except Exception as e:
+                    _logger.debug(
+                        f"Failed cache eviction on 404 in create_trace_span_helper: {e}"
+                    )
+            raise
+
+
 class _PropertyMixin(object):
     """Abstract mixin for cloud storage classes with associated properties.
 
@@ -184,6 +253,42 @@ class _PropertyMixin(object):
         if client is None:
             client = self.client
         return client
+
+    @contextmanager
+    def _create_trace_span(self, name, attributes=None, **kwargs):
+        from google.cloud.storage.blob import Blob
+        from google.cloud.storage.bucket import Bucket
+
+        if isinstance(self, Bucket):
+            client = self.client
+            bucket_name = self.name
+        elif isinstance(self, Blob):
+            bucket = getattr(self, "bucket", None)
+            client = (
+                getattr(bucket, "client", None)
+                if bucket and hasattr(bucket, "client")
+                else None
+            )
+            bucket_name = getattr(bucket, "name", None) if bucket else None
+        else:
+            client = None
+            bucket_name = None
+
+        if callable(bucket_name):
+            try:
+                bucket_name = bucket_name()
+            except Exception as e:
+                _logger.debug(
+                    f"Failed callable bucket_name resolution in _create_trace_span: {e}"
+                )
+
+        client_override = kwargs.pop("client", None)
+        active_client = client_override or client
+
+        with create_trace_span_helper(
+            active_client, bucket_name, name, attributes=attributes, **kwargs
+        ) as span:
+            yield span
 
     def _encryption_headers(self):
         """Return any encryption headers needed to fetch the object.

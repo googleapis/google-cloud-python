@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -117,6 +112,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1367,8 +1377,8 @@ def test_session_entity_types_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        session_entity_type.ListSessionEntityTypesRequest,
-        dict,
+        session_entity_type.ListSessionEntityTypesRequest(),
+        {},
     ],
 )
 def test_list_session_entity_types(request_type, transport: str = "grpc"):
@@ -1379,7 +1389,7 @@ def test_list_session_entity_types(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1428,10 +1438,11 @@ def test_list_session_entity_types_non_empty_request_with_auto_populated_field()
         client.list_session_entity_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_entity_type.ListSessionEntityTypesRequest(
+        request_msg = session_entity_type.ListSessionEntityTypesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_session_entity_types_use_cached_wrapped_rpc():
@@ -1517,9 +1528,15 @@ async def test_list_session_entity_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session_entity_type.ListSessionEntityTypesRequest(),
+        {},
+    ],
+)
 async def test_list_session_entity_types_async(
-    transport: str = "grpc_asyncio",
-    request_type=session_entity_type.ListSessionEntityTypesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SessionEntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1528,7 +1545,7 @@ async def test_list_session_entity_types_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1551,11 +1568,6 @@ async def test_list_session_entity_types_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSessionEntityTypesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_session_entity_types_async_from_dict():
-    await test_list_session_entity_types_async(request_type=dict)
 
 
 def test_list_session_entity_types_field_headers():
@@ -1762,6 +1774,9 @@ def test_list_session_entity_types_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1856,6 +1871,8 @@ async def test_list_session_entity_types_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1907,11 +1924,7 @@ async def test_list_session_entity_types_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_session_entity_types(request={})
-        ).pages:
+        async for page_ in (await client.list_session_entity_types(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1920,8 +1933,8 @@ async def test_list_session_entity_types_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        session_entity_type.GetSessionEntityTypeRequest,
-        dict,
+        session_entity_type.GetSessionEntityTypeRequest(),
+        {},
     ],
 )
 def test_get_session_entity_type(request_type, transport: str = "grpc"):
@@ -1932,7 +1945,7 @@ def test_get_session_entity_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1985,9 +1998,10 @@ def test_get_session_entity_type_non_empty_request_with_auto_populated_field():
         client.get_session_entity_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_entity_type.GetSessionEntityTypeRequest(
+        request_msg = session_entity_type.GetSessionEntityTypeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_session_entity_type_use_cached_wrapped_rpc():
@@ -2073,9 +2087,15 @@ async def test_get_session_entity_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session_entity_type.GetSessionEntityTypeRequest(),
+        {},
+    ],
+)
 async def test_get_session_entity_type_async(
-    transport: str = "grpc_asyncio",
-    request_type=session_entity_type.GetSessionEntityTypeRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SessionEntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2084,7 +2104,7 @@ async def test_get_session_entity_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2112,11 +2132,6 @@ async def test_get_session_entity_type_async(
         response.entity_override_mode
         == session_entity_type.SessionEntityType.EntityOverrideMode.ENTITY_OVERRIDE_MODE_OVERRIDE
     )
-
-
-@pytest.mark.asyncio
-async def test_get_session_entity_type_async_from_dict():
-    await test_get_session_entity_type_async(request_type=dict)
 
 
 def test_get_session_entity_type_field_headers():
@@ -2273,8 +2288,8 @@ async def test_get_session_entity_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_session_entity_type.CreateSessionEntityTypeRequest,
-        dict,
+        gcd_session_entity_type.CreateSessionEntityTypeRequest(),
+        {},
     ],
 )
 def test_create_session_entity_type(request_type, transport: str = "grpc"):
@@ -2285,7 +2300,7 @@ def test_create_session_entity_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2338,9 +2353,10 @@ def test_create_session_entity_type_non_empty_request_with_auto_populated_field(
         client.create_session_entity_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_session_entity_type.CreateSessionEntityTypeRequest(
+        request_msg = gcd_session_entity_type.CreateSessionEntityTypeRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_session_entity_type_use_cached_wrapped_rpc():
@@ -2426,9 +2442,15 @@ async def test_create_session_entity_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_session_entity_type.CreateSessionEntityTypeRequest(),
+        {},
+    ],
+)
 async def test_create_session_entity_type_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_session_entity_type.CreateSessionEntityTypeRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SessionEntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2437,7 +2459,7 @@ async def test_create_session_entity_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2465,11 +2487,6 @@ async def test_create_session_entity_type_async(
         response.entity_override_mode
         == gcd_session_entity_type.SessionEntityType.EntityOverrideMode.ENTITY_OVERRIDE_MODE_OVERRIDE
     )
-
-
-@pytest.mark.asyncio
-async def test_create_session_entity_type_async_from_dict():
-    await test_create_session_entity_type_async(request_type=dict)
 
 
 def test_create_session_entity_type_field_headers():
@@ -2644,8 +2661,8 @@ async def test_create_session_entity_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_session_entity_type.UpdateSessionEntityTypeRequest,
-        dict,
+        gcd_session_entity_type.UpdateSessionEntityTypeRequest(),
+        {},
     ],
 )
 def test_update_session_entity_type(request_type, transport: str = "grpc"):
@@ -2656,7 +2673,7 @@ def test_update_session_entity_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2707,7 +2724,8 @@ def test_update_session_entity_type_non_empty_request_with_auto_populated_field(
         client.update_session_entity_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_session_entity_type.UpdateSessionEntityTypeRequest()
+        request_msg = gcd_session_entity_type.UpdateSessionEntityTypeRequest()
+        assert args[0] == request_msg
 
 
 def test_update_session_entity_type_use_cached_wrapped_rpc():
@@ -2793,9 +2811,15 @@ async def test_update_session_entity_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_session_entity_type.UpdateSessionEntityTypeRequest(),
+        {},
+    ],
+)
 async def test_update_session_entity_type_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_session_entity_type.UpdateSessionEntityTypeRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SessionEntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2804,7 +2828,7 @@ async def test_update_session_entity_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2832,11 +2856,6 @@ async def test_update_session_entity_type_async(
         response.entity_override_mode
         == gcd_session_entity_type.SessionEntityType.EntityOverrideMode.ENTITY_OVERRIDE_MODE_OVERRIDE
     )
-
-
-@pytest.mark.asyncio
-async def test_update_session_entity_type_async_from_dict():
-    await test_update_session_entity_type_async(request_type=dict)
 
 
 def test_update_session_entity_type_field_headers():
@@ -3011,8 +3030,8 @@ async def test_update_session_entity_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        session_entity_type.DeleteSessionEntityTypeRequest,
-        dict,
+        session_entity_type.DeleteSessionEntityTypeRequest(),
+        {},
     ],
 )
 def test_delete_session_entity_type(request_type, transport: str = "grpc"):
@@ -3023,7 +3042,7 @@ def test_delete_session_entity_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3068,9 +3087,10 @@ def test_delete_session_entity_type_non_empty_request_with_auto_populated_field(
         client.delete_session_entity_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_entity_type.DeleteSessionEntityTypeRequest(
+        request_msg = session_entity_type.DeleteSessionEntityTypeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_session_entity_type_use_cached_wrapped_rpc():
@@ -3156,9 +3176,15 @@ async def test_delete_session_entity_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session_entity_type.DeleteSessionEntityTypeRequest(),
+        {},
+    ],
+)
 async def test_delete_session_entity_type_async(
-    transport: str = "grpc_asyncio",
-    request_type=session_entity_type.DeleteSessionEntityTypeRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SessionEntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3167,7 +3193,7 @@ async def test_delete_session_entity_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3185,11 +3211,6 @@ async def test_delete_session_entity_type_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_session_entity_type_async_from_dict():
-    await test_delete_session_entity_type_async(request_type=dict)
 
 
 def test_delete_session_entity_type_field_headers():
@@ -3461,7 +3482,7 @@ def test_list_session_entity_types_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_session_entity_types_rest_unset_required_fields():
@@ -3596,6 +3617,9 @@ def test_list_session_entity_types_rest_pager(transport: str = "rest"):
 
         pager = client.list_session_entity_types(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -3720,7 +3744,7 @@ def test_get_session_entity_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_session_entity_type_rest_unset_required_fields():
@@ -3906,7 +3930,7 @@ def test_create_session_entity_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_session_entity_type_rest_unset_required_fields():
@@ -4101,7 +4125,7 @@ def test_update_session_entity_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_session_entity_type_rest_unset_required_fields():
@@ -4291,7 +4315,7 @@ def test_delete_session_entity_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_session_entity_type_rest_unset_required_fields():
@@ -4486,7 +4510,6 @@ def test_list_session_entity_types_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_entity_type.ListSessionEntityTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4509,7 +4532,6 @@ def test_get_session_entity_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_entity_type.GetSessionEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -4532,7 +4554,6 @@ def test_create_session_entity_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_session_entity_type.CreateSessionEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -4555,7 +4576,6 @@ def test_update_session_entity_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_session_entity_type.UpdateSessionEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -4578,7 +4598,6 @@ def test_delete_session_entity_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_entity_type.DeleteSessionEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -4621,7 +4640,6 @@ async def test_list_session_entity_types_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_entity_type.ListSessionEntityTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4651,7 +4669,6 @@ async def test_get_session_entity_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_entity_type.GetSessionEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -4681,7 +4698,6 @@ async def test_create_session_entity_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_session_entity_type.CreateSessionEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -4711,7 +4727,6 @@ async def test_update_session_entity_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_session_entity_type.UpdateSessionEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -4736,7 +4751,6 @@ async def test_delete_session_entity_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_entity_type.DeleteSessionEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5927,7 +5941,6 @@ def test_list_session_entity_types_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_entity_type.ListSessionEntityTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5949,7 +5962,6 @@ def test_get_session_entity_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_entity_type.GetSessionEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5971,7 +5983,6 @@ def test_create_session_entity_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_session_entity_type.CreateSessionEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5993,7 +6004,6 @@ def test_update_session_entity_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_session_entity_type.UpdateSessionEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -6015,7 +6025,6 @@ def test_delete_session_entity_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_entity_type.DeleteSessionEntityTypeRequest()
-
         assert args[0] == request_msg
 
 

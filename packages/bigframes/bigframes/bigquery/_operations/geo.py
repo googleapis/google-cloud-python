@@ -99,7 +99,7 @@ def st_area(
       bigframes.pandas.Series:
           Series of float representing the areas.
     """
-    series = series._apply_unary_op(ops.geo_area_op)
+    series = series._apply_nary_op(ops.googlesql.ST_AREA, [])
     series.name = None
     return series
 
@@ -223,7 +223,7 @@ def st_centroid(
       bigframes.pandas.Series:
           A series of geography objects representing the centroids.
     """
-    series = series._apply_unary_op(ops.geo_st_centroid_op)
+    series = series._apply_nary_op(ops.googlesql.ST_CENTROID, [])
     series.name = None
     return series
 
@@ -753,6 +753,4 @@ def st_simplify(
     Returns:
         a Series containing the simplified GEOGRAPHY data.
     """
-    return geography._apply_unary_op(
-        ops.GeoStSimplifyOp(tolerance_meters=tolerance_meters)
-    )
+    return geography._apply_nary_op(ops.googlesql.ST_SIMPLIFY, [tolerance_meters])

@@ -1,0 +1,76 @@
+def {{ func_name }}(*args):
+    # Pad args with None to match max expected args
+    args = args + (None,) * ({{ max_args }} - len(args))
+    {% for impl in impls %}
+    # Try matching impl {{ loop.index0 }}
+    {% if impl.uses_any1 %}
+    any1_val = None
+    {% endif %}
+    match_ok = True
+    {% for arg in impl.args %}
+    {% set idx = loop.index0 %}
+    if match_ok and args[{{ idx }}] is not None:
+        {% if arg.value == "any1" %}
+        if any1_val is not None:
+            try:
+                any1_val = dtypes.coerce_to_common(any1_val, args[{{ idx }}])
+            except TypeError:
+                match_ok = False
+        else:
+            any1_val = args[{{ idx }}]
+        {% elif arg.value.startswith("list<") and arg.value.endswith(">") %}
+        {% set inner_type = arg.value[5:-1] %}
+        if not dtypes.is_array_like(args[{{ idx }}]):
+            match_ok = False
+        else:
+            inner = dtypes.get_array_inner_type(args[{{ idx }}])
+            {% if inner_type == "any1" %}
+            if any1_val is not None:
+                try:
+                    any1_val = dtypes.coerce_to_common(any1_val, inner)
+                except TypeError:
+                    match_ok = False
+            else:
+                any1_val = inner
+            {% else %}
+            {% set dtype_expr = dtype_map[inner_type] %}
+            try:
+                if dtypes.coerce_to_common(inner, {{ dtype_expr }}) != {{ dtype_expr }}:
+                    match_ok = False
+            except TypeError:
+                match_ok = False
+            {% endif %}
+        {% elif arg.value == "struct" %}
+        if not dtypes.is_struct_like(args[{{ idx }}]):
+            match_ok = False
+        {% else %}
+        {% set dtype_expr = dtype_map[arg.value] %}
+        try:
+            if dtypes.coerce_to_common(args[{{ idx }}], {{ dtype_expr }}) != {{ dtype_expr }}:
+                match_ok = False
+        except TypeError:
+            match_ok = False
+        {% endif %}
+    {% endfor %}
+    if match_ok:
+        {% set return_type_yaml = impl.return %}
+        {% if return_type_yaml == "any1" %}
+        return any1_val
+        {% elif return_type_yaml.startswith("list<") and return_type_yaml.endswith(">") %}
+        {% set inner_type = return_type_yaml[5:-1] %}
+        {% if inner_type == "any1" %}
+        if any1_val is not None:
+            return dtypes.list_type(any1_val)
+        else:
+            return None
+        {% else %}
+        {% set dtype_expr = dtype_map[inner_type] %}
+        return dtypes.list_type({{ dtype_expr }})
+        {% endif %}
+        {% else %}
+        {% set dtype_expr = dtype_map[return_type_yaml] %}
+        return {{ dtype_expr }}
+        {% endif %}
+
+    {% endfor %}
+    raise TypeError(f"Could not find matching signature for {{ sql_name }} with argument types: {[str(t) for t in args]}")

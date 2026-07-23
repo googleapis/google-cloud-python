@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,13 +24,37 @@ from google.ads.datamanager_v1.types import destination
 __protobuf__ = proto.module(
     package="google.ads.datamanager.v1",
     manifest={
+        "FeatureSet",
         "CreatePartnerLinkRequest",
         "DeletePartnerLinkRequest",
         "SearchPartnerLinksRequest",
         "SearchPartnerLinksResponse",
         "PartnerLink",
+        "PartnerCustomerAccount",
+        "PartnerLinkMetadata",
     },
 )
+
+
+class FeatureSet(proto.Enum):
+    r"""The set of supported features for a partner link.
+
+    Values:
+        FEATURE_SET_UNSPECIFIED (0):
+            Unspecified feature set. If unspecified, the system behavior
+            defaults to
+            [FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT][google.ads.datamanager.v1.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT].
+        FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT (1):
+            Indicates a link used for audience and event
+            management.
+        FEATURE_SET_AD_EVENT_MANAGEMENT (2):
+            Indicates a link used for ad event
+            management.
+    """
+
+    FEATURE_SET_UNSPECIFIED = 0
+    FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT = 1
+    FEATURE_SET_AD_EVENT_MANAGEMENT = 2
 
 
 class CreatePartnerLinkRequest(proto.Message):
@@ -193,6 +217,20 @@ class PartnerLink(proto.Message):
         partner_account (google.ads.datamanager_v1.types.ProductAccount):
             Required. The partner account granted access
             by the owning account.
+        feature_set (google.ads.datamanager_v1.types.FeatureSet):
+            Optional. Immutable. The set of features supported for the
+            partner link. If not specified, the system behavior defaults
+            to
+            [FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT][google.ads.datamanager.v1.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT].
+        partner_customer_account (google.ads.datamanager_v1.types.PartnerCustomerAccount):
+            Optional. The customer account in the partner system. This
+            is required for partner links with the
+            [FEATURE_SET_AD_EVENT_MANAGEMENT][google.ads.datamanager.v1.FeatureSet.FEATURE_SET_AD_EVENT_MANAGEMENT]
+            feature set.
+        partner_link_metadata (google.ads.datamanager_v1.types.PartnerLinkMetadata):
+            Optional. Metadata associated with the partner link. This is
+            optional and only accepted for partner links with the
+            [FEATURE_SET_AD_EVENT_MANAGEMENT][google.ads.datamanager.v1.FeatureSet.FEATURE_SET_AD_EVENT_MANAGEMENT].
     """
 
     name: str = proto.Field(
@@ -212,6 +250,65 @@ class PartnerLink(proto.Message):
         proto.MESSAGE,
         number=4,
         message=destination.ProductAccount,
+    )
+    feature_set: "FeatureSet" = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="FeatureSet",
+    )
+    partner_customer_account: "PartnerCustomerAccount" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="PartnerCustomerAccount",
+    )
+    partner_link_metadata: "PartnerLinkMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="PartnerLinkMetadata",
+    )
+
+
+class PartnerCustomerAccount(proto.Message):
+    r"""Represents a customer account in the partner's system.
+
+    Attributes:
+        account_id (str):
+            Required. The identifier of the customer
+            account in the partner's ID space.
+        account_name (str):
+            Optional. The name of the account.
+        account_type (str):
+            Optional. The type of the account. Can be
+            used to distinguish between advertiser accounts
+            and business level accounts, for example.
+    """
+
+    account_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    account_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    account_type: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class PartnerLinkMetadata(proto.Message):
+    r"""Represents metadata associated with a partner link.
+
+    Attributes:
+        implicit_accounts (MutableSequence[google.ads.datamanager_v1.types.PartnerCustomerAccount]):
+            Optional. The list of implicit accounts.
+    """
+
+    implicit_accounts: MutableSequence["PartnerCustomerAccount"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="PartnerCustomerAccount",
     )
 
 

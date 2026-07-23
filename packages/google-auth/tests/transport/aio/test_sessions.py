@@ -334,3 +334,35 @@ class TestAsyncAuthorizedSession(object):
             response = await authed_session.delete(self.TEST_URL)
             assert await response.read() == expected_payload
             response = await authed_session.close()
+
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_with_custom_transport_and_broken_cert(self):
+        auth_request = MockRequest()
+        authed_session = sessions.AsyncAuthorizedSession(
+            self.credentials, auth_request=auth_request
+        )
+
+        with patch(
+            "google.auth.transport._mtls_helper.check_use_client_cert",
+            return_value=True,
+        ):
+
+            def callback():
+                return b"invalid-cert", b"invalid-key"
+
+            with pytest.warns(
+                UserWarning,
+                match="Attempted to establish mTLS, but a custom async transport was provided",
+            ):
+                await authed_session.configure_mtls_channel(callback)
+
+            assert authed_session._is_mtls is False
+            assert authed_session._cached_cert is None
+
+        await authed_session.close()
+
+
+def test_mock_request_clone():
+    request = MockRequest()
+    cloned = request._clone()
+    assert cloned is request

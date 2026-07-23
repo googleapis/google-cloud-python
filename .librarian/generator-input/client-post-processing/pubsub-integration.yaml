@@ -1,5 +1,5 @@
 replacements:
-  - paths: 
+  - paths:
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/**/*client.py"
     before: 'instead\.\n(?:[ \t]*\n)*([ \t]+)DEFAULT_ENDPOINT = "pubsub\.googleapis\.com"'
     after: |-
@@ -13,7 +13,7 @@ replacements:
       \g<1>DEFAULT_ENDPOINT = "pubsub.googleapis.com"
     count: 3
 
-  - paths: 
+  - paths:
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/*/client.py"
     before: 'import json\n(?:[ \t]*\n)*import logging as std_logging'
     after: |-
@@ -23,7 +23,7 @@ replacements:
       import logging as std_logging
     count: 3
 
-  - paths: 
+  - paths:
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/*/client.py"
     before: 'class\n(?:[ \t]*\n)*([ \t]+)self\._transport = transport_init\('
     after: |-
@@ -38,7 +38,7 @@ replacements:
       \g<1>self._transport = transport_init(
     count: 3
 
-  - paths: 
+  - paths:
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/*/transports/grpc*.py"
       - "packages/google-cloud-pubsub/tests/unit/gapic/pubsub_v1/*.py"
     before: '\("grpc\.max_receive_message_length", -1\),\n(?:[ \t]*\n)*([ \t]+)\]'
@@ -49,19 +49,19 @@ replacements:
       \g<1>]
     count: 21
 
-  - paths: 
+  - paths:
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/transports/base.py"
     before: 'deadline=60\.0,'
     after: 'deadline=600.0,'
     count: 9
 
-  - paths: 
+  - paths:
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/**/*.py"
     before: 'gapic_version=package_version\.__version__'
     after: 'client_library_version=package_version.__version__'
     count: 9
 
-  - paths: 
+  - paths:
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
     before: 'import logging as std_logging\n(?:[ \t]*\n)*import os'
     after: |-
@@ -71,7 +71,7 @@ replacements:
       import os
     count: 1
 
-  - paths: 
+  - paths:
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/async_client.py"
     before: 'import logging as std_logging\n(?:[ \t]*\n)*import re'
     after: |-
@@ -80,7 +80,7 @@ replacements:
       import re
     count: 1
 
-  - paths: 
+  - paths:
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/async_client.py"
     before: 'request\.max_messages = max_messages\n(?:[ \t]*\n)*([ \t]+)# Wrap the RPC method'
@@ -96,7 +96,7 @@ replacements:
       \g<1># Wrap the RPC method
     count: 2
 
-  - paths: 
+  - paths:
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
     before: '"""\n(?:[ \t]*\n)*([ \t]+)# Wrap the RPC method; this adds retry and timeout information,\n(?:[ \t]*\n)*[ \t]+# and friendly error handling\.\n(?:[ \t]*\n)*[ \t]+rpc = self\._transport\._wrapped_methods\[self\._transport\.streaming_pull\]'
     after: |-
@@ -369,20 +369,12 @@ replacements:
     count: 1
 
 
-  # --- FIX: Restore pubsub-specific grpcio bound ---
-  - paths:
-      - "packages/google-cloud-pubsub/setup.py"
-    before: '([ \t]+)"grpcio >= [0-9\.]+, < 2\.0\.0",\n'
-    after: |-
-      \g<1>"grpcio >= 1.51.3, < 2.0.0; python_version < '3.14'",  # https://github.com/googleapis/python-pubsub/issues/609
-    count: 1
-
   # --- FIX: Restore missing dependencies, extras, and url dynamically ---
   - paths:
       - "packages/google-cloud-pubsub/setup.py"
     before: '([ \t]+)("grpc-google-iam-v1.*",\n)\]\nextras = \{\}'
     after: |-
-      \g<1>\g<2>\g<1>"grpcio-status >= 1.33.2",
+      \g<1>\g<2>\g<1>"grpcio-status >= 1.51.3",
       \g<1>"opentelemetry-api >= 1.27.0",
       \g<1>"opentelemetry-sdk >= 1.27.0",
       ]
@@ -411,6 +403,16 @@ replacements:
     before: 'nox\.options\.sessions = \[\n(?:[ \t]+)"unit",\n(?:[ \t]+)"system",\n(?:[ \t]+)"cover",\n(?:[ \t]+)"lint",\n(?:[ \t]+)"lint_setup_py",\n(?:[ \t]+)"blacken",\n(?:[ \t]+)"docs",\n\]'
     after: |-
       CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+      # Path to the centralized mypy configuration file at the repository root.
+      # Search upwards to support running nox from both monorepo packages and integration test goldens.
+      MYPY_CONFIG_FILE = next(
+          (
+              str(p / "mypy.ini")
+              for p in CURRENT_DIRECTORY.parents
+              if (p / "mypy.ini").exists()
+          ),
+          str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+      )
 
       nox.options.sessions = [
           "unit",
@@ -458,7 +460,7 @@ replacements:
           # mypy checks yet.
           # https://github.com/googleapis/gapic-generator-python/issues/1092
           # TODO: Re-enable mypy checks once we merge, since incremental checks are failing due to protobuf upgrade
-          # session.run("mypy", "-p", "google.cloud", "--exclude", "google/pubsub_v1/")
+          # session.run("mypy", f"--config-file={MYPY_CONFIG_FILE}", "-p", "google.cloud", "--exclude", "google/pubsub_v1/")
 
 
       @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -510,4 +512,28 @@ replacements:
       exclude_patterns = [
       \g<1>"pubsub_v1/**",
       \g<1>"_build",
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/testing/constraints-3.10.txt"
+    before: 'grpc-google-iam-v1==0\.14\.2\n(?!grpcio-status)'
+    after: |-
+      grpc-google-iam-v1==0.14.2
+      grpcio-status==1.51.3
+      opentelemetry-api==1.27.0
+      opentelemetry-sdk==1.27.0
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/testing/constraints-3.10.txt"
+    before: 'grpcio==1.59.0'
+    after: 'grpcio==1.51.3'
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/setup.py"
+    before: '([ \t]+)"grpcio >= [0-9\.]+, < 2\.0\.0",\n(?:[ \t]*)"grpcio >= 1\.75\.1, < 2\.0\.0; python_version >= ''3\.14''",\n'
+    after: |-
+      \g<1>"grpcio >= 1.51.3, < 2.0.0; python_version < '3.14'",
+      \g<1>"grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     count: 1

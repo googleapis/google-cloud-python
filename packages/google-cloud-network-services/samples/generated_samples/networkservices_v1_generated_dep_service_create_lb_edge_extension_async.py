@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -49,7 +49,6 @@ async def sample_create_lb_edge_extension():
     lb_edge_extension.extension_chains.match_condition.cel_expression = (
         "cel_expression_value"
     )
-    lb_edge_extension.extension_chains.extensions.name = "name_value"
     lb_edge_extension.extension_chains.extensions.service = "service_value"
     lb_edge_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -60,11 +59,11 @@ async def sample_create_lb_edge_extension():
     )
 
     # Make the request
-    operation = client.create_lb_edge_extension(request=request)
+    operation = await client.create_lb_edge_extension(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

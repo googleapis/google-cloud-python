@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,7 +42,11 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class RuleServiceTransport(abc.ABC):
     """Abstract transport class for RuleService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/chronicle",
+        "https://www.googleapis.com/auth/chronicle.readonly",
+        "https://www.googleapis.com/auth/cloud-platform",
+    )
 
     DEFAULT_HOST: str = "chronicle.googleapis.com"
 
@@ -185,6 +189,20 @@ class RuleServiceTransport(abc.ABC):
             ),
             self.delete_rule: gapic_v1.method.wrap_method(
                 self.delete_rule,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.verify_rule_text: gapic_v1.method.wrap_method(
+                self.verify_rule_text,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -340,6 +358,15 @@ class RuleServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [rule.DeleteRuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def verify_rule_text(
+        self,
+    ) -> Callable[
+        [rule.VerifyRuleTextRequest],
+        Union[rule.VerifyRuleTextResponse, Awaitable[rule.VerifyRuleTextResponse]],
     ]:
         raise NotImplementedError()
 

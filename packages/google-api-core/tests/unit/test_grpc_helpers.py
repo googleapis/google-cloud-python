@@ -15,6 +15,7 @@
 from unittest import mock
 
 import pytest
+
 from ..helpers import warn_deprecated_credentials_file
 
 try:
@@ -22,10 +23,10 @@ try:
 except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
-from google.api_core import exceptions
-from google.api_core import grpc_helpers
 import google.auth.credentials
 from google.longrunning import operations_pb2
+
+from google.api_core import exceptions, grpc_helpers
 
 
 def test__patch_callable_name():

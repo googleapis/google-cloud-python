@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -116,6 +111,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1374,8 +1384,8 @@ def test_cloud_channel_reports_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        reports_service.RunReportJobRequest,
-        dict,
+        reports_service.RunReportJobRequest(),
+        {},
     ],
 )
 def test_run_report_job(request_type, transport: str = "grpc"):
@@ -1386,7 +1396,7 @@ def test_run_report_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_report_job), "__call__") as call:
@@ -1429,11 +1439,12 @@ def test_run_report_job_non_empty_request_with_auto_populated_field():
         client.run_report_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reports_service.RunReportJobRequest(
+        request_msg = reports_service.RunReportJobRequest(
             name="name_value",
             filter="filter_value",
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_run_report_job_use_cached_wrapped_rpc():
@@ -1524,9 +1535,14 @@ async def test_run_report_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_run_report_job_async(
-    transport: str = "grpc_asyncio", request_type=reports_service.RunReportJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reports_service.RunReportJobRequest(),
+        {},
+    ],
+)
+async def test_run_report_job_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudChannelReportsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1534,7 +1550,7 @@ async def test_run_report_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_report_job), "__call__") as call:
@@ -1552,11 +1568,6 @@ async def test_run_report_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_run_report_job_async_from_dict():
-    await test_run_report_job_async(request_type=dict)
 
 
 def test_run_report_job_field_headers():
@@ -1623,8 +1634,8 @@ async def test_run_report_job_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reports_service.FetchReportResultsRequest,
-        dict,
+        reports_service.FetchReportResultsRequest(),
+        {},
     ],
 )
 def test_fetch_report_results(request_type, transport: str = "grpc"):
@@ -1635,7 +1646,7 @@ def test_fetch_report_results(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1684,10 +1695,11 @@ def test_fetch_report_results_non_empty_request_with_auto_populated_field():
         client.fetch_report_results(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reports_service.FetchReportResultsRequest(
+        request_msg = reports_service.FetchReportResultsRequest(
             report_job="report_job_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_report_results_use_cached_wrapped_rpc():
@@ -1772,9 +1784,15 @@ async def test_fetch_report_results_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reports_service.FetchReportResultsRequest(),
+        {},
+    ],
+)
 async def test_fetch_report_results_async(
-    transport: str = "grpc_asyncio",
-    request_type=reports_service.FetchReportResultsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudChannelReportsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1783,7 +1801,7 @@ async def test_fetch_report_results_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1806,11 +1824,6 @@ async def test_fetch_report_results_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchReportResultsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_report_results_async_from_dict():
-    await test_fetch_report_results_async(request_type=dict)
 
 
 def test_fetch_report_results_field_headers():
@@ -2015,6 +2028,9 @@ def test_fetch_report_results_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, reports_service.Row) for i in results)
@@ -2107,6 +2123,8 @@ async def test_fetch_report_results_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2156,11 +2174,7 @@ async def test_fetch_report_results_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.fetch_report_results(request={})
-        ).pages:
+        async for page_ in (await client.fetch_report_results(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2169,8 +2183,8 @@ async def test_fetch_report_results_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reports_service.ListReportsRequest,
-        dict,
+        reports_service.ListReportsRequest(),
+        {},
     ],
 )
 def test_list_reports(request_type, transport: str = "grpc"):
@@ -2181,7 +2195,7 @@ def test_list_reports(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_reports), "__call__") as call:
@@ -2227,11 +2241,12 @@ def test_list_reports_non_empty_request_with_auto_populated_field():
         client.list_reports(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reports_service.ListReportsRequest(
+        request_msg = reports_service.ListReportsRequest(
             parent="parent_value",
             page_token="page_token_value",
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_reports_use_cached_wrapped_rpc():
@@ -2312,9 +2327,14 @@ async def test_list_reports_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_reports_async(
-    transport: str = "grpc_asyncio", request_type=reports_service.ListReportsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reports_service.ListReportsRequest(),
+        {},
+    ],
+)
+async def test_list_reports_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudChannelReportsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2322,7 +2342,7 @@ async def test_list_reports_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_reports), "__call__") as call:
@@ -2343,11 +2363,6 @@ async def test_list_reports_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReportsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_reports_async_from_dict():
-    await test_list_reports_async(request_type=dict)
 
 
 def test_list_reports_field_headers():
@@ -2542,6 +2557,9 @@ def test_list_reports_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, reports_service.Report) for i in results)
@@ -2630,6 +2648,8 @@ async def test_list_reports_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2677,11 +2697,7 @@ async def test_list_reports_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_reports(request={})
-        ).pages:
+        async for page_ in (await client.list_reports(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2809,7 +2825,6 @@ def test_run_report_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reports_service.RunReportJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -2832,7 +2847,6 @@ def test_fetch_report_results_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reports_service.FetchReportResultsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2853,7 +2867,6 @@ def test_list_reports_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reports_service.ListReportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2892,7 +2905,6 @@ async def test_run_report_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reports_service.RunReportJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -2921,7 +2933,6 @@ async def test_fetch_report_results_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reports_service.FetchReportResultsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2948,7 +2959,6 @@ async def test_list_reports_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reports_service.ListReportsRequest()
-
         assert args[0] == request_msg
 
 

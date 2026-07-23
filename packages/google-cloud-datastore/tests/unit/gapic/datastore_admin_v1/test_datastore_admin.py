@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -117,6 +112,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1325,8 +1335,8 @@ def test_datastore_admin_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastore_admin.ExportEntitiesRequest,
-        dict,
+        datastore_admin.ExportEntitiesRequest(),
+        {},
     ],
 )
 def test_export_entities(request_type, transport: str = "grpc"):
@@ -1337,7 +1347,7 @@ def test_export_entities(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_entities), "__call__") as call:
@@ -1379,10 +1389,11 @@ def test_export_entities_non_empty_request_with_auto_populated_field():
         client.export_entities(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.ExportEntitiesRequest(
+        request_msg = datastore_admin.ExportEntitiesRequest(
             project_id="project_id_value",
             output_url_prefix="output_url_prefix_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_entities_use_cached_wrapped_rpc():
@@ -1473,9 +1484,14 @@ async def test_export_entities_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_entities_async(
-    transport: str = "grpc_asyncio", request_type=datastore_admin.ExportEntitiesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastore_admin.ExportEntitiesRequest(),
+        {},
+    ],
+)
+async def test_export_entities_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastoreAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1483,7 +1499,7 @@ async def test_export_entities_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_entities), "__call__") as call:
@@ -1501,11 +1517,6 @@ async def test_export_entities_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_entities_async_from_dict():
-    await test_export_entities_async(request_type=dict)
 
 
 def test_export_entities_field_headers():
@@ -1684,8 +1695,8 @@ async def test_export_entities_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastore_admin.ImportEntitiesRequest,
-        dict,
+        datastore_admin.ImportEntitiesRequest(),
+        {},
     ],
 )
 def test_import_entities(request_type, transport: str = "grpc"):
@@ -1696,7 +1707,7 @@ def test_import_entities(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_entities), "__call__") as call:
@@ -1738,10 +1749,11 @@ def test_import_entities_non_empty_request_with_auto_populated_field():
         client.import_entities(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.ImportEntitiesRequest(
+        request_msg = datastore_admin.ImportEntitiesRequest(
             project_id="project_id_value",
             input_url="input_url_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_entities_use_cached_wrapped_rpc():
@@ -1832,9 +1844,14 @@ async def test_import_entities_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_import_entities_async(
-    transport: str = "grpc_asyncio", request_type=datastore_admin.ImportEntitiesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastore_admin.ImportEntitiesRequest(),
+        {},
+    ],
+)
+async def test_import_entities_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastoreAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1842,7 +1859,7 @@ async def test_import_entities_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_entities), "__call__") as call:
@@ -1860,11 +1877,6 @@ async def test_import_entities_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_entities_async_from_dict():
-    await test_import_entities_async(request_type=dict)
 
 
 def test_import_entities_field_headers():
@@ -2043,8 +2055,8 @@ async def test_import_entities_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastore_admin.CreateIndexRequest,
-        dict,
+        datastore_admin.CreateIndexRequest(),
+        {},
     ],
 )
 def test_create_index(request_type, transport: str = "grpc"):
@@ -2055,7 +2067,7 @@ def test_create_index(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_index), "__call__") as call:
@@ -2096,9 +2108,10 @@ def test_create_index_non_empty_request_with_auto_populated_field():
         client.create_index(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.CreateIndexRequest(
+        request_msg = datastore_admin.CreateIndexRequest(
             project_id="project_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_index_use_cached_wrapped_rpc():
@@ -2189,9 +2202,14 @@ async def test_create_index_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_index_async(
-    transport: str = "grpc_asyncio", request_type=datastore_admin.CreateIndexRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastore_admin.CreateIndexRequest(),
+        {},
+    ],
+)
+async def test_create_index_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastoreAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2199,7 +2217,7 @@ async def test_create_index_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_index), "__call__") as call:
@@ -2217,11 +2235,6 @@ async def test_create_index_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_index_async_from_dict():
-    await test_create_index_async(request_type=dict)
 
 
 def test_create_index_field_headers():
@@ -2288,8 +2301,8 @@ async def test_create_index_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastore_admin.DeleteIndexRequest,
-        dict,
+        datastore_admin.DeleteIndexRequest(),
+        {},
     ],
 )
 def test_delete_index(request_type, transport: str = "grpc"):
@@ -2300,7 +2313,7 @@ def test_delete_index(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
@@ -2342,10 +2355,11 @@ def test_delete_index_non_empty_request_with_auto_populated_field():
         client.delete_index(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.DeleteIndexRequest(
+        request_msg = datastore_admin.DeleteIndexRequest(
             project_id="project_id_value",
             index_id="index_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_index_use_cached_wrapped_rpc():
@@ -2436,9 +2450,14 @@ async def test_delete_index_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_index_async(
-    transport: str = "grpc_asyncio", request_type=datastore_admin.DeleteIndexRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastore_admin.DeleteIndexRequest(),
+        {},
+    ],
+)
+async def test_delete_index_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastoreAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2446,7 +2465,7 @@ async def test_delete_index_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
@@ -2464,11 +2483,6 @@ async def test_delete_index_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_index_async_from_dict():
-    await test_delete_index_async(request_type=dict)
 
 
 def test_delete_index_field_headers():
@@ -2537,8 +2551,8 @@ async def test_delete_index_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastore_admin.GetIndexRequest,
-        dict,
+        datastore_admin.GetIndexRequest(),
+        {},
     ],
 )
 def test_get_index(request_type, transport: str = "grpc"):
@@ -2549,7 +2563,7 @@ def test_get_index(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_index), "__call__") as call:
@@ -2602,10 +2616,11 @@ def test_get_index_non_empty_request_with_auto_populated_field():
         client.get_index(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.GetIndexRequest(
+        request_msg = datastore_admin.GetIndexRequest(
             project_id="project_id_value",
             index_id="index_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_index_use_cached_wrapped_rpc():
@@ -2684,9 +2699,14 @@ async def test_get_index_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_index_async(
-    transport: str = "grpc_asyncio", request_type=datastore_admin.GetIndexRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastore_admin.GetIndexRequest(),
+        {},
+    ],
+)
+async def test_get_index_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastoreAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2694,7 +2714,7 @@ async def test_get_index_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_index), "__call__") as call:
@@ -2723,11 +2743,6 @@ async def test_get_index_async(
     assert response.kind == "kind_value"
     assert response.ancestor == index.Index.AncestorMode.NONE
     assert response.state == index.Index.State.CREATING
-
-
-@pytest.mark.asyncio
-async def test_get_index_async_from_dict():
-    await test_get_index_async(request_type=dict)
 
 
 def test_get_index_field_headers():
@@ -2794,8 +2809,8 @@ async def test_get_index_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastore_admin.ListIndexesRequest,
-        dict,
+        datastore_admin.ListIndexesRequest(),
+        {},
     ],
 )
 def test_list_indexes(request_type, transport: str = "grpc"):
@@ -2806,7 +2821,7 @@ def test_list_indexes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
@@ -2852,11 +2867,12 @@ def test_list_indexes_non_empty_request_with_auto_populated_field():
         client.list_indexes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastore_admin.ListIndexesRequest(
+        request_msg = datastore_admin.ListIndexesRequest(
             project_id="project_id_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_indexes_use_cached_wrapped_rpc():
@@ -2937,9 +2953,14 @@ async def test_list_indexes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_indexes_async(
-    transport: str = "grpc_asyncio", request_type=datastore_admin.ListIndexesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastore_admin.ListIndexesRequest(),
+        {},
+    ],
+)
+async def test_list_indexes_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastoreAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2947,7 +2968,7 @@ async def test_list_indexes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
@@ -2968,11 +2989,6 @@ async def test_list_indexes_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIndexesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_indexes_async_from_dict():
-    await test_list_indexes_async(request_type=dict)
 
 
 def test_list_indexes_field_headers():
@@ -3085,6 +3101,9 @@ def test_list_indexes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, index.Index) for i in results)
@@ -3173,6 +3192,8 @@ async def test_list_indexes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3220,11 +3241,7 @@ async def test_list_indexes_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_indexes(request={})
-        ).pages:
+        async for page_ in (await client.list_indexes(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3344,7 +3361,7 @@ def test_export_entities_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_export_entities_rest_unset_required_fields():
@@ -3538,7 +3555,7 @@ def test_import_entities_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_import_entities_rest_unset_required_fields():
@@ -3824,6 +3841,9 @@ def test_list_indexes_rest_pager(transport: str = "rest"):
 
         pager = client.list_indexes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, index.Index) for i in results)
@@ -3956,7 +3976,6 @@ def test_export_entities_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.ExportEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3977,7 +3996,6 @@ def test_import_entities_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.ImportEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3998,7 +4016,6 @@ def test_create_index_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.CreateIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -4019,7 +4036,6 @@ def test_delete_index_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.DeleteIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -4040,7 +4056,6 @@ def test_get_index_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.GetIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -4061,7 +4076,6 @@ def test_list_indexes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.ListIndexesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4100,7 +4114,6 @@ async def test_export_entities_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.ExportEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4125,7 +4138,6 @@ async def test_import_entities_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.ImportEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4150,7 +4162,6 @@ async def test_create_index_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.CreateIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -4175,7 +4186,6 @@ async def test_delete_index_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.DeleteIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -4206,7 +4216,6 @@ async def test_get_index_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.GetIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -4233,7 +4242,6 @@ async def test_list_indexes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.ListIndexesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5359,7 +5367,6 @@ def test_export_entities_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.ExportEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5379,7 +5386,6 @@ def test_import_entities_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.ImportEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5399,7 +5405,6 @@ def test_create_index_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.CreateIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -5419,7 +5424,6 @@ def test_delete_index_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.DeleteIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -5439,7 +5443,6 @@ def test_get_index_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.GetIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -5459,7 +5462,6 @@ def test_list_indexes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastore_admin.ListIndexesRequest()
-
         assert args[0] == request_msg
 
 

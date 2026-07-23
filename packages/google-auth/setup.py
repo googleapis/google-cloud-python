@@ -19,43 +19,50 @@ from setuptools import find_namespace_packages
 from setuptools import setup
 
 cryptography_base_require = [
-    "cryptography >= 38.0.3",
+    "cryptography >= 38.0.3; python_version < '3.14'",
+    "cryptography >= 41.0.5; python_version >= '3.14'",
 ]
 
 DEPENDENCIES = (
     "pyasn1-modules>=0.2.1",
-    cryptography_base_require,
+    *cryptography_base_require,
 )
 
-requests_extra_require = ["requests >= 2.20.0, < 3.0.0"]
+requests_extra_require = ["requests >= 2.30.0, < 3.0.0"]
 
-aiohttp_extra_require = ["aiohttp >= 3.8.0, < 4.0.0", *requests_extra_require]
+aiohttp_extra_require = [
+    "aiohttp >= 3.8.0, < 4.0.0; python_version < '3.14'",
+    "aiohttp >= 3.9.0, < 4.0.0; python_version >= '3.14'",
+    *requests_extra_require,
+]
 
 pyjwt_extra_require = ["pyjwt>=2.0"]
 
 reauth_extra_require = ["pyu2f>=0.1.5"]
 
-# TODO(https://github.com/googleapis/google-auth-library-python/issues/1738): Add bounds for pyopenssl dependency.
-enterprise_cert_extra_require = ["pyopenssl"]
+enterprise_cert_extra_require = cryptography_base_require
 
-pyopenssl_extra_require = ["pyopenssl>=20.0.0"]
+urllib3_extra_require = [
+    "urllib3 >= 1.26.15, < 3.0.0",
+    "packaging >= 20.0",
+]
 
-# TODO(https://github.com/googleapis/google-auth-library-python/issues/1739): Add bounds for urllib3 and packaging dependencies.
-urllib3_extra_require = ["urllib3", "packaging"]
+rsa_extra_require = ["rsa>=4.0.0,<5"]
 
-rsa_extra_require = ["rsa>=3.1.4,<5"]
+grpc_extra_require = [
+    "grpcio >= 1.59.0, < 2.0.0; python_version < '3.14'",
+    "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
+]
 
 # Unit test requirements.
 testing_extra_require = [
-    # TODO(https://github.com/googleapis/google-auth-library-python/issues/1735): Remove `grpcio` from testing requirements once an extra is added for `grpcio` dependency.
-    "grpcio",
+    *grpc_extra_require,
     "flask",
     "freezegun",
     *pyjwt_extra_require,
     "pytest",
     "pytest-cov",
     "pytest-localserver",
-    *pyopenssl_extra_require,
     *reauth_extra_require,
     "responses",
     *urllib3_extra_require,
@@ -63,29 +70,22 @@ testing_extra_require = [
     *aiohttp_extra_require,
     "aioresponses",
     "pytest-asyncio",
-    # TODO(https://github.com/googleapis/google-auth-library-python/issues/1665): Remove the pinned version of pyopenssl
-    # once `TestDecryptPrivateKey::test_success` is updated to remove the deprecated `OpenSSL.crypto.sign` and
-    # `OpenSSL.crypto.verify` methods. See: https://www.pyopenssl.org/en/latest/changelog.html#id3.
-    "pyopenssl < 24.3.0",
-    # TODO(https://github.com/googleapis/google-auth-library-python/issues/1722): `test_aiohttp_requests` depend on
-    # aiohttp < 3.10.0 which is a bug. Investigate and remove the pinned aiohttp version.
-    "aiohttp < 3.10.0",
 ]
 
 extras = {
     # Note: cryptography was made into a required dependency. Extra is kept for backwards compatibility
     "cryptography": cryptography_base_require,
+    # pyopenssl is deprecated, kept for backwards compatibility
+    "pyopenssl": cryptography_base_require,
     "aiohttp": aiohttp_extra_require,
     "enterprise_cert": enterprise_cert_extra_require,
-    "pyopenssl": pyopenssl_extra_require,
     "pyjwt": pyjwt_extra_require,
     "reauth": reauth_extra_require,
     "requests": requests_extra_require,
     "testing": testing_extra_require,
     "urllib3": urllib3_extra_require,
     "rsa": rsa_extra_require,
-    # TODO(https://github.com/googleapis/google-auth-library-python/issues/1735): Add an extra for `grpcio` dependency.
-    # TODO(https://github.com/googleapis/google-auth-library-python/issues/1736): Add an extra for `oauth2client` dependency.
+    "grpc": grpc_extra_require,
 }
 
 with io.open("README.rst", "r") as fh:
@@ -105,7 +105,7 @@ setup(
     author_email="googleapis-packages@google.com",
     description="Google Authentication Library",
     long_description=long_description,
-    url="https://github.com/googleapis/google-auth-library-python",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-auth",
     packages=find_namespace_packages(
         exclude=("tests*", "system_tests*", "docs*", "samples*")
     ),

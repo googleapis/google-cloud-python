@@ -22,6 +22,7 @@ from bigframes.operations import (
     array_ops,
     bool_ops,
     comparison_ops,
+    generic_ops,
     numeric_ops,
     string_ops,
 )
@@ -47,6 +48,8 @@ PYTHON_TO_BIGFRAMES = {
     operator.and_: bool_ops.and_op,
     operator.or_: bool_ops.or_op,
     operator.xor: bool_ops.xor_op,
+    operator.invert: generic_ops.invert_op,
+    operator.not_: generic_ops.invert_op,
     ## math
     math.log: numeric_ops.ln_op,
     math.log10: numeric_ops.log10_op,
@@ -71,11 +74,11 @@ PYTHON_TO_BIGFRAMES = {
     abs: numeric_ops.abs_op,
     pow: numeric_ops.pow_op,
     ### builtins -- iterable
-    all: array_ops.ArrayReduceOp(aggregations.all_op),
-    any: array_ops.ArrayReduceOp(aggregations.any_op),
-    sum: array_ops.ArrayReduceOp(aggregations.sum_op),
-    min: array_ops.ArrayReduceOp(aggregations.min_op),
-    max: array_ops.ArrayReduceOp(aggregations.max_op),
+    all: array_ops.ArrayReduceOp(aggregations.all_op),  # type: ignore
+    any: array_ops.ArrayReduceOp(aggregations.any_op),  # type: ignore
+    sum: array_ops.ArrayReduceOp(aggregations.sum_op),  # type: ignore
+    min: array_ops.ArrayReduceOp(aggregations.min_op),  # type: ignore
+    max: array_ops.ArrayReduceOp(aggregations.max_op),  # type: ignore
 }
 
 
@@ -83,3 +86,21 @@ def python_callable_to_op(obj) -> Optional[bigframes.operations.RowOp]:
     if obj in PYTHON_TO_BIGFRAMES:
         return PYTHON_TO_BIGFRAMES[obj]
     return None
+
+
+SERIES_METHOD_TO_OP = {
+    "abs": numeric_ops.abs_op,
+    "sqrt": numeric_ops.sqrt_op,
+    "sin": numeric_ops.sin_op,
+    "cos": numeric_ops.cos_op,
+    "tan": numeric_ops.tan_op,
+    "log": numeric_ops.ln_op,
+    "log10": numeric_ops.log10_op,
+    "exp": numeric_ops.exp_op,
+    "floor": numeric_ops.floor_op,
+    "ceil": numeric_ops.ceil_op,
+    "isnull": generic_ops.isnull_op,
+    "isna": generic_ops.isnull_op,
+    "notnull": generic_ops.notnull_op,
+    "notna": generic_ops.notnull_op,
+}

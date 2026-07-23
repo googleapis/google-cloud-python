@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -80,6 +80,8 @@ class ConfidentialComputingAsyncClient:
     parse_challenge_path = staticmethod(
         ConfidentialComputingClient.parse_challenge_path
     )
+    instance_path = staticmethod(ConfidentialComputingClient.instance_path)
+    parse_instance_path = staticmethod(ConfidentialComputingClient.parse_instance_path)
     common_billing_account_path = staticmethod(
         ConfidentialComputingClient.common_billing_account_path
     )

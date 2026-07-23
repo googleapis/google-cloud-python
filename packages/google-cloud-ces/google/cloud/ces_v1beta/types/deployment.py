@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,9 +25,103 @@ from google.cloud.ces_v1beta.types import common
 __protobuf__ = proto.module(
     package="google.cloud.ces.v1beta",
     manifest={
+        "ExperimentConfig",
         "Deployment",
     },
 )
+
+
+class ExperimentConfig(proto.Message):
+    r"""Experiment for the deployment.
+
+    Attributes:
+        version_release (google.cloud.ces_v1beta.types.ExperimentConfig.VersionRelease):
+            Optional. Version release for the experiment.
+    """
+
+    class State(proto.Enum):
+        r"""State of the experiment.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state.
+            PENDING (1):
+                Pending state. Experiment is pending and not
+                valid.
+            RUNNING (2):
+                Running state. Experiment is running and
+                valid.
+            DONE (3):
+                Done state. Experiment is done and no longer
+                valid.
+            EXPIRED (4):
+                Expired state. Experiment is expired and no
+                longer valid.
+        """
+
+        STATE_UNSPECIFIED = 0
+        PENDING = 1
+        RUNNING = 2
+        DONE = 3
+        EXPIRED = 4
+
+    class VersionRelease(proto.Message):
+        r"""Version release for the experiment.
+
+        Attributes:
+            state (google.cloud.ces_v1beta.types.ExperimentConfig.State):
+                Optional. State of the version release.
+            traffic_allocations (MutableSequence[google.cloud.ces_v1beta.types.ExperimentConfig.VersionRelease.TrafficAllocation]):
+                Optional. Traffic allocations for the version
+                release.
+        """
+
+        class TrafficAllocation(proto.Message):
+            r"""Traffic allocation for the version release.
+
+            Attributes:
+                id (str):
+                    Optional. Id of the traffic allocation.
+                    Free format string, up to 128 characters.
+                traffic_percentage (int):
+                    Optional. Traffic percentage of the traffic
+                    allocation. Must be between 0 and 100.
+                app_version (str):
+                    Optional. App version of the traffic allocation. Format:
+                    ``projects/{project}/locations/{location}/apps/{app}/versions/{version}``
+            """
+
+            id: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            traffic_percentage: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+            app_version: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+
+        state: "ExperimentConfig.State" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="ExperimentConfig.State",
+        )
+        traffic_allocations: MutableSequence[
+            "ExperimentConfig.VersionRelease.TrafficAllocation"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="ExperimentConfig.VersionRelease.TrafficAllocation",
+        )
+
+    version_release: VersionRelease = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=VersionRelease,
+    )
 
 
 class Deployment(proto.Message):
@@ -62,6 +156,9 @@ class Deployment(proto.Message):
             hasn't changed during a read-modify-write
             operation. If the etag is empty, the update will
             overwrite any concurrent changes.
+        experiment_config (google.cloud.ces_v1beta.types.ExperimentConfig):
+            Optional. Experiment configuration for the
+            deployment.
     """
 
     name: str = proto.Field(
@@ -94,6 +191,11 @@ class Deployment(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    experiment_config: "ExperimentConfig" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="ExperimentConfig",
     )
 
 

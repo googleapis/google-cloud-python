@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,13 +21,7 @@ from google.cloud.compute_v1beta import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
-
+from importlib import metadata
 
 from .services.accelerator_types import AcceleratorTypesClient
 from .services.addresses import AddressesClient
@@ -54,7 +48,9 @@ from .services.global_public_delegated_prefixes import (
 )
 from .services.global_vm_extension_policies import GlobalVmExtensionPoliciesClient
 from .services.health_checks import HealthChecksClient
+from .services.hosts import HostsClient
 from .services.image_family_views import ImageFamilyViewsClient
+from .services.image_views import ImageViewsClient
 from .services.images import ImagesClient
 from .services.instance_group_manager_resize_requests import (
     InstanceGroupManagerResizeRequestsClient,
@@ -85,9 +81,12 @@ from .services.networks import NetworksClient
 from .services.node_groups import NodeGroupsClient
 from .services.node_templates import NodeTemplatesClient
 from .services.node_types import NodeTypesClient
+from .services.organization_rollout_plans import OrganizationRolloutPlansClient
+from .services.organization_rollouts import OrganizationRolloutsClient
 from .services.organization_security_policies import OrganizationSecurityPoliciesClient
 from .services.packet_mirrorings import PacketMirroringsClient
 from .services.preview_features import PreviewFeaturesClient
+from .services.project_views import ProjectViewsClient
 from .services.projects import ProjectsClient
 from .services.public_advertised_prefixes import PublicAdvertisedPrefixesClient
 from .services.public_delegated_prefixes import PublicDelegatedPrefixesClient
@@ -134,6 +133,7 @@ from .services.region_target_tcp_proxies import RegionTargetTcpProxiesClient
 from .services.region_url_maps import RegionUrlMapsClient
 from .services.region_zones import RegionZonesClient
 from .services.regions import RegionsClient
+from .services.reliability_risks import ReliabilityRisksClient
 from .services.reservation_blocks import ReservationBlocksClient
 from .services.reservation_slots import ReservationSlotsClient
 from .services.reservation_sub_blocks import ReservationSubBlocksClient
@@ -213,6 +213,8 @@ from .types.compute import (
     AddTrafficClassificationRuleRegionNetworkPolicyRequest,
     AdoptInstancesRegionInstanceGroupManagerRequest,
     AdvancedMachineFeatures,
+    AdvanceOrganizationRolloutRequest,
+    AdvanceRolloutRequest,
     AggregatedListAcceleratorTypesRequest,
     AggregatedListAddressesRequest,
     AggregatedListAutoscalersRequest,
@@ -342,6 +344,7 @@ from .types.compute import (
     BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy,
     BackendServiceLocalityLoadBalancingPolicyConfigPolicy,
     BackendServiceLogConfig,
+    BackendServiceLogConfigLoggingHttpHeader,
     BackendServiceNetworkPassThroughLbTrafficPolicy,
     BackendServiceNetworkPassThroughLbTrafficPolicyZonalAffinity,
     BackendServiceOrchestrationInfo,
@@ -382,9 +385,31 @@ from .types.compute import (
     CalendarModeRecommendation,
     CancelFutureReservationRequest,
     CancelInstanceGroupManagerResizeRequestRequest,
+    CancelOrganizationRolloutRequest,
     CancelRegionInstanceGroupManagerResizeRequestRequest,
     CancelRequestRemovePeeringNetworkRequest,
     CancelRolloutRequest,
+    CapacityAdviceRequest,
+    CapacityAdviceRequestDistributionPolicy,
+    CapacityAdviceRequestDistributionPolicyZoneConfiguration,
+    CapacityAdviceRequestInstanceFlexibilityPolicy,
+    CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelection,
+    CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttachedDisk,
+    CapacityAdviceRequestInstanceProperties,
+    CapacityAdviceRequestInstancePropertiesScheduling,
+    CapacityAdviceResponse,
+    CapacityAdviceResponseRecommendation,
+    CapacityAdviceResponseRecommendationScores,
+    CapacityAdviceResponseRecommendationShard,
+    CapacityAdviceRpcRequest,
+    CapacityHistoryAdviceRequest,
+    CapacityHistoryRequest,
+    CapacityHistoryRequestInstanceProperties,
+    CapacityHistoryRequestInstancePropertiesScheduling,
+    CapacityHistoryRequestLocationPolicy,
+    CapacityHistoryResponse,
+    CapacityHistoryResponsePreemptionRecord,
+    CapacityHistoryResponsePriceRecord,
     CircuitBreakers,
     CloneRulesFirewallPolicyRequest,
     CloneRulesNetworkFirewallPolicyRequest,
@@ -421,6 +446,7 @@ from .types.compute import (
     CustomErrorResponsePolicyCustomErrorResponseRule,
     Data,
     Date,
+    DateTime,
     DeleteAccessConfigInstanceRequest,
     DeleteAddressRequest,
     DeleteAutoscalerRequest,
@@ -469,6 +495,8 @@ from .types.compute import (
     DeleteNodeGroupRequest,
     DeleteNodesNodeGroupRequest,
     DeleteNodeTemplateRequest,
+    DeleteOrganizationRolloutPlanRequest,
+    DeleteOrganizationRolloutRequest,
     DeleteOrganizationSecurityPolicyRequest,
     DeletePacketMirroringRequest,
     DeletePerInstanceConfigsInstanceGroupManagerRequest,
@@ -605,6 +633,7 @@ from .types.compute import (
     FlexibleTimeRange,
     ForwardingRule,
     ForwardingRuleAggregatedList,
+    ForwardingRuleAttachedExtension,
     ForwardingRuleList,
     ForwardingRuleReference,
     ForwardingRuleServiceDirectoryRegistration,
@@ -671,6 +700,7 @@ from .types.compute import (
     GetHealthRegionCompositeHealthCheckRequest,
     GetHealthRegionHealthSourceRequest,
     GetHealthTargetPoolRequest,
+    GetHostRequest,
     GetIamPolicyBackendBucketRequest,
     GetIamPolicyBackendServiceRequest,
     GetIamPolicyDiskRequest,
@@ -682,6 +712,7 @@ from .types.compute import (
     GetIamPolicyInstantSnapshotRequest,
     GetIamPolicyInterconnectAttachmentGroupRequest,
     GetIamPolicyInterconnectGroupRequest,
+    GetIamPolicyLicenseCodeRequest,
     GetIamPolicyLicenseRequest,
     GetIamPolicyMachineImageRequest,
     GetIamPolicyNetworkAttachmentRequest,
@@ -706,6 +737,7 @@ from .types.compute import (
     GetIamPolicySubnetworkRequest,
     GetImageFamilyViewRequest,
     GetImageRequest,
+    GetImageViewRequest,
     GetInstanceGroupManagerRequest,
     GetInstanceGroupManagerResizeRequestRequest,
     GetInstanceGroupRequest,
@@ -739,6 +771,8 @@ from .types.compute import (
     GetNodeTypeRequest,
     GetOperationalStatusInterconnectAttachmentGroupRequest,
     GetOperationalStatusInterconnectGroupRequest,
+    GetOrganizationRolloutPlanRequest,
+    GetOrganizationRolloutRequest,
     GetOrganizationSecurityPolicyRequest,
     GetPacketMirroringRequest,
     GetPacketMirroringRuleFirewallPolicyRequest,
@@ -746,6 +780,7 @@ from .types.compute import (
     GetPartnerMetadataInstanceRequest,
     GetPreviewFeatureRequest,
     GetProjectRequest,
+    GetProjectViewRequest,
     GetPublicAdvertisedPrefixeRequest,
     GetPublicDelegatedPrefixeRequest,
     GetRegionAutoscalerRequest,
@@ -783,6 +818,7 @@ from .types.compute import (
     GetRegionTargetHttpsProxyRequest,
     GetRegionTargetTcpProxyRequest,
     GetRegionUrlMapRequest,
+    GetReliabilityRiskRequest,
     GetReservationBlockRequest,
     GetReservationRequest,
     GetReservationSlotRequest,
@@ -825,6 +861,7 @@ from .types.compute import (
     GetTargetVpnGatewayRequest,
     GetTrafficClassificationRuleRegionNetworkPolicyRequest,
     GetUrlMapRequest,
+    GetVersionHostRequest,
     GetVersionOperationMetadata,
     GetVersionOperationMetadataSbomInfo,
     GetVersionReservationSlotRequest,
@@ -886,7 +923,12 @@ from .types.compute import (
     HealthStatusForNetworkEndpoint,
     Help,
     HelpLink,
+    Host,
+    HostPhysicalTopology,
     HostRule,
+    HostsGetVersionRequest,
+    HostsListResponse,
+    HostStatus,
     HTTP2HealthCheck,
     HttpFaultAbort,
     HttpFaultDelay,
@@ -906,7 +948,9 @@ from .types.compute import (
     Image,
     ImageFamilyView,
     ImageList,
+    ImageOptimizationPolicy,
     ImageParams,
+    ImageView,
     InitialStateConfig,
     InsertAddressRequest,
     InsertAutoscalerRequest,
@@ -946,6 +990,7 @@ from .types.compute import (
     InsertNetworkRequest,
     InsertNodeGroupRequest,
     InsertNodeTemplateRequest,
+    InsertOrganizationRolloutPlanRequest,
     InsertOrganizationSecurityPolicyRequest,
     InsertPacketMirroringRequest,
     InsertPublicAdvertisedPrefixeRequest,
@@ -1196,6 +1241,7 @@ from .types.compute import (
     InterconnectRemoteLocationPermittedConnections,
     InterconnectsGetDiagnosticsResponse,
     InterconnectsGetMacsecConfigResponse,
+    Interval,
     InvalidateCacheRegionUrlMapRequest,
     InvalidateCacheUrlMapRequest,
     Items,
@@ -1235,6 +1281,7 @@ from .types.compute import (
     ListGlobalPublicDelegatedPrefixesRequest,
     ListGlobalVmExtensionPoliciesRequest,
     ListHealthChecksRequest,
+    ListHostsRequest,
     ListImagesRequest,
     ListInstanceGroupManagerResizeRequestsRequest,
     ListInstanceGroupManagersRequest,
@@ -1270,6 +1317,8 @@ from .types.compute import (
     ListNodesNodeGroupsRequest,
     ListNodeTemplatesRequest,
     ListNodeTypesRequest,
+    ListOrganizationRolloutPlansRequest,
+    ListOrganizationRolloutsRequest,
     ListOrganizationSecurityPoliciesRequest,
     ListPacketMirroringsRequest,
     ListPeeringRoutesNetworksRequest,
@@ -1315,6 +1364,7 @@ from .types.compute import (
     ListRegionTargetTcpProxiesRequest,
     ListRegionUrlMapsRequest,
     ListRegionZonesRequest,
+    ListReliabilityRisksRequest,
     ListReservationBlocksRequest,
     ListReservationSlotsRequest,
     ListReservationsRequest,
@@ -1376,10 +1426,12 @@ from .types.compute import (
     ManagedInstanceLastAttemptErrors,
     ManagedInstancePropertiesFromFlexibilityPolicy,
     ManagedInstanceScheduling,
+    ManagedInstanceShutdownDetails,
     ManagedInstanceVersion,
     Metadata,
     MetadataFilter,
     MetadataFilterLabelMatch,
+    Money,
     MoveAddressRequest,
     MoveDiskProjectRequest,
     MoveFirewallPolicyRequest,
@@ -1491,6 +1543,7 @@ from .types.compute import (
     OperationAggregatedList,
     OperationList,
     OperationsScopedList,
+    OrganizationRolloutsListResponse,
     OrganizationSecurityPoliciesListAssociationsResponse,
     OutlierDetection,
     PacketIntervals,
@@ -1578,12 +1631,16 @@ from .types.compute import (
     PatchWireGroupRequest,
     PathMatcher,
     PathRule,
+    PauseOrganizationRolloutRequest,
+    PauseRolloutRequest,
     PerformMaintenanceInstanceRequest,
     PerformMaintenanceNodeGroupRequest,
     PerformMaintenanceReservationBlockRequest,
     PerformMaintenanceReservationRequest,
     PerformMaintenanceReservationSubBlockRequest,
     PerInstanceConfig,
+    PeriodicPartialMaintenanceSchedule,
+    PersistentDiskResourceCommitment,
     Policy,
     PreconfiguredWafSet,
     PreservedState,
@@ -1605,6 +1662,7 @@ from .types.compute import (
     ProjectsSetCloudArmorTierRequest,
     ProjectsSetDefaultNetworkTierRequest,
     ProjectsSetManagedProtectionTierRequest,
+    ProjectView,
     PublicAdvertisedPrefix,
     PublicAdvertisedPrefixList,
     PublicAdvertisedPrefixPublicDelegatedPrefix,
@@ -1620,6 +1678,7 @@ from .types.compute import (
     RecreateInstancesInstanceGroupManagerRequest,
     RecreateInstancesRegionInstanceGroupManagerRequest,
     Reference,
+    RegexRewrite,
     Region,
     RegionAddressesMoveRequest,
     RegionAutoscalerList,
@@ -1666,6 +1725,8 @@ from .types.compute import (
     RegionSnapshotUpdateKmsKeyRequest,
     RegionTargetHttpsProxiesSetSslCertificatesRequest,
     RegionUrlMapsValidateRequest,
+    ReliabilityRisk,
+    ReliabilityRisksListResponse,
     RemoveAssociationFirewallPolicyRequest,
     RemoveAssociationNetworkFirewallPolicyRequest,
     RemoveAssociationOrganizationSecurityPolicyRequest,
@@ -1754,12 +1815,18 @@ from .types.compute import (
     ResourceStatus,
     ResourceStatusEffectiveInstanceMetadata,
     ResourceStatusPhysicalHostTopology,
+    ResourceStatusPhysicalHostTopologyAdditionalAttributes,
     ResourceStatusReservationConsumptionInfo,
     ResourceStatusScheduling,
     ResourceStatusShutdownDetails,
     ResumeInstanceRequest,
     ResumeInstancesInstanceGroupManagerRequest,
     ResumeInstancesRegionInstanceGroupManagerRequest,
+    ResumeOrganizationRolloutRequest,
+    ResumeRolloutRequest,
+    RiskDetails,
+    RiskDetailsGlobalDnsInsight,
+    RiskRecommendation,
     Rollout,
     RolloutPlan,
     RolloutPlansListResponse,
@@ -1896,6 +1963,7 @@ from .types.compute import (
     SetIamPolicyInstantSnapshotRequest,
     SetIamPolicyInterconnectAttachmentGroupRequest,
     SetIamPolicyInterconnectGroupRequest,
+    SetIamPolicyLicenseCodeRequest,
     SetIamPolicyLicenseRequest,
     SetIamPolicyMachineImageRequest,
     SetIamPolicyNetworkAttachmentRequest,
@@ -1979,6 +2047,7 @@ from .types.compute import (
     SetUrlMapTargetHttpsProxyRequest,
     SetUsageExportBucketProjectRequest,
     ShareSettings,
+    ShareSettingsFolderConfig,
     ShareSettingsProjectConfig,
     ShieldedInstanceConfig,
     ShieldedInstanceIdentity,
@@ -2202,6 +2271,7 @@ from .types.compute import (
     TestIamPermissionsVpnTunnelRequest,
     TestPermissionsRequest,
     TestPermissionsResponse,
+    TimeZone,
     Uint128,
     UpcomingMaintenance,
     UpdateAccessConfigInstanceRequest,
@@ -2318,6 +2388,7 @@ from .types.compute import (
     XpnResourceId,
     Zone,
     ZoneList,
+    ZoneResourceStatus,
     ZoneSetLabelsRequest,
     ZoneSetNestedPolicyRequest,
     ZoneSetPolicyRequest,
@@ -2332,34 +2403,23 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.compute_v1beta"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -2388,9 +2448,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -2464,6 +2524,8 @@ __all__ = (
     "AddressesClient",
     "AddressesScopedList",
     "AdoptInstancesRegionInstanceGroupManagerRequest",
+    "AdvanceOrganizationRolloutRequest",
+    "AdvanceRolloutRequest",
     "AdvancedMachineFeatures",
     "AdviceClient",
     "AggregatedListAcceleratorTypesRequest",
@@ -2596,6 +2658,7 @@ __all__ = (
     "BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy",
     "BackendServiceLocalityLoadBalancingPolicyConfigPolicy",
     "BackendServiceLogConfig",
+    "BackendServiceLogConfigLoggingHttpHeader",
     "BackendServiceNetworkPassThroughLbTrafficPolicy",
     "BackendServiceNetworkPassThroughLbTrafficPolicyZonalAffinity",
     "BackendServiceOrchestrationInfo",
@@ -2637,9 +2700,31 @@ __all__ = (
     "CalendarModeRecommendation",
     "CancelFutureReservationRequest",
     "CancelInstanceGroupManagerResizeRequestRequest",
+    "CancelOrganizationRolloutRequest",
     "CancelRegionInstanceGroupManagerResizeRequestRequest",
     "CancelRequestRemovePeeringNetworkRequest",
     "CancelRolloutRequest",
+    "CapacityAdviceRequest",
+    "CapacityAdviceRequestDistributionPolicy",
+    "CapacityAdviceRequestDistributionPolicyZoneConfiguration",
+    "CapacityAdviceRequestInstanceFlexibilityPolicy",
+    "CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelection",
+    "CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttachedDisk",
+    "CapacityAdviceRequestInstanceProperties",
+    "CapacityAdviceRequestInstancePropertiesScheduling",
+    "CapacityAdviceResponse",
+    "CapacityAdviceResponseRecommendation",
+    "CapacityAdviceResponseRecommendationScores",
+    "CapacityAdviceResponseRecommendationShard",
+    "CapacityAdviceRpcRequest",
+    "CapacityHistoryAdviceRequest",
+    "CapacityHistoryRequest",
+    "CapacityHistoryRequestInstanceProperties",
+    "CapacityHistoryRequestInstancePropertiesScheduling",
+    "CapacityHistoryRequestLocationPolicy",
+    "CapacityHistoryResponse",
+    "CapacityHistoryResponsePreemptionRecord",
+    "CapacityHistoryResponsePriceRecord",
     "CircuitBreakers",
     "CloneRulesFirewallPolicyRequest",
     "CloneRulesNetworkFirewallPolicyRequest",
@@ -2677,6 +2762,7 @@ __all__ = (
     "CustomerEncryptionKeyProtectedDisk",
     "Data",
     "Date",
+    "DateTime",
     "DeleteAccessConfigInstanceRequest",
     "DeleteAddressRequest",
     "DeleteAutoscalerRequest",
@@ -2725,6 +2811,8 @@ __all__ = (
     "DeleteNodeGroupRequest",
     "DeleteNodeTemplateRequest",
     "DeleteNodesNodeGroupRequest",
+    "DeleteOrganizationRolloutPlanRequest",
+    "DeleteOrganizationRolloutRequest",
     "DeleteOrganizationSecurityPolicyRequest",
     "DeletePacketMirroringRequest",
     "DeletePerInstanceConfigsInstanceGroupManagerRequest",
@@ -2867,6 +2955,7 @@ __all__ = (
     "FlexibleTimeRange",
     "ForwardingRule",
     "ForwardingRuleAggregatedList",
+    "ForwardingRuleAttachedExtension",
     "ForwardingRuleList",
     "ForwardingRuleReference",
     "ForwardingRuleServiceDirectoryRegistration",
@@ -2937,6 +3026,7 @@ __all__ = (
     "GetHealthRegionCompositeHealthCheckRequest",
     "GetHealthRegionHealthSourceRequest",
     "GetHealthTargetPoolRequest",
+    "GetHostRequest",
     "GetIamPolicyBackendBucketRequest",
     "GetIamPolicyBackendServiceRequest",
     "GetIamPolicyDiskRequest",
@@ -2948,6 +3038,7 @@ __all__ = (
     "GetIamPolicyInstantSnapshotRequest",
     "GetIamPolicyInterconnectAttachmentGroupRequest",
     "GetIamPolicyInterconnectGroupRequest",
+    "GetIamPolicyLicenseCodeRequest",
     "GetIamPolicyLicenseRequest",
     "GetIamPolicyMachineImageRequest",
     "GetIamPolicyNetworkAttachmentRequest",
@@ -2972,6 +3063,7 @@ __all__ = (
     "GetIamPolicySubnetworkRequest",
     "GetImageFamilyViewRequest",
     "GetImageRequest",
+    "GetImageViewRequest",
     "GetInstanceGroupManagerRequest",
     "GetInstanceGroupManagerResizeRequestRequest",
     "GetInstanceGroupRequest",
@@ -3005,6 +3097,8 @@ __all__ = (
     "GetNodeTypeRequest",
     "GetOperationalStatusInterconnectAttachmentGroupRequest",
     "GetOperationalStatusInterconnectGroupRequest",
+    "GetOrganizationRolloutPlanRequest",
+    "GetOrganizationRolloutRequest",
     "GetOrganizationSecurityPolicyRequest",
     "GetPacketMirroringRequest",
     "GetPacketMirroringRuleFirewallPolicyRequest",
@@ -3012,6 +3106,7 @@ __all__ = (
     "GetPartnerMetadataInstanceRequest",
     "GetPreviewFeatureRequest",
     "GetProjectRequest",
+    "GetProjectViewRequest",
     "GetPublicAdvertisedPrefixeRequest",
     "GetPublicDelegatedPrefixeRequest",
     "GetRegionAutoscalerRequest",
@@ -3049,6 +3144,7 @@ __all__ = (
     "GetRegionTargetHttpsProxyRequest",
     "GetRegionTargetTcpProxyRequest",
     "GetRegionUrlMapRequest",
+    "GetReliabilityRiskRequest",
     "GetReservationBlockRequest",
     "GetReservationRequest",
     "GetReservationSlotRequest",
@@ -3091,6 +3187,7 @@ __all__ = (
     "GetTargetVpnGatewayRequest",
     "GetTrafficClassificationRuleRegionNetworkPolicyRequest",
     "GetUrlMapRequest",
+    "GetVersionHostRequest",
     "GetVersionOperationMetadata",
     "GetVersionOperationMetadataSbomInfo",
     "GetVersionReservationSlotRequest",
@@ -3161,7 +3258,13 @@ __all__ = (
     "HealthStatusForNetworkEndpoint",
     "Help",
     "HelpLink",
+    "Host",
+    "HostPhysicalTopology",
     "HostRule",
+    "HostStatus",
+    "HostsClient",
+    "HostsGetVersionRequest",
+    "HostsListResponse",
     "HttpFaultAbort",
     "HttpFaultDelay",
     "HttpFaultInjection",
@@ -3179,7 +3282,10 @@ __all__ = (
     "ImageFamilyView",
     "ImageFamilyViewsClient",
     "ImageList",
+    "ImageOptimizationPolicy",
     "ImageParams",
+    "ImageView",
+    "ImageViewsClient",
     "ImagesClient",
     "InitialStateConfig",
     "InsertAddressRequest",
@@ -3220,6 +3326,7 @@ __all__ = (
     "InsertNetworkRequest",
     "InsertNodeGroupRequest",
     "InsertNodeTemplateRequest",
+    "InsertOrganizationRolloutPlanRequest",
     "InsertOrganizationSecurityPolicyRequest",
     "InsertPacketMirroringRequest",
     "InsertPublicAdvertisedPrefixeRequest",
@@ -3484,6 +3591,7 @@ __all__ = (
     "InterconnectsClient",
     "InterconnectsGetDiagnosticsResponse",
     "InterconnectsGetMacsecConfigResponse",
+    "Interval",
     "InvalidateCacheRegionUrlMapRequest",
     "InvalidateCacheUrlMapRequest",
     "Items",
@@ -3525,6 +3633,7 @@ __all__ = (
     "ListGlobalPublicDelegatedPrefixesRequest",
     "ListGlobalVmExtensionPoliciesRequest",
     "ListHealthChecksRequest",
+    "ListHostsRequest",
     "ListImagesRequest",
     "ListInstanceGroupManagerResizeRequestsRequest",
     "ListInstanceGroupManagersRequest",
@@ -3560,6 +3669,8 @@ __all__ = (
     "ListNodeTemplatesRequest",
     "ListNodeTypesRequest",
     "ListNodesNodeGroupsRequest",
+    "ListOrganizationRolloutPlansRequest",
+    "ListOrganizationRolloutsRequest",
     "ListOrganizationSecurityPoliciesRequest",
     "ListPacketMirroringsRequest",
     "ListPeeringRoutesNetworksRequest",
@@ -3605,6 +3716,7 @@ __all__ = (
     "ListRegionUrlMapsRequest",
     "ListRegionZonesRequest",
     "ListRegionsRequest",
+    "ListReliabilityRisksRequest",
     "ListReservationBlocksRequest",
     "ListReservationSlotsRequest",
     "ListReservationSubBlocksRequest",
@@ -3668,10 +3780,12 @@ __all__ = (
     "ManagedInstanceLastAttemptErrors",
     "ManagedInstancePropertiesFromFlexibilityPolicy",
     "ManagedInstanceScheduling",
+    "ManagedInstanceShutdownDetails",
     "ManagedInstanceVersion",
     "Metadata",
     "MetadataFilter",
     "MetadataFilterLabelMatch",
+    "Money",
     "MoveAddressRequest",
     "MoveDiskProjectRequest",
     "MoveFirewallPolicyRequest",
@@ -3792,6 +3906,9 @@ __all__ = (
     "OperationAggregatedList",
     "OperationList",
     "OperationsScopedList",
+    "OrganizationRolloutPlansClient",
+    "OrganizationRolloutsClient",
+    "OrganizationRolloutsListResponse",
     "OrganizationSecurityPoliciesClient",
     "OrganizationSecurityPoliciesListAssociationsResponse",
     "OutlierDetection",
@@ -3881,12 +3998,16 @@ __all__ = (
     "PatchWireGroupRequest",
     "PathMatcher",
     "PathRule",
+    "PauseOrganizationRolloutRequest",
+    "PauseRolloutRequest",
     "PerInstanceConfig",
     "PerformMaintenanceInstanceRequest",
     "PerformMaintenanceNodeGroupRequest",
     "PerformMaintenanceReservationBlockRequest",
     "PerformMaintenanceReservationRequest",
     "PerformMaintenanceReservationSubBlockRequest",
+    "PeriodicPartialMaintenanceSchedule",
+    "PersistentDiskResourceCommitment",
     "Policy",
     "PreconfiguredWafSet",
     "PreservedState",
@@ -3902,6 +4023,8 @@ __all__ = (
     "PreviewFeaturesClient",
     "PreviewRouterRequest",
     "Project",
+    "ProjectView",
+    "ProjectViewsClient",
     "ProjectsClient",
     "ProjectsDisableXpnResourceRequest",
     "ProjectsEnableXpnResourceRequest",
@@ -3927,6 +4050,7 @@ __all__ = (
     "RecreateInstancesInstanceGroupManagerRequest",
     "RecreateInstancesRegionInstanceGroupManagerRequest",
     "Reference",
+    "RegexRewrite",
     "Region",
     "RegionAddressesMoveRequest",
     "RegionAutoscalerList",
@@ -4010,6 +4134,9 @@ __all__ = (
     "RegionUrlMapsValidateRequest",
     "RegionZonesClient",
     "RegionsClient",
+    "ReliabilityRisk",
+    "ReliabilityRisksClient",
+    "ReliabilityRisksListResponse",
     "RemoveAssociationFirewallPolicyRequest",
     "RemoveAssociationNetworkFirewallPolicyRequest",
     "RemoveAssociationOrganizationSecurityPolicyRequest",
@@ -4103,12 +4230,18 @@ __all__ = (
     "ResourceStatus",
     "ResourceStatusEffectiveInstanceMetadata",
     "ResourceStatusPhysicalHostTopology",
+    "ResourceStatusPhysicalHostTopologyAdditionalAttributes",
     "ResourceStatusReservationConsumptionInfo",
     "ResourceStatusScheduling",
     "ResourceStatusShutdownDetails",
     "ResumeInstanceRequest",
     "ResumeInstancesInstanceGroupManagerRequest",
     "ResumeInstancesRegionInstanceGroupManagerRequest",
+    "ResumeOrganizationRolloutRequest",
+    "ResumeRolloutRequest",
+    "RiskDetails",
+    "RiskDetailsGlobalDnsInsight",
+    "RiskRecommendation",
     "Rollout",
     "RolloutPlan",
     "RolloutPlanWave",
@@ -4252,6 +4385,7 @@ __all__ = (
     "SetIamPolicyInstantSnapshotRequest",
     "SetIamPolicyInterconnectAttachmentGroupRequest",
     "SetIamPolicyInterconnectGroupRequest",
+    "SetIamPolicyLicenseCodeRequest",
     "SetIamPolicyLicenseRequest",
     "SetIamPolicyMachineImageRequest",
     "SetIamPolicyNetworkAttachmentRequest",
@@ -4335,6 +4469,7 @@ __all__ = (
     "SetUrlMapTargetHttpsProxyRequest",
     "SetUsageExportBucketProjectRequest",
     "ShareSettings",
+    "ShareSettingsFolderConfig",
     "ShareSettingsProjectConfig",
     "ShieldedInstanceConfig",
     "ShieldedInstanceIdentity",
@@ -4573,6 +4708,7 @@ __all__ = (
     "TestIamPermissionsVpnTunnelRequest",
     "TestPermissionsRequest",
     "TestPermissionsResponse",
+    "TimeZone",
     "Uint128",
     "UpcomingMaintenance",
     "UpdateAccessConfigInstanceRequest",
@@ -4694,6 +4830,7 @@ __all__ = (
     "Zone",
     "ZoneList",
     "ZoneOperationsClient",
+    "ZoneResourceStatus",
     "ZoneSetLabelsRequest",
     "ZoneSetNestedPolicyRequest",
     "ZoneSetPolicyRequest",

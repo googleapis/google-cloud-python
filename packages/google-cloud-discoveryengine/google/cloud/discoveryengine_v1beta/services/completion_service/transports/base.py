@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,7 +45,13 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class CompletionServiceTransport(abc.ABC):
     """Abstract transport class for CompletionService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/cloud_search.query",
+        "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+        "https://www.googleapis.com/auth/discoveryengine.readwrite",
+        "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+    )
 
     DEFAULT_HOST: str = "discoveryengine.googleapis.com"
 
@@ -178,6 +184,11 @@ class CompletionServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.remove_suggestion: gapic_v1.method.wrap_method(
+                self.remove_suggestion,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.cancel_operation: gapic_v1.method.wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
@@ -266,6 +277,18 @@ class CompletionServiceTransport(abc.ABC):
     ) -> Callable[
         [purge_config.PurgeCompletionSuggestionsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def remove_suggestion(
+        self,
+    ) -> Callable[
+        [completion_service.RemoveSuggestionRequest],
+        Union[
+            completion_service.RemoveSuggestionResponse,
+            Awaitable[completion_service.RemoveSuggestionResponse],
+        ],
     ]:
         raise NotImplementedError()
 

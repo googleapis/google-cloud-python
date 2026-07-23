@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -114,6 +114,14 @@ class MemorystoreRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_finish_migration(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_finish_migration(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -183,6 +191,14 @@ class MemorystoreRestInterceptor:
                 return request, metadata
 
             def post_reschedule_maintenance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_start_migration(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_start_migration(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -437,6 +453,54 @@ class MemorystoreRestInterceptor:
         `post_export_backup` interceptor. The (possibly modified) response returned by
         `post_export_backup` will be passed to
         `post_export_backup_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_finish_migration(
+        self,
+        request: memorystore.FinishMigrationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.FinishMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for finish_migration
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_finish_migration(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for finish_migration
+
+        DEPRECATED. Please use the `post_finish_migration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_finish_migration` interceptor runs
+        before the `post_finish_migration_with_metadata` interceptor.
+        """
+        return response
+
+    def post_finish_migration_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for finish_migration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_finish_migration_with_metadata`
+        interceptor in new development instead of the `post_finish_migration` interceptor.
+        When both interceptors are used, this `post_finish_migration_with_metadata` interceptor runs after the
+        `post_finish_migration` interceptor. The (possibly modified) response returned by
+        `post_finish_migration` will be passed to
+        `post_finish_migration_with_metadata`.
         """
         return response, metadata
 
@@ -878,6 +942,54 @@ class MemorystoreRestInterceptor:
         """
         return response, metadata
 
+    def pre_start_migration(
+        self,
+        request: memorystore.StartMigrationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.StartMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for start_migration
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_start_migration(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for start_migration
+
+        DEPRECATED. Please use the `post_start_migration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_start_migration` interceptor runs
+        before the `post_start_migration_with_metadata` interceptor.
+        """
+        return response
+
+    def post_start_migration_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for start_migration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_start_migration_with_metadata`
+        interceptor in new development instead of the `post_start_migration` interceptor.
+        When both interceptors are used, this `post_start_migration_with_metadata` interceptor runs after the
+        `post_start_migration` interceptor. The (possibly modified) response returned by
+        `post_start_migration` will be passed to
+        `post_start_migration_with_metadata`.
+        """
+        return response, metadata
+
     def pre_update_instance(
         self,
         request: memorystore.UpdateInstanceRequest,
@@ -1260,7 +1372,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.BackupInstanceRequest):
-                    The request object. Request for [BackupInstance].
+                    The request object. Request for ``BackupInstance``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1561,7 +1673,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.DeleteBackupRequest):
-                    The request object. Request for [DeleteBackup].
+                    The request object. Request for ``DeleteBackup``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1856,7 +1968,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.ExportBackupRequest):
-                    The request object. Request for [ExportBackup].
+                    The request object. Request for ``ExportBackup``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1972,6 +2084,159 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
+    class _FinishMigration(
+        _BaseMemorystoreRestTransport._BaseFinishMigration, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.FinishMigration")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.FinishMigrationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the finish migration method over HTTP.
+
+            Args:
+                request (~.memorystore.FinishMigrationRequest):
+                    The request object. Request for ``FinishMigration``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseFinishMigration._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_finish_migration(
+                request, metadata
+            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseFinishMigration._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseMemorystoreRestTransport._BaseFinishMigration._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseFinishMigration._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.FinishMigration",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "FinishMigration",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._FinishMigration._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_finish_migration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_finish_migration_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.finish_migration",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "FinishMigration",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetBackup(_BaseMemorystoreRestTransport._BaseGetBackup, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.GetBackup")
@@ -2010,7 +2275,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.GetBackupRequest):
-                    The request object. Request for [GetBackup].
+                    The request object. Request for ``GetBackup``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2158,7 +2423,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.GetBackupCollectionRequest):
-                    The request object. Request for [GetBackupCollection].
+                    The request object. Request for ``GetBackupCollection``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2302,7 +2567,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.GetCertificateAuthorityRequest):
-                    The request object. Request message for [GetCertificateAuthority][].
+                    The request object. Request message for ``GetCertificateAuthority``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2602,8 +2867,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
                 Args:
                     request (~.memorystore.GetSharedRegionalCertificateAuthorityRequest):
-                        The request object. Request for
-                    [GetSharedRegionalCertificateAuthority][google.cloud.memorystore.v1.Memorystore.GetSharedRegionalCertificateAuthority].
+                        The request object. Request for ``GetSharedRegionalCertificateAuthority``.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2757,7 +3021,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.ListBackupCollectionsRequest):
-                    The request object. Request for [ListBackupCollections]
+                    The request object. Request for ``ListBackupCollections``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2768,7 +3032,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Returns:
                 ~.memorystore.ListBackupCollectionsResponse:
-                    Response for [ListBackupCollections].
+                    Response for ``ListBackupCollections``.
             """
 
             http_options = _BaseMemorystoreRestTransport._BaseListBackupCollections._get_http_options()
@@ -2903,7 +3167,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.ListBackupsRequest):
-                    The request object. Request for [ListBackups].
+                    The request object. Request for ``ListBackups``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2914,7 +3178,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Returns:
                 ~.memorystore.ListBackupsResponse:
-                    Response for [ListBackups].
+                    Response for ``ListBackups``.
             """
 
             http_options = (
@@ -3062,7 +3326,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Returns:
                 ~.memorystore.ListInstancesResponse:
-                    Response message for [ListInstances][].
+                    Response message for ``ListInstances``.
             """
 
             http_options = (
@@ -3311,6 +3575,157 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
+    class _StartMigration(
+        _BaseMemorystoreRestTransport._BaseStartMigration, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.StartMigration")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.StartMigrationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the start migration method over HTTP.
+
+            Args:
+                request (~.memorystore.StartMigrationRequest):
+                    The request object. Request for ``StartMigration``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseStartMigration._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_start_migration(request, metadata)
+            transcoded_request = _BaseMemorystoreRestTransport._BaseStartMigration._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseMemorystoreRestTransport._BaseStartMigration._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseStartMigration._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.StartMigration",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "StartMigration",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._StartMigration._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_start_migration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_start_migration_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.start_migration",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "StartMigration",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateInstance(
         _BaseMemorystoreRestTransport._BaseUpdateInstance, MemorystoreRestStub
     ):
@@ -3503,6 +3918,14 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
         return self._ExportBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def finish_migration(
+        self,
+    ) -> Callable[[memorystore.FinishMigrationRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FinishMigration(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_backup(
         self,
     ) -> Callable[[memorystore.GetBackupRequest], memorystore.Backup]:
@@ -3589,6 +4012,14 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RescheduleMaintenance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def start_migration(
+        self,
+    ) -> Callable[[memorystore.StartMigrationRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StartMigration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_instance(

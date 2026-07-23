@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,14 +21,20 @@ from google.cloud.discoveryengine_v1beta import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
+from importlib import metadata
 
-
+from .services.acl_config_service import (
+    AclConfigServiceAsyncClient,
+    AclConfigServiceClient,
+)
+from .services.assistant_service import (
+    AssistantServiceAsyncClient,
+    AssistantServiceClient,
+)
+from .services.cmek_config_service import (
+    CmekConfigServiceAsyncClient,
+    CmekConfigServiceClient,
+)
 from .services.completion_service import (
     CompletionServiceAsyncClient,
     CompletionServiceClient,
@@ -51,6 +57,14 @@ from .services.evaluation_service import (
 from .services.grounded_generation_service import (
     GroundedGenerationServiceAsyncClient,
     GroundedGenerationServiceClient,
+)
+from .services.identity_mapping_store_service import (
+    IdentityMappingStoreServiceAsyncClient,
+    IdentityMappingStoreServiceClient,
+)
+from .services.license_config_service import (
+    LicenseConfigServiceAsyncClient,
+    LicenseConfigServiceClient,
 )
 from .services.project_service import ProjectServiceAsyncClient, ProjectServiceClient
 from .services.rank_service import RankServiceAsyncClient, RankServiceClient
@@ -85,18 +99,63 @@ from .services.user_event_service import (
     UserEventServiceAsyncClient,
     UserEventServiceClient,
 )
+from .services.user_license_service import (
+    UserLicenseServiceAsyncClient,
+    UserLicenseServiceClient,
+)
+from .services.user_store_service import (
+    UserStoreServiceAsyncClient,
+    UserStoreServiceClient,
+)
+from .types.acl_config import AclConfig
+from .types.acl_config_service import GetAclConfigRequest, UpdateAclConfigRequest
+from .types.agent_gateway_setting import AgentGatewaySetting
 from .types.answer import Answer
+from .types.assist_answer import (
+    AssistAnswer,
+    AssistantContent,
+    AssistantGroundedContent,
+)
+from .types.assistant import Assistant
+from .types.assistant_service import (
+    AssistUserMetadata,
+    CreateAssistantRequest,
+    DeleteAssistantRequest,
+    GetAssistantRequest,
+    ListAssistantsRequest,
+    ListAssistantsResponse,
+    StreamAssistRequest,
+    StreamAssistResponse,
+    UpdateAssistantRequest,
+)
 from .types.chunk import Chunk
+from .types.cmek_config_service import (
+    CmekConfig,
+    DeleteCmekConfigMetadata,
+    DeleteCmekConfigRequest,
+    GetCmekConfigRequest,
+    ListCmekConfigsRequest,
+    ListCmekConfigsResponse,
+    SingleRegionKey,
+    UpdateCmekConfigMetadata,
+    UpdateCmekConfigRequest,
+)
 from .types.common import (
     CustomAttribute,
     DoubleList,
     EmbeddingConfig,
+    HealthcareFhirConfig,
+    IdpConfig,
     IndustryVertical,
     Interval,
+    Principal,
     SearchAddOn,
+    SearchLinkPromotion,
     SearchTier,
     SearchUseCase,
     SolutionType,
+    SubscriptionTerm,
+    SubscriptionTier,
     UserInfo,
 )
 from .types.completion import CompletionSuggestion, SuggestionDenyListEntry
@@ -105,6 +164,8 @@ from .types.completion_service import (
     AdvancedCompleteQueryResponse,
     CompleteQueryRequest,
     CompleteQueryResponse,
+    RemoveSuggestionRequest,
+    RemoveSuggestionResponse,
 )
 from .types.control import Condition, Control
 from .types.control_service import (
@@ -143,6 +204,7 @@ from .types.conversational_search_service import (
 )
 from .types.custom_tuning_model import CustomTuningModel
 from .types.data_store import (
+    AdvancedSiteSearchConfig,
     DataStore,
     LanguageInfo,
     NaturalLanguageQueryUnderstandingConfig,
@@ -196,15 +258,33 @@ from .types.evaluation_service import (
     ListEvaluationsRequest,
     ListEvaluationsResponse,
 )
+from .types.feedback import Feedback
 from .types.grounded_generation_service import (
     CheckGroundingRequest,
     CheckGroundingResponse,
     CheckGroundingSpec,
+    Citation,
+    CitationMetadata,
     GenerateGroundedContentRequest,
     GenerateGroundedContentResponse,
     GroundedGenerationContent,
 )
 from .types.grounding import FactChunk, GroundingConfig, GroundingFact
+from .types.identity_mapping_store import IdentityMappingEntry, IdentityMappingStore
+from .types.identity_mapping_store_service import (
+    CreateIdentityMappingStoreRequest,
+    DeleteIdentityMappingStoreMetadata,
+    DeleteIdentityMappingStoreRequest,
+    GetIdentityMappingStoreRequest,
+    IdentityMappingEntryOperationMetadata,
+    ImportIdentityMappingsRequest,
+    ImportIdentityMappingsResponse,
+    ListIdentityMappingsRequest,
+    ListIdentityMappingsResponse,
+    ListIdentityMappingStoresRequest,
+    ListIdentityMappingStoresResponse,
+    PurgeIdentityMappingsRequest,
+)
 from .types.import_config import (
     AlloyDbSource,
     BigQuerySource,
@@ -232,6 +312,19 @@ from .types.import_config import (
     ImportUserEventsResponse,
     SpannerSource,
 )
+from .types.license_config import LicenseConfig
+from .types.license_config_service import (
+    CreateLicenseConfigRequest,
+    DistributeLicenseConfigRequest,
+    DistributeLicenseConfigResponse,
+    GetLicenseConfigRequest,
+    ListLicenseConfigsRequest,
+    ListLicenseConfigsResponse,
+    RetractLicenseConfigRequest,
+    RetractLicenseConfigResponse,
+    UpdateLicenseConfigRequest,
+)
+from .types.logging import ObservabilityConfig
 from .types.project import Project
 from .types.project_service import ProvisionProjectMetadata, ProvisionProjectRequest
 from .types.purge_config import (
@@ -251,6 +344,7 @@ from .types.purge_config import (
 )
 from .types.rank_service import RankingRecord, RankRequest, RankResponse
 from .types.recommendation_service import RecommendRequest, RecommendResponse
+from .types.safety import HarmCategory, SafetyRating
 from .types.sample_query import SampleQuery
 from .types.sample_query_service import (
     CreateSampleQueryRequest,
@@ -289,8 +383,10 @@ from .types.search_tuning_service import (
     TrainCustomModelRequest,
     TrainCustomModelResponse,
 )
-from .types.serving_config import ServingConfig
+from .types.serving_config import AnswerGenerationSpec, ServingConfig
 from .types.serving_config_service import (
+    CreateServingConfigRequest,
+    DeleteServingConfigRequest,
     GetServingConfigRequest,
     ListServingConfigsRequest,
     ListServingConfigsResponse,
@@ -349,6 +445,18 @@ from .types.user_event import (
     UserEvent,
 )
 from .types.user_event_service import CollectUserEventRequest, WriteUserEventRequest
+from .types.user_license import LicenseConfigUsageStats, UserLicense
+from .types.user_license_service import (
+    BatchUpdateUserLicensesMetadata,
+    BatchUpdateUserLicensesRequest,
+    BatchUpdateUserLicensesResponse,
+    ListLicenseConfigsUsageStatsRequest,
+    ListLicenseConfigsUsageStatsResponse,
+    ListUserLicensesRequest,
+    ListUserLicensesResponse,
+)
+from .types.user_store import UserStore
+from .types.user_store_service import GetUserStoreRequest, UpdateUserStoreRequest
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
@@ -359,34 +467,23 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.discoveryengine_v1beta"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -415,9 +512,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -445,6 +542,9 @@ else:  # pragma: NO COVER
         )
 
 __all__ = (
+    "AclConfigServiceAsyncClient",
+    "AssistantServiceAsyncClient",
+    "CmekConfigServiceAsyncClient",
     "CompletionServiceAsyncClient",
     "ControlServiceAsyncClient",
     "ConversationalSearchServiceAsyncClient",
@@ -453,6 +553,8 @@ __all__ = (
     "EngineServiceAsyncClient",
     "EvaluationServiceAsyncClient",
     "GroundedGenerationServiceAsyncClient",
+    "IdentityMappingStoreServiceAsyncClient",
+    "LicenseConfigServiceAsyncClient",
     "ProjectServiceAsyncClient",
     "RankServiceAsyncClient",
     "RecommendationServiceAsyncClient",
@@ -465,17 +567,33 @@ __all__ = (
     "SessionServiceAsyncClient",
     "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceAsyncClient",
+    "UserLicenseServiceAsyncClient",
+    "UserStoreServiceAsyncClient",
+    "AclConfig",
+    "AclConfigServiceClient",
     "AdvancedCompleteQueryRequest",
     "AdvancedCompleteQueryResponse",
+    "AdvancedSiteSearchConfig",
+    "AgentGatewaySetting",
     "AlloyDbSource",
     "Answer",
+    "AnswerGenerationSpec",
     "AnswerQueryRequest",
     "AnswerQueryResponse",
+    "AssistAnswer",
+    "AssistUserMetadata",
+    "Assistant",
+    "AssistantContent",
+    "AssistantGroundedContent",
+    "AssistantServiceClient",
     "BatchCreateTargetSiteMetadata",
     "BatchCreateTargetSitesRequest",
     "BatchCreateTargetSitesResponse",
     "BatchGetDocumentsMetadataRequest",
     "BatchGetDocumentsMetadataResponse",
+    "BatchUpdateUserLicensesMetadata",
+    "BatchUpdateUserLicensesRequest",
+    "BatchUpdateUserLicensesResponse",
     "BatchVerifyTargetSitesMetadata",
     "BatchVerifyTargetSitesRequest",
     "BatchVerifyTargetSitesResponse",
@@ -486,7 +604,11 @@ __all__ = (
     "CheckGroundingResponse",
     "CheckGroundingSpec",
     "Chunk",
+    "Citation",
+    "CitationMetadata",
     "CloudSqlSource",
+    "CmekConfig",
+    "CmekConfigServiceClient",
     "CollectUserEventRequest",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
@@ -502,6 +624,7 @@ __all__ = (
     "ConversationalSearchServiceClient",
     "ConverseConversationRequest",
     "ConverseConversationResponse",
+    "CreateAssistantRequest",
     "CreateControlRequest",
     "CreateConversationRequest",
     "CreateDataStoreMetadata",
@@ -511,10 +634,13 @@ __all__ = (
     "CreateEngineRequest",
     "CreateEvaluationMetadata",
     "CreateEvaluationRequest",
+    "CreateIdentityMappingStoreRequest",
+    "CreateLicenseConfigRequest",
     "CreateSampleQueryRequest",
     "CreateSampleQuerySetRequest",
     "CreateSchemaMetadata",
     "CreateSchemaRequest",
+    "CreateServingConfigRequest",
     "CreateSessionRequest",
     "CreateSitemapMetadata",
     "CreateSitemapRequest",
@@ -524,6 +650,9 @@ __all__ = (
     "CustomTuningModel",
     "DataStore",
     "DataStoreServiceClient",
+    "DeleteAssistantRequest",
+    "DeleteCmekConfigMetadata",
+    "DeleteCmekConfigRequest",
     "DeleteControlRequest",
     "DeleteConversationRequest",
     "DeleteDataStoreMetadata",
@@ -531,10 +660,13 @@ __all__ = (
     "DeleteDocumentRequest",
     "DeleteEngineMetadata",
     "DeleteEngineRequest",
+    "DeleteIdentityMappingStoreMetadata",
+    "DeleteIdentityMappingStoreRequest",
     "DeleteSampleQueryRequest",
     "DeleteSampleQuerySetRequest",
     "DeleteSchemaMetadata",
     "DeleteSchemaRequest",
+    "DeleteServingConfigRequest",
     "DeleteSessionRequest",
     "DeleteSitemapMetadata",
     "DeleteSitemapRequest",
@@ -543,6 +675,8 @@ __all__ = (
     "DisableAdvancedSiteSearchMetadata",
     "DisableAdvancedSiteSearchRequest",
     "DisableAdvancedSiteSearchResponse",
+    "DistributeLicenseConfigRequest",
+    "DistributeLicenseConfigResponse",
     "Document",
     "DocumentInfo",
     "DocumentProcessingConfig",
@@ -557,6 +691,7 @@ __all__ = (
     "Evaluation",
     "EvaluationServiceClient",
     "FactChunk",
+    "Feedback",
     "FetchDomainVerificationStatusRequest",
     "FetchDomainVerificationStatusResponse",
     "FetchSitemapsRequest",
@@ -566,13 +701,18 @@ __all__ = (
     "GcsSource",
     "GenerateGroundedContentRequest",
     "GenerateGroundedContentResponse",
+    "GetAclConfigRequest",
     "GetAnswerRequest",
+    "GetAssistantRequest",
+    "GetCmekConfigRequest",
     "GetControlRequest",
     "GetConversationRequest",
     "GetDataStoreRequest",
     "GetDocumentRequest",
     "GetEngineRequest",
     "GetEvaluationRequest",
+    "GetIdentityMappingStoreRequest",
+    "GetLicenseConfigRequest",
     "GetSampleQueryRequest",
     "GetSampleQuerySetRequest",
     "GetSchemaRequest",
@@ -580,10 +720,18 @@ __all__ = (
     "GetSessionRequest",
     "GetSiteSearchEngineRequest",
     "GetTargetSiteRequest",
+    "GetUserStoreRequest",
     "GroundedGenerationContent",
     "GroundedGenerationServiceClient",
     "GroundingConfig",
     "GroundingFact",
+    "HarmCategory",
+    "HealthcareFhirConfig",
+    "IdentityMappingEntry",
+    "IdentityMappingEntryOperationMetadata",
+    "IdentityMappingStore",
+    "IdentityMappingStoreServiceClient",
+    "IdpConfig",
     "ImportCompletionSuggestionsMetadata",
     "ImportCompletionSuggestionsRequest",
     "ImportCompletionSuggestionsResponse",
@@ -591,6 +739,8 @@ __all__ = (
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
     "ImportErrorConfig",
+    "ImportIdentityMappingsRequest",
+    "ImportIdentityMappingsResponse",
     "ImportSampleQueriesMetadata",
     "ImportSampleQueriesRequest",
     "ImportSampleQueriesResponse",
@@ -603,6 +753,13 @@ __all__ = (
     "IndustryVertical",
     "Interval",
     "LanguageInfo",
+    "LicenseConfig",
+    "LicenseConfigServiceClient",
+    "LicenseConfigUsageStats",
+    "ListAssistantsRequest",
+    "ListAssistantsResponse",
+    "ListCmekConfigsRequest",
+    "ListCmekConfigsResponse",
     "ListControlsRequest",
     "ListControlsResponse",
     "ListConversationsRequest",
@@ -619,6 +776,14 @@ __all__ = (
     "ListEvaluationResultsResponse",
     "ListEvaluationsRequest",
     "ListEvaluationsResponse",
+    "ListIdentityMappingStoresRequest",
+    "ListIdentityMappingStoresResponse",
+    "ListIdentityMappingsRequest",
+    "ListIdentityMappingsResponse",
+    "ListLicenseConfigsRequest",
+    "ListLicenseConfigsResponse",
+    "ListLicenseConfigsUsageStatsRequest",
+    "ListLicenseConfigsUsageStatsResponse",
     "ListSampleQueriesRequest",
     "ListSampleQueriesResponse",
     "ListSampleQuerySetsRequest",
@@ -631,11 +796,15 @@ __all__ = (
     "ListSessionsResponse",
     "ListTargetSitesRequest",
     "ListTargetSitesResponse",
+    "ListUserLicensesRequest",
+    "ListUserLicensesResponse",
     "MediaInfo",
     "NaturalLanguageQueryUnderstandingConfig",
+    "ObservabilityConfig",
     "PageInfo",
     "PanelInfo",
     "PauseEngineRequest",
+    "Principal",
     "Project",
     "ProjectServiceClient",
     "ProvisionProjectMetadata",
@@ -647,6 +816,7 @@ __all__ = (
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
     "PurgeErrorConfig",
+    "PurgeIdentityMappingsRequest",
     "PurgeSuggestionDenyListEntriesMetadata",
     "PurgeSuggestionDenyListEntriesRequest",
     "PurgeSuggestionDenyListEntriesResponse",
@@ -665,8 +835,13 @@ __all__ = (
     "RecrawlUrisMetadata",
     "RecrawlUrisRequest",
     "RecrawlUrisResponse",
+    "RemoveSuggestionRequest",
+    "RemoveSuggestionResponse",
     "Reply",
     "ResumeEngineRequest",
+    "RetractLicenseConfigRequest",
+    "RetractLicenseConfigResponse",
+    "SafetyRating",
     "SampleQuery",
     "SampleQueryServiceClient",
     "SampleQuerySet",
@@ -675,6 +850,7 @@ __all__ = (
     "SchemaServiceClient",
     "SearchAddOn",
     "SearchInfo",
+    "SearchLinkPromotion",
     "SearchRequest",
     "SearchResponse",
     "SearchServiceClient",
@@ -685,12 +861,17 @@ __all__ = (
     "ServingConfigServiceClient",
     "Session",
     "SessionServiceClient",
+    "SingleRegionKey",
     "SiteSearchEngine",
     "SiteSearchEngineServiceClient",
     "SiteVerificationInfo",
     "Sitemap",
     "SolutionType",
     "SpannerSource",
+    "StreamAssistRequest",
+    "StreamAssistResponse",
+    "SubscriptionTerm",
+    "SubscriptionTier",
     "SuggestionDenyListEntry",
     "TargetSite",
     "TextInput",
@@ -701,11 +882,16 @@ __all__ = (
     "TuneEngineMetadata",
     "TuneEngineRequest",
     "TuneEngineResponse",
+    "UpdateAclConfigRequest",
+    "UpdateAssistantRequest",
+    "UpdateCmekConfigMetadata",
+    "UpdateCmekConfigRequest",
     "UpdateControlRequest",
     "UpdateConversationRequest",
     "UpdateDataStoreRequest",
     "UpdateDocumentRequest",
     "UpdateEngineRequest",
+    "UpdateLicenseConfigRequest",
     "UpdateSampleQueryRequest",
     "UpdateSampleQuerySetRequest",
     "UpdateSchemaMetadata",
@@ -714,9 +900,14 @@ __all__ = (
     "UpdateSessionRequest",
     "UpdateTargetSiteMetadata",
     "UpdateTargetSiteRequest",
+    "UpdateUserStoreRequest",
     "UserEvent",
     "UserEventServiceClient",
     "UserInfo",
+    "UserLicense",
+    "UserLicenseServiceClient",
+    "UserStore",
+    "UserStoreServiceClient",
     "WorkspaceConfig",
     "WriteUserEventRequest",
 )

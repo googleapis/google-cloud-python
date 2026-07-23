@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,9 +32,16 @@ from google.cloud.support_v2.services.comment_service.async_client import (
     CommentServiceAsyncClient,
 )
 from google.cloud.support_v2.services.comment_service.client import CommentServiceClient
+from google.cloud.support_v2.services.support_event_subscription_service.async_client import (
+    SupportEventSubscriptionServiceAsyncClient,
+)
+from google.cloud.support_v2.services.support_event_subscription_service.client import (
+    SupportEventSubscriptionServiceClient,
+)
 from google.cloud.support_v2.types.actor import Actor
 from google.cloud.support_v2.types.attachment import Attachment
 from google.cloud.support_v2.types.attachment_service import (
+    GetAttachmentRequest,
     ListAttachmentsRequest,
     ListAttachmentsResponse,
 )
@@ -55,10 +62,23 @@ from google.cloud.support_v2.types.case_service import (
 from google.cloud.support_v2.types.comment import Comment
 from google.cloud.support_v2.types.comment_service import (
     CreateCommentRequest,
+    GetCommentRequest,
     ListCommentsRequest,
     ListCommentsResponse,
 )
 from google.cloud.support_v2.types.escalation import Escalation
+from google.cloud.support_v2.types.support_event_subscription import (
+    SupportEventSubscription,
+)
+from google.cloud.support_v2.types.support_event_subscription_service import (
+    CreateSupportEventSubscriptionRequest,
+    DeleteSupportEventSubscriptionRequest,
+    GetSupportEventSubscriptionRequest,
+    ListSupportEventSubscriptionsRequest,
+    ListSupportEventSubscriptionsResponse,
+    UndeleteSupportEventSubscriptionRequest,
+    UpdateSupportEventSubscriptionRequest,
+)
 
 __all__ = (
     "CaseAttachmentServiceClient",
@@ -67,8 +87,11 @@ __all__ = (
     "CaseServiceAsyncClient",
     "CommentServiceClient",
     "CommentServiceAsyncClient",
+    "SupportEventSubscriptionServiceClient",
+    "SupportEventSubscriptionServiceAsyncClient",
     "Actor",
     "Attachment",
+    "GetAttachmentRequest",
     "ListAttachmentsRequest",
     "ListAttachmentsResponse",
     "Case",
@@ -86,7 +109,16 @@ __all__ = (
     "UpdateCaseRequest",
     "Comment",
     "CreateCommentRequest",
+    "GetCommentRequest",
     "ListCommentsRequest",
     "ListCommentsResponse",
     "Escalation",
+    "SupportEventSubscription",
+    "CreateSupportEventSubscriptionRequest",
+    "DeleteSupportEventSubscriptionRequest",
+    "GetSupportEventSubscriptionRequest",
+    "ListSupportEventSubscriptionsRequest",
+    "ListSupportEventSubscriptionsResponse",
+    "UndeleteSupportEventSubscriptionRequest",
+    "UpdateSupportEventSubscriptionRequest",
 )

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -103,6 +103,12 @@ class SecureSourceManagerAsyncClient:
     )
     hook_path = staticmethod(SecureSourceManagerClient.hook_path)
     parse_hook_path = staticmethod(SecureSourceManagerClient.parse_hook_path)
+    inspect_template_path = staticmethod(
+        SecureSourceManagerClient.inspect_template_path
+    )
+    parse_inspect_template_path = staticmethod(
+        SecureSourceManagerClient.parse_inspect_template_path
+    )
     instance_path = staticmethod(SecureSourceManagerClient.instance_path)
     parse_instance_path = staticmethod(SecureSourceManagerClient.parse_instance_path)
     issue_path = staticmethod(SecureSourceManagerClient.issue_path)
@@ -124,6 +130,10 @@ class SecureSourceManagerAsyncClient:
     repository_path = staticmethod(SecureSourceManagerClient.repository_path)
     parse_repository_path = staticmethod(
         SecureSourceManagerClient.parse_repository_path
+    )
+    service_account_path = staticmethod(SecureSourceManagerClient.service_account_path)
+    parse_service_account_path = staticmethod(
+        SecureSourceManagerClient.parse_service_account_path
     )
     service_attachment_path = staticmethod(
         SecureSourceManagerClient.service_attachment_path
@@ -628,11 +638,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_instance(request=request)
+                operation = await client.create_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -771,11 +781,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_instance(request=request)
+                operation = await client.delete_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1155,11 +1165,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_repository(request=request)
+                operation = await client.create_repository(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1302,11 +1312,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_repository(request=request)
+                operation = await client.update_repository(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1445,11 +1455,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_repository(request=request)
+                operation = await client.delete_repository(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1821,11 +1831,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_hook(request=request)
+                operation = await client.create_hook(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1973,11 +1983,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_hook(request=request)
+                operation = await client.update_hook(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2112,11 +2122,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_hook(request=request)
+                operation = await client.delete_hook(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2637,11 +2647,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_branch_rule(request=request)
+                operation = await client.create_branch_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3020,11 +3030,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_branch_rule(request=request)
+                operation = await client.update_branch_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3161,11 +3171,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_branch_rule(request=request)
+                operation = await client.delete_branch_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3300,11 +3310,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_pull_request(request=request)
+                operation = await client.create_pull_request(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3686,11 +3696,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_pull_request(request=request)
+                operation = await client.update_pull_request(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3827,11 +3837,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.merge_pull_request(request=request)
+                operation = await client.merge_pull_request(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3955,11 +3965,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.open_pull_request(request=request)
+                operation = await client.open_pull_request(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4083,11 +4093,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.close_pull_request(request=request)
+                operation = await client.close_pull_request(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4540,11 +4550,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_issue(request=request)
+                operation = await client.create_issue(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4911,11 +4921,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_issue(request=request)
+                operation = await client.update_issue(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5049,11 +5059,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_issue(request=request)
+                operation = await client.delete_issue(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5181,11 +5191,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.open_issue(request=request)
+                operation = await client.open_issue(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5306,11 +5316,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.close_issue(request=request)
+                operation = await client.close_issue(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5688,11 +5698,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_pull_request_comment(request=request)
+                operation = await client.create_pull_request_comment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5833,11 +5843,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_pull_request_comment(request=request)
+                operation = await client.update_pull_request_comment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5976,11 +5986,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_pull_request_comment(request=request)
+                operation = await client.delete_pull_request_comment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6128,11 +6138,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_create_pull_request_comments(request=request)
+                operation = await client.batch_create_pull_request_comments(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6281,11 +6291,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.resolve_pull_request_comments(request=request)
+                operation = await client.resolve_pull_request_comments(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6429,11 +6439,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.unresolve_pull_request_comments(request=request)
+                operation = await client.unresolve_pull_request_comments(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6578,11 +6588,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_issue_comment(request=request)
+                operation = await client.create_issue_comment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6961,11 +6971,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_issue_comment(request=request)
+                operation = await client.update_issue_comment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7104,11 +7114,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_issue_comment(request=request)
+                operation = await client.delete_issue_comment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

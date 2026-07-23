@@ -22,42 +22,39 @@ import json
 import operator
 import os
 import pathlib
+import random
+import string
 import time
 import unittest
 import uuid
-import random
-import string
 from typing import Optional
 
-from google.api_core.exceptions import PreconditionFailed
-from google.api_core.exceptions import BadRequest
-from google.api_core.exceptions import ClientError
-from google.api_core.exceptions import Conflict
-from google.api_core.exceptions import GoogleAPICallError
-from google.api_core.exceptions import NotFound
-from google.api_core.exceptions import InternalServerError
-from google.api_core.exceptions import ServiceUnavailable
-from google.api_core.exceptions import TooManyRequests
-from google.cloud import bigquery
-from google.cloud.bigquery.dataset import Dataset
-from google.cloud.bigquery.dataset import DatasetReference
-from google.cloud.bigquery.table import Table
-from google.cloud._helpers import UTC
-from google.cloud.bigquery import dbapi, enums
-from google.cloud import storage
-from google.cloud.datacatalog_v1 import types as datacatalog_types
-from google.cloud.datacatalog_v1 import PolicyTagManagerClient
-from google.cloud.resourcemanager_v3 import types as resourcemanager_types
-from google.cloud.resourcemanager_v3 import TagKeysClient, TagValuesClient
 import psutil
 import pytest
-from test_utils.retry import RetryErrors
-from test_utils.retry import RetryInstanceState
-from test_utils.retry import RetryResult
+from google.api_core.exceptions import (
+    BadRequest,
+    ClientError,
+    Conflict,
+    GoogleAPICallError,
+    InternalServerError,
+    NotFound,
+    PreconditionFailed,
+    ServiceUnavailable,
+    TooManyRequests,
+)
+from google.cloud import bigquery, storage
+from google.cloud._helpers import UTC
+from google.cloud.bigquery import dbapi, enums
+from google.cloud.bigquery.dataset import Dataset, DatasetReference
+from google.cloud.bigquery.table import Table
+from google.cloud.datacatalog_v1 import PolicyTagManagerClient
+from google.cloud.datacatalog_v1 import types as datacatalog_types
+from google.cloud.resourcemanager_v3 import TagKeysClient, TagValuesClient
+from google.cloud.resourcemanager_v3 import types as resourcemanager_types
+from test_utils.retry import RetryErrors, RetryInstanceState, RetryResult
 from test_utils.system import unique_resource_id
 
 from . import helpers
-
 
 JOB_TIMEOUT = 120  # 2 minutes
 DATA_PATH = pathlib.Path(__file__).parent.parent / "data"
@@ -234,23 +231,34 @@ class TestBigQuery(unittest.TestCase):
 
     def test_close_releases_open_sockets(self):
         current_process = psutil.Process()
-        conn_count_start = len(current_process.net_connections())
+        conn_start = current_process.net_connections()
+        conn_count_start = len(conn_start)
 
-        client = Config.CLIENT
-        client.query(
-            """
-            SELECT
-                source_year AS year, COUNT(is_male) AS birth_count
-            FROM `bigquery-public-data.samples.natality`
-            GROUP BY year
-            ORDER BY year DESC
-            LIMIT 15
-            """
-        )
+        with helpers.patch_tracked_requests():
+            client = Config.CLIENT
+            client.query(
+                """
+                SELECT
+                    source_year AS year, COUNT(is_male) AS birth_count
+                FROM `bigquery-public-data.samples.natality`
+                GROUP BY year
+                ORDER BY year DESC
+                LIMIT 15
+                """
+            )
 
-        client.close()
+            client.close()
 
-        conn_count_end = len(current_process.net_connections())
+        import gc
+
+        gc.collect()
+        for _ in range(30):  # Wait up to 3 seconds
+            conn_end = current_process.net_connections()
+            conn_count_end = len(conn_end)
+            if conn_count_end <= conn_count_start:
+                break
+            time.sleep(0.1)
+
         self.assertLessEqual(conn_count_end, conn_count_start)
 
     def test_create_dataset(self):
@@ -303,6 +311,18 @@ class TestBigQuery(unittest.TestCase):
         got = client.get_dataset("{}.{}".format(client.project, dataset_id))
         self.assertEqual(got.friendly_name, "Friendly")
         self.assertEqual(got.description, "Description")
+
+    def test_get_dataset_w_public_biglake(self):
+        dataset_id = "bigquery-public-data.biglake-public-nyc-taxi-iceberg.public_data"
+
+        dataset = Config.CLIENT.get_dataset(dataset_id)
+        self.assertEqual(
+            dataset.dataset_id, "biglake-public-nyc-taxi-iceberg.public_data"
+        )
+        self.assertEqual(dataset.project, "bigquery-public-data")
+        self.assertGreater(
+            dataset.created, datetime.datetime(2025, 1, 1, tzinfo=datetime.timezone.utc)
+        )
 
     def test_create_dataset_with_default_rounding_mode(self):
         DATASET_ID = _make_dataset_id("create_dataset_rounding_mode")
@@ -618,8 +638,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual("FOO", row_2.get("username"))
 
     def test_create_table_w_time_partitioning_w_clustering_fields(self):
-        from google.cloud.bigquery.table import TimePartitioning
-        from google.cloud.bigquery.table import TimePartitioningType
+        from google.cloud.bigquery.table import TimePartitioning, TimePartitioningType
 
         dataset = self.temp_dataset(_make_dataset_id("create_table_tp_cf"))
         table_id = "test_table"
@@ -692,6 +711,18 @@ class TestBigQuery(unittest.TestCase):
         helpers.retry_403(Config.CLIENT.create_table)(table_arg)
         with self.assertRaises(exceptions.BadRequest):
             Config.CLIENT.delete_dataset(dataset)
+
+    def test_get_table_w_public_biglake(self):
+        table_id = "bigquery-public-data.biglake-public-nyc-taxi-iceberg.public_data.nyc_taxicab"
+
+        table = Config.CLIENT.get_table(table_id)
+        self.assertEqual(table.table_id, "nyc_taxicab")
+        self.assertEqual(
+            table.dataset_id, "biglake-public-nyc-taxi-iceberg.public_data"
+        )
+        self.assertEqual(table.project, "bigquery-public-data")
+        schema_names = [field.name for field in table.schema]
+        self.assertGreater(len(schema_names), 0)
 
     def test_get_table_w_public_dataset(self):
         public = "bigquery-public-data"
@@ -935,12 +966,12 @@ class TestBigQuery(unittest.TestCase):
         self.assertIsNone(table3.clustering_fields, None)
 
     def test_update_table_constraints(self):
-        from google.cloud.bigquery.table import TableConstraints
         from google.cloud.bigquery.table import (
-            PrimaryKey,
-            ForeignKey,
-            TableReference,
             ColumnReference,
+            ForeignKey,
+            PrimaryKey,
+            TableConstraints,
+            TableReference,
         )
 
         dataset = self.temp_dataset(_make_dataset_id("update_table"))
@@ -1099,8 +1130,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(row_tuples, key=by_age), sorted(ROWS, key=by_age))
 
     def test_load_table_from_local_avro_file_then_dump_table(self):
-        from google.cloud.bigquery.job import SourceFormat
-        from google.cloud.bigquery.job import WriteDisposition
+        from google.cloud.bigquery.job import SourceFormat, WriteDisposition
 
         TABLE_NAME = "test_table_avro"
         ROWS = [
@@ -1140,8 +1170,7 @@ class TestBigQuery(unittest.TestCase):
 
     def test_load_table_from_local_parquet_file_decimal_types(self):
         from google.cloud.bigquery.enums import DecimalTargetType
-        from google.cloud.bigquery.job import SourceFormat
-        from google.cloud.bigquery.job import WriteDisposition
+        from google.cloud.bigquery.job import SourceFormat, WriteDisposition
 
         TABLE_NAME = "test_table_parquet"
 
@@ -1330,9 +1359,11 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(table.num_rows, 3)
 
     def test_load_avro_from_uri_then_dump_table(self):
-        from google.cloud.bigquery.job import CreateDisposition
-        from google.cloud.bigquery.job import SourceFormat
-        from google.cloud.bigquery.job import WriteDisposition
+        from google.cloud.bigquery.job import (
+            CreateDisposition,
+            SourceFormat,
+            WriteDisposition,
+        )
 
         table_name = "test_table"
         rows = [
@@ -1370,9 +1401,11 @@ class TestBigQuery(unittest.TestCase):
         )
 
     def test_load_table_from_uri_then_dump_table(self):
-        from google.cloud.bigquery.job import CreateDisposition
-        from google.cloud.bigquery.job import SourceFormat
-        from google.cloud.bigquery.job import WriteDisposition
+        from google.cloud.bigquery.job import (
+            CreateDisposition,
+            SourceFormat,
+            WriteDisposition,
+        )
 
         TABLE_ID = "test_table"
         GS_URL = self._write_csv_to_storage(
@@ -2150,32 +2183,64 @@ class TestBigQuery(unittest.TestCase):
     def test_dbapi_connection_does_not_leak_sockets(self):
         pytest.importorskip("google.cloud.bigquery_storage")
         current_process = psutil.Process()
-        conn_count_start = len(current_process.net_connections())
+        conn_start = current_process.net_connections()
+        conn_count_start = len(conn_start)
 
-        # Provide no explicit clients, so that the connection will create and own them.
-        connection = dbapi.connect()
-        cursor = connection.cursor()
+        with helpers.patch_tracked_requests():
+            # Provide no explicit clients, so that the connection will create and own them.
+            connection = dbapi.connect()
+            cursor = connection.cursor()
 
-        cursor.execute(
+            cursor.execute(
+                """
+                SELECT id, `by`, timestamp
+                FROM `bigquery-public-data.hacker_news.full`
+                ORDER BY `id` ASC
+                LIMIT 100000
             """
-            SELECT id, `by`, timestamp
-            FROM `bigquery-public-data.hacker_news.full`
-            ORDER BY `id` ASC
-            LIMIT 100000
-        """
-        )
-        rows = cursor.fetchall()
-        self.assertEqual(len(rows), 100000)
+            )
+            rows = cursor.fetchall()
+            self.assertEqual(len(rows), 100000)
 
-        connection.close()
-        conn_count_end = len(current_process.net_connections())
-        self.assertLessEqual(conn_count_end, conn_count_start)
+            connection.close()
+        import gc
+
+        gc.collect()
+        for _ in range(30):  # Wait up to 3 seconds
+            conn_end = current_process.net_connections()
+            conn_count_end = len(conn_end)
+            if conn_count_end <= conn_count_start:
+                break
+            time.sleep(0.1)
+
+        try:
+            self.assertLessEqual(conn_count_end, conn_count_start)
+        except AssertionError as e:
+            # Due to flakiness in this test (likely caused by OS cleanup delays or
+            # non-deterministic garbage collection of sockets), we want to capture
+            # the detailed state of connections in future failing runs to help
+            # decrease false positives and identify the root cause.
+            conn_debug = [
+                f"Status: {c.status}, Laddr: {c.laddr}, Raddr: {c.raddr}"
+                for c in current_process.net_connections()
+            ]
+            debug_msg = "\n".join(conn_debug)
+
+            raise AssertionError(
+                f"{e}\n\n"
+                f"--- Socket Leak Debug Info ---\n"
+                f"Start Count: {conn_count_start}\n"
+                f"End Count: {conn_count_end}\n"
+                f"Current Connections:\n{debug_msg}"
+            )
 
     def _load_table_for_dml(self, rows, dataset_id, table_id):
         from google.cloud._testing import _NamedTemporaryFile
-        from google.cloud.bigquery.job import CreateDisposition
-        from google.cloud.bigquery.job import SourceFormat
-        from google.cloud.bigquery.job import WriteDisposition
+        from google.cloud.bigquery.job import (
+            CreateDisposition,
+            SourceFormat,
+            WriteDisposition,
+        )
 
         dataset = self.temp_dataset(dataset_id)
         greeting = bigquery.SchemaField("greeting", "STRING", mode="NULLABLE")
@@ -2697,8 +2762,7 @@ class TestBigQuery(unittest.TestCase):
         bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
         pyarrow = pytest.importorskip("pyarrow")
         pyarrow.types = pytest.importorskip("pyarrow.types")
-        from google.cloud.bigquery.job import SourceFormat
-        from google.cloud.bigquery.job import WriteDisposition
+        from google.cloud.bigquery.job import SourceFormat, WriteDisposition
 
         SF = bigquery.SchemaField
         schema = [
@@ -2830,8 +2894,7 @@ def test_parameterized_types_round_trip(dataset_id: str):
 
 
 def test_table_snapshots(dataset_id: str):
-    from google.cloud.bigquery import CopyJobConfig
-    from google.cloud.bigquery import OperationType
+    from google.cloud.bigquery import CopyJobConfig, OperationType
 
     client = Config.CLIENT
 
@@ -2901,8 +2964,7 @@ def test_table_snapshots(dataset_id: str):
 
 
 def test_table_clones(dataset_id: str):
-    from google.cloud.bigquery import CopyJobConfig
-    from google.cloud.bigquery import OperationType
+    from google.cloud.bigquery import CopyJobConfig, OperationType
 
     client = Config.CLIENT
 

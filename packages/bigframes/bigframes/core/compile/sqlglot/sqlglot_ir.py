@@ -177,7 +177,7 @@ class SQLGlotIR:
         project_id: str,
         dataset_id: str,
         table_id: str,
-        uid_gen: guid.SequentialUIDGenerator,
+        uid_gen: guid.SequentialUIDGenerator | None = None,
         columns: typing.Sequence[str] = (),
         sql_predicate: typing.Optional[str] = None,
         system_time: typing.Optional[datetime.datetime] = None,
@@ -202,6 +202,8 @@ class SQLGlotIR:
             if system_time
             else None
         )
+        if uid_gen is None:
+            uid_gen = guid.SequentialUIDGenerator()
         table_alias = next(uid_gen.get_uid_stream("bft_"))
         table_expr = sge.Table(
             this=sql.identifier(table_id),
@@ -247,12 +249,13 @@ class SQLGlotIR:
         # TODO: Explicitly insert CTEs into plan
         if len(selections) > 0:
             to_select = [
-                sge.Alias(
-                    this=expr,
+                expr
+                if (isinstance(expr, sge.Alias) and expr.alias == id)
+                or (isinstance(expr, sge.Column) and expr.name == id)
+                else sge.Alias(
+                    this=expr.this if isinstance(expr, sge.Alias) else expr,
                     alias=sql.identifier(id),
                 )
-                if expr.alias_or_name != id
-                else expr
                 for id, expr in selections
             ]
             new_expr = self.expr.select(*to_select)

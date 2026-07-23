@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -120,11 +115,26 @@ def async_anonymous_credentials():
     return ga_credentials.AnonymousCredentials()
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
-        grafeas.GetOccurrenceRequest,
-        dict,
+        grafeas.GetOccurrenceRequest(),
+        {},
     ],
 )
 def test_get_occurrence(request_type, transport: str = "grpc"):
@@ -135,7 +145,7 @@ def test_get_occurrence(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_occurrence), "__call__") as call:
@@ -187,9 +197,10 @@ def test_get_occurrence_non_empty_request_with_auto_populated_field():
         client.get_occurrence(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == grafeas.GetOccurrenceRequest(
+        request_msg = grafeas.GetOccurrenceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_occurrence_use_cached_wrapped_rpc():
@@ -270,9 +281,14 @@ async def test_get_occurrence_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_occurrence_async(
-    transport: str = "grpc_asyncio", request_type=grafeas.GetOccurrenceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grafeas.GetOccurrenceRequest(),
+        {},
+    ],
+)
+async def test_get_occurrence_async(request_type, transport: str = "grpc_asyncio"):
     client = GrafeasAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -280,7 +296,7 @@ async def test_get_occurrence_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_occurrence), "__call__") as call:
@@ -309,11 +325,6 @@ async def test_get_occurrence_async(
     assert response.note_name == "note_name_value"
     assert response.kind == common.NoteKind.VULNERABILITY
     assert response.remediation == "remediation_value"
-
-
-@pytest.mark.asyncio
-async def test_get_occurrence_async_from_dict():
-    await test_get_occurrence_async(request_type=dict)
 
 
 def test_get_occurrence_field_headers():
@@ -458,8 +469,8 @@ async def test_get_occurrence_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        grafeas.ListOccurrencesRequest,
-        dict,
+        grafeas.ListOccurrencesRequest(),
+        {},
     ],
 )
 def test_list_occurrences(request_type, transport: str = "grpc"):
@@ -470,7 +481,7 @@ def test_list_occurrences(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_occurrences), "__call__") as call:
@@ -518,11 +529,12 @@ def test_list_occurrences_non_empty_request_with_auto_populated_field():
         client.list_occurrences(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == grafeas.ListOccurrencesRequest(
+        request_msg = grafeas.ListOccurrencesRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_occurrences_use_cached_wrapped_rpc():
@@ -605,9 +617,14 @@ async def test_list_occurrences_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_occurrences_async(
-    transport: str = "grpc_asyncio", request_type=grafeas.ListOccurrencesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grafeas.ListOccurrencesRequest(),
+        {},
+    ],
+)
+async def test_list_occurrences_async(request_type, transport: str = "grpc_asyncio"):
     client = GrafeasAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -615,7 +632,7 @@ async def test_list_occurrences_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_occurrences), "__call__") as call:
@@ -638,11 +655,6 @@ async def test_list_occurrences_async(
     assert isinstance(response, pagers.ListOccurrencesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_occurrences_async_from_dict():
-    await test_list_occurrences_async(request_type=dict)
 
 
 def test_list_occurrences_field_headers():
@@ -847,6 +859,9 @@ def test_list_occurrences_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, grafeas.Occurrence) for i in results)
@@ -935,6 +950,8 @@ async def test_list_occurrences_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -982,11 +999,7 @@ async def test_list_occurrences_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_occurrences(request={})
-        ).pages:
+        async for page_ in (await client.list_occurrences(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -995,8 +1008,8 @@ async def test_list_occurrences_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        grafeas.DeleteOccurrenceRequest,
-        dict,
+        grafeas.DeleteOccurrenceRequest(),
+        {},
     ],
 )
 def test_delete_occurrence(request_type, transport: str = "grpc"):
@@ -1007,7 +1020,7 @@ def test_delete_occurrence(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1052,9 +1065,10 @@ def test_delete_occurrence_non_empty_request_with_auto_populated_field():
         client.delete_occurrence(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == grafeas.DeleteOccurrenceRequest(
+        request_msg = grafeas.DeleteOccurrenceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_occurrence_use_cached_wrapped_rpc():
@@ -1137,9 +1151,14 @@ async def test_delete_occurrence_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_occurrence_async(
-    transport: str = "grpc_asyncio", request_type=grafeas.DeleteOccurrenceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grafeas.DeleteOccurrenceRequest(),
+        {},
+    ],
+)
+async def test_delete_occurrence_async(request_type, transport: str = "grpc_asyncio"):
     client = GrafeasAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1147,7 +1166,7 @@ async def test_delete_occurrence_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1165,11 +1184,6 @@ async def test_delete_occurrence_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_occurrence_async_from_dict():
-    await test_delete_occurrence_async(request_type=dict)
 
 
 def test_delete_occurrence_field_headers():
@@ -1322,8 +1336,8 @@ async def test_delete_occurrence_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        grafeas.CreateOccurrenceRequest,
-        dict,
+        grafeas.CreateOccurrenceRequest(),
+        {},
     ],
 )
 def test_create_occurrence(request_type, transport: str = "grpc"):
@@ -1334,7 +1348,7 @@ def test_create_occurrence(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1390,9 +1404,10 @@ def test_create_occurrence_non_empty_request_with_auto_populated_field():
         client.create_occurrence(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == grafeas.CreateOccurrenceRequest(
+        request_msg = grafeas.CreateOccurrenceRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_occurrence_use_cached_wrapped_rpc():
@@ -1475,9 +1490,14 @@ async def test_create_occurrence_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_occurrence_async(
-    transport: str = "grpc_asyncio", request_type=grafeas.CreateOccurrenceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grafeas.CreateOccurrenceRequest(),
+        {},
+    ],
+)
+async def test_create_occurrence_async(request_type, transport: str = "grpc_asyncio"):
     client = GrafeasAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1485,7 +1505,7 @@ async def test_create_occurrence_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1516,11 +1536,6 @@ async def test_create_occurrence_async(
     assert response.note_name == "note_name_value"
     assert response.kind == common.NoteKind.VULNERABILITY
     assert response.remediation == "remediation_value"
-
-
-@pytest.mark.asyncio
-async def test_create_occurrence_async_from_dict():
-    await test_create_occurrence_async(request_type=dict)
 
 
 def test_create_occurrence_field_headers():
@@ -1683,8 +1698,8 @@ async def test_create_occurrence_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        grafeas.BatchCreateOccurrencesRequest,
-        dict,
+        grafeas.BatchCreateOccurrencesRequest(),
+        {},
     ],
 )
 def test_batch_create_occurrences(request_type, transport: str = "grpc"):
@@ -1695,7 +1710,7 @@ def test_batch_create_occurrences(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1740,9 +1755,10 @@ def test_batch_create_occurrences_non_empty_request_with_auto_populated_field():
         client.batch_create_occurrences(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == grafeas.BatchCreateOccurrencesRequest(
+        request_msg = grafeas.BatchCreateOccurrencesRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_create_occurrences_use_cached_wrapped_rpc():
@@ -1828,8 +1844,15 @@ async def test_batch_create_occurrences_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grafeas.BatchCreateOccurrencesRequest(),
+        {},
+    ],
+)
 async def test_batch_create_occurrences_async(
-    transport: str = "grpc_asyncio", request_type=grafeas.BatchCreateOccurrencesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GrafeasAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1838,7 +1861,7 @@ async def test_batch_create_occurrences_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1858,11 +1881,6 @@ async def test_batch_create_occurrences_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, grafeas.BatchCreateOccurrencesResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_create_occurrences_async_from_dict():
-    await test_batch_create_occurrences_async(request_type=dict)
 
 
 def test_batch_create_occurrences_field_headers():
@@ -2029,8 +2047,8 @@ async def test_batch_create_occurrences_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        grafeas.UpdateOccurrenceRequest,
-        dict,
+        grafeas.UpdateOccurrenceRequest(),
+        {},
     ],
 )
 def test_update_occurrence(request_type, transport: str = "grpc"):
@@ -2041,7 +2059,7 @@ def test_update_occurrence(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2097,9 +2115,10 @@ def test_update_occurrence_non_empty_request_with_auto_populated_field():
         client.update_occurrence(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == grafeas.UpdateOccurrenceRequest(
+        request_msg = grafeas.UpdateOccurrenceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_occurrence_use_cached_wrapped_rpc():
@@ -2182,9 +2201,14 @@ async def test_update_occurrence_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_occurrence_async(
-    transport: str = "grpc_asyncio", request_type=grafeas.UpdateOccurrenceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grafeas.UpdateOccurrenceRequest(),
+        {},
+    ],
+)
+async def test_update_occurrence_async(request_type, transport: str = "grpc_asyncio"):
     client = GrafeasAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2192,7 +2216,7 @@ async def test_update_occurrence_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2223,11 +2247,6 @@ async def test_update_occurrence_async(
     assert response.note_name == "note_name_value"
     assert response.kind == common.NoteKind.VULNERABILITY
     assert response.remediation == "remediation_value"
-
-
-@pytest.mark.asyncio
-async def test_update_occurrence_async_from_dict():
-    await test_update_occurrence_async(request_type=dict)
 
 
 def test_update_occurrence_field_headers():
@@ -2400,8 +2419,8 @@ async def test_update_occurrence_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        grafeas.GetOccurrenceNoteRequest,
-        dict,
+        grafeas.GetOccurrenceNoteRequest(),
+        {},
     ],
 )
 def test_get_occurrence_note(request_type, transport: str = "grpc"):
@@ -2412,7 +2431,7 @@ def test_get_occurrence_note(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2468,9 +2487,10 @@ def test_get_occurrence_note_non_empty_request_with_auto_populated_field():
         client.get_occurrence_note(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == grafeas.GetOccurrenceNoteRequest(
+        request_msg = grafeas.GetOccurrenceNoteRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_occurrence_note_use_cached_wrapped_rpc():
@@ -2555,9 +2575,14 @@ async def test_get_occurrence_note_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_occurrence_note_async(
-    transport: str = "grpc_asyncio", request_type=grafeas.GetOccurrenceNoteRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grafeas.GetOccurrenceNoteRequest(),
+        {},
+    ],
+)
+async def test_get_occurrence_note_async(request_type, transport: str = "grpc_asyncio"):
     client = GrafeasAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2565,7 +2590,7 @@ async def test_get_occurrence_note_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2596,11 +2621,6 @@ async def test_get_occurrence_note_async(
     assert response.long_description == "long_description_value"
     assert response.kind == common.NoteKind.VULNERABILITY
     assert response.related_note_names == ["related_note_names_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_occurrence_note_async_from_dict():
-    await test_get_occurrence_note_async(request_type=dict)
 
 
 def test_get_occurrence_note_field_headers():
@@ -2753,8 +2773,8 @@ async def test_get_occurrence_note_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        grafeas.GetNoteRequest,
-        dict,
+        grafeas.GetNoteRequest(),
+        {},
     ],
 )
 def test_get_note(request_type, transport: str = "grpc"):
@@ -2765,7 +2785,7 @@ def test_get_note(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_note), "__call__") as call:
@@ -2817,9 +2837,10 @@ def test_get_note_non_empty_request_with_auto_populated_field():
         client.get_note(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == grafeas.GetNoteRequest(
+        request_msg = grafeas.GetNoteRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_note_use_cached_wrapped_rpc():
@@ -2898,9 +2919,14 @@ async def test_get_note_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_note_async(
-    transport: str = "grpc_asyncio", request_type=grafeas.GetNoteRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grafeas.GetNoteRequest(),
+        {},
+    ],
+)
+async def test_get_note_async(request_type, transport: str = "grpc_asyncio"):
     client = GrafeasAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2908,7 +2934,7 @@ async def test_get_note_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_note), "__call__") as call:
@@ -2937,11 +2963,6 @@ async def test_get_note_async(
     assert response.long_description == "long_description_value"
     assert response.kind == common.NoteKind.VULNERABILITY
     assert response.related_note_names == ["related_note_names_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_note_async_from_dict():
-    await test_get_note_async(request_type=dict)
 
 
 def test_get_note_field_headers():
@@ -3086,8 +3107,8 @@ async def test_get_note_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        grafeas.ListNotesRequest,
-        dict,
+        grafeas.ListNotesRequest(),
+        {},
     ],
 )
 def test_list_notes(request_type, transport: str = "grpc"):
@@ -3098,7 +3119,7 @@ def test_list_notes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_notes), "__call__") as call:
@@ -3146,11 +3167,12 @@ def test_list_notes_non_empty_request_with_auto_populated_field():
         client.list_notes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == grafeas.ListNotesRequest(
+        request_msg = grafeas.ListNotesRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_notes_use_cached_wrapped_rpc():
@@ -3229,9 +3251,14 @@ async def test_list_notes_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_notes_async(
-    transport: str = "grpc_asyncio", request_type=grafeas.ListNotesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grafeas.ListNotesRequest(),
+        {},
+    ],
+)
+async def test_list_notes_async(request_type, transport: str = "grpc_asyncio"):
     client = GrafeasAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3239,7 +3266,7 @@ async def test_list_notes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_notes), "__call__") as call:
@@ -3262,11 +3289,6 @@ async def test_list_notes_async(
     assert isinstance(response, pagers.ListNotesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_notes_async_from_dict():
-    await test_list_notes_async(request_type=dict)
 
 
 def test_list_notes_field_headers():
@@ -3471,6 +3493,9 @@ def test_list_notes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, grafeas.Note) for i in results)
@@ -3559,6 +3584,8 @@ async def test_list_notes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3606,11 +3633,7 @@ async def test_list_notes_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_notes(request={})
-        ).pages:
+        async for page_ in (await client.list_notes(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3619,8 +3642,8 @@ async def test_list_notes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        grafeas.DeleteNoteRequest,
-        dict,
+        grafeas.DeleteNoteRequest(),
+        {},
     ],
 )
 def test_delete_note(request_type, transport: str = "grpc"):
@@ -3631,7 +3654,7 @@ def test_delete_note(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_note), "__call__") as call:
@@ -3672,9 +3695,10 @@ def test_delete_note_non_empty_request_with_auto_populated_field():
         client.delete_note(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == grafeas.DeleteNoteRequest(
+        request_msg = grafeas.DeleteNoteRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_note_use_cached_wrapped_rpc():
@@ -3755,9 +3779,14 @@ async def test_delete_note_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_note_async(
-    transport: str = "grpc_asyncio", request_type=grafeas.DeleteNoteRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grafeas.DeleteNoteRequest(),
+        {},
+    ],
+)
+async def test_delete_note_async(request_type, transport: str = "grpc_asyncio"):
     client = GrafeasAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3765,7 +3794,7 @@ async def test_delete_note_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_note), "__call__") as call:
@@ -3781,11 +3810,6 @@ async def test_delete_note_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_note_async_from_dict():
-    await test_delete_note_async(request_type=dict)
 
 
 def test_delete_note_field_headers():
@@ -3930,8 +3954,8 @@ async def test_delete_note_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        grafeas.CreateNoteRequest,
-        dict,
+        grafeas.CreateNoteRequest(),
+        {},
     ],
 )
 def test_create_note(request_type, transport: str = "grpc"):
@@ -3942,7 +3966,7 @@ def test_create_note(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_note), "__call__") as call:
@@ -3995,10 +4019,11 @@ def test_create_note_non_empty_request_with_auto_populated_field():
         client.create_note(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == grafeas.CreateNoteRequest(
+        request_msg = grafeas.CreateNoteRequest(
             parent="parent_value",
             note_id="note_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_note_use_cached_wrapped_rpc():
@@ -4079,9 +4104,14 @@ async def test_create_note_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_note_async(
-    transport: str = "grpc_asyncio", request_type=grafeas.CreateNoteRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grafeas.CreateNoteRequest(),
+        {},
+    ],
+)
+async def test_create_note_async(request_type, transport: str = "grpc_asyncio"):
     client = GrafeasAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4089,7 +4119,7 @@ async def test_create_note_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_note), "__call__") as call:
@@ -4118,11 +4148,6 @@ async def test_create_note_async(
     assert response.long_description == "long_description_value"
     assert response.kind == common.NoteKind.VULNERABILITY
     assert response.related_note_names == ["related_note_names_value"]
-
-
-@pytest.mark.asyncio
-async def test_create_note_async_from_dict():
-    await test_create_note_async(request_type=dict)
 
 
 def test_create_note_field_headers():
@@ -4287,8 +4312,8 @@ async def test_create_note_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        grafeas.BatchCreateNotesRequest,
-        dict,
+        grafeas.BatchCreateNotesRequest(),
+        {},
     ],
 )
 def test_batch_create_notes(request_type, transport: str = "grpc"):
@@ -4299,7 +4324,7 @@ def test_batch_create_notes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4344,9 +4369,10 @@ def test_batch_create_notes_non_empty_request_with_auto_populated_field():
         client.batch_create_notes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == grafeas.BatchCreateNotesRequest(
+        request_msg = grafeas.BatchCreateNotesRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_create_notes_use_cached_wrapped_rpc():
@@ -4431,9 +4457,14 @@ async def test_batch_create_notes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_create_notes_async(
-    transport: str = "grpc_asyncio", request_type=grafeas.BatchCreateNotesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grafeas.BatchCreateNotesRequest(),
+        {},
+    ],
+)
+async def test_batch_create_notes_async(request_type, transport: str = "grpc_asyncio"):
     client = GrafeasAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4441,7 +4472,7 @@ async def test_batch_create_notes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4461,11 +4492,6 @@ async def test_batch_create_notes_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, grafeas.BatchCreateNotesResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_create_notes_async_from_dict():
-    await test_batch_create_notes_async(request_type=dict)
 
 
 def test_batch_create_notes_field_headers():
@@ -4632,8 +4658,8 @@ async def test_batch_create_notes_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        grafeas.UpdateNoteRequest,
-        dict,
+        grafeas.UpdateNoteRequest(),
+        {},
     ],
 )
 def test_update_note(request_type, transport: str = "grpc"):
@@ -4644,7 +4670,7 @@ def test_update_note(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_note), "__call__") as call:
@@ -4696,9 +4722,10 @@ def test_update_note_non_empty_request_with_auto_populated_field():
         client.update_note(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == grafeas.UpdateNoteRequest(
+        request_msg = grafeas.UpdateNoteRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_note_use_cached_wrapped_rpc():
@@ -4779,9 +4806,14 @@ async def test_update_note_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_note_async(
-    transport: str = "grpc_asyncio", request_type=grafeas.UpdateNoteRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grafeas.UpdateNoteRequest(),
+        {},
+    ],
+)
+async def test_update_note_async(request_type, transport: str = "grpc_asyncio"):
     client = GrafeasAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4789,7 +4821,7 @@ async def test_update_note_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_note), "__call__") as call:
@@ -4818,11 +4850,6 @@ async def test_update_note_async(
     assert response.long_description == "long_description_value"
     assert response.kind == common.NoteKind.VULNERABILITY
     assert response.related_note_names == ["related_note_names_value"]
-
-
-@pytest.mark.asyncio
-async def test_update_note_async_from_dict():
-    await test_update_note_async(request_type=dict)
 
 
 def test_update_note_field_headers():
@@ -4987,8 +5014,8 @@ async def test_update_note_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        grafeas.ListNoteOccurrencesRequest,
-        dict,
+        grafeas.ListNoteOccurrencesRequest(),
+        {},
     ],
 )
 def test_list_note_occurrences(request_type, transport: str = "grpc"):
@@ -4999,7 +5026,7 @@ def test_list_note_occurrences(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5049,11 +5076,12 @@ def test_list_note_occurrences_non_empty_request_with_auto_populated_field():
         client.list_note_occurrences(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == grafeas.ListNoteOccurrencesRequest(
+        request_msg = grafeas.ListNoteOccurrencesRequest(
             name="name_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_note_occurrences_use_cached_wrapped_rpc():
@@ -5139,8 +5167,15 @@ async def test_list_note_occurrences_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grafeas.ListNoteOccurrencesRequest(),
+        {},
+    ],
+)
 async def test_list_note_occurrences_async(
-    transport: str = "grpc_asyncio", request_type=grafeas.ListNoteOccurrencesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GrafeasAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5149,7 +5184,7 @@ async def test_list_note_occurrences_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5172,11 +5207,6 @@ async def test_list_note_occurrences_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNoteOccurrencesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_note_occurrences_async_from_dict():
-    await test_list_note_occurrences_async(request_type=dict)
 
 
 def test_list_note_occurrences_field_headers():
@@ -5391,6 +5421,9 @@ def test_list_note_occurrences_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, grafeas.Occurrence) for i in results)
@@ -5483,6 +5516,8 @@ async def test_list_note_occurrences_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5532,11 +5567,7 @@ async def test_list_note_occurrences_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_note_occurrences(request={})
-        ).pages:
+        async for page_ in (await client.list_note_occurrences(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5648,7 +5679,7 @@ def test_get_occurrence_rest_required_fields(request_type=grafeas.GetOccurrenceR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_occurrence_rest_unset_required_fields():
@@ -5835,7 +5866,7 @@ def test_list_occurrences_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_occurrences_rest_unset_required_fields():
@@ -5967,6 +5998,9 @@ def test_list_occurrences_rest_pager(transport: str = "rest"):
 
         pager = client.list_occurrences(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, grafeas.Occurrence) for i in results)
@@ -6083,7 +6117,7 @@ def test_delete_occurrence_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_occurrence_rest_unset_required_fields():
@@ -6260,7 +6294,7 @@ def test_create_occurrence_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_occurrence_rest_unset_required_fields():
@@ -6452,7 +6486,7 @@ def test_batch_create_occurrences_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_create_occurrences_rest_unset_required_fields():
@@ -6645,7 +6679,7 @@ def test_update_occurrence_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_occurrence_rest_unset_required_fields():
@@ -6837,7 +6871,7 @@ def test_get_occurrence_note_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_occurrence_note_rest_unset_required_fields():
@@ -7012,7 +7046,7 @@ def test_get_note_rest_required_fields(request_type=grafeas.GetNoteRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_note_rest_unset_required_fields():
@@ -7195,7 +7229,7 @@ def test_list_notes_rest_required_fields(request_type=grafeas.ListNotesRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_notes_rest_unset_required_fields():
@@ -7327,6 +7361,9 @@ def test_list_notes_rest_pager(transport: str = "rest"):
 
         pager = client.list_notes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, grafeas.Note) for i in results)
@@ -7439,7 +7476,7 @@ def test_delete_note_rest_required_fields(request_type=grafeas.DeleteNoteRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_note_rest_unset_required_fields():
@@ -7627,7 +7664,7 @@ def test_create_note_rest_required_fields(request_type=grafeas.CreateNoteRequest
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_note_rest_unset_required_fields():
@@ -7821,7 +7858,7 @@ def test_batch_create_notes_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_create_notes_rest_unset_required_fields():
@@ -8009,7 +8046,7 @@ def test_update_note_rest_required_fields(request_type=grafeas.UpdateNoteRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_note_rest_unset_required_fields():
@@ -8210,7 +8247,7 @@ def test_list_note_occurrences_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_note_occurrences_rest_unset_required_fields():
@@ -8344,6 +8381,9 @@ def test_list_note_occurrences_rest_pager(transport: str = "rest"):
 
         pager = client.list_note_occurrences(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, grafeas.Occurrence) for i in results)
@@ -8424,7 +8464,6 @@ def test_get_occurrence_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.GetOccurrenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8445,7 +8484,6 @@ def test_list_occurrences_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.ListOccurrencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8468,7 +8506,6 @@ def test_delete_occurrence_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.DeleteOccurrenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8491,7 +8528,6 @@ def test_create_occurrence_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.CreateOccurrenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8514,7 +8550,6 @@ def test_batch_create_occurrences_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.BatchCreateOccurrencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8537,7 +8572,6 @@ def test_update_occurrence_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.UpdateOccurrenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8560,7 +8594,6 @@ def test_get_occurrence_note_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.GetOccurrenceNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -8581,7 +8614,6 @@ def test_get_note_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.GetNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -8602,7 +8634,6 @@ def test_list_notes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.ListNotesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8623,7 +8654,6 @@ def test_delete_note_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.DeleteNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -8644,7 +8674,6 @@ def test_create_note_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.CreateNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -8667,7 +8696,6 @@ def test_batch_create_notes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.BatchCreateNotesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8688,7 +8716,6 @@ def test_update_note_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.UpdateNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -8711,7 +8738,6 @@ def test_list_note_occurrences_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.ListNoteOccurrencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8756,7 +8782,6 @@ async def test_get_occurrence_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.GetOccurrenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8784,7 +8809,6 @@ async def test_list_occurrences_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.ListOccurrencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8809,7 +8833,6 @@ async def test_delete_occurrence_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.DeleteOccurrenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8842,7 +8865,6 @@ async def test_create_occurrence_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.CreateOccurrenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8869,7 +8891,6 @@ async def test_batch_create_occurrences_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.BatchCreateOccurrencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8902,7 +8923,6 @@ async def test_update_occurrence_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.UpdateOccurrenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8935,7 +8955,6 @@ async def test_get_occurrence_note_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.GetOccurrenceNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -8966,7 +8985,6 @@ async def test_get_note_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.GetNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -8994,7 +9012,6 @@ async def test_list_notes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.ListNotesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9017,7 +9034,6 @@ async def test_delete_note_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.DeleteNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9048,7 +9064,6 @@ async def test_create_note_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.CreateNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9075,7 +9090,6 @@ async def test_batch_create_notes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.BatchCreateNotesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9106,7 +9120,6 @@ async def test_update_note_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.UpdateNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9135,7 +9148,6 @@ async def test_list_note_occurrences_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.ListNoteOccurrencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -12415,7 +12427,6 @@ def test_get_occurrence_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.GetOccurrenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -12435,7 +12446,6 @@ def test_list_occurrences_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.ListOccurrencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -12457,7 +12467,6 @@ def test_delete_occurrence_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.DeleteOccurrenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -12479,7 +12488,6 @@ def test_create_occurrence_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.CreateOccurrenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -12501,7 +12509,6 @@ def test_batch_create_occurrences_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.BatchCreateOccurrencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -12523,7 +12530,6 @@ def test_update_occurrence_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.UpdateOccurrenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -12545,7 +12551,6 @@ def test_get_occurrence_note_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.GetOccurrenceNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -12565,7 +12570,6 @@ def test_get_note_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.GetNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -12585,7 +12589,6 @@ def test_list_notes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.ListNotesRequest()
-
         assert args[0] == request_msg
 
 
@@ -12605,7 +12608,6 @@ def test_delete_note_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.DeleteNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -12625,7 +12627,6 @@ def test_create_note_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.CreateNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -12647,7 +12648,6 @@ def test_batch_create_notes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.BatchCreateNotesRequest()
-
         assert args[0] == request_msg
 
 
@@ -12667,7 +12667,6 @@ def test_update_note_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.UpdateNoteRequest()
-
         assert args[0] == request_msg
 
 
@@ -12689,7 +12688,6 @@ def test_list_note_occurrences_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = grafeas.ListNoteOccurrencesRequest()
-
         assert args[0] == request_msg
 
 

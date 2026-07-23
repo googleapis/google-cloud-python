@@ -27,6 +27,17 @@ RUFF_VERSION = "ruff==0.14.14"
 LINT_PATHS = ["docs", "proto", "tests", "noxfile.py", "setup.py"]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
@@ -82,6 +93,7 @@ def unit(session, implementation):
             session.posargs  # Coverage info when running individual tests is annoying.
             or [
                 "--cov=proto",
+                "--cov-append",
                 "--cov-config=.coveragerc",
                 "--cov-report=term",
                 "--cov-report=html",
@@ -305,6 +317,21 @@ def mypy(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/15104):
     # Enable mypy once this bug is fixed.
     session.skip("Skip mypy since this library doesn't have py.typed")
+
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-setuptools",
+        "types-protobuf",
+        "types-requests",
+    )
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "proto",
+        *session.posargs,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

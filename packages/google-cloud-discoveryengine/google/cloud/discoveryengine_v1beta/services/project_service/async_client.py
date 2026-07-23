@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -79,8 +79,14 @@ class ProjectServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = ProjectServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ProjectServiceClient._DEFAULT_UNIVERSE
 
+    content_policy_path = staticmethod(ProjectServiceClient.content_policy_path)
+    parse_content_policy_path = staticmethod(
+        ProjectServiceClient.parse_content_policy_path
+    )
     project_path = staticmethod(ProjectServiceClient.project_path)
     parse_project_path = staticmethod(ProjectServiceClient.parse_project_path)
+    template_path = staticmethod(ProjectServiceClient.template_path)
+    parse_template_path = staticmethod(ProjectServiceClient.parse_template_path)
     common_billing_account_path = staticmethod(
         ProjectServiceClient.common_billing_account_path
     )
@@ -339,11 +345,11 @@ class ProjectServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.provision_project(request=request)
+                operation = await client.provision_project(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

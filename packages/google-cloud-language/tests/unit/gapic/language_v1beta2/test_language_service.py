@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -110,6 +105,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1342,8 +1352,8 @@ def test_language_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        language_service.AnalyzeSentimentRequest,
-        dict,
+        language_service.AnalyzeSentimentRequest(),
+        {},
     ],
 )
 def test_analyze_sentiment(request_type, transport: str = "grpc"):
@@ -1354,7 +1364,7 @@ def test_analyze_sentiment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1400,7 +1410,8 @@ def test_analyze_sentiment_non_empty_request_with_auto_populated_field():
         client.analyze_sentiment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnalyzeSentimentRequest()
+        request_msg = language_service.AnalyzeSentimentRequest()
+        assert args[0] == request_msg
 
 
 def test_analyze_sentiment_use_cached_wrapped_rpc():
@@ -1483,10 +1494,14 @@ async def test_analyze_sentiment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_analyze_sentiment_async(
-    transport: str = "grpc_asyncio",
-    request_type=language_service.AnalyzeSentimentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        language_service.AnalyzeSentimentRequest(),
+        {},
+    ],
+)
+async def test_analyze_sentiment_async(request_type, transport: str = "grpc_asyncio"):
     client = LanguageServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1494,7 +1509,7 @@ async def test_analyze_sentiment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1517,11 +1532,6 @@ async def test_analyze_sentiment_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeSentimentResponse)
     assert response.language == "language_value"
-
-
-@pytest.mark.asyncio
-async def test_analyze_sentiment_async_from_dict():
-    await test_analyze_sentiment_async(request_type=dict)
 
 
 def test_analyze_sentiment_flattened():
@@ -1635,8 +1645,8 @@ async def test_analyze_sentiment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        language_service.AnalyzeEntitiesRequest,
-        dict,
+        language_service.AnalyzeEntitiesRequest(),
+        {},
     ],
 )
 def test_analyze_entities(request_type, transport: str = "grpc"):
@@ -1647,7 +1657,7 @@ def test_analyze_entities(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.analyze_entities), "__call__") as call:
@@ -1689,7 +1699,8 @@ def test_analyze_entities_non_empty_request_with_auto_populated_field():
         client.analyze_entities(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnalyzeEntitiesRequest()
+        request_msg = language_service.AnalyzeEntitiesRequest()
+        assert args[0] == request_msg
 
 
 def test_analyze_entities_use_cached_wrapped_rpc():
@@ -1772,10 +1783,14 @@ async def test_analyze_entities_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_analyze_entities_async(
-    transport: str = "grpc_asyncio",
-    request_type=language_service.AnalyzeEntitiesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        language_service.AnalyzeEntitiesRequest(),
+        {},
+    ],
+)
+async def test_analyze_entities_async(request_type, transport: str = "grpc_asyncio"):
     client = LanguageServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1783,7 +1798,7 @@ async def test_analyze_entities_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.analyze_entities), "__call__") as call:
@@ -1804,11 +1819,6 @@ async def test_analyze_entities_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeEntitiesResponse)
     assert response.language == "language_value"
-
-
-@pytest.mark.asyncio
-async def test_analyze_entities_async_from_dict():
-    await test_analyze_entities_async(request_type=dict)
 
 
 def test_analyze_entities_flattened():
@@ -1918,8 +1928,8 @@ async def test_analyze_entities_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        language_service.AnalyzeEntitySentimentRequest,
-        dict,
+        language_service.AnalyzeEntitySentimentRequest(),
+        {},
     ],
 )
 def test_analyze_entity_sentiment(request_type, transport: str = "grpc"):
@@ -1930,7 +1940,7 @@ def test_analyze_entity_sentiment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1976,7 +1986,8 @@ def test_analyze_entity_sentiment_non_empty_request_with_auto_populated_field():
         client.analyze_entity_sentiment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnalyzeEntitySentimentRequest()
+        request_msg = language_service.AnalyzeEntitySentimentRequest()
+        assert args[0] == request_msg
 
 
 def test_analyze_entity_sentiment_use_cached_wrapped_rpc():
@@ -2062,9 +2073,15 @@ async def test_analyze_entity_sentiment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        language_service.AnalyzeEntitySentimentRequest(),
+        {},
+    ],
+)
 async def test_analyze_entity_sentiment_async(
-    transport: str = "grpc_asyncio",
-    request_type=language_service.AnalyzeEntitySentimentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = LanguageServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2073,7 +2090,7 @@ async def test_analyze_entity_sentiment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2096,11 +2113,6 @@ async def test_analyze_entity_sentiment_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeEntitySentimentResponse)
     assert response.language == "language_value"
-
-
-@pytest.mark.asyncio
-async def test_analyze_entity_sentiment_async_from_dict():
-    await test_analyze_entity_sentiment_async(request_type=dict)
 
 
 def test_analyze_entity_sentiment_flattened():
@@ -2214,8 +2226,8 @@ async def test_analyze_entity_sentiment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        language_service.AnalyzeSyntaxRequest,
-        dict,
+        language_service.AnalyzeSyntaxRequest(),
+        {},
     ],
 )
 def test_analyze_syntax(request_type, transport: str = "grpc"):
@@ -2226,7 +2238,7 @@ def test_analyze_syntax(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.analyze_syntax), "__call__") as call:
@@ -2268,7 +2280,8 @@ def test_analyze_syntax_non_empty_request_with_auto_populated_field():
         client.analyze_syntax(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnalyzeSyntaxRequest()
+        request_msg = language_service.AnalyzeSyntaxRequest()
+        assert args[0] == request_msg
 
 
 def test_analyze_syntax_use_cached_wrapped_rpc():
@@ -2349,9 +2362,14 @@ async def test_analyze_syntax_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_analyze_syntax_async(
-    transport: str = "grpc_asyncio", request_type=language_service.AnalyzeSyntaxRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        language_service.AnalyzeSyntaxRequest(),
+        {},
+    ],
+)
+async def test_analyze_syntax_async(request_type, transport: str = "grpc_asyncio"):
     client = LanguageServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2359,7 +2377,7 @@ async def test_analyze_syntax_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.analyze_syntax), "__call__") as call:
@@ -2380,11 +2398,6 @@ async def test_analyze_syntax_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeSyntaxResponse)
     assert response.language == "language_value"
-
-
-@pytest.mark.asyncio
-async def test_analyze_syntax_async_from_dict():
-    await test_analyze_syntax_async(request_type=dict)
 
 
 def test_analyze_syntax_flattened():
@@ -2494,8 +2507,8 @@ async def test_analyze_syntax_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        language_service.ClassifyTextRequest,
-        dict,
+        language_service.ClassifyTextRequest(),
+        {},
     ],
 )
 def test_classify_text(request_type, transport: str = "grpc"):
@@ -2506,7 +2519,7 @@ def test_classify_text(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.classify_text), "__call__") as call:
@@ -2545,7 +2558,8 @@ def test_classify_text_non_empty_request_with_auto_populated_field():
         client.classify_text(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.ClassifyTextRequest()
+        request_msg = language_service.ClassifyTextRequest()
+        assert args[0] == request_msg
 
 
 def test_classify_text_use_cached_wrapped_rpc():
@@ -2626,9 +2640,14 @@ async def test_classify_text_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_classify_text_async(
-    transport: str = "grpc_asyncio", request_type=language_service.ClassifyTextRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        language_service.ClassifyTextRequest(),
+        {},
+    ],
+)
+async def test_classify_text_async(request_type, transport: str = "grpc_asyncio"):
     client = LanguageServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2636,7 +2655,7 @@ async def test_classify_text_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.classify_text), "__call__") as call:
@@ -2654,11 +2673,6 @@ async def test_classify_text_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.ClassifyTextResponse)
-
-
-@pytest.mark.asyncio
-async def test_classify_text_async_from_dict():
-    await test_classify_text_async(request_type=dict)
 
 
 def test_classify_text_flattened():
@@ -2758,8 +2772,8 @@ async def test_classify_text_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        language_service.ModerateTextRequest,
-        dict,
+        language_service.ModerateTextRequest(),
+        {},
     ],
 )
 def test_moderate_text(request_type, transport: str = "grpc"):
@@ -2770,7 +2784,7 @@ def test_moderate_text(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.moderate_text), "__call__") as call:
@@ -2809,7 +2823,8 @@ def test_moderate_text_non_empty_request_with_auto_populated_field():
         client.moderate_text(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.ModerateTextRequest()
+        request_msg = language_service.ModerateTextRequest()
+        assert args[0] == request_msg
 
 
 def test_moderate_text_use_cached_wrapped_rpc():
@@ -2890,9 +2905,14 @@ async def test_moderate_text_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_moderate_text_async(
-    transport: str = "grpc_asyncio", request_type=language_service.ModerateTextRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        language_service.ModerateTextRequest(),
+        {},
+    ],
+)
+async def test_moderate_text_async(request_type, transport: str = "grpc_asyncio"):
     client = LanguageServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2900,7 +2920,7 @@ async def test_moderate_text_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.moderate_text), "__call__") as call:
@@ -2918,11 +2938,6 @@ async def test_moderate_text_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.ModerateTextResponse)
-
-
-@pytest.mark.asyncio
-async def test_moderate_text_async_from_dict():
-    await test_moderate_text_async(request_type=dict)
 
 
 def test_moderate_text_flattened():
@@ -3022,8 +3037,8 @@ async def test_moderate_text_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        language_service.AnnotateTextRequest,
-        dict,
+        language_service.AnnotateTextRequest(),
+        {},
     ],
 )
 def test_annotate_text(request_type, transport: str = "grpc"):
@@ -3034,7 +3049,7 @@ def test_annotate_text(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.annotate_text), "__call__") as call:
@@ -3076,7 +3091,8 @@ def test_annotate_text_non_empty_request_with_auto_populated_field():
         client.annotate_text(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == language_service.AnnotateTextRequest()
+        request_msg = language_service.AnnotateTextRequest()
+        assert args[0] == request_msg
 
 
 def test_annotate_text_use_cached_wrapped_rpc():
@@ -3157,9 +3173,14 @@ async def test_annotate_text_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_annotate_text_async(
-    transport: str = "grpc_asyncio", request_type=language_service.AnnotateTextRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        language_service.AnnotateTextRequest(),
+        {},
+    ],
+)
+async def test_annotate_text_async(request_type, transport: str = "grpc_asyncio"):
     client = LanguageServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3167,7 +3188,7 @@ async def test_annotate_text_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.annotate_text), "__call__") as call:
@@ -3188,11 +3209,6 @@ async def test_annotate_text_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnnotateTextResponse)
     assert response.language == "language_value"
-
-
-@pytest.mark.asyncio
-async def test_annotate_text_async_from_dict():
-    await test_annotate_text_async(request_type=dict)
 
 
 def test_annotate_text_flattened():
@@ -3415,7 +3431,7 @@ def test_analyze_sentiment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_analyze_sentiment_rest_unset_required_fields():
@@ -3595,7 +3611,7 @@ def test_analyze_entities_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_analyze_entities_rest_unset_required_fields():
@@ -3780,7 +3796,7 @@ def test_analyze_entity_sentiment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_analyze_entity_sentiment_rest_unset_required_fields():
@@ -3959,7 +3975,7 @@ def test_analyze_syntax_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_analyze_syntax_rest_unset_required_fields():
@@ -4137,7 +4153,7 @@ def test_classify_text_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_classify_text_rest_unset_required_fields():
@@ -4313,7 +4329,7 @@ def test_moderate_text_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_moderate_text_rest_unset_required_fields():
@@ -4489,7 +4505,7 @@ def test_annotate_text_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_annotate_text_rest_unset_required_fields():
@@ -4698,7 +4714,6 @@ def test_analyze_sentiment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnalyzeSentimentRequest()
-
         assert args[0] == request_msg
 
 
@@ -4719,7 +4734,6 @@ def test_analyze_entities_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnalyzeEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4742,7 +4756,6 @@ def test_analyze_entity_sentiment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnalyzeEntitySentimentRequest()
-
         assert args[0] == request_msg
 
 
@@ -4763,7 +4776,6 @@ def test_analyze_syntax_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnalyzeSyntaxRequest()
-
         assert args[0] == request_msg
 
 
@@ -4784,7 +4796,6 @@ def test_classify_text_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.ClassifyTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -4805,7 +4816,6 @@ def test_moderate_text_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.ModerateTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -4826,7 +4836,6 @@ def test_annotate_text_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnnotateTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -4869,7 +4878,6 @@ async def test_analyze_sentiment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnalyzeSentimentRequest()
-
         assert args[0] == request_msg
 
 
@@ -4896,7 +4904,6 @@ async def test_analyze_entities_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnalyzeEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4925,7 +4932,6 @@ async def test_analyze_entity_sentiment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnalyzeEntitySentimentRequest()
-
         assert args[0] == request_msg
 
 
@@ -4952,7 +4958,6 @@ async def test_analyze_syntax_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnalyzeSyntaxRequest()
-
         assert args[0] == request_msg
 
 
@@ -4977,7 +4982,6 @@ async def test_classify_text_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.ClassifyTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -5002,7 +5006,6 @@ async def test_moderate_text_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.ModerateTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -5029,7 +5032,6 @@ async def test_annotate_text_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnnotateTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -6011,7 +6013,6 @@ def test_analyze_sentiment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnalyzeSentimentRequest()
-
         assert args[0] == request_msg
 
 
@@ -6031,7 +6032,6 @@ def test_analyze_entities_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnalyzeEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6053,7 +6053,6 @@ def test_analyze_entity_sentiment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnalyzeEntitySentimentRequest()
-
         assert args[0] == request_msg
 
 
@@ -6073,7 +6072,6 @@ def test_analyze_syntax_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnalyzeSyntaxRequest()
-
         assert args[0] == request_msg
 
 
@@ -6093,7 +6091,6 @@ def test_classify_text_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.ClassifyTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -6113,7 +6110,6 @@ def test_moderate_text_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.ModerateTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -6133,7 +6129,6 @@ def test_annotate_text_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = language_service.AnnotateTextRequest()
-
         assert args[0] == request_msg
 
 

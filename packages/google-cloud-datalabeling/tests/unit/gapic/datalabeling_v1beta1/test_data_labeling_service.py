@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -135,6 +130,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1360,8 +1370,8 @@ def test_data_labeling_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.CreateDatasetRequest,
-        dict,
+        data_labeling_service.CreateDatasetRequest(),
+        {},
     ],
 )
 def test_create_dataset(request_type, transport: str = "grpc"):
@@ -1372,7 +1382,7 @@ def test_create_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
@@ -1424,9 +1434,10 @@ def test_create_dataset_non_empty_request_with_auto_populated_field():
         client.create_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.CreateDatasetRequest(
+        request_msg = data_labeling_service.CreateDatasetRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_dataset_use_cached_wrapped_rpc():
@@ -1507,10 +1518,14 @@ async def test_create_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.CreateDatasetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.CreateDatasetRequest(),
+        {},
+    ],
+)
+async def test_create_dataset_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1518,7 +1533,7 @@ async def test_create_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
@@ -1547,11 +1562,6 @@ async def test_create_dataset_async(
     assert response.description == "description_value"
     assert response.blocking_resources == ["blocking_resources_value"]
     assert response.data_item_count == 1584
-
-
-@pytest.mark.asyncio
-async def test_create_dataset_async_from_dict():
-    await test_create_dataset_async(request_type=dict)
 
 
 def test_create_dataset_field_headers():
@@ -1706,8 +1716,8 @@ async def test_create_dataset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.GetDatasetRequest,
-        dict,
+        data_labeling_service.GetDatasetRequest(),
+        {},
     ],
 )
 def test_get_dataset(request_type, transport: str = "grpc"):
@@ -1718,7 +1728,7 @@ def test_get_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
@@ -1770,9 +1780,10 @@ def test_get_dataset_non_empty_request_with_auto_populated_field():
         client.get_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetDatasetRequest(
+        request_msg = data_labeling_service.GetDatasetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_dataset_use_cached_wrapped_rpc():
@@ -1853,10 +1864,14 @@ async def test_get_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.GetDatasetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.GetDatasetRequest(),
+        {},
+    ],
+)
+async def test_get_dataset_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1864,7 +1879,7 @@ async def test_get_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
@@ -1893,11 +1908,6 @@ async def test_get_dataset_async(
     assert response.description == "description_value"
     assert response.blocking_resources == ["blocking_resources_value"]
     assert response.data_item_count == 1584
-
-
-@pytest.mark.asyncio
-async def test_get_dataset_async_from_dict():
-    await test_get_dataset_async(request_type=dict)
 
 
 def test_get_dataset_field_headers():
@@ -2042,8 +2052,8 @@ async def test_get_dataset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.ListDatasetsRequest,
-        dict,
+        data_labeling_service.ListDatasetsRequest(),
+        {},
     ],
 )
 def test_list_datasets(request_type, transport: str = "grpc"):
@@ -2054,7 +2064,7 @@ def test_list_datasets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
@@ -2100,11 +2110,12 @@ def test_list_datasets_non_empty_request_with_auto_populated_field():
         client.list_datasets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListDatasetsRequest(
+        request_msg = data_labeling_service.ListDatasetsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_datasets_use_cached_wrapped_rpc():
@@ -2185,10 +2196,14 @@ async def test_list_datasets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_datasets_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.ListDatasetsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.ListDatasetsRequest(),
+        {},
+    ],
+)
+async def test_list_datasets_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2196,7 +2211,7 @@ async def test_list_datasets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
@@ -2217,11 +2232,6 @@ async def test_list_datasets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatasetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_datasets_async_from_dict():
-    await test_list_datasets_async(request_type=dict)
 
 
 def test_list_datasets_field_headers():
@@ -2426,6 +2436,9 @@ def test_list_datasets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataset.Dataset) for i in results)
@@ -2514,6 +2527,8 @@ async def test_list_datasets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2561,11 +2576,7 @@ async def test_list_datasets_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_datasets(request={})
-        ).pages:
+        async for page_ in (await client.list_datasets(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2574,8 +2585,8 @@ async def test_list_datasets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.DeleteDatasetRequest,
-        dict,
+        data_labeling_service.DeleteDatasetRequest(),
+        {},
     ],
 )
 def test_delete_dataset(request_type, transport: str = "grpc"):
@@ -2586,7 +2597,7 @@ def test_delete_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
@@ -2627,9 +2638,10 @@ def test_delete_dataset_non_empty_request_with_auto_populated_field():
         client.delete_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteDatasetRequest(
+        request_msg = data_labeling_service.DeleteDatasetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_dataset_use_cached_wrapped_rpc():
@@ -2710,10 +2722,14 @@ async def test_delete_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.DeleteDatasetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.DeleteDatasetRequest(),
+        {},
+    ],
+)
+async def test_delete_dataset_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2721,7 +2737,7 @@ async def test_delete_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
@@ -2737,11 +2753,6 @@ async def test_delete_dataset_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_dataset_async_from_dict():
-    await test_delete_dataset_async(request_type=dict)
 
 
 def test_delete_dataset_field_headers():
@@ -2886,8 +2897,8 @@ async def test_delete_dataset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.ImportDataRequest,
-        dict,
+        data_labeling_service.ImportDataRequest(),
+        {},
     ],
 )
 def test_import_data(request_type, transport: str = "grpc"):
@@ -2898,7 +2909,7 @@ def test_import_data(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_data), "__call__") as call:
@@ -2940,10 +2951,11 @@ def test_import_data_non_empty_request_with_auto_populated_field():
         client.import_data(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ImportDataRequest(
+        request_msg = data_labeling_service.ImportDataRequest(
             name="name_value",
             user_email_address="user_email_address_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_data_use_cached_wrapped_rpc():
@@ -3034,10 +3046,14 @@ async def test_import_data_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_import_data_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.ImportDataRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.ImportDataRequest(),
+        {},
+    ],
+)
+async def test_import_data_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3045,7 +3061,7 @@ async def test_import_data_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_data), "__call__") as call:
@@ -3063,11 +3079,6 @@ async def test_import_data_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_data_async_from_dict():
-    await test_import_data_async(request_type=dict)
 
 
 def test_import_data_field_headers():
@@ -3238,8 +3249,8 @@ async def test_import_data_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.ExportDataRequest,
-        dict,
+        data_labeling_service.ExportDataRequest(),
+        {},
     ],
 )
 def test_export_data(request_type, transport: str = "grpc"):
@@ -3250,7 +3261,7 @@ def test_export_data(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_data), "__call__") as call:
@@ -3294,12 +3305,13 @@ def test_export_data_non_empty_request_with_auto_populated_field():
         client.export_data(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ExportDataRequest(
+        request_msg = data_labeling_service.ExportDataRequest(
             name="name_value",
             annotated_dataset="annotated_dataset_value",
             filter="filter_value",
             user_email_address="user_email_address_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_data_use_cached_wrapped_rpc():
@@ -3390,10 +3402,14 @@ async def test_export_data_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_data_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.ExportDataRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.ExportDataRequest(),
+        {},
+    ],
+)
+async def test_export_data_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3401,7 +3417,7 @@ async def test_export_data_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_data), "__call__") as call:
@@ -3419,11 +3435,6 @@ async def test_export_data_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_data_async_from_dict():
-    await test_export_data_async(request_type=dict)
 
 
 def test_export_data_field_headers():
@@ -3614,8 +3625,8 @@ async def test_export_data_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.GetDataItemRequest,
-        dict,
+        data_labeling_service.GetDataItemRequest(),
+        {},
     ],
 )
 def test_get_data_item(request_type, transport: str = "grpc"):
@@ -3626,7 +3637,7 @@ def test_get_data_item(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_item), "__call__") as call:
@@ -3670,9 +3681,10 @@ def test_get_data_item_non_empty_request_with_auto_populated_field():
         client.get_data_item(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetDataItemRequest(
+        request_msg = data_labeling_service.GetDataItemRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_data_item_use_cached_wrapped_rpc():
@@ -3753,10 +3765,14 @@ async def test_get_data_item_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_data_item_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.GetDataItemRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.GetDataItemRequest(),
+        {},
+    ],
+)
+async def test_get_data_item_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3764,7 +3780,7 @@ async def test_get_data_item_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_item), "__call__") as call:
@@ -3785,11 +3801,6 @@ async def test_get_data_item_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.DataItem)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_data_item_async_from_dict():
-    await test_get_data_item_async(request_type=dict)
 
 
 def test_get_data_item_field_headers():
@@ -3934,8 +3945,8 @@ async def test_get_data_item_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.ListDataItemsRequest,
-        dict,
+        data_labeling_service.ListDataItemsRequest(),
+        {},
     ],
 )
 def test_list_data_items(request_type, transport: str = "grpc"):
@@ -3946,7 +3957,7 @@ def test_list_data_items(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_items), "__call__") as call:
@@ -3992,11 +4003,12 @@ def test_list_data_items_non_empty_request_with_auto_populated_field():
         client.list_data_items(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListDataItemsRequest(
+        request_msg = data_labeling_service.ListDataItemsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_data_items_use_cached_wrapped_rpc():
@@ -4077,10 +4089,14 @@ async def test_list_data_items_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_data_items_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.ListDataItemsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.ListDataItemsRequest(),
+        {},
+    ],
+)
+async def test_list_data_items_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4088,7 +4104,7 @@ async def test_list_data_items_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_items), "__call__") as call:
@@ -4109,11 +4125,6 @@ async def test_list_data_items_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataItemsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_data_items_async_from_dict():
-    await test_list_data_items_async(request_type=dict)
 
 
 def test_list_data_items_field_headers():
@@ -4318,6 +4329,9 @@ def test_list_data_items_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataset.DataItem) for i in results)
@@ -4406,6 +4420,8 @@ async def test_list_data_items_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4453,11 +4469,7 @@ async def test_list_data_items_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_data_items(request={})
-        ).pages:
+        async for page_ in (await client.list_data_items(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4466,8 +4478,8 @@ async def test_list_data_items_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.GetAnnotatedDatasetRequest,
-        dict,
+        data_labeling_service.GetAnnotatedDatasetRequest(),
+        {},
     ],
 )
 def test_get_annotated_dataset(request_type, transport: str = "grpc"):
@@ -4478,7 +4490,7 @@ def test_get_annotated_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4543,9 +4555,10 @@ def test_get_annotated_dataset_non_empty_request_with_auto_populated_field():
         client.get_annotated_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetAnnotatedDatasetRequest(
+        request_msg = data_labeling_service.GetAnnotatedDatasetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_annotated_dataset_use_cached_wrapped_rpc():
@@ -4631,9 +4644,15 @@ async def test_get_annotated_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.GetAnnotatedDatasetRequest(),
+        {},
+    ],
+)
 async def test_get_annotated_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.GetAnnotatedDatasetRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4642,7 +4661,7 @@ async def test_get_annotated_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4682,11 +4701,6 @@ async def test_get_annotated_dataset_async(
     assert response.example_count == 1396
     assert response.completed_example_count == 2448
     assert response.blocking_resources == ["blocking_resources_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_annotated_dataset_async_from_dict():
-    await test_get_annotated_dataset_async(request_type=dict)
 
 
 def test_get_annotated_dataset_field_headers():
@@ -4843,8 +4857,8 @@ async def test_get_annotated_dataset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.ListAnnotatedDatasetsRequest,
-        dict,
+        data_labeling_service.ListAnnotatedDatasetsRequest(),
+        {},
     ],
 )
 def test_list_annotated_datasets(request_type, transport: str = "grpc"):
@@ -4855,7 +4869,7 @@ def test_list_annotated_datasets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4905,11 +4919,12 @@ def test_list_annotated_datasets_non_empty_request_with_auto_populated_field():
         client.list_annotated_datasets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListAnnotatedDatasetsRequest(
+        request_msg = data_labeling_service.ListAnnotatedDatasetsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_annotated_datasets_use_cached_wrapped_rpc():
@@ -4995,9 +5010,15 @@ async def test_list_annotated_datasets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.ListAnnotatedDatasetsRequest(),
+        {},
+    ],
+)
 async def test_list_annotated_datasets_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.ListAnnotatedDatasetsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5006,7 +5027,7 @@ async def test_list_annotated_datasets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5029,11 +5050,6 @@ async def test_list_annotated_datasets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAnnotatedDatasetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_annotated_datasets_async_from_dict():
-    await test_list_annotated_datasets_async(request_type=dict)
 
 
 def test_list_annotated_datasets_field_headers():
@@ -5248,6 +5264,9 @@ def test_list_annotated_datasets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataset.AnnotatedDataset) for i in results)
@@ -5340,6 +5359,8 @@ async def test_list_annotated_datasets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5389,11 +5410,7 @@ async def test_list_annotated_datasets_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_annotated_datasets(request={})
-        ).pages:
+        async for page_ in (await client.list_annotated_datasets(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5402,8 +5419,8 @@ async def test_list_annotated_datasets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.DeleteAnnotatedDatasetRequest,
-        dict,
+        data_labeling_service.DeleteAnnotatedDatasetRequest(),
+        {},
     ],
 )
 def test_delete_annotated_dataset(request_type, transport: str = "grpc"):
@@ -5414,7 +5431,7 @@ def test_delete_annotated_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5459,9 +5476,10 @@ def test_delete_annotated_dataset_non_empty_request_with_auto_populated_field():
         client.delete_annotated_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteAnnotatedDatasetRequest(
+        request_msg = data_labeling_service.DeleteAnnotatedDatasetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_annotated_dataset_use_cached_wrapped_rpc():
@@ -5547,9 +5565,15 @@ async def test_delete_annotated_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.DeleteAnnotatedDatasetRequest(),
+        {},
+    ],
+)
 async def test_delete_annotated_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.DeleteAnnotatedDatasetRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5558,7 +5582,7 @@ async def test_delete_annotated_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5576,11 +5600,6 @@ async def test_delete_annotated_dataset_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_annotated_dataset_async_from_dict():
-    await test_delete_annotated_dataset_async(request_type=dict)
 
 
 def test_delete_annotated_dataset_field_headers():
@@ -5649,8 +5668,8 @@ async def test_delete_annotated_dataset_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.LabelImageRequest,
-        dict,
+        data_labeling_service.LabelImageRequest(),
+        {},
     ],
 )
 def test_label_image(request_type, transport: str = "grpc"):
@@ -5661,7 +5680,7 @@ def test_label_image(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.label_image), "__call__") as call:
@@ -5702,9 +5721,10 @@ def test_label_image_non_empty_request_with_auto_populated_field():
         client.label_image(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.LabelImageRequest(
+        request_msg = data_labeling_service.LabelImageRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_label_image_use_cached_wrapped_rpc():
@@ -5795,10 +5815,14 @@ async def test_label_image_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_label_image_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.LabelImageRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.LabelImageRequest(),
+        {},
+    ],
+)
+async def test_label_image_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5806,7 +5830,7 @@ async def test_label_image_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.label_image), "__call__") as call:
@@ -5824,11 +5848,6 @@ async def test_label_image_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_label_image_async_from_dict():
-    await test_label_image_async(request_type=dict)
 
 
 def test_label_image_field_headers():
@@ -6009,8 +6028,8 @@ async def test_label_image_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.LabelVideoRequest,
-        dict,
+        data_labeling_service.LabelVideoRequest(),
+        {},
     ],
 )
 def test_label_video(request_type, transport: str = "grpc"):
@@ -6021,7 +6040,7 @@ def test_label_video(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.label_video), "__call__") as call:
@@ -6062,9 +6081,10 @@ def test_label_video_non_empty_request_with_auto_populated_field():
         client.label_video(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.LabelVideoRequest(
+        request_msg = data_labeling_service.LabelVideoRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_label_video_use_cached_wrapped_rpc():
@@ -6155,10 +6175,14 @@ async def test_label_video_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_label_video_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.LabelVideoRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.LabelVideoRequest(),
+        {},
+    ],
+)
+async def test_label_video_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6166,7 +6190,7 @@ async def test_label_video_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.label_video), "__call__") as call:
@@ -6184,11 +6208,6 @@ async def test_label_video_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_label_video_async_from_dict():
-    await test_label_video_async(request_type=dict)
 
 
 def test_label_video_field_headers():
@@ -6369,8 +6388,8 @@ async def test_label_video_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.LabelTextRequest,
-        dict,
+        data_labeling_service.LabelTextRequest(),
+        {},
     ],
 )
 def test_label_text(request_type, transport: str = "grpc"):
@@ -6381,7 +6400,7 @@ def test_label_text(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.label_text), "__call__") as call:
@@ -6422,9 +6441,10 @@ def test_label_text_non_empty_request_with_auto_populated_field():
         client.label_text(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.LabelTextRequest(
+        request_msg = data_labeling_service.LabelTextRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_label_text_use_cached_wrapped_rpc():
@@ -6513,9 +6533,14 @@ async def test_label_text_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_label_text_async(
-    transport: str = "grpc_asyncio", request_type=data_labeling_service.LabelTextRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.LabelTextRequest(),
+        {},
+    ],
+)
+async def test_label_text_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6523,7 +6548,7 @@ async def test_label_text_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.label_text), "__call__") as call:
@@ -6541,11 +6566,6 @@ async def test_label_text_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_label_text_async_from_dict():
-    await test_label_text_async(request_type=dict)
 
 
 def test_label_text_field_headers():
@@ -6726,8 +6746,8 @@ async def test_label_text_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.GetExampleRequest,
-        dict,
+        data_labeling_service.GetExampleRequest(),
+        {},
     ],
 )
 def test_get_example(request_type, transport: str = "grpc"):
@@ -6738,7 +6758,7 @@ def test_get_example(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_example), "__call__") as call:
@@ -6783,10 +6803,11 @@ def test_get_example_non_empty_request_with_auto_populated_field():
         client.get_example(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetExampleRequest(
+        request_msg = data_labeling_service.GetExampleRequest(
             name="name_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_example_use_cached_wrapped_rpc():
@@ -6867,10 +6888,14 @@ async def test_get_example_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_example_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.GetExampleRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.GetExampleRequest(),
+        {},
+    ],
+)
+async def test_get_example_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6878,7 +6903,7 @@ async def test_get_example_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_example), "__call__") as call:
@@ -6899,11 +6924,6 @@ async def test_get_example_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.Example)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_example_async_from_dict():
-    await test_get_example_async(request_type=dict)
 
 
 def test_get_example_field_headers():
@@ -7058,8 +7078,8 @@ async def test_get_example_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.ListExamplesRequest,
-        dict,
+        data_labeling_service.ListExamplesRequest(),
+        {},
     ],
 )
 def test_list_examples(request_type, transport: str = "grpc"):
@@ -7070,7 +7090,7 @@ def test_list_examples(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_examples), "__call__") as call:
@@ -7116,11 +7136,12 @@ def test_list_examples_non_empty_request_with_auto_populated_field():
         client.list_examples(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListExamplesRequest(
+        request_msg = data_labeling_service.ListExamplesRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_examples_use_cached_wrapped_rpc():
@@ -7201,10 +7222,14 @@ async def test_list_examples_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_examples_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.ListExamplesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.ListExamplesRequest(),
+        {},
+    ],
+)
+async def test_list_examples_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7212,7 +7237,7 @@ async def test_list_examples_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_examples), "__call__") as call:
@@ -7233,11 +7258,6 @@ async def test_list_examples_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExamplesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_examples_async_from_dict():
-    await test_list_examples_async(request_type=dict)
 
 
 def test_list_examples_field_headers():
@@ -7442,6 +7462,9 @@ def test_list_examples_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataset.Example) for i in results)
@@ -7530,6 +7553,8 @@ async def test_list_examples_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7577,11 +7602,7 @@ async def test_list_examples_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_examples(request={})
-        ).pages:
+        async for page_ in (await client.list_examples(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7590,8 +7611,8 @@ async def test_list_examples_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.CreateAnnotationSpecSetRequest,
-        dict,
+        data_labeling_service.CreateAnnotationSpecSetRequest(),
+        {},
     ],
 )
 def test_create_annotation_spec_set(request_type, transport: str = "grpc"):
@@ -7602,7 +7623,7 @@ def test_create_annotation_spec_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7656,9 +7677,10 @@ def test_create_annotation_spec_set_non_empty_request_with_auto_populated_field(
         client.create_annotation_spec_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.CreateAnnotationSpecSetRequest(
+        request_msg = data_labeling_service.CreateAnnotationSpecSetRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_annotation_spec_set_use_cached_wrapped_rpc():
@@ -7744,9 +7766,15 @@ async def test_create_annotation_spec_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.CreateAnnotationSpecSetRequest(),
+        {},
+    ],
+)
 async def test_create_annotation_spec_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.CreateAnnotationSpecSetRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7755,7 +7783,7 @@ async def test_create_annotation_spec_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7784,11 +7812,6 @@ async def test_create_annotation_spec_set_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.blocking_resources == ["blocking_resources_value"]
-
-
-@pytest.mark.asyncio
-async def test_create_annotation_spec_set_async_from_dict():
-    await test_create_annotation_spec_set_async(request_type=dict)
 
 
 def test_create_annotation_spec_set_field_headers():
@@ -7963,8 +7986,8 @@ async def test_create_annotation_spec_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.GetAnnotationSpecSetRequest,
-        dict,
+        data_labeling_service.GetAnnotationSpecSetRequest(),
+        {},
     ],
 )
 def test_get_annotation_spec_set(request_type, transport: str = "grpc"):
@@ -7975,7 +7998,7 @@ def test_get_annotation_spec_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8029,9 +8052,10 @@ def test_get_annotation_spec_set_non_empty_request_with_auto_populated_field():
         client.get_annotation_spec_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetAnnotationSpecSetRequest(
+        request_msg = data_labeling_service.GetAnnotationSpecSetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_annotation_spec_set_use_cached_wrapped_rpc():
@@ -8117,9 +8141,15 @@ async def test_get_annotation_spec_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.GetAnnotationSpecSetRequest(),
+        {},
+    ],
+)
 async def test_get_annotation_spec_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.GetAnnotationSpecSetRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8128,7 +8158,7 @@ async def test_get_annotation_spec_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8157,11 +8187,6 @@ async def test_get_annotation_spec_set_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.blocking_resources == ["blocking_resources_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_annotation_spec_set_async_from_dict():
-    await test_get_annotation_spec_set_async(request_type=dict)
 
 
 def test_get_annotation_spec_set_field_headers():
@@ -8318,8 +8343,8 @@ async def test_get_annotation_spec_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.ListAnnotationSpecSetsRequest,
-        dict,
+        data_labeling_service.ListAnnotationSpecSetsRequest(),
+        {},
     ],
 )
 def test_list_annotation_spec_sets(request_type, transport: str = "grpc"):
@@ -8330,7 +8355,7 @@ def test_list_annotation_spec_sets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8380,11 +8405,12 @@ def test_list_annotation_spec_sets_non_empty_request_with_auto_populated_field()
         client.list_annotation_spec_sets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListAnnotationSpecSetsRequest(
+        request_msg = data_labeling_service.ListAnnotationSpecSetsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_annotation_spec_sets_use_cached_wrapped_rpc():
@@ -8470,9 +8496,15 @@ async def test_list_annotation_spec_sets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.ListAnnotationSpecSetsRequest(),
+        {},
+    ],
+)
 async def test_list_annotation_spec_sets_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.ListAnnotationSpecSetsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8481,7 +8513,7 @@ async def test_list_annotation_spec_sets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8504,11 +8536,6 @@ async def test_list_annotation_spec_sets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAnnotationSpecSetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_annotation_spec_sets_async_from_dict():
-    await test_list_annotation_spec_sets_async(request_type=dict)
 
 
 def test_list_annotation_spec_sets_field_headers():
@@ -8725,6 +8752,9 @@ def test_list_annotation_spec_sets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -8819,6 +8849,8 @@ async def test_list_annotation_spec_sets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8870,11 +8902,7 @@ async def test_list_annotation_spec_sets_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_annotation_spec_sets(request={})
-        ).pages:
+        async for page_ in (await client.list_annotation_spec_sets(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8883,8 +8911,8 @@ async def test_list_annotation_spec_sets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.DeleteAnnotationSpecSetRequest,
-        dict,
+        data_labeling_service.DeleteAnnotationSpecSetRequest(),
+        {},
     ],
 )
 def test_delete_annotation_spec_set(request_type, transport: str = "grpc"):
@@ -8895,7 +8923,7 @@ def test_delete_annotation_spec_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8940,9 +8968,10 @@ def test_delete_annotation_spec_set_non_empty_request_with_auto_populated_field(
         client.delete_annotation_spec_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteAnnotationSpecSetRequest(
+        request_msg = data_labeling_service.DeleteAnnotationSpecSetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_annotation_spec_set_use_cached_wrapped_rpc():
@@ -9028,9 +9057,15 @@ async def test_delete_annotation_spec_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.DeleteAnnotationSpecSetRequest(),
+        {},
+    ],
+)
 async def test_delete_annotation_spec_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.DeleteAnnotationSpecSetRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9039,7 +9074,7 @@ async def test_delete_annotation_spec_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9057,11 +9092,6 @@ async def test_delete_annotation_spec_set_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_annotation_spec_set_async_from_dict():
-    await test_delete_annotation_spec_set_async(request_type=dict)
 
 
 def test_delete_annotation_spec_set_field_headers():
@@ -9214,8 +9244,8 @@ async def test_delete_annotation_spec_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.CreateInstructionRequest,
-        dict,
+        data_labeling_service.CreateInstructionRequest(),
+        {},
     ],
 )
 def test_create_instruction(request_type, transport: str = "grpc"):
@@ -9226,7 +9256,7 @@ def test_create_instruction(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9271,9 +9301,10 @@ def test_create_instruction_non_empty_request_with_auto_populated_field():
         client.create_instruction(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.CreateInstructionRequest(
+        request_msg = data_labeling_service.CreateInstructionRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_instruction_use_cached_wrapped_rpc():
@@ -9368,10 +9399,14 @@ async def test_create_instruction_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_instruction_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.CreateInstructionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.CreateInstructionRequest(),
+        {},
+    ],
+)
+async def test_create_instruction_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9379,7 +9414,7 @@ async def test_create_instruction_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9399,11 +9434,6 @@ async def test_create_instruction_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_instruction_async_from_dict():
-    await test_create_instruction_async(request_type=dict)
 
 
 def test_create_instruction_field_headers():
@@ -9570,8 +9600,8 @@ async def test_create_instruction_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.GetInstructionRequest,
-        dict,
+        data_labeling_service.GetInstructionRequest(),
+        {},
     ],
 )
 def test_get_instruction(request_type, transport: str = "grpc"):
@@ -9582,7 +9612,7 @@ def test_get_instruction(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instruction), "__call__") as call:
@@ -9634,9 +9664,10 @@ def test_get_instruction_non_empty_request_with_auto_populated_field():
         client.get_instruction(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetInstructionRequest(
+        request_msg = data_labeling_service.GetInstructionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_instruction_use_cached_wrapped_rpc():
@@ -9717,10 +9748,14 @@ async def test_get_instruction_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_instruction_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.GetInstructionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.GetInstructionRequest(),
+        {},
+    ],
+)
+async def test_get_instruction_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9728,7 +9763,7 @@ async def test_get_instruction_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instruction), "__call__") as call:
@@ -9757,11 +9792,6 @@ async def test_get_instruction_async(
     assert response.description == "description_value"
     assert response.data_type == dataset.DataType.IMAGE
     assert response.blocking_resources == ["blocking_resources_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_instruction_async_from_dict():
-    await test_get_instruction_async(request_type=dict)
 
 
 def test_get_instruction_field_headers():
@@ -9910,8 +9940,8 @@ async def test_get_instruction_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.ListInstructionsRequest,
-        dict,
+        data_labeling_service.ListInstructionsRequest(),
+        {},
     ],
 )
 def test_list_instructions(request_type, transport: str = "grpc"):
@@ -9922,7 +9952,7 @@ def test_list_instructions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9972,11 +10002,12 @@ def test_list_instructions_non_empty_request_with_auto_populated_field():
         client.list_instructions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListInstructionsRequest(
+        request_msg = data_labeling_service.ListInstructionsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_instructions_use_cached_wrapped_rpc():
@@ -10059,10 +10090,14 @@ async def test_list_instructions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_instructions_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.ListInstructionsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.ListInstructionsRequest(),
+        {},
+    ],
+)
+async def test_list_instructions_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10070,7 +10105,7 @@ async def test_list_instructions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10093,11 +10128,6 @@ async def test_list_instructions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstructionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_instructions_async_from_dict():
-    await test_list_instructions_async(request_type=dict)
 
 
 def test_list_instructions_field_headers():
@@ -10312,6 +10342,9 @@ def test_list_instructions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, instruction.Instruction) for i in results)
@@ -10404,6 +10437,8 @@ async def test_list_instructions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -10453,11 +10488,7 @@ async def test_list_instructions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_instructions(request={})
-        ).pages:
+        async for page_ in (await client.list_instructions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -10466,8 +10497,8 @@ async def test_list_instructions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.DeleteInstructionRequest,
-        dict,
+        data_labeling_service.DeleteInstructionRequest(),
+        {},
     ],
 )
 def test_delete_instruction(request_type, transport: str = "grpc"):
@@ -10478,7 +10509,7 @@ def test_delete_instruction(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10523,9 +10554,10 @@ def test_delete_instruction_non_empty_request_with_auto_populated_field():
         client.delete_instruction(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteInstructionRequest(
+        request_msg = data_labeling_service.DeleteInstructionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_instruction_use_cached_wrapped_rpc():
@@ -10610,10 +10642,14 @@ async def test_delete_instruction_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_instruction_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.DeleteInstructionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.DeleteInstructionRequest(),
+        {},
+    ],
+)
+async def test_delete_instruction_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10621,7 +10657,7 @@ async def test_delete_instruction_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10639,11 +10675,6 @@ async def test_delete_instruction_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_instruction_async_from_dict():
-    await test_delete_instruction_async(request_type=dict)
 
 
 def test_delete_instruction_field_headers():
@@ -10796,8 +10827,8 @@ async def test_delete_instruction_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.GetEvaluationRequest,
-        dict,
+        data_labeling_service.GetEvaluationRequest(),
+        {},
     ],
 )
 def test_get_evaluation(request_type, transport: str = "grpc"):
@@ -10808,7 +10839,7 @@ def test_get_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
@@ -10859,9 +10890,10 @@ def test_get_evaluation_non_empty_request_with_auto_populated_field():
         client.get_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetEvaluationRequest(
+        request_msg = data_labeling_service.GetEvaluationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_evaluation_use_cached_wrapped_rpc():
@@ -10942,10 +10974,14 @@ async def test_get_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.GetEvaluationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.GetEvaluationRequest(),
+        {},
+    ],
+)
+async def test_get_evaluation_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10953,7 +10989,7 @@ async def test_get_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
@@ -10981,11 +11017,6 @@ async def test_get_evaluation_async(
         == annotation.AnnotationType.IMAGE_CLASSIFICATION_ANNOTATION
     )
     assert response.evaluated_item_count == 2129
-
-
-@pytest.mark.asyncio
-async def test_get_evaluation_async_from_dict():
-    await test_get_evaluation_async(request_type=dict)
 
 
 def test_get_evaluation_field_headers():
@@ -11134,8 +11165,8 @@ async def test_get_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.SearchEvaluationsRequest,
-        dict,
+        data_labeling_service.SearchEvaluationsRequest(),
+        {},
     ],
 )
 def test_search_evaluations(request_type, transport: str = "grpc"):
@@ -11146,7 +11177,7 @@ def test_search_evaluations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11196,11 +11227,12 @@ def test_search_evaluations_non_empty_request_with_auto_populated_field():
         client.search_evaluations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.SearchEvaluationsRequest(
+        request_msg = data_labeling_service.SearchEvaluationsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_evaluations_use_cached_wrapped_rpc():
@@ -11285,10 +11317,14 @@ async def test_search_evaluations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_evaluations_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.SearchEvaluationsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.SearchEvaluationsRequest(),
+        {},
+    ],
+)
+async def test_search_evaluations_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11296,7 +11332,7 @@ async def test_search_evaluations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11319,11 +11355,6 @@ async def test_search_evaluations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchEvaluationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_evaluations_async_from_dict():
-    await test_search_evaluations_async(request_type=dict)
 
 
 def test_search_evaluations_field_headers():
@@ -11538,6 +11569,9 @@ def test_search_evaluations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation.Evaluation) for i in results)
@@ -11630,6 +11664,8 @@ async def test_search_evaluations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11679,11 +11715,7 @@ async def test_search_evaluations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.search_evaluations(request={})
-        ).pages:
+        async for page_ in (await client.search_evaluations(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -11692,8 +11724,8 @@ async def test_search_evaluations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.SearchExampleComparisonsRequest,
-        dict,
+        data_labeling_service.SearchExampleComparisonsRequest(),
+        {},
     ],
 )
 def test_search_example_comparisons(request_type, transport: str = "grpc"):
@@ -11704,7 +11736,7 @@ def test_search_example_comparisons(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11753,10 +11785,11 @@ def test_search_example_comparisons_non_empty_request_with_auto_populated_field(
         client.search_example_comparisons(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.SearchExampleComparisonsRequest(
+        request_msg = data_labeling_service.SearchExampleComparisonsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_example_comparisons_use_cached_wrapped_rpc():
@@ -11842,9 +11875,15 @@ async def test_search_example_comparisons_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.SearchExampleComparisonsRequest(),
+        {},
+    ],
+)
 async def test_search_example_comparisons_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.SearchExampleComparisonsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11853,7 +11892,7 @@ async def test_search_example_comparisons_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11876,11 +11915,6 @@ async def test_search_example_comparisons_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchExampleComparisonsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_example_comparisons_async_from_dict():
-    await test_search_example_comparisons_async(request_type=dict)
 
 
 def test_search_example_comparisons_field_headers():
@@ -12087,6 +12121,9 @@ def test_search_example_comparisons_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -12185,6 +12222,8 @@ async def test_search_example_comparisons_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12240,11 +12279,7 @@ async def test_search_example_comparisons_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.search_example_comparisons(request={})
-        ).pages:
+        async for page_ in (await client.search_example_comparisons(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -12253,8 +12288,8 @@ async def test_search_example_comparisons_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.CreateEvaluationJobRequest,
-        dict,
+        data_labeling_service.CreateEvaluationJobRequest(),
+        {},
     ],
 )
 def test_create_evaluation_job(request_type, transport: str = "grpc"):
@@ -12265,7 +12300,7 @@ def test_create_evaluation_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12325,9 +12360,10 @@ def test_create_evaluation_job_non_empty_request_with_auto_populated_field():
         client.create_evaluation_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.CreateEvaluationJobRequest(
+        request_msg = data_labeling_service.CreateEvaluationJobRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_evaluation_job_use_cached_wrapped_rpc():
@@ -12413,9 +12449,15 @@ async def test_create_evaluation_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.CreateEvaluationJobRequest(),
+        {},
+    ],
+)
 async def test_create_evaluation_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.CreateEvaluationJobRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12424,7 +12466,7 @@ async def test_create_evaluation_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12459,11 +12501,6 @@ async def test_create_evaluation_job_async(
     assert response.model_version == "model_version_value"
     assert response.annotation_spec_set == "annotation_spec_set_value"
     assert response.label_missing_ground_truth is True
-
-
-@pytest.mark.asyncio
-async def test_create_evaluation_job_async_from_dict():
-    await test_create_evaluation_job_async(request_type=dict)
 
 
 def test_create_evaluation_job_field_headers():
@@ -12630,8 +12667,8 @@ async def test_create_evaluation_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.UpdateEvaluationJobRequest,
-        dict,
+        data_labeling_service.UpdateEvaluationJobRequest(),
+        {},
     ],
 )
 def test_update_evaluation_job(request_type, transport: str = "grpc"):
@@ -12642,7 +12679,7 @@ def test_update_evaluation_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12700,7 +12737,8 @@ def test_update_evaluation_job_non_empty_request_with_auto_populated_field():
         client.update_evaluation_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.UpdateEvaluationJobRequest()
+        request_msg = data_labeling_service.UpdateEvaluationJobRequest()
+        assert args[0] == request_msg
 
 
 def test_update_evaluation_job_use_cached_wrapped_rpc():
@@ -12786,9 +12824,15 @@ async def test_update_evaluation_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.UpdateEvaluationJobRequest(),
+        {},
+    ],
+)
 async def test_update_evaluation_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.UpdateEvaluationJobRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12797,7 +12841,7 @@ async def test_update_evaluation_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12832,11 +12876,6 @@ async def test_update_evaluation_job_async(
     assert response.model_version == "model_version_value"
     assert response.annotation_spec_set == "annotation_spec_set_value"
     assert response.label_missing_ground_truth is True
-
-
-@pytest.mark.asyncio
-async def test_update_evaluation_job_async_from_dict():
-    await test_update_evaluation_job_async(request_type=dict)
 
 
 def test_update_evaluation_job_field_headers():
@@ -13003,8 +13042,8 @@ async def test_update_evaluation_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.GetEvaluationJobRequest,
-        dict,
+        data_labeling_service.GetEvaluationJobRequest(),
+        {},
     ],
 )
 def test_get_evaluation_job(request_type, transport: str = "grpc"):
@@ -13015,7 +13054,7 @@ def test_get_evaluation_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13075,9 +13114,10 @@ def test_get_evaluation_job_non_empty_request_with_auto_populated_field():
         client.get_evaluation_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetEvaluationJobRequest(
+        request_msg = data_labeling_service.GetEvaluationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_evaluation_job_use_cached_wrapped_rpc():
@@ -13162,10 +13202,14 @@ async def test_get_evaluation_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_evaluation_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.GetEvaluationJobRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.GetEvaluationJobRequest(),
+        {},
+    ],
+)
+async def test_get_evaluation_job_async(request_type, transport: str = "grpc_asyncio"):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13173,7 +13217,7 @@ async def test_get_evaluation_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13208,11 +13252,6 @@ async def test_get_evaluation_job_async(
     assert response.model_version == "model_version_value"
     assert response.annotation_spec_set == "annotation_spec_set_value"
     assert response.label_missing_ground_truth is True
-
-
-@pytest.mark.asyncio
-async def test_get_evaluation_job_async_from_dict():
-    await test_get_evaluation_job_async(request_type=dict)
 
 
 def test_get_evaluation_job_field_headers():
@@ -13369,8 +13408,8 @@ async def test_get_evaluation_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.PauseEvaluationJobRequest,
-        dict,
+        data_labeling_service.PauseEvaluationJobRequest(),
+        {},
     ],
 )
 def test_pause_evaluation_job(request_type, transport: str = "grpc"):
@@ -13381,7 +13420,7 @@ def test_pause_evaluation_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13426,9 +13465,10 @@ def test_pause_evaluation_job_non_empty_request_with_auto_populated_field():
         client.pause_evaluation_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.PauseEvaluationJobRequest(
+        request_msg = data_labeling_service.PauseEvaluationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_pause_evaluation_job_use_cached_wrapped_rpc():
@@ -13513,9 +13553,15 @@ async def test_pause_evaluation_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.PauseEvaluationJobRequest(),
+        {},
+    ],
+)
 async def test_pause_evaluation_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.PauseEvaluationJobRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13524,7 +13570,7 @@ async def test_pause_evaluation_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13542,11 +13588,6 @@ async def test_pause_evaluation_job_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_pause_evaluation_job_async_from_dict():
-    await test_pause_evaluation_job_async(request_type=dict)
 
 
 def test_pause_evaluation_job_field_headers():
@@ -13699,8 +13740,8 @@ async def test_pause_evaluation_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.ResumeEvaluationJobRequest,
-        dict,
+        data_labeling_service.ResumeEvaluationJobRequest(),
+        {},
     ],
 )
 def test_resume_evaluation_job(request_type, transport: str = "grpc"):
@@ -13711,7 +13752,7 @@ def test_resume_evaluation_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13756,9 +13797,10 @@ def test_resume_evaluation_job_non_empty_request_with_auto_populated_field():
         client.resume_evaluation_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ResumeEvaluationJobRequest(
+        request_msg = data_labeling_service.ResumeEvaluationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_resume_evaluation_job_use_cached_wrapped_rpc():
@@ -13844,9 +13886,15 @@ async def test_resume_evaluation_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.ResumeEvaluationJobRequest(),
+        {},
+    ],
+)
 async def test_resume_evaluation_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.ResumeEvaluationJobRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13855,7 +13903,7 @@ async def test_resume_evaluation_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13873,11 +13921,6 @@ async def test_resume_evaluation_job_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_resume_evaluation_job_async_from_dict():
-    await test_resume_evaluation_job_async(request_type=dict)
 
 
 def test_resume_evaluation_job_field_headers():
@@ -14030,8 +14073,8 @@ async def test_resume_evaluation_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.DeleteEvaluationJobRequest,
-        dict,
+        data_labeling_service.DeleteEvaluationJobRequest(),
+        {},
     ],
 )
 def test_delete_evaluation_job(request_type, transport: str = "grpc"):
@@ -14042,7 +14085,7 @@ def test_delete_evaluation_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14087,9 +14130,10 @@ def test_delete_evaluation_job_non_empty_request_with_auto_populated_field():
         client.delete_evaluation_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteEvaluationJobRequest(
+        request_msg = data_labeling_service.DeleteEvaluationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_evaluation_job_use_cached_wrapped_rpc():
@@ -14175,9 +14219,15 @@ async def test_delete_evaluation_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.DeleteEvaluationJobRequest(),
+        {},
+    ],
+)
 async def test_delete_evaluation_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.DeleteEvaluationJobRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14186,7 +14236,7 @@ async def test_delete_evaluation_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14204,11 +14254,6 @@ async def test_delete_evaluation_job_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_evaluation_job_async_from_dict():
-    await test_delete_evaluation_job_async(request_type=dict)
 
 
 def test_delete_evaluation_job_field_headers():
@@ -14361,8 +14406,8 @@ async def test_delete_evaluation_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_labeling_service.ListEvaluationJobsRequest,
-        dict,
+        data_labeling_service.ListEvaluationJobsRequest(),
+        {},
     ],
 )
 def test_list_evaluation_jobs(request_type, transport: str = "grpc"):
@@ -14373,7 +14418,7 @@ def test_list_evaluation_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14423,11 +14468,12 @@ def test_list_evaluation_jobs_non_empty_request_with_auto_populated_field():
         client.list_evaluation_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListEvaluationJobsRequest(
+        request_msg = data_labeling_service.ListEvaluationJobsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_evaluation_jobs_use_cached_wrapped_rpc():
@@ -14512,9 +14558,15 @@ async def test_list_evaluation_jobs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_labeling_service.ListEvaluationJobsRequest(),
+        {},
+    ],
+)
 async def test_list_evaluation_jobs_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_labeling_service.ListEvaluationJobsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataLabelingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14523,7 +14575,7 @@ async def test_list_evaluation_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14546,11 +14598,6 @@ async def test_list_evaluation_jobs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEvaluationJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_evaluation_jobs_async_from_dict():
-    await test_list_evaluation_jobs_async(request_type=dict)
 
 
 def test_list_evaluation_jobs_field_headers():
@@ -14765,6 +14812,9 @@ def test_list_evaluation_jobs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation_job.EvaluationJob) for i in results)
@@ -14857,6 +14907,8 @@ async def test_list_evaluation_jobs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14906,11 +14958,7 @@ async def test_list_evaluation_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_evaluation_jobs(request={})
-        ).pages:
+        async for page_ in (await client.list_evaluation_jobs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -15038,7 +15086,6 @@ def test_create_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.CreateDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -15059,7 +15106,6 @@ def test_get_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -15080,7 +15126,6 @@ def test_list_datasets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ListDatasetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15101,7 +15146,6 @@ def test_delete_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.DeleteDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -15122,7 +15166,6 @@ def test_import_data_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ImportDataRequest()
-
         assert args[0] == request_msg
 
 
@@ -15143,7 +15186,6 @@ def test_export_data_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ExportDataRequest()
-
         assert args[0] == request_msg
 
 
@@ -15164,7 +15206,6 @@ def test_get_data_item_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetDataItemRequest()
-
         assert args[0] == request_msg
 
 
@@ -15185,7 +15226,6 @@ def test_list_data_items_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ListDataItemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15208,7 +15248,6 @@ def test_get_annotated_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetAnnotatedDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -15231,7 +15270,6 @@ def test_list_annotated_datasets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ListAnnotatedDatasetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15254,7 +15292,6 @@ def test_delete_annotated_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.DeleteAnnotatedDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -15275,7 +15312,6 @@ def test_label_image_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.LabelImageRequest()
-
         assert args[0] == request_msg
 
 
@@ -15296,7 +15332,6 @@ def test_label_video_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.LabelVideoRequest()
-
         assert args[0] == request_msg
 
 
@@ -15317,7 +15352,6 @@ def test_label_text_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.LabelTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -15338,7 +15372,6 @@ def test_get_example_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetExampleRequest()
-
         assert args[0] == request_msg
 
 
@@ -15359,7 +15392,6 @@ def test_list_examples_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ListExamplesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15382,7 +15414,6 @@ def test_create_annotation_spec_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.CreateAnnotationSpecSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -15405,7 +15436,6 @@ def test_get_annotation_spec_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetAnnotationSpecSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -15428,7 +15458,6 @@ def test_list_annotation_spec_sets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ListAnnotationSpecSetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15451,7 +15480,6 @@ def test_delete_annotation_spec_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.DeleteAnnotationSpecSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -15474,7 +15502,6 @@ def test_create_instruction_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.CreateInstructionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15495,7 +15522,6 @@ def test_get_instruction_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetInstructionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15518,7 +15544,6 @@ def test_list_instructions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ListInstructionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15541,7 +15566,6 @@ def test_delete_instruction_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.DeleteInstructionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15562,7 +15586,6 @@ def test_get_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -15585,7 +15608,6 @@ def test_search_evaluations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.SearchEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15608,7 +15630,6 @@ def test_search_example_comparisons_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.SearchExampleComparisonsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15631,7 +15652,6 @@ def test_create_evaluation_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.CreateEvaluationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -15654,7 +15674,6 @@ def test_update_evaluation_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.UpdateEvaluationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -15677,7 +15696,6 @@ def test_get_evaluation_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetEvaluationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -15700,7 +15718,6 @@ def test_pause_evaluation_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.PauseEvaluationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -15723,7 +15740,6 @@ def test_resume_evaluation_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ResumeEvaluationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -15746,7 +15762,6 @@ def test_delete_evaluation_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.DeleteEvaluationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -15769,7 +15784,6 @@ def test_list_evaluation_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ListEvaluationJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15814,7 +15828,6 @@ async def test_create_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.CreateDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -15845,7 +15858,6 @@ async def test_get_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -15872,7 +15884,6 @@ async def test_list_datasets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ListDatasetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15895,7 +15906,6 @@ async def test_delete_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.DeleteDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -15920,7 +15930,6 @@ async def test_import_data_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ImportDataRequest()
-
         assert args[0] == request_msg
 
 
@@ -15945,7 +15954,6 @@ async def test_export_data_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ExportDataRequest()
-
         assert args[0] == request_msg
 
 
@@ -15972,7 +15980,6 @@ async def test_get_data_item_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetDataItemRequest()
-
         assert args[0] == request_msg
 
 
@@ -15999,7 +16006,6 @@ async def test_list_data_items_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ListDataItemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16035,7 +16041,6 @@ async def test_get_annotated_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetAnnotatedDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -16064,7 +16069,6 @@ async def test_list_annotated_datasets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ListAnnotatedDatasetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16089,7 +16093,6 @@ async def test_delete_annotated_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.DeleteAnnotatedDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -16114,7 +16117,6 @@ async def test_label_image_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.LabelImageRequest()
-
         assert args[0] == request_msg
 
 
@@ -16139,7 +16141,6 @@ async def test_label_video_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.LabelVideoRequest()
-
         assert args[0] == request_msg
 
 
@@ -16164,7 +16165,6 @@ async def test_label_text_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.LabelTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -16191,7 +16191,6 @@ async def test_get_example_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetExampleRequest()
-
         assert args[0] == request_msg
 
 
@@ -16218,7 +16217,6 @@ async def test_list_examples_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ListExamplesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16250,7 +16248,6 @@ async def test_create_annotation_spec_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.CreateAnnotationSpecSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -16282,7 +16279,6 @@ async def test_get_annotation_spec_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetAnnotationSpecSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -16311,7 +16307,6 @@ async def test_list_annotation_spec_sets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ListAnnotationSpecSetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16336,7 +16331,6 @@ async def test_delete_annotation_spec_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.DeleteAnnotationSpecSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -16363,7 +16357,6 @@ async def test_create_instruction_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.CreateInstructionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16394,7 +16387,6 @@ async def test_get_instruction_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetInstructionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16423,7 +16415,6 @@ async def test_list_instructions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ListInstructionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16448,7 +16439,6 @@ async def test_delete_instruction_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.DeleteInstructionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16477,7 +16467,6 @@ async def test_get_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -16506,7 +16495,6 @@ async def test_search_evaluations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.SearchEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16535,7 +16523,6 @@ async def test_search_example_comparisons_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.SearchExampleComparisonsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16570,7 +16557,6 @@ async def test_create_evaluation_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.CreateEvaluationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16605,7 +16591,6 @@ async def test_update_evaluation_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.UpdateEvaluationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16640,7 +16625,6 @@ async def test_get_evaluation_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.GetEvaluationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16665,7 +16649,6 @@ async def test_pause_evaluation_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.PauseEvaluationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16690,7 +16673,6 @@ async def test_resume_evaluation_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ResumeEvaluationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16715,7 +16697,6 @@ async def test_delete_evaluation_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.DeleteEvaluationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16744,7 +16725,6 @@ async def test_list_evaluation_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_labeling_service.ListEvaluationJobsRequest()
-
         assert args[0] == request_msg
 
 

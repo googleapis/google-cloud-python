@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -124,6 +119,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1353,8 +1363,8 @@ def test_sse_realm_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_realm.ListSACRealmsRequest,
-        dict,
+        sse_realm.ListSACRealmsRequest(),
+        {},
     ],
 )
 def test_list_sac_realms(request_type, transport: str = "grpc"):
@@ -1365,7 +1375,7 @@ def test_list_sac_realms(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sac_realms), "__call__") as call:
@@ -1414,12 +1424,13 @@ def test_list_sac_realms_non_empty_request_with_auto_populated_field():
         client.list_sac_realms(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_realm.ListSACRealmsRequest(
+        request_msg = sse_realm.ListSACRealmsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_sac_realms_use_cached_wrapped_rpc():
@@ -1500,9 +1511,14 @@ async def test_list_sac_realms_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_sac_realms_async(
-    transport: str = "grpc_asyncio", request_type=sse_realm.ListSACRealmsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_realm.ListSACRealmsRequest(),
+        {},
+    ],
+)
+async def test_list_sac_realms_async(request_type, transport: str = "grpc_asyncio"):
     client = SSERealmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1510,7 +1526,7 @@ async def test_list_sac_realms_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sac_realms), "__call__") as call:
@@ -1533,11 +1549,6 @@ async def test_list_sac_realms_async(
     assert isinstance(response, pagers.ListSACRealmsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_sac_realms_async_from_dict():
-    await test_list_sac_realms_async(request_type=dict)
 
 
 def test_list_sac_realms_field_headers():
@@ -1732,6 +1743,9 @@ def test_list_sac_realms_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, sse_realm.SACRealm) for i in results)
@@ -1820,6 +1834,8 @@ async def test_list_sac_realms_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1867,11 +1883,7 @@ async def test_list_sac_realms_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_sac_realms(request={})
-        ).pages:
+        async for page_ in (await client.list_sac_realms(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1880,8 +1892,8 @@ async def test_list_sac_realms_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_realm.GetSACRealmRequest,
-        dict,
+        sse_realm.GetSACRealmRequest(),
+        {},
     ],
 )
 def test_get_sac_realm(request_type, transport: str = "grpc"):
@@ -1892,7 +1904,7 @@ def test_get_sac_realm(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_sac_realm), "__call__") as call:
@@ -1943,9 +1955,10 @@ def test_get_sac_realm_non_empty_request_with_auto_populated_field():
         client.get_sac_realm(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_realm.GetSACRealmRequest(
+        request_msg = sse_realm.GetSACRealmRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_sac_realm_use_cached_wrapped_rpc():
@@ -2026,9 +2039,14 @@ async def test_get_sac_realm_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_sac_realm_async(
-    transport: str = "grpc_asyncio", request_type=sse_realm.GetSACRealmRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_realm.GetSACRealmRequest(),
+        {},
+    ],
+)
+async def test_get_sac_realm_async(request_type, transport: str = "grpc_asyncio"):
     client = SSERealmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2036,7 +2054,7 @@ async def test_get_sac_realm_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_sac_realm), "__call__") as call:
@@ -2064,11 +2082,6 @@ async def test_get_sac_realm_async(
         == sse_realm.SACRealm.SecurityService.PALO_ALTO_PRISMA_ACCESS
     )
     assert response.state == sse_realm.SACRealm.State.PENDING_PARTNER_ATTACHMENT
-
-
-@pytest.mark.asyncio
-async def test_get_sac_realm_async_from_dict():
-    await test_get_sac_realm_async(request_type=dict)
 
 
 def test_get_sac_realm_field_headers():
@@ -2213,8 +2226,8 @@ async def test_get_sac_realm_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_realm.CreateSACRealmRequest,
-        dict,
+        sse_realm.CreateSACRealmRequest(),
+        {},
     ],
 )
 def test_create_sac_realm(request_type, transport: str = "grpc"):
@@ -2225,7 +2238,7 @@ def test_create_sac_realm(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_sac_realm), "__call__") as call:
@@ -2267,10 +2280,11 @@ def test_create_sac_realm_non_empty_request_with_auto_populated_field():
         client.create_sac_realm(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_realm.CreateSACRealmRequest(
+        request_msg = sse_realm.CreateSACRealmRequest(
             parent="parent_value",
             sac_realm_id="sac_realm_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_sac_realm_use_cached_wrapped_rpc():
@@ -2363,9 +2377,14 @@ async def test_create_sac_realm_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_sac_realm_async(
-    transport: str = "grpc_asyncio", request_type=sse_realm.CreateSACRealmRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_realm.CreateSACRealmRequest(),
+        {},
+    ],
+)
+async def test_create_sac_realm_async(request_type, transport: str = "grpc_asyncio"):
     client = SSERealmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2373,7 +2392,7 @@ async def test_create_sac_realm_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_sac_realm), "__call__") as call:
@@ -2391,11 +2410,6 @@ async def test_create_sac_realm_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_sac_realm_async_from_dict():
-    await test_create_sac_realm_async(request_type=dict)
 
 
 def test_create_sac_realm_field_headers():
@@ -2564,8 +2578,8 @@ async def test_create_sac_realm_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_realm.DeleteSACRealmRequest,
-        dict,
+        sse_realm.DeleteSACRealmRequest(),
+        {},
     ],
 )
 def test_delete_sac_realm(request_type, transport: str = "grpc"):
@@ -2576,7 +2590,7 @@ def test_delete_sac_realm(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_sac_realm), "__call__") as call:
@@ -2617,9 +2631,10 @@ def test_delete_sac_realm_non_empty_request_with_auto_populated_field():
         client.delete_sac_realm(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_realm.DeleteSACRealmRequest(
+        request_msg = sse_realm.DeleteSACRealmRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_sac_realm_use_cached_wrapped_rpc():
@@ -2712,9 +2727,14 @@ async def test_delete_sac_realm_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_sac_realm_async(
-    transport: str = "grpc_asyncio", request_type=sse_realm.DeleteSACRealmRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_realm.DeleteSACRealmRequest(),
+        {},
+    ],
+)
+async def test_delete_sac_realm_async(request_type, transport: str = "grpc_asyncio"):
     client = SSERealmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2722,7 +2742,7 @@ async def test_delete_sac_realm_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_sac_realm), "__call__") as call:
@@ -2740,11 +2760,6 @@ async def test_delete_sac_realm_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_sac_realm_async_from_dict():
-    await test_delete_sac_realm_async(request_type=dict)
 
 
 def test_delete_sac_realm_field_headers():
@@ -2893,8 +2908,8 @@ async def test_delete_sac_realm_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_realm.ListSACAttachmentsRequest,
-        dict,
+        sse_realm.ListSACAttachmentsRequest(),
+        {},
     ],
 )
 def test_list_sac_attachments(request_type, transport: str = "grpc"):
@@ -2905,7 +2920,7 @@ def test_list_sac_attachments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2958,12 +2973,13 @@ def test_list_sac_attachments_non_empty_request_with_auto_populated_field():
         client.list_sac_attachments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_realm.ListSACAttachmentsRequest(
+        request_msg = sse_realm.ListSACAttachmentsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_sac_attachments_use_cached_wrapped_rpc():
@@ -3048,8 +3064,15 @@ async def test_list_sac_attachments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_realm.ListSACAttachmentsRequest(),
+        {},
+    ],
+)
 async def test_list_sac_attachments_async(
-    transport: str = "grpc_asyncio", request_type=sse_realm.ListSACAttachmentsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SSERealmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3058,7 +3081,7 @@ async def test_list_sac_attachments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3083,11 +3106,6 @@ async def test_list_sac_attachments_async(
     assert isinstance(response, pagers.ListSACAttachmentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_sac_attachments_async_from_dict():
-    await test_list_sac_attachments_async(request_type=dict)
 
 
 def test_list_sac_attachments_field_headers():
@@ -3292,6 +3310,9 @@ def test_list_sac_attachments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, sse_realm.SACAttachment) for i in results)
@@ -3384,6 +3405,8 @@ async def test_list_sac_attachments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3433,11 +3456,7 @@ async def test_list_sac_attachments_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_sac_attachments(request={})
-        ).pages:
+        async for page_ in (await client.list_sac_attachments(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3446,8 +3465,8 @@ async def test_list_sac_attachments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_realm.GetSACAttachmentRequest,
-        dict,
+        sse_realm.GetSACAttachmentRequest(),
+        {},
     ],
 )
 def test_get_sac_attachment(request_type, transport: str = "grpc"):
@@ -3458,7 +3477,7 @@ def test_get_sac_attachment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3516,9 +3535,10 @@ def test_get_sac_attachment_non_empty_request_with_auto_populated_field():
         client.get_sac_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_realm.GetSACAttachmentRequest(
+        request_msg = sse_realm.GetSACAttachmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_sac_attachment_use_cached_wrapped_rpc():
@@ -3603,9 +3623,14 @@ async def test_get_sac_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_sac_attachment_async(
-    transport: str = "grpc_asyncio", request_type=sse_realm.GetSACAttachmentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_realm.GetSACAttachmentRequest(),
+        {},
+    ],
+)
+async def test_get_sac_attachment_async(request_type, transport: str = "grpc_asyncio"):
     client = SSERealmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3613,7 +3638,7 @@ async def test_get_sac_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3646,11 +3671,6 @@ async def test_get_sac_attachment_async(
     assert response.country == "country_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == sse_realm.SACAttachment.State.PENDING_PARTNER_ATTACHMENT
-
-
-@pytest.mark.asyncio
-async def test_get_sac_attachment_async_from_dict():
-    await test_get_sac_attachment_async(request_type=dict)
 
 
 def test_get_sac_attachment_field_headers():
@@ -3807,8 +3827,8 @@ async def test_get_sac_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_realm.CreateSACAttachmentRequest,
-        dict,
+        sse_realm.CreateSACAttachmentRequest(),
+        {},
     ],
 )
 def test_create_sac_attachment(request_type, transport: str = "grpc"):
@@ -3819,7 +3839,7 @@ def test_create_sac_attachment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3865,10 +3885,11 @@ def test_create_sac_attachment_non_empty_request_with_auto_populated_field():
         client.create_sac_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_realm.CreateSACAttachmentRequest(
+        request_msg = sse_realm.CreateSACAttachmentRequest(
             parent="parent_value",
             sac_attachment_id="sac_attachment_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_sac_attachment_use_cached_wrapped_rpc():
@@ -3964,8 +3985,15 @@ async def test_create_sac_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_realm.CreateSACAttachmentRequest(),
+        {},
+    ],
+)
 async def test_create_sac_attachment_async(
-    transport: str = "grpc_asyncio", request_type=sse_realm.CreateSACAttachmentRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SSERealmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3974,7 +4002,7 @@ async def test_create_sac_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3994,11 +4022,6 @@ async def test_create_sac_attachment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_sac_attachment_async_from_dict():
-    await test_create_sac_attachment_async(request_type=dict)
 
 
 def test_create_sac_attachment_field_headers():
@@ -4175,8 +4198,8 @@ async def test_create_sac_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_realm.DeleteSACAttachmentRequest,
-        dict,
+        sse_realm.DeleteSACAttachmentRequest(),
+        {},
     ],
 )
 def test_delete_sac_attachment(request_type, transport: str = "grpc"):
@@ -4187,7 +4210,7 @@ def test_delete_sac_attachment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4232,9 +4255,10 @@ def test_delete_sac_attachment_non_empty_request_with_auto_populated_field():
         client.delete_sac_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_realm.DeleteSACAttachmentRequest(
+        request_msg = sse_realm.DeleteSACAttachmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_sac_attachment_use_cached_wrapped_rpc():
@@ -4330,8 +4354,15 @@ async def test_delete_sac_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_realm.DeleteSACAttachmentRequest(),
+        {},
+    ],
+)
 async def test_delete_sac_attachment_async(
-    transport: str = "grpc_asyncio", request_type=sse_realm.DeleteSACAttachmentRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SSERealmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4340,7 +4371,7 @@ async def test_delete_sac_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4360,11 +4391,6 @@ async def test_delete_sac_attachment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_sac_attachment_async_from_dict():
-    await test_delete_sac_attachment_async(request_type=dict)
 
 
 def test_delete_sac_attachment_field_headers():
@@ -4521,8 +4547,8 @@ async def test_delete_sac_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_realm.ListPartnerSSERealmsRequest,
-        dict,
+        sse_realm.ListPartnerSSERealmsRequest(),
+        {},
     ],
 )
 def test_list_partner_sse_realms(request_type, transport: str = "grpc"):
@@ -4533,7 +4559,7 @@ def test_list_partner_sse_realms(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4586,12 +4612,13 @@ def test_list_partner_sse_realms_non_empty_request_with_auto_populated_field():
         client.list_partner_sse_realms(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_realm.ListPartnerSSERealmsRequest(
+        request_msg = sse_realm.ListPartnerSSERealmsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_partner_sse_realms_use_cached_wrapped_rpc():
@@ -4677,8 +4704,15 @@ async def test_list_partner_sse_realms_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_realm.ListPartnerSSERealmsRequest(),
+        {},
+    ],
+)
 async def test_list_partner_sse_realms_async(
-    transport: str = "grpc_asyncio", request_type=sse_realm.ListPartnerSSERealmsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SSERealmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4687,7 +4721,7 @@ async def test_list_partner_sse_realms_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4712,11 +4746,6 @@ async def test_list_partner_sse_realms_async(
     assert isinstance(response, pagers.ListPartnerSSERealmsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_partner_sse_realms_async_from_dict():
-    await test_list_partner_sse_realms_async(request_type=dict)
 
 
 def test_list_partner_sse_realms_field_headers():
@@ -4921,6 +4950,9 @@ def test_list_partner_sse_realms_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, sse_realm.PartnerSSERealm) for i in results)
@@ -5013,6 +5045,8 @@ async def test_list_partner_sse_realms_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5062,11 +5096,7 @@ async def test_list_partner_sse_realms_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_partner_sse_realms(request={})
-        ).pages:
+        async for page_ in (await client.list_partner_sse_realms(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5075,8 +5105,8 @@ async def test_list_partner_sse_realms_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_realm.GetPartnerSSERealmRequest,
-        dict,
+        sse_realm.GetPartnerSSERealmRequest(),
+        {},
     ],
 )
 def test_get_partner_sse_realm(request_type, transport: str = "grpc"):
@@ -5087,7 +5117,7 @@ def test_get_partner_sse_realm(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5151,9 +5181,10 @@ def test_get_partner_sse_realm_non_empty_request_with_auto_populated_field():
         client.get_partner_sse_realm(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_realm.GetPartnerSSERealmRequest(
+        request_msg = sse_realm.GetPartnerSSERealmRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_partner_sse_realm_use_cached_wrapped_rpc():
@@ -5239,8 +5270,15 @@ async def test_get_partner_sse_realm_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_realm.GetPartnerSSERealmRequest(),
+        {},
+    ],
+)
 async def test_get_partner_sse_realm_async(
-    transport: str = "grpc_asyncio", request_type=sse_realm.GetPartnerSSERealmRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SSERealmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5249,7 +5287,7 @@ async def test_get_partner_sse_realm_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5288,11 +5326,6 @@ async def test_get_partner_sse_realm_async(
     assert response.partner_network == "partner_network_value"
     assert response.sse_network == "sse_network_value"
     assert response.sse_project_number == 1929
-
-
-@pytest.mark.asyncio
-async def test_get_partner_sse_realm_async_from_dict():
-    await test_get_partner_sse_realm_async(request_type=dict)
 
 
 def test_get_partner_sse_realm_field_headers():
@@ -5449,8 +5482,8 @@ async def test_get_partner_sse_realm_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_realm.CreatePartnerSSERealmRequest,
-        dict,
+        sse_realm.CreatePartnerSSERealmRequest(),
+        {},
     ],
 )
 def test_create_partner_sse_realm(request_type, transport: str = "grpc"):
@@ -5461,7 +5494,7 @@ def test_create_partner_sse_realm(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5508,11 +5541,12 @@ def test_create_partner_sse_realm_non_empty_request_with_auto_populated_field():
         client.create_partner_sse_realm(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_realm.CreatePartnerSSERealmRequest(
+        request_msg = sse_realm.CreatePartnerSSERealmRequest(
             parent="parent_value",
             partner_sse_realm_id="partner_sse_realm_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_partner_sse_realm_use_cached_wrapped_rpc():
@@ -5608,8 +5642,15 @@ async def test_create_partner_sse_realm_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_realm.CreatePartnerSSERealmRequest(),
+        {},
+    ],
+)
 async def test_create_partner_sse_realm_async(
-    transport: str = "grpc_asyncio", request_type=sse_realm.CreatePartnerSSERealmRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SSERealmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5618,7 +5659,7 @@ async def test_create_partner_sse_realm_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5638,11 +5679,6 @@ async def test_create_partner_sse_realm_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_partner_sse_realm_async_from_dict():
-    await test_create_partner_sse_realm_async(request_type=dict)
 
 
 def test_create_partner_sse_realm_field_headers():
@@ -5819,8 +5855,8 @@ async def test_create_partner_sse_realm_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_realm.DeletePartnerSSERealmRequest,
-        dict,
+        sse_realm.DeletePartnerSSERealmRequest(),
+        {},
     ],
 )
 def test_delete_partner_sse_realm(request_type, transport: str = "grpc"):
@@ -5831,7 +5867,7 @@ def test_delete_partner_sse_realm(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5877,10 +5913,11 @@ def test_delete_partner_sse_realm_non_empty_request_with_auto_populated_field():
         client.delete_partner_sse_realm(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_realm.DeletePartnerSSERealmRequest(
+        request_msg = sse_realm.DeletePartnerSSERealmRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_partner_sse_realm_use_cached_wrapped_rpc():
@@ -5976,8 +6013,15 @@ async def test_delete_partner_sse_realm_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_realm.DeletePartnerSSERealmRequest(),
+        {},
+    ],
+)
 async def test_delete_partner_sse_realm_async(
-    transport: str = "grpc_asyncio", request_type=sse_realm.DeletePartnerSSERealmRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SSERealmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5986,7 +6030,7 @@ async def test_delete_partner_sse_realm_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6006,11 +6050,6 @@ async def test_delete_partner_sse_realm_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_partner_sse_realm_async_from_dict():
-    await test_delete_partner_sse_realm_async(request_type=dict)
 
 
 def test_delete_partner_sse_realm_field_headers():
@@ -6281,7 +6320,7 @@ def test_list_sac_realms_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_sac_realms_rest_unset_required_fields():
@@ -6413,6 +6452,9 @@ def test_list_sac_realms_rest_pager(transport: str = "rest"):
 
         pager = client.list_sac_realms(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, sse_realm.SACRealm) for i in results)
@@ -6528,7 +6570,7 @@ def test_get_sac_realm_rest_required_fields(request_type=sse_realm.GetSACRealmRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_sac_realm_rest_unset_required_fields():
@@ -6732,7 +6774,7 @@ def test_create_sac_realm_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_sac_realm_rest_unset_required_fields():
@@ -6931,7 +6973,7 @@ def test_delete_sac_realm_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_sac_realm_rest_unset_required_fields():
@@ -7122,7 +7164,7 @@ def test_list_sac_attachments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_sac_attachments_rest_unset_required_fields():
@@ -7256,6 +7298,9 @@ def test_list_sac_attachments_rest_pager(transport: str = "rest"):
 
         pager = client.list_sac_attachments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, sse_realm.SACAttachment) for i in results)
@@ -7377,7 +7422,7 @@ def test_get_sac_attachment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_sac_attachment_rest_unset_required_fields():
@@ -7584,7 +7629,7 @@ def test_create_sac_attachment_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_sac_attachment_rest_unset_required_fields():
@@ -7786,7 +7831,7 @@ def test_delete_sac_attachment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_sac_attachment_rest_unset_required_fields():
@@ -7978,7 +8023,7 @@ def test_list_partner_sse_realms_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_partner_sse_realms_rest_unset_required_fields():
@@ -8112,6 +8157,9 @@ def test_list_partner_sse_realms_rest_pager(transport: str = "rest"):
 
         pager = client.list_partner_sse_realms(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, sse_realm.PartnerSSERealm) for i in results)
@@ -8234,7 +8282,7 @@ def test_get_partner_sse_realm_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_partner_sse_realm_rest_unset_required_fields():
@@ -8443,7 +8491,7 @@ def test_create_partner_sse_realm_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_partner_sse_realm_rest_unset_required_fields():
@@ -8645,7 +8693,7 @@ def test_delete_partner_sse_realm_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_partner_sse_realm_rest_unset_required_fields():
@@ -8838,7 +8886,6 @@ def test_list_sac_realms_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.ListSACRealmsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8859,7 +8906,6 @@ def test_get_sac_realm_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.GetSACRealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -8880,7 +8926,6 @@ def test_create_sac_realm_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.CreateSACRealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -8901,7 +8946,6 @@ def test_delete_sac_realm_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.DeleteSACRealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -8924,7 +8968,6 @@ def test_list_sac_attachments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.ListSACAttachmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8947,7 +8990,6 @@ def test_get_sac_attachment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.GetSACAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8970,7 +9012,6 @@ def test_create_sac_attachment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.CreateSACAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8993,7 +9034,6 @@ def test_delete_sac_attachment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.DeleteSACAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9016,7 +9056,6 @@ def test_list_partner_sse_realms_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.ListPartnerSSERealmsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9039,7 +9078,6 @@ def test_get_partner_sse_realm_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.GetPartnerSSERealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -9062,7 +9100,6 @@ def test_create_partner_sse_realm_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.CreatePartnerSSERealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -9085,7 +9122,6 @@ def test_delete_partner_sse_realm_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.DeletePartnerSSERealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -9127,7 +9163,6 @@ async def test_list_sac_realms_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.ListSACRealmsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9156,7 +9191,6 @@ async def test_get_sac_realm_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.GetSACRealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -9181,7 +9215,6 @@ async def test_create_sac_realm_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.CreateSACRealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -9206,7 +9239,6 @@ async def test_delete_sac_realm_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.DeleteSACRealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -9236,7 +9268,6 @@ async def test_list_sac_attachments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.ListSACAttachmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9270,7 +9301,6 @@ async def test_get_sac_attachment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.GetSACAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9297,7 +9327,6 @@ async def test_create_sac_attachment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.CreateSACAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9324,7 +9353,6 @@ async def test_delete_sac_attachment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.DeleteSACAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9354,7 +9382,6 @@ async def test_list_partner_sse_realms_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.ListPartnerSSERealmsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9391,7 +9418,6 @@ async def test_get_partner_sse_realm_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.GetPartnerSSERealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -9418,7 +9444,6 @@ async def test_create_partner_sse_realm_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.CreatePartnerSSERealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -9445,7 +9470,6 @@ async def test_delete_partner_sse_realm_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.DeletePartnerSSERealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -11901,7 +11925,6 @@ def test_list_sac_realms_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.ListSACRealmsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11921,7 +11944,6 @@ def test_get_sac_realm_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.GetSACRealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -11941,7 +11963,6 @@ def test_create_sac_realm_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.CreateSACRealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -11961,7 +11982,6 @@ def test_delete_sac_realm_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.DeleteSACRealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -11983,7 +12003,6 @@ def test_list_sac_attachments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.ListSACAttachmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12005,7 +12024,6 @@ def test_get_sac_attachment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.GetSACAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -12027,7 +12045,6 @@ def test_create_sac_attachment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.CreateSACAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -12049,7 +12066,6 @@ def test_delete_sac_attachment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.DeleteSACAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -12071,7 +12087,6 @@ def test_list_partner_sse_realms_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.ListPartnerSSERealmsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12093,7 +12108,6 @@ def test_get_partner_sse_realm_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.GetPartnerSSERealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -12115,7 +12129,6 @@ def test_create_partner_sse_realm_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.CreatePartnerSSERealmRequest()
-
         assert args[0] == request_msg
 
 
@@ -12137,7 +12150,6 @@ def test_delete_partner_sse_realm_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_realm.DeletePartnerSSERealmRequest()
-
         assert args[0] == request_msg
 
 

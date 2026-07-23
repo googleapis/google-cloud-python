@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -86,6 +86,8 @@ class ControlServiceAsyncClient:
     parse_control_path = staticmethod(ControlServiceClient.parse_control_path)
     data_store_path = staticmethod(ControlServiceClient.data_store_path)
     parse_data_store_path = staticmethod(ControlServiceClient.parse_data_store_path)
+    document_path = staticmethod(ControlServiceClient.document_path)
+    parse_document_path = staticmethod(ControlServiceClient.parse_document_path)
     common_billing_account_path = staticmethod(
         ControlServiceClient.common_billing_account_path
     )
@@ -339,11 +341,11 @@ class ControlServiceAsyncClient:
 
                 # Initialize request argument(s)
                 control = discoveryengine_v1beta.Control()
-                control.boost_action.boost = 0.551
+                control.boost_action.fixed_boost = 0.1174
                 control.boost_action.filter = "filter_value"
                 control.boost_action.data_store = "data_store_value"
                 control.display_name = "display_name_value"
-                control.solution_type = "SOLUTION_TYPE_GENERATIVE_CHAT"
+                control.solution_type = "SOLUTION_TYPE_AI_MODE"
 
                 request = discoveryengine_v1beta.CreateControlRequest(
                     parent="parent_value",
@@ -592,11 +594,11 @@ class ControlServiceAsyncClient:
 
                 # Initialize request argument(s)
                 control = discoveryengine_v1beta.Control()
-                control.boost_action.boost = 0.551
+                control.boost_action.fixed_boost = 0.1174
                 control.boost_action.filter = "filter_value"
                 control.boost_action.data_store = "data_store_value"
                 control.display_name = "display_name_value"
-                control.solution_type = "SOLUTION_TYPE_GENERATIVE_CHAT"
+                control.solution_type = "SOLUTION_TYPE_AI_MODE"
 
                 request = discoveryengine_v1beta.UpdateControlRequest(
                     control=control,

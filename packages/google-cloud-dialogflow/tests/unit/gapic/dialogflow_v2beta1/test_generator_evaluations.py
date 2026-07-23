@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -75,10 +70,14 @@ from google.cloud.dialogflow_v2beta1.services.generator_evaluations import (
 )
 from google.cloud.dialogflow_v2beta1.types import (
     agent_coaching_instruction,
+    ces_app,
+    ces_tool,
     generator,
     generator_evaluation,
     operations,
+    tool,
     tool_call,
+    toolset,
 )
 from google.cloud.dialogflow_v2beta1.types import (
     generator_evaluation as gcd_generator_evaluation,
@@ -130,6 +129,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1398,8 +1412,8 @@ def test_generator_evaluations_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_generator_evaluation.CreateGeneratorEvaluationRequest,
-        dict,
+        gcd_generator_evaluation.CreateGeneratorEvaluationRequest(),
+        {},
     ],
 )
 def test_create_generator_evaluation(request_type, transport: str = "grpc"):
@@ -1410,7 +1424,7 @@ def test_create_generator_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1455,9 +1469,10 @@ def test_create_generator_evaluation_non_empty_request_with_auto_populated_field
         client.create_generator_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_generator_evaluation.CreateGeneratorEvaluationRequest(
+        request_msg = gcd_generator_evaluation.CreateGeneratorEvaluationRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_generator_evaluation_use_cached_wrapped_rpc():
@@ -1553,9 +1568,15 @@ async def test_create_generator_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_generator_evaluation.CreateGeneratorEvaluationRequest(),
+        {},
+    ],
+)
 async def test_create_generator_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_generator_evaluation.CreateGeneratorEvaluationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GeneratorEvaluationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1564,7 +1585,7 @@ async def test_create_generator_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1584,11 +1605,6 @@ async def test_create_generator_evaluation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_generator_evaluation_async_from_dict():
-    await test_create_generator_evaluation_async(request_type=dict)
 
 
 def test_create_generator_evaluation_field_headers():
@@ -1763,8 +1779,8 @@ async def test_create_generator_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generator_evaluation.GetGeneratorEvaluationRequest,
-        dict,
+        generator_evaluation.GetGeneratorEvaluationRequest(),
+        {},
     ],
 )
 def test_get_generator_evaluation(request_type, transport: str = "grpc"):
@@ -1775,7 +1791,7 @@ def test_get_generator_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1829,9 +1845,10 @@ def test_get_generator_evaluation_non_empty_request_with_auto_populated_field():
         client.get_generator_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generator_evaluation.GetGeneratorEvaluationRequest(
+        request_msg = generator_evaluation.GetGeneratorEvaluationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_generator_evaluation_use_cached_wrapped_rpc():
@@ -1917,9 +1934,15 @@ async def test_get_generator_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generator_evaluation.GetGeneratorEvaluationRequest(),
+        {},
+    ],
+)
 async def test_get_generator_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=generator_evaluation.GetGeneratorEvaluationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GeneratorEvaluationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1928,7 +1951,7 @@ async def test_get_generator_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1957,11 +1980,6 @@ async def test_get_generator_evaluation_async(
     assert response.display_name == "display_name_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
-
-
-@pytest.mark.asyncio
-async def test_get_generator_evaluation_async_from_dict():
-    await test_get_generator_evaluation_async(request_type=dict)
 
 
 def test_get_generator_evaluation_field_headers():
@@ -2118,8 +2136,8 @@ async def test_get_generator_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generator_evaluation.ListGeneratorEvaluationsRequest,
-        dict,
+        generator_evaluation.ListGeneratorEvaluationsRequest(),
+        {},
     ],
 )
 def test_list_generator_evaluations(request_type, transport: str = "grpc"):
@@ -2130,7 +2148,7 @@ def test_list_generator_evaluations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2179,10 +2197,11 @@ def test_list_generator_evaluations_non_empty_request_with_auto_populated_field(
         client.list_generator_evaluations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generator_evaluation.ListGeneratorEvaluationsRequest(
+        request_msg = generator_evaluation.ListGeneratorEvaluationsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_generator_evaluations_use_cached_wrapped_rpc():
@@ -2268,9 +2287,15 @@ async def test_list_generator_evaluations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generator_evaluation.ListGeneratorEvaluationsRequest(),
+        {},
+    ],
+)
 async def test_list_generator_evaluations_async(
-    transport: str = "grpc_asyncio",
-    request_type=generator_evaluation.ListGeneratorEvaluationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GeneratorEvaluationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2279,7 +2304,7 @@ async def test_list_generator_evaluations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2302,11 +2327,6 @@ async def test_list_generator_evaluations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGeneratorEvaluationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_generator_evaluations_async_from_dict():
-    await test_list_generator_evaluations_async(request_type=dict)
 
 
 def test_list_generator_evaluations_field_headers():
@@ -2513,6 +2533,9 @@ def test_list_generator_evaluations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -2607,6 +2630,8 @@ async def test_list_generator_evaluations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2658,11 +2683,7 @@ async def test_list_generator_evaluations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_generator_evaluations(request={})
-        ).pages:
+        async for page_ in (await client.list_generator_evaluations(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2671,8 +2692,8 @@ async def test_list_generator_evaluations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generator_evaluation.DeleteGeneratorEvaluationRequest,
-        dict,
+        generator_evaluation.DeleteGeneratorEvaluationRequest(),
+        {},
     ],
 )
 def test_delete_generator_evaluation(request_type, transport: str = "grpc"):
@@ -2683,7 +2704,7 @@ def test_delete_generator_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2728,9 +2749,10 @@ def test_delete_generator_evaluation_non_empty_request_with_auto_populated_field
         client.delete_generator_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generator_evaluation.DeleteGeneratorEvaluationRequest(
+        request_msg = generator_evaluation.DeleteGeneratorEvaluationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_generator_evaluation_use_cached_wrapped_rpc():
@@ -2816,9 +2838,15 @@ async def test_delete_generator_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generator_evaluation.DeleteGeneratorEvaluationRequest(),
+        {},
+    ],
+)
 async def test_delete_generator_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=generator_evaluation.DeleteGeneratorEvaluationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GeneratorEvaluationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2827,7 +2855,7 @@ async def test_delete_generator_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2845,11 +2873,6 @@ async def test_delete_generator_evaluation_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_generator_evaluation_async_from_dict():
-    await test_delete_generator_evaluation_async(request_type=dict)
 
 
 def test_delete_generator_evaluation_field_headers():
@@ -3114,7 +3137,7 @@ def test_create_generator_evaluation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_generator_evaluation_rest_unset_required_fields():
@@ -3311,7 +3334,7 @@ def test_get_generator_evaluation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_generator_evaluation_rest_unset_required_fields():
@@ -3505,7 +3528,7 @@ def test_list_generator_evaluations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_generator_evaluations_rest_unset_required_fields():
@@ -3644,6 +3667,9 @@ def test_list_generator_evaluations_rest_pager(transport: str = "rest"):
 
         pager = client.list_generator_evaluations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -3765,7 +3791,7 @@ def test_delete_generator_evaluation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_generator_evaluation_rest_unset_required_fields():
@@ -3960,7 +3986,6 @@ def test_create_generator_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_generator_evaluation.CreateGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -3983,7 +4008,6 @@ def test_get_generator_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.GetGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4006,7 +4030,6 @@ def test_list_generator_evaluations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.ListGeneratorEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4029,7 +4052,6 @@ def test_delete_generator_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.DeleteGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4070,7 +4092,6 @@ async def test_create_generator_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_generator_evaluation.CreateGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4102,7 +4123,6 @@ async def test_get_generator_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.GetGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4131,7 +4151,6 @@ async def test_list_generator_evaluations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.ListGeneratorEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4156,7 +4175,6 @@ async def test_delete_generator_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.DeleteGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4320,6 +4338,9 @@ def test_create_generator_evaluation_rest_call_success(request_type):
                                 {
                                     "tool_call": {
                                         "tool": "tool_value",
+                                        "ces_tool": "ces_tool_value",
+                                        "ces_toolset": "ces_toolset_value",
+                                        "ces_app": "ces_app_value",
                                         "tool_display_name": "tool_display_name_value",
                                         "tool_display_details": "tool_display_details_value",
                                         "action": "action_value",
@@ -4330,6 +4351,9 @@ def test_create_generator_evaluation_rest_call_success(request_type):
                                     },
                                     "tool_call_result": {
                                         "tool": "tool_value",
+                                        "ces_tool": "ces_tool_value",
+                                        "ces_toolset": "ces_toolset_value",
+                                        "ces_app": "ces_app_value",
                                         "action": "action_value",
                                         "error": {"message": "message_value"},
                                         "raw_content": b"raw_content_blob",
@@ -4360,6 +4384,24 @@ def test_create_generator_evaluation_rest_call_success(request_type):
                 "enable_deduping": True,
                 "similarity_threshold": 0.21630000000000002,
             },
+            "toolset_tools": [
+                {
+                    "toolset": "toolset_value",
+                    "operation_id": "operation_id_value",
+                    "confirmation_requirement": 1,
+                }
+            ],
+            "ces_tool_specs": [
+                {"ces_tool": "ces_tool_value", "confirmation_requirement": 1}
+            ],
+            "ces_app_specs": [
+                {
+                    "ces_app": "ces_app_value",
+                    "confirmation_requirement": 1,
+                    "proactive_enabled": True,
+                    "reactive_enabled": True,
+                }
+            ],
         },
         "summarization_metrics": {
             "summarization_evaluation_results": [
@@ -5338,7 +5380,6 @@ def test_create_generator_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_generator_evaluation.CreateGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5360,7 +5401,6 @@ def test_get_generator_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.GetGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5382,7 +5422,6 @@ def test_list_generator_evaluations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.ListGeneratorEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5404,7 +5443,6 @@ def test_delete_generator_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.DeleteGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5926,10 +5964,65 @@ def test_generator_evaluations_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_generator_path():
+def test_app_path():
     project = "squid"
     location = "clam"
-    generator = "whelk"
+    app = "whelk"
+    expected = "projects/{project}/locations/{location}/apps/{app}".format(
+        project=project,
+        location=location,
+        app=app,
+    )
+    actual = GeneratorEvaluationsClient.app_path(project, location, app)
+    assert expected == actual
+
+
+def test_parse_app_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "app": "nudibranch",
+    }
+    path = GeneratorEvaluationsClient.app_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GeneratorEvaluationsClient.parse_app_path(path)
+    assert expected == actual
+
+
+def test_ces_tool_path():
+    project = "cuttlefish"
+    location = "mussel"
+    app = "winkle"
+    tool = "nautilus"
+    expected = "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
+        project=project,
+        location=location,
+        app=app,
+        tool=tool,
+    )
+    actual = GeneratorEvaluationsClient.ces_tool_path(project, location, app, tool)
+    assert expected == actual
+
+
+def test_parse_ces_tool_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "app": "squid",
+        "tool": "clam",
+    }
+    path = GeneratorEvaluationsClient.ces_tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GeneratorEvaluationsClient.parse_ces_tool_path(path)
+    assert expected == actual
+
+
+def test_generator_path():
+    project = "whelk"
+    location = "octopus"
+    generator = "oyster"
     expected = "projects/{project}/locations/{location}/generators/{generator}".format(
         project=project,
         location=location,
@@ -5941,9 +6034,9 @@ def test_generator_path():
 
 def test_parse_generator_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "generator": "nudibranch",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "generator": "mussel",
     }
     path = GeneratorEvaluationsClient.generator_path(**expected)
 
@@ -5953,10 +6046,10 @@ def test_parse_generator_path():
 
 
 def test_generator_evaluation_path():
-    project = "cuttlefish"
-    location = "mussel"
-    generator = "winkle"
-    evaluation = "nautilus"
+    project = "winkle"
+    location = "nautilus"
+    generator = "scallop"
+    evaluation = "abalone"
     expected = "projects/{project}/locations/{location}/generators/{generator}/evaluations/{evaluation}".format(
         project=project,
         location=location,
@@ -5971,10 +6064,10 @@ def test_generator_evaluation_path():
 
 def test_parse_generator_evaluation_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "generator": "squid",
-        "evaluation": "clam",
+        "project": "squid",
+        "location": "clam",
+        "generator": "whelk",
+        "evaluation": "octopus",
     }
     path = GeneratorEvaluationsClient.generator_evaluation_path(**expected)
 
@@ -5984,9 +6077,9 @@ def test_parse_generator_evaluation_path():
 
 
 def test_tool_path():
-    project = "whelk"
-    location = "octopus"
-    tool = "oyster"
+    project = "oyster"
+    location = "nudibranch"
+    tool = "cuttlefish"
     expected = "projects/{project}/locations/{location}/tools/{tool}".format(
         project=project,
         location=location,
@@ -5998,9 +6091,9 @@ def test_tool_path():
 
 def test_parse_tool_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "tool": "mussel",
+        "project": "mussel",
+        "location": "winkle",
+        "tool": "nautilus",
     }
     path = GeneratorEvaluationsClient.tool_path(**expected)
 
@@ -6009,8 +6102,39 @@ def test_parse_tool_path():
     assert expected == actual
 
 
+def test_toolset_path():
+    project = "scallop"
+    location = "abalone"
+    app = "squid"
+    toolset = "clam"
+    expected = (
+        "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}".format(
+            project=project,
+            location=location,
+            app=app,
+            toolset=toolset,
+        )
+    )
+    actual = GeneratorEvaluationsClient.toolset_path(project, location, app, toolset)
+    assert expected == actual
+
+
+def test_parse_toolset_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "app": "oyster",
+        "toolset": "nudibranch",
+    }
+    path = GeneratorEvaluationsClient.toolset_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GeneratorEvaluationsClient.parse_toolset_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6020,7 +6144,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "mussel",
     }
     path = GeneratorEvaluationsClient.common_billing_account_path(**expected)
 
@@ -6030,7 +6154,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -6040,7 +6164,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nautilus",
     }
     path = GeneratorEvaluationsClient.common_folder_path(**expected)
 
@@ -6050,7 +6174,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6060,7 +6184,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "abalone",
     }
     path = GeneratorEvaluationsClient.common_organization_path(**expected)
 
@@ -6070,7 +6194,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6080,7 +6204,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "clam",
     }
     path = GeneratorEvaluationsClient.common_project_path(**expected)
 
@@ -6090,8 +6214,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6102,8 +6226,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = GeneratorEvaluationsClient.common_location_path(**expected)
 

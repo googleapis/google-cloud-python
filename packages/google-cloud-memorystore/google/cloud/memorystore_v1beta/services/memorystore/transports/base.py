@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,11 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class MemorystoreTransport(abc.ABC):
     """Abstract transport class for Memorystore."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/memorystore.read-only",
+        "https://www.googleapis.com/auth/memorystore.read-write",
+    )
 
     DEFAULT_HOST: str = "memorystore.googleapis.com"
 
@@ -206,6 +210,96 @@ class MemorystoreTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.reschedule_maintenance: gapic_v1.method.wrap_method(
+                self.reschedule_maintenance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_backup_collections: gapic_v1.method.wrap_method(
+                self.list_backup_collections,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_backup_collection: gapic_v1.method.wrap_method(
+                self.get_backup_collection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_backups: gapic_v1.method.wrap_method(
+                self.list_backups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_backup: gapic_v1.method.wrap_method(
+                self.get_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_backup: gapic_v1.method.wrap_method(
+                self.delete_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_backup: gapic_v1.method.wrap_method(
+                self.export_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.backup_instance: gapic_v1.method.wrap_method(
+                self.backup_instance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.start_migration: gapic_v1.method.wrap_method(
+                self.start_migration,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.finish_migration: gapic_v1.method.wrap_method(
+                self.finish_migration,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_token_auth_users: gapic_v1.method.wrap_method(
+                self.list_token_auth_users,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_token_auth_user: gapic_v1.method.wrap_method(
+                self.get_token_auth_user,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_auth_tokens: gapic_v1.method.wrap_method(
+                self.list_auth_tokens,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_auth_token: gapic_v1.method.wrap_method(
+                self.get_auth_token,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.add_token_auth_user: gapic_v1.method.wrap_method(
+                self.add_token_auth_user,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_token_auth_user: gapic_v1.method.wrap_method(
+                self.delete_token_auth_user,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.add_auth_token: gapic_v1.method.wrap_method(
+                self.add_auth_token,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_auth_token: gapic_v1.method.wrap_method(
+                self.delete_auth_token,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -321,6 +415,179 @@ class MemorystoreTransport(abc.ABC):
             memorystore.SharedRegionalCertificateAuthority,
             Awaitable[memorystore.SharedRegionalCertificateAuthority],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def reschedule_maintenance(
+        self,
+    ) -> Callable[
+        [memorystore.RescheduleMaintenanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backup_collections(
+        self,
+    ) -> Callable[
+        [memorystore.ListBackupCollectionsRequest],
+        Union[
+            memorystore.ListBackupCollectionsResponse,
+            Awaitable[memorystore.ListBackupCollectionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup_collection(
+        self,
+    ) -> Callable[
+        [memorystore.GetBackupCollectionRequest],
+        Union[memorystore.BackupCollection, Awaitable[memorystore.BackupCollection]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backups(
+        self,
+    ) -> Callable[
+        [memorystore.ListBackupsRequest],
+        Union[
+            memorystore.ListBackupsResponse, Awaitable[memorystore.ListBackupsResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup(
+        self,
+    ) -> Callable[
+        [memorystore.GetBackupRequest],
+        Union[memorystore.Backup, Awaitable[memorystore.Backup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_backup(
+        self,
+    ) -> Callable[
+        [memorystore.DeleteBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_backup(
+        self,
+    ) -> Callable[
+        [memorystore.ExportBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def backup_instance(
+        self,
+    ) -> Callable[
+        [memorystore.BackupInstanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def start_migration(
+        self,
+    ) -> Callable[
+        [memorystore.StartMigrationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def finish_migration(
+        self,
+    ) -> Callable[
+        [memorystore.FinishMigrationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_token_auth_users(
+        self,
+    ) -> Callable[
+        [memorystore.ListTokenAuthUsersRequest],
+        Union[
+            memorystore.ListTokenAuthUsersResponse,
+            Awaitable[memorystore.ListTokenAuthUsersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_token_auth_user(
+        self,
+    ) -> Callable[
+        [memorystore.GetTokenAuthUserRequest],
+        Union[memorystore.TokenAuthUser, Awaitable[memorystore.TokenAuthUser]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_auth_tokens(
+        self,
+    ) -> Callable[
+        [memorystore.ListAuthTokensRequest],
+        Union[
+            memorystore.ListAuthTokensResponse,
+            Awaitable[memorystore.ListAuthTokensResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_auth_token(
+        self,
+    ) -> Callable[
+        [memorystore.GetAuthTokenRequest],
+        Union[memorystore.AuthToken, Awaitable[memorystore.AuthToken]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def add_token_auth_user(
+        self,
+    ) -> Callable[
+        [memorystore.AddTokenAuthUserRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_token_auth_user(
+        self,
+    ) -> Callable[
+        [memorystore.DeleteTokenAuthUserRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def add_auth_token(
+        self,
+    ) -> Callable[
+        [memorystore.AddAuthTokenRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_auth_token(
+        self,
+    ) -> Callable[
+        [memorystore.DeleteAuthTokenRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

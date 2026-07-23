@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -114,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1350,7 +1360,7 @@ def test_get_mobile_device_submodel_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_mobile_device_submodel_rest_unset_required_fields():
@@ -1548,7 +1558,7 @@ def test_list_mobile_device_submodels_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_mobile_device_submodels_rest_unset_required_fields():
@@ -1688,6 +1698,9 @@ def test_list_mobile_device_submodels_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "networks/sample1"}
 
         pager = client.list_mobile_device_submodels(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -2226,7 +2239,6 @@ def test_get_mobile_device_submodel_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mobile_device_submodel_service.GetMobileDeviceSubmodelRequest()
-
         assert args[0] == request_msg
 
 
@@ -2248,7 +2260,6 @@ def test_list_mobile_device_submodels_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mobile_device_submodel_service.ListMobileDeviceSubmodelsRequest()
-
         assert args[0] == request_msg
 
 

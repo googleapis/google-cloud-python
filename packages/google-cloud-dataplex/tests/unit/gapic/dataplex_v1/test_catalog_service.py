@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -126,6 +121,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1336,8 +1346,8 @@ def test_catalog_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.CreateEntryTypeRequest,
-        dict,
+        catalog.CreateEntryTypeRequest(),
+        {},
     ],
 )
 def test_create_entry_type(request_type, transport: str = "grpc"):
@@ -1348,7 +1358,7 @@ def test_create_entry_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1394,10 +1404,11 @@ def test_create_entry_type_non_empty_request_with_auto_populated_field():
         client.create_entry_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateEntryTypeRequest(
+        request_msg = catalog.CreateEntryTypeRequest(
             parent="parent_value",
             entry_type_id="entry_type_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_entry_type_use_cached_wrapped_rpc():
@@ -1490,9 +1501,14 @@ async def test_create_entry_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_entry_type_async(
-    transport: str = "grpc_asyncio", request_type=catalog.CreateEntryTypeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.CreateEntryTypeRequest(),
+        {},
+    ],
+)
+async def test_create_entry_type_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1500,7 +1516,7 @@ async def test_create_entry_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1520,11 +1536,6 @@ async def test_create_entry_type_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_entry_type_async_from_dict():
-    await test_create_entry_type_async(request_type=dict)
 
 
 def test_create_entry_type_field_headers():
@@ -1701,8 +1712,8 @@ async def test_create_entry_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.UpdateEntryTypeRequest,
-        dict,
+        catalog.UpdateEntryTypeRequest(),
+        {},
     ],
 )
 def test_update_entry_type(request_type, transport: str = "grpc"):
@@ -1713,7 +1724,7 @@ def test_update_entry_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1756,7 +1767,8 @@ def test_update_entry_type_non_empty_request_with_auto_populated_field():
         client.update_entry_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.UpdateEntryTypeRequest()
+        request_msg = catalog.UpdateEntryTypeRequest()
+        assert args[0] == request_msg
 
 
 def test_update_entry_type_use_cached_wrapped_rpc():
@@ -1849,9 +1861,14 @@ async def test_update_entry_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_entry_type_async(
-    transport: str = "grpc_asyncio", request_type=catalog.UpdateEntryTypeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.UpdateEntryTypeRequest(),
+        {},
+    ],
+)
+async def test_update_entry_type_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1859,7 +1876,7 @@ async def test_update_entry_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1879,11 +1896,6 @@ async def test_update_entry_type_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_entry_type_async_from_dict():
-    await test_update_entry_type_async(request_type=dict)
 
 
 def test_update_entry_type_field_headers():
@@ -2050,8 +2062,8 @@ async def test_update_entry_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.DeleteEntryTypeRequest,
-        dict,
+        catalog.DeleteEntryTypeRequest(),
+        {},
     ],
 )
 def test_delete_entry_type(request_type, transport: str = "grpc"):
@@ -2062,7 +2074,7 @@ def test_delete_entry_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2108,10 +2120,11 @@ def test_delete_entry_type_non_empty_request_with_auto_populated_field():
         client.delete_entry_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.DeleteEntryTypeRequest(
+        request_msg = catalog.DeleteEntryTypeRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_entry_type_use_cached_wrapped_rpc():
@@ -2204,9 +2217,14 @@ async def test_delete_entry_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_entry_type_async(
-    transport: str = "grpc_asyncio", request_type=catalog.DeleteEntryTypeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.DeleteEntryTypeRequest(),
+        {},
+    ],
+)
+async def test_delete_entry_type_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2214,7 +2232,7 @@ async def test_delete_entry_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2234,11 +2252,6 @@ async def test_delete_entry_type_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_entry_type_async_from_dict():
-    await test_delete_entry_type_async(request_type=dict)
 
 
 def test_delete_entry_type_field_headers():
@@ -2395,8 +2408,8 @@ async def test_delete_entry_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.ListEntryTypesRequest,
-        dict,
+        catalog.ListEntryTypesRequest(),
+        {},
     ],
 )
 def test_list_entry_types(request_type, transport: str = "grpc"):
@@ -2407,7 +2420,7 @@ def test_list_entry_types(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_entry_types), "__call__") as call:
@@ -2456,12 +2469,13 @@ def test_list_entry_types_non_empty_request_with_auto_populated_field():
         client.list_entry_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.ListEntryTypesRequest(
+        request_msg = catalog.ListEntryTypesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_entry_types_use_cached_wrapped_rpc():
@@ -2544,9 +2558,14 @@ async def test_list_entry_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_entry_types_async(
-    transport: str = "grpc_asyncio", request_type=catalog.ListEntryTypesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.ListEntryTypesRequest(),
+        {},
+    ],
+)
+async def test_list_entry_types_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2554,7 +2573,7 @@ async def test_list_entry_types_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_entry_types), "__call__") as call:
@@ -2577,11 +2596,6 @@ async def test_list_entry_types_async(
     assert isinstance(response, pagers.ListEntryTypesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_entry_types_async_from_dict():
-    await test_list_entry_types_async(request_type=dict)
 
 
 def test_list_entry_types_field_headers():
@@ -2776,6 +2790,9 @@ def test_list_entry_types_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.EntryType) for i in results)
@@ -2864,6 +2881,8 @@ async def test_list_entry_types_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2911,11 +2930,7 @@ async def test_list_entry_types_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_entry_types(request={})
-        ).pages:
+        async for page_ in (await client.list_entry_types(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2924,8 +2939,8 @@ async def test_list_entry_types_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.GetEntryTypeRequest,
-        dict,
+        catalog.GetEntryTypeRequest(),
+        {},
     ],
 )
 def test_get_entry_type(request_type, transport: str = "grpc"):
@@ -2936,7 +2951,7 @@ def test_get_entry_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entry_type), "__call__") as call:
@@ -2994,9 +3009,10 @@ def test_get_entry_type_non_empty_request_with_auto_populated_field():
         client.get_entry_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetEntryTypeRequest(
+        request_msg = catalog.GetEntryTypeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_entry_type_use_cached_wrapped_rpc():
@@ -3077,9 +3093,14 @@ async def test_get_entry_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_entry_type_async(
-    transport: str = "grpc_asyncio", request_type=catalog.GetEntryTypeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.GetEntryTypeRequest(),
+        {},
+    ],
+)
+async def test_get_entry_type_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3087,7 +3108,7 @@ async def test_get_entry_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entry_type), "__call__") as call:
@@ -3122,11 +3143,6 @@ async def test_get_entry_type_async(
     assert response.type_aliases == ["type_aliases_value"]
     assert response.platform == "platform_value"
     assert response.system == "system_value"
-
-
-@pytest.mark.asyncio
-async def test_get_entry_type_async_from_dict():
-    await test_get_entry_type_async(request_type=dict)
 
 
 def test_get_entry_type_field_headers():
@@ -3271,8 +3287,8 @@ async def test_get_entry_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.CreateAspectTypeRequest,
-        dict,
+        catalog.CreateAspectTypeRequest(),
+        {},
     ],
 )
 def test_create_aspect_type(request_type, transport: str = "grpc"):
@@ -3283,7 +3299,7 @@ def test_create_aspect_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3329,10 +3345,11 @@ def test_create_aspect_type_non_empty_request_with_auto_populated_field():
         client.create_aspect_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateAspectTypeRequest(
+        request_msg = catalog.CreateAspectTypeRequest(
             parent="parent_value",
             aspect_type_id="aspect_type_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_aspect_type_use_cached_wrapped_rpc():
@@ -3427,9 +3444,14 @@ async def test_create_aspect_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_aspect_type_async(
-    transport: str = "grpc_asyncio", request_type=catalog.CreateAspectTypeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.CreateAspectTypeRequest(),
+        {},
+    ],
+)
+async def test_create_aspect_type_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3437,7 +3459,7 @@ async def test_create_aspect_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3457,11 +3479,6 @@ async def test_create_aspect_type_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_aspect_type_async_from_dict():
-    await test_create_aspect_type_async(request_type=dict)
 
 
 def test_create_aspect_type_field_headers():
@@ -3638,8 +3655,8 @@ async def test_create_aspect_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.UpdateAspectTypeRequest,
-        dict,
+        catalog.UpdateAspectTypeRequest(),
+        {},
     ],
 )
 def test_update_aspect_type(request_type, transport: str = "grpc"):
@@ -3650,7 +3667,7 @@ def test_update_aspect_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3693,7 +3710,8 @@ def test_update_aspect_type_non_empty_request_with_auto_populated_field():
         client.update_aspect_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.UpdateAspectTypeRequest()
+        request_msg = catalog.UpdateAspectTypeRequest()
+        assert args[0] == request_msg
 
 
 def test_update_aspect_type_use_cached_wrapped_rpc():
@@ -3788,9 +3806,14 @@ async def test_update_aspect_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_aspect_type_async(
-    transport: str = "grpc_asyncio", request_type=catalog.UpdateAspectTypeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.UpdateAspectTypeRequest(),
+        {},
+    ],
+)
+async def test_update_aspect_type_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3798,7 +3821,7 @@ async def test_update_aspect_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3818,11 +3841,6 @@ async def test_update_aspect_type_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_aspect_type_async_from_dict():
-    await test_update_aspect_type_async(request_type=dict)
 
 
 def test_update_aspect_type_field_headers():
@@ -3989,8 +4007,8 @@ async def test_update_aspect_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.DeleteAspectTypeRequest,
-        dict,
+        catalog.DeleteAspectTypeRequest(),
+        {},
     ],
 )
 def test_delete_aspect_type(request_type, transport: str = "grpc"):
@@ -4001,7 +4019,7 @@ def test_delete_aspect_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4047,10 +4065,11 @@ def test_delete_aspect_type_non_empty_request_with_auto_populated_field():
         client.delete_aspect_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.DeleteAspectTypeRequest(
+        request_msg = catalog.DeleteAspectTypeRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_aspect_type_use_cached_wrapped_rpc():
@@ -4145,9 +4164,14 @@ async def test_delete_aspect_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_aspect_type_async(
-    transport: str = "grpc_asyncio", request_type=catalog.DeleteAspectTypeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.DeleteAspectTypeRequest(),
+        {},
+    ],
+)
+async def test_delete_aspect_type_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4155,7 +4179,7 @@ async def test_delete_aspect_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4175,11 +4199,6 @@ async def test_delete_aspect_type_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_aspect_type_async_from_dict():
-    await test_delete_aspect_type_async(request_type=dict)
 
 
 def test_delete_aspect_type_field_headers():
@@ -4336,8 +4355,8 @@ async def test_delete_aspect_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.ListAspectTypesRequest,
-        dict,
+        catalog.ListAspectTypesRequest(),
+        {},
     ],
 )
 def test_list_aspect_types(request_type, transport: str = "grpc"):
@@ -4348,7 +4367,7 @@ def test_list_aspect_types(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4401,12 +4420,13 @@ def test_list_aspect_types_non_empty_request_with_auto_populated_field():
         client.list_aspect_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.ListAspectTypesRequest(
+        request_msg = catalog.ListAspectTypesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_aspect_types_use_cached_wrapped_rpc():
@@ -4489,9 +4509,14 @@ async def test_list_aspect_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_aspect_types_async(
-    transport: str = "grpc_asyncio", request_type=catalog.ListAspectTypesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.ListAspectTypesRequest(),
+        {},
+    ],
+)
+async def test_list_aspect_types_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4499,7 +4524,7 @@ async def test_list_aspect_types_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4524,11 +4549,6 @@ async def test_list_aspect_types_async(
     assert isinstance(response, pagers.ListAspectTypesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_aspect_types_async_from_dict():
-    await test_list_aspect_types_async(request_type=dict)
 
 
 def test_list_aspect_types_field_headers():
@@ -4733,6 +4753,9 @@ def test_list_aspect_types_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.AspectType) for i in results)
@@ -4825,6 +4848,8 @@ async def test_list_aspect_types_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4874,11 +4899,7 @@ async def test_list_aspect_types_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_aspect_types(request={})
-        ).pages:
+        async for page_ in (await client.list_aspect_types(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4887,8 +4908,8 @@ async def test_list_aspect_types_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.GetAspectTypeRequest,
-        dict,
+        catalog.GetAspectTypeRequest(),
+        {},
     ],
 )
 def test_get_aspect_type(request_type, transport: str = "grpc"):
@@ -4899,7 +4920,7 @@ def test_get_aspect_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_aspect_type), "__call__") as call:
@@ -4958,9 +4979,10 @@ def test_get_aspect_type_non_empty_request_with_auto_populated_field():
         client.get_aspect_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetAspectTypeRequest(
+        request_msg = catalog.GetAspectTypeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_aspect_type_use_cached_wrapped_rpc():
@@ -5041,9 +5063,14 @@ async def test_get_aspect_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_aspect_type_async(
-    transport: str = "grpc_asyncio", request_type=catalog.GetAspectTypeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.GetAspectTypeRequest(),
+        {},
+    ],
+)
+async def test_get_aspect_type_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5051,7 +5078,7 @@ async def test_get_aspect_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_aspect_type), "__call__") as call:
@@ -5087,11 +5114,6 @@ async def test_get_aspect_type_async(
         == catalog.AspectType.DataClassification.METADATA_AND_DATA
     )
     assert response.transfer_status == catalog.TransferStatus.TRANSFER_STATUS_MIGRATED
-
-
-@pytest.mark.asyncio
-async def test_get_aspect_type_async_from_dict():
-    await test_get_aspect_type_async(request_type=dict)
 
 
 def test_get_aspect_type_field_headers():
@@ -5236,8 +5258,8 @@ async def test_get_aspect_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.CreateEntryGroupRequest,
-        dict,
+        catalog.CreateEntryGroupRequest(),
+        {},
     ],
 )
 def test_create_entry_group(request_type, transport: str = "grpc"):
@@ -5248,7 +5270,7 @@ def test_create_entry_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5294,10 +5316,11 @@ def test_create_entry_group_non_empty_request_with_auto_populated_field():
         client.create_entry_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateEntryGroupRequest(
+        request_msg = catalog.CreateEntryGroupRequest(
             parent="parent_value",
             entry_group_id="entry_group_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_entry_group_use_cached_wrapped_rpc():
@@ -5392,9 +5415,14 @@ async def test_create_entry_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_entry_group_async(
-    transport: str = "grpc_asyncio", request_type=catalog.CreateEntryGroupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.CreateEntryGroupRequest(),
+        {},
+    ],
+)
+async def test_create_entry_group_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5402,7 +5430,7 @@ async def test_create_entry_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5422,11 +5450,6 @@ async def test_create_entry_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_entry_group_async_from_dict():
-    await test_create_entry_group_async(request_type=dict)
 
 
 def test_create_entry_group_field_headers():
@@ -5603,8 +5626,8 @@ async def test_create_entry_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.UpdateEntryGroupRequest,
-        dict,
+        catalog.UpdateEntryGroupRequest(),
+        {},
     ],
 )
 def test_update_entry_group(request_type, transport: str = "grpc"):
@@ -5615,7 +5638,7 @@ def test_update_entry_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5658,7 +5681,8 @@ def test_update_entry_group_non_empty_request_with_auto_populated_field():
         client.update_entry_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.UpdateEntryGroupRequest()
+        request_msg = catalog.UpdateEntryGroupRequest()
+        assert args[0] == request_msg
 
 
 def test_update_entry_group_use_cached_wrapped_rpc():
@@ -5753,9 +5777,14 @@ async def test_update_entry_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_entry_group_async(
-    transport: str = "grpc_asyncio", request_type=catalog.UpdateEntryGroupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.UpdateEntryGroupRequest(),
+        {},
+    ],
+)
+async def test_update_entry_group_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5763,7 +5792,7 @@ async def test_update_entry_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5783,11 +5812,6 @@ async def test_update_entry_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_entry_group_async_from_dict():
-    await test_update_entry_group_async(request_type=dict)
 
 
 def test_update_entry_group_field_headers():
@@ -5954,8 +5978,8 @@ async def test_update_entry_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.DeleteEntryGroupRequest,
-        dict,
+        catalog.DeleteEntryGroupRequest(),
+        {},
     ],
 )
 def test_delete_entry_group(request_type, transport: str = "grpc"):
@@ -5966,7 +5990,7 @@ def test_delete_entry_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6012,10 +6036,11 @@ def test_delete_entry_group_non_empty_request_with_auto_populated_field():
         client.delete_entry_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.DeleteEntryGroupRequest(
+        request_msg = catalog.DeleteEntryGroupRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_entry_group_use_cached_wrapped_rpc():
@@ -6110,9 +6135,14 @@ async def test_delete_entry_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_entry_group_async(
-    transport: str = "grpc_asyncio", request_type=catalog.DeleteEntryGroupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.DeleteEntryGroupRequest(),
+        {},
+    ],
+)
+async def test_delete_entry_group_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6120,7 +6150,7 @@ async def test_delete_entry_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6140,11 +6170,6 @@ async def test_delete_entry_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_entry_group_async_from_dict():
-    await test_delete_entry_group_async(request_type=dict)
 
 
 def test_delete_entry_group_field_headers():
@@ -6301,8 +6326,8 @@ async def test_delete_entry_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.ListEntryGroupsRequest,
-        dict,
+        catalog.ListEntryGroupsRequest(),
+        {},
     ],
 )
 def test_list_entry_groups(request_type, transport: str = "grpc"):
@@ -6313,7 +6338,7 @@ def test_list_entry_groups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6366,12 +6391,13 @@ def test_list_entry_groups_non_empty_request_with_auto_populated_field():
         client.list_entry_groups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.ListEntryGroupsRequest(
+        request_msg = catalog.ListEntryGroupsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_entry_groups_use_cached_wrapped_rpc():
@@ -6454,9 +6480,14 @@ async def test_list_entry_groups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_entry_groups_async(
-    transport: str = "grpc_asyncio", request_type=catalog.ListEntryGroupsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.ListEntryGroupsRequest(),
+        {},
+    ],
+)
+async def test_list_entry_groups_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6464,7 +6495,7 @@ async def test_list_entry_groups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6489,11 +6520,6 @@ async def test_list_entry_groups_async(
     assert isinstance(response, pagers.ListEntryGroupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_entry_groups_async_from_dict():
-    await test_list_entry_groups_async(request_type=dict)
 
 
 def test_list_entry_groups_field_headers():
@@ -6698,6 +6724,9 @@ def test_list_entry_groups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.EntryGroup) for i in results)
@@ -6790,6 +6819,8 @@ async def test_list_entry_groups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6839,11 +6870,7 @@ async def test_list_entry_groups_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_entry_groups(request={})
-        ).pages:
+        async for page_ in (await client.list_entry_groups(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6852,8 +6879,8 @@ async def test_list_entry_groups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.GetEntryGroupRequest,
-        dict,
+        catalog.GetEntryGroupRequest(),
+        {},
     ],
 )
 def test_get_entry_group(request_type, transport: str = "grpc"):
@@ -6864,7 +6891,7 @@ def test_get_entry_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
@@ -6918,9 +6945,10 @@ def test_get_entry_group_non_empty_request_with_auto_populated_field():
         client.get_entry_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetEntryGroupRequest(
+        request_msg = catalog.GetEntryGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_entry_group_use_cached_wrapped_rpc():
@@ -7001,9 +7029,14 @@ async def test_get_entry_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_entry_group_async(
-    transport: str = "grpc_asyncio", request_type=catalog.GetEntryGroupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.GetEntryGroupRequest(),
+        {},
+    ],
+)
+async def test_get_entry_group_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7011,7 +7044,7 @@ async def test_get_entry_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
@@ -7042,11 +7075,6 @@ async def test_get_entry_group_async(
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
     assert response.transfer_status == catalog.TransferStatus.TRANSFER_STATUS_MIGRATED
-
-
-@pytest.mark.asyncio
-async def test_get_entry_group_async_from_dict():
-    await test_get_entry_group_async(request_type=dict)
 
 
 def test_get_entry_group_field_headers():
@@ -7191,8 +7219,8 @@ async def test_get_entry_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.CreateEntryRequest,
-        dict,
+        catalog.CreateEntryRequest(),
+        {},
     ],
 )
 def test_create_entry(request_type, transport: str = "grpc"):
@@ -7203,7 +7231,7 @@ def test_create_entry(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
@@ -7254,10 +7282,11 @@ def test_create_entry_non_empty_request_with_auto_populated_field():
         client.create_entry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateEntryRequest(
+        request_msg = catalog.CreateEntryRequest(
             parent="parent_value",
             entry_id="entry_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_entry_use_cached_wrapped_rpc():
@@ -7338,9 +7367,14 @@ async def test_create_entry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_entry_async(
-    transport: str = "grpc_asyncio", request_type=catalog.CreateEntryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.CreateEntryRequest(),
+        {},
+    ],
+)
+async def test_create_entry_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7348,7 +7382,7 @@ async def test_create_entry_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
@@ -7375,11 +7409,6 @@ async def test_create_entry_async(
     assert response.entry_type == "entry_type_value"
     assert response.parent_entry == "parent_entry_value"
     assert response.fully_qualified_name == "fully_qualified_name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_entry_async_from_dict():
-    await test_create_entry_async(request_type=dict)
 
 
 def test_create_entry_field_headers():
@@ -7544,8 +7573,8 @@ async def test_create_entry_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.UpdateEntryRequest,
-        dict,
+        catalog.UpdateEntryRequest(),
+        {},
     ],
 )
 def test_update_entry(request_type, transport: str = "grpc"):
@@ -7556,7 +7585,7 @@ def test_update_entry(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
@@ -7604,7 +7633,8 @@ def test_update_entry_non_empty_request_with_auto_populated_field():
         client.update_entry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.UpdateEntryRequest()
+        request_msg = catalog.UpdateEntryRequest()
+        assert args[0] == request_msg
 
 
 def test_update_entry_use_cached_wrapped_rpc():
@@ -7685,9 +7715,14 @@ async def test_update_entry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_entry_async(
-    transport: str = "grpc_asyncio", request_type=catalog.UpdateEntryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.UpdateEntryRequest(),
+        {},
+    ],
+)
+async def test_update_entry_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7695,7 +7730,7 @@ async def test_update_entry_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
@@ -7722,11 +7757,6 @@ async def test_update_entry_async(
     assert response.entry_type == "entry_type_value"
     assert response.parent_entry == "parent_entry_value"
     assert response.fully_qualified_name == "fully_qualified_name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_entry_async_from_dict():
-    await test_update_entry_async(request_type=dict)
 
 
 def test_update_entry_field_headers():
@@ -7881,8 +7911,8 @@ async def test_update_entry_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.DeleteEntryRequest,
-        dict,
+        catalog.DeleteEntryRequest(),
+        {},
     ],
 )
 def test_delete_entry(request_type, transport: str = "grpc"):
@@ -7893,7 +7923,7 @@ def test_delete_entry(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
@@ -7943,9 +7973,10 @@ def test_delete_entry_non_empty_request_with_auto_populated_field():
         client.delete_entry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.DeleteEntryRequest(
+        request_msg = catalog.DeleteEntryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_entry_use_cached_wrapped_rpc():
@@ -8026,9 +8057,14 @@ async def test_delete_entry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_entry_async(
-    transport: str = "grpc_asyncio", request_type=catalog.DeleteEntryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.DeleteEntryRequest(),
+        {},
+    ],
+)
+async def test_delete_entry_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8036,7 +8072,7 @@ async def test_delete_entry_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
@@ -8063,11 +8099,6 @@ async def test_delete_entry_async(
     assert response.entry_type == "entry_type_value"
     assert response.parent_entry == "parent_entry_value"
     assert response.fully_qualified_name == "fully_qualified_name_value"
-
-
-@pytest.mark.asyncio
-async def test_delete_entry_async_from_dict():
-    await test_delete_entry_async(request_type=dict)
 
 
 def test_delete_entry_field_headers():
@@ -8212,8 +8243,8 @@ async def test_delete_entry_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.ListEntriesRequest,
-        dict,
+        catalog.ListEntriesRequest(),
+        {},
     ],
 )
 def test_list_entries(request_type, transport: str = "grpc"):
@@ -8224,7 +8255,7 @@ def test_list_entries(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
@@ -8270,11 +8301,12 @@ def test_list_entries_non_empty_request_with_auto_populated_field():
         client.list_entries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.ListEntriesRequest(
+        request_msg = catalog.ListEntriesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_entries_use_cached_wrapped_rpc():
@@ -8355,9 +8387,14 @@ async def test_list_entries_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_entries_async(
-    transport: str = "grpc_asyncio", request_type=catalog.ListEntriesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.ListEntriesRequest(),
+        {},
+    ],
+)
+async def test_list_entries_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8365,7 +8402,7 @@ async def test_list_entries_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
@@ -8386,11 +8423,6 @@ async def test_list_entries_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntriesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_entries_async_from_dict():
-    await test_list_entries_async(request_type=dict)
 
 
 def test_list_entries_field_headers():
@@ -8585,6 +8617,9 @@ def test_list_entries_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.Entry) for i in results)
@@ -8673,6 +8708,8 @@ async def test_list_entries_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8720,11 +8757,7 @@ async def test_list_entries_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_entries(request={})
-        ).pages:
+        async for page_ in (await client.list_entries(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8733,8 +8766,8 @@ async def test_list_entries_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.GetEntryRequest,
-        dict,
+        catalog.GetEntryRequest(),
+        {},
     ],
 )
 def test_get_entry(request_type, transport: str = "grpc"):
@@ -8745,7 +8778,7 @@ def test_get_entry(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
@@ -8795,9 +8828,10 @@ def test_get_entry_non_empty_request_with_auto_populated_field():
         client.get_entry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetEntryRequest(
+        request_msg = catalog.GetEntryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_entry_use_cached_wrapped_rpc():
@@ -8876,9 +8910,14 @@ async def test_get_entry_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_entry_async(
-    transport: str = "grpc_asyncio", request_type=catalog.GetEntryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.GetEntryRequest(),
+        {},
+    ],
+)
+async def test_get_entry_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8886,7 +8925,7 @@ async def test_get_entry_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
@@ -8913,11 +8952,6 @@ async def test_get_entry_async(
     assert response.entry_type == "entry_type_value"
     assert response.parent_entry == "parent_entry_value"
     assert response.fully_qualified_name == "fully_qualified_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_entry_async_from_dict():
-    await test_get_entry_async(request_type=dict)
 
 
 def test_get_entry_field_headers():
@@ -9062,8 +9096,8 @@ async def test_get_entry_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.LookupEntryRequest,
-        dict,
+        catalog.LookupEntryRequest(),
+        {},
     ],
 )
 def test_lookup_entry(request_type, transport: str = "grpc"):
@@ -9074,7 +9108,7 @@ def test_lookup_entry(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_entry), "__call__") as call:
@@ -9125,10 +9159,11 @@ def test_lookup_entry_non_empty_request_with_auto_populated_field():
         client.lookup_entry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.LookupEntryRequest(
+        request_msg = catalog.LookupEntryRequest(
             name="name_value",
             entry="entry_value",
         )
+        assert args[0] == request_msg
 
 
 def test_lookup_entry_use_cached_wrapped_rpc():
@@ -9209,9 +9244,14 @@ async def test_lookup_entry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_lookup_entry_async(
-    transport: str = "grpc_asyncio", request_type=catalog.LookupEntryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.LookupEntryRequest(),
+        {},
+    ],
+)
+async def test_lookup_entry_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9219,7 +9259,7 @@ async def test_lookup_entry_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_entry), "__call__") as call:
@@ -9246,11 +9286,6 @@ async def test_lookup_entry_async(
     assert response.entry_type == "entry_type_value"
     assert response.parent_entry == "parent_entry_value"
     assert response.fully_qualified_name == "fully_qualified_name_value"
-
-
-@pytest.mark.asyncio
-async def test_lookup_entry_async_from_dict():
-    await test_lookup_entry_async(request_type=dict)
 
 
 def test_lookup_entry_field_headers():
@@ -9315,8 +9350,260 @@ async def test_lookup_entry_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.SearchEntriesRequest,
-        dict,
+        catalog.ModifyEntryRequest(),
+        {},
+    ],
+)
+def test_modify_entry(request_type, transport: str = "grpc"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.modify_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.Entry(
+            name="name_value",
+            entry_type="entry_type_value",
+            parent_entry="parent_entry_value",
+            fully_qualified_name="fully_qualified_name_value",
+        )
+        response = client.modify_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = catalog.ModifyEntryRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.Entry)
+    assert response.name == "name_value"
+    assert response.entry_type == "entry_type_value"
+    assert response.parent_entry == "parent_entry_value"
+    assert response.fully_qualified_name == "fully_qualified_name_value"
+
+
+def test_modify_entry_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog.ModifyEntryRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.modify_entry), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.modify_entry(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.ModifyEntryRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_modify_entry_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CatalogServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.modify_entry in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.modify_entry] = mock_rpc
+        request = {}
+        client.modify_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.modify_entry(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_modify_entry_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CatalogServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.modify_entry
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.modify_entry
+        ] = mock_rpc
+
+        request = {}
+        await client.modify_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.modify_entry(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.ModifyEntryRequest(),
+        {},
+    ],
+)
+async def test_modify_entry_async(request_type, transport: str = "grpc_asyncio"):
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.modify_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.Entry(
+                name="name_value",
+                entry_type="entry_type_value",
+                parent_entry="parent_entry_value",
+                fully_qualified_name="fully_qualified_name_value",
+            )
+        )
+        response = await client.modify_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = catalog.ModifyEntryRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.Entry)
+    assert response.name == "name_value"
+    assert response.entry_type == "entry_type_value"
+    assert response.parent_entry == "parent_entry_value"
+    assert response.fully_qualified_name == "fully_qualified_name_value"
+
+
+def test_modify_entry_field_headers():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog.ModifyEntryRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.modify_entry), "__call__") as call:
+        call.return_value = catalog.Entry()
+        client.modify_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_modify_entry_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog.ModifyEntryRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.modify_entry), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(catalog.Entry())
+        await client.modify_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.SearchEntriesRequest(),
+        {},
     ],
 )
 def test_search_entries(request_type, transport: str = "grpc"):
@@ -9327,7 +9614,7 @@ def test_search_entries(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_entries), "__call__") as call:
@@ -9379,13 +9666,14 @@ def test_search_entries_non_empty_request_with_auto_populated_field():
         client.search_entries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.SearchEntriesRequest(
+        request_msg = catalog.SearchEntriesRequest(
             name="name_value",
             query="query_value",
             page_token="page_token_value",
             order_by="order_by_value",
             scope="scope_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_entries_use_cached_wrapped_rpc():
@@ -9466,9 +9754,14 @@ async def test_search_entries_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_entries_async(
-    transport: str = "grpc_asyncio", request_type=catalog.SearchEntriesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.SearchEntriesRequest(),
+        {},
+    ],
+)
+async def test_search_entries_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9476,7 +9769,7 @@ async def test_search_entries_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_entries), "__call__") as call:
@@ -9501,11 +9794,6 @@ async def test_search_entries_async(
     assert response.total_size == 1086
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_search_entries_async_from_dict():
-    await test_search_entries_async(request_type=dict)
 
 
 def test_search_entries_field_headers():
@@ -9710,6 +9998,9 @@ def test_search_entries_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.SearchEntriesResult) for i in results)
@@ -9798,6 +10089,8 @@ async def test_search_entries_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9845,11 +10138,7 @@ async def test_search_entries_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.search_entries(request={})
-        ).pages:
+        async for page_ in (await client.search_entries(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9858,8 +10147,8 @@ async def test_search_entries_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.CreateMetadataJobRequest,
-        dict,
+        catalog.CreateMetadataJobRequest(),
+        {},
     ],
 )
 def test_create_metadata_job(request_type, transport: str = "grpc"):
@@ -9870,7 +10159,7 @@ def test_create_metadata_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9916,10 +10205,11 @@ def test_create_metadata_job_non_empty_request_with_auto_populated_field():
         client.create_metadata_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateMetadataJobRequest(
+        request_msg = catalog.CreateMetadataJobRequest(
             parent="parent_value",
             metadata_job_id="metadata_job_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_metadata_job_use_cached_wrapped_rpc():
@@ -10014,9 +10304,14 @@ async def test_create_metadata_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_metadata_job_async(
-    transport: str = "grpc_asyncio", request_type=catalog.CreateMetadataJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.CreateMetadataJobRequest(),
+        {},
+    ],
+)
+async def test_create_metadata_job_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10024,7 +10319,7 @@ async def test_create_metadata_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10044,11 +10339,6 @@ async def test_create_metadata_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_metadata_job_async_from_dict():
-    await test_create_metadata_job_async(request_type=dict)
 
 
 def test_create_metadata_job_field_headers():
@@ -10225,8 +10515,8 @@ async def test_create_metadata_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.GetMetadataJobRequest,
-        dict,
+        catalog.GetMetadataJobRequest(),
+        {},
     ],
 )
 def test_get_metadata_job(request_type, transport: str = "grpc"):
@@ -10237,7 +10527,7 @@ def test_get_metadata_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_metadata_job), "__call__") as call:
@@ -10285,9 +10575,10 @@ def test_get_metadata_job_non_empty_request_with_auto_populated_field():
         client.get_metadata_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetMetadataJobRequest(
+        request_msg = catalog.GetMetadataJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_metadata_job_use_cached_wrapped_rpc():
@@ -10370,9 +10661,14 @@ async def test_get_metadata_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_metadata_job_async(
-    transport: str = "grpc_asyncio", request_type=catalog.GetMetadataJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.GetMetadataJobRequest(),
+        {},
+    ],
+)
+async def test_get_metadata_job_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10380,7 +10676,7 @@ async def test_get_metadata_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_metadata_job), "__call__") as call:
@@ -10405,11 +10701,6 @@ async def test_get_metadata_job_async(
     assert response.name == "name_value"
     assert response.uid == "uid_value"
     assert response.type_ == catalog.MetadataJob.Type.IMPORT
-
-
-@pytest.mark.asyncio
-async def test_get_metadata_job_async_from_dict():
-    await test_get_metadata_job_async(request_type=dict)
 
 
 def test_get_metadata_job_field_headers():
@@ -10554,8 +10845,8 @@ async def test_get_metadata_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.ListMetadataJobsRequest,
-        dict,
+        catalog.ListMetadataJobsRequest(),
+        {},
     ],
 )
 def test_list_metadata_jobs(request_type, transport: str = "grpc"):
@@ -10566,7 +10857,7 @@ def test_list_metadata_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10619,12 +10910,13 @@ def test_list_metadata_jobs_non_empty_request_with_auto_populated_field():
         client.list_metadata_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.ListMetadataJobsRequest(
+        request_msg = catalog.ListMetadataJobsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_metadata_jobs_use_cached_wrapped_rpc():
@@ -10709,9 +11001,14 @@ async def test_list_metadata_jobs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_metadata_jobs_async(
-    transport: str = "grpc_asyncio", request_type=catalog.ListMetadataJobsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.ListMetadataJobsRequest(),
+        {},
+    ],
+)
+async def test_list_metadata_jobs_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10719,7 +11016,7 @@ async def test_list_metadata_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10744,11 +11041,6 @@ async def test_list_metadata_jobs_async(
     assert isinstance(response, pagers.ListMetadataJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_metadata_jobs_async_from_dict():
-    await test_list_metadata_jobs_async(request_type=dict)
 
 
 def test_list_metadata_jobs_field_headers():
@@ -10953,6 +11245,9 @@ def test_list_metadata_jobs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.MetadataJob) for i in results)
@@ -11045,6 +11340,8 @@ async def test_list_metadata_jobs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11094,11 +11391,7 @@ async def test_list_metadata_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_metadata_jobs(request={})
-        ).pages:
+        async for page_ in (await client.list_metadata_jobs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -11107,8 +11400,8 @@ async def test_list_metadata_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.CancelMetadataJobRequest,
-        dict,
+        catalog.CancelMetadataJobRequest(),
+        {},
     ],
 )
 def test_cancel_metadata_job(request_type, transport: str = "grpc"):
@@ -11119,7 +11412,7 @@ def test_cancel_metadata_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11164,9 +11457,10 @@ def test_cancel_metadata_job_non_empty_request_with_auto_populated_field():
         client.cancel_metadata_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CancelMetadataJobRequest(
+        request_msg = catalog.CancelMetadataJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_metadata_job_use_cached_wrapped_rpc():
@@ -11251,9 +11545,14 @@ async def test_cancel_metadata_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_cancel_metadata_job_async(
-    transport: str = "grpc_asyncio", request_type=catalog.CancelMetadataJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.CancelMetadataJobRequest(),
+        {},
+    ],
+)
+async def test_cancel_metadata_job_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11261,7 +11560,7 @@ async def test_cancel_metadata_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11279,11 +11578,6 @@ async def test_cancel_metadata_job_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_cancel_metadata_job_async_from_dict():
-    await test_cancel_metadata_job_async(request_type=dict)
 
 
 def test_cancel_metadata_job_field_headers():
@@ -11436,8 +11730,8 @@ async def test_cancel_metadata_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.CreateEntryLinkRequest,
-        dict,
+        catalog.CreateEntryLinkRequest(),
+        {},
     ],
 )
 def test_create_entry_link(request_type, transport: str = "grpc"):
@@ -11448,7 +11742,7 @@ def test_create_entry_link(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11499,10 +11793,11 @@ def test_create_entry_link_non_empty_request_with_auto_populated_field():
         client.create_entry_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateEntryLinkRequest(
+        request_msg = catalog.CreateEntryLinkRequest(
             parent="parent_value",
             entry_link_id="entry_link_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_entry_link_use_cached_wrapped_rpc():
@@ -11585,9 +11880,14 @@ async def test_create_entry_link_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_entry_link_async(
-    transport: str = "grpc_asyncio", request_type=catalog.CreateEntryLinkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.CreateEntryLinkRequest(),
+        {},
+    ],
+)
+async def test_create_entry_link_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11595,7 +11895,7 @@ async def test_create_entry_link_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11620,11 +11920,6 @@ async def test_create_entry_link_async(
     assert isinstance(response, catalog.EntryLink)
     assert response.name == "name_value"
     assert response.entry_link_type == "entry_link_type_value"
-
-
-@pytest.mark.asyncio
-async def test_create_entry_link_async_from_dict():
-    await test_create_entry_link_async(request_type=dict)
 
 
 def test_create_entry_link_field_headers():
@@ -11797,8 +12092,8 @@ async def test_create_entry_link_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.UpdateEntryLinkRequest,
-        dict,
+        catalog.UpdateEntryLinkRequest(),
+        {},
     ],
 )
 def test_update_entry_link(request_type, transport: str = "grpc"):
@@ -11809,7 +12104,7 @@ def test_update_entry_link(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11857,7 +12152,8 @@ def test_update_entry_link_non_empty_request_with_auto_populated_field():
         client.update_entry_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.UpdateEntryLinkRequest()
+        request_msg = catalog.UpdateEntryLinkRequest()
+        assert args[0] == request_msg
 
 
 def test_update_entry_link_use_cached_wrapped_rpc():
@@ -11940,9 +12236,14 @@ async def test_update_entry_link_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_entry_link_async(
-    transport: str = "grpc_asyncio", request_type=catalog.UpdateEntryLinkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.UpdateEntryLinkRequest(),
+        {},
+    ],
+)
+async def test_update_entry_link_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11950,7 +12251,7 @@ async def test_update_entry_link_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11975,11 +12276,6 @@ async def test_update_entry_link_async(
     assert isinstance(response, catalog.EntryLink)
     assert response.name == "name_value"
     assert response.entry_link_type == "entry_link_type_value"
-
-
-@pytest.mark.asyncio
-async def test_update_entry_link_async_from_dict():
-    await test_update_entry_link_async(request_type=dict)
 
 
 def test_update_entry_link_field_headers():
@@ -12132,8 +12428,8 @@ async def test_update_entry_link_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.DeleteEntryLinkRequest,
-        dict,
+        catalog.DeleteEntryLinkRequest(),
+        {},
     ],
 )
 def test_delete_entry_link(request_type, transport: str = "grpc"):
@@ -12144,7 +12440,7 @@ def test_delete_entry_link(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12194,9 +12490,10 @@ def test_delete_entry_link_non_empty_request_with_auto_populated_field():
         client.delete_entry_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.DeleteEntryLinkRequest(
+        request_msg = catalog.DeleteEntryLinkRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_entry_link_use_cached_wrapped_rpc():
@@ -12279,9 +12576,14 @@ async def test_delete_entry_link_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_entry_link_async(
-    transport: str = "grpc_asyncio", request_type=catalog.DeleteEntryLinkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.DeleteEntryLinkRequest(),
+        {},
+    ],
+)
+async def test_delete_entry_link_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12289,7 +12591,7 @@ async def test_delete_entry_link_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12314,11 +12616,6 @@ async def test_delete_entry_link_async(
     assert isinstance(response, catalog.EntryLink)
     assert response.name == "name_value"
     assert response.entry_link_type == "entry_link_type_value"
-
-
-@pytest.mark.asyncio
-async def test_delete_entry_link_async_from_dict():
-    await test_delete_entry_link_async(request_type=dict)
 
 
 def test_delete_entry_link_field_headers():
@@ -12471,8 +12768,8 @@ async def test_delete_entry_link_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.LookupEntryLinksRequest,
-        dict,
+        catalog.LookupEntryLinksRequest(),
+        {},
     ],
 )
 def test_lookup_entry_links(request_type, transport: str = "grpc"):
@@ -12483,7 +12780,7 @@ def test_lookup_entry_links(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12533,11 +12830,12 @@ def test_lookup_entry_links_non_empty_request_with_auto_populated_field():
         client.lookup_entry_links(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.LookupEntryLinksRequest(
+        request_msg = catalog.LookupEntryLinksRequest(
             name="name_value",
             entry="entry_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_lookup_entry_links_use_cached_wrapped_rpc():
@@ -12622,9 +12920,14 @@ async def test_lookup_entry_links_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_lookup_entry_links_async(
-    transport: str = "grpc_asyncio", request_type=catalog.LookupEntryLinksRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.LookupEntryLinksRequest(),
+        {},
+    ],
+)
+async def test_lookup_entry_links_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12632,7 +12935,7 @@ async def test_lookup_entry_links_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12655,11 +12958,6 @@ async def test_lookup_entry_links_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.LookupEntryLinksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_lookup_entry_links_async_from_dict():
-    await test_lookup_entry_links_async(request_type=dict)
 
 
 def test_lookup_entry_links_field_headers():
@@ -12778,6 +13076,9 @@ def test_lookup_entry_links_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.EntryLink) for i in results)
@@ -12870,6 +13171,8 @@ async def test_lookup_entry_links_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12919,11 +13222,7 @@ async def test_lookup_entry_links_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.lookup_entry_links(request={})
-        ).pages:
+        async for page_ in (await client.lookup_entry_links(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -12932,8 +13231,8 @@ async def test_lookup_entry_links_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.LookupContextRequest,
-        dict,
+        catalog.LookupContextRequest(),
+        {},
     ],
 )
 def test_lookup_context(request_type, transport: str = "grpc"):
@@ -12944,7 +13243,7 @@ def test_lookup_context(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_context), "__call__") as call:
@@ -12978,6 +13277,7 @@ def test_lookup_context_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = catalog.LookupContextRequest(
         name="name_value",
+        context="context_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12988,9 +13288,11 @@ def test_lookup_context_non_empty_request_with_auto_populated_field():
         client.lookup_context(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.LookupContextRequest(
+        request_msg = catalog.LookupContextRequest(
             name="name_value",
+            context="context_value",
         )
+        assert args[0] == request_msg
 
 
 def test_lookup_context_use_cached_wrapped_rpc():
@@ -13071,9 +13373,14 @@ async def test_lookup_context_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_lookup_context_async(
-    transport: str = "grpc_asyncio", request_type=catalog.LookupContextRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.LookupContextRequest(),
+        {},
+    ],
+)
+async def test_lookup_context_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13081,7 +13388,7 @@ async def test_lookup_context_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_context), "__call__") as call:
@@ -13102,11 +13409,6 @@ async def test_lookup_context_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.LookupContextResponse)
     assert response.context == "context_value"
-
-
-@pytest.mark.asyncio
-async def test_lookup_context_async_from_dict():
-    await test_lookup_context_async(request_type=dict)
 
 
 def test_lookup_context_field_headers():
@@ -13173,8 +13475,8 @@ async def test_lookup_context_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.GetEntryLinkRequest,
-        dict,
+        catalog.GetEntryLinkRequest(),
+        {},
     ],
 )
 def test_get_entry_link(request_type, transport: str = "grpc"):
@@ -13185,7 +13487,7 @@ def test_get_entry_link(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entry_link), "__call__") as call:
@@ -13231,9 +13533,10 @@ def test_get_entry_link_non_empty_request_with_auto_populated_field():
         client.get_entry_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetEntryLinkRequest(
+        request_msg = catalog.GetEntryLinkRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_entry_link_use_cached_wrapped_rpc():
@@ -13314,9 +13617,14 @@ async def test_get_entry_link_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_entry_link_async(
-    transport: str = "grpc_asyncio", request_type=catalog.GetEntryLinkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.GetEntryLinkRequest(),
+        {},
+    ],
+)
+async def test_get_entry_link_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13324,7 +13632,7 @@ async def test_get_entry_link_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entry_link), "__call__") as call:
@@ -13347,11 +13655,6 @@ async def test_get_entry_link_async(
     assert isinstance(response, catalog.EntryLink)
     assert response.name == "name_value"
     assert response.entry_link_type == "entry_link_type_value"
-
-
-@pytest.mark.asyncio
-async def test_get_entry_link_async_from_dict():
-    await test_get_entry_link_async(request_type=dict)
 
 
 def test_get_entry_link_field_headers():
@@ -13496,8 +13799,8 @@ async def test_get_entry_link_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.CreateMetadataFeedRequest,
-        dict,
+        catalog.CreateMetadataFeedRequest(),
+        {},
     ],
 )
 def test_create_metadata_feed(request_type, transport: str = "grpc"):
@@ -13508,7 +13811,7 @@ def test_create_metadata_feed(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13554,10 +13857,11 @@ def test_create_metadata_feed_non_empty_request_with_auto_populated_field():
         client.create_metadata_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateMetadataFeedRequest(
+        request_msg = catalog.CreateMetadataFeedRequest(
             parent="parent_value",
             metadata_feed_id="metadata_feed_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_metadata_feed_use_cached_wrapped_rpc():
@@ -13652,8 +13956,15 @@ async def test_create_metadata_feed_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.CreateMetadataFeedRequest(),
+        {},
+    ],
+)
 async def test_create_metadata_feed_async(
-    transport: str = "grpc_asyncio", request_type=catalog.CreateMetadataFeedRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13662,7 +13973,7 @@ async def test_create_metadata_feed_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13682,11 +13993,6 @@ async def test_create_metadata_feed_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_metadata_feed_async_from_dict():
-    await test_create_metadata_feed_async(request_type=dict)
 
 
 def test_create_metadata_feed_field_headers():
@@ -13863,8 +14169,8 @@ async def test_create_metadata_feed_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.GetMetadataFeedRequest,
-        dict,
+        catalog.GetMetadataFeedRequest(),
+        {},
     ],
 )
 def test_get_metadata_feed(request_type, transport: str = "grpc"):
@@ -13875,7 +14181,7 @@ def test_get_metadata_feed(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13926,9 +14232,10 @@ def test_get_metadata_feed_non_empty_request_with_auto_populated_field():
         client.get_metadata_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetMetadataFeedRequest(
+        request_msg = catalog.GetMetadataFeedRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_metadata_feed_use_cached_wrapped_rpc():
@@ -14011,9 +14318,14 @@ async def test_get_metadata_feed_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_metadata_feed_async(
-    transport: str = "grpc_asyncio", request_type=catalog.GetMetadataFeedRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.GetMetadataFeedRequest(),
+        {},
+    ],
+)
+async def test_get_metadata_feed_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14021,7 +14333,7 @@ async def test_get_metadata_feed_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14046,11 +14358,6 @@ async def test_get_metadata_feed_async(
     assert isinstance(response, catalog.MetadataFeed)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_metadata_feed_async_from_dict():
-    await test_get_metadata_feed_async(request_type=dict)
 
 
 def test_get_metadata_feed_field_headers():
@@ -14207,8 +14514,8 @@ async def test_get_metadata_feed_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.ListMetadataFeedsRequest,
-        dict,
+        catalog.ListMetadataFeedsRequest(),
+        {},
     ],
 )
 def test_list_metadata_feeds(request_type, transport: str = "grpc"):
@@ -14219,7 +14526,7 @@ def test_list_metadata_feeds(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14272,12 +14579,13 @@ def test_list_metadata_feeds_non_empty_request_with_auto_populated_field():
         client.list_metadata_feeds(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.ListMetadataFeedsRequest(
+        request_msg = catalog.ListMetadataFeedsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_metadata_feeds_use_cached_wrapped_rpc():
@@ -14362,9 +14670,14 @@ async def test_list_metadata_feeds_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_metadata_feeds_async(
-    transport: str = "grpc_asyncio", request_type=catalog.ListMetadataFeedsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.ListMetadataFeedsRequest(),
+        {},
+    ],
+)
+async def test_list_metadata_feeds_async(request_type, transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14372,7 +14685,7 @@ async def test_list_metadata_feeds_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14397,11 +14710,6 @@ async def test_list_metadata_feeds_async(
     assert isinstance(response, pagers.ListMetadataFeedsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_metadata_feeds_async_from_dict():
-    await test_list_metadata_feeds_async(request_type=dict)
 
 
 def test_list_metadata_feeds_field_headers():
@@ -14606,6 +14914,9 @@ def test_list_metadata_feeds_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.MetadataFeed) for i in results)
@@ -14698,6 +15009,8 @@ async def test_list_metadata_feeds_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14747,11 +15060,7 @@ async def test_list_metadata_feeds_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_metadata_feeds(request={})
-        ).pages:
+        async for page_ in (await client.list_metadata_feeds(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -14760,8 +15069,8 @@ async def test_list_metadata_feeds_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.DeleteMetadataFeedRequest,
-        dict,
+        catalog.DeleteMetadataFeedRequest(),
+        {},
     ],
 )
 def test_delete_metadata_feed(request_type, transport: str = "grpc"):
@@ -14772,7 +15081,7 @@ def test_delete_metadata_feed(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14817,9 +15126,10 @@ def test_delete_metadata_feed_non_empty_request_with_auto_populated_field():
         client.delete_metadata_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.DeleteMetadataFeedRequest(
+        request_msg = catalog.DeleteMetadataFeedRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_metadata_feed_use_cached_wrapped_rpc():
@@ -14914,8 +15224,15 @@ async def test_delete_metadata_feed_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.DeleteMetadataFeedRequest(),
+        {},
+    ],
+)
 async def test_delete_metadata_feed_async(
-    transport: str = "grpc_asyncio", request_type=catalog.DeleteMetadataFeedRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14924,7 +15241,7 @@ async def test_delete_metadata_feed_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14944,11 +15261,6 @@ async def test_delete_metadata_feed_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_metadata_feed_async_from_dict():
-    await test_delete_metadata_feed_async(request_type=dict)
 
 
 def test_delete_metadata_feed_field_headers():
@@ -15105,8 +15417,8 @@ async def test_delete_metadata_feed_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        catalog.UpdateMetadataFeedRequest,
-        dict,
+        catalog.UpdateMetadataFeedRequest(),
+        {},
     ],
 )
 def test_update_metadata_feed(request_type, transport: str = "grpc"):
@@ -15117,7 +15429,7 @@ def test_update_metadata_feed(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15160,7 +15472,8 @@ def test_update_metadata_feed_non_empty_request_with_auto_populated_field():
         client.update_metadata_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.UpdateMetadataFeedRequest()
+        request_msg = catalog.UpdateMetadataFeedRequest()
+        assert args[0] == request_msg
 
 
 def test_update_metadata_feed_use_cached_wrapped_rpc():
@@ -15255,8 +15568,15 @@ async def test_update_metadata_feed_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.UpdateMetadataFeedRequest(),
+        {},
+    ],
+)
 async def test_update_metadata_feed_async(
-    transport: str = "grpc_asyncio", request_type=catalog.UpdateMetadataFeedRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -15265,7 +15585,7 @@ async def test_update_metadata_feed_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15285,11 +15605,6 @@ async def test_update_metadata_feed_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_metadata_feed_async_from_dict():
-    await test_update_metadata_feed_async(request_type=dict)
 
 
 def test_update_metadata_feed_field_headers():
@@ -15585,7 +15900,7 @@ def test_create_entry_type_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_entry_type_rest_unset_required_fields():
@@ -15784,7 +16099,7 @@ def test_update_entry_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_entry_type_rest_unset_required_fields():
@@ -15984,7 +16299,7 @@ def test_delete_entry_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_entry_type_rest_unset_required_fields():
@@ -16172,7 +16487,7 @@ def test_list_entry_types_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_entry_types_rest_unset_required_fields():
@@ -16303,6 +16618,9 @@ def test_list_entry_types_rest_pager(transport: str = "rest"):
 
         pager = client.list_entry_types(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.EntryType) for i in results)
@@ -16418,7 +16736,7 @@ def test_get_entry_type_rest_required_fields(request_type=catalog.GetEntryTypeRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_entry_type_rest_unset_required_fields():
@@ -16623,7 +16941,7 @@ def test_create_aspect_type_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_aspect_type_rest_unset_required_fields():
@@ -16825,7 +17143,7 @@ def test_update_aspect_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_aspect_type_rest_unset_required_fields():
@@ -17027,7 +17345,7 @@ def test_delete_aspect_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_aspect_type_rest_unset_required_fields():
@@ -17216,7 +17534,7 @@ def test_list_aspect_types_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_aspect_types_rest_unset_required_fields():
@@ -17348,6 +17666,9 @@ def test_list_aspect_types_rest_pager(transport: str = "rest"):
 
         pager = client.list_aspect_types(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.AspectType) for i in results)
@@ -17465,7 +17786,7 @@ def test_get_aspect_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_aspect_type_rest_unset_required_fields():
@@ -17671,7 +17992,7 @@ def test_create_entry_group_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_entry_group_rest_unset_required_fields():
@@ -17873,7 +18194,7 @@ def test_update_entry_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_entry_group_rest_unset_required_fields():
@@ -18075,7 +18396,7 @@ def test_delete_entry_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_entry_group_rest_unset_required_fields():
@@ -18264,7 +18585,7 @@ def test_list_entry_groups_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_entry_groups_rest_unset_required_fields():
@@ -18396,6 +18717,9 @@ def test_list_entry_groups_rest_pager(transport: str = "rest"):
 
         pager = client.list_entry_groups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.EntryGroup) for i in results)
@@ -18513,7 +18837,7 @@ def test_get_entry_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_entry_group_rest_unset_required_fields():
@@ -18707,7 +19031,7 @@ def test_create_entry_rest_required_fields(request_type=catalog.CreateEntryReque
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_entry_rest_unset_required_fields():
@@ -18903,7 +19227,7 @@ def test_update_entry_rest_required_fields(request_type=catalog.UpdateEntryReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_entry_rest_unset_required_fields():
@@ -19095,7 +19419,7 @@ def test_delete_entry_rest_required_fields(request_type=catalog.DeleteEntryReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_entry_rest_unset_required_fields():
@@ -19281,7 +19605,7 @@ def test_list_entries_rest_required_fields(request_type=catalog.ListEntriesReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_entries_rest_unset_required_fields():
@@ -19416,6 +19740,9 @@ def test_list_entries_rest_pager(transport: str = "rest"):
 
         pager = client.list_entries(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.Entry) for i in results)
@@ -19539,7 +19866,7 @@ def test_get_entry_rest_required_fields(request_type=catalog.GetEntryRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_entry_rest_unset_required_fields():
@@ -19748,7 +20075,7 @@ def test_lookup_entry_rest_required_fields(request_type=catalog.LookupEntryReque
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_lookup_entry_rest_unset_required_fields():
@@ -19766,6 +20093,133 @@ def test_lookup_entry_rest_unset_required_fields():
                 "view",
             )
         )
+        & set(
+            (
+                "name",
+                "entry",
+            )
+        )
+    )
+
+
+def test_modify_entry_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CatalogServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.modify_entry in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.modify_entry] = mock_rpc
+
+        request = {}
+        client.modify_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.modify_entry(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_modify_entry_rest_required_fields(request_type=catalog.ModifyEntryRequest):
+    transport_class = transports.CatalogServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).modify_entry._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).modify_entry._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = catalog.Entry()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = catalog.Entry.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.modify_entry(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_modify_entry_rest_unset_required_fields():
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.modify_entry._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
         & set(
             (
                 "name",
@@ -19905,7 +20359,7 @@ def test_search_entries_rest_required_fields(request_type=catalog.SearchEntriesR
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_search_entries_rest_unset_required_fields():
@@ -20046,6 +20500,9 @@ def test_search_entries_rest_pager(transport: str = "rest"):
 
         pager = client.search_entries(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.SearchEntriesResult) for i in results)
@@ -20176,7 +20633,7 @@ def test_create_metadata_job_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_metadata_job_rest_unset_required_fields():
@@ -20371,7 +20828,7 @@ def test_get_metadata_job_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_metadata_job_rest_unset_required_fields():
@@ -20564,7 +21021,7 @@ def test_list_metadata_jobs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_metadata_jobs_rest_unset_required_fields():
@@ -20696,6 +21153,9 @@ def test_list_metadata_jobs_rest_pager(transport: str = "rest"):
 
         pager = client.list_metadata_jobs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.MetadataJob) for i in results)
@@ -20815,7 +21275,7 @@ def test_cancel_metadata_job_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_cancel_metadata_job_rest_unset_required_fields():
@@ -21011,7 +21471,7 @@ def test_create_entry_link_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_entry_link_rest_unset_required_fields():
@@ -21209,7 +21669,7 @@ def test_update_entry_link_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_entry_link_rest_unset_required_fields():
@@ -21401,7 +21861,7 @@ def test_delete_entry_link_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_entry_link_rest_unset_required_fields():
@@ -21608,7 +22068,7 @@ def test_lookup_entry_links_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_lookup_entry_links_rest_unset_required_fields():
@@ -21687,6 +22147,9 @@ def test_lookup_entry_links_rest_pager(transport: str = "rest"):
         sample_request = {"name": "projects/sample1/locations/sample2"}
 
         pager = client.lookup_entry_links(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -21808,7 +22271,7 @@ def test_lookup_context_rest_required_fields(request_type=catalog.LookupContextR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_lookup_context_rest_unset_required_fields():
@@ -21934,7 +22397,7 @@ def test_get_entry_link_rest_required_fields(request_type=catalog.GetEntryLinkRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_entry_link_rest_unset_required_fields():
@@ -22127,7 +22590,7 @@ def test_create_metadata_feed_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_metadata_feed_rest_unset_required_fields():
@@ -22322,7 +22785,7 @@ def test_get_metadata_feed_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_metadata_feed_rest_unset_required_fields():
@@ -22515,7 +22978,7 @@ def test_list_metadata_feeds_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_metadata_feeds_rest_unset_required_fields():
@@ -22647,6 +23110,9 @@ def test_list_metadata_feeds_rest_pager(transport: str = "rest"):
 
         pager = client.list_metadata_feeds(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.MetadataFeed) for i in results)
@@ -22769,7 +23235,7 @@ def test_delete_metadata_feed_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_metadata_feed_rest_unset_required_fields():
@@ -22955,7 +23421,7 @@ def test_update_metadata_feed_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_metadata_feed_rest_unset_required_fields():
@@ -23162,7 +23628,6 @@ def test_create_entry_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateEntryTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -23185,7 +23650,6 @@ def test_update_entry_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateEntryTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -23208,7 +23672,6 @@ def test_delete_entry_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteEntryTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -23229,7 +23692,6 @@ def test_list_entry_types_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListEntryTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23250,7 +23712,6 @@ def test_get_entry_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetEntryTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -23273,7 +23734,6 @@ def test_create_aspect_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateAspectTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -23296,7 +23756,6 @@ def test_update_aspect_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateAspectTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -23319,7 +23778,6 @@ def test_delete_aspect_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteAspectTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -23342,7 +23800,6 @@ def test_list_aspect_types_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListAspectTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23363,7 +23820,6 @@ def test_get_aspect_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetAspectTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -23386,7 +23842,6 @@ def test_create_entry_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateEntryGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -23409,7 +23864,6 @@ def test_update_entry_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateEntryGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -23432,7 +23886,6 @@ def test_delete_entry_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteEntryGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -23455,7 +23908,6 @@ def test_list_entry_groups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListEntryGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23476,7 +23928,6 @@ def test_get_entry_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetEntryGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -23497,7 +23948,6 @@ def test_create_entry_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -23518,7 +23968,6 @@ def test_update_entry_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -23539,7 +23988,6 @@ def test_delete_entry_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -23560,7 +24008,6 @@ def test_list_entries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23581,7 +24028,6 @@ def test_get_entry_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -23602,7 +24048,26 @@ def test_lookup_entry_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.LookupEntryRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_modify_entry_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.modify_entry), "__call__") as call:
+        call.return_value = catalog.Entry()
+        client.modify_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.ModifyEntryRequest()
         assert args[0] == request_msg
 
 
@@ -23623,7 +24088,6 @@ def test_search_entries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.SearchEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23646,7 +24110,6 @@ def test_create_metadata_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateMetadataJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -23667,7 +24130,6 @@ def test_get_metadata_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetMetadataJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -23690,7 +24152,6 @@ def test_list_metadata_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListMetadataJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23713,7 +24174,6 @@ def test_cancel_metadata_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CancelMetadataJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -23736,7 +24196,6 @@ def test_create_entry_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateEntryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -23759,7 +24218,6 @@ def test_update_entry_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateEntryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -23782,7 +24240,6 @@ def test_delete_entry_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteEntryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -23805,7 +24262,6 @@ def test_lookup_entry_links_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.LookupEntryLinksRequest()
-
         assert args[0] == request_msg
 
 
@@ -23826,7 +24282,6 @@ def test_lookup_context_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.LookupContextRequest()
-
         assert args[0] == request_msg
 
 
@@ -23847,7 +24302,6 @@ def test_get_entry_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetEntryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -23870,7 +24324,6 @@ def test_create_metadata_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateMetadataFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -23893,7 +24346,6 @@ def test_get_metadata_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetMetadataFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -23916,7 +24368,6 @@ def test_list_metadata_feeds_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListMetadataFeedsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23939,7 +24390,6 @@ def test_delete_metadata_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteMetadataFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -23962,7 +24412,6 @@ def test_update_metadata_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateMetadataFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -24003,7 +24452,6 @@ async def test_create_entry_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateEntryTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -24030,7 +24478,6 @@ async def test_update_entry_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateEntryTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -24057,7 +24504,6 @@ async def test_delete_entry_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteEntryTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -24085,7 +24531,6 @@ async def test_list_entry_types_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListEntryTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24119,7 +24564,6 @@ async def test_get_entry_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetEntryTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -24146,7 +24590,6 @@ async def test_create_aspect_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateAspectTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -24173,7 +24616,6 @@ async def test_update_aspect_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateAspectTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -24200,7 +24642,6 @@ async def test_delete_aspect_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteAspectTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -24230,7 +24671,6 @@ async def test_list_aspect_types_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListAspectTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24263,7 +24703,6 @@ async def test_get_aspect_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetAspectTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -24290,7 +24729,6 @@ async def test_create_entry_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateEntryGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -24317,7 +24755,6 @@ async def test_update_entry_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateEntryGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -24344,7 +24781,6 @@ async def test_delete_entry_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteEntryGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -24374,7 +24810,6 @@ async def test_list_entry_groups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListEntryGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24406,7 +24841,6 @@ async def test_get_entry_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetEntryGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -24436,7 +24870,6 @@ async def test_create_entry_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -24466,7 +24899,6 @@ async def test_update_entry_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -24496,7 +24928,6 @@ async def test_delete_entry_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -24523,7 +24954,6 @@ async def test_list_entries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24553,7 +24983,6 @@ async def test_get_entry_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -24583,7 +25012,35 @@ async def test_lookup_entry_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.LookupEntryRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_modify_entry_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.modify_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.Entry(
+                name="name_value",
+                entry_type="entry_type_value",
+                parent_entry="parent_entry_value",
+                fully_qualified_name="fully_qualified_name_value",
+            )
+        )
+        await client.modify_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.ModifyEntryRequest()
         assert args[0] == request_msg
 
 
@@ -24612,7 +25069,6 @@ async def test_search_entries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.SearchEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24639,7 +25095,6 @@ async def test_create_metadata_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateMetadataJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -24668,7 +25123,6 @@ async def test_get_metadata_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetMetadataJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -24698,7 +25152,6 @@ async def test_list_metadata_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListMetadataJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24723,7 +25176,6 @@ async def test_cancel_metadata_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CancelMetadataJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -24753,7 +25205,6 @@ async def test_create_entry_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateEntryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -24783,7 +25234,6 @@ async def test_update_entry_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateEntryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -24813,7 +25263,6 @@ async def test_delete_entry_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteEntryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -24842,7 +25291,6 @@ async def test_lookup_entry_links_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.LookupEntryLinksRequest()
-
         assert args[0] == request_msg
 
 
@@ -24869,7 +25317,6 @@ async def test_lookup_context_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.LookupContextRequest()
-
         assert args[0] == request_msg
 
 
@@ -24897,7 +25344,6 @@ async def test_get_entry_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetEntryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -24924,7 +25370,6 @@ async def test_create_metadata_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateMetadataFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -24954,7 +25399,6 @@ async def test_get_metadata_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetMetadataFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -24984,7 +25428,6 @@ async def test_list_metadata_feeds_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListMetadataFeedsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25011,7 +25454,6 @@ async def test_delete_metadata_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteMetadataFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -25038,7 +25480,6 @@ async def test_update_metadata_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateMetadataFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -28518,6 +28959,138 @@ def test_lookup_entry_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_modify_entry_rest_bad_request(request_type=catalog.ModifyEntryRequest):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.modify_entry(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.ModifyEntryRequest,
+        dict,
+    ],
+)
+def test_modify_entry_rest_call_success(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.Entry(
+            name="name_value",
+            entry_type="entry_type_value",
+            parent_entry="parent_entry_value",
+            fully_qualified_name="fully_qualified_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = catalog.Entry.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.modify_entry(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.Entry)
+    assert response.name == "name_value"
+    assert response.entry_type == "entry_type_value"
+    assert response.parent_entry == "parent_entry_value"
+    assert response.fully_qualified_name == "fully_qualified_name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_modify_entry_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CatalogServiceRestInterceptor, "post_modify_entry"
+        ) as post,
+        mock.patch.object(
+            transports.CatalogServiceRestInterceptor, "post_modify_entry_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CatalogServiceRestInterceptor, "pre_modify_entry"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = catalog.ModifyEntryRequest.pb(catalog.ModifyEntryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = catalog.Entry.to_json(catalog.Entry())
+        req.return_value.content = return_value
+
+        request = catalog.ModifyEntryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = catalog.Entry()
+        post_with_metadata.return_value = catalog.Entry(), metadata
+
+        client.modify_entry(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_search_entries_rest_bad_request(request_type=catalog.SearchEntriesRequest):
     client = CatalogServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -31641,7 +32214,6 @@ def test_create_entry_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateEntryTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -31663,7 +32235,6 @@ def test_update_entry_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateEntryTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -31685,7 +32256,6 @@ def test_delete_entry_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteEntryTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -31705,7 +32275,6 @@ def test_list_entry_types_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListEntryTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -31725,7 +32294,6 @@ def test_get_entry_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetEntryTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -31747,7 +32315,6 @@ def test_create_aspect_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateAspectTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -31769,7 +32336,6 @@ def test_update_aspect_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateAspectTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -31791,7 +32357,6 @@ def test_delete_aspect_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteAspectTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -31813,7 +32378,6 @@ def test_list_aspect_types_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListAspectTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -31833,7 +32397,6 @@ def test_get_aspect_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetAspectTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -31855,7 +32418,6 @@ def test_create_entry_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateEntryGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -31877,7 +32439,6 @@ def test_update_entry_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateEntryGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -31899,7 +32460,6 @@ def test_delete_entry_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteEntryGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -31921,7 +32481,6 @@ def test_list_entry_groups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListEntryGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -31941,7 +32500,6 @@ def test_get_entry_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetEntryGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -31961,7 +32519,6 @@ def test_create_entry_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -31981,7 +32538,6 @@ def test_update_entry_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -32001,7 +32557,6 @@ def test_delete_entry_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -32021,7 +32576,6 @@ def test_list_entries_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -32041,7 +32595,6 @@ def test_get_entry_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -32061,7 +32614,25 @@ def test_lookup_entry_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.LookupEntryRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_modify_entry_empty_call_rest():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.modify_entry), "__call__") as call:
+        client.modify_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.ModifyEntryRequest()
         assert args[0] == request_msg
 
 
@@ -32081,7 +32652,6 @@ def test_search_entries_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.SearchEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -32103,7 +32673,6 @@ def test_create_metadata_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateMetadataJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -32123,7 +32692,6 @@ def test_get_metadata_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetMetadataJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -32145,7 +32713,6 @@ def test_list_metadata_jobs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListMetadataJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32167,7 +32734,6 @@ def test_cancel_metadata_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CancelMetadataJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -32189,7 +32755,6 @@ def test_create_entry_link_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateEntryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -32211,7 +32776,6 @@ def test_update_entry_link_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateEntryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -32233,7 +32797,6 @@ def test_delete_entry_link_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteEntryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -32255,7 +32818,6 @@ def test_lookup_entry_links_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.LookupEntryLinksRequest()
-
         assert args[0] == request_msg
 
 
@@ -32275,7 +32837,6 @@ def test_lookup_context_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.LookupContextRequest()
-
         assert args[0] == request_msg
 
 
@@ -32295,7 +32856,6 @@ def test_get_entry_link_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetEntryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -32317,7 +32877,6 @@ def test_create_metadata_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CreateMetadataFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -32339,7 +32898,6 @@ def test_get_metadata_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.GetMetadataFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -32361,7 +32919,6 @@ def test_list_metadata_feeds_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.ListMetadataFeedsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32383,7 +32940,6 @@ def test_delete_metadata_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.DeleteMetadataFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -32405,7 +32961,6 @@ def test_update_metadata_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.UpdateMetadataFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -32480,6 +33035,7 @@ def test_catalog_service_base_transport():
         "list_entries",
         "get_entry",
         "lookup_entry",
+        "modify_entry",
         "search_entries",
         "create_metadata_job",
         "get_metadata_job",
@@ -32857,6 +33413,9 @@ def test_catalog_service_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.lookup_entry._session
     session2 = client2.transport.lookup_entry._session
+    assert session1 != session2
+    session1 = client1.transport.modify_entry._session
+    session2 = client2.transport.modify_entry._session
     assert session1 != session2
     session1 = client1.transport.search_entries._session
     session2 = client2.transport.search_entries._session

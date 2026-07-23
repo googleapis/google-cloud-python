@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,12 +39,19 @@ from .dataform import (
     CreateWorkspaceRequest,
     DataEncryptionState,
     DeleteFolderRequest,
+    DeleteFolderTreeMetadata,
+    DeleteFolderTreeRequest,
     DeleteReleaseConfigRequest,
+    DeleteRepositoryLongRunningMetadata,
+    DeleteRepositoryLongRunningRequest,
+    DeleteRepositoryLongRunningResponse,
     DeleteRepositoryRequest,
     DeleteTeamFolderRequest,
+    DeleteTeamFolderTreeRequest,
     DeleteWorkflowConfigRequest,
     DeleteWorkflowInvocationRequest,
     DeleteWorkspaceRequest,
+    DirectoryContentsView,
     DirectoryEntry,
     DirectorySearchResult,
     FetchFileDiffRequest,
@@ -58,6 +65,7 @@ from .dataform import (
     FetchRepositoryHistoryRequest,
     FetchRepositoryHistoryResponse,
     FileSearchResult,
+    FilesystemEntryMetadata,
     Folder,
     GetCompilationResultRequest,
     GetConfigRequest,
@@ -173,9 +181,15 @@ __all__ = (
     "CreateWorkspaceRequest",
     "DataEncryptionState",
     "DeleteFolderRequest",
+    "DeleteFolderTreeMetadata",
+    "DeleteFolderTreeRequest",
     "DeleteReleaseConfigRequest",
+    "DeleteRepositoryLongRunningMetadata",
+    "DeleteRepositoryLongRunningRequest",
+    "DeleteRepositoryLongRunningResponse",
     "DeleteRepositoryRequest",
     "DeleteTeamFolderRequest",
+    "DeleteTeamFolderTreeRequest",
     "DeleteWorkflowConfigRequest",
     "DeleteWorkflowInvocationRequest",
     "DeleteWorkspaceRequest",
@@ -192,6 +206,7 @@ __all__ = (
     "FetchRepositoryHistoryRequest",
     "FetchRepositoryHistoryResponse",
     "FileSearchResult",
+    "FilesystemEntryMetadata",
     "Folder",
     "GetCompilationResultRequest",
     "GetConfigRequest",
@@ -279,4 +294,5 @@ __all__ = (
     "Workspace",
     "WriteFileRequest",
     "WriteFileResponse",
+    "DirectoryContentsView",
 )

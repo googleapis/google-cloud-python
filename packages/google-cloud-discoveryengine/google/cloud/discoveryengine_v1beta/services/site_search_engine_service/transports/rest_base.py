@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -641,6 +641,10 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                     "method": "get",
                     "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*/siteSearchEngine}/sitemaps:fetch",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/sitemaps:fetch",
+                },
             ]
             return http_options
 
@@ -1019,6 +1023,10 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                 },
                 {
                     "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/assistants/*/agents/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
                 },
                 {
@@ -1040,6 +1048,10 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/evaluations/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/identityMappingStores/*/operations/*}",
                 },
                 {
                     "method": "get",
@@ -1121,6 +1133,10 @@ class _BaseSiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/identityMappingStores/*}/operations",
                 },
                 {
                     "method": "get",

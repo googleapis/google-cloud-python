@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -418,7 +418,8 @@ class DbSystemOptions(proto.Message):
             STORAGE_MANAGEMENT_UNSPECIFIED (0):
                 The storage management is unspecified.
             ASM (1):
-                Automatic storage management.
+                Automatic storage management. This option is
+                not supported. Only LVM is supported.
             LVM (2):
                 Logical Volume management.
         """
@@ -630,6 +631,10 @@ class ListDbSystemsResponse(proto.Message):
         next_page_token (str):
             A token identifying a page of results the
             server should return.
+        unreachable (MutableSequence[str]):
+            Unreachable locations when listing resources
+            across all locations using wildcard location
+            '-'.
     """
 
     @property
@@ -644,6 +649,10 @@ class ListDbSystemsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

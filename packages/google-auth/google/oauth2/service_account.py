@@ -77,6 +77,7 @@ from typing import Optional, TYPE_CHECKING
 
 
 from google.auth import _helpers
+from google.auth import _regional_access_boundary_utils
 from google.auth import _service_account_info
 from google.auth import credentials
 from google.auth import exceptions
@@ -513,15 +514,19 @@ class Credentials(
 
         Returns:
             Optional[str]: The URL for the Regional Access Boundary lookup endpoint, or None
-                 if the service account email is missing.
+                 if the service account email is missing. Returns None if the subject is populated.
         """
+        if self._subject:
+            # RAB does not apply to Workspace User Accounts via Domain-wide Delegation.
+            return None
+
         if not self.service_account_email:
             _LOGGER.error(
                 "Service account email is required to build the Regional Access Boundary lookup URL for service account credentials."
             )
             return None
-        return iam._SERVICE_ACCOUNT_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
-            service_account_email=self._service_account_email,
+        return _regional_access_boundary_utils.get_service_account_rab_endpoint(
+            self._service_account_email
         )
 
     @_helpers.copy_docstring(credentials.Signing)

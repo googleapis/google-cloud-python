@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -112,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1312,7 +1322,7 @@ def test_delete_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_rest_unset_required_fields():
@@ -1510,7 +1520,7 @@ def test_delete_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_unary_rest_unset_required_fields():
@@ -1653,6 +1663,8 @@ def test_get_rest_required_fields(request_type=compute.GetGlobalForwardingRuleRe
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("view",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -1700,7 +1712,7 @@ def test_get_rest_required_fields(request_type=compute.GetGlobalForwardingRuleRe
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rest_unset_required_fields():
@@ -1710,7 +1722,7 @@ def test_get_rest_unset_required_fields():
 
     unset_fields = transport.get._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(())
+        set(("view",))
         & set(
             (
                 "forwardingRule",
@@ -1895,7 +1907,7 @@ def test_insert_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_rest_unset_required_fields():
@@ -2094,7 +2106,7 @@ def test_insert_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_unary_rest_unset_required_fields():
@@ -2296,7 +2308,7 @@ def test_list_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_rest_unset_required_fields():
@@ -2429,6 +2441,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.ForwardingRule) for i in results)
@@ -2557,7 +2572,7 @@ def test_patch_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_rest_unset_required_fields():
@@ -2763,7 +2778,7 @@ def test_patch_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_unary_rest_unset_required_fields():
@@ -2967,7 +2982,7 @@ def test_set_labels_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_labels_rest_unset_required_fields():
@@ -3171,7 +3186,7 @@ def test_set_labels_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_labels_unary_rest_unset_required_fields():
@@ -3377,7 +3392,7 @@ def test_set_target_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_target_rest_unset_required_fields():
@@ -3579,7 +3594,7 @@ def test_set_target_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_target_unary_rest_unset_required_fields():
@@ -3779,7 +3794,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -4165,13 +4180,16 @@ def test_get_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = compute.ForwardingRule(
             I_p_address="I_p_address_value",
+            I_p_addresses=["I_p_addresses_value"],
             I_p_protocol="I_p_protocol_value",
             all_ports=True,
             allow_global_access=True,
             allow_psc_global_access=True,
             allow_psc_packet_injection=True,
+            availability_group="availability_group_value",
             backend_service="backend_service_value",
             base_forwarding_rule="base_forwarding_rule_value",
+            child_forwarding_rules=["child_forwarding_rules_value"],
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             external_managed_backend_bucket_migration_state="external_managed_backend_bucket_migration_state_value",
@@ -4188,6 +4206,7 @@ def test_get_rest_call_success(request_type):
             network="network_value",
             network_tier="network_tier_value",
             no_automate_dns_zone=True,
+            parent_forwarding_rule="parent_forwarding_rule_value",
             port_range="port_range_value",
             ports=["ports_value"],
             psc_connection_id=1793,
@@ -4217,13 +4236,16 @@ def test_get_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.ForwardingRule)
     assert response.I_p_address == "I_p_address_value"
+    assert response.I_p_addresses == ["I_p_addresses_value"]
     assert response.I_p_protocol == "I_p_protocol_value"
     assert response.all_ports is True
     assert response.allow_global_access is True
     assert response.allow_psc_global_access is True
     assert response.allow_psc_packet_injection is True
+    assert response.availability_group == "availability_group_value"
     assert response.backend_service == "backend_service_value"
     assert response.base_forwarding_rule == "base_forwarding_rule_value"
+    assert response.child_forwarding_rules == ["child_forwarding_rules_value"]
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert (
@@ -4247,6 +4269,7 @@ def test_get_rest_call_success(request_type):
     assert response.network == "network_value"
     assert response.network_tier == "network_tier_value"
     assert response.no_automate_dns_zone is True
+    assert response.parent_forwarding_rule == "parent_forwarding_rule_value"
     assert response.port_range == "port_range_value"
     assert response.ports == ["ports_value"]
     assert response.psc_connection_id == 1793
@@ -4367,13 +4390,20 @@ def test_insert_rest_call_success(request_type):
     request_init = {"project": "sample1"}
     request_init["forwarding_rule_resource"] = {
         "I_p_address": "I_p_address_value",
+        "I_p_addresses": ["I_p_addresses_value1", "I_p_addresses_value2"],
         "I_p_protocol": "I_p_protocol_value",
         "all_ports": True,
         "allow_global_access": True,
         "allow_psc_global_access": True,
         "allow_psc_packet_injection": True,
+        "attached_extensions": [{"reference": "reference_value"}],
+        "availability_group": "availability_group_value",
         "backend_service": "backend_service_value",
         "base_forwarding_rule": "base_forwarding_rule_value",
+        "child_forwarding_rules": [
+            "child_forwarding_rules_value1",
+            "child_forwarding_rules_value2",
+        ],
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "external_managed_backend_bucket_migration_state": "external_managed_backend_bucket_migration_state_value",
@@ -4397,6 +4427,7 @@ def test_insert_rest_call_success(request_type):
         "network": "network_value",
         "network_tier": "network_tier_value",
         "no_automate_dns_zone": True,
+        "parent_forwarding_rule": "parent_forwarding_rule_value",
         "port_range": "port_range_value",
         "ports": ["ports_value1", "ports_value2"],
         "psc_connection_id": 1793,
@@ -4794,13 +4825,20 @@ def test_patch_rest_call_success(request_type):
     request_init = {"project": "sample1", "forwarding_rule": "sample2"}
     request_init["forwarding_rule_resource"] = {
         "I_p_address": "I_p_address_value",
+        "I_p_addresses": ["I_p_addresses_value1", "I_p_addresses_value2"],
         "I_p_protocol": "I_p_protocol_value",
         "all_ports": True,
         "allow_global_access": True,
         "allow_psc_global_access": True,
         "allow_psc_packet_injection": True,
+        "attached_extensions": [{"reference": "reference_value"}],
+        "availability_group": "availability_group_value",
         "backend_service": "backend_service_value",
         "base_forwarding_rule": "base_forwarding_rule_value",
+        "child_forwarding_rules": [
+            "child_forwarding_rules_value1",
+            "child_forwarding_rules_value2",
+        ],
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "external_managed_backend_bucket_migration_state": "external_managed_backend_bucket_migration_state_value",
@@ -4824,6 +4862,7 @@ def test_patch_rest_call_success(request_type):
         "network": "network_value",
         "network_tier": "network_tier_value",
         "no_automate_dns_zone": True,
+        "parent_forwarding_rule": "parent_forwarding_rule_value",
         "port_range": "port_range_value",
         "ports": ["ports_value1", "ports_value2"],
         "psc_connection_id": 1793,
@@ -5780,7 +5819,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteGlobalForwardingRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -5800,7 +5838,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetGlobalForwardingRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -5820,7 +5857,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertGlobalForwardingRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -5840,7 +5876,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListGlobalForwardingRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5860,7 +5895,6 @@ def test_patch_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchGlobalForwardingRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -5880,7 +5914,6 @@ def test_set_labels_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetLabelsGlobalForwardingRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -5900,7 +5933,6 @@ def test_set_target_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetTargetGlobalForwardingRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -5922,7 +5954,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsGlobalForwardingRuleRequest()
-
         assert args[0] == request_msg
 
 

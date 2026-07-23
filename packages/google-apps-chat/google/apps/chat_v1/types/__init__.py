@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,6 +35,19 @@ from .attachment import (
     GetAttachmentRequest,
     UploadAttachmentRequest,
     UploadAttachmentResponse,
+)
+from .audience import (
+    Audience,
+)
+from .availability import (
+    Availability,
+    CustomStatus,
+    DoNotDisturbMetadata,
+    GetAvailabilityRequest,
+    MarkAsActiveRequest,
+    MarkAsAwayRequest,
+    MarkAsDoNotDisturbRequest,
+    UpdateAvailabilityRequest,
 )
 from .contextual_addon import (
     ContextualAddOnMarkup,
@@ -85,6 +98,7 @@ from .message import (
     ActionResponse,
     AttachedGif,
     CardWithId,
+    CreateMessageNotificationOptions,
     CreateMessageRequest,
     DeleteMessageRequest,
     Dialog,
@@ -197,6 +211,15 @@ __all__ = (
     "GetAttachmentRequest",
     "UploadAttachmentRequest",
     "UploadAttachmentResponse",
+    "Audience",
+    "Availability",
+    "CustomStatus",
+    "DoNotDisturbMetadata",
+    "GetAvailabilityRequest",
+    "MarkAsActiveRequest",
+    "MarkAsAwayRequest",
+    "MarkAsDoNotDisturbRequest",
+    "UpdateAvailabilityRequest",
     "ContextualAddOnMarkup",
     "DeletionMetadata",
     "MembershipBatchCreatedEventData",
@@ -231,6 +254,7 @@ __all__ = (
     "ActionResponse",
     "AttachedGif",
     "CardWithId",
+    "CreateMessageNotificationOptions",
     "CreateMessageRequest",
     "DeleteMessageRequest",
     "Dialog",

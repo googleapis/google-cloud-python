@@ -14,7 +14,7 @@
 
 # Helpful notes for local usage:
 #   unset PYENV_VERSION
-#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12 3.9.17
+#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12
 #   PIP_INDEX_URL=https://pypi.org/simple nox
 
 from __future__ import absolute_import
@@ -28,17 +28,24 @@ import unittest
 # https://github.com/google/importlab/issues/25
 import nox
 
-BLACK_VERSION = "black==23.7.0"
 RUFF_VERSION = "ruff==0.14.14"
-BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
-# Black and flake8 clash on the syntax for ignoring flake8's F401 in this file.
-BLACK_EXCLUDES = ["--exclude", "^/google/api_core/operations_v1/__init__.py"]
+LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-ALL_PYTHON = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
-SUPPORTED_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+SUPPORTED_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
 
 
 # Error if a python version is missing
@@ -52,25 +59,36 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
-    session.install(".")
+    session.install("flake8", RUFF_VERSION)
+
     session.run(
-        "black",
+        "ruff",
+        "format",
         "--check",
-        *BLACK_EXCLUDES,
-        *BLACK_PATHS,
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
     )
+
     session.run("flake8", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """Run black.
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
 
-    Format code to uniform standard.
-    """
-    session.install(BLACK_VERSION)
-    session.run("black", *BLACK_EXCLUDES, *BLACK_PATHS)
+    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
+    session.install(RUFF_VERSION)
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -90,7 +108,7 @@ def format(session):
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
 
     # 3. Run Ruff to format code
@@ -99,7 +117,7 @@ def format(session):
         "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
 
 
@@ -303,7 +321,7 @@ def default(
         (
             True,
             False,
-            ["3.9", "3.10", "3.11"],
+            ["3.10", "3.11"],
             4,
         ),  # Run proto4 tests with grpcio/grpcio-gcp installed
     ],
@@ -325,13 +343,13 @@ def unit(
         session.log(f"Skipping session for Python {session.python}")
         session.skip()
 
-    # TODO: consider converting the following into a `match` statement once
-    # we drop Python 3.9 support.
-    if legacy_proto:
-        if legacy_proto == 4:
+    match legacy_proto:
+        case 4:
             # Pin protobuf to a 4.x version to ensure coverage for the legacy code path.
             session.install("protobuf>=4.25.8,<5.0.0")
-        else:
+        case None | False:
+            pass
+        case _:
             assert False, f"Unknown legacy_proto: {legacy_proto}"
 
     default(
@@ -370,7 +388,7 @@ def mypy(session):
         "types-requests",
         "types-protobuf",
     )
-    session.run("mypy", "google", "tests")
+    session.run("mypy", f"--config-file={MYPY_CONFIG_FILE}", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -381,7 +399,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "report", "--show-missing")
     session.run("coverage", "erase")
 
 

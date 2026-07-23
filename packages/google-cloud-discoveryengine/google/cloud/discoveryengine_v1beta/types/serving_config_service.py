@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,12 +27,47 @@ from google.cloud.discoveryengine_v1beta.types import (
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
     manifest={
+        "CreateServingConfigRequest",
         "UpdateServingConfigRequest",
+        "DeleteServingConfigRequest",
         "GetServingConfigRequest",
         "ListServingConfigsRequest",
         "ListServingConfigsResponse",
     },
 )
+
+
+class CreateServingConfigRequest(proto.Message):
+    r"""Request for CreateServingConfig method.
+
+    Attributes:
+        parent (str):
+            Required. Full resource name of parent. Format:
+            ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}``
+        serving_config (google.cloud.discoveryengine_v1beta.types.ServingConfig):
+            Required. The ServingConfig to create.
+        serving_config_id (str):
+            Required. The ID to use for the ServingConfig, which will
+            become the final component of the ServingConfig's resource
+            name.
+
+            This value should be 4-63 characters, and valid characters
+            are /[a-zA-Z0-9][a-zA-Z0-9\_-]+/.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    serving_config: gcd_serving_config.ServingConfig = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_serving_config.ServingConfig,
+    )
+    serving_config_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class UpdateServingConfigRequest(proto.Message):
@@ -60,6 +95,22 @@ class UpdateServingConfigRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteServingConfigRequest(proto.Message):
+    r"""Request for DeleteServingConfig method.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the ServingConfig to delete.
+            Format:
+            ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

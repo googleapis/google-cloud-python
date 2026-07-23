@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastore-v2.25.0...google-cloud-datastore-v2.26.0) (2026-07-07)
+
+
+### Features
+
+* update googleapis and regenerate ([#17635](https://github.com/googleapis/google-cloud-python/issues/17635)) ([9638879](https://github.com/googleapis/google-cloud-python/commit/96388796440b226440f885c04ce565782b1d9190))
+
+## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastore-v2.24.0...google-cloud-datastore-v2.25.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-d packages (#17092) ([d49a2b9412b4ee9105125db36104a3e18344e0ad](https://github.com/googleapis/google-cloud-python/commit/d49a2b9412b4ee9105125db36104a3e18344e0ad))
+
 ## [2.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastore-v2.23.0...google-cloud-datastore-v2.24.0) (2026-03-26)
 
 

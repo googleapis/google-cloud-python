@@ -118,21 +118,21 @@ class TestDatabase(Database):
                     transport=transport,
                 )
                 return self._spanner_api
-            if self._instance.experimental_host is not None:
+            if getattr(client, "instance_type", None) == "omni":
                 self._x_goog_request_id_interceptor = XGoogRequestIDHeaderInterceptor()
                 self._interceptors.append(self._x_goog_request_id_interceptor)
 
                 from google.cloud.spanner_v1._async._helpers import (
-                    _create_experimental_host_transport as _create_experimental_host_transport_async,
+                    _create_spanner_omni_transport as _create_spanner_omni_transport_async,
                 )
                 from google.cloud.spanner_v1._helpers import (
-                    _create_experimental_host_transport as _create_experimental_host_transport_sync,
+                    _create_spanner_omni_transport as _create_spanner_omni_transport_sync,
                 )
 
                 if CrossSync.is_async:
-                    transport = _create_experimental_host_transport_async(
+                    transport = _create_spanner_omni_transport_async(
                         SpannerGrpcTransport,
-                        self._instance.experimental_host,
+                        client._host,
                         client._use_plain_text,
                         client._ca_certificate,
                         client._client_certificate,
@@ -140,9 +140,9 @@ class TestDatabase(Database):
                         self._interceptors,
                     )
                 else:
-                    transport = _create_experimental_host_transport_sync(
+                    transport = _create_spanner_omni_transport_sync(
                         SpannerGrpcTransport,
-                        self._instance.experimental_host,
+                        client._host,
                         client._use_plain_text,
                         client._ca_certificate,
                         client._client_certificate,

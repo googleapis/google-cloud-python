@@ -19,6 +19,7 @@ import datetime
 import decimal
 import logging
 import math
+import operator
 import threading
 import time
 import uuid
@@ -26,7 +27,6 @@ from contextlib import contextmanager
 
 from google.api_core import datetime_helpers
 from google.api_core.exceptions import Aborted
-from google.cloud._helpers import _date_from_iso8601_date
 from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 from google.protobuf.message import DecodeError, Message
 from google.protobuf.struct_pb2 import ListValue, Value
@@ -465,6 +465,12 @@ def _parse_value_pb(value_pb, field_type, field_name, column_info=None):
     return _parse_nullable(value_pb, decoder)
 
 
+_date_fromisoformat = datetime.date.fromisoformat
+_Decimal = decimal.Decimal
+_json_from_str = JsonObject.from_str
+_uuid_UUID = uuid.UUID
+
+
 def _get_type_decoder(field_type, field_name, column_info=None):
     """Returns a function that converts a Value protobuf to cell data.
 
@@ -489,28 +495,30 @@ def _get_type_decoder(field_type, field_name, column_info=None):
     """
 
     type_code = field_type.code
+    # Note: STRING and BOOL use operator.attrgetter because direct attribute extraction
+    # is faster in Python. Other types require type transformation, so they use lambdas.
     if type_code == TypeCode.STRING:
-        return _parse_string
+        return operator.attrgetter("string_value")
     elif type_code == TypeCode.BYTES:
-        return _parse_bytes
+        return lambda value_pb: value_pb.string_value.encode("utf8")
     elif type_code == TypeCode.BOOL:
-        return _parse_bool
+        return operator.attrgetter("bool_value")
     elif type_code == TypeCode.INT64:
-        return _parse_int64
+        return lambda value_pb: int(value_pb.string_value)
     elif type_code == TypeCode.FLOAT64:
         return _parse_float
     elif type_code == TypeCode.FLOAT32:
         return _parse_float
     elif type_code == TypeCode.DATE:
-        return _parse_date
+        return lambda value_pb: _date_fromisoformat(value_pb.string_value)
     elif type_code == TypeCode.TIMESTAMP:
         return _parse_timestamp
     elif type_code == TypeCode.NUMERIC:
-        return _parse_numeric
+        return lambda value_pb: _Decimal(value_pb.string_value)
     elif type_code == TypeCode.JSON:
-        return _parse_json
+        return lambda value_pb: _json_from_str(value_pb.string_value)
     elif type_code == TypeCode.UUID:
-        return _parse_uuid
+        return lambda value_pb: _uuid_UUID(value_pb.string_value)
     elif type_code == TypeCode.PROTO:
         return lambda value_pb: _parse_proto(value_pb, column_info, field_name)
     elif type_code == TypeCode.ENUM:
@@ -553,48 +561,81 @@ def _parse_list_value_pbs(rows, row_type):
     return result
 
 
-def _parse_string(value_pb) -> str:
-    return value_pb.string_value
-
-
-def _parse_bytes(value_pb):
-    return value_pb.string_value.encode("utf8")
-
-
-def _parse_bool(value_pb) -> bool:
-    return value_pb.bool_value
-
-
-def _parse_int64(value_pb) -> int:
-    return int(value_pb.string_value)
-
-
 def _parse_float(value_pb) -> float:
-    if value_pb.HasField("string_value"):
-        return float(value_pb.string_value)
-    else:
-        return value_pb.number_value
+    # Note: Storing val = value_pb.string_value and doing a truthiness check is faster
+    # than calling value_pb.HasField("string_value") because it avoids the C-extension
+    # method lookup/call overhead and accesses the attribute only once.
+    val = value_pb.string_value
+    return float(val) if val else value_pb.number_value
 
 
-def _parse_date(value_pb):
-    return _date_from_iso8601_date(value_pb.string_value)
+_POWERS_OF_10 = (
+    1,
+    10,
+    100,
+    1000,
+    10000,
+    100000,
+    1000000,
+    10000000,
+    100000000,
+    1000000000,
+)
 
 
 def _parse_timestamp(value_pb):
-    DatetimeWithNanoseconds = datetime_helpers.DatetimeWithNanoseconds
-    return DatetimeWithNanoseconds.from_rfc3339(value_pb.string_value)
+    val = value_pb.string_value
+    try:
+        if len(val) < 20 or val[10] != "T":
+            raise ValueError()
+        no_fraction = val[:19]
+        bare = datetime.datetime.fromisoformat(no_fraction)
+        if val[19] == ".":
+            if val.endswith("Z"):
+                offset = "Z"
+                fraction = val[20:-1]
+            elif val[-6] in ("+", "-"):
+                offset = val[-6:]
+                fraction = val[20:-6]
+            else:
+                raise ValueError()
+            if not fraction or len(fraction) > 9 or not fraction.isdigit():
+                raise ValueError()
+            scale = 9 - len(fraction)
+            nanos = int(fraction) * _POWERS_OF_10[scale]
+        else:
+            nanos = 0
+            if val.endswith("Z"):
+                offset = "Z"
+            elif val[-6] in ("+", "-"):
+                offset = val[-6:]
+            else:
+                raise ValueError()
 
+        if offset != "Z":
+            sign = offset[0]
+            hours = int(offset[1:3])
+            minutes = int(offset[4:6])
+            if offset[3] != ":":
+                raise ValueError()
+            delta = datetime.timedelta(hours=hours, minutes=minutes)
+            if sign == "-":
+                delta = -delta
+            tzinfo = datetime.timezone(delta)
+            bare = bare.replace(tzinfo=tzinfo).astimezone(datetime.timezone.utc)
 
-def _parse_numeric(value_pb):
-    return decimal.Decimal(value_pb.string_value)
-
-
-def _parse_json(value_pb):
-    return JsonObject.from_str(value_pb.string_value)
-
-
-def _parse_uuid(value_pb):
-    return uuid.UUID(value_pb.string_value)
+        return datetime_helpers.DatetimeWithNanoseconds(
+            bare.year,
+            bare.month,
+            bare.day,
+            bare.hour,
+            bare.minute,
+            bare.second,
+            nanosecond=nanos,
+            tzinfo=datetime.timezone.utc,
+        )
+    except (IndexError, ValueError) as e:
+        raise ValueError("Timestamp: {} does not match pattern".format(val)) from e
 
 
 def _parse_proto(value_pb, column_info, field_name):
@@ -977,21 +1018,21 @@ def _merge_Transaction_Options(
     return TransactionOptions(merged_pb)
 
 
-def _create_experimental_host_transport(
+def _create_spanner_omni_transport(
     transport_factory,
-    experimental_host,
+    host,
     use_plain_text,
     ca_certificate,
     client_certificate,
     client_key,
     interceptors=None,
 ):
-    """Creates an experimental host transport for Spanner.
+    """Creates a Spanner Omni transport.
 
     Args:
         transport_factory (type): The transport class to instantiate (e.g.
             `SpannerGrpcTransport`).
-        experimental_host (str): The endpoint for the experimental host.
+        host (str): The endpoint for Spanner Omni.
         use_plain_text (bool): Whether to use a plain text (insecure) connection.
         ca_certificate (str): Path to the CA certificate file for TLS.
         client_certificate (str): Path to the client certificate file for mTLS.
@@ -1009,7 +1050,7 @@ def _create_experimental_host_transport(
 
     channel = None
     if use_plain_text:
-        channel = grpc.insecure_channel(target=experimental_host)
+        channel = grpc.insecure_channel(target=host)
     elif ca_certificate:
         with open(ca_certificate, "rb") as f:
             ca_cert = f.read()
@@ -1029,11 +1070,39 @@ def _create_experimental_host_transport(
             )
         else:
             ssl_creds = grpc.ssl_channel_credentials(root_certificates=ca_cert)
-        channel = grpc.secure_channel(experimental_host, ssl_creds)
+        channel = grpc.secure_channel(host, ssl_creds)
     else:
         raise ValueError(
-            "TLS/mTLS connection requires ca_certificate to be set for experimental_host"
+            "TLS/mTLS connection requires ca_certificate to be set for Spanner Omni"
         )
     if interceptors is not None:
         channel = grpc.intercept_channel(channel, *interceptors)
     return transport_factory(channel=channel, credentials=AnonymousCredentials())
+
+
+def _create_experimental_host_transport(
+    transport_factory,
+    experimental_host,
+    use_plain_text,
+    ca_certificate,
+    client_certificate,
+    client_key,
+    interceptors=None,
+):
+    """Deprecated alias for _create_spanner_omni_transport."""
+    import warnings
+
+    warnings.warn(
+        "_create_experimental_host_transport is deprecated. Please use _create_spanner_omni_transport instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    return _create_spanner_omni_transport(
+        transport_factory,
+        experimental_host,
+        use_plain_text,
+        ca_certificate,
+        client_certificate,
+        client_key,
+        interceptors=interceptors,
+    )

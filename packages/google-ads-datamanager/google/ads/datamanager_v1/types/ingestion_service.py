@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.ads.datamanager_v1.types import audience, destination, event
+from google.ads.datamanager_v1.types import ad_event, audience, destination, event
 from google.ads.datamanager_v1.types import consent as gad_consent
 from google.ads.datamanager_v1.types import encryption_info as gad_encryption_info
 from google.ads.datamanager_v1.types import (
@@ -37,6 +37,8 @@ __protobuf__ = proto.module(
         "RemoveAudienceMembersResponse",
         "IngestEventsRequest",
         "IngestEventsResponse",
+        "IngestAdEventsRequest",
+        "IngestAdEventsResponse",
         "RetrieveRequestStatusRequest",
         "RetrieveRequestStatusResponse",
     },
@@ -311,6 +313,41 @@ class IngestEventsResponse(proto.Message):
         proto.STRING,
         number=1,
     )
+
+
+class IngestAdEventsRequest(proto.Message):
+    r"""Request to upload ad events.
+
+    Attributes:
+        ad_events (MutableSequence[google.ads.datamanager_v1.types.AdEvent]):
+            Required. Required (at least 1). A list of ad
+            events.
+        encryption_info (google.ads.datamanager_v1.types.EncryptionInfo):
+            Optional. Information about encryption keys
+            which are used to encrypt the data.
+        validate_only (bool):
+            Optional. If true, the request is validated,
+            but not executed.
+    """
+
+    ad_events: MutableSequence[ad_event.AdEvent] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=ad_event.AdEvent,
+    )
+    encryption_info: gad_encryption_info.EncryptionInfo = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gad_encryption_info.EncryptionInfo,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class IngestAdEventsResponse(proto.Message):
+    r"""Response from an ad event ingestion operation."""
 
 
 class RetrieveRequestStatusRequest(proto.Message):

@@ -18,6 +18,8 @@ from __future__ import absolute_import
 
 import configparser
 import os
+import pathlib
+import re
 import shutil
 
 import nox
@@ -77,9 +79,51 @@ UPGRADE_CODE = """def upgrade():
     """
 
 
-BLACK_VERSION = "black==23.7.0"
-ISORT_VERSION = "isort==5.11.0"
-BLACK_PATHS = ["google", "tests", "noxfile.py", "setup.py", "samples"]
+RUFF_VERSION = "ruff==0.14.14"
+LINT_PATHS = ["google", "tests", "noxfile.py", "setup.py", "samples"]
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+UNIT_TEST_STANDARD_DEPENDENCIES = [
+    "mock",
+    "pytest",
+]
+
+UNIT_TEST_EXTERNAL_DEPENDENCIES = [
+    "setuptools",
+    "opentelemetry-api",
+    "opentelemetry-sdk",
+    "opentelemetry-instrumentation",
+]
+
+UNIT_TEST_DEPENDENCIES = [
+    "sqlalchemy>=2.0",
+]
+
+SYSTEM_TEST_STANDARD_DEPENDENCIES = [
+    "mock",
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+]
+
+SYSTEM_TEST_EXTERNAL_DEPENDENCIES = [
+    "opentelemetry-api",
+    "opentelemetry-sdk",
+    "opentelemetry-instrumentation",
+]
+
+MIGRATION_TEST_DEPENDENCIES = [
+    "pytest",
+    "alembic",
+]
+
+SQLALCHEMY_14_DEPENDENCIES = [
+    "sqlalchemy>=1.4,<2.0",
+]
+
+SQLALCHEMY_20_DEPENDENCIES = [
+    "sqlalchemy>=2.0",
+]
+
 UNIT_TEST_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.12"]
@@ -105,34 +149,22 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
+    session.install("flake8", RUFF_VERSION)
+
+    # 2. Check formatting
     session.run(
-        "black",
+        "ruff",
+        "format",
         "--check",
-        *BLACK_PATHS,
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
     )
     session.run(
         "flake8",
         "google",
         "tests",
         "--max-line-length=88",
-    )
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20)
-def blacken(session):
-    """Run black.
-
-    Format code to uniform standard.
-
-    This currently uses Python 3.6 due to the automated Kokoro run of synthtool.
-    That run uses an image that doesn't have 3.6 installed. Before updating this
-    check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
-    """
-    session.install(BLACK_VERSION)
-    session.run(
-        "black",
-        *BLACK_PATHS,
     )
 
 
@@ -158,15 +190,14 @@ def compliance_test_14(session):
             "Credentials or emulator host must be set via environment variable"
         )
 
-    session.install(
-        "pytest",
-        "pytest-cov",
-        "pytest-asyncio",
-    )
-
-    session.install("mock")
+    session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES)
     session.install(".[tracing]")
-    session.run("pip", "install", "sqlalchemy>=1.4,<2.0", "--force-reinstall")
+    session.run(
+        "pip",
+        "install",
+        *SQLALCHEMY_14_DEPENDENCIES,
+        "--force-reinstall",
+    )
     session.run("python", "create_test_database.py")
     session.run(
         "py.test",
@@ -200,17 +231,11 @@ def compliance_test_20(session):
             "Credentials or emulator host must be set via environment variable"
         )
 
-    session.install(
-        "pytest",
-        "pytest-cov",
-        "pytest-asyncio",
-    )
-
-    session.install("mock")
+    session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES)
     session.install("-e", ".", "--force-reinstall")
     session.run("python", "create_test_database.py")
 
-    session.install("sqlalchemy>=2.0")
+    session.install(*SQLALCHEMY_20_DEPENDENCIES)
 
     session.run(
         "py.test",
@@ -230,11 +255,12 @@ def compliance_test_20(session):
 def mockserver(session):
     """Run mockserver tests."""
     # Run SQLAlchemy dialect tests using an in-mem mocked Spanner server.
-    session.install("setuptools")
-    session.install("pytest")
-    session.install("mock")
+    session.install(
+        *UNIT_TEST_STANDARD_DEPENDENCIES,
+        *UNIT_TEST_EXTERNAL_DEPENDENCIES,
+        *UNIT_TEST_DEPENDENCIES,
+    )
     session.install(".")
-    session.install("sqlalchemy>=2.0")
     session.run(
         "python",
         "create_test_config.py",
@@ -257,7 +283,12 @@ def mockserver(session):
 @nox.session(python=SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS[0])
 def migration_test(session):
     """Test migrations with SQLAlchemy v1.4 and Alembic"""
-    session.run("pip", "install", "sqlalchemy>=1.4,<2.0", "--force-reinstall")
+    session.run(
+        "pip",
+        "install",
+        *SQLALCHEMY_14_DEPENDENCIES,
+        "--force-reinstall",
+    )
     _migration_test(session)
 
 
@@ -268,9 +299,8 @@ def _migration_test(session):
     import os
     import shutil
 
-    session.install("pytest")
+    session.install(*MIGRATION_TEST_DEPENDENCIES)
     session.install(".")
-    session.install("alembic")
 
     session.run("python", "create_test_database.py")
 
@@ -332,13 +362,12 @@ def unit(session, test_type):
 
     if test_type == "unit":
         # Run SQLAlchemy dialect compliance test suite with OpenTelemetry.
-        session.install("setuptools")
-        session.install("pytest")
-        session.install("mock")
+        session.install(
+            *UNIT_TEST_STANDARD_DEPENDENCIES,
+            *UNIT_TEST_EXTERNAL_DEPENDENCIES,
+            *UNIT_TEST_DEPENDENCIES,
+        )
         session.install(".")
-        session.install("opentelemetry-api")
-        session.install("opentelemetry-sdk")
-        session.install("opentelemetry-instrumentation")
         session.run("py.test", "--quiet", os.path.join("tests/unit"), *session.posargs)
         return
 
@@ -380,32 +409,34 @@ def system(session, test_type):
             f"SQLAlchemy 2.0-based tests configured to run exclusively on {DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20}"
         )
 
-    if test_type == "system":
-        session.install("pytest", "pytest-cov", "pytest-asyncio")
-        session.install("mock")
-        session.install(".[tracing]")
-        session.install("opentelemetry-api")
-        session.install("opentelemetry-sdk")
-        session.install("opentelemetry-instrumentation")
-        session.run("python", "create_test_database.py")
-        session.install("sqlalchemy>=2.0")
-        session.run(
-            "py.test", "--quiet", os.path.join("tests", "system"), *session.posargs
-        )
-        session.run("python", "drop_test_database.py")
-    elif test_type == "compliance_14":
-        compliance_test_14(session)
-    elif test_type == "compliance_20":
-        compliance_test_20(session)
-    elif test_type == "migration_14":
-        migration_test(session)
-    elif test_type == "migration_20":
-        _migration_test(session)
+    try:
+        if test_type == "system":
+            session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES)
+            session.install(".[tracing]")
+            session.install(*SYSTEM_TEST_EXTERNAL_DEPENDENCIES)
+            session.run("python", "create_test_database.py")
+            session.install(*SQLALCHEMY_20_DEPENDENCIES)
+            session.run(
+                "py.test", "--quiet", os.path.join("tests", "system"), *session.posargs
+            )
+        elif test_type == "compliance_14":
+            compliance_test_14(session)
+        elif test_type == "compliance_20":
+            compliance_test_20(session)
+        elif test_type == "migration_14":
+            migration_test(session)
+        elif test_type == "migration_20":
+            _migration_test(session)
+    finally:
+        if os.path.exists("test.cfg"):
+            session.run("python", "drop_test_database.py", success_codes=[0, 1])
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run the type checker."""
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17047):
+    # Add typehints to this package.
     session.skip("mypy tests are not yet supported")
 
 
@@ -416,13 +447,12 @@ def mypy(session):
 )
 def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source"""
-    session.install("setuptools")
-    session.install("pytest")
-    session.install("mock")
+    session.install(
+        *UNIT_TEST_STANDARD_DEPENDENCIES,
+        *UNIT_TEST_EXTERNAL_DEPENDENCIES,
+        *UNIT_TEST_DEPENDENCIES,
+    )
     session.install(".")
-    session.install("opentelemetry-api")
-    session.install("opentelemetry-sdk")
-    session.install("opentelemetry-instrumentation")
 
     core_dependencies_from_source = [
         "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
@@ -449,28 +479,128 @@ def core_deps_from_source(session, protobuf_implementation):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def prerelease_deps(session):
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def prerelease_deps(session, protobuf_implementation):
     """Run all tests with prerelease versions of dependencies installed."""
-    session.skip("prerelease deps tests are not yet supported")
+    session.install(
+        *UNIT_TEST_STANDARD_DEPENDENCIES,
+        *UNIT_TEST_EXTERNAL_DEPENDENCIES,
+        *UNIT_TEST_DEPENDENCIES,
+    )
+    session.install(".")
+
+    prerel_deps = [
+        "googleapis-common-protos",
+        "google-api-core",
+        "google-auth",
+        "grpc-google-iam-v1",
+        "grpcio>=1.75.1" if session.python >= "3.12" else "grpcio<=1.62.2",
+        "grpcio-status",
+        "protobuf",
+        "proto-plus",
+        "google-cloud-spanner",
+    ]
+
+    deps_dir = CURRENT_DIRECTORY.parent
+    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
+        deps_dir = deps_dir.parent
+
+    parsed_deps = {
+        dep: re.match(r"^([a-zA-Z0-9_-]+)", dep).group(1) for dep in prerel_deps
+    }
+
+    local_paths = []
+    pypi_deps = []
+
+    for dep, pkg_name in parsed_deps.items():
+        if (deps_dir / pkg_name).exists():
+            local_paths.append(str(deps_dir / pkg_name))
+        else:
+            pypi_deps.append(dep)
+
+    if local_paths:
+        session.install(*local_paths, "--no-deps", "--ignore-installed")
+    if pypi_deps:
+        session.install(*pypi_deps, "--pre", "--no-deps", "--ignore-installed")
+
+    package_namespaces = {
+        "google-api-core": "google.api_core",
+        "google-auth": "google.auth",
+        "grpcio": "grpc",
+        "protobuf": "google.protobuf",
+        "proto-plus": "proto",
+        "google-cloud-spanner": "google.cloud.spanner",
+    }
+
+    for dep, pkg_name in parsed_deps.items():
+        print(f"Installed {dep}")
+        version_namespace = package_namespaces.get(pkg_name)
+
+        if version_namespace:
+            session.run(
+                "python",
+                "-c",
+                f"import {version_namespace}; print({version_namespace}.__version__)",
+            )
+
+    session.run(
+        "py.test",
+        "--quiet",
+        os.path.join("tests", "unit"),
+        *session.posargs,
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def cover(session):
+    """Run the final coverage report."""
+    session.install("coverage", "pytest-cov")
+    if not os.path.exists(".coverage"):
+        session.skip("No coverage data found to report.")
+    session.run("coverage", "report", "--show-missing", "--fail-under=0")
+    session.run("coverage", "erase")
 
 
 @nox.session(python="3.10")
 def docs(session):
     """Build the docs for this library."""
-    session.skip("docs builds are not yet supported")
+    session.skip("There is no docs directory, thus docs builds do not run")
 
 
 @nox.session(python="3.10")
 def docfx(session):
     """Build the docfx yaml files for this library."""
-    session.skip("docfx builds are not yet supported")
+    session.skip("There is no docs directory, thus docfx builds do not run")
 
 
-@nox.session
-def format(session: nox.sessions.Session) -> None:
-    session.install(BLACK_VERSION, ISORT_VERSION)
-    import os
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def format(session):
+    """Run ruff to sort imports and format code."""
+    session.install(RUFF_VERSION)
 
-    python_files = [path for path in os.listdir(".") if path.endswith(".py")]
-    session.run("isort", "--fss", *python_files)
-    session.run("black", *python_files)
+    # Run Ruff to fix imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
+
+    # Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )

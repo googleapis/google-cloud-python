@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -255,28 +255,6 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
     def parse_agent_path(path: str) -> Dict[str, str]:
         """Parses a agent path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/agent$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def conversation_model_path(
-        project: str,
-        location: str,
-        conversation_model: str,
-    ) -> str:
-        """Returns a fully-qualified conversation_model string."""
-        return "projects/{project}/locations/{location}/conversationModels/{conversation_model}".format(
-            project=project,
-            location=location,
-            conversation_model=conversation_model,
-        )
-
-    @staticmethod
-    def parse_conversation_model_path(path: str) -> Dict[str, str]:
-        """Parses a conversation_model path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/conversationModels/(?P<conversation_model>.+?)$",
-            path,
-        )
         return m.groupdict() if m else {}
 
     @staticmethod

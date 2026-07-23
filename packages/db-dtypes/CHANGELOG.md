@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/db-dtypes/#history
 
+## [1.7.1](https://github.com/googleapis/google-cloud-python/compare/db-dtypes-v1.7.0...db-dtypes-v1.7.1) (2026-07-07)
+
+
+### Bug Fixes
+
+* avoid deprecated unitless operations for NumPy 2.5 compatibility ([#17589](https://github.com/googleapis/google-cloud-python/issues/17589)) ([d0b2abc](https://github.com/googleapis/google-cloud-python/commit/d0b2abc2aef8d95402c026cccbc866d812b819b8))
+
+## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/db-dtypes-v1.6.0...db-dtypes-v1.7.0) (2026-06-02)
+
+
+### Features
+
+* support pandas 3.0 (#17177) ([2086b34d8b3418462c9bc89b96eac779a25a3afd](https://github.com/googleapis/google-cloud-python/commit/2086b34d8b3418462c9bc89b96eac779a25a3afd))
+
+
+### Bug Fixes
+
+* bump pyarrow from 13.0.0 to 14.0.1 in /packages/db-dtypes (#17182) ([49252da0f81c63ff7bc384dc3ddd92608e15f459](https://github.com/googleapis/google-cloud-python/commit/49252da0f81c63ff7bc384dc3ddd92608e15f459))
+* Drop support for Python <= 3.9 (#16966) ([66988617e67e9c923d8bcbd4034505ec9a20968f](https://github.com/googleapis/google-cloud-python/commit/66988617e67e9c923d8bcbd4034505ec9a20968f))
+
 ## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/db-dtypes-v1.5.1...db-dtypes-v1.6.0) (2026-05-06)
 
 

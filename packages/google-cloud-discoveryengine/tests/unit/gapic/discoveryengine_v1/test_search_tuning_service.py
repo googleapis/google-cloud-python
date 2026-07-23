@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -120,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1385,8 +1395,8 @@ def test_search_tuning_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        search_tuning_service.TrainCustomModelRequest,
-        dict,
+        search_tuning_service.TrainCustomModelRequest(),
+        {},
     ],
 )
 def test_train_custom_model(request_type, transport: str = "grpc"):
@@ -1397,7 +1407,7 @@ def test_train_custom_model(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1444,11 +1454,12 @@ def test_train_custom_model_non_empty_request_with_auto_populated_field():
         client.train_custom_model(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == search_tuning_service.TrainCustomModelRequest(
+        request_msg = search_tuning_service.TrainCustomModelRequest(
             data_store="data_store_value",
             model_type="model_type_value",
             model_id="model_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_train_custom_model_use_cached_wrapped_rpc():
@@ -1543,10 +1554,14 @@ async def test_train_custom_model_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_train_custom_model_async(
-    transport: str = "grpc_asyncio",
-    request_type=search_tuning_service.TrainCustomModelRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        search_tuning_service.TrainCustomModelRequest(),
+        {},
+    ],
+)
+async def test_train_custom_model_async(request_type, transport: str = "grpc_asyncio"):
     client = SearchTuningServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1554,7 +1569,7 @@ async def test_train_custom_model_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1574,11 +1589,6 @@ async def test_train_custom_model_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_train_custom_model_async_from_dict():
-    await test_train_custom_model_async(request_type=dict)
 
 
 def test_train_custom_model_field_headers():
@@ -1649,8 +1659,8 @@ async def test_train_custom_model_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        search_tuning_service.ListCustomModelsRequest,
-        dict,
+        search_tuning_service.ListCustomModelsRequest(),
+        {},
     ],
 )
 def test_list_custom_models(request_type, transport: str = "grpc"):
@@ -1661,7 +1671,7 @@ def test_list_custom_models(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1706,9 +1716,10 @@ def test_list_custom_models_non_empty_request_with_auto_populated_field():
         client.list_custom_models(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == search_tuning_service.ListCustomModelsRequest(
+        request_msg = search_tuning_service.ListCustomModelsRequest(
             data_store="data_store_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_custom_models_use_cached_wrapped_rpc():
@@ -1793,10 +1804,14 @@ async def test_list_custom_models_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_custom_models_async(
-    transport: str = "grpc_asyncio",
-    request_type=search_tuning_service.ListCustomModelsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        search_tuning_service.ListCustomModelsRequest(),
+        {},
+    ],
+)
+async def test_list_custom_models_async(request_type, transport: str = "grpc_asyncio"):
     client = SearchTuningServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1804,7 +1819,7 @@ async def test_list_custom_models_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1824,11 +1839,6 @@ async def test_list_custom_models_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, search_tuning_service.ListCustomModelsResponse)
-
-
-@pytest.mark.asyncio
-async def test_list_custom_models_async_from_dict():
-    await test_list_custom_models_async(request_type=dict)
 
 
 def test_list_custom_models_field_headers():
@@ -2010,7 +2020,7 @@ def test_train_custom_model_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_train_custom_model_rest_unset_required_fields():
@@ -2136,7 +2146,7 @@ def test_list_custom_models_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_custom_models_rest_unset_required_fields():
@@ -2273,7 +2283,6 @@ def test_train_custom_model_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = search_tuning_service.TrainCustomModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -2296,7 +2305,6 @@ def test_list_custom_models_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = search_tuning_service.ListCustomModelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2337,7 +2345,6 @@ async def test_train_custom_model_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = search_tuning_service.TrainCustomModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -2364,7 +2371,6 @@ async def test_list_custom_models_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = search_tuning_service.ListCustomModelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2854,7 +2860,6 @@ def test_train_custom_model_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = search_tuning_service.TrainCustomModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -2876,7 +2881,6 @@ def test_list_custom_models_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = search_tuning_service.ListCustomModelsRequest()
-
         assert args[0] == request_msg
 
 

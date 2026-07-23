@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -113,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1390,8 +1400,8 @@ def test_essential_contacts_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateContactRequest,
-        dict,
+        service.CreateContactRequest(),
+        {},
     ],
 )
 def test_create_contact(request_type, transport: str = "grpc"):
@@ -1402,7 +1412,7 @@ def test_create_contact(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_contact), "__call__") as call:
@@ -1456,9 +1466,10 @@ def test_create_contact_non_empty_request_with_auto_populated_field():
         client.create_contact(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateContactRequest(
+        request_msg = service.CreateContactRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_contact_use_cached_wrapped_rpc():
@@ -1539,9 +1550,14 @@ async def test_create_contact_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_contact_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateContactRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateContactRequest(),
+        {},
+    ],
+)
+async def test_create_contact_async(request_type, transport: str = "grpc_asyncio"):
     client = EssentialContactsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1549,7 +1565,7 @@ async def test_create_contact_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_contact), "__call__") as call:
@@ -1580,11 +1596,6 @@ async def test_create_contact_async(
     ]
     assert response.language_tag == "language_tag_value"
     assert response.validation_state == enums.ValidationState.VALID
-
-
-@pytest.mark.asyncio
-async def test_create_contact_async_from_dict():
-    await test_create_contact_async(request_type=dict)
 
 
 def test_create_contact_field_headers():
@@ -1739,8 +1750,8 @@ async def test_create_contact_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateContactRequest,
-        dict,
+        service.UpdateContactRequest(),
+        {},
     ],
 )
 def test_update_contact(request_type, transport: str = "grpc"):
@@ -1751,7 +1762,7 @@ def test_update_contact(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_contact), "__call__") as call:
@@ -1803,7 +1814,8 @@ def test_update_contact_non_empty_request_with_auto_populated_field():
         client.update_contact(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateContactRequest()
+        request_msg = service.UpdateContactRequest()
+        assert args[0] == request_msg
 
 
 def test_update_contact_use_cached_wrapped_rpc():
@@ -1884,9 +1896,14 @@ async def test_update_contact_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_contact_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateContactRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateContactRequest(),
+        {},
+    ],
+)
+async def test_update_contact_async(request_type, transport: str = "grpc_asyncio"):
     client = EssentialContactsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1894,7 +1911,7 @@ async def test_update_contact_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_contact), "__call__") as call:
@@ -1925,11 +1942,6 @@ async def test_update_contact_async(
     ]
     assert response.language_tag == "language_tag_value"
     assert response.validation_state == enums.ValidationState.VALID
-
-
-@pytest.mark.asyncio
-async def test_update_contact_async_from_dict():
-    await test_update_contact_async(request_type=dict)
 
 
 def test_update_contact_field_headers():
@@ -2084,8 +2096,8 @@ async def test_update_contact_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListContactsRequest,
-        dict,
+        service.ListContactsRequest(),
+        {},
     ],
 )
 def test_list_contacts(request_type, transport: str = "grpc"):
@@ -2096,7 +2108,7 @@ def test_list_contacts(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_contacts), "__call__") as call:
@@ -2141,10 +2153,11 @@ def test_list_contacts_non_empty_request_with_auto_populated_field():
         client.list_contacts(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListContactsRequest(
+        request_msg = service.ListContactsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_contacts_use_cached_wrapped_rpc():
@@ -2225,9 +2238,14 @@ async def test_list_contacts_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_contacts_async(
-    transport: str = "grpc_asyncio", request_type=service.ListContactsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListContactsRequest(),
+        {},
+    ],
+)
+async def test_list_contacts_async(request_type, transport: str = "grpc_asyncio"):
     client = EssentialContactsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2235,7 +2253,7 @@ async def test_list_contacts_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_contacts), "__call__") as call:
@@ -2256,11 +2274,6 @@ async def test_list_contacts_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListContactsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_contacts_async_from_dict():
-    await test_list_contacts_async(request_type=dict)
 
 
 def test_list_contacts_field_headers():
@@ -2455,6 +2468,9 @@ def test_list_contacts_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service.Contact) for i in results)
@@ -2543,6 +2559,8 @@ async def test_list_contacts_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2590,11 +2608,7 @@ async def test_list_contacts_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_contacts(request={})
-        ).pages:
+        async for page_ in (await client.list_contacts(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2603,8 +2617,8 @@ async def test_list_contacts_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetContactRequest,
-        dict,
+        service.GetContactRequest(),
+        {},
     ],
 )
 def test_get_contact(request_type, transport: str = "grpc"):
@@ -2615,7 +2629,7 @@ def test_get_contact(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_contact), "__call__") as call:
@@ -2669,9 +2683,10 @@ def test_get_contact_non_empty_request_with_auto_populated_field():
         client.get_contact(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetContactRequest(
+        request_msg = service.GetContactRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_contact_use_cached_wrapped_rpc():
@@ -2752,9 +2767,14 @@ async def test_get_contact_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_contact_async(
-    transport: str = "grpc_asyncio", request_type=service.GetContactRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetContactRequest(),
+        {},
+    ],
+)
+async def test_get_contact_async(request_type, transport: str = "grpc_asyncio"):
     client = EssentialContactsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2762,7 +2782,7 @@ async def test_get_contact_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_contact), "__call__") as call:
@@ -2793,11 +2813,6 @@ async def test_get_contact_async(
     ]
     assert response.language_tag == "language_tag_value"
     assert response.validation_state == enums.ValidationState.VALID
-
-
-@pytest.mark.asyncio
-async def test_get_contact_async_from_dict():
-    await test_get_contact_async(request_type=dict)
 
 
 def test_get_contact_field_headers():
@@ -2942,8 +2957,8 @@ async def test_get_contact_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteContactRequest,
-        dict,
+        service.DeleteContactRequest(),
+        {},
     ],
 )
 def test_delete_contact(request_type, transport: str = "grpc"):
@@ -2954,7 +2969,7 @@ def test_delete_contact(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_contact), "__call__") as call:
@@ -2995,9 +3010,10 @@ def test_delete_contact_non_empty_request_with_auto_populated_field():
         client.delete_contact(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteContactRequest(
+        request_msg = service.DeleteContactRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_contact_use_cached_wrapped_rpc():
@@ -3078,9 +3094,14 @@ async def test_delete_contact_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_contact_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteContactRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteContactRequest(),
+        {},
+    ],
+)
+async def test_delete_contact_async(request_type, transport: str = "grpc_asyncio"):
     client = EssentialContactsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3088,7 +3109,7 @@ async def test_delete_contact_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_contact), "__call__") as call:
@@ -3104,11 +3125,6 @@ async def test_delete_contact_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_contact_async_from_dict():
-    await test_delete_contact_async(request_type=dict)
 
 
 def test_delete_contact_field_headers():
@@ -3253,8 +3269,8 @@ async def test_delete_contact_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ComputeContactsRequest,
-        dict,
+        service.ComputeContactsRequest(),
+        {},
     ],
 )
 def test_compute_contacts(request_type, transport: str = "grpc"):
@@ -3265,7 +3281,7 @@ def test_compute_contacts(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.compute_contacts), "__call__") as call:
@@ -3310,10 +3326,11 @@ def test_compute_contacts_non_empty_request_with_auto_populated_field():
         client.compute_contacts(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ComputeContactsRequest(
+        request_msg = service.ComputeContactsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_compute_contacts_use_cached_wrapped_rpc():
@@ -3396,9 +3413,14 @@ async def test_compute_contacts_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_compute_contacts_async(
-    transport: str = "grpc_asyncio", request_type=service.ComputeContactsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ComputeContactsRequest(),
+        {},
+    ],
+)
+async def test_compute_contacts_async(request_type, transport: str = "grpc_asyncio"):
     client = EssentialContactsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3406,7 +3428,7 @@ async def test_compute_contacts_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.compute_contacts), "__call__") as call:
@@ -3427,11 +3449,6 @@ async def test_compute_contacts_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ComputeContactsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_compute_contacts_async_from_dict():
-    await test_compute_contacts_async(request_type=dict)
 
 
 def test_compute_contacts_field_headers():
@@ -3544,6 +3561,9 @@ def test_compute_contacts_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service.Contact) for i in results)
@@ -3632,6 +3652,8 @@ async def test_compute_contacts_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3679,11 +3701,7 @@ async def test_compute_contacts_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.compute_contacts(request={})
-        ).pages:
+        async for page_ in (await client.compute_contacts(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3692,8 +3710,8 @@ async def test_compute_contacts_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.SendTestMessageRequest,
-        dict,
+        service.SendTestMessageRequest(),
+        {},
     ],
 )
 def test_send_test_message(request_type, transport: str = "grpc"):
@@ -3704,7 +3722,7 @@ def test_send_test_message(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3749,9 +3767,10 @@ def test_send_test_message_non_empty_request_with_auto_populated_field():
         client.send_test_message(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.SendTestMessageRequest(
+        request_msg = service.SendTestMessageRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_send_test_message_use_cached_wrapped_rpc():
@@ -3834,9 +3853,14 @@ async def test_send_test_message_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_send_test_message_async(
-    transport: str = "grpc_asyncio", request_type=service.SendTestMessageRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SendTestMessageRequest(),
+        {},
+    ],
+)
+async def test_send_test_message_async(request_type, transport: str = "grpc_asyncio"):
     client = EssentialContactsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3844,7 +3868,7 @@ async def test_send_test_message_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3862,11 +3886,6 @@ async def test_send_test_message_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_send_test_message_async_from_dict():
-    await test_send_test_message_async(request_type=dict)
 
 
 def test_send_test_message_field_headers():
@@ -4039,7 +4058,7 @@ def test_create_contact_rest_required_fields(request_type=service.CreateContactR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_contact_rest_unset_required_fields():
@@ -4221,7 +4240,7 @@ def test_update_contact_rest_required_fields(request_type=service.UpdateContactR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_contact_rest_unset_required_fields():
@@ -4405,7 +4424,7 @@ def test_list_contacts_rest_required_fields(request_type=service.ListContactsReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_contacts_rest_unset_required_fields():
@@ -4533,6 +4552,9 @@ def test_list_contacts_rest_pager(transport: str = "rest"):
 
         pager = client.list_contacts(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service.Contact) for i in results)
@@ -4648,7 +4670,7 @@ def test_get_contact_rest_required_fields(request_type=service.GetContactRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_contact_rest_unset_required_fields():
@@ -4819,7 +4841,7 @@ def test_delete_contact_rest_required_fields(request_type=service.DeleteContactR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_contact_rest_unset_required_fields():
@@ -5003,7 +5025,7 @@ def test_compute_contacts_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_compute_contacts_rest_unset_required_fields():
@@ -5075,6 +5097,9 @@ def test_compute_contacts_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1"}
 
         pager = client.compute_contacts(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -5197,7 +5222,7 @@ def test_send_test_message_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_send_test_message_rest_unset_required_fields():
@@ -5341,7 +5366,6 @@ def test_create_contact_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateContactRequest()
-
         assert args[0] == request_msg
 
 
@@ -5362,7 +5386,6 @@ def test_update_contact_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateContactRequest()
-
         assert args[0] == request_msg
 
 
@@ -5383,7 +5406,6 @@ def test_list_contacts_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListContactsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5404,7 +5426,6 @@ def test_get_contact_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetContactRequest()
-
         assert args[0] == request_msg
 
 
@@ -5425,7 +5446,6 @@ def test_delete_contact_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteContactRequest()
-
         assert args[0] == request_msg
 
 
@@ -5446,7 +5466,6 @@ def test_compute_contacts_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ComputeContactsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5469,7 +5488,6 @@ def test_send_test_message_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SendTestMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -5514,7 +5532,6 @@ async def test_create_contact_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateContactRequest()
-
         assert args[0] == request_msg
 
 
@@ -5545,7 +5562,6 @@ async def test_update_contact_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateContactRequest()
-
         assert args[0] == request_msg
 
 
@@ -5572,7 +5588,6 @@ async def test_list_contacts_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListContactsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5603,7 +5618,6 @@ async def test_get_contact_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetContactRequest()
-
         assert args[0] == request_msg
 
 
@@ -5626,7 +5640,6 @@ async def test_delete_contact_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteContactRequest()
-
         assert args[0] == request_msg
 
 
@@ -5653,7 +5666,6 @@ async def test_compute_contacts_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ComputeContactsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5678,7 +5690,6 @@ async def test_send_test_message_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SendTestMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -6745,7 +6756,6 @@ def test_create_contact_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateContactRequest()
-
         assert args[0] == request_msg
 
 
@@ -6765,7 +6775,6 @@ def test_update_contact_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateContactRequest()
-
         assert args[0] == request_msg
 
 
@@ -6785,7 +6794,6 @@ def test_list_contacts_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListContactsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6805,7 +6813,6 @@ def test_get_contact_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetContactRequest()
-
         assert args[0] == request_msg
 
 
@@ -6825,7 +6832,6 @@ def test_delete_contact_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteContactRequest()
-
         assert args[0] == request_msg
 
 
@@ -6845,7 +6851,6 @@ def test_compute_contacts_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ComputeContactsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6867,7 +6872,6 @@ def test_send_test_message_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SendTestMessageRequest()
-
         assert args[0] == request_msg
 
 

@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-logging-v3.16.0...google-cloud-logging-v3.16.1) (2026-07-07)
+
+
+### Documentation
+
+* **logging:** fix StructuredLogHandler docstring parameter name ([#17625](https://github.com/googleapis/google-cloud-python/issues/17625)) ([32862f0](https://github.com/googleapis/google-cloud-python/commit/32862f0a2c1c9570cc8e96f371c3188800c7d307)), closes [#17604](https://github.com/googleapis/google-cloud-python/issues/17604)
+
+## [3.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-logging-v3.15.0...google-cloud-logging-v3.16.0) (2026-06-02)
+
+
+### Features
+
+* drop support for Python 3.7, 3.8, and 3.9 runtimes (#17276) ([014e951b6a1a07cb25baf4286e433a0c28783314](https://github.com/googleapis/google-cloud-python/commit/014e951b6a1a07cb25baf4286e433a0c28783314))
+
 ## [3.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-logging-v3.14.0...google-cloud-logging-v3.15.0) (2026-03-26)
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -130,6 +130,28 @@ from .featured_content_native_dashboard import (
     ListFeaturedContentNativeDashboardsRequest,
     ListFeaturedContentNativeDashboardsResponse,
 )
+from .findings_refinement import (
+    ComputeAllFindingsRefinementActivitiesRequest,
+    ComputeAllFindingsRefinementActivitiesResponse,
+    ComputeFindingsRefinementActivityRequest,
+    ComputeFindingsRefinementActivityResponse,
+    CreateFindingsRefinementRequest,
+    DetectionExclusionActivity,
+    DetectionExclusionApplication,
+    FindingsRefinement,
+    FindingsRefinementActivity,
+    FindingsRefinementDeployment,
+    FindingsRefinementType,
+    GetFindingsRefinementDeploymentRequest,
+    GetFindingsRefinementRequest,
+    ListAllFindingsRefinementDeploymentsRequest,
+    ListAllFindingsRefinementDeploymentsResponse,
+    ListFindingsRefinementsRequest,
+    ListFindingsRefinementsResponse,
+    OutcomeFilter,
+    UpdateFindingsRefinementDeploymentRequest,
+    UpdateFindingsRefinementRequest,
+)
 from .instance import (
     GetInstanceRequest,
     Instance,
@@ -171,11 +193,14 @@ from .reference_list import (
     ListReferenceListsResponse,
     ReferenceList,
     ReferenceListEntry,
+    ReferenceListError,
     ReferenceListScope,
     ReferenceListSyntaxType,
     ReferenceListView,
     ScopeInfo,
     UpdateReferenceListRequest,
+    VerifyReferenceListRequest,
+    VerifyReferenceListResponse,
 )
 from .rule import (
     CompilationDiagnostic,
@@ -205,6 +230,13 @@ from .rule import (
     Severity,
     UpdateRuleDeploymentRequest,
     UpdateRuleRequest,
+    VerifyRuleTextRequest,
+    VerifyRuleTextResponse,
+)
+from .rule_execution_error import (
+    ListRuleExecutionErrorsRequest,
+    ListRuleExecutionErrorsResponse,
+    RuleExecutionError,
 )
 
 __all__ = (
@@ -309,6 +341,26 @@ __all__ = (
     "InstallFeaturedContentNativeDashboardResponse",
     "ListFeaturedContentNativeDashboardsRequest",
     "ListFeaturedContentNativeDashboardsResponse",
+    "ComputeAllFindingsRefinementActivitiesRequest",
+    "ComputeAllFindingsRefinementActivitiesResponse",
+    "ComputeFindingsRefinementActivityRequest",
+    "ComputeFindingsRefinementActivityResponse",
+    "CreateFindingsRefinementRequest",
+    "DetectionExclusionActivity",
+    "DetectionExclusionApplication",
+    "FindingsRefinement",
+    "FindingsRefinementActivity",
+    "FindingsRefinementDeployment",
+    "GetFindingsRefinementDeploymentRequest",
+    "GetFindingsRefinementRequest",
+    "ListAllFindingsRefinementDeploymentsRequest",
+    "ListAllFindingsRefinementDeploymentsResponse",
+    "ListFindingsRefinementsRequest",
+    "ListFindingsRefinementsResponse",
+    "OutcomeFilter",
+    "UpdateFindingsRefinementDeploymentRequest",
+    "UpdateFindingsRefinementRequest",
+    "FindingsRefinementType",
     "GetInstanceRequest",
     "Instance",
     "AddChartRequest",
@@ -345,9 +397,12 @@ __all__ = (
     "ListReferenceListsResponse",
     "ReferenceList",
     "ReferenceListEntry",
+    "ReferenceListError",
     "ReferenceListScope",
     "ScopeInfo",
     "UpdateReferenceListRequest",
+    "VerifyReferenceListRequest",
+    "VerifyReferenceListResponse",
     "ReferenceListSyntaxType",
     "ReferenceListView",
     "CompilationDiagnostic",
@@ -374,7 +429,12 @@ __all__ = (
     "Severity",
     "UpdateRuleDeploymentRequest",
     "UpdateRuleRequest",
+    "VerifyRuleTextRequest",
+    "VerifyRuleTextResponse",
     "RuleType",
     "RuleView",
     "RunFrequency",
+    "ListRuleExecutionErrorsRequest",
+    "ListRuleExecutionErrorsResponse",
+    "RuleExecutionError",
 )

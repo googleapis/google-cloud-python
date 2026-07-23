@@ -25,10 +25,10 @@ in Google APIs for `resource names`_.
 
 from __future__ import unicode_literals
 
-from collections import deque
 import copy
 import functools
 import re
+from collections import deque
 
 # Regular expression for extracting variable parts from a path template.
 # The variables can be expressed as:
@@ -321,8 +321,7 @@ def transcode(http_options, message=None, **request_kwargs):
         return request
 
     bindings_description = [
-        '\n\tURI: "{}"'
-        "\n\tRequired request fields:\n\t\t{}".format(
+        '\n\tURI: "{}"\n\tRequired request fields:\n\t\t{}'.format(
             uri,
             "\n\t\t".join(
                 [

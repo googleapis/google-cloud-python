@@ -1,0 +1,39 @@
+name: import-profiler
+
+on:
+  pull_request:
+    branches:
+      - main
+      - preview
+  # Trigger workflow on GitHub merge queue events
+  merge_group:
+    types: [checks_requested]
+
+permissions:
+  contents: read
+
+jobs:
+  import-profile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 2
+    - name: Setup Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.15"
+        allow-prereleases: true
+        cache: 'pip'
+    - name: Run import profiler
+      env:
+        BUILD_TYPE: presubmit
+        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
+        TEST_TYPE: import_profile
+        PY_VERSION: "3.15"
+        # Workaround: Allows libcst to compile on Python 3.15+ while PyO3 catches up
+        PYO3_USE_ABI3_FORWARD_COMPATIBILITY: "1"
+      run: |
+        ci/run_conditional_tests.sh

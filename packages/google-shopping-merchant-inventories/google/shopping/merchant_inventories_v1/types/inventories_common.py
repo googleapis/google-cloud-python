@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -77,6 +77,14 @@ class LocalInventoryAttributes(proto.Message):
             store. Maximum length is 20 bytes.
 
             This field is a member of `oneof`_ ``_instore_product_location``.
+        local_shipping_label (str):
+            Optional. Specifies a label associated with the shipping for
+            the ``LocalInventory`` resource. Can be used to group local
+            shipping services to this particular inventory item. For
+            accepted field format, see the `Local
+            delivery <https://support.google.com/merchants/answer/14819809#localdelivery>`__
+
+            This field is a member of `oneof`_ ``_local_shipping_label``.
         loyalty_programs (MutableSequence[google.shopping.merchant_inventories_v1.types.InventoryLoyaltyProgram]):
             Optional. An optional list of loyalty programs containing
             applicable loyalty member prices for this product at this
@@ -96,6 +104,17 @@ class LocalInventoryAttributes(proto.Message):
             configuration. For local inventory specific details, see the
             `Local inventory data
             specification <https://support.google.com/merchants/answer/3061342>`__.
+        custom_attributes (MutableSequence[google.shopping.type.types.CustomAttribute]):
+            Optional. A list of custom (merchant-provided) attributes.
+            It can also be used for submitting any attribute of the data
+            specification in its generic form (for example,
+            ``{ "name": "size type", "value": "regular" }``). This is
+            useful for submitting attributes not explicitly exposed by
+            the API. Maximum allowed number of characters for each
+            custom attribute is 10240 (represents sum of characters for
+            name and value). Maximum 2500 custom attributes can be set,
+            with total size of 102.4kB. Underscores in custom attribute
+            names are replaced by spaces upon insertion.
     """
 
     class Availability(proto.Enum):
@@ -234,10 +253,20 @@ class LocalInventoryAttributes(proto.Message):
         number=8,
         optional=True,
     )
+    local_shipping_label: str = proto.Field(
+        proto.STRING,
+        number=9,
+        optional=True,
+    )
     loyalty_programs: MutableSequence["InventoryLoyaltyProgram"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="InventoryLoyaltyProgram",
+    )
+    custom_attributes: MutableSequence[types.CustomAttribute] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message=types.CustomAttribute,
     )
 
 

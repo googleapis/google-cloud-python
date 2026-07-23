@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -81,6 +76,7 @@ from google.cloud.ces_v1beta.types import (
     app,
     common,
     evaluation,
+    evaluation_metrics_config,
     evaluation_service,
     example,
     fakes,
@@ -137,6 +133,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1383,8 +1394,8 @@ def test_evaluation_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation.RunEvaluationRequest,
-        dict,
+        evaluation.RunEvaluationRequest(),
+        {},
     ],
 )
 def test_run_evaluation(request_type, transport: str = "grpc"):
@@ -1395,7 +1406,7 @@ def test_run_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_evaluation), "__call__") as call:
@@ -1440,13 +1451,14 @@ def test_run_evaluation_non_empty_request_with_auto_populated_field():
         client.run_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation.RunEvaluationRequest(
+        request_msg = evaluation.RunEvaluationRequest(
             app="app_value",
             evaluation_dataset="evaluation_dataset_value",
             display_name="display_name_value",
             app_version="app_version_value",
             scheduled_evaluation_run="scheduled_evaluation_run_value",
         )
+        assert args[0] == request_msg
 
 
 def test_run_evaluation_use_cached_wrapped_rpc():
@@ -1537,9 +1549,14 @@ async def test_run_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_run_evaluation_async(
-    transport: str = "grpc_asyncio", request_type=evaluation.RunEvaluationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation.RunEvaluationRequest(),
+        {},
+    ],
+)
+async def test_run_evaluation_async(request_type, transport: str = "grpc_asyncio"):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1547,7 +1564,7 @@ async def test_run_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_evaluation), "__call__") as call:
@@ -1565,11 +1582,6 @@ async def test_run_evaluation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_run_evaluation_async_from_dict():
-    await test_run_evaluation_async(request_type=dict)
 
 
 def test_run_evaluation_field_headers():
@@ -1718,8 +1730,8 @@ async def test_run_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.UploadEvaluationAudioRequest,
-        dict,
+        evaluation_service.UploadEvaluationAudioRequest(),
+        {},
     ],
 )
 def test_upload_evaluation_audio(request_type, transport: str = "grpc"):
@@ -1730,7 +1742,7 @@ def test_upload_evaluation_audio(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1781,10 +1793,11 @@ def test_upload_evaluation_audio_non_empty_request_with_auto_populated_field():
         client.upload_evaluation_audio(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.UploadEvaluationAudioRequest(
+        request_msg = evaluation_service.UploadEvaluationAudioRequest(
             name="name_value",
             previous_audio_gcs_uri="previous_audio_gcs_uri_value",
         )
+        assert args[0] == request_msg
 
 
 def test_upload_evaluation_audio_use_cached_wrapped_rpc():
@@ -1870,9 +1883,15 @@ async def test_upload_evaluation_audio_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.UploadEvaluationAudioRequest(),
+        {},
+    ],
+)
 async def test_upload_evaluation_audio_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.UploadEvaluationAudioRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1881,7 +1900,7 @@ async def test_upload_evaluation_audio_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1906,11 +1925,6 @@ async def test_upload_evaluation_audio_async(
     assert isinstance(response, evaluation_service.UploadEvaluationAudioResponse)
     assert response.audio_gcs_uri == "audio_gcs_uri_value"
     assert response.transcript == "transcript_value"
-
-
-@pytest.mark.asyncio
-async def test_upload_evaluation_audio_async_from_dict():
-    await test_upload_evaluation_audio_async(request_type=dict)
 
 
 def test_upload_evaluation_audio_field_headers():
@@ -2077,8 +2091,8 @@ async def test_upload_evaluation_audio_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.CreateEvaluationRequest,
-        dict,
+        evaluation_service.CreateEvaluationRequest(),
+        {},
     ],
 )
 def test_create_evaluation(request_type, transport: str = "grpc"):
@@ -2089,7 +2103,7 @@ def test_create_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2156,10 +2170,11 @@ def test_create_evaluation_non_empty_request_with_auto_populated_field():
         client.create_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.CreateEvaluationRequest(
+        request_msg = evaluation_service.CreateEvaluationRequest(
             parent="parent_value",
             evaluation_id="evaluation_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_evaluation_use_cached_wrapped_rpc():
@@ -2242,10 +2257,14 @@ async def test_create_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.CreateEvaluationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.CreateEvaluationRequest(),
+        {},
+    ],
+)
+async def test_create_evaluation_async(request_type, transport: str = "grpc_asyncio"):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2253,7 +2272,7 @@ async def test_create_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2294,11 +2313,6 @@ async def test_create_evaluation_async(
     assert response.evaluation_runs == ["evaluation_runs_value"]
     assert response.etag == "etag_value"
     assert response.invalid is True
-
-
-@pytest.mark.asyncio
-async def test_create_evaluation_async_from_dict():
-    await test_create_evaluation_async(request_type=dict)
 
 
 def test_create_evaluation_field_headers():
@@ -2559,8 +2573,8 @@ async def test_create_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.GenerateEvaluationRequest,
-        dict,
+        evaluation_service.GenerateEvaluationRequest(),
+        {},
     ],
 )
 def test_generate_evaluation(request_type, transport: str = "grpc"):
@@ -2571,7 +2585,7 @@ def test_generate_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2616,9 +2630,10 @@ def test_generate_evaluation_non_empty_request_with_auto_populated_field():
         client.generate_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.GenerateEvaluationRequest(
+        request_msg = evaluation_service.GenerateEvaluationRequest(
             conversation="conversation_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_evaluation_use_cached_wrapped_rpc():
@@ -2713,10 +2728,14 @@ async def test_generate_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_generate_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.GenerateEvaluationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.GenerateEvaluationRequest(),
+        {},
+    ],
+)
+async def test_generate_evaluation_async(request_type, transport: str = "grpc_asyncio"):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2724,7 +2743,7 @@ async def test_generate_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2744,11 +2763,6 @@ async def test_generate_evaluation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_generate_evaluation_async_from_dict():
-    await test_generate_evaluation_async(request_type=dict)
 
 
 def test_generate_evaluation_field_headers():
@@ -2905,8 +2919,8 @@ async def test_generate_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.ImportEvaluationsRequest,
-        dict,
+        evaluation_service.ImportEvaluationsRequest(),
+        {},
     ],
 )
 def test_import_evaluations(request_type, transport: str = "grpc"):
@@ -2917,7 +2931,7 @@ def test_import_evaluations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2963,10 +2977,11 @@ def test_import_evaluations_non_empty_request_with_auto_populated_field():
         client.import_evaluations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.ImportEvaluationsRequest(
+        request_msg = evaluation_service.ImportEvaluationsRequest(
             gcs_uri="gcs_uri_value",
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_evaluations_use_cached_wrapped_rpc():
@@ -3061,10 +3076,14 @@ async def test_import_evaluations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_import_evaluations_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.ImportEvaluationsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ImportEvaluationsRequest(),
+        {},
+    ],
+)
+async def test_import_evaluations_async(request_type, transport: str = "grpc_asyncio"):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3072,7 +3091,7 @@ async def test_import_evaluations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3092,11 +3111,6 @@ async def test_import_evaluations_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_evaluations_async_from_dict():
-    await test_import_evaluations_async(request_type=dict)
 
 
 def test_import_evaluations_field_headers():
@@ -3253,8 +3267,8 @@ async def test_import_evaluations_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.CreateEvaluationDatasetRequest,
-        dict,
+        evaluation_service.CreateEvaluationDatasetRequest(),
+        {},
     ],
 )
 def test_create_evaluation_dataset(request_type, transport: str = "grpc"):
@@ -3265,7 +3279,7 @@ def test_create_evaluation_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3324,10 +3338,11 @@ def test_create_evaluation_dataset_non_empty_request_with_auto_populated_field()
         client.create_evaluation_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.CreateEvaluationDatasetRequest(
+        request_msg = evaluation_service.CreateEvaluationDatasetRequest(
             parent="parent_value",
             evaluation_dataset_id="evaluation_dataset_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_evaluation_dataset_use_cached_wrapped_rpc():
@@ -3413,9 +3428,15 @@ async def test_create_evaluation_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.CreateEvaluationDatasetRequest(),
+        {},
+    ],
+)
 async def test_create_evaluation_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.CreateEvaluationDatasetRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3424,7 +3445,7 @@ async def test_create_evaluation_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3457,11 +3478,6 @@ async def test_create_evaluation_dataset_async(
     assert response.etag == "etag_value"
     assert response.created_by == "created_by_value"
     assert response.last_updated_by == "last_updated_by_value"
-
-
-@pytest.mark.asyncio
-async def test_create_evaluation_dataset_async_from_dict():
-    await test_create_evaluation_dataset_async(request_type=dict)
 
 
 def test_create_evaluation_dataset_field_headers():
@@ -3638,8 +3654,8 @@ async def test_create_evaluation_dataset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.UpdateEvaluationRequest,
-        dict,
+        evaluation_service.UpdateEvaluationRequest(),
+        {},
     ],
 )
 def test_update_evaluation(request_type, transport: str = "grpc"):
@@ -3650,7 +3666,7 @@ def test_update_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3714,7 +3730,8 @@ def test_update_evaluation_non_empty_request_with_auto_populated_field():
         client.update_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.UpdateEvaluationRequest()
+        request_msg = evaluation_service.UpdateEvaluationRequest()
+        assert args[0] == request_msg
 
 
 def test_update_evaluation_use_cached_wrapped_rpc():
@@ -3797,10 +3814,14 @@ async def test_update_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.UpdateEvaluationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.UpdateEvaluationRequest(),
+        {},
+    ],
+)
+async def test_update_evaluation_async(request_type, transport: str = "grpc_asyncio"):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3808,7 +3829,7 @@ async def test_update_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3849,11 +3870,6 @@ async def test_update_evaluation_async(
     assert response.evaluation_runs == ["evaluation_runs_value"]
     assert response.etag == "etag_value"
     assert response.invalid is True
-
-
-@pytest.mark.asyncio
-async def test_update_evaluation_async_from_dict():
-    await test_update_evaluation_async(request_type=dict)
 
 
 def test_update_evaluation_field_headers():
@@ -4104,8 +4120,8 @@ async def test_update_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.UpdateEvaluationDatasetRequest,
-        dict,
+        evaluation_service.UpdateEvaluationDatasetRequest(),
+        {},
     ],
 )
 def test_update_evaluation_dataset(request_type, transport: str = "grpc"):
@@ -4116,7 +4132,7 @@ def test_update_evaluation_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4172,7 +4188,8 @@ def test_update_evaluation_dataset_non_empty_request_with_auto_populated_field()
         client.update_evaluation_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.UpdateEvaluationDatasetRequest()
+        request_msg = evaluation_service.UpdateEvaluationDatasetRequest()
+        assert args[0] == request_msg
 
 
 def test_update_evaluation_dataset_use_cached_wrapped_rpc():
@@ -4258,9 +4275,15 @@ async def test_update_evaluation_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.UpdateEvaluationDatasetRequest(),
+        {},
+    ],
+)
 async def test_update_evaluation_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.UpdateEvaluationDatasetRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4269,7 +4292,7 @@ async def test_update_evaluation_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4302,11 +4325,6 @@ async def test_update_evaluation_dataset_async(
     assert response.etag == "etag_value"
     assert response.created_by == "created_by_value"
     assert response.last_updated_by == "last_updated_by_value"
-
-
-@pytest.mark.asyncio
-async def test_update_evaluation_dataset_async_from_dict():
-    await test_update_evaluation_dataset_async(request_type=dict)
 
 
 def test_update_evaluation_dataset_field_headers():
@@ -4473,8 +4491,8 @@ async def test_update_evaluation_dataset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.DeleteEvaluationRequest,
-        dict,
+        evaluation_service.DeleteEvaluationRequest(),
+        {},
     ],
 )
 def test_delete_evaluation(request_type, transport: str = "grpc"):
@@ -4485,7 +4503,7 @@ def test_delete_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4531,10 +4549,11 @@ def test_delete_evaluation_non_empty_request_with_auto_populated_field():
         client.delete_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.DeleteEvaluationRequest(
+        request_msg = evaluation_service.DeleteEvaluationRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_evaluation_use_cached_wrapped_rpc():
@@ -4617,10 +4636,14 @@ async def test_delete_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.DeleteEvaluationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.DeleteEvaluationRequest(),
+        {},
+    ],
+)
+async def test_delete_evaluation_async(request_type, transport: str = "grpc_asyncio"):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4628,7 +4651,7 @@ async def test_delete_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4646,11 +4669,6 @@ async def test_delete_evaluation_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_evaluation_async_from_dict():
-    await test_delete_evaluation_async(request_type=dict)
 
 
 def test_delete_evaluation_field_headers():
@@ -4803,8 +4821,8 @@ async def test_delete_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.DeleteEvaluationResultRequest,
-        dict,
+        evaluation_service.DeleteEvaluationResultRequest(),
+        {},
     ],
 )
 def test_delete_evaluation_result(request_type, transport: str = "grpc"):
@@ -4815,7 +4833,7 @@ def test_delete_evaluation_result(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4860,9 +4878,10 @@ def test_delete_evaluation_result_non_empty_request_with_auto_populated_field():
         client.delete_evaluation_result(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.DeleteEvaluationResultRequest(
+        request_msg = evaluation_service.DeleteEvaluationResultRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_evaluation_result_use_cached_wrapped_rpc():
@@ -4948,9 +4967,15 @@ async def test_delete_evaluation_result_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.DeleteEvaluationResultRequest(),
+        {},
+    ],
+)
 async def test_delete_evaluation_result_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.DeleteEvaluationResultRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4959,7 +4984,7 @@ async def test_delete_evaluation_result_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4977,11 +5002,6 @@ async def test_delete_evaluation_result_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_evaluation_result_async_from_dict():
-    await test_delete_evaluation_result_async(request_type=dict)
 
 
 def test_delete_evaluation_result_field_headers():
@@ -5134,8 +5154,8 @@ async def test_delete_evaluation_result_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.DeleteEvaluationDatasetRequest,
-        dict,
+        evaluation_service.DeleteEvaluationDatasetRequest(),
+        {},
     ],
 )
 def test_delete_evaluation_dataset(request_type, transport: str = "grpc"):
@@ -5146,7 +5166,7 @@ def test_delete_evaluation_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5192,10 +5212,11 @@ def test_delete_evaluation_dataset_non_empty_request_with_auto_populated_field()
         client.delete_evaluation_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.DeleteEvaluationDatasetRequest(
+        request_msg = evaluation_service.DeleteEvaluationDatasetRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_evaluation_dataset_use_cached_wrapped_rpc():
@@ -5281,9 +5302,15 @@ async def test_delete_evaluation_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.DeleteEvaluationDatasetRequest(),
+        {},
+    ],
+)
 async def test_delete_evaluation_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.DeleteEvaluationDatasetRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5292,7 +5319,7 @@ async def test_delete_evaluation_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5310,11 +5337,6 @@ async def test_delete_evaluation_dataset_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_evaluation_dataset_async_from_dict():
-    await test_delete_evaluation_dataset_async(request_type=dict)
 
 
 def test_delete_evaluation_dataset_field_headers():
@@ -5467,8 +5489,8 @@ async def test_delete_evaluation_dataset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.DeleteEvaluationRunRequest,
-        dict,
+        evaluation_service.DeleteEvaluationRunRequest(),
+        {},
     ],
 )
 def test_delete_evaluation_run(request_type, transport: str = "grpc"):
@@ -5479,7 +5501,7 @@ def test_delete_evaluation_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5524,9 +5546,10 @@ def test_delete_evaluation_run_non_empty_request_with_auto_populated_field():
         client.delete_evaluation_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.DeleteEvaluationRunRequest(
+        request_msg = evaluation_service.DeleteEvaluationRunRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_evaluation_run_use_cached_wrapped_rpc():
@@ -5622,9 +5645,15 @@ async def test_delete_evaluation_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.DeleteEvaluationRunRequest(),
+        {},
+    ],
+)
 async def test_delete_evaluation_run_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.DeleteEvaluationRunRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5633,7 +5662,7 @@ async def test_delete_evaluation_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5653,11 +5682,6 @@ async def test_delete_evaluation_run_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_evaluation_run_async_from_dict():
-    await test_delete_evaluation_run_async(request_type=dict)
 
 
 def test_delete_evaluation_run_field_headers():
@@ -5814,8 +5838,8 @@ async def test_delete_evaluation_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.GetEvaluationRequest,
-        dict,
+        evaluation_service.GetEvaluationRequest(),
+        {},
     ],
 )
 def test_get_evaluation(request_type, transport: str = "grpc"):
@@ -5826,7 +5850,7 @@ def test_get_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
@@ -5888,9 +5912,10 @@ def test_get_evaluation_non_empty_request_with_auto_populated_field():
         client.get_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.GetEvaluationRequest(
+        request_msg = evaluation_service.GetEvaluationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_evaluation_use_cached_wrapped_rpc():
@@ -5971,10 +5996,14 @@ async def test_get_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.GetEvaluationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.GetEvaluationRequest(),
+        {},
+    ],
+)
+async def test_get_evaluation_async(request_type, transport: str = "grpc_asyncio"):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5982,7 +6011,7 @@ async def test_get_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
@@ -6021,11 +6050,6 @@ async def test_get_evaluation_async(
     assert response.evaluation_runs == ["evaluation_runs_value"]
     assert response.etag == "etag_value"
     assert response.invalid is True
-
-
-@pytest.mark.asyncio
-async def test_get_evaluation_async_from_dict():
-    await test_get_evaluation_async(request_type=dict)
 
 
 def test_get_evaluation_field_headers():
@@ -6174,8 +6198,8 @@ async def test_get_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.GetEvaluationResultRequest,
-        dict,
+        evaluation_service.GetEvaluationResultRequest(),
+        {},
     ],
 )
 def test_get_evaluation_result(request_type, transport: str = "grpc"):
@@ -6186,7 +6210,7 @@ def test_get_evaluation_result(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6202,7 +6226,7 @@ def test_get_evaluation_result(request_type, transport: str = "grpc"):
             app_version="app_version_value",
             app_version_display_name="app_version_display_name_value",
             changelog="changelog_value",
-            execution_state=evaluation.EvaluationResult.ExecutionState.RUNNING,
+            execution_state=evaluation.EvaluationResult.ExecutionState.QUEUED,
             golden_run_method=golden_run.GoldenRunMethod.STABLE,
         )
         response = client.get_evaluation_result(request)
@@ -6223,9 +6247,7 @@ def test_get_evaluation_result(request_type, transport: str = "grpc"):
     assert response.app_version == "app_version_value"
     assert response.app_version_display_name == "app_version_display_name_value"
     assert response.changelog == "changelog_value"
-    assert (
-        response.execution_state == evaluation.EvaluationResult.ExecutionState.RUNNING
-    )
+    assert response.execution_state == evaluation.EvaluationResult.ExecutionState.QUEUED
     assert response.golden_run_method == golden_run.GoldenRunMethod.STABLE
 
 
@@ -6254,9 +6276,10 @@ def test_get_evaluation_result_non_empty_request_with_auto_populated_field():
         client.get_evaluation_result(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.GetEvaluationResultRequest(
+        request_msg = evaluation_service.GetEvaluationResultRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_evaluation_result_use_cached_wrapped_rpc():
@@ -6342,9 +6365,15 @@ async def test_get_evaluation_result_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.GetEvaluationResultRequest(),
+        {},
+    ],
+)
 async def test_get_evaluation_result_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.GetEvaluationResultRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6353,7 +6382,7 @@ async def test_get_evaluation_result_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6370,7 +6399,7 @@ async def test_get_evaluation_result_async(
                 app_version="app_version_value",
                 app_version_display_name="app_version_display_name_value",
                 changelog="changelog_value",
-                execution_state=evaluation.EvaluationResult.ExecutionState.RUNNING,
+                execution_state=evaluation.EvaluationResult.ExecutionState.QUEUED,
                 golden_run_method=golden_run.GoldenRunMethod.STABLE,
             )
         )
@@ -6392,15 +6421,8 @@ async def test_get_evaluation_result_async(
     assert response.app_version == "app_version_value"
     assert response.app_version_display_name == "app_version_display_name_value"
     assert response.changelog == "changelog_value"
-    assert (
-        response.execution_state == evaluation.EvaluationResult.ExecutionState.RUNNING
-    )
+    assert response.execution_state == evaluation.EvaluationResult.ExecutionState.QUEUED
     assert response.golden_run_method == golden_run.GoldenRunMethod.STABLE
-
-
-@pytest.mark.asyncio
-async def test_get_evaluation_result_async_from_dict():
-    await test_get_evaluation_result_async(request_type=dict)
 
 
 def test_get_evaluation_result_field_headers():
@@ -6557,8 +6579,8 @@ async def test_get_evaluation_result_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.GetEvaluationDatasetRequest,
-        dict,
+        evaluation_service.GetEvaluationDatasetRequest(),
+        {},
     ],
 )
 def test_get_evaluation_dataset(request_type, transport: str = "grpc"):
@@ -6569,7 +6591,7 @@ def test_get_evaluation_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6627,9 +6649,10 @@ def test_get_evaluation_dataset_non_empty_request_with_auto_populated_field():
         client.get_evaluation_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.GetEvaluationDatasetRequest(
+        request_msg = evaluation_service.GetEvaluationDatasetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_evaluation_dataset_use_cached_wrapped_rpc():
@@ -6715,9 +6738,15 @@ async def test_get_evaluation_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.GetEvaluationDatasetRequest(),
+        {},
+    ],
+)
 async def test_get_evaluation_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.GetEvaluationDatasetRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6726,7 +6755,7 @@ async def test_get_evaluation_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6759,11 +6788,6 @@ async def test_get_evaluation_dataset_async(
     assert response.etag == "etag_value"
     assert response.created_by == "created_by_value"
     assert response.last_updated_by == "last_updated_by_value"
-
-
-@pytest.mark.asyncio
-async def test_get_evaluation_dataset_async_from_dict():
-    await test_get_evaluation_dataset_async(request_type=dict)
 
 
 def test_get_evaluation_dataset_field_headers():
@@ -6920,8 +6944,8 @@ async def test_get_evaluation_dataset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.GetEvaluationRunRequest,
-        dict,
+        evaluation_service.GetEvaluationRunRequest(),
+        {},
     ],
 )
 def test_get_evaluation_run(request_type, transport: str = "grpc"):
@@ -6932,7 +6956,7 @@ def test_get_evaluation_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6950,10 +6974,11 @@ def test_get_evaluation_run(request_type, transport: str = "grpc"):
             evaluations=["evaluations_value"],
             evaluation_dataset="evaluation_dataset_value",
             evaluation_type=evaluation.EvaluationRun.EvaluationType.GOLDEN,
-            state=evaluation.EvaluationRun.EvaluationRunState.RUNNING,
+            state=evaluation.EvaluationRun.EvaluationRunState.QUEUED,
             run_count=989,
             scheduled_evaluation_run="scheduled_evaluation_run_value",
             golden_run_method=golden_run.GoldenRunMethod.STABLE,
+            operation="operation_value",
         )
         response = client.get_evaluation_run(request)
 
@@ -6975,10 +7000,11 @@ def test_get_evaluation_run(request_type, transport: str = "grpc"):
     assert response.evaluations == ["evaluations_value"]
     assert response.evaluation_dataset == "evaluation_dataset_value"
     assert response.evaluation_type == evaluation.EvaluationRun.EvaluationType.GOLDEN
-    assert response.state == evaluation.EvaluationRun.EvaluationRunState.RUNNING
+    assert response.state == evaluation.EvaluationRun.EvaluationRunState.QUEUED
     assert response.run_count == 989
     assert response.scheduled_evaluation_run == "scheduled_evaluation_run_value"
     assert response.golden_run_method == golden_run.GoldenRunMethod.STABLE
+    assert response.operation == "operation_value"
 
 
 def test_get_evaluation_run_non_empty_request_with_auto_populated_field():
@@ -7006,9 +7032,10 @@ def test_get_evaluation_run_non_empty_request_with_auto_populated_field():
         client.get_evaluation_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.GetEvaluationRunRequest(
+        request_msg = evaluation_service.GetEvaluationRunRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_evaluation_run_use_cached_wrapped_rpc():
@@ -7093,10 +7120,14 @@ async def test_get_evaluation_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_evaluation_run_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.GetEvaluationRunRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.GetEvaluationRunRequest(),
+        {},
+    ],
+)
+async def test_get_evaluation_run_async(request_type, transport: str = "grpc_asyncio"):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7104,7 +7135,7 @@ async def test_get_evaluation_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7123,10 +7154,11 @@ async def test_get_evaluation_run_async(
                 evaluations=["evaluations_value"],
                 evaluation_dataset="evaluation_dataset_value",
                 evaluation_type=evaluation.EvaluationRun.EvaluationType.GOLDEN,
-                state=evaluation.EvaluationRun.EvaluationRunState.RUNNING,
+                state=evaluation.EvaluationRun.EvaluationRunState.QUEUED,
                 run_count=989,
                 scheduled_evaluation_run="scheduled_evaluation_run_value",
                 golden_run_method=golden_run.GoldenRunMethod.STABLE,
+                operation="operation_value",
             )
         )
         response = await client.get_evaluation_run(request)
@@ -7149,15 +7181,11 @@ async def test_get_evaluation_run_async(
     assert response.evaluations == ["evaluations_value"]
     assert response.evaluation_dataset == "evaluation_dataset_value"
     assert response.evaluation_type == evaluation.EvaluationRun.EvaluationType.GOLDEN
-    assert response.state == evaluation.EvaluationRun.EvaluationRunState.RUNNING
+    assert response.state == evaluation.EvaluationRun.EvaluationRunState.QUEUED
     assert response.run_count == 989
     assert response.scheduled_evaluation_run == "scheduled_evaluation_run_value"
     assert response.golden_run_method == golden_run.GoldenRunMethod.STABLE
-
-
-@pytest.mark.asyncio
-async def test_get_evaluation_run_async_from_dict():
-    await test_get_evaluation_run_async(request_type=dict)
+    assert response.operation == "operation_value"
 
 
 def test_get_evaluation_run_field_headers():
@@ -7314,8 +7342,8 @@ async def test_get_evaluation_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.ListEvaluationsRequest,
-        dict,
+        evaluation_service.ListEvaluationsRequest(),
+        {},
     ],
 )
 def test_list_evaluations(request_type, transport: str = "grpc"):
@@ -7326,7 +7354,7 @@ def test_list_evaluations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_evaluations), "__call__") as call:
@@ -7375,7 +7403,7 @@ def test_list_evaluations_non_empty_request_with_auto_populated_field():
         client.list_evaluations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.ListEvaluationsRequest(
+        request_msg = evaluation_service.ListEvaluationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
@@ -7383,6 +7411,7 @@ def test_list_evaluations_non_empty_request_with_auto_populated_field():
             evaluation_run_filter="evaluation_run_filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_evaluations_use_cached_wrapped_rpc():
@@ -7465,10 +7494,14 @@ async def test_list_evaluations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_evaluations_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.ListEvaluationsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ListEvaluationsRequest(),
+        {},
+    ],
+)
+async def test_list_evaluations_async(request_type, transport: str = "grpc_asyncio"):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7476,7 +7509,7 @@ async def test_list_evaluations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_evaluations), "__call__") as call:
@@ -7497,11 +7530,6 @@ async def test_list_evaluations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEvaluationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_evaluations_async_from_dict():
-    await test_list_evaluations_async(request_type=dict)
 
 
 def test_list_evaluations_field_headers():
@@ -7831,11 +7859,7 @@ async def test_list_evaluations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_evaluations(request={})
-        ).pages:
+        async for page_ in (await client.list_evaluations(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7844,8 +7868,8 @@ async def test_list_evaluations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.ListEvaluationResultsRequest,
-        dict,
+        evaluation_service.ListEvaluationResultsRequest(),
+        {},
     ],
 )
 def test_list_evaluation_results(request_type, transport: str = "grpc"):
@@ -7856,7 +7880,7 @@ def test_list_evaluation_results(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7907,12 +7931,13 @@ def test_list_evaluation_results_non_empty_request_with_auto_populated_field():
         client.list_evaluation_results(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.ListEvaluationResultsRequest(
+        request_msg = evaluation_service.ListEvaluationResultsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_evaluation_results_use_cached_wrapped_rpc():
@@ -7998,9 +8023,15 @@ async def test_list_evaluation_results_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ListEvaluationResultsRequest(),
+        {},
+    ],
+)
 async def test_list_evaluation_results_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.ListEvaluationResultsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8009,7 +8040,7 @@ async def test_list_evaluation_results_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8032,11 +8063,6 @@ async def test_list_evaluation_results_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEvaluationResultsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_evaluation_results_async_from_dict():
-    await test_list_evaluation_results_async(request_type=dict)
 
 
 def test_list_evaluation_results_field_headers():
@@ -8382,11 +8408,7 @@ async def test_list_evaluation_results_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_evaluation_results(request={})
-        ).pages:
+        async for page_ in (await client.list_evaluation_results(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8395,8 +8417,8 @@ async def test_list_evaluation_results_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.ListEvaluationDatasetsRequest,
-        dict,
+        evaluation_service.ListEvaluationDatasetsRequest(),
+        {},
     ],
 )
 def test_list_evaluation_datasets(request_type, transport: str = "grpc"):
@@ -8407,7 +8429,7 @@ def test_list_evaluation_datasets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8458,12 +8480,13 @@ def test_list_evaluation_datasets_non_empty_request_with_auto_populated_field():
         client.list_evaluation_datasets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.ListEvaluationDatasetsRequest(
+        request_msg = evaluation_service.ListEvaluationDatasetsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_evaluation_datasets_use_cached_wrapped_rpc():
@@ -8549,9 +8572,15 @@ async def test_list_evaluation_datasets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ListEvaluationDatasetsRequest(),
+        {},
+    ],
+)
 async def test_list_evaluation_datasets_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.ListEvaluationDatasetsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8560,7 +8589,7 @@ async def test_list_evaluation_datasets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8583,11 +8612,6 @@ async def test_list_evaluation_datasets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEvaluationDatasetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_evaluation_datasets_async_from_dict():
-    await test_list_evaluation_datasets_async(request_type=dict)
 
 
 def test_list_evaluation_datasets_field_headers():
@@ -8935,11 +8959,7 @@ async def test_list_evaluation_datasets_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_evaluation_datasets(request={})
-        ).pages:
+        async for page_ in (await client.list_evaluation_datasets(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8948,8 +8968,8 @@ async def test_list_evaluation_datasets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.ListEvaluationRunsRequest,
-        dict,
+        evaluation_service.ListEvaluationRunsRequest(),
+        {},
     ],
 )
 def test_list_evaluation_runs(request_type, transport: str = "grpc"):
@@ -8960,7 +8980,7 @@ def test_list_evaluation_runs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9011,12 +9031,13 @@ def test_list_evaluation_runs_non_empty_request_with_auto_populated_field():
         client.list_evaluation_runs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.ListEvaluationRunsRequest(
+        request_msg = evaluation_service.ListEvaluationRunsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_evaluation_runs_use_cached_wrapped_rpc():
@@ -9101,9 +9122,15 @@ async def test_list_evaluation_runs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ListEvaluationRunsRequest(),
+        {},
+    ],
+)
 async def test_list_evaluation_runs_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.ListEvaluationRunsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9112,7 +9139,7 @@ async def test_list_evaluation_runs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9135,11 +9162,6 @@ async def test_list_evaluation_runs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEvaluationRunsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_evaluation_runs_async_from_dict():
-    await test_list_evaluation_runs_async(request_type=dict)
 
 
 def test_list_evaluation_runs_field_headers():
@@ -9485,11 +9507,7 @@ async def test_list_evaluation_runs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_evaluation_runs(request={})
-        ).pages:
+        async for page_ in (await client.list_evaluation_runs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9498,8 +9516,8 @@ async def test_list_evaluation_runs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.ListEvaluationExpectationsRequest,
-        dict,
+        evaluation_service.ListEvaluationExpectationsRequest(),
+        {},
     ],
 )
 def test_list_evaluation_expectations(request_type, transport: str = "grpc"):
@@ -9510,7 +9528,7 @@ def test_list_evaluation_expectations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9561,12 +9579,13 @@ def test_list_evaluation_expectations_non_empty_request_with_auto_populated_fiel
         client.list_evaluation_expectations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.ListEvaluationExpectationsRequest(
+        request_msg = evaluation_service.ListEvaluationExpectationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_evaluation_expectations_use_cached_wrapped_rpc():
@@ -9652,9 +9671,15 @@ async def test_list_evaluation_expectations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ListEvaluationExpectationsRequest(),
+        {},
+    ],
+)
 async def test_list_evaluation_expectations_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.ListEvaluationExpectationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9663,7 +9688,7 @@ async def test_list_evaluation_expectations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9686,11 +9711,6 @@ async def test_list_evaluation_expectations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEvaluationExpectationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_evaluation_expectations_async_from_dict():
-    await test_list_evaluation_expectations_async(request_type=dict)
 
 
 def test_list_evaluation_expectations_field_headers():
@@ -10038,9 +10058,7 @@ async def test_list_evaluation_expectations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_evaluation_expectations(request={})
         ).pages:
             pages.append(page_)
@@ -10051,8 +10069,8 @@ async def test_list_evaluation_expectations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.GetEvaluationExpectationRequest,
-        dict,
+        evaluation_service.GetEvaluationExpectationRequest(),
+        {},
     ],
 )
 def test_get_evaluation_expectation(request_type, transport: str = "grpc"):
@@ -10063,7 +10081,7 @@ def test_get_evaluation_expectation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10117,9 +10135,10 @@ def test_get_evaluation_expectation_non_empty_request_with_auto_populated_field(
         client.get_evaluation_expectation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.GetEvaluationExpectationRequest(
+        request_msg = evaluation_service.GetEvaluationExpectationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_evaluation_expectation_use_cached_wrapped_rpc():
@@ -10205,9 +10224,15 @@ async def test_get_evaluation_expectation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.GetEvaluationExpectationRequest(),
+        {},
+    ],
+)
 async def test_get_evaluation_expectation_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.GetEvaluationExpectationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10216,7 +10241,7 @@ async def test_get_evaluation_expectation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10245,11 +10270,6 @@ async def test_get_evaluation_expectation_async(
     assert response.display_name == "display_name_value"
     assert response.tags == ["tags_value"]
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_evaluation_expectation_async_from_dict():
-    await test_get_evaluation_expectation_async(request_type=dict)
 
 
 def test_get_evaluation_expectation_field_headers():
@@ -10406,8 +10426,8 @@ async def test_get_evaluation_expectation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.CreateEvaluationExpectationRequest,
-        dict,
+        evaluation_service.CreateEvaluationExpectationRequest(),
+        {},
     ],
 )
 def test_create_evaluation_expectation(request_type, transport: str = "grpc"):
@@ -10418,7 +10438,7 @@ def test_create_evaluation_expectation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10473,10 +10493,11 @@ def test_create_evaluation_expectation_non_empty_request_with_auto_populated_fie
         client.create_evaluation_expectation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.CreateEvaluationExpectationRequest(
+        request_msg = evaluation_service.CreateEvaluationExpectationRequest(
             parent="parent_value",
             evaluation_expectation_id="evaluation_expectation_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_evaluation_expectation_use_cached_wrapped_rpc():
@@ -10562,9 +10583,15 @@ async def test_create_evaluation_expectation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.CreateEvaluationExpectationRequest(),
+        {},
+    ],
+)
 async def test_create_evaluation_expectation_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.CreateEvaluationExpectationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10573,7 +10600,7 @@ async def test_create_evaluation_expectation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10602,11 +10629,6 @@ async def test_create_evaluation_expectation_async(
     assert response.display_name == "display_name_value"
     assert response.tags == ["tags_value"]
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_create_evaluation_expectation_async_from_dict():
-    await test_create_evaluation_expectation_async(request_type=dict)
 
 
 def test_create_evaluation_expectation_field_headers():
@@ -10807,8 +10829,8 @@ async def test_create_evaluation_expectation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.UpdateEvaluationExpectationRequest,
-        dict,
+        evaluation_service.UpdateEvaluationExpectationRequest(),
+        {},
     ],
 )
 def test_update_evaluation_expectation(request_type, transport: str = "grpc"):
@@ -10819,7 +10841,7 @@ def test_update_evaluation_expectation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10871,7 +10893,8 @@ def test_update_evaluation_expectation_non_empty_request_with_auto_populated_fie
         client.update_evaluation_expectation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.UpdateEvaluationExpectationRequest()
+        request_msg = evaluation_service.UpdateEvaluationExpectationRequest()
+        assert args[0] == request_msg
 
 
 def test_update_evaluation_expectation_use_cached_wrapped_rpc():
@@ -10957,9 +10980,15 @@ async def test_update_evaluation_expectation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.UpdateEvaluationExpectationRequest(),
+        {},
+    ],
+)
 async def test_update_evaluation_expectation_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.UpdateEvaluationExpectationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10968,7 +10997,7 @@ async def test_update_evaluation_expectation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10997,11 +11026,6 @@ async def test_update_evaluation_expectation_async(
     assert response.display_name == "display_name_value"
     assert response.tags == ["tags_value"]
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_update_evaluation_expectation_async_from_dict():
-    await test_update_evaluation_expectation_async(request_type=dict)
 
 
 def test_update_evaluation_expectation_field_headers():
@@ -11192,8 +11216,8 @@ async def test_update_evaluation_expectation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.DeleteEvaluationExpectationRequest,
-        dict,
+        evaluation_service.DeleteEvaluationExpectationRequest(),
+        {},
     ],
 )
 def test_delete_evaluation_expectation(request_type, transport: str = "grpc"):
@@ -11204,7 +11228,7 @@ def test_delete_evaluation_expectation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11250,10 +11274,11 @@ def test_delete_evaluation_expectation_non_empty_request_with_auto_populated_fie
         client.delete_evaluation_expectation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.DeleteEvaluationExpectationRequest(
+        request_msg = evaluation_service.DeleteEvaluationExpectationRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_evaluation_expectation_use_cached_wrapped_rpc():
@@ -11339,9 +11364,15 @@ async def test_delete_evaluation_expectation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.DeleteEvaluationExpectationRequest(),
+        {},
+    ],
+)
 async def test_delete_evaluation_expectation_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.DeleteEvaluationExpectationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11350,7 +11381,7 @@ async def test_delete_evaluation_expectation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11368,11 +11399,6 @@ async def test_delete_evaluation_expectation_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_evaluation_expectation_async_from_dict():
-    await test_delete_evaluation_expectation_async(request_type=dict)
 
 
 def test_delete_evaluation_expectation_field_headers():
@@ -11525,8 +11551,8 @@ async def test_delete_evaluation_expectation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.CreateScheduledEvaluationRunRequest,
-        dict,
+        evaluation_service.CreateScheduledEvaluationRunRequest(),
+        {},
     ],
 )
 def test_create_scheduled_evaluation_run(request_type, transport: str = "grpc"):
@@ -11537,7 +11563,7 @@ def test_create_scheduled_evaluation_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11602,10 +11628,11 @@ def test_create_scheduled_evaluation_run_non_empty_request_with_auto_populated_f
         client.create_scheduled_evaluation_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.CreateScheduledEvaluationRunRequest(
+        request_msg = evaluation_service.CreateScheduledEvaluationRunRequest(
             parent="parent_value",
             scheduled_evaluation_run_id="scheduled_evaluation_run_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_scheduled_evaluation_run_use_cached_wrapped_rpc():
@@ -11691,9 +11718,15 @@ async def test_create_scheduled_evaluation_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.CreateScheduledEvaluationRunRequest(),
+        {},
+    ],
+)
 async def test_create_scheduled_evaluation_run_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.CreateScheduledEvaluationRunRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11702,7 +11735,7 @@ async def test_create_scheduled_evaluation_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11741,11 +11774,6 @@ async def test_create_scheduled_evaluation_run_async(
     assert response.created_by == "created_by_value"
     assert response.last_updated_by == "last_updated_by_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_create_scheduled_evaluation_run_async_from_dict():
-    await test_create_scheduled_evaluation_run_async(request_type=dict)
 
 
 def test_create_scheduled_evaluation_run_field_headers():
@@ -11930,8 +11958,8 @@ async def test_create_scheduled_evaluation_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.GetScheduledEvaluationRunRequest,
-        dict,
+        evaluation_service.GetScheduledEvaluationRunRequest(),
+        {},
     ],
 )
 def test_get_scheduled_evaluation_run(request_type, transport: str = "grpc"):
@@ -11942,7 +11970,7 @@ def test_get_scheduled_evaluation_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12006,9 +12034,10 @@ def test_get_scheduled_evaluation_run_non_empty_request_with_auto_populated_fiel
         client.get_scheduled_evaluation_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.GetScheduledEvaluationRunRequest(
+        request_msg = evaluation_service.GetScheduledEvaluationRunRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_scheduled_evaluation_run_use_cached_wrapped_rpc():
@@ -12094,9 +12123,15 @@ async def test_get_scheduled_evaluation_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.GetScheduledEvaluationRunRequest(),
+        {},
+    ],
+)
 async def test_get_scheduled_evaluation_run_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.GetScheduledEvaluationRunRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12105,7 +12140,7 @@ async def test_get_scheduled_evaluation_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12144,11 +12179,6 @@ async def test_get_scheduled_evaluation_run_async(
     assert response.created_by == "created_by_value"
     assert response.last_updated_by == "last_updated_by_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_scheduled_evaluation_run_async_from_dict():
-    await test_get_scheduled_evaluation_run_async(request_type=dict)
 
 
 def test_get_scheduled_evaluation_run_field_headers():
@@ -12305,8 +12335,8 @@ async def test_get_scheduled_evaluation_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.ListScheduledEvaluationRunsRequest,
-        dict,
+        evaluation_service.ListScheduledEvaluationRunsRequest(),
+        {},
     ],
 )
 def test_list_scheduled_evaluation_runs(request_type, transport: str = "grpc"):
@@ -12317,7 +12347,7 @@ def test_list_scheduled_evaluation_runs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12368,12 +12398,13 @@ def test_list_scheduled_evaluation_runs_non_empty_request_with_auto_populated_fi
         client.list_scheduled_evaluation_runs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.ListScheduledEvaluationRunsRequest(
+        request_msg = evaluation_service.ListScheduledEvaluationRunsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_scheduled_evaluation_runs_use_cached_wrapped_rpc():
@@ -12459,9 +12490,15 @@ async def test_list_scheduled_evaluation_runs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ListScheduledEvaluationRunsRequest(),
+        {},
+    ],
+)
 async def test_list_scheduled_evaluation_runs_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.ListScheduledEvaluationRunsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12470,7 +12507,7 @@ async def test_list_scheduled_evaluation_runs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12493,11 +12530,6 @@ async def test_list_scheduled_evaluation_runs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListScheduledEvaluationRunsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_scheduled_evaluation_runs_async_from_dict():
-    await test_list_scheduled_evaluation_runs_async(request_type=dict)
 
 
 def test_list_scheduled_evaluation_runs_field_headers():
@@ -12845,9 +12877,7 @@ async def test_list_scheduled_evaluation_runs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_scheduled_evaluation_runs(request={})
         ).pages:
             pages.append(page_)
@@ -12858,8 +12888,8 @@ async def test_list_scheduled_evaluation_runs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.UpdateScheduledEvaluationRunRequest,
-        dict,
+        evaluation_service.UpdateScheduledEvaluationRunRequest(),
+        {},
     ],
 )
 def test_update_scheduled_evaluation_run(request_type, transport: str = "grpc"):
@@ -12870,7 +12900,7 @@ def test_update_scheduled_evaluation_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12932,7 +12962,8 @@ def test_update_scheduled_evaluation_run_non_empty_request_with_auto_populated_f
         client.update_scheduled_evaluation_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.UpdateScheduledEvaluationRunRequest()
+        request_msg = evaluation_service.UpdateScheduledEvaluationRunRequest()
+        assert args[0] == request_msg
 
 
 def test_update_scheduled_evaluation_run_use_cached_wrapped_rpc():
@@ -13018,9 +13049,15 @@ async def test_update_scheduled_evaluation_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.UpdateScheduledEvaluationRunRequest(),
+        {},
+    ],
+)
 async def test_update_scheduled_evaluation_run_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.UpdateScheduledEvaluationRunRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13029,7 +13066,7 @@ async def test_update_scheduled_evaluation_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13068,11 +13105,6 @@ async def test_update_scheduled_evaluation_run_async(
     assert response.created_by == "created_by_value"
     assert response.last_updated_by == "last_updated_by_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_update_scheduled_evaluation_run_async_from_dict():
-    await test_update_scheduled_evaluation_run_async(request_type=dict)
 
 
 def test_update_scheduled_evaluation_run_field_headers():
@@ -13247,8 +13279,8 @@ async def test_update_scheduled_evaluation_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.DeleteScheduledEvaluationRunRequest,
-        dict,
+        evaluation_service.DeleteScheduledEvaluationRunRequest(),
+        {},
     ],
 )
 def test_delete_scheduled_evaluation_run(request_type, transport: str = "grpc"):
@@ -13259,7 +13291,7 @@ def test_delete_scheduled_evaluation_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13305,10 +13337,11 @@ def test_delete_scheduled_evaluation_run_non_empty_request_with_auto_populated_f
         client.delete_scheduled_evaluation_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.DeleteScheduledEvaluationRunRequest(
+        request_msg = evaluation_service.DeleteScheduledEvaluationRunRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_scheduled_evaluation_run_use_cached_wrapped_rpc():
@@ -13394,9 +13427,15 @@ async def test_delete_scheduled_evaluation_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.DeleteScheduledEvaluationRunRequest(),
+        {},
+    ],
+)
 async def test_delete_scheduled_evaluation_run_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.DeleteScheduledEvaluationRunRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13405,7 +13444,7 @@ async def test_delete_scheduled_evaluation_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13423,11 +13462,6 @@ async def test_delete_scheduled_evaluation_run_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_scheduled_evaluation_run_async_from_dict():
-    await test_delete_scheduled_evaluation_run_async(request_type=dict)
 
 
 def test_delete_scheduled_evaluation_run_field_headers():
@@ -13580,8 +13614,8 @@ async def test_delete_scheduled_evaluation_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.TestPersonaVoiceRequest,
-        dict,
+        evaluation_service.TestPersonaVoiceRequest(),
+        {},
     ],
 )
 def test_test_persona_voice(request_type, transport: str = "grpc"):
@@ -13592,7 +13626,7 @@ def test_test_persona_voice(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13642,11 +13676,12 @@ def test_test_persona_voice_non_empty_request_with_auto_populated_field():
         client.test_persona_voice(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.TestPersonaVoiceRequest(
+        request_msg = evaluation_service.TestPersonaVoiceRequest(
             app="app_value",
             persona_id="persona_id_value",
             text="text_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_persona_voice_use_cached_wrapped_rpc():
@@ -13731,10 +13766,14 @@ async def test_test_persona_voice_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_test_persona_voice_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.TestPersonaVoiceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.TestPersonaVoiceRequest(),
+        {},
+    ],
+)
+async def test_test_persona_voice_async(request_type, transport: str = "grpc_asyncio"):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13742,7 +13781,7 @@ async def test_test_persona_voice_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13765,11 +13804,6 @@ async def test_test_persona_voice_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, evaluation_service.TestPersonaVoiceResponse)
     assert response.audio == b"audio_blob"
-
-
-@pytest.mark.asyncio
-async def test_test_persona_voice_async_from_dict():
-    await test_test_persona_voice_async(request_type=dict)
 
 
 def test_test_persona_voice_field_headers():
@@ -13926,8 +13960,8 @@ async def test_test_persona_voice_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.ExportEvaluationsRequest,
-        dict,
+        evaluation_service.ExportEvaluationsRequest(),
+        {},
     ],
 )
 def test_export_evaluations(request_type, transport: str = "grpc"):
@@ -13938,7 +13972,7 @@ def test_export_evaluations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13983,9 +14017,10 @@ def test_export_evaluations_non_empty_request_with_auto_populated_field():
         client.export_evaluations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.ExportEvaluationsRequest(
+        request_msg = evaluation_service.ExportEvaluationsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_evaluations_use_cached_wrapped_rpc():
@@ -14080,10 +14115,14 @@ async def test_export_evaluations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_evaluations_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.ExportEvaluationsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ExportEvaluationsRequest(),
+        {},
+    ],
+)
+async def test_export_evaluations_async(request_type, transport: str = "grpc_asyncio"):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14091,7 +14130,7 @@ async def test_export_evaluations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14111,11 +14150,6 @@ async def test_export_evaluations_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_evaluations_async_from_dict():
-    await test_export_evaluations_async(request_type=dict)
 
 
 def test_export_evaluations_field_headers():
@@ -14269,6 +14303,1073 @@ async def test_export_evaluations_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ExportEvaluationRunsRequest(),
+        {},
+    ],
+)
+def test_export_evaluation_runs(request_type, transport: str = "grpc"):
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_runs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.export_evaluation_runs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = evaluation_service.ExportEvaluationRunsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_export_evaluation_runs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = evaluation_service.ExportEvaluationRunsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_runs), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.export_evaluation_runs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = evaluation_service.ExportEvaluationRunsRequest(
+            parent="parent_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_export_evaluation_runs_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EvaluationServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.export_evaluation_runs
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.export_evaluation_runs] = (
+            mock_rpc
+        )
+        request = {}
+        client.export_evaluation_runs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.export_evaluation_runs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_export_evaluation_runs_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EvaluationServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.export_evaluation_runs
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.export_evaluation_runs
+        ] = mock_rpc
+
+        request = {}
+        await client.export_evaluation_runs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.export_evaluation_runs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ExportEvaluationRunsRequest(),
+        {},
+    ],
+)
+async def test_export_evaluation_runs_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_runs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.export_evaluation_runs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = evaluation_service.ExportEvaluationRunsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_export_evaluation_runs_field_headers():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = evaluation_service.ExportEvaluationRunsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_runs), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.export_evaluation_runs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_export_evaluation_runs_field_headers_async():
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = evaluation_service.ExportEvaluationRunsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_runs), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.export_evaluation_runs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_export_evaluation_runs_flattened():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_runs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.export_evaluation_runs(
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].names
+        mock_val = ["names_value"]
+        assert arg == mock_val
+
+
+def test_export_evaluation_runs_flattened_error():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.export_evaluation_runs(
+            evaluation_service.ExportEvaluationRunsRequest(),
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+
+@pytest.mark.asyncio
+async def test_export_evaluation_runs_flattened_async():
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_runs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.export_evaluation_runs(
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].names
+        mock_val = ["names_value"]
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_export_evaluation_runs_flattened_error_async():
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.export_evaluation_runs(
+            evaluation_service.ExportEvaluationRunsRequest(),
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ExportEvaluationResultsRequest(),
+        {},
+    ],
+)
+def test_export_evaluation_results(request_type, transport: str = "grpc"):
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_results), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.export_evaluation_results(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = evaluation_service.ExportEvaluationResultsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_export_evaluation_results_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = evaluation_service.ExportEvaluationResultsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_results), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.export_evaluation_results(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = evaluation_service.ExportEvaluationResultsRequest(
+            parent="parent_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_export_evaluation_results_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EvaluationServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.export_evaluation_results
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.export_evaluation_results
+        ] = mock_rpc
+        request = {}
+        client.export_evaluation_results(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.export_evaluation_results(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_export_evaluation_results_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EvaluationServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.export_evaluation_results
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.export_evaluation_results
+        ] = mock_rpc
+
+        request = {}
+        await client.export_evaluation_results(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.export_evaluation_results(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ExportEvaluationResultsRequest(),
+        {},
+    ],
+)
+async def test_export_evaluation_results_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_results), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.export_evaluation_results(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = evaluation_service.ExportEvaluationResultsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_export_evaluation_results_field_headers():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = evaluation_service.ExportEvaluationResultsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_results), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.export_evaluation_results(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_export_evaluation_results_field_headers_async():
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = evaluation_service.ExportEvaluationResultsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_results), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.export_evaluation_results(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_export_evaluation_results_flattened():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_results), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.export_evaluation_results(
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].names
+        mock_val = ["names_value"]
+        assert arg == mock_val
+
+
+def test_export_evaluation_results_flattened_error():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.export_evaluation_results(
+            evaluation_service.ExportEvaluationResultsRequest(),
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+
+@pytest.mark.asyncio
+async def test_export_evaluation_results_flattened_async():
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_results), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.export_evaluation_results(
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].names
+        mock_val = ["names_value"]
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_export_evaluation_results_flattened_error_async():
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.export_evaluation_results(
+            evaluation_service.ExportEvaluationResultsRequest(),
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.RunEvaluationResultMetricsRequest(),
+        {},
+    ],
+)
+def test_run_evaluation_result_metrics(request_type, transport: str = "grpc"):
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_evaluation_result_metrics), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.run_evaluation_result_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = evaluation_service.RunEvaluationResultMetricsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_run_evaluation_result_metrics_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = evaluation_service.RunEvaluationResultMetricsRequest(
+        evaluation_result_id="evaluation_result_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_evaluation_result_metrics), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.run_evaluation_result_metrics(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = evaluation_service.RunEvaluationResultMetricsRequest(
+            evaluation_result_id="evaluation_result_id_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_run_evaluation_result_metrics_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EvaluationServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.run_evaluation_result_metrics
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.run_evaluation_result_metrics
+        ] = mock_rpc
+        request = {}
+        client.run_evaluation_result_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.run_evaluation_result_metrics(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_run_evaluation_result_metrics_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = EvaluationServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.run_evaluation_result_metrics
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.run_evaluation_result_metrics
+        ] = mock_rpc
+
+        request = {}
+        await client.run_evaluation_result_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.run_evaluation_result_metrics(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.RunEvaluationResultMetricsRequest(),
+        {},
+    ],
+)
+async def test_run_evaluation_result_metrics_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_evaluation_result_metrics), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.run_evaluation_result_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = evaluation_service.RunEvaluationResultMetricsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_run_evaluation_result_metrics_field_headers():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = evaluation_service.RunEvaluationResultMetricsRequest()
+
+    request.evaluation_result_id = "evaluation_result_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_evaluation_result_metrics), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.run_evaluation_result_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "evaluation_result_id=evaluation_result_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_run_evaluation_result_metrics_field_headers_async():
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = evaluation_service.RunEvaluationResultMetricsRequest()
+
+    request.evaluation_result_id = "evaluation_result_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_evaluation_result_metrics), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.run_evaluation_result_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "evaluation_result_id=evaluation_result_id_value",
+    ) in kw["metadata"]
+
+
+def test_run_evaluation_result_metrics_flattened():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_evaluation_result_metrics), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.run_evaluation_result_metrics(
+            evaluation_result_id="evaluation_result_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].evaluation_result_id
+        mock_val = "evaluation_result_id_value"
+        assert arg == mock_val
+
+
+def test_run_evaluation_result_metrics_flattened_error():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.run_evaluation_result_metrics(
+            evaluation_service.RunEvaluationResultMetricsRequest(),
+            evaluation_result_id="evaluation_result_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_run_evaluation_result_metrics_flattened_async():
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_evaluation_result_metrics), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.run_evaluation_result_metrics(
+            evaluation_result_id="evaluation_result_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].evaluation_result_id
+        mock_val = "evaluation_result_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_run_evaluation_result_metrics_flattened_error_async():
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.run_evaluation_result_metrics(
+            evaluation_service.RunEvaluationResultMetricsRequest(),
+            evaluation_result_id="evaluation_result_id_value",
+        )
+
+
 def test_run_evaluation_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -14379,7 +15480,7 @@ def test_run_evaluation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_run_evaluation_rest_unset_required_fields():
@@ -14567,7 +15668,7 @@ def test_upload_evaluation_audio_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_upload_evaluation_audio_rest_unset_required_fields():
@@ -14762,7 +15863,7 @@ def test_create_evaluation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_evaluation_rest_unset_required_fields():
@@ -14986,7 +16087,7 @@ def test_generate_evaluation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_evaluation_rest_unset_required_fields():
@@ -15170,7 +16271,7 @@ def test_import_evaluations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_import_evaluations_rest_unset_required_fields():
@@ -15354,7 +16455,7 @@ def test_create_evaluation_dataset_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_evaluation_dataset_rest_unset_required_fields():
@@ -15544,7 +16645,7 @@ def test_update_evaluation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_evaluation_rest_unset_required_fields():
@@ -15759,7 +16860,7 @@ def test_update_evaluation_dataset_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_evaluation_dataset_rest_unset_required_fields():
@@ -15949,7 +17050,7 @@ def test_delete_evaluation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_evaluation_rest_unset_required_fields():
@@ -16137,7 +17238,7 @@ def test_delete_evaluation_result_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_evaluation_result_rest_unset_required_fields():
@@ -16319,7 +17420,7 @@ def test_delete_evaluation_dataset_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_evaluation_dataset_rest_unset_required_fields():
@@ -16503,7 +17604,7 @@ def test_delete_evaluation_run_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_evaluation_run_rest_unset_required_fields():
@@ -16681,7 +17782,7 @@ def test_get_evaluation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_evaluation_rest_unset_required_fields():
@@ -16866,7 +17967,7 @@ def test_get_evaluation_result_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_evaluation_result_rest_unset_required_fields():
@@ -17051,7 +18152,7 @@ def test_get_evaluation_dataset_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_evaluation_dataset_rest_unset_required_fields():
@@ -17235,7 +18336,7 @@ def test_get_evaluation_run_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_evaluation_run_rest_unset_required_fields():
@@ -17429,7 +18530,7 @@ def test_list_evaluations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_evaluations_rest_unset_required_fields():
@@ -17699,7 +18800,7 @@ def test_list_evaluation_results_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_evaluation_results_rest_unset_required_fields():
@@ -17971,7 +19072,7 @@ def test_list_evaluation_datasets_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_evaluation_datasets_rest_unset_required_fields():
@@ -18240,7 +19341,7 @@ def test_list_evaluation_runs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_evaluation_runs_rest_unset_required_fields():
@@ -18507,7 +19608,7 @@ def test_list_evaluation_expectations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_evaluation_expectations_rest_unset_required_fields():
@@ -18766,7 +19867,7 @@ def test_get_evaluation_expectation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_evaluation_expectation_rest_unset_required_fields():
@@ -18954,7 +20055,7 @@ def test_create_evaluation_expectation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_evaluation_expectation_rest_unset_required_fields():
@@ -19157,7 +20258,7 @@ def test_update_evaluation_expectation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_evaluation_expectation_rest_unset_required_fields():
@@ -19355,7 +20456,7 @@ def test_delete_evaluation_expectation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_evaluation_expectation_rest_unset_required_fields():
@@ -19543,7 +20644,7 @@ def test_create_scheduled_evaluation_run_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_scheduled_evaluation_run_rest_unset_required_fields():
@@ -19744,7 +20845,7 @@ def test_get_scheduled_evaluation_run_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_scheduled_evaluation_run_rest_unset_required_fields():
@@ -19940,7 +21041,7 @@ def test_list_scheduled_evaluation_runs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_scheduled_evaluation_runs_rest_unset_required_fields():
@@ -20201,7 +21302,7 @@ def test_update_scheduled_evaluation_run_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_scheduled_evaluation_run_rest_unset_required_fields():
@@ -20397,7 +21498,7 @@ def test_delete_scheduled_evaluation_run_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_scheduled_evaluation_run_rest_unset_required_fields():
@@ -20590,7 +21691,7 @@ def test_test_persona_voice_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_persona_voice_rest_unset_required_fields():
@@ -20787,7 +21888,7 @@ def test_export_evaluations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_export_evaluations_rest_unset_required_fields():
@@ -20860,6 +21961,589 @@ def test_export_evaluations_rest_flattened_error(transport: str = "rest"):
         client.export_evaluations(
             evaluation_service.ExportEvaluationsRequest(),
             parent="parent_value",
+        )
+
+
+def test_export_evaluation_runs_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EvaluationServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.export_evaluation_runs
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.export_evaluation_runs] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.export_evaluation_runs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.export_evaluation_runs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_export_evaluation_runs_rest_required_fields(
+    request_type=evaluation_service.ExportEvaluationRunsRequest,
+):
+    transport_class = transports.EvaluationServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["names"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).export_evaluation_runs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["names"] = "names_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).export_evaluation_runs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "names" in jsonified_request
+    assert jsonified_request["names"] == "names_value"
+
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.export_evaluation_runs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_export_evaluation_runs_rest_unset_required_fields():
+    transport = transports.EvaluationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.export_evaluation_runs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "names",
+            )
+        )
+    )
+
+
+def test_export_evaluation_runs_rest_flattened():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2/apps/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            names=["names_value"],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.export_evaluation_runs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{parent=projects/*/locations/*/apps/*}/evaluationRuns:export"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_export_evaluation_runs_rest_flattened_error(transport: str = "rest"):
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.export_evaluation_runs(
+            evaluation_service.ExportEvaluationRunsRequest(),
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+
+def test_export_evaluation_results_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EvaluationServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.export_evaluation_results
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.export_evaluation_results
+        ] = mock_rpc
+
+        request = {}
+        client.export_evaluation_results(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.export_evaluation_results(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_export_evaluation_results_rest_required_fields(
+    request_type=evaluation_service.ExportEvaluationResultsRequest,
+):
+    transport_class = transports.EvaluationServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["names"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).export_evaluation_results._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["names"] = "names_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).export_evaluation_results._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "names" in jsonified_request
+    assert jsonified_request["names"] == "names_value"
+
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.export_evaluation_results(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_export_evaluation_results_rest_unset_required_fields():
+    transport = transports.EvaluationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.export_evaluation_results._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "names",
+            )
+        )
+    )
+
+
+def test_export_evaluation_results_rest_flattened():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/apps/sample3/evaluations/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            names=["names_value"],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.export_evaluation_results(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{parent=projects/*/locations/*/apps/*/evaluations/*}/results:export"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_export_evaluation_results_rest_flattened_error(transport: str = "rest"):
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.export_evaluation_results(
+            evaluation_service.ExportEvaluationResultsRequest(),
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+
+def test_run_evaluation_result_metrics_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = EvaluationServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.run_evaluation_result_metrics
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.run_evaluation_result_metrics
+        ] = mock_rpc
+
+        request = {}
+        client.run_evaluation_result_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.run_evaluation_result_metrics(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_run_evaluation_result_metrics_rest_required_fields(
+    request_type=evaluation_service.RunEvaluationResultMetricsRequest,
+):
+    transport_class = transports.EvaluationServiceRestTransport
+
+    request_init = {}
+    request_init["evaluation_result_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).run_evaluation_result_metrics._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["evaluationResultId"] = "evaluation_result_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).run_evaluation_result_metrics._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "evaluationResultId" in jsonified_request
+    assert jsonified_request["evaluationResultId"] == "evaluation_result_id_value"
+
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.run_evaluation_result_metrics(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_run_evaluation_result_metrics_rest_unset_required_fields():
+    transport = transports.EvaluationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.run_evaluation_result_metrics._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("evaluationResultId",)))
+
+
+def test_run_evaluation_result_metrics_rest_flattened():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "evaluation_result_id": "projects/sample1/locations/sample2/apps/sample3/evaluations/sample4/results/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            evaluation_result_id="evaluation_result_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.run_evaluation_result_metrics(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{evaluation_result_id=projects/*/locations/*/apps/*/evaluations/*/results/*}:runEvaluationResultMetrics"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_run_evaluation_result_metrics_rest_flattened_error(transport: str = "rest"):
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.run_evaluation_result_metrics(
+            evaluation_service.RunEvaluationResultMetricsRequest(),
+            evaluation_result_id="evaluation_result_id_value",
         )
 
 
@@ -20986,7 +22670,6 @@ def test_run_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation.RunEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -21009,7 +22692,6 @@ def test_upload_evaluation_audio_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UploadEvaluationAudioRequest()
-
         assert args[0] == request_msg
 
 
@@ -21032,7 +22714,6 @@ def test_create_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -21055,7 +22736,6 @@ def test_generate_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GenerateEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -21078,7 +22758,6 @@ def test_import_evaluations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ImportEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21101,7 +22780,6 @@ def test_create_evaluation_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateEvaluationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -21124,7 +22802,6 @@ def test_update_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UpdateEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -21147,7 +22824,6 @@ def test_update_evaluation_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UpdateEvaluationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -21170,7 +22846,6 @@ def test_delete_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -21193,7 +22868,6 @@ def test_delete_evaluation_result_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -21216,7 +22890,6 @@ def test_delete_evaluation_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -21239,7 +22912,6 @@ def test_delete_evaluation_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -21260,7 +22932,6 @@ def test_get_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -21283,7 +22954,6 @@ def test_get_evaluation_result_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -21306,7 +22976,6 @@ def test_get_evaluation_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -21329,7 +22998,6 @@ def test_get_evaluation_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -21350,7 +23018,6 @@ def test_list_evaluations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21373,7 +23040,6 @@ def test_list_evaluation_results_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationResultsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21396,7 +23062,6 @@ def test_list_evaluation_datasets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationDatasetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21419,7 +23084,6 @@ def test_list_evaluation_runs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21442,7 +23106,6 @@ def test_list_evaluation_expectations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationExpectationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21465,7 +23128,6 @@ def test_get_evaluation_expectation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationExpectationRequest()
-
         assert args[0] == request_msg
 
 
@@ -21488,7 +23150,6 @@ def test_create_evaluation_expectation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateEvaluationExpectationRequest()
-
         assert args[0] == request_msg
 
 
@@ -21511,7 +23172,6 @@ def test_update_evaluation_expectation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UpdateEvaluationExpectationRequest()
-
         assert args[0] == request_msg
 
 
@@ -21534,7 +23194,6 @@ def test_delete_evaluation_expectation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationExpectationRequest()
-
         assert args[0] == request_msg
 
 
@@ -21557,7 +23216,6 @@ def test_create_scheduled_evaluation_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateScheduledEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -21580,7 +23238,6 @@ def test_get_scheduled_evaluation_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetScheduledEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -21603,7 +23260,6 @@ def test_list_scheduled_evaluation_runs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListScheduledEvaluationRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21626,7 +23282,6 @@ def test_update_scheduled_evaluation_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UpdateScheduledEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -21649,7 +23304,6 @@ def test_delete_scheduled_evaluation_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteScheduledEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -21672,7 +23326,6 @@ def test_test_persona_voice_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.TestPersonaVoiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -21695,7 +23348,72 @@ def test_export_evaluations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ExportEvaluationsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_evaluation_runs_empty_call_grpc():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_runs), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.export_evaluation_runs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = evaluation_service.ExportEvaluationRunsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_evaluation_results_empty_call_grpc():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_results), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.export_evaluation_results(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = evaluation_service.ExportEvaluationResultsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_run_evaluation_result_metrics_empty_call_grpc():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_evaluation_result_metrics), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.run_evaluation_result_metrics(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = evaluation_service.RunEvaluationResultMetricsRequest()
         assert args[0] == request_msg
 
 
@@ -21734,7 +23452,6 @@ async def test_run_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation.RunEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -21764,7 +23481,6 @@ async def test_upload_evaluation_audio_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UploadEvaluationAudioRequest()
-
         assert args[0] == request_msg
 
 
@@ -21802,7 +23518,6 @@ async def test_create_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -21829,7 +23544,6 @@ async def test_generate_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GenerateEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -21856,7 +23570,6 @@ async def test_import_evaluations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ImportEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21890,7 +23603,6 @@ async def test_create_evaluation_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateEvaluationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -21928,7 +23640,6 @@ async def test_update_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UpdateEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -21962,7 +23673,6 @@ async def test_update_evaluation_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UpdateEvaluationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -21987,7 +23697,6 @@ async def test_delete_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -22012,7 +23721,6 @@ async def test_delete_evaluation_result_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -22037,7 +23745,6 @@ async def test_delete_evaluation_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -22064,7 +23771,6 @@ async def test_delete_evaluation_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -22100,7 +23806,6 @@ async def test_get_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -22128,7 +23833,7 @@ async def test_get_evaluation_result_empty_call_grpc_asyncio():
                 app_version="app_version_value",
                 app_version_display_name="app_version_display_name_value",
                 changelog="changelog_value",
-                execution_state=evaluation.EvaluationResult.ExecutionState.RUNNING,
+                execution_state=evaluation.EvaluationResult.ExecutionState.QUEUED,
                 golden_run_method=golden_run.GoldenRunMethod.STABLE,
             )
         )
@@ -22138,7 +23843,6 @@ async def test_get_evaluation_result_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -22172,7 +23876,6 @@ async def test_get_evaluation_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -22202,10 +23905,11 @@ async def test_get_evaluation_run_empty_call_grpc_asyncio():
                 evaluations=["evaluations_value"],
                 evaluation_dataset="evaluation_dataset_value",
                 evaluation_type=evaluation.EvaluationRun.EvaluationType.GOLDEN,
-                state=evaluation.EvaluationRun.EvaluationRunState.RUNNING,
+                state=evaluation.EvaluationRun.EvaluationRunState.QUEUED,
                 run_count=989,
                 scheduled_evaluation_run="scheduled_evaluation_run_value",
                 golden_run_method=golden_run.GoldenRunMethod.STABLE,
+                operation="operation_value",
             )
         )
         await client.get_evaluation_run(request=None)
@@ -22214,7 +23918,6 @@ async def test_get_evaluation_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -22241,7 +23944,6 @@ async def test_list_evaluations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22270,7 +23972,6 @@ async def test_list_evaluation_results_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationResultsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22299,7 +24000,6 @@ async def test_list_evaluation_datasets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationDatasetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22328,7 +24028,6 @@ async def test_list_evaluation_runs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22357,7 +24056,6 @@ async def test_list_evaluation_expectations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationExpectationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22389,7 +24087,6 @@ async def test_get_evaluation_expectation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationExpectationRequest()
-
         assert args[0] == request_msg
 
 
@@ -22421,7 +24118,6 @@ async def test_create_evaluation_expectation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateEvaluationExpectationRequest()
-
         assert args[0] == request_msg
 
 
@@ -22453,7 +24149,6 @@ async def test_update_evaluation_expectation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UpdateEvaluationExpectationRequest()
-
         assert args[0] == request_msg
 
 
@@ -22478,7 +24173,6 @@ async def test_delete_evaluation_expectation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationExpectationRequest()
-
         assert args[0] == request_msg
 
 
@@ -22515,7 +24209,6 @@ async def test_create_scheduled_evaluation_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateScheduledEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -22552,7 +24245,6 @@ async def test_get_scheduled_evaluation_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetScheduledEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -22581,7 +24273,6 @@ async def test_list_scheduled_evaluation_runs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListScheduledEvaluationRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22618,7 +24309,6 @@ async def test_update_scheduled_evaluation_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UpdateScheduledEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -22643,7 +24333,6 @@ async def test_delete_scheduled_evaluation_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteScheduledEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -22672,7 +24361,6 @@ async def test_test_persona_voice_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.TestPersonaVoiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -22699,7 +24387,84 @@ async def test_export_evaluations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ExportEvaluationsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_export_evaluation_runs_empty_call_grpc_asyncio():
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_runs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.export_evaluation_runs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = evaluation_service.ExportEvaluationRunsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_export_evaluation_results_empty_call_grpc_asyncio():
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_results), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.export_evaluation_results(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = evaluation_service.ExportEvaluationResultsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_run_evaluation_result_metrics_empty_call_grpc_asyncio():
+    client = EvaluationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_evaluation_result_metrics), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.run_evaluation_result_metrics(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = evaluation_service.RunEvaluationResultMetricsRequest()
         assert args[0] == request_msg
 
 
@@ -23086,7 +24851,19 @@ def test_create_evaluation_rest_call_success(request_type):
                                 "agent_transfer": {},
                                 "updated_variables": {},
                                 "mock_tool_response": {},
+                                "no_tool_calls": True,
                                 "note": "note_value",
+                                "skip_evaluation": True,
+                                "expectation_level_metrics_thresholds_override": {
+                                    "tool_invocation_parameter_correctness_threshold": 0.5037
+                                },
+                                "agent_response_semantic_similarity_metrics_config_override": {
+                                    "enable_semantic_similarity_metrics": True
+                                },
+                                "agent_response_hallucination_metrics_config_override": {
+                                    "enable_hallucination_metrics": True
+                                },
+                                "comparison_type": 1,
                             },
                         }
                     ],
@@ -23098,6 +24875,12 @@ def test_create_evaluation_rest_call_success(request_type):
                         "attributes": {},
                         "child_spans": {},
                     },
+                    "turn_level_metrics_thresholds_override": {
+                        "semantic_similarity_success_threshold": 3966,
+                        "overall_tool_invocation_correctness_threshold": 0.4833,
+                        "semantic_similarity_channel": 1,
+                    },
+                    "hallucination_metric_behavior_override": 1,
                 }
             ],
             "evaluation_expectations": [
@@ -23126,6 +24909,7 @@ def test_create_evaluation_rest_call_success(request_type):
                 "evaluation_expectations_value1",
                 "evaluation_expectations_value2",
             ],
+            "scenario_execution_mode": 1,
         },
         "name": "name_value",
         "display_name": "display_name_value",
@@ -23180,6 +24964,7 @@ def test_create_evaluation_rest_call_success(request_type):
                                 "observed_tool_response": {},
                                 "observed_agent_response": {},
                                 "observed_agent_transfer": {},
+                                "observed_payload": {},
                                 "expectation": {},
                                 "outcome": 1,
                                 "semantic_similarity_result": {
@@ -23221,6 +25006,7 @@ def test_create_evaluation_rest_call_success(request_type):
                             "error_type": 1,
                             "error_message": "error_message_value",
                             "session_id": "session_id_value",
+                            "user_facing_error_message": "user_facing_error_message_value",
                         },
                         "span_latencies": [
                             {
@@ -23314,17 +25100,11 @@ def test_create_evaluation_rest_call_success(request_type):
             "app_version_display_name": "app_version_display_name_value",
             "changelog": "changelog_value",
             "changelog_create_time": {},
-            "execution_state": 1,
+            "execution_state": 5,
             "evaluation_metrics_thresholds": {
                 "golden_evaluation_metrics_thresholds": {
-                    "turn_level_metrics_thresholds": {
-                        "semantic_similarity_success_threshold": 3966,
-                        "overall_tool_invocation_correctness_threshold": 0.4833,
-                        "semantic_similarity_channel": 1,
-                    },
-                    "expectation_level_metrics_thresholds": {
-                        "tool_invocation_parameter_correctness_threshold": 0.5037
-                    },
+                    "turn_level_metrics_thresholds": {},
+                    "expectation_level_metrics_thresholds": {},
                     "tool_matching_settings": {"extra_tool_call_behavior": 1},
                 },
                 "hallucination_metric_behavior": 1,
@@ -23345,6 +25125,22 @@ def test_create_evaluation_rest_call_success(request_type):
         },
         "invalid": True,
         "last_ten_results": {},
+        "evaluation_metrics_threshold_override": {},
+        "evaluation_metrics_config_override": {
+            "golden_metrics_config": {
+                "semantic_similarity_metrics_config": {},
+                "tool_correctness_metrics_config": {
+                    "enable_tool_correctness_metrics": True
+                },
+                "step_tool_correctness_metrics_config": {},
+            },
+            "scenario_metrics_config": {
+                "user_goal_met_metrics_config": {"enable_user_goal_met_metrics": True},
+                "expectations_met_metrics_config": {
+                    "enable_expectations_met_metrics": True
+                },
+            },
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -24150,7 +25946,19 @@ def test_update_evaluation_rest_call_success(request_type):
                                 "agent_transfer": {},
                                 "updated_variables": {},
                                 "mock_tool_response": {},
+                                "no_tool_calls": True,
                                 "note": "note_value",
+                                "skip_evaluation": True,
+                                "expectation_level_metrics_thresholds_override": {
+                                    "tool_invocation_parameter_correctness_threshold": 0.5037
+                                },
+                                "agent_response_semantic_similarity_metrics_config_override": {
+                                    "enable_semantic_similarity_metrics": True
+                                },
+                                "agent_response_hallucination_metrics_config_override": {
+                                    "enable_hallucination_metrics": True
+                                },
+                                "comparison_type": 1,
                             },
                         }
                     ],
@@ -24162,6 +25970,12 @@ def test_update_evaluation_rest_call_success(request_type):
                         "attributes": {},
                         "child_spans": {},
                     },
+                    "turn_level_metrics_thresholds_override": {
+                        "semantic_similarity_success_threshold": 3966,
+                        "overall_tool_invocation_correctness_threshold": 0.4833,
+                        "semantic_similarity_channel": 1,
+                    },
+                    "hallucination_metric_behavior_override": 1,
                 }
             ],
             "evaluation_expectations": [
@@ -24190,6 +26004,7 @@ def test_update_evaluation_rest_call_success(request_type):
                 "evaluation_expectations_value1",
                 "evaluation_expectations_value2",
             ],
+            "scenario_execution_mode": 1,
         },
         "name": "projects/sample1/locations/sample2/apps/sample3/evaluations/sample4",
         "display_name": "display_name_value",
@@ -24244,6 +26059,7 @@ def test_update_evaluation_rest_call_success(request_type):
                                 "observed_tool_response": {},
                                 "observed_agent_response": {},
                                 "observed_agent_transfer": {},
+                                "observed_payload": {},
                                 "expectation": {},
                                 "outcome": 1,
                                 "semantic_similarity_result": {
@@ -24285,6 +26101,7 @@ def test_update_evaluation_rest_call_success(request_type):
                             "error_type": 1,
                             "error_message": "error_message_value",
                             "session_id": "session_id_value",
+                            "user_facing_error_message": "user_facing_error_message_value",
                         },
                         "span_latencies": [
                             {
@@ -24378,17 +26195,11 @@ def test_update_evaluation_rest_call_success(request_type):
             "app_version_display_name": "app_version_display_name_value",
             "changelog": "changelog_value",
             "changelog_create_time": {},
-            "execution_state": 1,
+            "execution_state": 5,
             "evaluation_metrics_thresholds": {
                 "golden_evaluation_metrics_thresholds": {
-                    "turn_level_metrics_thresholds": {
-                        "semantic_similarity_success_threshold": 3966,
-                        "overall_tool_invocation_correctness_threshold": 0.4833,
-                        "semantic_similarity_channel": 1,
-                    },
-                    "expectation_level_metrics_thresholds": {
-                        "tool_invocation_parameter_correctness_threshold": 0.5037
-                    },
+                    "turn_level_metrics_thresholds": {},
+                    "expectation_level_metrics_thresholds": {},
                     "tool_matching_settings": {"extra_tool_call_behavior": 1},
                 },
                 "hallucination_metric_behavior": 1,
@@ -24409,6 +26220,22 @@ def test_update_evaluation_rest_call_success(request_type):
         },
         "invalid": True,
         "last_ten_results": {},
+        "evaluation_metrics_threshold_override": {},
+        "evaluation_metrics_config_override": {
+            "golden_metrics_config": {
+                "semantic_similarity_metrics_config": {},
+                "tool_correctness_metrics_config": {
+                    "enable_tool_correctness_metrics": True
+                },
+                "step_tool_correctness_metrics_config": {},
+            },
+            "scenario_metrics_config": {
+                "user_goal_met_metrics_config": {"enable_user_goal_met_metrics": True},
+                "expectations_met_metrics_config": {
+                    "enable_expectations_met_metrics": True
+                },
+            },
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -25531,7 +27358,7 @@ def test_get_evaluation_result_rest_call_success(request_type):
             app_version="app_version_value",
             app_version_display_name="app_version_display_name_value",
             changelog="changelog_value",
-            execution_state=evaluation.EvaluationResult.ExecutionState.RUNNING,
+            execution_state=evaluation.EvaluationResult.ExecutionState.QUEUED,
             golden_run_method=golden_run.GoldenRunMethod.STABLE,
         )
 
@@ -25557,9 +27384,7 @@ def test_get_evaluation_result_rest_call_success(request_type):
     assert response.app_version == "app_version_value"
     assert response.app_version_display_name == "app_version_display_name_value"
     assert response.changelog == "changelog_value"
-    assert (
-        response.execution_state == evaluation.EvaluationResult.ExecutionState.RUNNING
-    )
+    assert response.execution_state == evaluation.EvaluationResult.ExecutionState.QUEUED
     assert response.golden_run_method == golden_run.GoldenRunMethod.STABLE
 
 
@@ -25837,10 +27662,11 @@ def test_get_evaluation_run_rest_call_success(request_type):
             evaluations=["evaluations_value"],
             evaluation_dataset="evaluation_dataset_value",
             evaluation_type=evaluation.EvaluationRun.EvaluationType.GOLDEN,
-            state=evaluation.EvaluationRun.EvaluationRunState.RUNNING,
+            state=evaluation.EvaluationRun.EvaluationRunState.QUEUED,
             run_count=989,
             scheduled_evaluation_run="scheduled_evaluation_run_value",
             golden_run_method=golden_run.GoldenRunMethod.STABLE,
+            operation="operation_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -25867,10 +27693,11 @@ def test_get_evaluation_run_rest_call_success(request_type):
     assert response.evaluations == ["evaluations_value"]
     assert response.evaluation_dataset == "evaluation_dataset_value"
     assert response.evaluation_type == evaluation.EvaluationRun.EvaluationType.GOLDEN
-    assert response.state == evaluation.EvaluationRun.EvaluationRunState.RUNNING
+    assert response.state == evaluation.EvaluationRun.EvaluationRunState.QUEUED
     assert response.run_count == 989
     assert response.scheduled_evaluation_run == "scheduled_evaluation_run_value"
     assert response.golden_run_method == golden_run.GoldenRunMethod.STABLE
+    assert response.operation == "operation_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -28562,6 +30389,395 @@ def test_export_evaluations_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_export_evaluation_runs_rest_bad_request(
+    request_type=evaluation_service.ExportEvaluationRunsRequest,
+):
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apps/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.export_evaluation_runs(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ExportEvaluationRunsRequest,
+        dict,
+    ],
+)
+def test_export_evaluation_runs_rest_call_success(request_type):
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apps/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.export_evaluation_runs(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_evaluation_runs_rest_interceptors(null_interceptor):
+    transport = transports.EvaluationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EvaluationServiceRestInterceptor(),
+    )
+    client = EvaluationServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EvaluationServiceRestInterceptor, "post_export_evaluation_runs"
+        ) as post,
+        mock.patch.object(
+            transports.EvaluationServiceRestInterceptor,
+            "post_export_evaluation_runs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EvaluationServiceRestInterceptor, "pre_export_evaluation_runs"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = evaluation_service.ExportEvaluationRunsRequest.pb(
+            evaluation_service.ExportEvaluationRunsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = evaluation_service.ExportEvaluationRunsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.export_evaluation_runs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_export_evaluation_results_rest_bad_request(
+    request_type=evaluation_service.ExportEvaluationResultsRequest,
+):
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/apps/sample3/evaluations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.export_evaluation_results(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ExportEvaluationResultsRequest,
+        dict,
+    ],
+)
+def test_export_evaluation_results_rest_call_success(request_type):
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/apps/sample3/evaluations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.export_evaluation_results(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_evaluation_results_rest_interceptors(null_interceptor):
+    transport = transports.EvaluationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EvaluationServiceRestInterceptor(),
+    )
+    client = EvaluationServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EvaluationServiceRestInterceptor,
+            "post_export_evaluation_results",
+        ) as post,
+        mock.patch.object(
+            transports.EvaluationServiceRestInterceptor,
+            "post_export_evaluation_results_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EvaluationServiceRestInterceptor, "pre_export_evaluation_results"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = evaluation_service.ExportEvaluationResultsRequest.pb(
+            evaluation_service.ExportEvaluationResultsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = evaluation_service.ExportEvaluationResultsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.export_evaluation_results(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_run_evaluation_result_metrics_rest_bad_request(
+    request_type=evaluation_service.RunEvaluationResultMetricsRequest,
+):
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "evaluation_result_id": "projects/sample1/locations/sample2/apps/sample3/evaluations/sample4/results/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.run_evaluation_result_metrics(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.RunEvaluationResultMetricsRequest,
+        dict,
+    ],
+)
+def test_run_evaluation_result_metrics_rest_call_success(request_type):
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "evaluation_result_id": "projects/sample1/locations/sample2/apps/sample3/evaluations/sample4/results/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.run_evaluation_result_metrics(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_run_evaluation_result_metrics_rest_interceptors(null_interceptor):
+    transport = transports.EvaluationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EvaluationServiceRestInterceptor(),
+    )
+    client = EvaluationServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EvaluationServiceRestInterceptor,
+            "post_run_evaluation_result_metrics",
+        ) as post,
+        mock.patch.object(
+            transports.EvaluationServiceRestInterceptor,
+            "post_run_evaluation_result_metrics_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EvaluationServiceRestInterceptor,
+            "pre_run_evaluation_result_metrics",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = evaluation_service.RunEvaluationResultMetricsRequest.pb(
+            evaluation_service.RunEvaluationResultMetricsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = evaluation_service.RunEvaluationResultMetricsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.run_evaluation_result_metrics(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
     client = EvaluationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -28959,7 +31175,6 @@ def test_run_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation.RunEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -28981,7 +31196,6 @@ def test_upload_evaluation_audio_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UploadEvaluationAudioRequest()
-
         assert args[0] == request_msg
 
 
@@ -29003,7 +31217,6 @@ def test_create_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -29025,7 +31238,6 @@ def test_generate_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GenerateEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -29047,7 +31259,6 @@ def test_import_evaluations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ImportEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29069,7 +31280,6 @@ def test_create_evaluation_dataset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateEvaluationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -29091,7 +31301,6 @@ def test_update_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UpdateEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -29113,7 +31322,6 @@ def test_update_evaluation_dataset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UpdateEvaluationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -29135,7 +31343,6 @@ def test_delete_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -29157,7 +31364,6 @@ def test_delete_evaluation_result_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -29179,7 +31385,6 @@ def test_delete_evaluation_dataset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -29201,7 +31406,6 @@ def test_delete_evaluation_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -29221,7 +31425,6 @@ def test_get_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -29243,7 +31446,6 @@ def test_get_evaluation_result_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -29265,7 +31467,6 @@ def test_get_evaluation_dataset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -29287,7 +31488,6 @@ def test_get_evaluation_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -29307,7 +31507,6 @@ def test_list_evaluations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29329,7 +31528,6 @@ def test_list_evaluation_results_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationResultsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29351,7 +31549,6 @@ def test_list_evaluation_datasets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationDatasetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29373,7 +31570,6 @@ def test_list_evaluation_runs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29395,7 +31591,6 @@ def test_list_evaluation_expectations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationExpectationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29417,7 +31612,6 @@ def test_get_evaluation_expectation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationExpectationRequest()
-
         assert args[0] == request_msg
 
 
@@ -29439,7 +31633,6 @@ def test_create_evaluation_expectation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateEvaluationExpectationRequest()
-
         assert args[0] == request_msg
 
 
@@ -29461,7 +31654,6 @@ def test_update_evaluation_expectation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UpdateEvaluationExpectationRequest()
-
         assert args[0] == request_msg
 
 
@@ -29483,7 +31675,6 @@ def test_delete_evaluation_expectation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteEvaluationExpectationRequest()
-
         assert args[0] == request_msg
 
 
@@ -29505,7 +31696,6 @@ def test_create_scheduled_evaluation_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateScheduledEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -29527,7 +31717,6 @@ def test_get_scheduled_evaluation_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetScheduledEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -29549,7 +31738,6 @@ def test_list_scheduled_evaluation_runs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListScheduledEvaluationRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29571,7 +31759,6 @@ def test_update_scheduled_evaluation_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.UpdateScheduledEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -29593,7 +31780,6 @@ def test_delete_scheduled_evaluation_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.DeleteScheduledEvaluationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -29615,7 +31801,6 @@ def test_test_persona_voice_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.TestPersonaVoiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -29637,7 +31822,69 @@ def test_export_evaluations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ExportEvaluationsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_evaluation_runs_empty_call_rest():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_runs), "__call__"
+    ) as call:
+        client.export_evaluation_runs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = evaluation_service.ExportEvaluationRunsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_evaluation_results_empty_call_rest():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluation_results), "__call__"
+    ) as call:
+        client.export_evaluation_results(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = evaluation_service.ExportEvaluationResultsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_run_evaluation_result_metrics_empty_call_rest():
+    client = EvaluationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_evaluation_result_metrics), "__call__"
+    ) as call:
+        client.run_evaluation_result_metrics(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = evaluation_service.RunEvaluationResultMetricsRequest()
         assert args[0] == request_msg
 
 
@@ -29723,6 +31970,9 @@ def test_evaluation_service_base_transport():
         "delete_scheduled_evaluation_run",
         "test_persona_voice",
         "export_evaluations",
+        "export_evaluation_runs",
+        "export_evaluation_results",
+        "run_evaluation_result_metrics",
         "get_location",
         "list_locations",
         "get_operation",
@@ -30104,6 +32354,15 @@ def test_evaluation_service_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.export_evaluations._session
     session2 = client2.transport.export_evaluations._session
+    assert session1 != session2
+    session1 = client1.transport.export_evaluation_runs._session
+    session2 = client2.transport.export_evaluation_runs._session
+    assert session1 != session2
+    session1 = client1.transport.export_evaluation_results._session
+    session2 = client2.transport.export_evaluation_results._session
+    assert session1 != session2
+    session1 = client1.transport.run_evaluation_result_metrics._session
+    session2 = client2.transport.run_evaluation_result_metrics._session
     assert session1 != session2
 
 

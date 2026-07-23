@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1135,6 +1135,9 @@ class PropertySummary(proto.Message):
             change the parent. Format: accounts/{account},
             properties/{property} Example: "accounts/100",
             "properties/200".
+        can_edit (bool):
+            If true, then the user has a Google Analytics
+            role that permits them to edit the property.
     """
 
     property: str = proto.Field(
@@ -1153,6 +1156,10 @@ class PropertySummary(proto.Message):
     parent: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    can_edit: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 

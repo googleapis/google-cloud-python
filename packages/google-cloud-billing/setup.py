@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,10 @@ description = "Google Cloud Billing API client library"
 version = None
 
 with open(os.path.join(package_root, "google/cloud/billing/gapic_version.py")) as fp:
-    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
+    version_candidates = re.findall(
+        r"(?<=\")\d+\.\d+\.\d+[^\"\s]*(?=\")",
+        fp.read(),
+    )
     assert len(version_candidates) == 1
     version = version_candidates[0]
 
@@ -39,16 +42,15 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "google-api-core[grpc] >= 2.11.0, <3.0.0",
+    "google-api-core[grpc] >= 2.24.2, <3.0.0",
     # Exclude incompatible versions of `google-auth`
     # See https://github.com/googleapis/google-cloud-python/issues/12364
     "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
-    "grpcio >= 1.33.2, < 2.0.0",
+    "grpcio >= 1.59.0, < 2.0.0",
     "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-    "proto-plus >= 1.22.3, <2.0.0",
-    "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
-    "protobuf >= 4.25.8, < 8.0.0",
-    "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
+    "proto-plus >= 1.26.1, <2.0.0",
+    "protobuf >= 6.33.5, < 8.0.0",
+    "grpc-google-iam-v1 >= 0.14.2, <1.0.0",
 ]
 extras = {}
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-billing"
@@ -72,7 +74,7 @@ setuptools.setup(
     long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
-    license="Apache 2.0",
+    license="Apache-2.0",
     url=url,
     classifiers=[
         release_status,
@@ -80,7 +82,6 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
@@ -91,7 +92,7 @@ setuptools.setup(
     ],
     platforms="Posix; MacOS X; Windows",
     packages=packages,
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     install_requires=dependencies,
     extras_require=extras,
     include_package_data=True,

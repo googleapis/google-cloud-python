@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,6 +51,7 @@ from google.apps.chat_v1.services.chat_service import pagers
 from google.apps.chat_v1.types import (
     annotation,
     attachment,
+    availability,
     contextual_addon,
     deletion_metadata,
     event_payload,
@@ -70,6 +71,7 @@ from google.apps.chat_v1.types import (
     thread_read_state,
     user,
 )
+from google.apps.chat_v1.types import availability as gc_availability
 from google.apps.chat_v1.types import membership as gc_membership
 from google.apps.chat_v1.types import message as gc_message
 from google.apps.chat_v1.types import reaction as gc_reaction
@@ -110,6 +112,8 @@ class ChatServiceAsyncClient:
 
     attachment_path = staticmethod(ChatServiceClient.attachment_path)
     parse_attachment_path = staticmethod(ChatServiceClient.parse_attachment_path)
+    availability_path = staticmethod(ChatServiceClient.availability_path)
+    parse_availability_path = staticmethod(ChatServiceClient.parse_availability_path)
     custom_emoji_path = staticmethod(ChatServiceClient.custom_emoji_path)
     parse_custom_emoji_path = staticmethod(ChatServiceClient.parse_custom_emoji_path)
     membership_path = staticmethod(ChatServiceClient.membership_path)
@@ -406,7 +410,7 @@ class ChatServiceAsyncClient:
         (``text``), cards (``cardsV2``), and accessory widgets
         (``accessoryWidgets``).
 
-        |Message sent with app authentication async|
+        |Message sent with app authentication|
 
         The following image shows how Chat attributes a message when you
         use user authentication. Chat displays the user as the message
@@ -414,7 +418,7 @@ class ChatServiceAsyncClient:
         its name. The content of message can only contain text
         (``text``).
 
-        |Message sent with user authentication async|
+        |Message sent with user authentication|
 
         The maximum message size, including the message contents, is
         32,000 bytes.
@@ -425,8 +429,8 @@ class ChatServiceAsyncClient:
         response only populates the ``name`` and ``thread.name`` fields
         in addition to the information that was in the request.
 
-        .. |Message sent with app authentication async| image:: https://developers.google.com/workspace/chat/images/message-app-auth.svg
-        .. |Message sent with user authentication async| image:: https://developers.google.com/workspace/chat/images/message-user-auth.svg
+        .. |Message sent with app authentication| image:: https://developers.google.com/workspace/chat/images/message-app-auth.svg
+        .. |Message sent with user authentication| image:: https://developers.google.com/workspace/chat/images/message-user-auth.svg
 
         .. code-block:: python
 
@@ -2530,6 +2534,27 @@ class ChatServiceAsyncClient:
                 users <https://developers.google.com/workspace/chat/space-target-audience>`__.
                 ``access_settings.audience`` is not supported with
                 ``useAdminAccess``.
+
+                ``access_settings.access_permission_settings``: Updates
+                the `access permission
+                settings <https://support.google.com/chat/answer/11971020>`__
+                of who can discover and join the space where
+                ``spaceType`` field is ``SPACE``. Principals allowed to
+                join the space must also be allowed to discover it. To
+                update access permission settings for a space, the
+                authenticating user must be a space manager or assistant
+                manager and omit all other field masks in the request.
+                You can't update this field if the space is in `import
+                mode <https://developers.google.com/workspace/chat/import-data-overview>`__.
+                To learn more, see `Make a space discoverable to
+                specific
+                users <https://developers.google.com/workspace/chat/space-target-audience>`__.
+                ``access_settings.access_permission_settings`` is not
+                supported with ``useAdminAccess``. The supported field
+                masks include:
+
+                - ``access_settings.access_permission_settings.discoverSpaceSetting``
+                - ``access_settings.access_permission_settings.joinSpaceSetting``
 
                 ``permission_settings``: Supports changing the
                 `permission
@@ -4913,6 +4938,580 @@ class ChatServiceAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_availability(
+        self,
+        request: Optional[Union[availability.GetAvailabilityRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> availability.Availability:
+        r"""Returns availability information for a human user in Google
+        Chat. For example, this can be used to check if a user is online
+        or away, or to retrieve their custom status message.
+
+        This method only retrieves the authenticated user's
+        availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability.readonly``
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_get_availability():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.GetAvailabilityRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_availability(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.GetAvailabilityRequest, dict]]):
+                The request object. Request message for the ``GetAvailability`` method.
+            name (:class:`str`):
+                Required. The resource name of the availability to
+                retrieve.
+
+                Format: users/{user}/availability
+
+                ``{user}`` is the id for the Person in the People API or
+                Admin SDK directory API. For example,
+                ``users/123456789``.
+
+                The user's email address or ``me`` can also be used as
+                an alias to refer to the caller. For example,
+                ``users/user@example.com`` or ``users/me``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.Availability:
+                Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, availability.GetAvailabilityRequest):
+            request = availability.GetAvailabilityRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_availability
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def mark_as_active(
+        self,
+        request: Optional[Union[availability.MarkAsActiveRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> availability.Availability:
+        r"""Marks user as ``ACTIVE`` in Google Chat.
+
+        Sets the user's availability state to ``ACTIVE``. The ``ACTIVE``
+        state lasts until the specified expiration, at which point the
+        user's state becomes ``AWAY``. Note that if the user is actively
+        using Chat, the ``ACTIVE`` state duration may extend beyond the
+        provided expiration.
+
+        This method only updates the authenticated user's availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_mark_as_active():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.MarkAsActiveRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.mark_as_active(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.MarkAsActiveRequest, dict]]):
+                The request object. Request message for the ``MarkAsActive`` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.Availability:
+                Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, availability.MarkAsActiveRequest):
+            request = availability.MarkAsActiveRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.mark_as_active
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def mark_as_away(
+        self,
+        request: Optional[Union[availability.MarkAsAwayRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> availability.Availability:
+        r"""Marks user as ``AWAY`` in Google Chat.
+
+        Sets the user's state to away and is not affected by the user's
+        activity.
+
+        This method only updates the authenticated user's availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_mark_as_away():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.MarkAsAwayRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.mark_as_away(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.MarkAsAwayRequest, dict]]):
+                The request object. Request message for the ``MarkAsAway`` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.Availability:
+                Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, availability.MarkAsAwayRequest):
+            request = availability.MarkAsAwayRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.mark_as_away
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def mark_as_do_not_disturb(
+        self,
+        request: Optional[Union[availability.MarkAsDoNotDisturbRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> availability.Availability:
+        r"""Marks user as ``DO_NOT_DISTURB`` in Google Chat.
+
+        Sets a user's availability state to ``DO_NOT_DISTURB`` until a
+        specified expiration time. When in ``DO_NOT_DISTURB``, users
+        typically won't receive notifications.
+
+        This method only updates the authenticated user's availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_mark_as_do_not_disturb():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.MarkAsDoNotDisturbRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.mark_as_do_not_disturb(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.MarkAsDoNotDisturbRequest, dict]]):
+                The request object. Request message for the ``MarkAsDoNotDisturb`` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.Availability:
+                Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, availability.MarkAsDoNotDisturbRequest):
+            request = availability.MarkAsDoNotDisturbRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.mark_as_do_not_disturb
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_availability(
+        self,
+        request: Optional[
+            Union[gc_availability.UpdateAvailabilityRequest, dict]
+        ] = None,
+        *,
+        availability: Optional[gc_availability.Availability] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> gc_availability.Availability:
+        r"""Updates availability information for a human user. Only the
+        ``custom_status`` field can be updated through this method.
+
+        This method only updates the authenticated user's availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_update_availability():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.UpdateAvailabilityRequest(
+                )
+
+                # Make the request
+                response = await client.update_availability(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.UpdateAvailabilityRequest, dict]]):
+                The request object. Request message for the ``UpdateAvailability`` method.
+            availability (:class:`google.apps.chat_v1.types.Availability`):
+                Required. The availability to update.
+                This corresponds to the ``availability`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to update. The only field
+                that can be updated is ``custom_status``.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.Availability:
+                Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [availability, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gc_availability.UpdateAvailabilityRequest):
+            request = gc_availability.UpdateAvailabilityRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if availability is not None:
+            request.availability = availability
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_availability
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("availability.name", request.availability.name),)
+            ),
         )
 
         # Validate the universe domain.

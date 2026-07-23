@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -111,6 +106,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1293,8 +1303,8 @@ def test_area_insights_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        area_insights_service.ComputeInsightsRequest,
-        dict,
+        area_insights_service.ComputeInsightsRequest(),
+        {},
     ],
 )
 def test_compute_insights(request_type, transport: str = "grpc"):
@@ -1305,7 +1315,7 @@ def test_compute_insights(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.compute_insights), "__call__") as call:
@@ -1347,7 +1357,8 @@ def test_compute_insights_non_empty_request_with_auto_populated_field():
         client.compute_insights(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == area_insights_service.ComputeInsightsRequest()
+        request_msg = area_insights_service.ComputeInsightsRequest()
+        assert args[0] == request_msg
 
 
 def test_compute_insights_use_cached_wrapped_rpc():
@@ -1430,10 +1441,14 @@ async def test_compute_insights_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_compute_insights_async(
-    transport: str = "grpc_asyncio",
-    request_type=area_insights_service.ComputeInsightsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        area_insights_service.ComputeInsightsRequest(),
+        {},
+    ],
+)
+async def test_compute_insights_async(request_type, transport: str = "grpc_asyncio"):
     client = AreaInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1441,7 +1456,7 @@ async def test_compute_insights_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.compute_insights), "__call__") as call:
@@ -1462,11 +1477,6 @@ async def test_compute_insights_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, area_insights_service.ComputeInsightsResponse)
     assert response.count == 553
-
-
-@pytest.mark.asyncio
-async def test_compute_insights_async_from_dict():
-    await test_compute_insights_async(request_type=dict)
 
 
 def test_compute_insights_rest_use_cached_wrapped_rpc():
@@ -1577,7 +1587,7 @@ def test_compute_insights_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_compute_insights_rest_unset_required_fields():
@@ -1720,7 +1730,6 @@ def test_compute_insights_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = area_insights_service.ComputeInsightsRequest()
-
         assert args[0] == request_msg
 
 
@@ -1761,7 +1770,6 @@ async def test_compute_insights_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = area_insights_service.ComputeInsightsRequest()
-
         assert args[0] == request_msg
 
 
@@ -1931,7 +1939,6 @@ def test_compute_insights_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = area_insights_service.ComputeInsightsRequest()
-
         assert args[0] == request_msg
 
 

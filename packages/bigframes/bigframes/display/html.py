@@ -189,20 +189,15 @@ def create_html_representation(
     pandas_df: pd.DataFrame,
     total_rows: int,
     total_columns: int,
-    blob_cols: list[str],
 ) -> str:
     """Create an HTML representation of the DataFrame or Series."""
-    from bigframes.series import Series
+    import bigframes.series
 
     opts = options.display
     with display_options.pandas_repr(opts):
-        if isinstance(obj, Series):
-            # Some pandas objects may not have a _repr_html_ method, or it might
-            # fail in certain environments. We fall back to a pre-formatted
-            # string representation to ensure something is always displayed.
+        if isinstance(obj, bigframes.series.Series):
             pd_series = pandas_df.iloc[:, 0]
             try:
-                # TODO(b/464053870): Support rich display for blob Series.
                 html_string = pd_series._repr_html_()
             except AttributeError:
                 html_string = f"<pre>{pd_series.to_string()}</pre>"
@@ -212,26 +207,8 @@ def create_html_representation(
                 html_string += f"<p>[{total_rows} rows]</p>"
             return html_string
         else:
-            # It's a DataFrame
-            # TODO(shuowei, b/464053870): Escaping HTML would be useful, but
-            # `escape=False` is needed to show images. We may need to implement
-            # a full-fledged repr module to better support types not in pandas.
-            if options.display.blob_display and blob_cols:
-                formatters = {blob_col: _obj_ref_rt_to_html for blob_col in blob_cols}
-
-                # set max_colwidth so not to truncate the image url
-                with pandas.option_context("display.max_colwidth", None):
-                    html_string = pandas_df.to_html(
-                        escape=False,
-                        notebook=True,
-                        max_rows=pandas.get_option("display.max_rows"),
-                        max_cols=pandas.get_option("display.max_columns"),
-                        show_dimensions=pandas.get_option("display.show_dimensions"),
-                        formatters=formatters,  # type: ignore
-                    )
-            else:
-                # _repr_html_ stub is missing so mypy thinks it's a Series. Ignore mypy.
-                html_string = pandas_df._repr_html_()  # type:ignore
+            # _repr_html_ stub is missing so mypy thinks it's a Series. Ignore mypy.
+            html_string = pandas_df._repr_html_()  # type:ignore
 
             html_string += f"[{total_rows} rows x {total_columns} columns in total]"
             return html_string
@@ -240,9 +217,9 @@ def create_html_representation(
 def _get_obj_metadata(
     obj: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
 ) -> tuple[bool, bool]:
-    from bigframes.series import Series
+    import bigframes.series
 
-    is_series = isinstance(obj, Series)
+    is_series = isinstance(obj, bigframes.series.Series)
     if is_series:
         has_index = len(obj._block.index_columns) > 0
     else:
@@ -254,20 +231,31 @@ def get_anywidget_bundle(
     obj: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
     include=None,
     exclude=None,
+    dry_run_info: str | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """
     Helper method to create and return the anywidget mimebundle.
     This function encapsulates the logic for anywidget display.
     """
+    import bigframes.series
     from bigframes import display
-    from bigframes.series import Series
 
-    if isinstance(obj, Series):
+    if isinstance(obj, bigframes.series.Series):
         df = obj.to_frame()
     else:
-        df, blob_cols = obj._get_display_df_and_blob_cols()
+        df = obj
 
-    widget = display.TableWidget(df)
+    from bigframes.session import deferred
+
+    if (
+        not isinstance(df, deferred.DeferredBigQueryDataFrame)
+        and bigframes.options.display.repr_mode != "deferred"
+    ):
+        display_df = df._prepare_display_df()
+    else:
+        display_df = df
+
+    widget = display.TableWidget(display_df, dry_run_info=dry_run_info)
     widget_repr_result = widget._repr_mimebundle_(include=include, exclude=exclude)
 
     if isinstance(widget_repr_result, tuple):
@@ -283,21 +271,23 @@ def get_anywidget_bundle(
     total_rows = widget.row_count
     total_columns = len(df.columns)
 
-    widget_repr["text/html"] = create_html_representation(
-        obj,
-        cached_pd,
-        total_rows,
-        total_columns,
-        blob_cols if "blob_cols" in locals() else [],
-    )
-    is_series, has_index = _get_obj_metadata(obj)
-    widget_repr["text/plain"] = plaintext.create_text_representation(
-        cached_pd,
-        total_rows,
-        is_series=is_series,
-        has_index=has_index,
-        column_count=len(df.columns) if not is_series else 0,
-    )
+    if dry_run_info:
+        widget_repr["text/plain"] = dry_run_info
+    else:
+        widget_repr["text/html"] = create_html_representation(
+            obj,
+            cached_pd,
+            total_rows,
+            total_columns,
+        )
+        is_series, has_index = _get_obj_metadata(obj)
+        widget_repr["text/plain"] = plaintext.create_text_representation(
+            cached_pd,
+            total_rows,
+            is_series=is_series,
+            has_index=has_index,
+            column_count=len(df.columns) if not is_series else 0,
+        )
 
     return widget_repr, widget_metadata
 
@@ -314,27 +304,23 @@ def repr_mimebundle_deferred(
 def repr_mimebundle_head(
     obj: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
 ) -> dict[str, str]:
-    from bigframes.series import Series
+    import bigframes.series
 
     opts = options.display
-    blob_cols: list[str]
-    if isinstance(obj, Series):
-        pandas_df, row_count, query_job = obj._block.retrieve_repr_request_results(
-            opts.max_rows
-        )
-        blob_cols = []
+    if isinstance(obj, bigframes.series.Series):
+        df = obj.to_frame()
     else:
-        df, blob_cols = obj._get_display_df_and_blob_cols()
-        pandas_df, row_count, query_job = df._block.retrieve_repr_request_results(
-            opts.max_rows
-        )
+        df = obj
+
+    df = df._prepare_display_df()
+    pandas_df, row_count, query_job = df._block.retrieve_repr_request_results(
+        opts.max_rows
+    )
 
     obj._set_internal_query_job(query_job)
     column_count = len(pandas_df.columns)
 
-    html_string = create_html_representation(
-        obj, pandas_df, row_count, column_count, blob_cols
-    )
+    html_string = create_html_representation(obj, pandas_df, row_count, column_count)
 
     is_series, has_index = _get_obj_metadata(obj)
     text_representation = plaintext.create_text_representation(
@@ -358,10 +344,11 @@ def repr_mimebundle(
     # BQ Studio, but there is a known compatibility issue with Marimo that needs to be addressed.
 
     opts = options.display
-    if opts.repr_mode == "deferred":
-        return repr_mimebundle_deferred(obj)
-
-    if opts.render_mode == "anywidget" or opts.repr_mode == "anywidget":
+    if (
+        opts.render_mode == "anywidget"
+        or opts.repr_mode == "anywidget"
+        or opts.repr_mode == "deferred"
+    ):
         try:
             with bigframes.option_context("display.progress_bar", None):
                 with warnings.catch_warnings():
@@ -369,16 +356,28 @@ def repr_mimebundle(
                         "ignore", category=bigframes.exceptions.JSONDtypeWarning
                     )
                     warnings.simplefilter("ignore", category=FutureWarning)
-                    return get_anywidget_bundle(obj, include=include, exclude=exclude)
-        except ImportError:
+                    dry_run_info = None
+                    if opts.repr_mode == "deferred":
+                        dry_run_job = obj._compute_dry_run()
+                        dry_run_info = formatter.repr_query_job(dry_run_job)
+                    return get_anywidget_bundle(
+                        obj,
+                        include=include,
+                        exclude=exclude,
+                        dry_run_info=dry_run_info,
+                    )
+        except Exception:
             # Anywidget is an optional dependency, so warn rather than fail.
             # TODO(shuowei): When Anywidget becomes the default for all repr modes,
             # remove this warning.
             warnings.warn(
-                "Anywidget mode is not available. "
-                "Please `pip install anywidget traitlets` or `pip install 'bigframes[anywidget]'` to use interactive tables. "
+                "Anywidget mode is not available or failed to load. "
+                "Please `pip install anywidget traitlets` or "
+                "`pip install 'bigframes[anywidget]'` to use interactive tables. "
                 f"Falling back to static HTML. Error: {traceback.format_exc()}"
             )
+            if opts.repr_mode == "deferred":
+                return repr_mimebundle_deferred(obj)
 
     bundle = repr_mimebundle_head(obj)
     if opts.render_mode == "plaintext":

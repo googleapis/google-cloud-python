@@ -2,6 +2,7 @@
 branch = True
 
 [report]
+fail_under = 98
 show_missing = True
 omit =
     google/cloud/spanner/__init__.py

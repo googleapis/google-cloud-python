@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,6 +52,7 @@ __protobuf__ = proto.module(
         "RedisClusterInfo",
         "CloudFunctionInfo",
         "CloudRunRevisionInfo",
+        "CloudRunJobInfo",
         "AppEngineVersionInfo",
         "VpcConnectorInfo",
         "DirectVpcEgressConnectionInfo",
@@ -62,6 +63,7 @@ __protobuf__ = proto.module(
         "StorageBucketInfo",
         "ServerlessNegInfo",
         "NgfwPacketInspectionInfo",
+        "PrivateConnectionInfo",
     },
 )
 
@@ -337,6 +339,10 @@ class Step(proto.Message):
             Display information of a Cloud Run revision.
 
             This field is a member of `oneof`_ ``step_info``.
+        cloud_run_job (google.cloud.network_management_v1.types.CloudRunJobInfo):
+            Display information of a Cloud Run job.
+
+            This field is a member of `oneof`_ ``step_info``.
         nat (google.cloud.network_management_v1.types.NatInfo):
             Display information of a NAT.
 
@@ -364,6 +370,11 @@ class Step(proto.Message):
         ngfw_packet_inspection (google.cloud.network_management_v1.types.NgfwPacketInspectionInfo):
             Display information of a layer 7 packet
             inspection by the firewall.
+
+            This field is a member of `oneof`_ ``step_info``.
+        dms_private_connection (google.cloud.network_management_v1.types.PrivateConnectionInfo):
+            Display information of a DMS Private
+            Connection.
 
             This field is a member of `oneof`_ ``step_info``.
     """
@@ -424,6 +435,10 @@ class Step(proto.Message):
                 Initial state: packet originating from a
                 Cloud Run revision. A CloudRunRevisionInfo is
                 populated with starting revision information.
+            START_FROM_CLOUD_RUN_JOB (50):
+                Initial state: packet originating from a
+                Cloud Run Job. A CloudRunJobInfo is populated
+                with starting Job information.
             START_FROM_STORAGE_BUCKET (29):
                 Initial state: packet originating from a Storage Bucket.
                 Used only for return traces. The storage_bucket information
@@ -436,6 +451,9 @@ class Step(proto.Message):
                 Initial state: packet originating from a serverless network
                 endpoint group backend. Used only for return traces. The
                 serverless_neg information is populated.
+            START_FROM_DMS_PRIVATE_CONNECTION (48):
+                Initial state: packet originating from a DMS
+                Private Connection.
             APPLY_INGRESS_FIREWALL_RULE (4):
                 Config checking state: verify ingress
                 firewall rule.
@@ -544,9 +562,11 @@ class Step(proto.Message):
         START_FROM_CLOUD_FUNCTION = 23
         START_FROM_APP_ENGINE_VERSION = 25
         START_FROM_CLOUD_RUN_REVISION = 26
+        START_FROM_CLOUD_RUN_JOB = 50
         START_FROM_STORAGE_BUCKET = 29
         START_FROM_PSC_PUBLISHED_SERVICE = 30
         START_FROM_SERVERLESS_NEG = 31
+        START_FROM_DMS_PRIVATE_CONNECTION = 48
         APPLY_INGRESS_FIREWALL_RULE = 4
         APPLY_EGRESS_FIREWALL_RULE = 5
         APPLY_ROUTE = 6
@@ -775,6 +795,12 @@ class Step(proto.Message):
         oneof="step_info",
         message="CloudRunRevisionInfo",
     )
+    cloud_run_job: "CloudRunJobInfo" = proto.Field(
+        proto.MESSAGE,
+        number=45,
+        oneof="step_info",
+        message="CloudRunJobInfo",
+    )
     nat: "NatInfo" = proto.Field(
         proto.MESSAGE,
         number=25,
@@ -810,6 +836,12 @@ class Step(proto.Message):
         number=42,
         oneof="step_info",
         message="NgfwPacketInspectionInfo",
+    )
+    dms_private_connection: "PrivateConnectionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=43,
+        oneof="step_info",
+        message="PrivateConnectionInfo",
     )
 
 
@@ -2160,6 +2192,12 @@ class DeliverInfo(proto.Message):
                 Target is a Redis Cluster.
             GKE_POD (19):
                 Target is a GKE Pod.
+            CLOUD_RUN_JOB (20):
+                Target is a Cloud Run Job. Used only for
+                return traces.
+            DMS_PRIVATE_CONNECTION (21):
+                Target is a DMS Private Connection. Used only
+                for return traces.
         """
 
         TARGET_UNSPECIFIED = 0
@@ -2181,6 +2219,8 @@ class DeliverInfo(proto.Message):
         REDIS_INSTANCE = 16
         REDIS_CLUSTER = 17
         GKE_POD = 19
+        CLOUD_RUN_JOB = 20
+        DMS_PRIVATE_CONNECTION = 21
 
     class GoogleServiceType(proto.Enum):
         r"""Recognized type of a Google Service.
@@ -2740,6 +2780,9 @@ class DropInfo(proto.Message):
                 Engine Service.
             DROPPED_INSIDE_CLOUD_SQL_SERVICE (19):
                 Packet was dropped inside Cloud SQL Service.
+            DROPPED_INSIDE_DMS_PRIVATE_CONNECTION (114):
+                Packet was dropped inside DMS Private
+                Connection.
             GOOGLE_MANAGED_SERVICE_NO_PEERING (20):
                 Packet was dropped because there is no
                 peering between the originating network and the
@@ -2848,6 +2891,9 @@ class DropInfo(proto.Message):
             CLOUD_RUN_REVISION_NOT_READY (29):
                 Packet sent from a Cloud Run revision that is
                 not ready.
+            CLOUD_RUN_JOB_NOT_READY (113):
+                Packet sent from a Cloud Run job that is not
+                ready.
             DROPPED_INSIDE_PSC_SERVICE_PRODUCER (37):
                 Packet was dropped inside Private Service
                 Connect service producer.
@@ -2998,6 +3044,9 @@ class DropInfo(proto.Message):
                 Packet is dropped because there is no valid
                 matching route from the network of the
                 Google-managed service to the destination.
+            PRIVATE_CONNECTION_NO_RUNNING_INSTANCE (111):
+                Packet is dropped due to no running instance
+                found for private connection.
         """
 
         CAUSE_UNSPECIFIED = 0
@@ -3039,6 +3088,7 @@ class DropInfo(proto.Message):
         CLOUD_SQL_INSTANCE_UNAUTHORIZED_ACCESS = 17
         DROPPED_INSIDE_GKE_SERVICE = 18
         DROPPED_INSIDE_CLOUD_SQL_SERVICE = 19
+        DROPPED_INSIDE_DMS_PRIVATE_CONNECTION = 114
         GOOGLE_MANAGED_SERVICE_NO_PEERING = 20
         GOOGLE_MANAGED_SERVICE_NO_PSC_ENDPOINT = 38
         GKE_PSC_ENDPOINT_MISSING = 36
@@ -3066,6 +3116,7 @@ class DropInfo(proto.Message):
         HYBRID_NEG_NON_DYNAMIC_ROUTE_MATCHED = 55
         HYBRID_NEG_NON_LOCAL_DYNAMIC_ROUTE_MATCHED = 56
         CLOUD_RUN_REVISION_NOT_READY = 29
+        CLOUD_RUN_JOB_NOT_READY = 113
         DROPPED_INSIDE_PSC_SERVICE_PRODUCER = 37
         LOAD_BALANCER_HAS_NO_PROXY_SUBNET = 39
         CLOUD_NAT_NO_ADDRESSES = 40
@@ -3105,6 +3156,7 @@ class DropInfo(proto.Message):
         HYBRID_SUBNET_NO_ROUTE = 106
         GKE_NETWORK_POLICY = 108
         NO_VALID_ROUTE_FROM_GOOGLE_MANAGED_NETWORK_TO_DESTINATION = 110
+        PRIVATE_CONNECTION_NO_RUNNING_INSTANCE = 111
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -3572,6 +3624,32 @@ class CloudRunRevisionInfo(proto.Message):
     service_uri: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+
+
+class CloudRunJobInfo(proto.Message):
+    r"""For display only. Metadata associated with a Cloud Run job.
+
+    Attributes:
+        display_name (str):
+            Name of a Cloud Run job.
+        uri (str):
+            URI of a Cloud Run job.
+        location (str):
+            Location in which this job is deployed.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -4097,6 +4175,22 @@ class NgfwPacketInspectionInfo(proto.Message):
     """
 
     security_profile_group_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class PrivateConnectionInfo(proto.Message):
+    r"""For display only. Metadata associated with a Private
+    Connection.
+
+    Attributes:
+        uri (str):
+            URI of the Private Connection in format
+            "projects/{project_id}/locations/{location}/privateConnections/{private_connection_id}".
+    """
+
+    uri: str = proto.Field(
         proto.STRING,
         number=1,
     )

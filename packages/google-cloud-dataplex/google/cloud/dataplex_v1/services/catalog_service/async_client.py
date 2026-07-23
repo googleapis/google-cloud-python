@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -362,11 +362,11 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_entry_type(request=request)
+                operation = await client.create_entry_type(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -502,11 +502,11 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_entry_type(request=request)
+                operation = await client.update_entry_type(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -634,11 +634,11 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_entry_type(request=request)
+                operation = await client.delete_entry_type(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1011,11 +1011,11 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_aspect_type(request=request)
+                operation = await client.create_aspect_type(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1156,11 +1156,11 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_aspect_type(request=request)
+                operation = await client.update_aspect_type(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1288,11 +1288,11 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_aspect_type(request=request)
+                operation = await client.delete_aspect_type(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1662,11 +1662,11 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_entry_group(request=request)
+                operation = await client.create_entry_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1803,11 +1803,11 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_entry_group(request=request)
+                operation = await client.update_entry_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1936,11 +1936,11 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_entry_group(request=request)
+                operation = await client.delete_entry_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2990,6 +2990,98 @@ class CatalogServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def modify_entry(
+        self,
+        request: Optional[Union[catalog.ModifyEntryRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> catalog.Entry:
+        r"""Modifies an entry using the permission on the source
+        system.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            async def sample_modify_entry():
+                # Create a client
+                client = dataplex_v1.CatalogServiceAsyncClient()
+
+                # Initialize request argument(s)
+                entry = dataplex_v1.Entry()
+                entry.entry_type = "entry_type_value"
+
+                request = dataplex_v1.ModifyEntryRequest(
+                    name="name_value",
+                    entry=entry,
+                )
+
+                # Make the request
+                response = await client.modify_entry(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataplex_v1.types.ModifyEntryRequest, dict]]):
+                The request object. Modify Entry request using
+                permissions in the source system.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.Entry:
+                An entry is a representation of a
+                data resource that can be described by
+                various metadata.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.ModifyEntryRequest):
+            request = catalog.ModifyEntryRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.modify_entry
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def search_entries(
         self,
         request: Optional[Union[catalog.SearchEntriesRequest, dict]] = None,
@@ -3172,11 +3264,11 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_metadata_job(request=request)
+                operation = await client.create_metadata_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4322,11 +4414,11 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_metadata_feed(request=request)
+                operation = await client.create_metadata_feed(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4704,11 +4796,11 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_metadata_feed(request=request)
+                operation = await client.delete_metadata_feed(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4842,11 +4934,11 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_metadata_feed(request=request)
+                operation = await client.update_metadata_feed(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

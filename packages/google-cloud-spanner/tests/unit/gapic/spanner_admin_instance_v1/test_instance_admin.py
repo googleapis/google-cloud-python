@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,19 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-import re
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -124,6 +118,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1329,8 +1338,8 @@ def test_instance_admin_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.ListInstanceConfigsRequest,
-        dict,
+        spanner_instance_admin.ListInstanceConfigsRequest(),
+        {},
     ],
 )
 def test_list_instance_configs(request_type, transport: str = "grpc"):
@@ -1341,7 +1350,7 @@ def test_list_instance_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1390,10 +1399,11 @@ def test_list_instance_configs_non_empty_request_with_auto_populated_field():
         client.list_instance_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.ListInstanceConfigsRequest(
+        request_msg = spanner_instance_admin.ListInstanceConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_instance_configs_use_cached_wrapped_rpc():
@@ -1479,9 +1489,15 @@ async def test_list_instance_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.ListInstanceConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_instance_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.ListInstanceConfigsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1490,7 +1506,7 @@ async def test_list_instance_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1513,11 +1529,6 @@ async def test_list_instance_configs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstanceConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_instance_configs_async_from_dict():
-    await test_list_instance_configs_async(request_type=dict)
 
 
 def test_list_instance_configs_field_headers():
@@ -1722,6 +1733,9 @@ def test_list_instance_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1816,6 +1830,8 @@ async def test_list_instance_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1867,11 +1883,7 @@ async def test_list_instance_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_instance_configs(request={})
-        ).pages:
+        async for page_ in (await client.list_instance_configs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1880,8 +1892,8 @@ async def test_list_instance_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.GetInstanceConfigRequest,
-        dict,
+        spanner_instance_admin.GetInstanceConfigRequest(),
+        {},
     ],
 )
 def test_get_instance_config(request_type, transport: str = "grpc"):
@@ -1892,7 +1904,7 @@ def test_get_instance_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1968,9 +1980,10 @@ def test_get_instance_config_non_empty_request_with_auto_populated_field():
         client.get_instance_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.GetInstanceConfigRequest(
+        request_msg = spanner_instance_admin.GetInstanceConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_instance_config_use_cached_wrapped_rpc():
@@ -2055,10 +2068,14 @@ async def test_get_instance_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_instance_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.GetInstanceConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.GetInstanceConfigRequest(),
+        {},
+    ],
+)
+async def test_get_instance_config_async(request_type, transport: str = "grpc_asyncio"):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2066,7 +2083,7 @@ async def test_get_instance_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2117,11 +2134,6 @@ async def test_get_instance_config_async(
         response.quorum_type == spanner_instance_admin.InstanceConfig.QuorumType.REGION
     )
     assert response.storage_limit_per_processing_unit == 3540
-
-
-@pytest.mark.asyncio
-async def test_get_instance_config_async_from_dict():
-    await test_get_instance_config_async(request_type=dict)
 
 
 def test_get_instance_config_field_headers():
@@ -2278,8 +2290,8 @@ async def test_get_instance_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.CreateInstanceConfigRequest,
-        dict,
+        spanner_instance_admin.CreateInstanceConfigRequest(),
+        {},
     ],
 )
 def test_create_instance_config(request_type, transport: str = "grpc"):
@@ -2290,7 +2302,7 @@ def test_create_instance_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2336,10 +2348,11 @@ def test_create_instance_config_non_empty_request_with_auto_populated_field():
         client.create_instance_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.CreateInstanceConfigRequest(
+        request_msg = spanner_instance_admin.CreateInstanceConfigRequest(
             parent="parent_value",
             instance_config_id="instance_config_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_instance_config_use_cached_wrapped_rpc():
@@ -2435,9 +2448,15 @@ async def test_create_instance_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.CreateInstanceConfigRequest(),
+        {},
+    ],
+)
 async def test_create_instance_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.CreateInstanceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2446,7 +2465,7 @@ async def test_create_instance_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2466,11 +2485,6 @@ async def test_create_instance_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_instance_config_async_from_dict():
-    await test_create_instance_config_async(request_type=dict)
 
 
 def test_create_instance_config_field_headers():
@@ -2647,8 +2661,8 @@ async def test_create_instance_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.UpdateInstanceConfigRequest,
-        dict,
+        spanner_instance_admin.UpdateInstanceConfigRequest(),
+        {},
     ],
 )
 def test_update_instance_config(request_type, transport: str = "grpc"):
@@ -2659,7 +2673,7 @@ def test_update_instance_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2702,7 +2716,8 @@ def test_update_instance_config_non_empty_request_with_auto_populated_field():
         client.update_instance_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.UpdateInstanceConfigRequest()
+        request_msg = spanner_instance_admin.UpdateInstanceConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_instance_config_use_cached_wrapped_rpc():
@@ -2798,9 +2813,15 @@ async def test_update_instance_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.UpdateInstanceConfigRequest(),
+        {},
+    ],
+)
 async def test_update_instance_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.UpdateInstanceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2809,7 +2830,7 @@ async def test_update_instance_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2829,11 +2850,6 @@ async def test_update_instance_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_instance_config_async_from_dict():
-    await test_update_instance_config_async(request_type=dict)
 
 
 def test_update_instance_config_field_headers():
@@ -3000,8 +3016,8 @@ async def test_update_instance_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.DeleteInstanceConfigRequest,
-        dict,
+        spanner_instance_admin.DeleteInstanceConfigRequest(),
+        {},
     ],
 )
 def test_delete_instance_config(request_type, transport: str = "grpc"):
@@ -3012,7 +3028,7 @@ def test_delete_instance_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3058,10 +3074,11 @@ def test_delete_instance_config_non_empty_request_with_auto_populated_field():
         client.delete_instance_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.DeleteInstanceConfigRequest(
+        request_msg = spanner_instance_admin.DeleteInstanceConfigRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_instance_config_use_cached_wrapped_rpc():
@@ -3147,9 +3164,15 @@ async def test_delete_instance_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.DeleteInstanceConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_instance_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.DeleteInstanceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3158,7 +3181,7 @@ async def test_delete_instance_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3176,11 +3199,6 @@ async def test_delete_instance_config_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_instance_config_async_from_dict():
-    await test_delete_instance_config_async(request_type=dict)
 
 
 def test_delete_instance_config_field_headers():
@@ -3333,8 +3351,8 @@ async def test_delete_instance_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.ListInstanceConfigOperationsRequest,
-        dict,
+        spanner_instance_admin.ListInstanceConfigOperationsRequest(),
+        {},
     ],
 )
 def test_list_instance_config_operations(request_type, transport: str = "grpc"):
@@ -3345,7 +3363,7 @@ def test_list_instance_config_operations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3395,11 +3413,12 @@ def test_list_instance_config_operations_non_empty_request_with_auto_populated_f
         client.list_instance_config_operations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.ListInstanceConfigOperationsRequest(
+        request_msg = spanner_instance_admin.ListInstanceConfigOperationsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_instance_config_operations_use_cached_wrapped_rpc():
@@ -3485,9 +3504,15 @@ async def test_list_instance_config_operations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.ListInstanceConfigOperationsRequest(),
+        {},
+    ],
+)
 async def test_list_instance_config_operations_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.ListInstanceConfigOperationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3496,7 +3521,7 @@ async def test_list_instance_config_operations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3519,11 +3544,6 @@ async def test_list_instance_config_operations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstanceConfigOperationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_instance_config_operations_async_from_dict():
-    await test_list_instance_config_operations_async(request_type=dict)
 
 
 def test_list_instance_config_operations_field_headers():
@@ -3736,6 +3756,9 @@ def test_list_instance_config_operations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, operations_pb2.Operation) for i in results)
@@ -3828,6 +3851,8 @@ async def test_list_instance_config_operations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3877,9 +3902,7 @@ async def test_list_instance_config_operations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_instance_config_operations(request={})
         ).pages:
             pages.append(page_)
@@ -3890,8 +3913,8 @@ async def test_list_instance_config_operations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.ListInstancesRequest,
-        dict,
+        spanner_instance_admin.ListInstancesRequest(),
+        {},
     ],
 )
 def test_list_instances(request_type, transport: str = "grpc"):
@@ -3902,7 +3925,7 @@ def test_list_instances(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -3950,11 +3973,12 @@ def test_list_instances_non_empty_request_with_auto_populated_field():
         client.list_instances(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.ListInstancesRequest(
+        request_msg = spanner_instance_admin.ListInstancesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_instances_use_cached_wrapped_rpc():
@@ -4035,10 +4059,14 @@ async def test_list_instances_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_instances_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.ListInstancesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.ListInstancesRequest(),
+        {},
+    ],
+)
+async def test_list_instances_async(request_type, transport: str = "grpc_asyncio"):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4046,7 +4074,7 @@ async def test_list_instances_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -4069,11 +4097,6 @@ async def test_list_instances_async(
     assert isinstance(response, pagers.ListInstancesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_instances_async_from_dict():
-    await test_list_instances_async(request_type=dict)
 
 
 def test_list_instances_field_headers():
@@ -4268,6 +4291,9 @@ def test_list_instances_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, spanner_instance_admin.Instance) for i in results)
@@ -4356,6 +4382,8 @@ async def test_list_instances_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4403,11 +4431,7 @@ async def test_list_instances_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_instances(request={})
-        ).pages:
+        async for page_ in (await client.list_instances(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4416,8 +4440,8 @@ async def test_list_instances_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.ListInstancePartitionsRequest,
-        dict,
+        spanner_instance_admin.ListInstancePartitionsRequest(),
+        {},
     ],
 )
 def test_list_instance_partitions(request_type, transport: str = "grpc"):
@@ -4428,7 +4452,7 @@ def test_list_instance_partitions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4479,10 +4503,11 @@ def test_list_instance_partitions_non_empty_request_with_auto_populated_field():
         client.list_instance_partitions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.ListInstancePartitionsRequest(
+        request_msg = spanner_instance_admin.ListInstancePartitionsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_instance_partitions_use_cached_wrapped_rpc():
@@ -4568,9 +4593,15 @@ async def test_list_instance_partitions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.ListInstancePartitionsRequest(),
+        {},
+    ],
+)
 async def test_list_instance_partitions_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.ListInstancePartitionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4579,7 +4610,7 @@ async def test_list_instance_partitions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4604,11 +4635,6 @@ async def test_list_instance_partitions_async(
     assert isinstance(response, pagers.ListInstancePartitionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_instance_partitions_async_from_dict():
-    await test_list_instance_partitions_async(request_type=dict)
 
 
 def test_list_instance_partitions_field_headers():
@@ -4815,6 +4841,9 @@ def test_list_instance_partitions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -4909,6 +4938,8 @@ async def test_list_instance_partitions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4960,11 +4991,7 @@ async def test_list_instance_partitions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_instance_partitions(request={})
-        ).pages:
+        async for page_ in (await client.list_instance_partitions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4973,8 +5000,8 @@ async def test_list_instance_partitions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.GetInstanceRequest,
-        dict,
+        spanner_instance_admin.GetInstanceRequest(),
+        {},
     ],
 )
 def test_get_instance(request_type, transport: str = "grpc"):
@@ -4985,7 +5012,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -5053,9 +5080,10 @@ def test_get_instance_non_empty_request_with_auto_populated_field():
         client.get_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.GetInstanceRequest(
+        request_msg = spanner_instance_admin.GetInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_instance_use_cached_wrapped_rpc():
@@ -5136,10 +5164,14 @@ async def test_get_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.GetInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.GetInstanceRequest(),
+        {},
+    ],
+)
+async def test_get_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5147,7 +5179,7 @@ async def test_get_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -5192,11 +5224,6 @@ async def test_get_instance_async(
         response.default_backup_schedule_type
         == spanner_instance_admin.Instance.DefaultBackupScheduleType.NONE
     )
-
-
-@pytest.mark.asyncio
-async def test_get_instance_async_from_dict():
-    await test_get_instance_async(request_type=dict)
 
 
 def test_get_instance_field_headers():
@@ -5345,8 +5372,8 @@ async def test_get_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.CreateInstanceRequest,
-        dict,
+        spanner_instance_admin.CreateInstanceRequest(),
+        {},
     ],
 )
 def test_create_instance(request_type, transport: str = "grpc"):
@@ -5357,7 +5384,7 @@ def test_create_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -5399,10 +5426,11 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
         client.create_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.CreateInstanceRequest(
+        request_msg = spanner_instance_admin.CreateInstanceRequest(
             parent="parent_value",
             instance_id="instance_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_instance_use_cached_wrapped_rpc():
@@ -5493,10 +5521,14 @@ async def test_create_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.CreateInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.CreateInstanceRequest(),
+        {},
+    ],
+)
+async def test_create_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5504,7 +5536,7 @@ async def test_create_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -5522,11 +5554,6 @@ async def test_create_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_instance_async_from_dict():
-    await test_create_instance_async(request_type=dict)
 
 
 def test_create_instance_field_headers():
@@ -5695,8 +5722,8 @@ async def test_create_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.UpdateInstanceRequest,
-        dict,
+        spanner_instance_admin.UpdateInstanceRequest(),
+        {},
     ],
 )
 def test_update_instance(request_type, transport: str = "grpc"):
@@ -5707,7 +5734,7 @@ def test_update_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -5746,7 +5773,8 @@ def test_update_instance_non_empty_request_with_auto_populated_field():
         client.update_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.UpdateInstanceRequest()
+        request_msg = spanner_instance_admin.UpdateInstanceRequest()
+        assert args[0] == request_msg
 
 
 def test_update_instance_use_cached_wrapped_rpc():
@@ -5837,10 +5865,14 @@ async def test_update_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.UpdateInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.UpdateInstanceRequest(),
+        {},
+    ],
+)
+async def test_update_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5848,7 +5880,7 @@ async def test_update_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -5866,11 +5898,6 @@ async def test_update_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_instance_async_from_dict():
-    await test_update_instance_async(request_type=dict)
 
 
 def test_update_instance_field_headers():
@@ -6029,8 +6056,8 @@ async def test_update_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.DeleteInstanceRequest,
-        dict,
+        spanner_instance_admin.DeleteInstanceRequest(),
+        {},
     ],
 )
 def test_delete_instance(request_type, transport: str = "grpc"):
@@ -6041,7 +6068,7 @@ def test_delete_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -6082,9 +6109,10 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
         client.delete_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.DeleteInstanceRequest(
+        request_msg = spanner_instance_admin.DeleteInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_instance_use_cached_wrapped_rpc():
@@ -6165,10 +6193,14 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.DeleteInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.DeleteInstanceRequest(),
+        {},
+    ],
+)
+async def test_delete_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6176,7 +6208,7 @@ async def test_delete_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -6192,11 +6224,6 @@ async def test_delete_instance_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_instance_async_from_dict():
-    await test_delete_instance_async(request_type=dict)
 
 
 def test_delete_instance_field_headers():
@@ -6341,8 +6368,8 @@ async def test_delete_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -6353,7 +6380,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -6399,9 +6426,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -6482,9 +6510,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6492,7 +6525,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -6515,11 +6548,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -6682,8 +6710,8 @@ async def test_set_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -6694,7 +6722,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -6740,9 +6768,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -6823,9 +6852,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6833,7 +6867,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -6856,11 +6890,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -7022,8 +7051,8 @@ async def test_get_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -7034,7 +7063,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7082,9 +7111,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -7169,9 +7199,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7180,7 +7216,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7203,11 +7239,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -7393,8 +7424,8 @@ async def test_test_iam_permissions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.GetInstancePartitionRequest,
-        dict,
+        spanner_instance_admin.GetInstancePartitionRequest(),
+        {},
     ],
 )
 def test_get_instance_partition(request_type, transport: str = "grpc"):
@@ -7405,7 +7436,7 @@ def test_get_instance_partition(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7466,9 +7497,10 @@ def test_get_instance_partition_non_empty_request_with_auto_populated_field():
         client.get_instance_partition(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.GetInstancePartitionRequest(
+        request_msg = spanner_instance_admin.GetInstancePartitionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_instance_partition_use_cached_wrapped_rpc():
@@ -7554,9 +7586,15 @@ async def test_get_instance_partition_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.GetInstancePartitionRequest(),
+        {},
+    ],
+)
 async def test_get_instance_partition_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.GetInstancePartitionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7565,7 +7603,7 @@ async def test_get_instance_partition_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7600,11 +7638,6 @@ async def test_get_instance_partition_async(
     assert response.referencing_databases == ["referencing_databases_value"]
     assert response.referencing_backups == ["referencing_backups_value"]
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_instance_partition_async_from_dict():
-    await test_get_instance_partition_async(request_type=dict)
 
 
 def test_get_instance_partition_field_headers():
@@ -7761,8 +7794,8 @@ async def test_get_instance_partition_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.CreateInstancePartitionRequest,
-        dict,
+        spanner_instance_admin.CreateInstancePartitionRequest(),
+        {},
     ],
 )
 def test_create_instance_partition(request_type, transport: str = "grpc"):
@@ -7773,7 +7806,7 @@ def test_create_instance_partition(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7819,10 +7852,11 @@ def test_create_instance_partition_non_empty_request_with_auto_populated_field()
         client.create_instance_partition(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.CreateInstancePartitionRequest(
+        request_msg = spanner_instance_admin.CreateInstancePartitionRequest(
             parent="parent_value",
             instance_partition_id="instance_partition_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_instance_partition_use_cached_wrapped_rpc():
@@ -7918,9 +7952,15 @@ async def test_create_instance_partition_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.CreateInstancePartitionRequest(),
+        {},
+    ],
+)
 async def test_create_instance_partition_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.CreateInstancePartitionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7929,7 +7969,7 @@ async def test_create_instance_partition_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7949,11 +7989,6 @@ async def test_create_instance_partition_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_instance_partition_async_from_dict():
-    await test_create_instance_partition_async(request_type=dict)
 
 
 def test_create_instance_partition_field_headers():
@@ -8138,8 +8173,8 @@ async def test_create_instance_partition_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.DeleteInstancePartitionRequest,
-        dict,
+        spanner_instance_admin.DeleteInstancePartitionRequest(),
+        {},
     ],
 )
 def test_delete_instance_partition(request_type, transport: str = "grpc"):
@@ -8150,7 +8185,7 @@ def test_delete_instance_partition(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8196,10 +8231,11 @@ def test_delete_instance_partition_non_empty_request_with_auto_populated_field()
         client.delete_instance_partition(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.DeleteInstancePartitionRequest(
+        request_msg = spanner_instance_admin.DeleteInstancePartitionRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_instance_partition_use_cached_wrapped_rpc():
@@ -8285,9 +8321,15 @@ async def test_delete_instance_partition_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.DeleteInstancePartitionRequest(),
+        {},
+    ],
+)
 async def test_delete_instance_partition_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.DeleteInstancePartitionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8296,7 +8338,7 @@ async def test_delete_instance_partition_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8314,11 +8356,6 @@ async def test_delete_instance_partition_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_instance_partition_async_from_dict():
-    await test_delete_instance_partition_async(request_type=dict)
 
 
 def test_delete_instance_partition_field_headers():
@@ -8471,8 +8508,8 @@ async def test_delete_instance_partition_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.UpdateInstancePartitionRequest,
-        dict,
+        spanner_instance_admin.UpdateInstancePartitionRequest(),
+        {},
     ],
 )
 def test_update_instance_partition(request_type, transport: str = "grpc"):
@@ -8483,7 +8520,7 @@ def test_update_instance_partition(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8526,7 +8563,8 @@ def test_update_instance_partition_non_empty_request_with_auto_populated_field()
         client.update_instance_partition(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.UpdateInstancePartitionRequest()
+        request_msg = spanner_instance_admin.UpdateInstancePartitionRequest()
+        assert args[0] == request_msg
 
 
 def test_update_instance_partition_use_cached_wrapped_rpc():
@@ -8622,9 +8660,15 @@ async def test_update_instance_partition_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.UpdateInstancePartitionRequest(),
+        {},
+    ],
+)
 async def test_update_instance_partition_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.UpdateInstancePartitionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8633,7 +8677,7 @@ async def test_update_instance_partition_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8653,11 +8697,6 @@ async def test_update_instance_partition_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_instance_partition_async_from_dict():
-    await test_update_instance_partition_async(request_type=dict)
 
 
 def test_update_instance_partition_field_headers():
@@ -8832,8 +8871,8 @@ async def test_update_instance_partition_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.ListInstancePartitionOperationsRequest,
-        dict,
+        spanner_instance_admin.ListInstancePartitionOperationsRequest(),
+        {},
     ],
 )
 def test_list_instance_partition_operations(request_type, transport: str = "grpc"):
@@ -8844,7 +8883,7 @@ def test_list_instance_partition_operations(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8902,11 +8941,12 @@ def test_list_instance_partition_operations_non_empty_request_with_auto_populate
         client.list_instance_partition_operations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.ListInstancePartitionOperationsRequest(
+        request_msg = spanner_instance_admin.ListInstancePartitionOperationsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_instance_partition_operations_use_cached_wrapped_rpc():
@@ -8992,9 +9032,15 @@ async def test_list_instance_partition_operations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.ListInstancePartitionOperationsRequest(),
+        {},
+    ],
+)
 async def test_list_instance_partition_operations_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.ListInstancePartitionOperationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9003,7 +9049,7 @@ async def test_list_instance_partition_operations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9032,11 +9078,6 @@ async def test_list_instance_partition_operations_async(
     assert response.unreachable_instance_partitions == [
         "unreachable_instance_partitions_value"
     ]
-
-
-@pytest.mark.asyncio
-async def test_list_instance_partition_operations_async_from_dict():
-    await test_list_instance_partition_operations_async(request_type=dict)
 
 
 def test_list_instance_partition_operations_field_headers():
@@ -9249,6 +9290,9 @@ def test_list_instance_partition_operations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, operations_pb2.Operation) for i in results)
@@ -9341,6 +9385,8 @@ async def test_list_instance_partition_operations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9390,9 +9436,7 @@ async def test_list_instance_partition_operations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_instance_partition_operations(request={})
         ).pages:
             pages.append(page_)
@@ -9403,8 +9447,8 @@ async def test_list_instance_partition_operations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_instance_admin.MoveInstanceRequest,
-        dict,
+        spanner_instance_admin.MoveInstanceRequest(),
+        {},
     ],
 )
 def test_move_instance(request_type, transport: str = "grpc"):
@@ -9415,7 +9459,7 @@ def test_move_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_instance), "__call__") as call:
@@ -9457,10 +9501,11 @@ def test_move_instance_non_empty_request_with_auto_populated_field():
         client.move_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_instance_admin.MoveInstanceRequest(
+        request_msg = spanner_instance_admin.MoveInstanceRequest(
             name="name_value",
             target_config="target_config_value",
         )
+        assert args[0] == request_msg
 
 
 def test_move_instance_use_cached_wrapped_rpc():
@@ -9551,10 +9596,14 @@ async def test_move_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_move_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_instance_admin.MoveInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_instance_admin.MoveInstanceRequest(),
+        {},
+    ],
+)
+async def test_move_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = InstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9562,7 +9611,7 @@ async def test_move_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_instance), "__call__") as call:
@@ -9580,11 +9629,6 @@ async def test_move_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_move_instance_async_from_dict():
-    await test_move_instance_async(request_type=dict)
 
 
 def test_move_instance_field_headers():
@@ -9770,7 +9814,7 @@ def test_list_instance_configs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_instance_configs_rest_unset_required_fields():
@@ -9904,6 +9948,9 @@ def test_list_instance_configs_rest_pager(transport: str = "rest"):
 
         pager = client.list_instance_configs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -10027,7 +10074,7 @@ def test_get_instance_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_instance_config_rest_unset_required_fields():
@@ -10215,7 +10262,7 @@ def test_create_instance_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_instance_config_rest_unset_required_fields():
@@ -10405,7 +10452,7 @@ def test_update_instance_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_instance_config_rest_unset_required_fields():
@@ -10602,7 +10649,7 @@ def test_delete_instance_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_instance_config_rest_unset_required_fields():
@@ -10802,7 +10849,7 @@ def test_list_instance_config_operations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_instance_config_operations_rest_unset_required_fields():
@@ -10940,6 +10987,9 @@ def test_list_instance_config_operations_rest_pager(transport: str = "rest"):
 
         pager = client.list_instance_config_operations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, operations_pb2.Operation) for i in results)
@@ -11068,7 +11118,7 @@ def test_list_instances_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_instances_rest_unset_required_fields():
@@ -11199,6 +11249,9 @@ def test_list_instances_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1"}
 
         pager = client.list_instances(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -11332,7 +11385,7 @@ def test_list_instance_partitions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_instance_partitions_rest_unset_required_fields():
@@ -11468,6 +11521,9 @@ def test_list_instance_partitions_rest_pager(transport: str = "rest"):
 
         pager = client.list_instance_partitions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -11589,7 +11645,7 @@ def test_get_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_instance_rest_unset_required_fields():
@@ -11771,7 +11827,7 @@ def test_create_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_instance_rest_unset_required_fields():
@@ -11955,7 +12011,7 @@ def test_update_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_instance_rest_unset_required_fields():
@@ -12137,7 +12193,7 @@ def test_delete_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_instance_rest_unset_required_fields():
@@ -12310,7 +12366,7 @@ def test_set_iam_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_iam_policy_rest_unset_required_fields():
@@ -12493,7 +12549,7 @@ def test_get_iam_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_iam_policy_rest_unset_required_fields():
@@ -12676,7 +12732,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -12867,7 +12923,7 @@ def test_get_instance_partition_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_instance_partition_rest_unset_required_fields():
@@ -13058,7 +13114,7 @@ def test_create_instance_partition_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_instance_partition_rest_unset_required_fields():
@@ -13255,7 +13311,7 @@ def test_delete_instance_partition_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_instance_partition_rest_unset_required_fields():
@@ -13435,7 +13491,7 @@ def test_update_instance_partition_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_instance_partition_rest_unset_required_fields():
@@ -13647,7 +13703,7 @@ def test_list_instance_partition_operations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_instance_partition_operations_rest_unset_required_fields():
@@ -13790,6 +13846,9 @@ def test_list_instance_partition_operations_rest_pager(transport: str = "rest"):
 
         pager = client.list_instance_partition_operations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, operations_pb2.Operation) for i in results)
@@ -13915,7 +13974,7 @@ def test_move_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_move_instance_rest_unset_required_fields():
@@ -14060,7 +14119,6 @@ def test_list_instance_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstanceConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14083,7 +14141,6 @@ def test_get_instance_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.GetInstanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14106,7 +14163,6 @@ def test_create_instance_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.CreateInstanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14129,7 +14185,6 @@ def test_update_instance_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.UpdateInstanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14152,7 +14207,6 @@ def test_delete_instance_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.DeleteInstanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14177,7 +14231,6 @@ def test_list_instance_config_operations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstanceConfigOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14198,7 +14251,6 @@ def test_list_instances_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14221,7 +14273,6 @@ def test_list_instance_partitions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstancePartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14242,7 +14293,6 @@ def test_get_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -14263,7 +14313,6 @@ def test_create_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -14284,7 +14333,6 @@ def test_update_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -14305,7 +14353,6 @@ def test_delete_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -14326,7 +14373,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14347,7 +14393,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14370,7 +14415,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14393,7 +14437,6 @@ def test_get_instance_partition_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.GetInstancePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14416,7 +14459,6 @@ def test_create_instance_partition_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.CreateInstancePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14439,7 +14481,6 @@ def test_delete_instance_partition_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.DeleteInstancePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14462,7 +14503,6 @@ def test_update_instance_partition_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.UpdateInstancePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14487,7 +14527,6 @@ def test_list_instance_partition_operations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstancePartitionOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14508,7 +14547,6 @@ def test_move_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.MoveInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -14551,7 +14589,6 @@ async def test_list_instance_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstanceConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14590,7 +14627,6 @@ async def test_get_instance_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.GetInstanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14617,7 +14653,6 @@ async def test_create_instance_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.CreateInstanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14644,7 +14679,6 @@ async def test_update_instance_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.UpdateInstanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14669,7 +14703,6 @@ async def test_delete_instance_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.DeleteInstanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14698,7 +14731,6 @@ async def test_list_instance_config_operations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstanceConfigOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14726,7 +14758,6 @@ async def test_list_instances_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14756,7 +14787,6 @@ async def test_list_instance_partitions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstancePartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14792,7 +14822,6 @@ async def test_get_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -14817,7 +14846,6 @@ async def test_create_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -14842,7 +14870,6 @@ async def test_update_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -14865,7 +14892,6 @@ async def test_delete_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -14893,7 +14919,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14921,7 +14946,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14950,7 +14974,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14985,7 +15008,6 @@ async def test_get_instance_partition_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.GetInstancePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15012,7 +15034,6 @@ async def test_create_instance_partition_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.CreateInstancePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15037,7 +15058,6 @@ async def test_delete_instance_partition_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.DeleteInstancePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15064,7 +15084,6 @@ async def test_update_instance_partition_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.UpdateInstancePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15096,7 +15115,6 @@ async def test_list_instance_partition_operations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstancePartitionOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15121,7 +15139,6 @@ async def test_move_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.MoveInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18221,7 +18238,6 @@ def test_list_instance_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstanceConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18243,7 +18259,6 @@ def test_get_instance_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.GetInstanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -18265,7 +18280,6 @@ def test_create_instance_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.CreateInstanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -18287,7 +18301,6 @@ def test_update_instance_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.UpdateInstanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -18309,7 +18322,6 @@ def test_delete_instance_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.DeleteInstanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -18331,7 +18343,6 @@ def test_list_instance_config_operations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstanceConfigOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18351,7 +18362,6 @@ def test_list_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -18373,7 +18383,6 @@ def test_list_instance_partitions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstancePartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18393,7 +18402,6 @@ def test_get_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18413,7 +18421,6 @@ def test_create_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18433,7 +18440,6 @@ def test_update_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18453,7 +18459,6 @@ def test_delete_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18473,7 +18478,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -18493,7 +18497,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -18515,7 +18518,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18537,7 +18539,6 @@ def test_get_instance_partition_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.GetInstancePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18559,7 +18560,6 @@ def test_create_instance_partition_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.CreateInstancePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18581,7 +18581,6 @@ def test_delete_instance_partition_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.DeleteInstancePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18603,7 +18602,6 @@ def test_update_instance_partition_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.UpdateInstancePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18625,7 +18623,6 @@ def test_list_instance_partition_operations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.ListInstancePartitionOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18645,7 +18642,6 @@ def test_move_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_instance_admin.MoveInstanceRequest()
-
         assert args[0] == request_msg
 
 

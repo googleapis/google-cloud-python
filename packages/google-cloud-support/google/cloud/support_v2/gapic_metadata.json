@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "CaseAttachmentServiceClient",
           "rpcs": {
+            "GetAttachment": {
+              "methods": [
+                "get_attachment"
+              ]
+            },
             "ListAttachments": {
               "methods": [
                 "list_attachments"
@@ -20,6 +25,11 @@
         "grpc-async": {
           "libraryClient": "CaseAttachmentServiceAsyncClient",
           "rpcs": {
+            "GetAttachment": {
+              "methods": [
+                "get_attachment"
+              ]
+            },
             "ListAttachments": {
               "methods": [
                 "list_attachments"
@@ -30,6 +40,11 @@
         "rest": {
           "libraryClient": "CaseAttachmentServiceClient",
           "rpcs": {
+            "GetAttachment": {
+              "methods": [
+                "get_attachment"
+              ]
+            },
             "ListAttachments": {
               "methods": [
                 "list_attachments"
@@ -188,6 +203,11 @@
                 "create_comment"
               ]
             },
+            "GetComment": {
+              "methods": [
+                "get_comment"
+              ]
+            },
             "ListComments": {
               "methods": [
                 "list_comments"
@@ -201,6 +221,11 @@
             "CreateComment": {
               "methods": [
                 "create_comment"
+              ]
+            },
+            "GetComment": {
+              "methods": [
+                "get_comment"
               ]
             },
             "ListComments": {
@@ -218,9 +243,123 @@
                 "create_comment"
               ]
             },
+            "GetComment": {
+              "methods": [
+                "get_comment"
+              ]
+            },
             "ListComments": {
               "methods": [
                 "list_comments"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "SupportEventSubscriptionService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "SupportEventSubscriptionServiceClient",
+          "rpcs": {
+            "CreateSupportEventSubscription": {
+              "methods": [
+                "create_support_event_subscription"
+              ]
+            },
+            "DeleteSupportEventSubscription": {
+              "methods": [
+                "delete_support_event_subscription"
+              ]
+            },
+            "GetSupportEventSubscription": {
+              "methods": [
+                "get_support_event_subscription"
+              ]
+            },
+            "ListSupportEventSubscriptions": {
+              "methods": [
+                "list_support_event_subscriptions"
+              ]
+            },
+            "UndeleteSupportEventSubscription": {
+              "methods": [
+                "undelete_support_event_subscription"
+              ]
+            },
+            "UpdateSupportEventSubscription": {
+              "methods": [
+                "update_support_event_subscription"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "SupportEventSubscriptionServiceAsyncClient",
+          "rpcs": {
+            "CreateSupportEventSubscription": {
+              "methods": [
+                "create_support_event_subscription"
+              ]
+            },
+            "DeleteSupportEventSubscription": {
+              "methods": [
+                "delete_support_event_subscription"
+              ]
+            },
+            "GetSupportEventSubscription": {
+              "methods": [
+                "get_support_event_subscription"
+              ]
+            },
+            "ListSupportEventSubscriptions": {
+              "methods": [
+                "list_support_event_subscriptions"
+              ]
+            },
+            "UndeleteSupportEventSubscription": {
+              "methods": [
+                "undelete_support_event_subscription"
+              ]
+            },
+            "UpdateSupportEventSubscription": {
+              "methods": [
+                "update_support_event_subscription"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "SupportEventSubscriptionServiceClient",
+          "rpcs": {
+            "CreateSupportEventSubscription": {
+              "methods": [
+                "create_support_event_subscription"
+              ]
+            },
+            "DeleteSupportEventSubscription": {
+              "methods": [
+                "delete_support_event_subscription"
+              ]
+            },
+            "GetSupportEventSubscription": {
+              "methods": [
+                "get_support_event_subscription"
+              ]
+            },
+            "ListSupportEventSubscriptions": {
+              "methods": [
+                "list_support_event_subscriptions"
+              ]
+            },
+            "UndeleteSupportEventSubscription": {
+              "methods": [
+                "undelete_support_event_subscription"
+              ]
+            },
+            "UpdateSupportEventSubscription": {
+              "methods": [
+                "update_support_event_subscription"
               ]
             }
           }

@@ -30,19 +30,18 @@ need to be deleted during teardown.
 """
 
 from datetime import datetime, timezone
+
 import pytest
-
-from google.api_core.exceptions import DeadlineExceeded
-from google.api_core.exceptions import NotFound
-from google.api_core.exceptions import TooManyRequests
-from google.api_core.exceptions import ServiceUnavailable
-from test_utils.system import unique_resource_id
+from google.api_core.exceptions import (
+    DeadlineExceeded,
+    NotFound,
+    ServiceUnavailable,
+    TooManyRequests,
+)
 from test_utils.retry import RetryErrors
+from test_utils.system import unique_resource_id
 
-
-from google.cloud.bigtable import Client
-from google.cloud.bigtable import enums
-
+from google.cloud.bigtable import Client, enums
 
 UNIQUE_SUFFIX = unique_resource_id("-")
 INSTANCE_ID = "snippet-tests" + UNIQUE_SUFFIX
@@ -57,9 +56,7 @@ SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
 LABEL_KEY = "python-snippet"
 LABEL_STAMP = (
-    datetime.now(timezone.utc)
-    .replace(microsecond=0)
-    .strftime("%Y-%m-%dt%H-%M-%S")
+    datetime.now(timezone.utc).replace(microsecond=0).strftime("%Y-%m-%dt%H-%M-%S")
 )
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
 INSTANCES_TO_DELETE = []
@@ -110,8 +107,7 @@ def teardown_module():
 
 def test_bigtable_create_instance():
     # [START bigtable_api_create_prod_instance]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import enums
+    from google.cloud.bigtable import Client, enums
 
     my_instance_id = "inst-my-" + UNIQUE_SUFFIX
     my_cluster_id = "clus-my-" + UNIQUE_SUFFIX
@@ -144,8 +140,7 @@ def test_bigtable_create_instance():
 
 def test_bigtable_create_additional_cluster():
     # [START bigtable_api_create_cluster]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import enums
+    from google.cloud.bigtable import Client, enums
 
     # Assuming that there is an existing instance with `INSTANCE_ID`
     # on the server already.
@@ -181,8 +176,7 @@ def test_bigtable_create_reload_delete_app_profile():
     import re
 
     # [START bigtable_api_create_app_profile]
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import enums
+    from google.cloud.bigtable import Client, enums
 
     routing_policy_type = enums.RoutingPolicyType.ANY
 
@@ -422,10 +416,9 @@ def test_bigtable_cluster_disable_autoscaling():
 
 def test_bigtable_create_table():
     # [START bigtable_api_create_table]
-    from google.api_core import exceptions
-    from google.api_core import retry
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
+    from google.api_core import exceptions, retry
+
+    from google.cloud.bigtable import Client, column_family
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -547,8 +540,7 @@ def test_bigtable_set_iam_policy_then_get_iam_policy():
 
     # [START bigtable_api_set_iam_policy]
     from google.cloud.bigtable import Client
-    from google.cloud.bigtable.policy import Policy
-    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE, Policy
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -615,8 +607,7 @@ def test_bigtable_admins_policy():
 
     # [START bigtable_api_admins_policy]
     from google.cloud.bigtable import Client
-    from google.cloud.bigtable.policy import Policy
-    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE, Policy
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -636,8 +627,7 @@ def test_bigtable_readers_policy():
 
     # [START bigtable_api_readers_policy]
     from google.cloud.bigtable import Client
-    from google.cloud.bigtable.policy import Policy
-    from google.cloud.bigtable.policy import BIGTABLE_READER_ROLE
+    from google.cloud.bigtable.policy import BIGTABLE_READER_ROLE, Policy
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -657,8 +647,7 @@ def test_bigtable_users_policy():
 
     # [START bigtable_api_users_policy]
     from google.cloud.bigtable import Client
-    from google.cloud.bigtable.policy import Policy
-    from google.cloud.bigtable.policy import BIGTABLE_USER_ROLE
+    from google.cloud.bigtable.policy import BIGTABLE_USER_ROLE, Policy
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -678,8 +667,7 @@ def test_bigtable_viewers_policy():
 
     # [START bigtable_api_viewers_policy]
     from google.cloud.bigtable import Client
-    from google.cloud.bigtable.policy import Policy
-    from google.cloud.bigtable.policy import BIGTABLE_VIEWER_ROLE
+    from google.cloud.bigtable.policy import BIGTABLE_VIEWER_ROLE, Policy
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)

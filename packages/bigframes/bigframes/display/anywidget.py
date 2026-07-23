@@ -18,6 +18,9 @@ from __future__ import annotations
 
 import dataclasses
 import functools
+import logging
+
+logger = logging.getLogger(__name__)
 import math
 import threading
 import uuid
@@ -58,6 +61,19 @@ class _SortState:
     ascending: tuple[bool, ...]
 
 
+@dataclasses.dataclass
+class _ExecutionResult:
+    df_to_set: Optional[bigframes.dataframe.DataFrame] = None
+    orderable_cols: Optional[list[str]] = None
+    batches: Optional[blocks.PandasBatches] = None
+    batch_iter: Optional[Iterator[pd.DataFrame]] = None
+    cached_batches: Optional[list[pd.DataFrame]] = None
+    all_data_loaded: bool = False
+    total_rows: Optional[int] = None
+    initial_html: Optional[str] = None
+    error_message: Optional[str] = None
+
+
 class TableWidget(_WIDGET_BASE):
     """An interactive, paginated table widget for BigFrames DataFrames.
 
@@ -77,8 +93,19 @@ class TableWidget(_WIDGET_BASE):
     _error_message = traitlets.Unicode(allow_none=True, default_value=None).tag(
         sync=True
     )
+    start_execution = traitlets.Bool(False).tag(sync=True)
+    is_deferred_mode = traitlets.Bool(False).tag(sync=True)
+    dry_run_info = traitlets.Unicode("").tag(sync=True)
+    ping = traitlets.Int(0).tag(sync=True)
 
-    def __init__(self, dataframe: bigframes.dataframe.DataFrame):
+    def __init__(
+        self,
+        dataframe: (
+            bigframes.dataframe.DataFrame
+            | bigframes.session.deferred.DeferredBigQueryDataFrame
+        ),
+        dry_run_info: Optional[str] = None,
+    ):
         """Initialize the TableWidget.
 
         Args:
@@ -90,9 +117,44 @@ class TableWidget(_WIDGET_BASE):
                 "`pip install 'bigframes[anywidget]'` to use TableWidget."
             )
 
-        self._dataframe = dataframe
+        # Enable third-party widgets manager in Google Colab environment.
+        try:
+            import sys
+
+            if "google.colab" in sys.modules:
+                from google.colab import output
+
+                output.enable_custom_widget_manager()
+        except Exception:
+            pass
+
+        from bigframes.session import deferred
+
+        is_deferred = False
+        deferred_df = None
+        df = None
+
+        if isinstance(dataframe, deferred.DeferredBigQueryDataFrame):
+            is_deferred = True
+            deferred_df = dataframe
+        elif bigframes.options.display.repr_mode == "deferred":
+            is_deferred = True
+            df = dataframe
+        else:
+            df = dataframe
+
+        from bigframes.core.utils import get_ipython_execution_count
+
+        self._cell_execution_count = get_ipython_execution_count()
 
         super().__init__()
+
+        self.is_deferred_mode = is_deferred
+        self._deferred_dataframe = deferred_df
+        self._dataframe = df
+
+        if dry_run_info:
+            self.dry_run_info = dry_run_info
 
         # Initialize attributes that might be needed by observers first
         self._table_id = str(uuid.uuid4())
@@ -100,6 +162,7 @@ class TableWidget(_WIDGET_BASE):
         self._batch_iter: Optional[Iterator[pd.DataFrame]] = None
         self._cached_batches: list[pd.DataFrame] = []
         self._last_sort_state: Optional[_SortState] = None
+        self._execution_result: Optional[_ExecutionResult] = None
         # Lock to ensure only one thread at a time is updating the table HTML.
         self._setting_html_lock = threading.Lock()
 
@@ -107,18 +170,165 @@ class TableWidget(_WIDGET_BASE):
         initial_page_size = bigframes.options.display.max_rows
         initial_max_columns = bigframes.options.display.max_columns
 
-        # set traitlets properties that trigger observers
-        # TODO(b/462525985): Investigate and improve TableWidget UX for DataFrames with a large number of columns.
         self.page_size = initial_page_size
         self.max_columns = initial_max_columns
 
-        self.orderable_columns = self._get_orderable_columns(dataframe)
-
-        self._initial_load()
+        if not self.is_deferred_mode:
+            self._initialize_from_dataframe()
 
         # Signals to the frontend that the initial data load is complete.
         # Also used as a guard to prevent observers from firing during initialization.
         self._initial_load_complete = True
+
+    @traitlets.observe("start_execution")
+    def _on_start_execution(self, change: dict[str, Any]):
+        if change["new"]:
+            import asyncio
+
+            try:
+                loop = asyncio.get_running_loop()
+            except RuntimeError:
+                try:
+                    import tornado.ioloop  # type: ignore[import-not-found]
+
+                    loop = tornado.ioloop.IOLoop.current().asyncio_loop  # type: ignore[attr-defined]
+                except Exception:
+                    loop = None
+
+            def run_execution():
+                try:
+                    self._error_message = None
+                    df = None
+                    if self.is_deferred_mode:
+                        if self._deferred_dataframe is not None:
+                            result = self._deferred_dataframe.execute()
+                            if isinstance(result, bigframes.series.Series):
+                                df = result.to_frame()
+                            elif isinstance(result, bigframes.dataframe.DataFrame):
+                                df = result
+                            else:
+                                raise TypeError(
+                                    f"Unexpected result type: {type(result)}"
+                                )
+                        elif self._dataframe is not None:
+                            df = self._dataframe
+                    else:
+                        df = self._dataframe
+
+                    if df is None:
+                        raise ValueError("No DataFrame to execute.")
+
+                    df_to_set = df._prepare_display_df()
+                    orderable_cols = self._get_orderable_columns(df_to_set)
+
+                    with bigframes.option_context("display.progress_bar", None):
+                        batches = df_to_set.to_pandas_batches(
+                            page_size=self.page_size,
+                            cell_execution_count=self._cell_execution_count,
+                        )
+
+                    total_rows = getattr(batches, "total_rows", None)
+
+                    # Fetch the first batch
+                    batch_iter = iter(batches)
+                    try:
+                        initial_batch = next(batch_iter)
+                        cached_batches = [initial_batch]
+                        all_data_loaded = False
+                    except StopIteration:
+                        initial_batch = pd.DataFrame(columns=df_to_set.columns)
+                        cached_batches = []
+                        all_data_loaded = True
+
+                    # Render the HTML
+                    page_data = initial_batch.copy()
+                    start = 0
+                    if df_to_set._block.has_index:
+                        is_unnamed_single_index = (
+                            page_data.index.name is None
+                            and not isinstance(page_data.index, pd.MultiIndex)
+                        )
+                        page_data = page_data.reset_index()
+                        if is_unnamed_single_index and "index" in page_data.columns:
+                            page_data.rename(columns={"index": ""}, inplace=True)
+                    else:
+                        page_data.insert(
+                            0, "Row", range(start + 1, start + len(page_data) + 1)
+                        )
+
+                    initial_html = bigframes.display.html.render_html(
+                        dataframe=page_data,
+                        table_id=f"table-{self._table_id}",
+                        orderable_columns=orderable_cols,
+                        max_columns=self.max_columns,
+                    )
+
+                    self._execution_result = _ExecutionResult(
+                        df_to_set=df_to_set,
+                        orderable_cols=orderable_cols,
+                        batches=batches,
+                        batch_iter=batch_iter,
+                        cached_batches=cached_batches,
+                        all_data_loaded=all_data_loaded,
+                        total_rows=total_rows,
+                        initial_html=initial_html,
+                    )
+                except Exception as e:
+                    logger.warning(f"Error in background execution: {e}")
+                    self._execution_result = _ExecutionResult(error_message=str(e))
+
+                import sys
+
+                is_colab = "google.colab" in sys.modules
+
+                if loop is not None and loop.is_running() and not is_colab:
+                    loop.call_soon_threadsafe(self._apply_execution_result)
+                elif is_colab:
+                    # In Google Colab, background thread updates to traitlets are not automatically
+                    # synchronized to the frontend. We rely on the frontend's active pinging
+                    # (which triggers `_on_ping` on the main kernel thread) to apply the result.
+                    pass
+                else:
+                    self._apply_execution_result()
+
+            self._execution_thread = threading.Thread(target=run_execution, daemon=True)
+            self._execution_thread.start()
+
+    def _apply_execution_result(self) -> None:
+        if self._execution_result is None:
+            return
+
+        result = self._execution_result
+        self._execution_result = None
+
+        with self.hold_sync():
+            if result.error_message is not None:
+                self._error_message = result.error_message
+                self.start_execution = False
+            else:
+                self._dataframe = result.df_to_set
+                self.orderable_columns = result.orderable_cols or []
+                self._batches = result.batches
+                self._batch_iter = result.batch_iter
+                self._cached_batches = result.cached_batches or []
+                self._all_data_loaded = result.all_data_loaded
+                self._last_sort_state = _SortState((), ())
+                self.row_count = result.total_rows
+                self.table_html = result.initial_html or ""
+                self.is_deferred_mode = False
+                self.start_execution = False
+
+    @traitlets.observe("ping")
+    def _on_ping(self, _change: dict[str, Any]):
+        self._apply_execution_result()
+
+    def _initialize_from_dataframe(self):
+        if self._dataframe is None:
+            return
+
+        self.orderable_columns = self._get_orderable_columns(self._dataframe)
+
+        self._initial_load()
 
     def _get_orderable_columns(
         self, dataframe: bigframes.dataframe.DataFrame
@@ -171,8 +381,8 @@ class TableWidget(_WIDGET_BASE):
 
     @functools.cached_property
     def _esm(self):
-        """Load JavaScript code from external file."""
-        return resources.read_text(bigframes.display, "table_widget.js")
+        """Load JavaScript code from the compiled Angular hybrid bundle."""
+        return resources.read_text(bigframes.display, "table_widget_angular.js")
 
     @functools.cached_property
     def _css(self):
@@ -274,7 +484,9 @@ class TableWidget(_WIDGET_BASE):
     def _cached_data(self) -> pd.DataFrame:
         """Combine all cached batches into a single DataFrame."""
         if not self._cached_batches:
-            return pd.DataFrame(columns=self._dataframe.columns)
+            if self._dataframe is not None:
+                return pd.DataFrame(columns=self._dataframe.columns)
+            return pd.DataFrame()
         return pd.concat(self._cached_batches)
 
     def _reset_batch_cache(self) -> None:
@@ -285,13 +497,21 @@ class TableWidget(_WIDGET_BASE):
 
     def _reset_batches_for_new_page_size(self) -> None:
         """Reset the batch iterator when page size changes."""
+        if self._dataframe is None:
+            return
         with bigframes.option_context("display.progress_bar", None):
-            self._batches = self._dataframe.to_pandas_batches(page_size=self.page_size)
+            self._batches = self._dataframe.to_pandas_batches(
+                page_size=self.page_size,
+                cell_execution_count=self._cell_execution_count,
+            )
 
         self._reset_batch_cache()
 
     def _set_table_html(self) -> None:
         """Sets the current html data based on the current page and page size."""
+        if self.is_deferred_mode:
+            return
+
         new_page = None
         with (
             self._setting_html_lock,
@@ -301,6 +521,10 @@ class TableWidget(_WIDGET_BASE):
                 self.table_html = (
                     f"<div class='bigframes-error-message'>{self._error_message}</div>"
                 )
+                return
+
+            if self._dataframe is None:
+                self.table_html = "<div class='bigframes-error-message'>Internal Error: DataFrame is missing.</div>"
                 return
 
             # Apply sorting if a column is selected
@@ -318,7 +542,8 @@ class TableWidget(_WIDGET_BASE):
             current_sort_state = _SortState(tuple(sort_columns), tuple(sort_ascending))
             if self._last_sort_state != current_sort_state:
                 self._batches = df_to_display.to_pandas_batches(
-                    page_size=self.page_size
+                    page_size=self.page_size,
+                    cell_execution_count=self._cell_execution_count,
                 )
                 self._reset_batch_cache()
                 self._last_sort_state = current_sort_state

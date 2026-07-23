@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.saasplatform_saasservicemgmt_v1beta1.types import common
@@ -41,6 +42,9 @@ __protobuf__ = proto.module(
         "FromMapping",
         "ToMapping",
         "Dependency",
+        "CompositeRef",
+        "ComponentRef",
+        "AppParams",
     },
 )
 
@@ -74,6 +78,29 @@ class Saas(proto.Message):
             Optional. List of locations that the service
             is available in. Rollout refers to the list to
             generate a rollout plan.
+        application_template (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.CompositeRef):
+            Reference to composite ApplicationTemplate.
+            When specified, the template components will be
+            imported into their equivalent UnitKind, Release
+            and Blueprint resources. Deleted references will
+            not delete imported resources. Should only be
+            specified on source regions, and be unspecified
+            on replica regions.
+        blueprint_repo (str):
+            Output only. Name of repository in Artifact
+            Registry for system-generated Blueprints, eg.
+            Blueprints of imported ApplicationTemplates.
+        state (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Saas.State):
+            Output only. State of the Saas. It is always in ACTIVE state
+            if the application_template is empty.
+        conditions (MutableSequence[google.cloud.saasplatform_saasservicemgmt_v1beta1.types.SaasCondition]):
+            Output only. A set of conditions which
+            indicate the various conditions this resource
+            can have.
+        error (google.rpc.status_pb2.Status):
+            Output only. If the state is FAILED, the
+            corresponding error code and message. Defaults
+            to code=OK for all other states.
         labels (MutableMapping[str, str]):
             Optional. The labels on the resource, which
             can be used for categorization. similar to
@@ -113,6 +140,38 @@ class Saas(proto.Message):
             this value.
     """
 
+    class State(proto.Enum):
+        r"""State of the Saas.
+
+        Values:
+            STATE_TYPE_UNSPECIFIED (0):
+                State type is unspecified.
+            STATE_ACTIVE (1):
+                The Saas is ready
+            STATE_RUNNING (2):
+                In the process of importing, synchronizing or
+                replicating ApplicationTemplates
+            STATE_FAILED (3):
+                Failure during process of importing,
+                synchronizing or replicating ApplicationTemplate
+                processing
+            ACTIVE (1):
+                Deprecated: Use STATE_ACTIVE.
+            RUNNING (2):
+                Deprecated: Use STATE_RUNNING.
+            FAILED (3):
+                Deprecated: Use STATE_FAILED.
+        """
+
+        _pb_options = {"allow_alias": True}
+        STATE_TYPE_UNSPECIFIED = 0
+        STATE_ACTIVE = 1
+        STATE_RUNNING = 2
+        STATE_FAILED = 3
+        ACTIVE = 1
+        RUNNING = 2
+        FAILED = 3
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -121,6 +180,30 @@ class Saas(proto.Message):
         proto.MESSAGE,
         number=4,
         message="Location",
+    )
+    application_template: "CompositeRef" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="CompositeRef",
+    )
+    blueprint_repo: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=State,
+    )
+    conditions: MutableSequence[common.SaasCondition] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message=common.SaasCondition,
+    )
+    error: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=status_pb2.Status,
     )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -311,6 +394,12 @@ class UnitKind(proto.Message):
             the producer wants to manage with App Lifecycle
             Manager. Part of the App Lifecycle Manager
             common data model. Immutable once set.
+        application_template_component (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.ComponentRef):
+            Output only. Reference to component and
+            revision in a composite ApplicationTemplate.
+        app_params (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.AppParams):
+            AppParams contains the parameters for
+            creating an AppHub Application.
         labels (MutableMapping[str, str]):
             Optional. The labels on the resource, which
             can be used for categorization. similar to
@@ -376,6 +465,16 @@ class UnitKind(proto.Message):
     saas: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    application_template_component: "ComponentRef" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="ComponentRef",
+    )
+    app_params: "AppParams" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="AppParams",
     )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -487,6 +586,11 @@ class Unit(proto.Message):
             Optional. Output only. If set, indicates the
             time when the system will start removing the
             unit.
+        application (str):
+            Optional. Reference to the AppHub Application
+            this unit belongs to. All resources deployed in
+            this Unit will be associated with the specified
+            Application.
         labels (MutableMapping[str, str]):
             Optional. The labels on the resource, which
             can be used for categorization. similar to
@@ -524,6 +628,12 @@ class Unit(proto.Message):
             made by users must refresh this value. Changes
             to a resource made by the service should refresh
             this value.
+        satisfies_pzs (bool):
+            Output only. Indicates whether the resource
+            location satisfies Zone Separation constraints.
+            This is false by default.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
     """
 
     class UnitState(proto.Enum):
@@ -702,6 +812,10 @@ class Unit(proto.Message):
         number=26,
         message=timestamp_pb2.Timestamp,
     )
+    application: str = proto.Field(
+        proto.STRING,
+        number=29,
+    )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
@@ -729,6 +843,14 @@ class Unit(proto.Message):
         proto.MESSAGE,
         number=10304,
         message=timestamp_pb2.Timestamp,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=10305,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=10306,
     )
 
 
@@ -765,7 +887,7 @@ class UnitOperation(proto.Message):
     unit to focus only on the change they have requested.
 
     This is a base object that contains the common fields in all
-    unit operations. Next: 19
+    unit operations. Next: 22
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -866,6 +988,10 @@ class UnitOperation(proto.Message):
             made by users must refresh this value. Changes
             to a resource made by the service should refresh
             this value.
+        delete_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the resource
+            was marked for deletion (deletion is an
+            asynchronous operation).
     """
 
     class UnitOperationState(proto.Enum):
@@ -988,6 +1114,11 @@ class UnitOperation(proto.Message):
         number=10304,
         message=timestamp_pb2.Timestamp,
     )
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=10305,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class Provision(proto.Message):
@@ -1100,6 +1231,9 @@ class Release(proto.Message):
         input_variable_defaults (MutableSequence[google.cloud.saasplatform_saasservicemgmt_v1beta1.types.UnitVariable]):
             Optional. Mapping of input variables to
             default values. Maximum 100
+        application_template_component (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.ComponentRef):
+            Output only. Reference to component and
+            revision in a composite ApplicationTemplate.
         labels (MutableMapping[str, str]):
             Optional. The labels on the resource, which
             can be used for categorization. similar to
@@ -1189,6 +1323,11 @@ class Release(proto.Message):
         proto.MESSAGE,
         number=7,
         message=common.UnitVariable,
+    )
+    application_template_component: "ComponentRef" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="ComponentRef",
     )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -1337,6 +1476,136 @@ class Dependency(proto.Message):
     alias: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class CompositeRef(proto.Message):
+    r"""CompositeRef represents a reference to a composite resource.
+    Next ID: 4
+
+    Attributes:
+        application_template (str):
+            Required. Reference to the
+            ApplicationTemplate resource.
+        revision (str):
+            Revision of the ApplicationTemplate to use.
+            Changes to revision will trigger manual
+            resynchronization. If empty, ApplicationTemplate
+            will be ignored.
+        sync_operation (str):
+            Output only. Reference to on-going AppTemplate import and
+            replication operation (i.e. the operation_id for the
+            long-running operation). This field is opaque for external
+            usage.
+    """
+
+    application_template: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    revision: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    sync_operation: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ComponentRef(proto.Message):
+    r"""ComponentRef represents a reference to a component resource.
+    Next ID: 4
+
+    Attributes:
+        composite_ref (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.CompositeRef):
+            Reference to the Composite
+            ApplicationTemplate.
+        component (str):
+            Name of the component in composite.Components
+        revision (str):
+            Revision of the component.
+            If the component does not have a revision, this
+            field will be explicitly set to the revision of
+            the composite ApplicationTemplate.
+    """
+
+    composite_ref: "CompositeRef" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CompositeRef",
+    )
+    component: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    revision: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class AppParams(proto.Message):
+    r"""AppParams contains the parameters for creating an AppHub
+    Application.
+
+    Attributes:
+        group (str):
+            Grouping used to construct the name of the AppHub
+            Application. Multiple UnitKinds can specify the same group
+            to use the same Application across their respective units.
+            Corresponds to the app_boundary_id in the ADC composite
+            ApplicationTemplate. Defaults to UnitKind.name
+        scope (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.AppParams.Scope):
+            Corresponds to the scope in the ADC composite
+            ApplicationTemplate. Defaults to TYPE_REGIONAL.
+    """
+
+    class Scope(proto.Message):
+        r"""Scope of an application.
+
+        Attributes:
+            type_ (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.AppParams.Scope.Type):
+                Required. Scope Type.
+        """
+
+        class Type(proto.Enum):
+            r"""Scope Type.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    Unspecified type.
+                TYPE_REGIONAL (1):
+                    Regional type.
+                TYPE_GLOBAL (2):
+                    Global type.
+                REGIONAL (1):
+                    Deprecated: Use TYPE_REGIONAL.
+                GLOBAL (2):
+                    Deprecated: Use TYPE_GLOBAL.
+            """
+
+            _pb_options = {"allow_alias": True}
+            TYPE_UNSPECIFIED = 0
+            TYPE_REGIONAL = 1
+            TYPE_GLOBAL = 2
+            REGIONAL = 1
+            GLOBAL = 2
+
+        type_: "AppParams.Scope.Type" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="AppParams.Scope.Type",
+        )
+
+    group: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    scope: Scope = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=Scope,
     )
 
 

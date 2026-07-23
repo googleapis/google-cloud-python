@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.protobuf import empty_pb2
-import tests.mockserver_tests.spanner_database_admin_pb2_grpc as database_admin_grpc
 from google.longrunning import operations_pb2 as operations_pb2
+from google.protobuf import empty_pb2
+
+import tests.mockserver_tests.spanner_database_admin_pb2_grpc as database_admin_grpc
 
 
 # An in-memory mock DatabaseAdmin server that can be used for testing.

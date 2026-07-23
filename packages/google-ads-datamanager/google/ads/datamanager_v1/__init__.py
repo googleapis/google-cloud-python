@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,13 +21,7 @@ from google.ads.datamanager_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
-
+from importlib import metadata
 
 from .services.ingestion_service import (
     IngestionServiceAsyncClient,
@@ -53,18 +47,43 @@ from .services.user_list_service import (
     UserListServiceAsyncClient,
     UserListServiceClient,
 )
+from .types.ad_event import (
+    AdEvent,
+    AdFormat,
+    AdPlacement,
+    AdType,
+    AttributionHint,
+    Platform,
+    PlatformType,
+    TargetingType,
+)
 from .types.age_range import AgeRange
-from .types.audience import AudienceMember, MobileData, PairData, PpidData, UserIdData
-from .types.cart_data import CartData, Item
+from .types.audience import (
+    AudienceMember,
+    CompositeData,
+    IpData,
+    MobileData,
+    PairData,
+    PpidData,
+    UserIdData,
+)
+from .types.cart_data import CartData, Item, ItemCustomVariable
 from .types.consent import Consent, ConsentStatus
 from .types.destination import Destination, Product, ProductAccount
 from .types.device_info import DeviceInfo
-from .types.encryption_info import AwsWrappedKeyInfo, EncryptionInfo, GcpWrappedKeyInfo
+from .types.encrypted_user_id import EncryptedUserId
+from .types.encryption_info import (
+    AwsWrappedKeyInfo,
+    CoordinatorKeyInfo,
+    EncryptionInfo,
+    GcpWrappedKeyInfo,
+)
 from .types.error import ErrorReason
 from .types.event import (
     AdIdentifiers,
     CustomVariable,
     Event,
+    EventLocation,
     EventParameter,
     EventSource,
 )
@@ -72,6 +91,8 @@ from .types.experimental_field import ExperimentalField
 from .types.gender import Gender
 from .types.ingestion_service import (
     Encoding,
+    IngestAdEventsRequest,
+    IngestAdEventsResponse,
     IngestAudienceMembersRequest,
     IngestAudienceMembersResponse,
     IngestEventsRequest,
@@ -91,7 +112,10 @@ from .types.match_rate import MatchRateRange
 from .types.partner_link_service import (
     CreatePartnerLinkRequest,
     DeletePartnerLinkRequest,
+    FeatureSet,
+    PartnerCustomerAccount,
     PartnerLink,
+    PartnerLinkMetadata,
     SearchPartnerLinksRequest,
     SearchPartnerLinksResponse,
 )
@@ -161,6 +185,7 @@ from .types.user_properties import (
     UserProperties,
     UserProperty,
 )
+from .types.viewability_info import MediaQuartile, ViewabilityInfo, ViewType
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
@@ -171,34 +196,23 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.ads.datamanager_v1"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -227,9 +241,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -263,16 +277,23 @@ __all__ = (
     "UserListDirectLicenseServiceAsyncClient",
     "UserListGlobalLicenseServiceAsyncClient",
     "UserListServiceAsyncClient",
+    "AdEvent",
+    "AdFormat",
     "AdIdentifiers",
+    "AdPlacement",
+    "AdType",
     "AddressInfo",
     "AgeRange",
+    "AttributionHint",
     "AudienceMember",
     "AwsWrappedKeyInfo",
     "Baseline",
     "CartData",
+    "CompositeData",
     "Consent",
     "ConsentStatus",
     "ContactIdInfo",
+    "CoordinatorKeyInfo",
     "CreatePartnerLinkRequest",
     "CreateUserListDirectLicenseRequest",
     "CreateUserListGlobalLicenseRequest",
@@ -286,26 +307,33 @@ __all__ = (
     "Destination",
     "DeviceInfo",
     "Encoding",
+    "EncryptedUserId",
     "EncryptionInfo",
     "ErrorCount",
     "ErrorInfo",
     "ErrorReason",
     "Event",
+    "EventLocation",
     "EventParameter",
     "EventSource",
     "ExperimentalField",
+    "FeatureSet",
     "GcpWrappedKeyInfo",
     "Gender",
     "GetUserListDirectLicenseRequest",
     "GetUserListGlobalLicenseRequest",
     "GetUserListRequest",
+    "IngestAdEventsRequest",
+    "IngestAdEventsResponse",
     "IngestAudienceMembersRequest",
     "IngestAudienceMembersResponse",
     "IngestEventsRequest",
     "IngestEventsResponse",
     "IngestedUserListInfo",
     "IngestionServiceClient",
+    "IpData",
     "Item",
+    "ItemCustomVariable",
     "ItemParameter",
     "ListUserListDirectLicensesRequest",
     "ListUserListDirectLicensesResponse",
@@ -317,13 +345,18 @@ __all__ = (
     "ListUserListsResponse",
     "MarketingDataInsightsServiceClient",
     "MatchRateRange",
+    "MediaQuartile",
     "MobileData",
     "MobileIdInfo",
     "PairData",
     "PairIdInfo",
     "PartnerAudienceInfo",
+    "PartnerCustomerAccount",
     "PartnerLink",
+    "PartnerLinkMetadata",
     "PartnerLinkServiceClient",
+    "Platform",
+    "PlatformType",
     "PpidData",
     "ProcessingErrorReason",
     "ProcessingWarningReason",
@@ -341,6 +374,7 @@ __all__ = (
     "SearchPartnerLinksResponse",
     "SizeInfo",
     "TargetNetworkInfo",
+    "TargetingType",
     "TermsOfService",
     "TermsOfServiceStatus",
     "UpdateUserListDirectLicenseRequest",
@@ -364,6 +398,8 @@ __all__ = (
     "UserListServiceClient",
     "UserProperties",
     "UserProperty",
+    "ViewType",
+    "ViewabilityInfo",
     "WarningCount",
     "WarningInfo",
 )

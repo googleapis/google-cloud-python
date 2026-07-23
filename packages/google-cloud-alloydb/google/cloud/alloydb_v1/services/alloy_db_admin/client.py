@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1875,7 +1875,7 @@ class AlloyDBAdminClient(metaclass=AlloyDBAdminClientMeta):
                 # Initialize request argument(s)
                 request = alloydb_v1.UpgradeClusterRequest(
                     name="name_value",
-                    version="POSTGRES_17",
+                    version="POSTGRES_18",
                 )
 
                 # Make the request

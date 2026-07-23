@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -384,6 +384,16 @@ class KeyManagementServiceTransport(abc.ABC):
             self.import_crypto_key_version: gapic_v1.method.wrap_method(
                 self.import_crypto_key_version,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.import_trusted_key_wrapped_crypto_key_version: gapic_v1.method.wrap_method(
+                self.import_trusted_key_wrapped_crypto_key_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_trusted_key_wrapped_crypto_key_version: gapic_v1.method.wrap_method(
+                self.export_trusted_key_wrapped_crypto_key_version,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_import_job: gapic_v1.method.wrap_method(
@@ -802,6 +812,27 @@ class KeyManagementServiceTransport(abc.ABC):
     ) -> Callable[
         [service.ImportCryptoKeyVersionRequest],
         Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_trusted_key_wrapped_crypto_key_version(
+        self,
+    ) -> Callable[
+        [service.ImportTrustedKeyWrappedCryptoKeyVersionRequest],
+        Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_trusted_key_wrapped_crypto_key_version(
+        self,
+    ) -> Callable[
+        [service.ExportTrustedKeyWrappedCryptoKeyVersionRequest],
+        Union[
+            service.ExportTrustedKeyWrappedCryptoKeyVersionResponse,
+            Awaitable[service.ExportTrustedKeyWrappedCryptoKeyVersionResponse],
+        ],
     ]:
         raise NotImplementedError()
 

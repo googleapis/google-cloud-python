@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -339,6 +339,28 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def inspect_template_path(
+        project: str,
+        location: str,
+        inspect_template: str,
+    ) -> str:
+        """Returns a fully-qualified inspect_template string."""
+        return "projects/{project}/locations/{location}/inspectTemplates/{inspect_template}".format(
+            project=project,
+            location=location,
+            inspect_template=inspect_template,
+        )
+
+    @staticmethod
+    def parse_inspect_template_path(path: str) -> Dict[str, str]:
+        """Parses a inspect_template path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/inspectTemplates/(?P<inspect_template>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def instance_path(
         project: str,
         location: str,
@@ -480,6 +502,26 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
         """Parses a repository path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/repositories/(?P<repository>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def service_account_path(
+        project: str,
+        service_account: str,
+    ) -> str:
+        """Returns a fully-qualified service_account string."""
+        return "projects/{project}/serviceAccounts/{service_account}".format(
+            project=project,
+            service_account=service_account,
+        )
+
+    @staticmethod
+    def parse_service_account_path(path: str) -> Dict[str, str]:
+        """Parses a service_account path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/serviceAccounts/(?P<service_account>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -112,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1317,8 +1327,8 @@ def test_database_center_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.QueryProductsRequest,
-        dict,
+        service.QueryProductsRequest(),
+        {},
     ],
 )
 def test_query_products(request_type, transport: str = "grpc"):
@@ -1329,7 +1339,7 @@ def test_query_products(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_products), "__call__") as call:
@@ -1376,10 +1386,11 @@ def test_query_products_non_empty_request_with_auto_populated_field():
         client.query_products(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.QueryProductsRequest(
+        request_msg = service.QueryProductsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_products_use_cached_wrapped_rpc():
@@ -1460,9 +1471,14 @@ async def test_query_products_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_products_async(
-    transport: str = "grpc_asyncio", request_type=service.QueryProductsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.QueryProductsRequest(),
+        {},
+    ],
+)
+async def test_query_products_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1470,7 +1486,7 @@ async def test_query_products_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_products), "__call__") as call:
@@ -1493,11 +1509,6 @@ async def test_query_products_async(
     assert isinstance(response, pagers.QueryProductsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_query_products_async_from_dict():
-    await test_query_products_async(request_type=dict)
 
 
 def test_query_products_pager(transport_name: str = "grpc"):
@@ -1545,6 +1556,9 @@ def test_query_products_pager(transport_name: str = "grpc"):
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
         assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -1634,6 +1648,8 @@ async def test_query_products_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1681,11 +1697,7 @@ async def test_query_products_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.query_products(request={})
-        ).pages:
+        async for page_ in (await client.query_products(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1694,8 +1706,8 @@ async def test_query_products_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.AggregateFleetRequest,
-        dict,
+        service.AggregateFleetRequest(),
+        {},
     ],
 )
 def test_aggregate_fleet(request_type, transport: str = "grpc"):
@@ -1706,7 +1718,7 @@ def test_aggregate_fleet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.aggregate_fleet), "__call__") as call:
@@ -1760,13 +1772,14 @@ def test_aggregate_fleet_non_empty_request_with_auto_populated_field():
         client.aggregate_fleet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.AggregateFleetRequest(
+        request_msg = service.AggregateFleetRequest(
             parent="parent_value",
             filter="filter_value",
             group_by="group_by_value",
             order_by="order_by_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_aggregate_fleet_use_cached_wrapped_rpc():
@@ -1847,9 +1860,14 @@ async def test_aggregate_fleet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_aggregate_fleet_async(
-    transport: str = "grpc_asyncio", request_type=service.AggregateFleetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AggregateFleetRequest(),
+        {},
+    ],
+)
+async def test_aggregate_fleet_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1857,7 +1875,7 @@ async def test_aggregate_fleet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.aggregate_fleet), "__call__") as call:
@@ -1884,11 +1902,6 @@ async def test_aggregate_fleet_async(
     assert response.resource_total_count == 2163
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_aggregate_fleet_async_from_dict():
-    await test_aggregate_fleet_async(request_type=dict)
 
 
 def test_aggregate_fleet_pager(transport_name: str = "grpc"):
@@ -1936,6 +1949,9 @@ def test_aggregate_fleet_pager(transport_name: str = "grpc"):
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
         assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -2025,6 +2041,8 @@ async def test_aggregate_fleet_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2072,11 +2090,7 @@ async def test_aggregate_fleet_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.aggregate_fleet(request={})
-        ).pages:
+        async for page_ in (await client.aggregate_fleet(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2085,8 +2099,8 @@ async def test_aggregate_fleet_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.QueryDatabaseResourceGroupsRequest,
-        dict,
+        service.QueryDatabaseResourceGroupsRequest(),
+        {},
     ],
 )
 def test_query_database_resource_groups(request_type, transport: str = "grpc"):
@@ -2097,7 +2111,7 @@ def test_query_database_resource_groups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2150,12 +2164,13 @@ def test_query_database_resource_groups_non_empty_request_with_auto_populated_fi
         client.query_database_resource_groups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.QueryDatabaseResourceGroupsRequest(
+        request_msg = service.QueryDatabaseResourceGroupsRequest(
             parent="parent_value",
             filter="filter_value",
             order_by="order_by_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_database_resource_groups_use_cached_wrapped_rpc():
@@ -2241,9 +2256,15 @@ async def test_query_database_resource_groups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.QueryDatabaseResourceGroupsRequest(),
+        {},
+    ],
+)
 async def test_query_database_resource_groups_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.QueryDatabaseResourceGroupsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatabaseCenterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2252,7 +2273,7 @@ async def test_query_database_resource_groups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2277,11 +2298,6 @@ async def test_query_database_resource_groups_async(
     assert isinstance(response, pagers.QueryDatabaseResourceGroupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_query_database_resource_groups_async_from_dict():
-    await test_query_database_resource_groups_async(request_type=dict)
 
 
 def test_query_database_resource_groups_pager(transport_name: str = "grpc"):
@@ -2333,6 +2349,9 @@ def test_query_database_resource_groups_pager(transport_name: str = "grpc"):
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
         assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -2426,6 +2445,8 @@ async def test_query_database_resource_groups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2475,9 +2496,7 @@ async def test_query_database_resource_groups_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.query_database_resource_groups(request={})
         ).pages:
             pages.append(page_)
@@ -2488,8 +2507,8 @@ async def test_query_database_resource_groups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.AggregateIssueStatsRequest,
-        dict,
+        service.AggregateIssueStatsRequest(),
+        {},
     ],
 )
 def test_aggregate_issue_stats(request_type, transport: str = "grpc"):
@@ -2500,7 +2519,7 @@ def test_aggregate_issue_stats(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2553,10 +2572,11 @@ def test_aggregate_issue_stats_non_empty_request_with_auto_populated_field():
         client.aggregate_issue_stats(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.AggregateIssueStatsRequest(
+        request_msg = service.AggregateIssueStatsRequest(
             parent="parent_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_aggregate_issue_stats_use_cached_wrapped_rpc():
@@ -2642,8 +2662,15 @@ async def test_aggregate_issue_stats_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AggregateIssueStatsRequest(),
+        {},
+    ],
+)
 async def test_aggregate_issue_stats_async(
-    transport: str = "grpc_asyncio", request_type=service.AggregateIssueStatsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatabaseCenterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2652,7 +2679,7 @@ async def test_aggregate_issue_stats_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2681,16 +2708,483 @@ async def test_aggregate_issue_stats_async(
     assert response.unreachable == ["unreachable_value"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AggregateQueryStatsRequest(),
+        {},
+    ],
+)
+def test_aggregate_query_stats(request_type, transport: str = "grpc"):
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregate_query_stats), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.AggregateQueryStatsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.aggregate_query_stats(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = service.AggregateQueryStatsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AggregateQueryStatsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_aggregate_query_stats_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.AggregateQueryStatsRequest(
+        parent="parent_value",
+        order_by="order_by_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregate_query_stats), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.aggregate_query_stats(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.AggregateQueryStatsRequest(
+            parent="parent_value",
+            order_by="order_by_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_aggregate_query_stats_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DatabaseCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.aggregate_query_stats
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.aggregate_query_stats] = (
+            mock_rpc
+        )
+        request = {}
+        client.aggregate_query_stats(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.aggregate_query_stats(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
 @pytest.mark.asyncio
-async def test_aggregate_issue_stats_async_from_dict():
-    await test_aggregate_issue_stats_async(request_type=dict)
+async def test_aggregate_query_stats_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DatabaseCenterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.aggregate_query_stats
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.aggregate_query_stats
+        ] = mock_rpc
+
+        request = {}
+        await client.aggregate_query_stats(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.aggregate_query_stats(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AggregateQueryStatsRequest(),
+        {},
+    ],
+)
+async def test_aggregate_query_stats_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = DatabaseCenterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregate_query_stats), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.AggregateQueryStatsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.aggregate_query_stats(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = service.AggregateQueryStatsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AggregateQueryStatsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_aggregate_query_stats_field_headers():
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.AggregateQueryStatsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregate_query_stats), "__call__"
+    ) as call:
+        call.return_value = service.AggregateQueryStatsResponse()
+        client.aggregate_query_stats(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_aggregate_query_stats_field_headers_async():
+    client = DatabaseCenterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.AggregateQueryStatsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregate_query_stats), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.AggregateQueryStatsResponse()
+        )
+        await client.aggregate_query_stats(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_aggregate_query_stats_pager(transport_name: str = "grpc"):
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregate_query_stats), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                ],
+                next_page_token="abc",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[],
+                next_page_token="def",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.aggregate_query_stats(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, service.QueryStatsInfo) for i in results)
+
+
+def test_aggregate_query_stats_pages(transport_name: str = "grpc"):
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregate_query_stats), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                ],
+                next_page_token="abc",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[],
+                next_page_token="def",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.aggregate_query_stats(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_aggregate_query_stats_async_pager():
+    client = DatabaseCenterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregate_query_stats),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                ],
+                next_page_token="abc",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[],
+                next_page_token="def",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.aggregate_query_stats(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, service.QueryStatsInfo) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_aggregate_query_stats_async_pages():
+    client = DatabaseCenterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregate_query_stats),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                ],
+                next_page_token="abc",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[],
+                next_page_token="def",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.aggregate_query_stats(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.QueryIssuesRequest,
-        dict,
+        service.QueryIssuesRequest(),
+        {},
     ],
 )
 def test_query_issues(request_type, transport: str = "grpc"):
@@ -2701,7 +3195,7 @@ def test_query_issues(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_issues), "__call__") as call:
@@ -2750,12 +3244,13 @@ def test_query_issues_non_empty_request_with_auto_populated_field():
         client.query_issues(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.QueryIssuesRequest(
+        request_msg = service.QueryIssuesRequest(
             parent="parent_value",
             filter="filter_value",
             order_by="order_by_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_issues_use_cached_wrapped_rpc():
@@ -2836,9 +3331,14 @@ async def test_query_issues_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_issues_async(
-    transport: str = "grpc_asyncio", request_type=service.QueryIssuesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.QueryIssuesRequest(),
+        {},
+    ],
+)
+async def test_query_issues_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2846,7 +3346,7 @@ async def test_query_issues_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_issues), "__call__") as call:
@@ -2869,11 +3369,6 @@ async def test_query_issues_async(
     assert isinstance(response, pagers.QueryIssuesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_query_issues_async_from_dict():
-    await test_query_issues_async(request_type=dict)
 
 
 def test_query_issues_flattened():
@@ -3004,6 +3499,9 @@ def test_query_issues_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service.DatabaseResourceIssue) for i in results)
@@ -3092,6 +3590,8 @@ async def test_query_issues_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3139,11 +3639,7 @@ async def test_query_issues_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.query_issues(request={})
-        ).pages:
+        async for page_ in (await client.query_issues(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3272,7 +3768,7 @@ def test_query_products_rest_required_fields(request_type=service.QueryProductsR
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_query_products_rest_unset_required_fields():
@@ -3344,6 +3840,9 @@ def test_query_products_rest_pager(transport: str = "rest"):
         sample_request = {}
 
         pager = client.query_products(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -3483,7 +3982,7 @@ def test_aggregate_fleet_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_aggregate_fleet_rest_unset_required_fields():
@@ -3559,6 +4058,9 @@ def test_aggregate_fleet_rest_pager(transport: str = "rest"):
         sample_request = {}
 
         pager = client.aggregate_fleet(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -3683,7 +4185,7 @@ def test_query_database_resource_groups_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_query_database_resource_groups_rest_unset_required_fields():
@@ -3750,6 +4252,9 @@ def test_query_database_resource_groups_rest_pager(transport: str = "rest"):
         sample_request = {}
 
         pager = client.query_database_resource_groups(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -3876,7 +4381,7 @@ def test_aggregate_issue_stats_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_aggregate_issue_stats_rest_unset_required_fields():
@@ -3886,6 +4391,198 @@ def test_aggregate_issue_stats_rest_unset_required_fields():
 
     unset_fields = transport.aggregate_issue_stats._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+def test_aggregate_query_stats_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DatabaseCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.aggregate_query_stats
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.aggregate_query_stats] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.aggregate_query_stats(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.aggregate_query_stats(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_aggregate_query_stats_rest_required_fields(
+    request_type=service.AggregateQueryStatsRequest,
+):
+    transport_class = transports.DatabaseCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).aggregate_query_stats._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).aggregate_query_stats._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.AggregateQueryStatsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = service.AggregateQueryStatsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.aggregate_query_stats(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_aggregate_query_stats_rest_unset_required_fields():
+    transport = transports.DatabaseCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.aggregate_query_stats._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+def test_aggregate_query_stats_rest_pager(transport: str = "rest"):
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                ],
+                next_page_token="abc",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[],
+                next_page_token="def",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.AggregateQueryStatsResponse(
+                query_stats=[
+                    service.QueryStatsInfo(),
+                    service.QueryStatsInfo(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            service.AggregateQueryStatsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "organizations/sample1"}
+
+        pager = client.aggregate_query_stats(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, service.QueryStatsInfo) for i in results)
+
+        pages = list(client.aggregate_query_stats(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_query_issues_rest_use_cached_wrapped_rpc():
@@ -3995,7 +4692,7 @@ def test_query_issues_rest_required_fields(request_type=service.QueryIssuesReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_query_issues_rest_unset_required_fields():
@@ -4114,6 +4811,9 @@ def test_query_issues_rest_pager(transport: str = "rest"):
         sample_request = {}
 
         pager = client.query_issues(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -4247,7 +4947,6 @@ def test_query_products_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4268,7 +4967,6 @@ def test_aggregate_fleet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4291,7 +4989,6 @@ def test_query_database_resource_groups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryDatabaseResourceGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4314,7 +5011,28 @@ def test_aggregate_issue_stats_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateIssueStatsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_aggregate_query_stats_empty_call_grpc():
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregate_query_stats), "__call__"
+    ) as call:
+        call.return_value = service.AggregateQueryStatsResponse()
+        client.aggregate_query_stats(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.AggregateQueryStatsRequest()
         assert args[0] == request_msg
 
 
@@ -4335,7 +5053,6 @@ def test_query_issues_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryIssuesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4377,7 +5094,6 @@ async def test_query_products_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4407,7 +5123,6 @@ async def test_aggregate_fleet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4437,7 +5152,6 @@ async def test_query_database_resource_groups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryDatabaseResourceGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4468,7 +5182,35 @@ async def test_aggregate_issue_stats_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateIssueStatsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_aggregate_query_stats_empty_call_grpc_asyncio():
+    client = DatabaseCenterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregate_query_stats), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.AggregateQueryStatsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.aggregate_query_stats(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.AggregateQueryStatsRequest()
         assert args[0] == request_msg
 
 
@@ -4496,7 +5238,6 @@ async def test_query_issues_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryIssuesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5053,6 +5794,144 @@ def test_aggregate_issue_stats_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_aggregate_query_stats_rest_bad_request(
+    request_type=service.AggregateQueryStatsRequest,
+):
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.aggregate_query_stats(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AggregateQueryStatsRequest,
+        dict,
+    ],
+)
+def test_aggregate_query_stats_rest_call_success(request_type):
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.AggregateQueryStatsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = service.AggregateQueryStatsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.aggregate_query_stats(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AggregateQueryStatsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_aggregate_query_stats_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseCenterRestInterceptor(),
+    )
+    client = DatabaseCenterClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DatabaseCenterRestInterceptor, "post_aggregate_query_stats"
+        ) as post,
+        mock.patch.object(
+            transports.DatabaseCenterRestInterceptor,
+            "post_aggregate_query_stats_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DatabaseCenterRestInterceptor, "pre_aggregate_query_stats"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = service.AggregateQueryStatsRequest.pb(
+            service.AggregateQueryStatsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = service.AggregateQueryStatsResponse.to_json(
+            service.AggregateQueryStatsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = service.AggregateQueryStatsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.AggregateQueryStatsResponse()
+        post_with_metadata.return_value = (
+            service.AggregateQueryStatsResponse(),
+            metadata,
+        )
+
+        client.aggregate_query_stats(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_query_issues_rest_bad_request(request_type=service.QueryIssuesRequest):
     client = DatabaseCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -5206,7 +6085,6 @@ def test_query_products_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5226,7 +6104,6 @@ def test_aggregate_fleet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5248,7 +6125,6 @@ def test_query_database_resource_groups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryDatabaseResourceGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5270,7 +6146,27 @@ def test_aggregate_issue_stats_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateIssueStatsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_aggregate_query_stats_empty_call_rest():
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregate_query_stats), "__call__"
+    ) as call:
+        client.aggregate_query_stats(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.AggregateQueryStatsRequest()
         assert args[0] == request_msg
 
 
@@ -5290,7 +6186,6 @@ def test_query_issues_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryIssuesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5331,6 +6226,7 @@ def test_database_center_base_transport():
         "aggregate_fleet",
         "query_database_resource_groups",
         "aggregate_issue_stats",
+        "aggregate_query_stats",
         "query_issues",
     )
     for method in methods:
@@ -5608,6 +6504,9 @@ def test_database_center_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.aggregate_issue_stats._session
     session2 = client2.transport.aggregate_issue_stats._session
+    assert session1 != session2
+    session1 = client1.transport.aggregate_query_stats._session
+    session2 = client2.transport.aggregate_query_stats._session
     assert session1 != session2
     session1 = client1.transport.query_issues._session
     session2 = client2.transport.query_issues._session

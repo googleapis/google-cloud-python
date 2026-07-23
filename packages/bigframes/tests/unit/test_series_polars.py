@@ -4561,6 +4561,20 @@ def test_map_series_input_duplicates_error(scalars_dfs):
         scalars_df.int64_too.map(bf_map_series, verify_integrity=True)
 
 
+def test_series_map_with_udf(session):
+    series = bpd.Series([1, 2, None, 4], dtype="Int64")
+
+    @session.udf(input_types=[int], output_type=int)
+    def foo(x):
+        if x is None:
+            return -1
+        return x * 2
+
+    bf_result = series.map(foo).to_pandas()
+    pd_result = pd.Series([2, 4, -1, 8])
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
 @pytest.mark.skip(
     reason="NotImplementedError: Polars compiler hasn't implemented hash()"
 )
@@ -5146,3 +5160,42 @@ def test_series_dt_total_seconds(scalars_df_index, scalars_pandas_df_index):
         # bigframes uses Float64, newer pandas may use double[pyarrow]
         check_dtype=False,
     )
+
+
+def test_series_where_with_expression(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    s1 = scalars_df["float64_col"]
+    s2 = scalars_df["bool_col"]
+
+    bf_result = s1.where(s2, bpd.col("bool_col")).to_pandas()
+
+    s1_pd = scalars_pandas_df["float64_col"]
+    s2_pd = scalars_pandas_df["bool_col"]
+
+    pd_result = s1_pd.where(s2_pd, s2_pd)
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_series_expression_unbound_fails(scalars_dfs):
+    scalars_df, _ = scalars_dfs
+    s1 = scalars_df["float64_col"]
+    s2 = scalars_df["bool_col"]
+
+    with pytest.raises(ValueError, match="remains unbound"):
+        s1.where(s2, bpd.col("non_existent_column"))
+
+
+def test_series_where_with_expression_resolving_to_self(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    s1 = scalars_df["float64_col"]
+    s2 = scalars_df["bool_col"]
+
+    bf_result = s1.where(s2, bpd.col("float64_col")).to_pandas()
+
+    s1_pd = scalars_pandas_df["float64_col"]
+    s2_pd = scalars_pandas_df["bool_col"]
+
+    pd_result = s1_pd.where(s2_pd, s1_pd)
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)

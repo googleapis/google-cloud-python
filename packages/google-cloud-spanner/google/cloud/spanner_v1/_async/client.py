@@ -101,6 +101,7 @@ _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 
 EMULATOR_ENV_VAR = "SPANNER_EMULATOR_HOST"
 SPANNER_DISABLE_BUILTIN_METRICS_ENV_VAR = "SPANNER_DISABLE_BUILTIN_METRICS"
+LOG_CLIENT_OPTIONS_ENV_VAR = "GOOGLE_CLOUD_SPANNER_ENABLE_LOG_CLIENT_OPTIONS"
 _EMULATOR_HOST_HTTP_SCHEME = (
     "%s contains a http scheme. When used with a scheme it may cause gRPC's "
     "DNS resolver to endlessly attempt to resolve. %s is intended to be used "
@@ -131,6 +132,10 @@ _metrics_monitor_lock = threading.Lock()
 
 def _get_spanner_enable_builtin_metrics_env():
     return os.getenv(SPANNER_DISABLE_BUILTIN_METRICS_ENV_VAR) != "true"
+
+
+def _get_spanner_log_client_options_env():
+    return os.getenv(LOG_CLIENT_OPTIONS_ENV_VAR, "false").lower() == "true"
 
 
 def _initialize_metrics(project, credentials):
@@ -167,6 +172,12 @@ def _initialize_metrics(project, credentials):
                         "Failed to initialize Spanner built-in metrics. Error: %s",
                         e,
                     )
+
+
+class InstanceType:
+    CLOUD = "cloud"
+    OMNI = "omni"
+    EMULATOR = "emulator"
 
 
 @CrossSync.convert_class(
@@ -249,9 +260,11 @@ class Client(ClientWithProject):
     :param default_transaction_options: (Optional) Default options to use for all transactions.
 
     :type experimental_host: str
-    :param experimental_host: (Optional) The endpoint for a spanner experimental host deployment.
-        This is intended only for experimental host spanner endpoints.
-        If set, this will override the `api_endpoint` in `client_options`.
+    :param experimental_host: (Deprecated) Use `client_options` with `api_endpoint` and `instance_type="omni"` instead.
+
+    :type instance_type: str
+    :param instance_type: (Optional) The type of Spanner instance to connect to.
+        Supported values are `"cloud"` or `"omni"`. Connecting to Spanner Omni requires setting instance_type="omni".
 
     :type disable_builtin_metrics: bool
     :param disable_builtin_metrics: (Optional) Default False. Set to True to disable
@@ -288,9 +301,9 @@ class Client(ClientWithProject):
         ca_certificate=None,
         client_certificate=None,
         client_key=None,
+        instance_type=None,
     ):
         self._emulator_host = _get_spanner_emulator_host()
-        self._experimental_host = experimental_host
         self._use_plain_text = use_plain_text
         self._ca_certificate = ca_certificate
         self._client_certificate = client_certificate
@@ -303,10 +316,38 @@ class Client(ClientWithProject):
         else:
             self._client_options = client_options
 
+        host_endpoint = None
+        if experimental_host is not None:
+            warnings.warn(
+                "experimental_host is deprecated. Please use client_options with api_endpoint instead, along with instance_type='omni'.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            instance_type = "omni"
+            host_endpoint = experimental_host
+
+        if instance_type is not None:
+            instance_type = instance_type.lower()
+            if instance_type not in ("cloud", "omni"):
+                raise ValueError("instance_type must be one of 'cloud' or 'omni'")
+        self._instance_type = instance_type
+
         if self._emulator_host:
             credentials = AnonymousCredentials()
-        elif self._experimental_host:
-            # For all experimental host endpoints project is default
+        elif self._instance_type == "omni":
+            if not host_endpoint:
+                if self._client_options:
+                    if hasattr(self._client_options, "api_endpoint"):
+                        host_endpoint = self._client_options.api_endpoint
+                    elif isinstance(self._client_options, dict):
+                        host_endpoint = self._client_options.get("api_endpoint")
+
+            if not host_endpoint:
+                raise ValueError(
+                    "Host must be set for connecting to Spanner Omni instances"
+                )
+
+            # For all spanner omni endpoints project is default
             project = "default"
             self._use_plain_text = use_plain_text
             self._ca_certificate = ca_certificate
@@ -364,6 +405,37 @@ class Client(ClientWithProject):
         self._nth_client_id = Client.NTH_CLIENT.increment()
         self._nth_request = AtomicCounter(0)
 
+        self._host = "spanner.googleapis.com"
+        if self._emulator_host:
+            self._host = self._emulator_host
+        elif self._instance_type == "omni":
+            self._host = host_endpoint
+        elif self._client_options and self._client_options.api_endpoint:
+            self._host = self._client_options.api_endpoint
+
+        if _get_spanner_log_client_options_env():
+            self._log_spanner_options()
+
+    def _log_spanner_options(self):
+        """Logs Spanner client options."""
+        log.info(
+            "Spanner options: \n"
+            "  Project ID: %s\n"
+            "  Host: %s\n"
+            "  Route to leader enabled: %s\n"
+            "  Directed read options: %s\n"
+            "  Default transaction options: %s\n"
+            "  Observability options: %s\n"
+            "  Built-in metrics enabled: %s",
+            self.project,
+            self._host,
+            self.route_to_leader_enabled,
+            self._directed_read_options,
+            self._default_transaction_options,
+            self._observability_options,
+            _get_spanner_enable_builtin_metrics_env(),
+        )
+
     @property
     def _next_nth_request(self):
         return self._nth_request.increment()
@@ -377,6 +449,14 @@ class Client(ClientWithProject):
         :returns: The credentials stored on the client.
         """
         return self._credentials
+
+    @property
+    def instance_type(self):
+        """Getter for client's instance type.
+
+        :rtype: str
+        :returns: The instance type of the client."""
+        return self._instance_type
 
     @property
     def project_name(self):
@@ -413,18 +493,18 @@ class Client(ClientWithProject):
                     transport=transport,
                 )
 
-            elif self._experimental_host:
+            elif self._instance_type == "omni":
                 from google.cloud.spanner_v1._async._helpers import (
-                    _create_experimental_host_transport as _create_experimental_host_transport_async,
+                    _create_spanner_omni_transport as _create_spanner_omni_transport_async,
                 )
                 from google.cloud.spanner_v1._helpers import (
-                    _create_experimental_host_transport as _create_experimental_host_transport_sync,
+                    _create_spanner_omni_transport as _create_spanner_omni_transport_sync,
                 )
 
                 if CrossSync.is_async:
-                    transport = _create_experimental_host_transport_async(
+                    transport = _create_spanner_omni_transport_async(
                         InstanceAdminGrpcTransport,
-                        self._experimental_host,
+                        self._host,
                         self._use_plain_text,
                         self._ca_certificate,
                         self._client_certificate,
@@ -432,9 +512,9 @@ class Client(ClientWithProject):
                     )
 
                 else:
-                    transport = _create_experimental_host_transport_sync(
+                    transport = _create_spanner_omni_transport_sync(
                         InstanceAdminGrpcTransport,
-                        self._experimental_host,
+                        self._host,
                         self._use_plain_text,
                         self._ca_certificate,
                         self._client_certificate,
@@ -471,18 +551,18 @@ class Client(ClientWithProject):
                     transport=transport,
                 )
 
-            elif self._experimental_host:
+            elif self._instance_type == "omni":
                 from google.cloud.spanner_v1._async._helpers import (
-                    _create_experimental_host_transport as _create_experimental_host_transport_async,
+                    _create_spanner_omni_transport as _create_spanner_omni_transport_async,
                 )
                 from google.cloud.spanner_v1._helpers import (
-                    _create_experimental_host_transport as _create_experimental_host_transport_sync,
+                    _create_spanner_omni_transport as _create_spanner_omni_transport_sync,
                 )
 
                 if CrossSync.is_async:
-                    transport = _create_experimental_host_transport_async(
+                    transport = _create_spanner_omni_transport_async(
                         DatabaseAdminGrpcTransport,
-                        self._experimental_host,
+                        self._host,
                         self._use_plain_text,
                         self._ca_certificate,
                         self._client_certificate,
@@ -490,9 +570,9 @@ class Client(ClientWithProject):
                     )
 
                 else:
-                    transport = _create_experimental_host_transport_sync(
+                    transport = _create_spanner_omni_transport_sync(
                         DatabaseAdminGrpcTransport,
-                        self._experimental_host,
+                        self._host,
                         self._use_plain_text,
                         self._ca_certificate,
                         self._client_certificate,
@@ -646,7 +726,6 @@ class Client(ClientWithProject):
             self._emulator_host,
             labels,
             processing_units,
-            self._experimental_host,
         )
 
     @CrossSync.convert

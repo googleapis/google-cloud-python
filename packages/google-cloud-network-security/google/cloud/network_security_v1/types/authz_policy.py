@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -70,6 +70,15 @@ class AuthzPolicy(proto.Message):
             in the policy. At least one HTTP Rule is
             required for Allow or Deny Action. Limited to 5
             rules.
+        network_rules (MutableSequence[google.cloud.network_security_v1.types.AuthzPolicy.AuthzRule]):
+            Optional. A list of authorization network
+            rules to match against the incoming request. A
+            policy match occurs when at least one network
+            rule matches the request.
+            At least one network rule is required for Allow
+            or Deny Action if no HTTP rules are provided.
+            Network rules are mutually exclusive with HTTP
+            rules. Limited to 5 rules.
         action (google.cloud.network_security_v1.types.AuthzPolicy.AuthzAction):
             Required. Can be one of ``ALLOW``, ``DENY``, ``CUSTOM``.
 
@@ -195,13 +204,17 @@ class AuthzPolicy(proto.Message):
             load_balancing_scheme (google.cloud.network_security_v1.types.AuthzPolicy.LoadBalancingScheme):
                 Optional. All gateways and forwarding rules referenced by
                 this policy and extensions must share the same load
-                balancing scheme. Supported values: ``INTERNAL_MANAGED`` and
-                ``EXTERNAL_MANAGED``. For more information, refer to
-                `Backend services
+                balancing scheme. Required only when targeting forwarding
+                rules. If targeting Secure Web Proxy, this field must be
+                ``INTERNAL_MANAGED`` or not specified. Must not be specified
+                when targeting Agent Gateway. Supported values:
+                ``INTERNAL_MANAGED`` and ``EXTERNAL_MANAGED``. For more
+                information, refer to `Backend services
                 overview <https://cloud.google.com/load-balancing/docs/backend-service>`__.
             resources (MutableSequence[str]):
                 Required. A list of references to the
-                Forwarding Rules on which this policy will be
+                Forwarding Rules, Secure Web Proxy Gateways, or
+                Agent Gateways on which this policy will be
                 applied.
         """
 
@@ -624,6 +637,14 @@ class AuthzPolicy(proto.Message):
                         body cannot be successfully parsed, the request
                         will be denied. This field can be set only for
                         AuthzPolicies targeting AgentGateway resources.
+                    snis (MutableSequence[google.cloud.network_security_v1.types.AuthzPolicy.AuthzRule.StringMatch]):
+                        Optional. A list of SNIs to match against.
+                        The match can be one of exact, prefix, suffix,
+                        or contains (substring match). If there is no
+                        SNI (i.e. plaintext HTTP traffic), the request
+                        will be denied. Matches are always case
+                        sensitive unless the ignoreCase is set. Limited
+                        to 10 SNIs per Authorization Policy.
                 """
 
                 class BaseProtocolMethodsOption(proto.Enum):
@@ -769,6 +790,13 @@ class AuthzPolicy(proto.Message):
                     number=5,
                     message="AuthzPolicy.AuthzRule.To.RequestOperation.MCP",
                 )
+                snis: MutableSequence["AuthzPolicy.AuthzRule.StringMatch"] = (
+                    proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=7,
+                        message="AuthzPolicy.AuthzRule.StringMatch",
+                    )
+                )
 
             operations: MutableSequence["AuthzPolicy.AuthzRule.To.RequestOperation"] = (
                 proto.RepeatedField(
@@ -890,6 +918,11 @@ class AuthzPolicy(proto.Message):
     http_rules: MutableSequence[AuthzRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
+        message=AuthzRule,
+    )
+    network_rules: MutableSequence[AuthzRule] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
         message=AuthzRule,
     )
     action: AuthzAction = proto.Field(

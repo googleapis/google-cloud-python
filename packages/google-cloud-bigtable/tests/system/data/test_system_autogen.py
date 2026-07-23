@@ -58,7 +58,7 @@ class TempRowBuilder:
         elif isinstance(value, int):
             value = value.to_bytes(8, byteorder="big", signed=True)
         request = {
-            "table_name": self.target.table_name,
+            **self.target._request_path,
             "row_key": row_key,
             "mutations": [
                 {
@@ -77,7 +77,7 @@ class TempRowBuilder:
         self, row_key, *, family=TEST_AGGREGATE_FAMILY, qualifier=b"q", input=0
     ):
         request = {
-            "table_name": self.target.table_name,
+            **self.target._request_path,
             "row_key": row_key,
             "mutations": [
                 {
@@ -95,14 +95,31 @@ class TempRowBuilder:
 
     def delete_rows(self):
         if self.rows:
-            request = {
-                "table_name": self.target.table_name,
-                "entries": [
-                    {"row_key": row, "mutations": [{"delete_from_row": {}}]}
-                    for row in self.rows
-                ],
-            }
-            self.target.client._gapic_client.mutate_rows(request)
+            chunk_size = 5000
+            rows_list = list(self.rows)
+            is_authorized_view = "authorized_view_name" in self.target._request_path
+            if is_authorized_view:
+                mutations = [
+                    {"delete_from_family": {"family_name": TEST_FAMILY}},
+                    {"delete_from_family": {"family_name": TEST_AGGREGATE_FAMILY}},
+                ]
+            else:
+                mutations = [{"delete_from_row": {}}]
+            for i in range(0, len(rows_list), chunk_size):
+                chunk = rows_list[i : i + chunk_size]
+                request = {
+                    **self.target._request_path,
+                    "entries": [
+                        {"row_key": row, "mutations": mutations} for row in chunk
+                    ],
+                }
+                stream = self.target.client._gapic_client.mutate_rows(request)
+                for response in stream:
+                    for entry in response.entries:
+                        if entry.status.code != 0:
+                            raise RuntimeError(
+                                f"Failed to delete row: {entry.status.message}"
+                            )
 
     def retrieve_cell_value(self, target, row_key):
         """Helper to read an individual row"""
@@ -270,6 +287,31 @@ class TestSystem(SystemTestRunner):
             assert isinstance(results[idx][1], int)
         assert results[-1][0] == b""
         assert isinstance(results[-1][1], int)
+
+    @pytest.mark.skipif(
+        bool(os.environ.get(BIGTABLE_EMULATOR)), reason="emulator doesn't use splits"
+    )
+    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("target")
+    @CrossSync._Sync_Impl.Retry(
+        predicate=retry.if_exception_type(ClientError), initial=1, maximum=5
+    )
+    def test_sample_row_keys_w_row_range(self, client, target, column_split_config):
+        """Sample keys with row range should return samples within the range,
+        with the last key matching the end of the range."""
+        if len(column_split_config) < 4:
+            pytest.skip("Not enough splits in column_split_config for this test")
+        from google.cloud.bigtable.data import RowRange
+
+        start_key = column_split_config[1]
+        end_key = column_split_config[3]
+        row_range = RowRange(start_key=start_key, end_key=end_key)
+        results = target.sample_row_keys(row_range=row_range)
+        assert len(results) == 2
+        assert results[0][0] == column_split_config[2]
+        assert results[1][0] == column_split_config[3]
+        for _, offset in results:
+            assert isinstance(offset, int)
 
     @pytest.mark.usefixtures("client")
     @pytest.mark.usefixtures("target")
@@ -902,6 +944,38 @@ class TestSystem(SystemTestRunner):
         row_list = target.read_rows(query)
         assert len(row_list) == bool(expect_match), (
             f"row {type(cell_value)}({cell_value}) not found with {type(filter_input)}({filter_input}) filter"
+        )
+
+    @pytest.mark.usefixtures("target")
+    @CrossSync._Sync_Impl.Retry(
+        predicate=retry.if_exception_type(ClientError), initial=1, maximum=5
+    )
+    @pytest.mark.parametrize(
+        "cell_value,mask,expect_match",
+        [
+            (b"\x01\x02\x03", b"\x01\x02\x03", True),
+            (b"\x01\x02\x03", b"\x01\x00\x00", True),
+            (b"\x00\x02\x03", b"\x01\x00\x00", False),
+        ],
+    )
+    @pytest.mark.skipif(
+        bool(os.environ.get(BIGTABLE_EMULATOR)),
+        reason="value_bitmask_filter not supported by emulator",
+    )
+    def test_value_bitmask_filter(
+        self, target, temp_rows, cell_value, mask, expect_match
+    ):
+        """ValueBitmaskFilter matches cells where (value & mask) == mask.
+        Make sure inputs are properly interpreted by the server."""
+        from google.cloud.bigtable.data import ReadRowsQuery
+        from google.cloud.bigtable.data.row_filters import ValueBitmaskFilter
+
+        f = ValueBitmaskFilter(mask)
+        temp_rows.add_row(b"row_key_1", value=cell_value)
+        query = ReadRowsQuery(row_keys=[b"row_key_1"], row_filter=f)
+        row_list = target.read_rows(query)
+        assert len(row_list) == bool(expect_match), (
+            f"row {cell_value!r} not matched as {expect_match} with {mask!r} bitmask filter"
         )
 
     @pytest.mark.skipif(

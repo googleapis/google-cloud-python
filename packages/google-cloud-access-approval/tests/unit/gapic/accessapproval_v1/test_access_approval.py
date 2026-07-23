@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -113,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1318,8 +1328,8 @@ def test_access_approval_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        accessapproval.ListApprovalRequestsMessage,
-        dict,
+        accessapproval.ListApprovalRequestsMessage(),
+        {},
     ],
 )
 def test_list_approval_requests(request_type, transport: str = "grpc"):
@@ -1330,7 +1340,7 @@ def test_list_approval_requests(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1380,11 +1390,12 @@ def test_list_approval_requests_non_empty_request_with_auto_populated_field():
         client.list_approval_requests(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.ListApprovalRequestsMessage(
+        request_msg = accessapproval.ListApprovalRequestsMessage(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_approval_requests_use_cached_wrapped_rpc():
@@ -1470,9 +1481,15 @@ async def test_list_approval_requests_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        accessapproval.ListApprovalRequestsMessage(),
+        {},
+    ],
+)
 async def test_list_approval_requests_async(
-    transport: str = "grpc_asyncio",
-    request_type=accessapproval.ListApprovalRequestsMessage,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AccessApprovalAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1481,7 +1498,7 @@ async def test_list_approval_requests_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1504,11 +1521,6 @@ async def test_list_approval_requests_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApprovalRequestsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_approval_requests_async_from_dict():
-    await test_list_approval_requests_async(request_type=dict)
 
 
 def test_list_approval_requests_field_headers():
@@ -1713,6 +1725,9 @@ def test_list_approval_requests_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, accessapproval.ApprovalRequest) for i in results)
@@ -1805,6 +1820,8 @@ async def test_list_approval_requests_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1854,11 +1871,7 @@ async def test_list_approval_requests_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_approval_requests(request={})
-        ).pages:
+        async for page_ in (await client.list_approval_requests(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1867,8 +1880,8 @@ async def test_list_approval_requests_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        accessapproval.GetApprovalRequestMessage,
-        dict,
+        accessapproval.GetApprovalRequestMessage(),
+        {},
     ],
 )
 def test_get_approval_request(request_type, transport: str = "grpc"):
@@ -1879,7 +1892,7 @@ def test_get_approval_request(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1929,9 +1942,10 @@ def test_get_approval_request_non_empty_request_with_auto_populated_field():
         client.get_approval_request(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.GetApprovalRequestMessage(
+        request_msg = accessapproval.GetApprovalRequestMessage(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_approval_request_use_cached_wrapped_rpc():
@@ -2016,9 +2030,15 @@ async def test_get_approval_request_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        accessapproval.GetApprovalRequestMessage(),
+        {},
+    ],
+)
 async def test_get_approval_request_async(
-    transport: str = "grpc_asyncio",
-    request_type=accessapproval.GetApprovalRequestMessage,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AccessApprovalAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2027,7 +2047,7 @@ async def test_get_approval_request_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2052,11 +2072,6 @@ async def test_get_approval_request_async(
     assert isinstance(response, accessapproval.ApprovalRequest)
     assert response.name == "name_value"
     assert response.requested_resource_name == "requested_resource_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_approval_request_async_from_dict():
-    await test_get_approval_request_async(request_type=dict)
 
 
 def test_get_approval_request_field_headers():
@@ -2213,8 +2228,8 @@ async def test_get_approval_request_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        accessapproval.ApproveApprovalRequestMessage,
-        dict,
+        accessapproval.ApproveApprovalRequestMessage(),
+        {},
     ],
 )
 def test_approve_approval_request(request_type, transport: str = "grpc"):
@@ -2225,7 +2240,7 @@ def test_approve_approval_request(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2275,9 +2290,10 @@ def test_approve_approval_request_non_empty_request_with_auto_populated_field():
         client.approve_approval_request(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.ApproveApprovalRequestMessage(
+        request_msg = accessapproval.ApproveApprovalRequestMessage(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_approve_approval_request_use_cached_wrapped_rpc():
@@ -2363,9 +2379,15 @@ async def test_approve_approval_request_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        accessapproval.ApproveApprovalRequestMessage(),
+        {},
+    ],
+)
 async def test_approve_approval_request_async(
-    transport: str = "grpc_asyncio",
-    request_type=accessapproval.ApproveApprovalRequestMessage,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AccessApprovalAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2374,7 +2396,7 @@ async def test_approve_approval_request_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2399,11 +2421,6 @@ async def test_approve_approval_request_async(
     assert isinstance(response, accessapproval.ApprovalRequest)
     assert response.name == "name_value"
     assert response.requested_resource_name == "requested_resource_name_value"
-
-
-@pytest.mark.asyncio
-async def test_approve_approval_request_async_from_dict():
-    await test_approve_approval_request_async(request_type=dict)
 
 
 def test_approve_approval_request_field_headers():
@@ -2474,8 +2491,8 @@ async def test_approve_approval_request_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        accessapproval.DismissApprovalRequestMessage,
-        dict,
+        accessapproval.DismissApprovalRequestMessage(),
+        {},
     ],
 )
 def test_dismiss_approval_request(request_type, transport: str = "grpc"):
@@ -2486,7 +2503,7 @@ def test_dismiss_approval_request(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2536,9 +2553,10 @@ def test_dismiss_approval_request_non_empty_request_with_auto_populated_field():
         client.dismiss_approval_request(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.DismissApprovalRequestMessage(
+        request_msg = accessapproval.DismissApprovalRequestMessage(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_dismiss_approval_request_use_cached_wrapped_rpc():
@@ -2624,9 +2642,15 @@ async def test_dismiss_approval_request_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        accessapproval.DismissApprovalRequestMessage(),
+        {},
+    ],
+)
 async def test_dismiss_approval_request_async(
-    transport: str = "grpc_asyncio",
-    request_type=accessapproval.DismissApprovalRequestMessage,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AccessApprovalAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2635,7 +2659,7 @@ async def test_dismiss_approval_request_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2660,11 +2684,6 @@ async def test_dismiss_approval_request_async(
     assert isinstance(response, accessapproval.ApprovalRequest)
     assert response.name == "name_value"
     assert response.requested_resource_name == "requested_resource_name_value"
-
-
-@pytest.mark.asyncio
-async def test_dismiss_approval_request_async_from_dict():
-    await test_dismiss_approval_request_async(request_type=dict)
 
 
 def test_dismiss_approval_request_field_headers():
@@ -2735,8 +2754,8 @@ async def test_dismiss_approval_request_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        accessapproval.InvalidateApprovalRequestMessage,
-        dict,
+        accessapproval.InvalidateApprovalRequestMessage(),
+        {},
     ],
 )
 def test_invalidate_approval_request(request_type, transport: str = "grpc"):
@@ -2747,7 +2766,7 @@ def test_invalidate_approval_request(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2797,9 +2816,10 @@ def test_invalidate_approval_request_non_empty_request_with_auto_populated_field
         client.invalidate_approval_request(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.InvalidateApprovalRequestMessage(
+        request_msg = accessapproval.InvalidateApprovalRequestMessage(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_invalidate_approval_request_use_cached_wrapped_rpc():
@@ -2885,9 +2905,15 @@ async def test_invalidate_approval_request_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        accessapproval.InvalidateApprovalRequestMessage(),
+        {},
+    ],
+)
 async def test_invalidate_approval_request_async(
-    transport: str = "grpc_asyncio",
-    request_type=accessapproval.InvalidateApprovalRequestMessage,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AccessApprovalAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2896,7 +2922,7 @@ async def test_invalidate_approval_request_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2921,11 +2947,6 @@ async def test_invalidate_approval_request_async(
     assert isinstance(response, accessapproval.ApprovalRequest)
     assert response.name == "name_value"
     assert response.requested_resource_name == "requested_resource_name_value"
-
-
-@pytest.mark.asyncio
-async def test_invalidate_approval_request_async_from_dict():
-    await test_invalidate_approval_request_async(request_type=dict)
 
 
 def test_invalidate_approval_request_field_headers():
@@ -2996,8 +3017,8 @@ async def test_invalidate_approval_request_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        accessapproval.GetAccessApprovalSettingsMessage,
-        dict,
+        accessapproval.GetAccessApprovalSettingsMessage(),
+        {},
     ],
 )
 def test_get_access_approval_settings(request_type, transport: str = "grpc"):
@@ -3008,7 +3029,7 @@ def test_get_access_approval_settings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3066,9 +3087,10 @@ def test_get_access_approval_settings_non_empty_request_with_auto_populated_fiel
         client.get_access_approval_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.GetAccessApprovalSettingsMessage(
+        request_msg = accessapproval.GetAccessApprovalSettingsMessage(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_access_approval_settings_use_cached_wrapped_rpc():
@@ -3154,9 +3176,15 @@ async def test_get_access_approval_settings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        accessapproval.GetAccessApprovalSettingsMessage(),
+        {},
+    ],
+)
 async def test_get_access_approval_settings_async(
-    transport: str = "grpc_asyncio",
-    request_type=accessapproval.GetAccessApprovalSettingsMessage,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AccessApprovalAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3165,7 +3193,7 @@ async def test_get_access_approval_settings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3198,11 +3226,6 @@ async def test_get_access_approval_settings_async(
     assert response.active_key_version == "active_key_version_value"
     assert response.ancestor_has_active_key_version is True
     assert response.invalid_key_version is True
-
-
-@pytest.mark.asyncio
-async def test_get_access_approval_settings_async_from_dict():
-    await test_get_access_approval_settings_async(request_type=dict)
 
 
 def test_get_access_approval_settings_field_headers():
@@ -3359,8 +3382,8 @@ async def test_get_access_approval_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        accessapproval.UpdateAccessApprovalSettingsMessage,
-        dict,
+        accessapproval.UpdateAccessApprovalSettingsMessage(),
+        {},
     ],
 )
 def test_update_access_approval_settings(request_type, transport: str = "grpc"):
@@ -3371,7 +3394,7 @@ def test_update_access_approval_settings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3427,7 +3450,8 @@ def test_update_access_approval_settings_non_empty_request_with_auto_populated_f
         client.update_access_approval_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.UpdateAccessApprovalSettingsMessage()
+        request_msg = accessapproval.UpdateAccessApprovalSettingsMessage()
+        assert args[0] == request_msg
 
 
 def test_update_access_approval_settings_use_cached_wrapped_rpc():
@@ -3513,9 +3537,15 @@ async def test_update_access_approval_settings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        accessapproval.UpdateAccessApprovalSettingsMessage(),
+        {},
+    ],
+)
 async def test_update_access_approval_settings_async(
-    transport: str = "grpc_asyncio",
-    request_type=accessapproval.UpdateAccessApprovalSettingsMessage,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AccessApprovalAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3524,7 +3554,7 @@ async def test_update_access_approval_settings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3557,11 +3587,6 @@ async def test_update_access_approval_settings_async(
     assert response.active_key_version == "active_key_version_value"
     assert response.ancestor_has_active_key_version is True
     assert response.invalid_key_version is True
-
-
-@pytest.mark.asyncio
-async def test_update_access_approval_settings_async_from_dict():
-    await test_update_access_approval_settings_async(request_type=dict)
 
 
 def test_update_access_approval_settings_field_headers():
@@ -3728,8 +3753,8 @@ async def test_update_access_approval_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        accessapproval.DeleteAccessApprovalSettingsMessage,
-        dict,
+        accessapproval.DeleteAccessApprovalSettingsMessage(),
+        {},
     ],
 )
 def test_delete_access_approval_settings(request_type, transport: str = "grpc"):
@@ -3740,7 +3765,7 @@ def test_delete_access_approval_settings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3785,9 +3810,10 @@ def test_delete_access_approval_settings_non_empty_request_with_auto_populated_f
         client.delete_access_approval_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.DeleteAccessApprovalSettingsMessage(
+        request_msg = accessapproval.DeleteAccessApprovalSettingsMessage(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_access_approval_settings_use_cached_wrapped_rpc():
@@ -3873,9 +3899,15 @@ async def test_delete_access_approval_settings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        accessapproval.DeleteAccessApprovalSettingsMessage(),
+        {},
+    ],
+)
 async def test_delete_access_approval_settings_async(
-    transport: str = "grpc_asyncio",
-    request_type=accessapproval.DeleteAccessApprovalSettingsMessage,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AccessApprovalAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3884,7 +3916,7 @@ async def test_delete_access_approval_settings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3902,11 +3934,6 @@ async def test_delete_access_approval_settings_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_access_approval_settings_async_from_dict():
-    await test_delete_access_approval_settings_async(request_type=dict)
 
 
 def test_delete_access_approval_settings_field_headers():
@@ -4059,8 +4086,8 @@ async def test_delete_access_approval_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        accessapproval.GetAccessApprovalServiceAccountMessage,
-        dict,
+        accessapproval.GetAccessApprovalServiceAccountMessage(),
+        {},
     ],
 )
 def test_get_access_approval_service_account(request_type, transport: str = "grpc"):
@@ -4071,7 +4098,7 @@ def test_get_access_approval_service_account(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4121,9 +4148,10 @@ def test_get_access_approval_service_account_non_empty_request_with_auto_populat
         client.get_access_approval_service_account(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accessapproval.GetAccessApprovalServiceAccountMessage(
+        request_msg = accessapproval.GetAccessApprovalServiceAccountMessage(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_access_approval_service_account_use_cached_wrapped_rpc():
@@ -4209,9 +4237,15 @@ async def test_get_access_approval_service_account_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        accessapproval.GetAccessApprovalServiceAccountMessage(),
+        {},
+    ],
+)
 async def test_get_access_approval_service_account_async(
-    transport: str = "grpc_asyncio",
-    request_type=accessapproval.GetAccessApprovalServiceAccountMessage,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AccessApprovalAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4220,7 +4254,7 @@ async def test_get_access_approval_service_account_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4245,11 +4279,6 @@ async def test_get_access_approval_service_account_async(
     assert isinstance(response, accessapproval.AccessApprovalServiceAccount)
     assert response.name == "name_value"
     assert response.account_email == "account_email_value"
-
-
-@pytest.mark.asyncio
-async def test_get_access_approval_service_account_async_from_dict():
-    await test_get_access_approval_service_account_async(request_type=dict)
 
 
 def test_get_access_approval_service_account_field_headers():
@@ -4554,6 +4583,9 @@ def test_list_approval_requests_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1"}
 
         pager = client.list_approval_requests(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -5305,7 +5337,6 @@ def test_list_approval_requests_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.ListApprovalRequestsMessage()
-
         assert args[0] == request_msg
 
 
@@ -5328,7 +5359,6 @@ def test_get_approval_request_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.GetApprovalRequestMessage()
-
         assert args[0] == request_msg
 
 
@@ -5351,7 +5381,6 @@ def test_approve_approval_request_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.ApproveApprovalRequestMessage()
-
         assert args[0] == request_msg
 
 
@@ -5374,7 +5403,6 @@ def test_dismiss_approval_request_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.DismissApprovalRequestMessage()
-
         assert args[0] == request_msg
 
 
@@ -5397,7 +5425,6 @@ def test_invalidate_approval_request_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.InvalidateApprovalRequestMessage()
-
         assert args[0] == request_msg
 
 
@@ -5420,7 +5447,6 @@ def test_get_access_approval_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.GetAccessApprovalSettingsMessage()
-
         assert args[0] == request_msg
 
 
@@ -5443,7 +5469,6 @@ def test_update_access_approval_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.UpdateAccessApprovalSettingsMessage()
-
         assert args[0] == request_msg
 
 
@@ -5466,7 +5491,6 @@ def test_delete_access_approval_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.DeleteAccessApprovalSettingsMessage()
-
         assert args[0] == request_msg
 
 
@@ -5489,7 +5513,6 @@ def test_get_access_approval_service_account_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.GetAccessApprovalServiceAccountMessage()
-
         assert args[0] == request_msg
 
 
@@ -5532,7 +5555,6 @@ async def test_list_approval_requests_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.ListApprovalRequestsMessage()
-
         assert args[0] == request_msg
 
 
@@ -5562,7 +5584,6 @@ async def test_get_approval_request_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.GetApprovalRequestMessage()
-
         assert args[0] == request_msg
 
 
@@ -5592,7 +5613,6 @@ async def test_approve_approval_request_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.ApproveApprovalRequestMessage()
-
         assert args[0] == request_msg
 
 
@@ -5622,7 +5642,6 @@ async def test_dismiss_approval_request_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.DismissApprovalRequestMessage()
-
         assert args[0] == request_msg
 
 
@@ -5652,7 +5671,6 @@ async def test_invalidate_approval_request_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.InvalidateApprovalRequestMessage()
-
         assert args[0] == request_msg
 
 
@@ -5686,7 +5704,6 @@ async def test_get_access_approval_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.GetAccessApprovalSettingsMessage()
-
         assert args[0] == request_msg
 
 
@@ -5720,7 +5737,6 @@ async def test_update_access_approval_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.UpdateAccessApprovalSettingsMessage()
-
         assert args[0] == request_msg
 
 
@@ -5745,7 +5761,6 @@ async def test_delete_access_approval_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.DeleteAccessApprovalSettingsMessage()
-
         assert args[0] == request_msg
 
 
@@ -5775,7 +5790,6 @@ async def test_get_access_approval_service_account_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.GetAccessApprovalServiceAccountMessage()
-
         assert args[0] == request_msg
 
 
@@ -7116,7 +7130,6 @@ def test_list_approval_requests_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.ListApprovalRequestsMessage()
-
         assert args[0] == request_msg
 
 
@@ -7138,7 +7151,6 @@ def test_get_approval_request_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.GetApprovalRequestMessage()
-
         assert args[0] == request_msg
 
 
@@ -7160,7 +7172,6 @@ def test_approve_approval_request_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.ApproveApprovalRequestMessage()
-
         assert args[0] == request_msg
 
 
@@ -7182,7 +7193,6 @@ def test_dismiss_approval_request_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.DismissApprovalRequestMessage()
-
         assert args[0] == request_msg
 
 
@@ -7204,7 +7214,6 @@ def test_invalidate_approval_request_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.InvalidateApprovalRequestMessage()
-
         assert args[0] == request_msg
 
 
@@ -7226,7 +7235,6 @@ def test_get_access_approval_settings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.GetAccessApprovalSettingsMessage()
-
         assert args[0] == request_msg
 
 
@@ -7248,7 +7256,6 @@ def test_update_access_approval_settings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.UpdateAccessApprovalSettingsMessage()
-
         assert args[0] == request_msg
 
 
@@ -7270,7 +7277,6 @@ def test_delete_access_approval_settings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.DeleteAccessApprovalSettingsMessage()
-
         assert args[0] == request_msg
 
 
@@ -7292,7 +7298,6 @@ def test_get_access_approval_service_account_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accessapproval.GetAccessApprovalServiceAccountMessage()
-
         assert args[0] == request_msg
 
 

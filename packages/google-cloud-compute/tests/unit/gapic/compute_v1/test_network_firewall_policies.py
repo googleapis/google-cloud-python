@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -112,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1322,7 +1332,7 @@ def test_add_association_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_association_rest_unset_required_fields():
@@ -1538,7 +1548,7 @@ def test_add_association_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_association_unary_rest_unset_required_fields():
@@ -1760,7 +1770,7 @@ def test_add_packet_mirroring_rule_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_packet_mirroring_rule_rest_unset_required_fields():
@@ -1983,7 +1993,7 @@ def test_add_packet_mirroring_rule_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_packet_mirroring_rule_unary_rest_unset_required_fields():
@@ -2201,7 +2211,7 @@ def test_add_rule_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_rule_rest_unset_required_fields():
@@ -2419,7 +2429,7 @@ def test_add_rule_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_rule_unary_rest_unset_required_fields():
@@ -2632,7 +2642,7 @@ def test_aggregated_list_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_aggregated_list_rest_unset_required_fields():
@@ -2768,6 +2778,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.aggregated_list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         assert isinstance(pager.get("a"), compute.FirewallPoliciesScopedList)
         assert pager.get("h") is None
@@ -2913,7 +2926,7 @@ def test_clone_rules_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_clone_rules_rest_unset_required_fields():
@@ -3121,7 +3134,7 @@ def test_clone_rules_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_clone_rules_unary_rest_unset_required_fields():
@@ -3324,7 +3337,7 @@ def test_delete_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_rest_unset_required_fields():
@@ -3522,7 +3535,7 @@ def test_delete_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_unary_rest_unset_required_fields():
@@ -3712,7 +3725,7 @@ def test_get_rest_required_fields(request_type=compute.GetNetworkFirewallPolicyR
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rest_unset_required_fields():
@@ -3906,7 +3919,7 @@ def test_get_association_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_association_rest_unset_required_fields():
@@ -4100,7 +4113,7 @@ def test_get_iam_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_iam_policy_rest_unset_required_fields():
@@ -4299,7 +4312,7 @@ def test_get_packet_mirroring_rule_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_packet_mirroring_rule_rest_unset_required_fields():
@@ -4493,7 +4506,7 @@ def test_get_rule_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rule_rest_unset_required_fields():
@@ -4688,7 +4701,7 @@ def test_insert_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_rest_unset_required_fields():
@@ -4895,7 +4908,7 @@ def test_insert_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_unary_rest_unset_required_fields():
@@ -5105,7 +5118,7 @@ def test_list_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_rest_unset_required_fields():
@@ -5238,6 +5251,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.FirewallPolicy) for i in results)
@@ -5366,7 +5382,7 @@ def test_patch_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_rest_unset_required_fields():
@@ -5580,7 +5596,7 @@ def test_patch_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_unary_rest_unset_required_fields():
@@ -5804,7 +5820,7 @@ def test_patch_packet_mirroring_rule_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_packet_mirroring_rule_rest_unset_required_fields():
@@ -6025,7 +6041,7 @@ def test_patch_packet_mirroring_rule_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_packet_mirroring_rule_unary_rest_unset_required_fields():
@@ -6243,7 +6259,7 @@ def test_patch_rule_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_rule_rest_unset_required_fields():
@@ -6459,7 +6475,7 @@ def test_patch_rule_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_rule_unary_rest_unset_required_fields():
@@ -6678,7 +6694,7 @@ def test_remove_association_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_remove_association_rest_unset_required_fields():
@@ -6890,7 +6906,7 @@ def test_remove_association_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_remove_association_unary_rest_unset_required_fields():
@@ -7103,7 +7119,7 @@ def test_remove_packet_mirroring_rule_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_remove_packet_mirroring_rule_rest_unset_required_fields():
@@ -7316,7 +7332,7 @@ def test_remove_packet_mirroring_rule_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_remove_packet_mirroring_rule_unary_rest_unset_required_fields():
@@ -7526,7 +7542,7 @@ def test_remove_rule_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_remove_rule_rest_unset_required_fields():
@@ -7734,7 +7750,7 @@ def test_remove_rule_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_remove_rule_unary_rest_unset_required_fields():
@@ -7932,7 +7948,7 @@ def test_set_iam_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_iam_policy_rest_unset_required_fields():
@@ -8136,7 +8152,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -8652,12 +8668,17 @@ def test_add_packet_mirroring_rule_rest_call_success(request_type):
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
         "security_profile_group": "security_profile_group_value",
+        "target_forwarding_rules": [
+            "target_forwarding_rules_value1",
+            "target_forwarding_rules_value2",
+        ],
         "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
             "target_service_accounts_value1",
             "target_service_accounts_value2",
         ],
+        "target_type": "target_type_value",
         "tls_inspect": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -8960,12 +8981,17 @@ def test_add_rule_rest_call_success(request_type):
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
         "security_profile_group": "security_profile_group_value",
+        "target_forwarding_rules": [
+            "target_forwarding_rules_value1",
+            "target_forwarding_rules_value2",
+        ],
         "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
             "target_service_accounts_value1",
             "target_service_accounts_value2",
         ],
+        "target_type": "target_type_value",
         "tls_inspect": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -10152,8 +10178,10 @@ def test_get_packet_mirroring_rule_rest_call_success(request_type):
             rule_name="rule_name_value",
             rule_tuple_count=1737,
             security_profile_group="security_profile_group_value",
+            target_forwarding_rules=["target_forwarding_rules_value"],
             target_resources=["target_resources_value"],
             target_service_accounts=["target_service_accounts_value"],
+            target_type="target_type_value",
             tls_inspect=True,
         )
 
@@ -10181,8 +10209,10 @@ def test_get_packet_mirroring_rule_rest_call_success(request_type):
     assert response.rule_name == "rule_name_value"
     assert response.rule_tuple_count == 1737
     assert response.security_profile_group == "security_profile_group_value"
+    assert response.target_forwarding_rules == ["target_forwarding_rules_value"]
     assert response.target_resources == ["target_resources_value"]
     assert response.target_service_accounts == ["target_service_accounts_value"]
+    assert response.target_type == "target_type_value"
     assert response.tls_inspect is True
 
 
@@ -10309,8 +10339,10 @@ def test_get_rule_rest_call_success(request_type):
             rule_name="rule_name_value",
             rule_tuple_count=1737,
             security_profile_group="security_profile_group_value",
+            target_forwarding_rules=["target_forwarding_rules_value"],
             target_resources=["target_resources_value"],
             target_service_accounts=["target_service_accounts_value"],
+            target_type="target_type_value",
             tls_inspect=True,
         )
 
@@ -10338,8 +10370,10 @@ def test_get_rule_rest_call_success(request_type):
     assert response.rule_name == "rule_name_value"
     assert response.rule_tuple_count == 1737
     assert response.security_profile_group == "security_profile_group_value"
+    assert response.target_forwarding_rules == ["target_forwarding_rules_value"]
     assert response.target_resources == ["target_resources_value"]
     assert response.target_service_accounts == ["target_service_accounts_value"]
+    assert response.target_type == "target_type_value"
     assert response.tls_inspect is True
 
 
@@ -10522,6 +10556,10 @@ def test_insert_rest_call_success(request_type):
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "security_profile_group": "security_profile_group_value",
+                "target_forwarding_rules": [
+                    "target_forwarding_rules_value1",
+                    "target_forwarding_rules_value2",
+                ],
                 "target_resources": [
                     "target_resources_value1",
                     "target_resources_value2",
@@ -10531,6 +10569,7 @@ def test_insert_rest_call_success(request_type):
                     "target_service_accounts_value1",
                     "target_service_accounts_value2",
                 ],
+                "target_type": "target_type_value",
                 "tls_inspect": True,
             }
         ],
@@ -10991,6 +11030,10 @@ def test_patch_rest_call_success(request_type):
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "security_profile_group": "security_profile_group_value",
+                "target_forwarding_rules": [
+                    "target_forwarding_rules_value1",
+                    "target_forwarding_rules_value2",
+                ],
                 "target_resources": [
                     "target_resources_value1",
                     "target_resources_value2",
@@ -11000,6 +11043,7 @@ def test_patch_rest_call_success(request_type):
                     "target_service_accounts_value1",
                     "target_service_accounts_value2",
                 ],
+                "target_type": "target_type_value",
                 "tls_inspect": True,
             }
         ],
@@ -11306,12 +11350,17 @@ def test_patch_packet_mirroring_rule_rest_call_success(request_type):
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
         "security_profile_group": "security_profile_group_value",
+        "target_forwarding_rules": [
+            "target_forwarding_rules_value1",
+            "target_forwarding_rules_value2",
+        ],
         "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
             "target_service_accounts_value1",
             "target_service_accounts_value2",
         ],
+        "target_type": "target_type_value",
         "tls_inspect": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -11616,12 +11665,17 @@ def test_patch_rule_rest_call_success(request_type):
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
         "security_profile_group": "security_profile_group_value",
+        "target_forwarding_rules": [
+            "target_forwarding_rules_value1",
+            "target_forwarding_rules_value2",
+        ],
         "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
             "target_service_accounts_value1",
             "target_service_accounts_value2",
         ],
+        "target_type": "target_type_value",
         "tls_inspect": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -12840,7 +12894,6 @@ def test_add_association_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddAssociationNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12862,7 +12915,6 @@ def test_add_packet_mirroring_rule_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddPacketMirroringRuleNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12882,7 +12934,6 @@ def test_add_rule_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddRuleNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12902,7 +12953,6 @@ def test_aggregated_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AggregatedListNetworkFirewallPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -12922,7 +12972,6 @@ def test_clone_rules_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.CloneRulesNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12942,7 +12991,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12962,7 +13010,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12982,7 +13029,6 @@ def test_get_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetAssociationNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13002,7 +13048,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetIamPolicyNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13024,7 +13069,6 @@ def test_get_packet_mirroring_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetPacketMirroringRuleNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13044,7 +13088,6 @@ def test_get_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetRuleNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13064,7 +13107,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13084,7 +13126,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListNetworkFirewallPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13104,7 +13145,6 @@ def test_patch_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13126,7 +13166,6 @@ def test_patch_packet_mirroring_rule_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchPacketMirroringRuleNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13146,7 +13185,6 @@ def test_patch_rule_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchRuleNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13168,7 +13206,6 @@ def test_remove_association_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RemoveAssociationNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13190,7 +13227,6 @@ def test_remove_packet_mirroring_rule_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RemovePacketMirroringRuleNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13210,7 +13246,6 @@ def test_remove_rule_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RemoveRuleNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13230,7 +13265,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetIamPolicyNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13252,7 +13286,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsNetworkFirewallPolicyRequest()
-
         assert args[0] == request_msg
 
 

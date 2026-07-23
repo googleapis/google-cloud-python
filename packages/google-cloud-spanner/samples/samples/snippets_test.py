@@ -56,11 +56,6 @@ retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
 
 
 @pytest.fixture(scope="module")
-def sample_name():
-    return "snippets"
-
-
-@pytest.fixture(scope="module")
 def database_dialect():
     """Spanner dialect to be used for this sample.
 

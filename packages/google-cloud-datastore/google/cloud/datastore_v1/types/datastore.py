@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,6 +48,7 @@ __protobuf__ = proto.module(
         "PropertyMask",
         "ReadOptions",
         "TransactionOptions",
+        "RequestOptions",
     },
 )
 
@@ -78,6 +79,8 @@ class LookupRequest(proto.Message):
             [LookupResponse.found.entity.properties][].
 
             The entity's key is always returned.
+        request_options (google.cloud.datastore_v1.types.RequestOptions):
+            Optional. The options for this request.
     """
 
     project_id: str = proto.Field(
@@ -102,6 +105,11 @@ class LookupRequest(proto.Message):
         proto.MESSAGE,
         number=5,
         message="PropertyMask",
+    )
+    request_options: "RequestOptions" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="RequestOptions",
     )
 
 
@@ -210,6 +218,8 @@ class RunQueryRequest(proto.Message):
             set, additional query statistics will be
             returned. If not, only query results will be
             returned.
+        request_options (google.cloud.datastore_v1.types.RequestOptions):
+            Optional. The options for this request.
     """
 
     project_id: str = proto.Field(
@@ -252,6 +262,11 @@ class RunQueryRequest(proto.Message):
         number=12,
         message=query_profile.ExplainOptions,
     )
+    request_options: "RequestOptions" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="RequestOptions",
+    )
 
 
 class RunQueryResponse(proto.Message):
@@ -260,7 +275,12 @@ class RunQueryResponse(proto.Message):
 
     Attributes:
         batch (google.cloud.datastore_v1.types.QueryResultBatch):
-            A batch of query results (always present).
+            A batch of query results. This is always present unless
+            running a query under explain-only mode:
+            [RunQueryRequest.explain_options][google.datastore.v1.RunQueryRequest.explain_options]
+            was provided and
+            [ExplainOptions.analyze][google.datastore.v1.ExplainOptions.analyze]
+            was set to false.
         query (google.cloud.datastore_v1.types.Query):
             The parsed form of the ``GqlQuery`` from the request, if it
             was set.
@@ -342,6 +362,8 @@ class RunAggregationQueryRequest(proto.Message):
             set, additional query statistics will be
             returned. If not, only query results will be
             returned.
+        request_options (google.cloud.datastore_v1.types.RequestOptions):
+            Optional. The options for this request.
     """
 
     project_id: str = proto.Field(
@@ -378,6 +400,11 @@ class RunAggregationQueryRequest(proto.Message):
         proto.MESSAGE,
         number=11,
         message=query_profile.ExplainOptions,
+    )
+    request_options: "RequestOptions" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="RequestOptions",
     )
 
 
@@ -443,6 +470,8 @@ class BeginTransactionRequest(proto.Message):
             string '' to refer the default database.
         transaction_options (google.cloud.datastore_v1.types.TransactionOptions):
             Options for a new transaction.
+        request_options (google.cloud.datastore_v1.types.RequestOptions):
+            Optional. The options for this request.
     """
 
     project_id: str = proto.Field(
@@ -457,6 +486,11 @@ class BeginTransactionRequest(proto.Message):
         proto.MESSAGE,
         number=10,
         message="TransactionOptions",
+    )
+    request_options: "RequestOptions" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="RequestOptions",
     )
 
 
@@ -491,6 +525,8 @@ class RollbackRequest(proto.Message):
         transaction (bytes):
             Required. The transaction identifier, returned by a call to
             [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
+        request_options (google.cloud.datastore_v1.types.RequestOptions):
+            Optional. The options for this request.
     """
 
     project_id: str = proto.Field(
@@ -504,6 +540,11 @@ class RollbackRequest(proto.Message):
     transaction: bytes = proto.Field(
         proto.BYTES,
         number=1,
+    )
+    request_options: "RequestOptions" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="RequestOptions",
     )
 
 
@@ -568,6 +609,8 @@ class CommitRequest(proto.Message):
 
             When mode is ``NON_TRANSACTIONAL``, no two mutations may
             affect a single entity.
+        request_options (google.cloud.datastore_v1.types.RequestOptions):
+            Optional. The options for this request.
     """
 
     class Mode(proto.Enum):
@@ -617,6 +660,11 @@ class CommitRequest(proto.Message):
         proto.MESSAGE,
         number=6,
         message="Mutation",
+    )
+    request_options: "RequestOptions" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="RequestOptions",
     )
 
 
@@ -670,6 +718,8 @@ class AllocateIdsRequest(proto.Message):
             Required. A list of keys with incomplete key
             paths for which to allocate IDs. No key may be
             reserved/read-only.
+        request_options (google.cloud.datastore_v1.types.RequestOptions):
+            Optional. The options for this request.
     """
 
     project_id: str = proto.Field(
@@ -684,6 +734,11 @@ class AllocateIdsRequest(proto.Message):
         proto.MESSAGE,
         number=1,
         message=entity.Key,
+    )
+    request_options: "RequestOptions" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="RequestOptions",
     )
 
 
@@ -722,6 +777,8 @@ class ReserveIdsRequest(proto.Message):
             Required. A list of keys with complete key
             paths whose numeric IDs should not be
             auto-allocated.
+        request_options (google.cloud.datastore_v1.types.RequestOptions):
+            Optional. The options for this request.
     """
 
     project_id: str = proto.Field(
@@ -736,6 +793,11 @@ class ReserveIdsRequest(proto.Message):
         proto.MESSAGE,
         number=1,
         message=entity.Key,
+    )
+    request_options: "RequestOptions" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="RequestOptions",
     )
 
 
@@ -1315,6 +1377,26 @@ class TransactionOptions(proto.Message):
         number=2,
         oneof="mode",
         message=ReadOnly,
+    )
+
+
+class RequestOptions(proto.Message):
+    r"""Options for a request.
+
+    Attributes:
+        request_tags (MutableSequence[str]):
+            Optional. The request tags for the request.
+            The tags are processed as follows:
+
+            - Truncated to 510 characters.
+            - Filtered out if empty.
+            - Deduplicated.
+            - Limited to 50 tags.
+    """
+
+    request_tags: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

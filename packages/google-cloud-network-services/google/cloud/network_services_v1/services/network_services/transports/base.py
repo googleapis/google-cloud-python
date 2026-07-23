@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.network_services_v1 import gapic_version as package_version
 from google.cloud.network_services_v1.types import (
+    agent_gateway,
     endpoint_policy,
     extensibility,
     gateway,
@@ -45,6 +46,7 @@ from google.cloud.network_services_v1.types import (
     tcp_route,
     tls_route,
 )
+from google.cloud.network_services_v1.types import agent_gateway as gcn_agent_gateway
 from google.cloud.network_services_v1.types import (
     endpoint_policy as gcn_endpoint_policy,
 )
@@ -462,6 +464,31 @@ class NetworkServicesTransport(abc.ABC):
             ),
             self.list_mesh_route_views: gapic_v1.method.wrap_method(
                 self.list_mesh_route_views,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_agent_gateways: gapic_v1.method.wrap_method(
+                self.list_agent_gateways,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_agent_gateway: gapic_v1.method.wrap_method(
+                self.get_agent_gateway,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_agent_gateway: gapic_v1.method.wrap_method(
+                self.create_agent_gateway,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_agent_gateway: gapic_v1.method.wrap_method(
+                self.update_agent_gateway,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_agent_gateway: gapic_v1.method.wrap_method(
+                self.delete_agent_gateway,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1081,6 +1108,54 @@ class NetworkServicesTransport(abc.ABC):
             route_view.ListMeshRouteViewsResponse,
             Awaitable[route_view.ListMeshRouteViewsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_agent_gateways(
+        self,
+    ) -> Callable[
+        [agent_gateway.ListAgentGatewaysRequest],
+        Union[
+            agent_gateway.ListAgentGatewaysResponse,
+            Awaitable[agent_gateway.ListAgentGatewaysResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_agent_gateway(
+        self,
+    ) -> Callable[
+        [agent_gateway.GetAgentGatewayRequest],
+        Union[agent_gateway.AgentGateway, Awaitable[agent_gateway.AgentGateway]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_agent_gateway(
+        self,
+    ) -> Callable[
+        [gcn_agent_gateway.CreateAgentGatewayRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_agent_gateway(
+        self,
+    ) -> Callable[
+        [gcn_agent_gateway.UpdateAgentGatewayRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_agent_gateway(
+        self,
+    ) -> Callable[
+        [agent_gateway.DeleteAgentGatewayRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

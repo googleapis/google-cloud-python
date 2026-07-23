@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -113,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1263,7 +1273,7 @@ def test_add_access_config_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_access_config_rest_unset_required_fields():
@@ -1507,7 +1517,7 @@ def test_add_access_config_unary_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_access_config_unary_rest_unset_required_fields():
@@ -1737,7 +1747,7 @@ def test_add_network_interface_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_network_interface_rest_unset_required_fields():
@@ -1963,7 +1973,7 @@ def test_add_network_interface_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_network_interface_unary_rest_unset_required_fields():
@@ -2189,7 +2199,7 @@ def test_add_resource_policies_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_resource_policies_rest_unset_required_fields():
@@ -2411,7 +2421,7 @@ def test_add_resource_policies_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_resource_policies_unary_rest_unset_required_fields():
@@ -2625,7 +2635,7 @@ def test_aggregated_list_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_aggregated_list_rest_unset_required_fields():
@@ -2759,6 +2769,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.aggregated_list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         assert isinstance(pager.get("a"), compute.InstancesScopedList)
         assert pager.get("h") is None
@@ -2906,7 +2919,7 @@ def test_attach_disk_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_attach_disk_rest_unset_required_fields():
@@ -3133,7 +3146,7 @@ def test_attach_disk_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_attach_disk_unary_rest_unset_required_fields():
@@ -3351,7 +3364,7 @@ def test_bulk_insert_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_bulk_insert_rest_unset_required_fields():
@@ -3557,7 +3570,7 @@ def test_bulk_insert_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_bulk_insert_unary_rest_unset_required_fields():
@@ -3769,7 +3782,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteInstanceRequest)
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_rest_unset_required_fields():
@@ -3986,7 +3999,7 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteInstanceRe
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_unary_rest_unset_required_fields():
@@ -4233,7 +4246,7 @@ def test_delete_access_config_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_access_config_rest_unset_required_fields():
@@ -4487,7 +4500,7 @@ def test_delete_access_config_unary_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_access_config_unary_rest_unset_required_fields():
@@ -4733,7 +4746,7 @@ def test_delete_network_interface_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_network_interface_rest_unset_required_fields():
@@ -4975,7 +4988,7 @@ def test_delete_network_interface_unary_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_network_interface_unary_rest_unset_required_fields():
@@ -5209,7 +5222,7 @@ def test_detach_disk_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_detach_disk_rest_unset_required_fields():
@@ -5443,7 +5456,7 @@ def test_detach_disk_unary_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_detach_disk_unary_rest_unset_required_fields():
@@ -5654,7 +5667,7 @@ def test_get_rest_required_fields(request_type=compute.GetInstanceRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rest_unset_required_fields():
@@ -5878,7 +5891,7 @@ def test_get_effective_firewalls_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_effective_firewalls_rest_unset_required_fields():
@@ -6095,7 +6108,7 @@ def test_get_guest_attributes_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_guest_attributes_rest_unset_required_fields():
@@ -6305,7 +6318,7 @@ def test_get_iam_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_iam_policy_rest_unset_required_fields():
@@ -6514,7 +6527,7 @@ def test_get_partner_metadata_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_partner_metadata_rest_unset_required_fields():
@@ -6717,7 +6730,7 @@ def test_get_screenshot_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_screenshot_rest_unset_required_fields():
@@ -6932,7 +6945,7 @@ def test_get_serial_port_output_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_serial_port_output_rest_unset_required_fields():
@@ -7145,7 +7158,7 @@ def test_get_shielded_instance_identity_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_shielded_instance_identity_rest_unset_required_fields():
@@ -7355,7 +7368,7 @@ def test_get_shielded_vm_identity_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_shielded_vm_identity_rest_unset_required_fields():
@@ -7565,7 +7578,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertInstanceRequest)
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_rest_unset_required_fields():
@@ -7785,7 +7798,7 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertInstanceRe
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_unary_rest_unset_required_fields():
@@ -8003,7 +8016,7 @@ def test_list_rest_required_fields(request_type=compute.ListInstancesRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_rest_unset_required_fields():
@@ -8144,6 +8157,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.Instance) for i in results)
@@ -8279,7 +8295,7 @@ def test_list_referrers_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_referrers_rest_unset_required_fields():
@@ -8430,6 +8446,9 @@ def test_list_referrers_rest_pager(transport: str = "rest"):
 
         pager = client.list_referrers(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.Reference) for i in results)
@@ -8567,7 +8586,7 @@ def test_patch_partner_metadata_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_partner_metadata_rest_unset_required_fields():
@@ -8789,7 +8808,7 @@ def test_patch_partner_metadata_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_partner_metadata_unary_rest_unset_required_fields():
@@ -9009,7 +9028,7 @@ def test_perform_maintenance_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_perform_maintenance_rest_unset_required_fields():
@@ -9222,7 +9241,7 @@ def test_perform_maintenance_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_perform_maintenance_unary_rest_unset_required_fields():
@@ -9437,7 +9456,7 @@ def test_remove_resource_policies_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_remove_resource_policies_rest_unset_required_fields():
@@ -9659,7 +9678,7 @@ def test_remove_resource_policies_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_remove_resource_policies_unary_rest_unset_required_fields():
@@ -9881,7 +9900,7 @@ def test_report_host_as_faulty_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_report_host_as_faulty_rest_unset_required_fields():
@@ -10103,7 +10122,7 @@ def test_report_host_as_faulty_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_report_host_as_faulty_unary_rest_unset_required_fields():
@@ -10317,7 +10336,7 @@ def test_reset_rest_required_fields(request_type=compute.ResetInstanceRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_reset_rest_unset_required_fields():
@@ -10524,7 +10543,7 @@ def test_reset_unary_rest_required_fields(request_type=compute.ResetInstanceRequ
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_reset_unary_rest_unset_required_fields():
@@ -10732,7 +10751,7 @@ def test_resume_rest_required_fields(request_type=compute.ResumeInstanceRequest)
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resume_rest_unset_required_fields():
@@ -10941,7 +10960,7 @@ def test_resume_unary_rest_required_fields(request_type=compute.ResumeInstanceRe
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resume_unary_rest_unset_required_fields():
@@ -11152,7 +11171,7 @@ def test_send_diagnostic_interrupt_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_send_diagnostic_interrupt_rest_unset_required_fields():
@@ -11371,7 +11390,7 @@ def test_set_deletion_protection_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_deletion_protection_rest_unset_required_fields():
@@ -11595,7 +11614,7 @@ def test_set_deletion_protection_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_deletion_protection_unary_rest_unset_required_fields():
@@ -11842,7 +11861,7 @@ def test_set_disk_auto_delete_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_disk_auto_delete_rest_unset_required_fields():
@@ -12096,7 +12115,7 @@ def test_set_disk_auto_delete_unary_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_disk_auto_delete_unary_rest_unset_required_fields():
@@ -12312,7 +12331,7 @@ def test_set_iam_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_iam_policy_rest_unset_required_fields():
@@ -12527,7 +12546,7 @@ def test_set_labels_rest_required_fields(request_type=compute.SetLabelsInstanceR
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_labels_rest_unset_required_fields():
@@ -12744,7 +12763,7 @@ def test_set_labels_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_labels_unary_rest_unset_required_fields():
@@ -12966,7 +12985,7 @@ def test_set_machine_resources_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_machine_resources_rest_unset_required_fields():
@@ -13188,7 +13207,7 @@ def test_set_machine_resources_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_machine_resources_unary_rest_unset_required_fields():
@@ -13407,7 +13426,7 @@ def test_set_machine_type_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_machine_type_rest_unset_required_fields():
@@ -13626,7 +13645,7 @@ def test_set_machine_type_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_machine_type_unary_rest_unset_required_fields():
@@ -13843,7 +13862,7 @@ def test_set_metadata_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_metadata_rest_unset_required_fields():
@@ -14056,7 +14075,7 @@ def test_set_metadata_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_metadata_unary_rest_unset_required_fields():
@@ -14273,7 +14292,7 @@ def test_set_min_cpu_platform_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_min_cpu_platform_rest_unset_required_fields():
@@ -14494,7 +14513,7 @@ def test_set_min_cpu_platform_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_min_cpu_platform_unary_rest_unset_required_fields():
@@ -14709,7 +14728,7 @@ def test_set_name_rest_required_fields(request_type=compute.SetNameInstanceReque
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_name_rest_unset_required_fields():
@@ -14926,7 +14945,7 @@ def test_set_name_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_name_unary_rest_unset_required_fields():
@@ -15143,7 +15162,7 @@ def test_set_scheduling_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_scheduling_rest_unset_required_fields():
@@ -15356,7 +15375,7 @@ def test_set_scheduling_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_scheduling_unary_rest_unset_required_fields():
@@ -15573,7 +15592,7 @@ def test_set_security_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_security_policy_rest_unset_required_fields():
@@ -15794,7 +15813,7 @@ def test_set_security_policy_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_security_policy_unary_rest_unset_required_fields():
@@ -16015,7 +16034,7 @@ def test_set_service_account_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_service_account_rest_unset_required_fields():
@@ -16236,7 +16255,7 @@ def test_set_service_account_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_service_account_unary_rest_unset_required_fields():
@@ -16462,7 +16481,7 @@ def test_set_shielded_instance_integrity_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_shielded_instance_integrity_policy_rest_unset_required_fields():
@@ -16692,7 +16711,7 @@ def test_set_shielded_instance_integrity_policy_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_shielded_instance_integrity_policy_unary_rest_unset_required_fields():
@@ -16918,7 +16937,7 @@ def test_set_shielded_vm_integrity_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_shielded_vm_integrity_policy_rest_unset_required_fields():
@@ -17142,7 +17161,7 @@ def test_set_shielded_vm_integrity_policy_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_shielded_vm_integrity_policy_unary_rest_unset_required_fields():
@@ -17361,7 +17380,7 @@ def test_set_tags_rest_required_fields(request_type=compute.SetTagsInstanceReque
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_tags_rest_unset_required_fields():
@@ -17574,7 +17593,7 @@ def test_set_tags_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_tags_unary_rest_unset_required_fields():
@@ -17796,7 +17815,7 @@ def test_simulate_maintenance_event_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_simulate_maintenance_event_rest_unset_required_fields():
@@ -18020,7 +18039,7 @@ def test_simulate_maintenance_event_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_simulate_maintenance_event_unary_rest_unset_required_fields():
@@ -18232,7 +18251,7 @@ def test_start_rest_required_fields(request_type=compute.StartInstanceRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_start_rest_unset_required_fields():
@@ -18439,7 +18458,7 @@ def test_start_unary_rest_required_fields(request_type=compute.StartInstanceRequ
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_start_unary_rest_unset_required_fields():
@@ -18654,7 +18673,7 @@ def test_start_with_encryption_key_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_start_with_encryption_key_rest_unset_required_fields():
@@ -18888,7 +18907,7 @@ def test_start_with_encryption_key_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_start_with_encryption_key_unary_rest_unset_required_fields():
@@ -19120,7 +19139,7 @@ def test_stop_rest_required_fields(request_type=compute.StopInstanceRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_stop_rest_unset_required_fields():
@@ -19339,7 +19358,7 @@ def test_stop_unary_rest_required_fields(request_type=compute.StopInstanceReques
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_stop_unary_rest_unset_required_fields():
@@ -19557,7 +19576,7 @@ def test_suspend_rest_required_fields(request_type=compute.SuspendInstanceReques
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_suspend_rest_unset_required_fields():
@@ -19776,7 +19795,7 @@ def test_suspend_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_suspend_unary_rest_unset_required_fields():
@@ -19989,7 +20008,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -20211,7 +20230,7 @@ def test_update_rest_required_fields(request_type=compute.UpdateInstanceRequest)
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_rest_unset_required_fields():
@@ -20444,7 +20463,7 @@ def test_update_unary_rest_required_fields(request_type=compute.UpdateInstanceRe
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_unary_rest_unset_required_fields():
@@ -20693,7 +20712,7 @@ def test_update_access_config_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_access_config_rest_unset_required_fields():
@@ -20939,7 +20958,7 @@ def test_update_access_config_unary_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_access_config_unary_rest_unset_required_fields():
@@ -21169,7 +21188,7 @@ def test_update_display_device_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_display_device_rest_unset_required_fields():
@@ -21387,7 +21406,7 @@ def test_update_display_device_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_display_device_unary_rest_unset_required_fields():
@@ -21622,7 +21641,7 @@ def test_update_network_interface_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_network_interface_rest_unset_required_fields():
@@ -21873,7 +21892,7 @@ def test_update_network_interface_unary_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_network_interface_unary_rest_unset_required_fields():
@@ -22107,7 +22126,7 @@ def test_update_shielded_instance_config_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_shielded_instance_config_rest_unset_required_fields():
@@ -22331,7 +22350,7 @@ def test_update_shielded_instance_config_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_shielded_instance_config_unary_rest_unset_required_fields():
@@ -22557,7 +22576,7 @@ def test_update_shielded_vm_config_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_shielded_vm_config_rest_unset_required_fields():
@@ -22779,7 +22798,7 @@ def test_update_shielded_vm_config_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_shielded_vm_config_unary_rest_unset_required_fields():
@@ -23269,6 +23288,7 @@ def test_add_network_interface_rest_call_success(request_type):
                 "subnetwork_range_name": "subnetwork_range_name_value",
             }
         ],
+        "alias_ipv6_ranges": {},
         "enable_vpc_scoped_dns": True,
         "fingerprint": "fingerprint_value",
         "igmp_query": "igmp_query_value",
@@ -24315,6 +24335,7 @@ def test_bulk_insert_rest_call_success(request_type):
             ],
             "key_revocation_action_type": "key_revocation_action_type_value",
             "labels": {},
+            "local_ssd_encryption_mode": "local_ssd_encryption_mode_value",
             "machine_type": "machine_type_value",
             "metadata": {
                 "fingerprint": "fingerprint_value",
@@ -24344,6 +24365,7 @@ def test_bulk_insert_rest_call_success(request_type):
                             "subnetwork_range_name": "subnetwork_range_name_value",
                         }
                     ],
+                    "alias_ipv6_ranges": {},
                     "enable_vpc_scoped_dns": True,
                     "fingerprint": "fingerprint_value",
                     "igmp_query": "igmp_query_value",
@@ -25383,6 +25405,7 @@ def test_get_rest_call_success(request_type):
             last_start_timestamp="last_start_timestamp_value",
             last_stop_timestamp="last_stop_timestamp_value",
             last_suspended_timestamp="last_suspended_timestamp_value",
+            local_ssd_encryption_mode="local_ssd_encryption_mode_value",
             machine_type="machine_type_value",
             min_cpu_platform="min_cpu_platform_value",
             name="name_value",
@@ -25428,6 +25451,7 @@ def test_get_rest_call_success(request_type):
     assert response.last_start_timestamp == "last_start_timestamp_value"
     assert response.last_stop_timestamp == "last_stop_timestamp_value"
     assert response.last_suspended_timestamp == "last_suspended_timestamp_value"
+    assert response.local_ssd_encryption_mode == "local_ssd_encryption_mode_value"
     assert response.machine_type == "machine_type_value"
     assert response.min_cpu_platform == "min_cpu_platform_value"
     assert response.name == "name_value"
@@ -26694,6 +26718,7 @@ def test_insert_rest_call_success(request_type):
         "last_start_timestamp": "last_start_timestamp_value",
         "last_stop_timestamp": "last_stop_timestamp_value",
         "last_suspended_timestamp": "last_suspended_timestamp_value",
+        "local_ssd_encryption_mode": "local_ssd_encryption_mode_value",
         "machine_type": "machine_type_value",
         "metadata": {
             "fingerprint": "fingerprint_value",
@@ -26724,6 +26749,7 @@ def test_insert_rest_call_success(request_type):
                         "subnetwork_range_name": "subnetwork_range_name_value",
                     }
                 ],
+                "alias_ipv6_ranges": {},
                 "enable_vpc_scoped_dns": True,
                 "fingerprint": "fingerprint_value",
                 "igmp_query": "igmp_query_value",
@@ -26776,13 +26802,16 @@ def test_insert_rest_call_success(request_type):
             },
             "physical_host": "physical_host_value",
             "physical_host_topology": {
+                "additional_attributes": {"accelerator_topology_ids": {}},
                 "block": "block_value",
                 "cluster": "cluster_value",
                 "host": "host_value",
                 "subblock": "subblock_value",
             },
             "reservation_consumption_info": {
-                "consumed_reservation": "consumed_reservation_value"
+                "consumed_reservation": "consumed_reservation_value",
+                "consumed_reservation_block": "consumed_reservation_block_value",
+                "consumed_reservation_sub_block": "consumed_reservation_sub_block_value",
             },
             "scheduling": {
                 "availability_domain": 2002,
@@ -33681,6 +33710,7 @@ def test_update_rest_call_success(request_type):
         "last_start_timestamp": "last_start_timestamp_value",
         "last_stop_timestamp": "last_stop_timestamp_value",
         "last_suspended_timestamp": "last_suspended_timestamp_value",
+        "local_ssd_encryption_mode": "local_ssd_encryption_mode_value",
         "machine_type": "machine_type_value",
         "metadata": {
             "fingerprint": "fingerprint_value",
@@ -33711,6 +33741,7 @@ def test_update_rest_call_success(request_type):
                         "subnetwork_range_name": "subnetwork_range_name_value",
                     }
                 ],
+                "alias_ipv6_ranges": {},
                 "enable_vpc_scoped_dns": True,
                 "fingerprint": "fingerprint_value",
                 "igmp_query": "igmp_query_value",
@@ -33763,13 +33794,16 @@ def test_update_rest_call_success(request_type):
             },
             "physical_host": "physical_host_value",
             "physical_host_topology": {
+                "additional_attributes": {"accelerator_topology_ids": {}},
                 "block": "block_value",
                 "cluster": "cluster_value",
                 "host": "host_value",
                 "subblock": "subblock_value",
             },
             "reservation_consumption_info": {
-                "consumed_reservation": "consumed_reservation_value"
+                "consumed_reservation": "consumed_reservation_value",
+                "consumed_reservation_block": "consumed_reservation_block_value",
+                "consumed_reservation_sub_block": "consumed_reservation_sub_block_value",
             },
             "scheduling": {
                 "availability_domain": 2002,
@@ -34604,6 +34638,7 @@ def test_update_network_interface_rest_call_success(request_type):
                 "subnetwork_range_name": "subnetwork_range_name_value",
             }
         ],
+        "alias_ipv6_ranges": {},
         "enable_vpc_scoped_dns": True,
         "fingerprint": "fingerprint_value",
         "igmp_query": "igmp_query_value",
@@ -35354,7 +35389,6 @@ def test_add_access_config_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddAccessConfigInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35376,7 +35410,6 @@ def test_add_network_interface_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddNetworkInterfaceInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35398,7 +35431,6 @@ def test_add_resource_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddResourcePoliciesInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35418,7 +35450,6 @@ def test_aggregated_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AggregatedListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -35438,7 +35469,6 @@ def test_attach_disk_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AttachDiskInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35458,7 +35488,6 @@ def test_bulk_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.BulkInsertInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35478,7 +35507,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35500,7 +35528,6 @@ def test_delete_access_config_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteAccessConfigInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35522,7 +35549,6 @@ def test_delete_network_interface_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteNetworkInterfaceInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35542,7 +35568,6 @@ def test_detach_disk_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DetachDiskInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35562,7 +35587,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35584,7 +35608,6 @@ def test_get_effective_firewalls_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetEffectiveFirewallsInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35606,7 +35629,6 @@ def test_get_guest_attributes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetGuestAttributesInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35626,7 +35648,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetIamPolicyInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35648,7 +35669,6 @@ def test_get_partner_metadata_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetPartnerMetadataInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35668,7 +35688,6 @@ def test_get_screenshot_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetScreenshotInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35690,7 +35709,6 @@ def test_get_serial_port_output_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetSerialPortOutputInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35712,7 +35730,6 @@ def test_get_shielded_instance_identity_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetShieldedInstanceIdentityInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35734,7 +35751,6 @@ def test_get_shielded_vm_identity_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetShieldedVmIdentityInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35754,7 +35770,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35774,7 +35789,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -35794,7 +35808,6 @@ def test_list_referrers_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListReferrersInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -35816,7 +35829,6 @@ def test_patch_partner_metadata_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchPartnerMetadataInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35838,7 +35850,6 @@ def test_perform_maintenance_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PerformMaintenanceInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35860,7 +35871,6 @@ def test_remove_resource_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RemoveResourcePoliciesInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35882,7 +35892,6 @@ def test_report_host_as_faulty_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ReportHostAsFaultyInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35902,7 +35911,6 @@ def test_reset_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35922,7 +35930,6 @@ def test_resume_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResumeInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35944,7 +35951,6 @@ def test_send_diagnostic_interrupt_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SendDiagnosticInterruptInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35966,7 +35972,6 @@ def test_set_deletion_protection_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetDeletionProtectionInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35988,7 +35993,6 @@ def test_set_disk_auto_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetDiskAutoDeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36008,7 +36012,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetIamPolicyInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36028,7 +36031,6 @@ def test_set_labels_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetLabelsInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36050,7 +36052,6 @@ def test_set_machine_resources_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetMachineResourcesInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36070,7 +36071,6 @@ def test_set_machine_type_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetMachineTypeInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36090,7 +36090,6 @@ def test_set_metadata_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetMetadataInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36112,7 +36111,6 @@ def test_set_min_cpu_platform_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetMinCpuPlatformInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36132,7 +36130,6 @@ def test_set_name_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetNameInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36152,7 +36149,6 @@ def test_set_scheduling_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetSchedulingInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36174,7 +36170,6 @@ def test_set_security_policy_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetSecurityPolicyInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36196,7 +36191,6 @@ def test_set_service_account_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetServiceAccountInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36218,7 +36212,6 @@ def test_set_shielded_instance_integrity_policy_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetShieldedInstanceIntegrityPolicyInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36240,7 +36233,6 @@ def test_set_shielded_vm_integrity_policy_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetShieldedVmIntegrityPolicyInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36260,7 +36252,6 @@ def test_set_tags_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetTagsInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36282,7 +36273,6 @@ def test_simulate_maintenance_event_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SimulateMaintenanceEventInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36302,7 +36292,6 @@ def test_start_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StartInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36324,7 +36313,6 @@ def test_start_with_encryption_key_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StartWithEncryptionKeyInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36344,7 +36332,6 @@ def test_stop_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36364,7 +36351,6 @@ def test_suspend_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SuspendInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36386,7 +36372,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36406,7 +36391,6 @@ def test_update_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36428,7 +36412,6 @@ def test_update_access_config_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateAccessConfigInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36450,7 +36433,6 @@ def test_update_display_device_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateDisplayDeviceInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36472,7 +36454,6 @@ def test_update_network_interface_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateNetworkInterfaceInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36494,7 +36475,6 @@ def test_update_shielded_instance_config_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateShieldedInstanceConfigInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36516,7 +36496,6 @@ def test_update_shielded_vm_config_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateShieldedVmConfigInstanceRequest()
-
         assert args[0] == request_msg
 
 

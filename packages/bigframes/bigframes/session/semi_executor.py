@@ -15,7 +15,7 @@ import abc
 from typing import Optional
 
 from bigframes.core import bigframe_node
-from bigframes.session import executor
+from bigframes.session import execution_spec, executor
 
 
 # Unstable interface, in development
@@ -24,10 +24,9 @@ class SemiExecutor(abc.ABC):
     A semi executor executes a subset of possible plans, returns None for unsupported plans.
     """
 
-    def execute(
+    async def execute(
         self,
         plan: bigframe_node.BigFrameNode,
-        ordered: bool,
-        peek: Optional[int] = None,
+        execution_spec: execution_spec.ExecutionSpec,
     ) -> Optional[executor.ExecuteResult]:
         raise NotImplementedError("execute not implemented for this executor")

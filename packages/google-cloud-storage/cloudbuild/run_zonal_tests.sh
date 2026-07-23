@@ -1,16 +1,9 @@
 
 set -euxo pipefail
-echo '--- Installing git and cloning repository on VM ---'
-sudo apt-get update && sudo apt-get install -y git python3-pip python3-venv
-
-# Clone the repository and checkout the specific commit from the build trigger.
-git clone --no-checkout --depth 1 --sparse --filter=blob:none https://github.com/googleapis/google-cloud-python.git
-cd google-cloud-python
-git sparse-checkout set packages/google-cloud-storage
-git fetch origin "refs/pull/${_PR_NUMBER}/head"
-git checkout ${COMMIT_SHA}
-cd packages/google-cloud-storage
-
+echo '--- Extracting source code tarball on VM ---'
+sudo apt-get update && sudo apt-get install -y python3-pip python3-venv
+tar -xzf google-cloud-storage.tar.gz
+cd google-cloud-storage
 
 echo '--- Installing Python and dependencies on VM ---'
 python3 -m venv env
@@ -24,6 +17,7 @@ pip install -e .
 
 echo '--- Setting up environment variables on VM ---'
 export ZONAL_BUCKET=${_ZONAL_BUCKET}
+export CROSS_REGION_BUCKET=${CROSS_REGION_BUCKET:-}
 export RUN_ZONAL_SYSTEM_TESTS=True
 export GCE_METADATA_MTLS_MODE=None
 CURRENT_ULIMIT=$(ulimit -n)

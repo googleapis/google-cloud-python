@@ -18,15 +18,14 @@ import os
 import uuid
 
 import pytest
-
 from sqlalchemy import (
     Column,
+    ForeignKey,
     Integer,
     MetaData,
     String,
     Table,
     create_engine,
-    ForeignKey,
 )
 
 

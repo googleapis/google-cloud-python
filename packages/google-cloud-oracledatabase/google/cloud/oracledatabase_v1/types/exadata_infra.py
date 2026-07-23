@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,9 @@ __protobuf__ = proto.module(
     manifest={
         "CloudExadataInfrastructure",
         "CloudExadataInfrastructureProperties",
+        "ExascaleConfig",
         "MaintenanceWindow",
+        "ConfigureExascaleCloudExadataInfrastructureRequest",
     },
 )
 
@@ -198,6 +200,9 @@ class CloudExadataInfrastructureProperties(proto.Message):
         storage_server_type (str):
             Output only. The storage server type of the
             Exadata Infrastructure.
+        exascale_config (google.cloud.oracledatabase_v1.types.ExascaleConfig):
+            Output only. The Exascale configuration for
+            the Exadata Infrastructure.
     """
 
     class State(proto.Enum):
@@ -361,6 +366,34 @@ class CloudExadataInfrastructureProperties(proto.Message):
         proto.STRING,
         number=30,
     )
+    exascale_config: "ExascaleConfig" = proto.Field(
+        proto.MESSAGE,
+        number=32,
+        message="ExascaleConfig",
+    )
+
+
+class ExascaleConfig(proto.Message):
+    r"""Details of the Exascale configuration for the Exadata
+    Infrastructure.
+
+    Attributes:
+        total_storage_size_gb (int):
+            Output only. Total storage size needed for
+            Exascale in GBs.
+        available_storage_size_gb (int):
+            Output only. Available storage size for
+            Exascale in GBs.
+    """
+
+    total_storage_size_gb: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    available_storage_size_gb: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class MaintenanceWindow(proto.Message):
@@ -389,12 +422,12 @@ class MaintenanceWindow(proto.Message):
             when maintenance should be performed. The window
             is a 4 hour slot. Valid values are:
 
-            0 - represents time slot 0:00 - 3:59 UTC
-            4 - represents time slot 4:00 - 7:59 UTC
-            8 - represents time slot 8:00 - 11:59 UTC
-            12 - represents time slot 12:00 - 15:59 UTC
-            16 - represents time slot 16:00 - 19:59 UTC
-            20 - represents time slot 20:00 - 23:59 UTC
+              0 - represents time slot 0:00 - 3:59 UTC
+              4 - represents time slot 4:00 - 7:59 UTC
+              8 - represents time slot 8:00 - 11:59 UTC
+              12 - represents time slot 12:00 - 15:59 UTC
+            16 - represents time slot 16:00 - 19:59 UTC   20
+            - represents time slot 20:00 - 23:59 UTC
         lead_time_week (int):
             Optional. Lead time window allows user to set
             a lead time to prepare for a down time. The lead
@@ -490,6 +523,36 @@ class MaintenanceWindow(proto.Message):
     is_custom_action_timeout_enabled: bool = proto.Field(
         proto.BOOL,
         number=9,
+    )
+
+
+class ConfigureExascaleCloudExadataInfrastructureRequest(proto.Message):
+    r"""The request for ``CloudExadataInfrastructure.ConfigureExascale``.
+
+    Attributes:
+        name (str):
+            Required. The name of the Cloud Exadata Infrastructure in
+            the following format:
+            projects/{project}/locations/{location}/cloudExadataInfrastructures/{cloud_exadata_infrastructure}.
+        total_storage_size_gb (int):
+            Required. The total storage to be allocated
+            to Exascale in GBs.
+        request_id (str):
+            Optional. An optional ID to identify the
+            request.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    total_storage_size_gb: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

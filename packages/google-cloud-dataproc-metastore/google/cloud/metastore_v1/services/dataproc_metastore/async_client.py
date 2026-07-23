@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 #
 import logging as std_logging
 import re
-import uuid
 from collections import OrderedDict
 from typing import (
     Callable,
@@ -618,11 +617,11 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_service(request=request)
+                operation = await client.create_service(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -775,11 +774,11 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_service(request=request)
+                operation = await client.update_service(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -919,11 +918,11 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_service(request=request)
+                operation = await client.delete_service(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1299,11 +1298,11 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_metadata_import(request=request)
+                operation = await client.create_metadata_import(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1457,11 +1456,11 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_metadata_import(request=request)
+                operation = await client.update_metadata_import(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1601,11 +1600,11 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_metadata(request=request)
+                operation = await client.export_metadata(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1705,11 +1704,11 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                operation = client.restore_service(request=request)
+                operation = await client.restore_service(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2085,11 +2084,11 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backup(request=request)
+                operation = await client.create_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2239,11 +2238,11 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup(request=request)
+                operation = await client.delete_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2374,11 +2373,11 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                operation = client.query_metadata(request=request)
+                operation = await client.query_metadata(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2477,11 +2476,11 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                operation = client.move_table_to_database(request=request)
+                operation = await client.move_table_to_database(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2585,11 +2584,11 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                operation = client.alter_metadata_resource_location(request=request)
+                operation = await client.alter_metadata_resource_location(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

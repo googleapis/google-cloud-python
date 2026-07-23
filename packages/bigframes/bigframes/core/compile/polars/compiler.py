@@ -37,7 +37,9 @@ import bigframes.operations.frequency_ops as freq_ops
 import bigframes.operations.generic_ops as gen_ops
 import bigframes.operations.json_ops as json_ops
 import bigframes.operations.numeric_ops as num_ops
+import bigframes.operations.remote_function_ops as remote_function_ops
 import bigframes.operations.string_ops as string_ops
+import bigframes.operations.struct_ops as struct_ops
 from bigframes.core import agg_expressions, identifiers, nodes, ordering, window_spec
 from bigframes.core.compile.polars import lowering
 
@@ -122,7 +124,7 @@ if polars_installed:
                 ]
             )
         if bigframes.dtypes.is_array_like(dtype):
-            return pl.Array(
+            return pl.List(
                 inner=_bigframes_dtype_to_polars_dtype(
                     bigframes.dtypes.get_array_inner_type(dtype)
                 )
@@ -138,11 +140,20 @@ if polars_installed:
         Should be extended to dispatch based on bigframes schema types.
         """
 
-        @functools.singledispatchmethod
+        _expr_types: dict[int, bigframes.dtypes.ExpressionType] = dataclasses.field(
+            default_factory=dict, init=False, compare=False
+        )
+
         def compile_expression(self, expression: ex.Expression) -> pl.Expr:
+            res = self._compile_expression(expression)
+            self._expr_types[id(res)] = expression.output_type
+            return res
+
+        @functools.singledispatchmethod
+        def _compile_expression(self, expression: ex.Expression) -> pl.Expr:
             raise NotImplementedError(f"Cannot compile expression: {expression}")
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.ScalarConstantExpression,
@@ -159,27 +170,78 @@ if polars_installed:
 
             return pl.lit(value, _bigframes_dtype_to_polars_dtype(expression.dtype))
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.DerefOp,
         ) -> pl.Expr:
             return pl.col(expression.id.sql)
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.ResolvedDerefOp,
         ) -> pl.Expr:
             return pl.col(expression.id.sql)
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.OpExpression,
         ) -> pl.Expr:
-            # TODO: Complete the implementation
+            import datetime
+
+            import pyarrow as pa
+
             op = expression.op
+
+            # Polars panics on nulls from pandas objects in timezone-aware
+            # datetimes for certain ops. Convert to timezone-naive temporarily
+            # to avoid this issue.
+            # TODO(tswast): Remove workaround when
+            # https://github.com/pola-rs/polars/issues/27862 has been fixed.
+            is_problematic_op = type(op) in (
+                date_ops.YearOp,
+                date_ops.QuarterOp,
+                date_ops.MonthOp,
+                date_ops.DayOp,
+                date_ops.IsoWeekOp,
+            )
+
+            if is_problematic_op and len(expression.inputs) == 1:
+                input_expr = expression.inputs[0]
+                if (
+                    input_expr.is_resolved
+                    and isinstance(input_expr.output_type, pd.ArrowDtype)
+                    and isinstance(
+                        input_expr.output_type.pyarrow_dtype, pa.TimestampType
+                    )
+                    and input_expr.output_type.pyarrow_dtype.tz is not None
+                ):
+                    tz_str = input_expr.output_type.pyarrow_dtype.tz
+                    if tz_str == "UTC":
+                        dummy_tz = datetime.timezone.utc
+                    else:
+                        try:
+                            from zoneinfo import ZoneInfo
+
+                            dummy_tz = ZoneInfo(tz_str)  # type: ignore
+                        except Exception:
+                            dummy_tz = datetime.timezone.utc
+
+                    dummy_val = datetime.datetime(1970, 1, 1, tzinfo=dummy_tz)
+
+                    compiled_input = self.compile_expression(input_expr)
+                    filled_input = compiled_input.fill_null(dummy_val)
+                    compiled_op_with_fill = self.compile_op(op, filled_input)
+
+                    return (
+                        pl.when(compiled_input.is_null())
+                        .then(None)
+                        .otherwise(compiled_op_with_fill)
+                    )
+
+            # TODO: Complete the implementation
             args = tuple(map(self.compile_expression, expression.inputs))
             return self.compile_op(op, *args)
 
@@ -310,6 +372,28 @@ if polars_installed:
         ) -> pl.Expr:
             return pl.when(condition).then(original).otherwise(otherwise)
 
+        @compile_op.register(gen_ops.CoerceToBoolOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, gen_ops.CoerceToBoolOp)
+            from_type = self._expr_types.get(id(input))
+            if from_type is None:
+                return input.cast(pl.Boolean).fill_null(False)
+
+            if from_type == bigframes.dtypes.BOOL_DTYPE:
+                res = input
+            elif bigframes.dtypes.is_numeric(from_type):
+                res = input != 0
+            elif from_type == bigframes.dtypes.BYTES_DTYPE:
+                res = input.bin.size() > 0
+            elif bigframes.dtypes.is_string_like(from_type):
+                res = input.str.len_chars() > 0
+            elif bigframes.dtypes.is_array_like(from_type):
+                res = input.list.len() > 0
+            else:
+                res = input.is_not_null()
+
+            return res.fill_null(False)
+
         @compile_op.register(gen_ops.AsTypeOp)
         def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
             assert isinstance(op, gen_ops.AsTypeOp)
@@ -427,9 +511,64 @@ if polars_installed:
             )
 
         @compile_op.register(json_ops.JSONDecode)
-        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+        def _(self, op: json_ops.JSONDecode, input: pl.Expr) -> pl.Expr:
             assert isinstance(op, json_ops.JSONDecode)
             return input.str.json_decode(_DTYPE_MAPPING[op.to_type])
+
+        @compile_op.register(json_ops.ToJSON)
+        def _(self, op: json_ops.ToJSON, input: pl.Expr) -> pl.Expr:
+            from_type = self._expr_types.get(id(input))
+            if from_type in (
+                bigframes.dtypes.STRING_DTYPE,
+                bigframes.dtypes.JSON_DTYPE,
+            ):
+                return input
+            else:
+                return input.cast(pl.String())
+
+        @compile_op.register(json_ops.ToJSONString)
+        def _(self, op: json_ops.ToJSONString, input: pl.Expr) -> pl.Expr:
+            from_type = self._expr_types.get(id(input))
+
+            def preprocess_binary(
+                expr: pl.Expr, dtype: bigframes.dtypes.ExpressionType
+            ) -> pl.Expr:
+                if dtype == bigframes.dtypes.BYTES_DTYPE:
+                    return expr.bin.encode("base64")
+                if bigframes.dtypes.is_struct_like(dtype):
+                    fields = bigframes.dtypes.get_struct_fields(dtype)
+                    return pl.struct(
+                        *[
+                            preprocess_binary(
+                                expr.struct.field(name), field_type
+                            ).alias(name)
+                            for name, field_type in fields.items()
+                        ]
+                    )
+                if bigframes.dtypes.is_array_like(dtype):
+                    inner_type = bigframes.dtypes.get_array_inner_type(dtype)
+                    return expr.list.eval(preprocess_binary(pl.element(), inner_type))
+                return expr
+
+            preprocessed = preprocess_binary(input, from_type)
+
+            if bigframes.dtypes.is_struct_like(from_type):
+                result = preprocessed.struct.json_encode()
+            elif from_type == bigframes.dtypes.INT_DTYPE:
+                result = preprocessed.cast(pl.String)
+            elif from_type == bigframes.dtypes.BOOL_DTYPE:
+                result = (
+                    pl.when(preprocessed)
+                    .then(pl.lit("true"))
+                    .otherwise(pl.lit("false"))
+                )
+            elif from_type == bigframes.dtypes.BYTES_DTYPE:
+                result = pl.lit('"') + preprocessed + pl.lit('"')
+            else:
+                wrapped = pl.struct(value=preprocessed).struct.json_encode()
+                result = wrapped.str.slice(9, wrapped.str.len_chars() - 10)
+
+            return pl.when(input.is_null()).then(pl.lit("null")).otherwise(result)
 
         @compile_op.register(arr_ops.ToArrayOp)
         def _(self, op: ops.ToArrayOp, *inputs: pl.Expr) -> pl.Expr:
@@ -460,6 +599,36 @@ if polars_installed:
                 raise NotImplementedError(
                     f"Haven't implemented array aggregation: {op.aggregation}"
                 )
+
+        @compile_op.register(struct_ops.StructOp)
+        def _(self, op: struct_ops.StructOp, *inputs: pl.Expr) -> pl.Expr:
+            return pl.struct(**{col: inp for col, inp in zip(op.column_names, inputs)})  # type: ignore
+
+        @compile_op.register(struct_ops.StructFieldOp)
+        def _(self, op: struct_ops.StructFieldOp, *inputs: pl.Expr) -> pl.Expr:
+            return inputs[0].struct[op.name_or_index]
+
+        @compile_op.register(remote_function_ops.PythonUdfOp)
+        def _(self, op: ops.PythonUdfOp, *inputs: pl.Expr) -> pl.Expr:
+            from bigframes.functions import function_template
+
+            code = op.function_def.code.to_callable()
+            if op.function_def.signature.is_row_processor:
+
+                def handler(py_struct):
+                    args = list(py_struct.values())
+                    series_arg = function_template.get_pd_series(args[0])
+                    return code(series_arg, *args[1:])
+            else:
+
+                def handler(py_struct):
+                    return code(*(field for field in py_struct.values()))
+
+            return pl.struct(*inputs).map_elements(
+                handler,
+                return_dtype=_bigframes_dtype_to_polars_dtype(op.output_type()),
+                skip_nulls=False,
+            )
 
     @dataclasses.dataclass(frozen=True)
     class PolarsAggregateCompiler:

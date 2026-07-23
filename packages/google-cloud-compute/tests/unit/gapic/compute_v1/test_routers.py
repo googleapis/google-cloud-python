@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -108,6 +103,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1222,7 +1232,7 @@ def test_aggregated_list_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_aggregated_list_rest_unset_required_fields():
@@ -1356,6 +1366,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.aggregated_list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         assert isinstance(pager.get("a"), compute.RoutersScopedList)
         assert pager.get("h") is None
@@ -1495,7 +1508,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteRouterRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_rest_unset_required_fields():
@@ -1702,7 +1715,7 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteRouterRequ
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_unary_rest_unset_required_fields():
@@ -1783,6 +1796,448 @@ def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     with pytest.raises(ValueError):
         client.delete_unary(
             compute.DeleteRouterRequest(),
+            project="project_value",
+            region="region_value",
+            router="router_value",
+        )
+
+
+def test_delete_named_set_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RoutersClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_named_set in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.delete_named_set] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.delete_named_set(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_named_set(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_named_set_rest_required_fields(
+    request_type=compute.DeleteNamedSetRouterRequest,
+):
+    transport_class = transports.RoutersRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["router"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_named_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["router"] = "router_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_named_set._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "named_set",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "router" in jsonified_request
+    assert jsonified_request["router"] == "router_value"
+
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.delete_named_set(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_delete_named_set_rest_unset_required_fields():
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_named_set._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "namedSet",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "project",
+                "region",
+                "router",
+            )
+        )
+    )
+
+
+def test_delete_named_set_rest_flattened():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "router": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            router="router_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.delete_named_set(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}/deleteNamedSet"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_named_set_rest_flattened_error(transport: str = "rest"):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_named_set(
+            compute.DeleteNamedSetRouterRequest(),
+            project="project_value",
+            region="region_value",
+            router="router_value",
+        )
+
+
+def test_delete_named_set_unary_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RoutersClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_named_set in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.delete_named_set] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.delete_named_set_unary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_named_set_unary(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_named_set_unary_rest_required_fields(
+    request_type=compute.DeleteNamedSetRouterRequest,
+):
+    transport_class = transports.RoutersRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["router"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_named_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["router"] = "router_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_named_set._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "named_set",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "router" in jsonified_request
+    assert jsonified_request["router"] == "router_value"
+
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.delete_named_set_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_delete_named_set_unary_rest_unset_required_fields():
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_named_set._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "namedSet",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "project",
+                "region",
+                "router",
+            )
+        )
+    )
+
+
+def test_delete_named_set_unary_rest_flattened():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "router": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            router="router_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.delete_named_set_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}/deleteNamedSet"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_named_set_unary_rest_flattened_error(transport: str = "rest"):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_named_set_unary(
+            compute.DeleteNamedSetRouterRequest(),
             project="project_value",
             region="region_value",
             router="router_value",
@@ -1920,7 +2375,7 @@ def test_delete_route_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_route_policy_rest_unset_required_fields():
@@ -2143,7 +2598,7 @@ def test_delete_route_policy_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_route_policy_unary_rest_unset_required_fields():
@@ -2349,7 +2804,7 @@ def test_get_rest_required_fields(request_type=compute.GetRouterRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rest_unset_required_fields():
@@ -2430,6 +2885,211 @@ def test_get_rest_flattened_error(transport: str = "rest"):
     with pytest.raises(ValueError):
         client.get(
             compute.GetRouterRequest(),
+            project="project_value",
+            region="region_value",
+            router="router_value",
+        )
+
+
+def test_get_named_set_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RoutersClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_named_set in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_named_set] = mock_rpc
+
+        request = {}
+        client.get_named_set(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_named_set(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_named_set_rest_required_fields(
+    request_type=compute.GetNamedSetRouterRequest,
+):
+    transport_class = transports.RoutersRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["router"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_named_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["router"] = "router_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_named_set._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("named_set",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "router" in jsonified_request
+    assert jsonified_request["router"] == "router_value"
+
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.RoutersGetNamedSetResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.RoutersGetNamedSetResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_named_set(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_get_named_set_rest_unset_required_fields():
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_named_set._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("namedSet",))
+        & set(
+            (
+                "project",
+                "region",
+                "router",
+            )
+        )
+    )
+
+
+def test_get_named_set_rest_flattened():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.RoutersGetNamedSetResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "router": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            router="router_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.RoutersGetNamedSetResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_named_set(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}/getNamedSet"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_named_set_rest_flattened_error(transport: str = "rest"):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_named_set(
+            compute.GetNamedSetRouterRequest(),
             project="project_value",
             region="region_value",
             router="router_value",
@@ -2554,7 +3214,7 @@ def test_get_nat_ip_info_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_nat_ip_info_rest_unset_required_fields():
@@ -2772,7 +3432,7 @@ def test_get_nat_mapping_info_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_nat_mapping_info_rest_unset_required_fields():
@@ -2924,6 +3584,9 @@ def test_get_nat_mapping_info_rest_pager(transport: str = "rest"):
 
         pager = client.get_nat_mapping_info(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.VmEndpointNatMappings) for i in results)
@@ -3053,7 +3716,7 @@ def test_get_route_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_route_policy_rest_unset_required_fields():
@@ -3258,7 +3921,7 @@ def test_get_router_status_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_router_status_rest_unset_required_fields():
@@ -3462,7 +4125,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertRouterRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_rest_unset_required_fields():
@@ -3666,7 +4329,7 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertRouterRequ
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_unary_rest_unset_required_fields():
@@ -3873,7 +4536,7 @@ def test_list_rest_required_fields(request_type=compute.ListRoutersRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_rest_unset_required_fields():
@@ -4012,6 +4675,9 @@ def test_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1", "region": "sample2"}
 
         pager = client.list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -4153,7 +4819,7 @@ def test_list_bgp_routes_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_bgp_routes_rest_unset_required_fields():
@@ -4309,11 +4975,303 @@ def test_list_bgp_routes_rest_pager(transport: str = "rest"):
 
         pager = client.list_bgp_routes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.BgpRoute) for i in results)
 
         pages = list(client.list_bgp_routes(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_list_named_sets_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RoutersClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_named_sets in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list_named_sets] = mock_rpc
+
+        request = {}
+        client.list_named_sets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_named_sets(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_named_sets_rest_required_fields(
+    request_type=compute.ListNamedSetsRoutersRequest,
+):
+    transport_class = transports.RoutersRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["router"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_named_sets._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["router"] = "router_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_named_sets._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "router" in jsonified_request
+    assert jsonified_request["router"] == "router_value"
+
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.RoutersListNamedSets()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.RoutersListNamedSets.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_named_sets(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_list_named_sets_rest_unset_required_fields():
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_named_sets._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
+        & set(
+            (
+                "project",
+                "region",
+                "router",
+            )
+        )
+    )
+
+
+def test_list_named_sets_rest_flattened():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.RoutersListNamedSets()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "router": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            router="router_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.RoutersListNamedSets.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_named_sets(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}/listNamedSets"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_named_sets_rest_flattened_error(transport: str = "rest"):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_named_sets(
+            compute.ListNamedSetsRoutersRequest(),
+            project="project_value",
+            region="region_value",
+            router="router_value",
+        )
+
+
+def test_list_named_sets_rest_pager(transport: str = "rest"):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            compute.RoutersListNamedSets(
+                result=[
+                    compute.NamedSet(),
+                    compute.NamedSet(),
+                    compute.NamedSet(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.RoutersListNamedSets(
+                result=[],
+                next_page_token="def",
+            ),
+            compute.RoutersListNamedSets(
+                result=[
+                    compute.NamedSet(),
+                ],
+                next_page_token="ghi",
+            ),
+            compute.RoutersListNamedSets(
+                result=[
+                    compute.NamedSet(),
+                    compute.NamedSet(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.RoutersListNamedSets.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "router": "sample3",
+        }
+
+        pager = client.list_named_sets(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, compute.NamedSet) for i in results)
+
+        pages = list(client.list_named_sets(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
 
@@ -4448,7 +5406,7 @@ def test_list_route_policies_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_route_policies_rest_unset_required_fields():
@@ -4599,6 +5557,9 @@ def test_list_route_policies_rest_pager(transport: str = "rest"):
 
         pager = client.list_route_policies(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.RoutePolicy) for i in results)
@@ -4729,7 +5690,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchRouterRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_rest_unset_required_fields():
@@ -4944,7 +5905,7 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchRouterReques
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_unary_rest_unset_required_fields():
@@ -5035,6 +5996,432 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
             router_resource=compute.Router(
                 bgp=compute.RouterBgp(advertise_mode="advertise_mode_value")
             ),
+        )
+
+
+def test_patch_named_set_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RoutersClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.patch_named_set in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.patch_named_set] = mock_rpc
+
+        request = {}
+        client.patch_named_set(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.patch_named_set(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_patch_named_set_rest_required_fields(
+    request_type=compute.PatchNamedSetRouterRequest,
+):
+    transport_class = transports.RoutersRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["router"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch_named_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["router"] = "router_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch_named_set._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "router" in jsonified_request
+    assert jsonified_request["router"] == "router_value"
+
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.patch_named_set(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_patch_named_set_rest_unset_required_fields():
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.patch_named_set._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "namedSetResource",
+                "project",
+                "region",
+                "router",
+            )
+        )
+    )
+
+
+def test_patch_named_set_rest_flattened():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "router": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            router="router_value",
+            named_set_resource=compute.NamedSet(description="description_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.patch_named_set(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}/patchNamedSet"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_patch_named_set_rest_flattened_error(transport: str = "rest"):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.patch_named_set(
+            compute.PatchNamedSetRouterRequest(),
+            project="project_value",
+            region="region_value",
+            router="router_value",
+            named_set_resource=compute.NamedSet(description="description_value"),
+        )
+
+
+def test_patch_named_set_unary_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RoutersClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.patch_named_set in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.patch_named_set] = mock_rpc
+
+        request = {}
+        client.patch_named_set_unary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.patch_named_set_unary(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_patch_named_set_unary_rest_required_fields(
+    request_type=compute.PatchNamedSetRouterRequest,
+):
+    transport_class = transports.RoutersRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["router"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch_named_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["router"] = "router_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch_named_set._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "router" in jsonified_request
+    assert jsonified_request["router"] == "router_value"
+
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.patch_named_set_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_patch_named_set_unary_rest_unset_required_fields():
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.patch_named_set._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "namedSetResource",
+                "project",
+                "region",
+                "router",
+            )
+        )
+    )
+
+
+def test_patch_named_set_unary_rest_flattened():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "router": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            router="router_value",
+            named_set_resource=compute.NamedSet(description="description_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.patch_named_set_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}/patchNamedSet"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_patch_named_set_unary_rest_flattened_error(transport: str = "rest"):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.patch_named_set_unary(
+            compute.PatchNamedSetRouterRequest(),
+            project="project_value",
+            region="region_value",
+            router="router_value",
+            named_set_resource=compute.NamedSet(description="description_value"),
         )
 
 
@@ -5165,7 +6552,7 @@ def test_patch_route_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_route_policy_rest_unset_required_fields():
@@ -5382,7 +6769,7 @@ def test_patch_route_policy_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_route_policy_unary_rest_unset_required_fields():
@@ -5587,7 +6974,7 @@ def test_preview_rest_required_fields(request_type=compute.PreviewRouterRequest)
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_preview_rest_unset_required_fields():
@@ -5802,7 +7189,7 @@ def test_update_rest_required_fields(request_type=compute.UpdateRouterRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_rest_unset_required_fields():
@@ -6017,7 +7404,7 @@ def test_update_unary_rest_required_fields(request_type=compute.UpdateRouterRequ
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_unary_rest_unset_required_fields():
@@ -6108,6 +7495,436 @@ def test_update_unary_rest_flattened_error(transport: str = "rest"):
             router_resource=compute.Router(
                 bgp=compute.RouterBgp(advertise_mode="advertise_mode_value")
             ),
+        )
+
+
+def test_update_named_set_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RoutersClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_named_set in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_named_set] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.update_named_set(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_named_set(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_named_set_rest_required_fields(
+    request_type=compute.UpdateNamedSetRouterRequest,
+):
+    transport_class = transports.RoutersRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["router"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_named_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["router"] = "router_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_named_set._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "router" in jsonified_request
+    assert jsonified_request["router"] == "router_value"
+
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_named_set(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_update_named_set_rest_unset_required_fields():
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_named_set._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "namedSetResource",
+                "project",
+                "region",
+                "router",
+            )
+        )
+    )
+
+
+def test_update_named_set_rest_flattened():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "router": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            router="router_value",
+            named_set_resource=compute.NamedSet(description="description_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_named_set(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}/updateNamedSet"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_named_set_rest_flattened_error(transport: str = "rest"):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_named_set(
+            compute.UpdateNamedSetRouterRequest(),
+            project="project_value",
+            region="region_value",
+            router="router_value",
+            named_set_resource=compute.NamedSet(description="description_value"),
+        )
+
+
+def test_update_named_set_unary_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RoutersClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_named_set in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_named_set] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.update_named_set_unary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_named_set_unary(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_named_set_unary_rest_required_fields(
+    request_type=compute.UpdateNamedSetRouterRequest,
+):
+    transport_class = transports.RoutersRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["router"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_named_set._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["router"] = "router_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_named_set._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "router" in jsonified_request
+    assert jsonified_request["router"] == "router_value"
+
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_named_set_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_update_named_set_unary_rest_unset_required_fields():
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_named_set._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "namedSetResource",
+                "project",
+                "region",
+                "router",
+            )
+        )
+    )
+
+
+def test_update_named_set_unary_rest_flattened():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "router": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            router="router_value",
+            named_set_resource=compute.NamedSet(description="description_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_named_set_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}/updateNamedSet"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_named_set_unary_rest_flattened_error(transport: str = "rest"):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_named_set_unary(
+            compute.UpdateNamedSetRouterRequest(),
+            project="project_value",
+            region="region_value",
+            router="router_value",
+            named_set_resource=compute.NamedSet(description="description_value"),
         )
 
 
@@ -6238,7 +8055,7 @@ def test_update_route_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_route_policy_rest_unset_required_fields():
@@ -6455,7 +8272,7 @@ def test_update_route_policy_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_route_policy_unary_rest_unset_required_fields():
@@ -6927,6 +8744,176 @@ def test_delete_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_delete_named_set_rest_bad_request(
+    request_type=compute.DeleteNamedSetRouterRequest,
+):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.delete_named_set(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.DeleteNamedSetRouterRequest,
+        dict,
+    ],
+)
+def test_delete_named_set_rest_call_success(request_type):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.delete_named_set(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_named_set_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "post_delete_named_set"
+        ) as post,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "post_delete_named_set_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "pre_delete_named_set"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = compute.DeleteNamedSetRouterRequest.pb(
+            compute.DeleteNamedSetRouterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.DeleteNamedSetRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
+
+        client.delete_named_set(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_delete_route_policy_rest_bad_request(
     request_type=compute.DeleteRoutePolicyRouterRequest,
 ):
@@ -7147,6 +9134,7 @@ def test_get_rest_call_success(request_type):
             id=205,
             kind="kind_value",
             name="name_value",
+            ncc_gateway="ncc_gateway_value",
             network="network_value",
             region="region_value",
             self_link="self_link_value",
@@ -7172,6 +9160,7 @@ def test_get_rest_call_success(request_type):
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.ncc_gateway == "ncc_gateway_value"
     assert response.network == "network_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
@@ -7221,6 +9210,134 @@ def test_get_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = compute.Router(), metadata
 
         client.get(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_named_set_rest_bad_request(request_type=compute.GetNamedSetRouterRequest):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_named_set(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetNamedSetRouterRequest,
+        dict,
+    ],
+)
+def test_get_named_set_rest_call_success(request_type):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.RoutersGetNamedSetResponse(
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.RoutersGetNamedSetResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_named_set(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.RoutersGetNamedSetResponse)
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_named_set_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "post_get_named_set"
+        ) as post,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "post_get_named_set_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "pre_get_named_set"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = compute.GetNamedSetRouterRequest.pb(
+            compute.GetNamedSetRouterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = compute.RoutersGetNamedSetResponse.to_json(
+            compute.RoutersGetNamedSetResponse()
+        )
+        req.return_value.content = return_value
+
+        request = compute.GetNamedSetRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.RoutersGetNamedSetResponse()
+        post_with_metadata.return_value = compute.RoutersGetNamedSetResponse(), metadata
+
+        client.get_named_set(
             request,
             metadata=[
                 ("key", "val"),
@@ -7866,6 +9983,7 @@ def test_insert_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -7924,6 +10042,7 @@ def test_insert_rest_call_success(request_type):
                 "udp_idle_timeout_sec": 2118,
             }
         ],
+        "ncc_gateway": "ncc_gateway_value",
         "network": "network_value",
         "params": {"resource_manager_tags": {}},
         "region": "region_value",
@@ -8386,6 +10505,146 @@ def test_list_bgp_routes_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_list_named_sets_rest_bad_request(
+    request_type=compute.ListNamedSetsRoutersRequest,
+):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_named_sets(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.ListNamedSetsRoutersRequest,
+        dict,
+    ],
+)
+def test_list_named_sets_rest_call_success(request_type):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.RoutersListNamedSets(
+            etag="etag_value",
+            id="id_value",
+            kind="kind_value",
+            next_page_token="next_page_token_value",
+            self_link="self_link_value",
+            unreachables=["unreachables_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.RoutersListNamedSets.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_named_sets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListNamedSetsPager)
+    assert response.etag == "etag_value"
+    assert response.id == "id_value"
+    assert response.kind == "kind_value"
+    assert response.next_page_token == "next_page_token_value"
+    assert response.self_link == "self_link_value"
+    assert response.unreachables == ["unreachables_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_named_sets_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "post_list_named_sets"
+        ) as post,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "post_list_named_sets_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "pre_list_named_sets"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = compute.ListNamedSetsRoutersRequest.pb(
+            compute.ListNamedSetsRoutersRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = compute.RoutersListNamedSets.to_json(
+            compute.RoutersListNamedSets()
+        )
+        req.return_value.content = return_value
+
+        request = compute.ListNamedSetsRoutersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.RoutersListNamedSets()
+        post_with_metadata.return_value = compute.RoutersListNamedSets(), metadata
+
+        client.list_named_sets(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_list_route_policies_rest_bad_request(
     request_type=compute.ListRoutePoliciesRoutersRequest,
 ):
@@ -8638,6 +10897,7 @@ def test_patch_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -8696,6 +10956,7 @@ def test_patch_rest_call_success(request_type):
                 "udp_idle_timeout_sec": 2118,
             }
         ],
+        "ncc_gateway": "ncc_gateway_value",
         "network": "network_value",
         "params": {"resource_manager_tags": {}},
         "region": "region_value",
@@ -8880,6 +11141,257 @@ def test_patch_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = compute.Operation(), metadata
 
         client.patch(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_patch_named_set_rest_bad_request(
+    request_type=compute.PatchNamedSetRouterRequest,
+):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.patch_named_set(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.PatchNamedSetRouterRequest,
+        dict,
+    ],
+)
+def test_patch_named_set_rest_call_success(request_type):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request_init["named_set_resource"] = {
+        "description": "description_value",
+        "elements": [
+            {
+                "description": "description_value",
+                "expression": "expression_value",
+                "location": "location_value",
+                "title": "title_value",
+            }
+        ],
+        "fingerprint": "fingerprint_value",
+        "name": "name_value",
+        "type_": "type__value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.PatchNamedSetRouterRequest.meta.fields["named_set_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["named_set_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["named_set_resource"][field])):
+                    del request_init["named_set_resource"][field][i][subfield]
+            else:
+                del request_init["named_set_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.patch_named_set(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_patch_named_set_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "post_patch_named_set"
+        ) as post,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "post_patch_named_set_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "pre_patch_named_set"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = compute.PatchNamedSetRouterRequest.pb(
+            compute.PatchNamedSetRouterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.PatchNamedSetRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
+
+        client.patch_named_set(
             request,
             metadata=[
                 ("key", "val"),
@@ -9265,6 +11777,7 @@ def test_preview_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -9323,6 +11836,7 @@ def test_preview_rest_call_success(request_type):
                 "udp_idle_timeout_sec": 2118,
             }
         ],
+        "ncc_gateway": "ncc_gateway_value",
         "network": "network_value",
         "params": {"resource_manager_tags": {}},
         "region": "region_value",
@@ -9588,6 +12102,7 @@ def test_update_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -9646,6 +12161,7 @@ def test_update_rest_call_success(request_type):
                 "udp_idle_timeout_sec": 2118,
             }
         ],
+        "ncc_gateway": "ncc_gateway_value",
         "network": "network_value",
         "params": {"resource_manager_tags": {}},
         "region": "region_value",
@@ -9830,6 +12346,257 @@ def test_update_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = compute.Operation(), metadata
 
         client.update(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_update_named_set_rest_bad_request(
+    request_type=compute.UpdateNamedSetRouterRequest,
+):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.update_named_set(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.UpdateNamedSetRouterRequest,
+        dict,
+    ],
+)
+def test_update_named_set_rest_call_success(request_type):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request_init["named_set_resource"] = {
+        "description": "description_value",
+        "elements": [
+            {
+                "description": "description_value",
+                "expression": "expression_value",
+                "location": "location_value",
+                "title": "title_value",
+            }
+        ],
+        "fingerprint": "fingerprint_value",
+        "name": "name_value",
+        "type_": "type__value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.UpdateNamedSetRouterRequest.meta.fields["named_set_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["named_set_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["named_set_resource"][field])):
+                    del request_init["named_set_resource"][field][i][subfield]
+            else:
+                del request_init["named_set_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.update_named_set(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_named_set_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "post_update_named_set"
+        ) as post,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "post_update_named_set_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RoutersRestInterceptor, "pre_update_named_set"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = compute.UpdateNamedSetRouterRequest.pb(
+            compute.UpdateNamedSetRouterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.UpdateNamedSetRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
+
+        client.update_named_set(
             request,
             metadata=[
                 ("key", "val"),
@@ -10126,7 +12893,6 @@ def test_aggregated_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AggregatedListRoutersRequest()
-
         assert args[0] == request_msg
 
 
@@ -10146,7 +12912,25 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteRouterRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_named_set_unary_empty_call_rest():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_named_set), "__call__") as call:
+        client.delete_named_set_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.DeleteNamedSetRouterRequest()
         assert args[0] == request_msg
 
 
@@ -10168,7 +12952,6 @@ def test_delete_route_policy_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteRoutePolicyRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10188,7 +12971,25 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetRouterRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_named_set_empty_call_rest():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_named_set), "__call__") as call:
+        client.get_named_set(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.GetNamedSetRouterRequest()
         assert args[0] == request_msg
 
 
@@ -10208,7 +13009,6 @@ def test_get_nat_ip_info_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetNatIpInfoRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10230,7 +13030,6 @@ def test_get_nat_mapping_info_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetNatMappingInfoRoutersRequest()
-
         assert args[0] == request_msg
 
 
@@ -10250,7 +13049,6 @@ def test_get_route_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetRoutePolicyRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10272,7 +13070,6 @@ def test_get_router_status_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetRouterStatusRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10292,7 +13089,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10312,7 +13108,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListRoutersRequest()
-
         assert args[0] == request_msg
 
 
@@ -10332,7 +13127,25 @@ def test_list_bgp_routes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListBgpRoutesRoutersRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_named_sets_empty_call_rest():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_named_sets), "__call__") as call:
+        client.list_named_sets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.ListNamedSetsRoutersRequest()
         assert args[0] == request_msg
 
 
@@ -10354,7 +13167,6 @@ def test_list_route_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListRoutePoliciesRoutersRequest()
-
         assert args[0] == request_msg
 
 
@@ -10374,7 +13186,25 @@ def test_patch_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchRouterRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_patch_named_set_unary_empty_call_rest():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.patch_named_set), "__call__") as call:
+        client.patch_named_set_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.PatchNamedSetRouterRequest()
         assert args[0] == request_msg
 
 
@@ -10396,7 +13226,6 @@ def test_patch_route_policy_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchRoutePolicyRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10416,7 +13245,6 @@ def test_preview_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PreviewRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10436,7 +13264,25 @@ def test_update_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateRouterRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_named_set_unary_empty_call_rest():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_named_set), "__call__") as call:
+        client.update_named_set_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.UpdateNamedSetRouterRequest()
         assert args[0] == request_msg
 
 
@@ -10458,7 +13304,6 @@ def test_update_route_policy_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateRoutePolicyRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10486,8 +13331,10 @@ def test_routers_base_transport():
     methods = (
         "aggregated_list",
         "delete",
+        "delete_named_set",
         "delete_route_policy",
         "get",
+        "get_named_set",
         "get_nat_ip_info",
         "get_nat_mapping_info",
         "get_route_policy",
@@ -10495,11 +13342,14 @@ def test_routers_base_transport():
         "insert",
         "list",
         "list_bgp_routes",
+        "list_named_sets",
         "list_route_policies",
         "patch",
+        "patch_named_set",
         "patch_route_policy",
         "preview",
         "update",
+        "update_named_set",
         "update_route_policy",
     )
     for method in methods:
@@ -10650,11 +13500,17 @@ def test_routers_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete._session
     session2 = client2.transport.delete._session
     assert session1 != session2
+    session1 = client1.transport.delete_named_set._session
+    session2 = client2.transport.delete_named_set._session
+    assert session1 != session2
     session1 = client1.transport.delete_route_policy._session
     session2 = client2.transport.delete_route_policy._session
     assert session1 != session2
     session1 = client1.transport.get._session
     session2 = client2.transport.get._session
+    assert session1 != session2
+    session1 = client1.transport.get_named_set._session
+    session2 = client2.transport.get_named_set._session
     assert session1 != session2
     session1 = client1.transport.get_nat_ip_info._session
     session2 = client2.transport.get_nat_ip_info._session
@@ -10677,11 +13533,17 @@ def test_routers_client_transport_session_collision(transport_name):
     session1 = client1.transport.list_bgp_routes._session
     session2 = client2.transport.list_bgp_routes._session
     assert session1 != session2
+    session1 = client1.transport.list_named_sets._session
+    session2 = client2.transport.list_named_sets._session
+    assert session1 != session2
     session1 = client1.transport.list_route_policies._session
     session2 = client2.transport.list_route_policies._session
     assert session1 != session2
     session1 = client1.transport.patch._session
     session2 = client2.transport.patch._session
+    assert session1 != session2
+    session1 = client1.transport.patch_named_set._session
+    session2 = client2.transport.patch_named_set._session
     assert session1 != session2
     session1 = client1.transport.patch_route_policy._session
     session2 = client2.transport.patch_route_policy._session
@@ -10691,6 +13553,9 @@ def test_routers_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.update._session
     session2 = client2.transport.update._session
+    assert session1 != session2
+    session1 = client1.transport.update_named_set._session
+    session2 = client2.transport.update_named_set._session
     assert session1 != session2
     session1 = client1.transport.update_route_policy._session
     session2 = client2.transport.update_route_policy._session

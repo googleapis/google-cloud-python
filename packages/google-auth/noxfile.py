@@ -14,11 +14,23 @@
 
 import os
 import pathlib
+import re
 import shutil
 
 import nox
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 CLICK_VERSION = "click"
 BLACK_VERSION = "black==23.7.0"
@@ -33,6 +45,12 @@ BLACK_PATHS = [
 ]
 
 DEFAULT_PYTHON_VERSION = "3.14"
+
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
+# Switch this to Python 3.15 alpha1
+# https://peps.python.org/pep-0790/
+PREVIEW_PYTHON_VERSION = "3.14"
+
 UNIT_TEST_PYTHON_VERSIONS = [
     "3.10",
     "3.11",
@@ -41,6 +59,15 @@ UNIT_TEST_PYTHON_VERSIONS = [
     "3.14",
 ]
 ALL_PYTHON = UNIT_TEST_PYTHON_VERSIONS.copy()
+
+UNIT_TEST_STANDARD_DEPENDENCIES = [
+    "mock",
+    "asyncmock",
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+]
+UNIT_TEST_EXTERNAL_DEPENDENCIES: list[str] = []
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
@@ -134,13 +161,21 @@ def mypy(session):
         "mypy",
         "types-certifi",
         "types-freezegun",
-        "types-pyOpenSSL",
         "types-requests",
         "types-setuptools",
         "types-mock",
         "pytest<8.0.0",
     )
-    session.run("mypy", "-p", "google", "-p", "tests", "-p", "tests_async")
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "google",
+        "-p",
+        "tests",
+        "-p",
+        "tests_async",
+    )
 
 
 @nox.session(python=ALL_PYTHON)
@@ -196,6 +231,7 @@ def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".[aiohttp]")
+    session.install("requests==2.31.0")
     session.install("sphinx", "alabaster", "recommonmark", "sphinx-docstring-typing")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
@@ -219,16 +255,77 @@ def docfx(session):
     session.skip("This package does not have documentation in cloud.google.com")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def prerelease_deps(session):
-    """Run all tests with pre-release versions of dependencies installed
+@nox.session(python=PREVIEW_PYTHON_VERSION)
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def prerelease_deps(session, protobuf_implementation):
+    """
+    Run all tests with pre-release versions of dependencies installed
     rather than the standard non pre-release versions.
     Pre-release versions can be installed using
     `pip install --pre <package>`.
     """
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16013):
-    # Add prerelease tests
-    session.skip("Prerelease tests are not yet supported")
+
+    # Install all dependencies
+    session.install("-e", ".[testing,rsa]")
+    session.install("oauth2client")
+
+    # Install dependencies for the unit test environment
+    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    session.install(*unit_deps_all)
+
+    # Because we test minimum dependency versions on the minimum Python
+    # version, the first version we test with in the unit tests sessions has a
+    # constraints file containing all dependencies and extras.
+    with open(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt",
+        encoding="utf-8",
+    ) as constraints_file:
+        constraints_text = constraints_file.read()
+
+    # Ignore leading whitespace and comment lines.
+    constraints_deps = [
+        match.group(1)
+        for match in re.finditer(
+            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
+        )
+    ]
+
+    # Install dependencies specified in `testing/constraints-X.txt`.
+    session.install(*constraints_deps)
+
+    # Note: If a dependency is added to the `prerel_deps` list,
+    # the `core_dependencies_from_source` list in the `core_deps_from_source`
+    # nox session should also be updated.
+    prerel_deps = [
+        # Note: We use --no-deps below to prevent prerelease updates.
+        # However, aiohttp 3.10+ introduced aiohappyeyeballs as a strict requirement.
+        # We must manually inject it here so the aiohttp pre-release doesn't crash on import.
+        "aiohappyeyeballs",
+        "aiohttp",
+        "cryptography",
+        "grpcio",
+        "pyasn1-modules",
+        "pyjwt",
+        "requests",
+        "rsa",
+        "urllib3",
+    ]
+
+    for dep in prerel_deps:
+        session.install("--pre", "--no-deps", "--ignore-installed", dep)
+        print(f"Installed {dep}")
+
+    session.run(
+        "py.test",
+        "tests",
+        "tests_async",
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -236,6 +333,4 @@ def core_deps_from_source(session):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16013):
-    # Add prerelease tests
-    session.skip("Prerelease tests are not yet supported")
+    session.skip("Skipping: Not applicable for google-auth.")

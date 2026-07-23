@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ except AttributeError:  # pragma: NO COVER
 
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.iam.v1.resource_policy_member_pb2 as resource_policy_member_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
@@ -2129,6 +2130,262 @@ class SecretManagerServiceAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def enable_managed_rotation(
+        self,
+        request: Optional[Union[service.EnableManagedRotationRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        cloud_sql_single_user_credentials: Optional[
+            service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> resources.SecretVersion:
+        r"""Enables the managed rotation feature for a
+        [Secret][google.cloud.secretmanager.v1.Secret]. This method can
+        only be triggered once for a secret. In order to do further
+        rotations, RotateSecret should be used. This method will add a
+        secret version and update the password in Cloud SQL.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1
+
+            async def sample_enable_managed_rotation():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
+
+                # Initialize request argument(s)
+                cloud_sql_single_user_credentials = secretmanager_v1.CloudSQLSingleUserCredentials()
+                cloud_sql_single_user_credentials.instance_id = "instance_id_value"
+                cloud_sql_single_user_credentials.username = "username_value"
+
+                request = secretmanager_v1.EnableManagedRotationRequest(
+                    cloud_sql_single_user_credentials=cloud_sql_single_user_credentials,
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.enable_managed_rotation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.secretmanager_v1.types.EnableManagedRotationRequest, dict]]):
+                The request object. Request message for
+                [SecretManagerService.EnableManagedRotation][google.cloud.secretmanager.v1.SecretManagerService.EnableManagedRotation].
+            parent (:class:`str`):
+                Required. The resource name of the
+                [Secret][google.cloud.secretmanager.v1.Secret] to
+                associate with the
+                [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
+                in the format ``projects/*/secrets/*`` or
+                ``projects/*/locations/*/secrets/*``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            cloud_sql_single_user_credentials (:class:`google.cloud.secretmanager_v1.types.EnableManagedRotationRequest.CloudSQLSingleUserCredentials`):
+                Credentials required for Cloud SQL DB
+                for Single user Managed Rotation.
+
+                This corresponds to the ``cloud_sql_single_user_credentials`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.secretmanager_v1.types.SecretVersion:
+                A secret version resource in the
+                Secret Manager API.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, cloud_sql_single_user_credentials]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.EnableManagedRotationRequest):
+            request = service.EnableManagedRotationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if cloud_sql_single_user_credentials is not None:
+            request.cloud_sql_single_user_credentials = (
+                cloud_sql_single_user_credentials
+            )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.enable_managed_rotation
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def rotate_secret(
+        self,
+        request: Optional[Union[service.RotateSecretRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> resources.SecretVersion:
+        r"""Do a managed rotation for a
+        [Secret][google.cloud.secretmanager.v1.Secret]. This can only be
+        triggered after Managed rotation has been enabled. This method
+        will add a secret version and update the password in Cloud SQL.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import secretmanager_v1
+
+            async def sample_rotate_secret():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.RotateSecretRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.rotate_secret(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.secretmanager_v1.types.RotateSecretRequest, dict]]):
+                The request object. Request message for
+                [SecretManagerService.RotateSecret][google.cloud.secretmanager.v1.SecretManagerService.RotateSecret].
+            parent (:class:`str`):
+                Required. The resource name of the
+                [Secret][google.cloud.secretmanager.v1.Secret] to
+                associate with the
+                [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
+                in the format ``projects/*/secrets/*`` or
+                ``projects/*/locations/*/secrets/*``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.secretmanager_v1.types.SecretVersion:
+                A secret version resource in the
+                Secret Manager API.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.RotateSecretRequest):
+            request = service.RotateSecretRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.rotate_secret
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.

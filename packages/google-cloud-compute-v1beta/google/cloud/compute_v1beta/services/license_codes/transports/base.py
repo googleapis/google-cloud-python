@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,6 @@ class LicenseCodesTransport(abc.ABC):
     """Abstract transport class for LicenseCodes."""
 
     AUTH_SCOPES = (
-        "https://www.googleapis.com/auth/compute.readonly",
         "https://www.googleapis.com/auth/compute",
         "https://www.googleapis.com/auth/cloud-platform",
     )
@@ -161,6 +160,26 @@ class LicenseCodesTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.get_iam_policy: gapic_v1.method.wrap_method(
+                self.get_iam_policy,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: gapic_v1.method.wrap_method(
+                self.set_iam_policy,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
                 default_timeout=600.0,
@@ -183,6 +202,24 @@ class LicenseCodesTransport(abc.ABC):
     ) -> Callable[
         [compute.GetLicenseCodeRequest],
         Union[compute.LicenseCode, Awaitable[compute.LicenseCode]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [compute.GetIamPolicyLicenseCodeRequest],
+        Union[compute.Policy, Awaitable[compute.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [compute.SetIamPolicyLicenseCodeRequest],
+        Union[compute.Policy, Awaitable[compute.Policy]],
     ]:
         raise NotImplementedError()
 

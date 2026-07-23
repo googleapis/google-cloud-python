@@ -16,17 +16,14 @@
 
 import base64
 import hashlib
-import logging
 import os
 import re
+import stat
 import time
 from urllib.parse import quote, urlparse
+import warnings
 
-from google.auth import environment_vars
-from google.auth import exceptions
-
-
-_LOGGER = logging.getLogger(__name__)
+from google.auth import environment_vars, exceptions
 
 CRYPTOGRAPHY_NOT_FOUND_ERROR = (
     "The cryptography library is required for certificate-based authentication."
@@ -37,6 +34,8 @@ CRYPTOGRAPHY_NOT_FOUND_ERROR = (
 _AGENT_IDENTITY_SPIFFE_TRUST_DOMAIN_PATTERNS = [
     r"^agents\.global\.org-\d+\.system\.id\.goog$",
     r"^agents\.global\.proj-\d+\.system\.id\.goog$",
+    r"^agents-nonprod\.global\.org-\d+\.system\.id\.goog$",
+    r"^agents-nonprod\.global\.proj-\d+\.system\.id\.goog$",
 ]
 
 _WELL_KNOWN_CERT_PATH = "/var/run/secrets/workload-spiffe-credentials/certificates.pem"
@@ -58,65 +57,126 @@ _POLLING_INTERVALS = ([_FAST_POLL_INTERVAL] * _FAST_POLL_CYCLES) + (
 
 
 def _is_certificate_file_ready(path):
-    """Checks if a file exists and is not empty."""
-    return path and os.path.exists(path) and os.path.getsize(path) > 0
+    """Checks if a file exists, is a regular file, and is not empty."""
+    if not path:
+        return False
+    try:
+        # Check if the path points to a regular file and is not empty.
+        # stat.S_ISREG is used instead of os.path.isfile to avoid swallowing
+        # PermissionError exceptions, which the caller needs to propagate.
+        st = os.stat(path)
+        return stat.S_ISREG(st.st_mode) and st.st_size > 0
+    except PermissionError:
+        # Propagate PermissionError to let caller handle it (e.g., return early or fallback)
+        raise
+    except OSError:
+        return False
 
 
 def get_agent_identity_certificate_path():
-    """Gets the certificate path from the certificate config file.
+    """Gets the agent certificate path from the certificate config file.
 
     The path to the certificate config file is read from the
     GOOGLE_API_CERTIFICATE_CONFIG environment variable. This function
-    implements a retry mechanism to handle cases where the environment
+    can optionally trigger polling to handle cases where the environment
     variable is set before the files are available on the filesystem.
 
     Returns:
-        str: The path to the leaf certificate file.
+        Optional[str]: The path to the agent's certificate file, or None if unavailable.
 
     Raises:
         google.auth.exceptions.RefreshError: If the certificate config file
             or the certificate file cannot be found after retries.
     """
-    import json
-
     cert_config_path = os.environ.get(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG)
+
     if not cert_config_path:
         return None
 
-    has_logged_warning = False
+    # We trigger polling only if the config path points to the well-known directory.
+    # Cloud Run dynamically generates these files in this directory, and both the
+    # config file and the certificate file may experience a brief startup latency.
+    # For all other paths, we return early to avoid introducing unnecessary startup
+    # delays.
+    well_known_dir = os.path.dirname(_WELL_KNOWN_CERT_PATH)
+    try:
+        abs_cert_path = os.path.abspath(cert_config_path)
+        abs_well_known_dir = os.path.abspath(well_known_dir)
+        should_poll = (
+            os.path.commonpath([abs_well_known_dir, abs_cert_path])
+            == abs_well_known_dir
+        )
+    except ValueError:
+        should_poll = False
+
+    return _get_cert_path_with_optional_polling(cert_config_path, should_poll)
+
+
+def _get_cert_path_with_optional_polling(cert_config_path, should_poll):
+    """Gets the certificate path, optionally polling until it is ready.
+
+    Args:
+        cert_config_path (str): The path to the certificate configuration file.
+        should_poll (bool): If True, the function will poll for the file and
+            certificate to be ready. If False, it will check only once and
+            return early if they are not immediately available.
+
+    Returns:
+        str: The path to the certificate file, or None if unavailable.
+
+    Raises:
+        google.auth.exceptions.RefreshError: If the certificate config file
+            or the certificate file cannot be found after retries.
+    """
+    has_logged_config_warning = False
+    has_logged_cert_warning = False
 
     for interval in _POLLING_INTERVALS:
         try:
-            with open(cert_config_path, "r") as f:
-                cert_config = json.load(f)
-                cert_path = (
-                    cert_config.get("cert_configs", {})
-                    .get("workload", {})
-                    .get("cert_path")
-                )
-                if _is_certificate_file_ready(cert_path):
-                    return cert_path
-        except (IOError, ValueError, KeyError):
-            if not has_logged_warning:
-                _LOGGER.warning(
-                    "Certificate config file not found at %s (from %s environment "
-                    "variable). Retrying for up to %s seconds.",
-                    cert_config_path,
-                    environment_vars.GOOGLE_API_CERTIFICATE_CONFIG,
-                    _TOTAL_TIMEOUT,
-                )
-                has_logged_warning = True
-            pass
+            cert_path = _parse_cert_path_from_config(cert_config_path)
 
-        # As a fallback, check the well-known certificate path.
-        if _is_certificate_file_ready(_WELL_KNOWN_CERT_PATH):
-            return _WELL_KNOWN_CERT_PATH
+            if cert_path is None:
+                return None
 
-        # A sleep is required in two cases:
-        # 1. The config file is not found (the except block).
-        # 2. The config file is found, but the certificate is not yet available.
-        # In both cases, we need to poll, so we sleep on every iteration
-        # that doesn't return a certificate.
+            if _is_certificate_file_ready(cert_path):
+                return cert_path
+
+            # The config was parsed, but the cert file is not ready yet
+            if not should_poll:
+                # If polling is disabled, return early.
+                return None
+
+            if not has_logged_cert_warning:
+                warnings.warn(
+                    f"Certificate file not ready at {cert_path}. Retrying until startup timeout (up to {_TOTAL_TIMEOUT} seconds total)..."
+                )
+                has_logged_cert_warning = True
+
+        except PermissionError as e:
+            warnings.warn(
+                f"Permission denied when accessing certificate config or certificate file: {e}. "
+                "Token binding protection cannot be enabled. Falling back to unbound tokens."
+            )
+            return None
+        except (IOError, ValueError, KeyError) as e:
+            if os.path.exists(cert_config_path):
+                # If the file exists but has invalid JSON or is unreadable,
+                # we assume it is in its final format and return early (returning None).
+                return None
+
+            if not should_poll:
+                # If polling is disabled, return early if the file doesn't exist.
+                return None
+
+            if not has_logged_config_warning:
+                warnings.warn(
+                    f"Certificate config file not found or incomplete: {e} (from "
+                    f"{environment_vars.GOOGLE_API_CERTIFICATE_CONFIG} environment variable). "
+                    f"Retrying until startup timeout (up to {_TOTAL_TIMEOUT} seconds total)..."
+                )
+                has_logged_config_warning = True
+
+        # Sleep before the next polling attempt.
         time.sleep(interval)
 
     raise exceptions.RefreshError(
@@ -125,6 +185,40 @@ def get_agent_identity_certificate_path():
         f"{environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES} to false "
         "to fall back to unbound tokens."
     )
+
+
+def _parse_cert_path_from_config(cert_config_path):
+    """Reads the cert config file and returns the cert_path.
+
+    Args:
+        cert_config_path (str): The path to the certificate configuration file.
+
+    Returns:
+        Optional[str]: The path to the certificate file, or None if not found
+            in the config.
+
+    Raises:
+        IOError: If the certificate config file cannot be read.
+        ValueError: If the certificate config file contains invalid JSON.
+        KeyError: If the certificate config file does not contain the
+            expected structure.
+    """
+    import json
+
+    with open(cert_config_path, "r", encoding="utf-8") as f:
+        cert_config = json.load(f)
+
+    cert_configs = (
+        cert_config.get("cert_configs") if isinstance(cert_config, dict) else None
+    )
+    workload_config = (
+        cert_configs.get("workload") if isinstance(cert_configs, dict) else None
+    )
+
+    if not isinstance(workload_config, dict) or "cert_path" not in workload_config:
+        return None
+
+    return workload_config["cert_path"]
 
 
 def get_and_parse_agent_identity_certificate():
@@ -148,12 +242,26 @@ def get_and_parse_agent_identity_certificate():
     if is_opted_out:
         return None
 
+    # Respect explicit opt-out of mTLS / client certs
+    from google.auth.transport import _mtls_helper
+
+    env_override = _mtls_helper._check_use_client_cert_env()
+    if env_override is False:
+        return None
+
     cert_path = get_agent_identity_certificate_path()
     if not cert_path:
         return None
 
-    with open(cert_path, "rb") as cert_file:
-        cert_bytes = cert_file.read()
+    try:
+        with open(cert_path, "rb") as cert_file:
+            cert_bytes = cert_file.read()
+    except PermissionError as e:
+        warnings.warn(
+            f"Failed to read agent identity certificate file at {cert_path}: {e}. "
+            "Token binding protection cannot be enabled. Falling back to unbound tokens."
+        )
+        return None
 
     return parse_certificate(cert_bytes)
 
@@ -259,7 +367,17 @@ def should_request_bound_token(cert):
         ).lower()
         == "true"
     )
-    return is_agent_cert and is_opted_in
+    if not (is_agent_cert and is_opted_in):
+        return False
+
+    # Respect explicit opt-out of mTLS / client certs
+    from google.auth.transport import _mtls_helper
+
+    env_override = _mtls_helper._check_use_client_cert_env()
+    if env_override is False:
+        return False
+
+    return True
 
 
 def get_cached_cert_fingerprint(cached_cert):

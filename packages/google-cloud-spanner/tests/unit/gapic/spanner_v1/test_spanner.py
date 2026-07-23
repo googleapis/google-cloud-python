@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -124,6 +119,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1275,8 +1285,8 @@ def test_spanner_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.CreateSessionRequest,
-        dict,
+        spanner.CreateSessionRequest(),
+        {},
     ],
 )
 def test_create_session(request_type, transport: str = "grpc"):
@@ -1287,7 +1297,7 @@ def test_create_session(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_session), "__call__") as call:
@@ -1335,9 +1345,10 @@ def test_create_session_non_empty_request_with_auto_populated_field():
         client.create_session(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.CreateSessionRequest(
+        request_msg = spanner.CreateSessionRequest(
             database="database_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_session_use_cached_wrapped_rpc():
@@ -1418,9 +1429,14 @@ async def test_create_session_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_session_async(
-    transport: str = "grpc_asyncio", request_type=spanner.CreateSessionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.CreateSessionRequest(),
+        {},
+    ],
+)
+async def test_create_session_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1428,7 +1444,7 @@ async def test_create_session_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_session), "__call__") as call:
@@ -1453,11 +1469,6 @@ async def test_create_session_async(
     assert response.name == "name_value"
     assert response.creator_role == "creator_role_value"
     assert response.multiplexed is True
-
-
-@pytest.mark.asyncio
-async def test_create_session_async_from_dict():
-    await test_create_session_async(request_type=dict)
 
 
 def test_create_session_field_headers():
@@ -1602,8 +1613,8 @@ async def test_create_session_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.BatchCreateSessionsRequest,
-        dict,
+        spanner.BatchCreateSessionsRequest(),
+        {},
     ],
 )
 def test_batch_create_sessions(request_type, transport: str = "grpc"):
@@ -1614,7 +1625,7 @@ def test_batch_create_sessions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1659,9 +1670,10 @@ def test_batch_create_sessions_non_empty_request_with_auto_populated_field():
         client.batch_create_sessions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.BatchCreateSessionsRequest(
+        request_msg = spanner.BatchCreateSessionsRequest(
             database="database_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_create_sessions_use_cached_wrapped_rpc():
@@ -1747,8 +1759,15 @@ async def test_batch_create_sessions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.BatchCreateSessionsRequest(),
+        {},
+    ],
+)
 async def test_batch_create_sessions_async(
-    transport: str = "grpc_asyncio", request_type=spanner.BatchCreateSessionsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1757,7 +1776,7 @@ async def test_batch_create_sessions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1777,11 +1796,6 @@ async def test_batch_create_sessions_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner.BatchCreateSessionsResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_create_sessions_async_from_dict():
-    await test_batch_create_sessions_async(request_type=dict)
 
 
 def test_batch_create_sessions_field_headers():
@@ -1948,8 +1962,8 @@ async def test_batch_create_sessions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.GetSessionRequest,
-        dict,
+        spanner.GetSessionRequest(),
+        {},
     ],
 )
 def test_get_session(request_type, transport: str = "grpc"):
@@ -1960,7 +1974,7 @@ def test_get_session(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_session), "__call__") as call:
@@ -2008,9 +2022,10 @@ def test_get_session_non_empty_request_with_auto_populated_field():
         client.get_session(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.GetSessionRequest(
+        request_msg = spanner.GetSessionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_session_use_cached_wrapped_rpc():
@@ -2091,9 +2106,14 @@ async def test_get_session_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_session_async(
-    transport: str = "grpc_asyncio", request_type=spanner.GetSessionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.GetSessionRequest(),
+        {},
+    ],
+)
+async def test_get_session_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2101,7 +2121,7 @@ async def test_get_session_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_session), "__call__") as call:
@@ -2126,11 +2146,6 @@ async def test_get_session_async(
     assert response.name == "name_value"
     assert response.creator_role == "creator_role_value"
     assert response.multiplexed is True
-
-
-@pytest.mark.asyncio
-async def test_get_session_async_from_dict():
-    await test_get_session_async(request_type=dict)
 
 
 def test_get_session_field_headers():
@@ -2275,8 +2290,8 @@ async def test_get_session_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.ListSessionsRequest,
-        dict,
+        spanner.ListSessionsRequest(),
+        {},
     ],
 )
 def test_list_sessions(request_type, transport: str = "grpc"):
@@ -2287,7 +2302,7 @@ def test_list_sessions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
@@ -2333,11 +2348,12 @@ def test_list_sessions_non_empty_request_with_auto_populated_field():
         client.list_sessions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ListSessionsRequest(
+        request_msg = spanner.ListSessionsRequest(
             database="database_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_sessions_use_cached_wrapped_rpc():
@@ -2418,9 +2434,14 @@ async def test_list_sessions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_sessions_async(
-    transport: str = "grpc_asyncio", request_type=spanner.ListSessionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ListSessionsRequest(),
+        {},
+    ],
+)
+async def test_list_sessions_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2428,7 +2449,7 @@ async def test_list_sessions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
@@ -2449,11 +2470,6 @@ async def test_list_sessions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSessionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_sessions_async_from_dict():
-    await test_list_sessions_async(request_type=dict)
 
 
 def test_list_sessions_field_headers():
@@ -2648,6 +2664,9 @@ def test_list_sessions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, spanner.Session) for i in results)
@@ -2736,6 +2755,8 @@ async def test_list_sessions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2783,11 +2804,7 @@ async def test_list_sessions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_sessions(request={})
-        ).pages:
+        async for page_ in (await client.list_sessions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2796,8 +2813,8 @@ async def test_list_sessions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.DeleteSessionRequest,
-        dict,
+        spanner.DeleteSessionRequest(),
+        {},
     ],
 )
 def test_delete_session(request_type, transport: str = "grpc"):
@@ -2808,7 +2825,7 @@ def test_delete_session(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
@@ -2849,9 +2866,10 @@ def test_delete_session_non_empty_request_with_auto_populated_field():
         client.delete_session(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.DeleteSessionRequest(
+        request_msg = spanner.DeleteSessionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_session_use_cached_wrapped_rpc():
@@ -2932,9 +2950,14 @@ async def test_delete_session_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_session_async(
-    transport: str = "grpc_asyncio", request_type=spanner.DeleteSessionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.DeleteSessionRequest(),
+        {},
+    ],
+)
+async def test_delete_session_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2942,7 +2965,7 @@ async def test_delete_session_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
@@ -2958,11 +2981,6 @@ async def test_delete_session_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_session_async_from_dict():
-    await test_delete_session_async(request_type=dict)
 
 
 def test_delete_session_field_headers():
@@ -3107,8 +3125,8 @@ async def test_delete_session_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.ExecuteSqlRequest,
-        dict,
+        spanner.ExecuteSqlRequest(),
+        {},
     ],
 )
 def test_execute_sql(request_type, transport: str = "grpc"):
@@ -3119,7 +3137,7 @@ def test_execute_sql(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.execute_sql), "__call__") as call:
@@ -3161,10 +3179,11 @@ def test_execute_sql_non_empty_request_with_auto_populated_field():
         client.execute_sql(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ExecuteSqlRequest(
+        request_msg = spanner.ExecuteSqlRequest(
             session="session_value",
             sql="sql_value",
         )
+        assert args[0] == request_msg
 
 
 def test_execute_sql_use_cached_wrapped_rpc():
@@ -3245,9 +3264,14 @@ async def test_execute_sql_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_execute_sql_async(
-    transport: str = "grpc_asyncio", request_type=spanner.ExecuteSqlRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ExecuteSqlRequest(),
+        {},
+    ],
+)
+async def test_execute_sql_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3255,7 +3279,7 @@ async def test_execute_sql_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.execute_sql), "__call__") as call:
@@ -3273,11 +3297,6 @@ async def test_execute_sql_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, result_set.ResultSet)
-
-
-@pytest.mark.asyncio
-async def test_execute_sql_async_from_dict():
-    await test_execute_sql_async(request_type=dict)
 
 
 def test_execute_sql_field_headers():
@@ -3344,8 +3363,8 @@ async def test_execute_sql_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.ExecuteSqlRequest,
-        dict,
+        spanner.ExecuteSqlRequest(),
+        {},
     ],
 )
 def test_execute_streaming_sql(request_type, transport: str = "grpc"):
@@ -3356,7 +3375,7 @@ def test_execute_streaming_sql(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3403,10 +3422,11 @@ def test_execute_streaming_sql_non_empty_request_with_auto_populated_field():
         client.execute_streaming_sql(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ExecuteSqlRequest(
+        request_msg = spanner.ExecuteSqlRequest(
             session="session_value",
             sql="sql_value",
         )
+        assert args[0] == request_msg
 
 
 def test_execute_streaming_sql_use_cached_wrapped_rpc():
@@ -3492,8 +3512,15 @@ async def test_execute_streaming_sql_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ExecuteSqlRequest(),
+        {},
+    ],
+)
 async def test_execute_streaming_sql_async(
-    transport: str = "grpc_asyncio", request_type=spanner.ExecuteSqlRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3502,7 +3529,7 @@ async def test_execute_streaming_sql_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3524,11 +3551,6 @@ async def test_execute_streaming_sql_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, result_set.PartialResultSet)
-
-
-@pytest.mark.asyncio
-async def test_execute_streaming_sql_async_from_dict():
-    await test_execute_streaming_sql_async(request_type=dict)
 
 
 def test_execute_streaming_sql_field_headers():
@@ -3600,8 +3622,8 @@ async def test_execute_streaming_sql_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.ExecuteBatchDmlRequest,
-        dict,
+        spanner.ExecuteBatchDmlRequest(),
+        {},
     ],
 )
 def test_execute_batch_dml(request_type, transport: str = "grpc"):
@@ -3612,7 +3634,7 @@ def test_execute_batch_dml(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3657,9 +3679,10 @@ def test_execute_batch_dml_non_empty_request_with_auto_populated_field():
         client.execute_batch_dml(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ExecuteBatchDmlRequest(
+        request_msg = spanner.ExecuteBatchDmlRequest(
             session="session_value",
         )
+        assert args[0] == request_msg
 
 
 def test_execute_batch_dml_use_cached_wrapped_rpc():
@@ -3742,9 +3765,14 @@ async def test_execute_batch_dml_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_execute_batch_dml_async(
-    transport: str = "grpc_asyncio", request_type=spanner.ExecuteBatchDmlRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ExecuteBatchDmlRequest(),
+        {},
+    ],
+)
+async def test_execute_batch_dml_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3752,7 +3780,7 @@ async def test_execute_batch_dml_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3772,11 +3800,6 @@ async def test_execute_batch_dml_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner.ExecuteBatchDmlResponse)
-
-
-@pytest.mark.asyncio
-async def test_execute_batch_dml_async_from_dict():
-    await test_execute_batch_dml_async(request_type=dict)
 
 
 def test_execute_batch_dml_field_headers():
@@ -3847,8 +3870,8 @@ async def test_execute_batch_dml_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.ReadRequest,
-        dict,
+        spanner.ReadRequest(),
+        {},
     ],
 )
 def test_read(request_type, transport: str = "grpc"):
@@ -3859,7 +3882,7 @@ def test_read(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read), "__call__") as call:
@@ -3902,11 +3925,12 @@ def test_read_non_empty_request_with_auto_populated_field():
         client.read(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ReadRequest(
+        request_msg = spanner.ReadRequest(
             session="session_value",
             table="table_value",
             index="index_value",
         )
+        assert args[0] == request_msg
 
 
 def test_read_use_cached_wrapped_rpc():
@@ -3984,9 +4008,14 @@ async def test_read_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"
 
 
 @pytest.mark.asyncio
-async def test_read_async(
-    transport: str = "grpc_asyncio", request_type=spanner.ReadRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ReadRequest(),
+        {},
+    ],
+)
+async def test_read_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3994,7 +4023,7 @@ async def test_read_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read), "__call__") as call:
@@ -4012,11 +4041,6 @@ async def test_read_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, result_set.ResultSet)
-
-
-@pytest.mark.asyncio
-async def test_read_async_from_dict():
-    await test_read_async(request_type=dict)
 
 
 def test_read_field_headers():
@@ -4083,8 +4107,8 @@ async def test_read_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.ReadRequest,
-        dict,
+        spanner.ReadRequest(),
+        {},
     ],
 )
 def test_streaming_read(request_type, transport: str = "grpc"):
@@ -4095,7 +4119,7 @@ def test_streaming_read(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.streaming_read), "__call__") as call:
@@ -4139,11 +4163,12 @@ def test_streaming_read_non_empty_request_with_auto_populated_field():
         client.streaming_read(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ReadRequest(
+        request_msg = spanner.ReadRequest(
             session="session_value",
             table="table_value",
             index="index_value",
         )
+        assert args[0] == request_msg
 
 
 def test_streaming_read_use_cached_wrapped_rpc():
@@ -4224,9 +4249,14 @@ async def test_streaming_read_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_streaming_read_async(
-    transport: str = "grpc_asyncio", request_type=spanner.ReadRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ReadRequest(),
+        {},
+    ],
+)
+async def test_streaming_read_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4234,7 +4264,7 @@ async def test_streaming_read_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.streaming_read), "__call__") as call:
@@ -4254,11 +4284,6 @@ async def test_streaming_read_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, result_set.PartialResultSet)
-
-
-@pytest.mark.asyncio
-async def test_streaming_read_async_from_dict():
-    await test_streaming_read_async(request_type=dict)
 
 
 def test_streaming_read_field_headers():
@@ -4326,8 +4351,8 @@ async def test_streaming_read_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.BeginTransactionRequest,
-        dict,
+        spanner.BeginTransactionRequest(),
+        {},
     ],
 )
 def test_begin_transaction(request_type, transport: str = "grpc"):
@@ -4338,7 +4363,7 @@ def test_begin_transaction(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4386,9 +4411,10 @@ def test_begin_transaction_non_empty_request_with_auto_populated_field():
         client.begin_transaction(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.BeginTransactionRequest(
+        request_msg = spanner.BeginTransactionRequest(
             session="session_value",
         )
+        assert args[0] == request_msg
 
 
 def test_begin_transaction_use_cached_wrapped_rpc():
@@ -4471,9 +4497,14 @@ async def test_begin_transaction_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_begin_transaction_async(
-    transport: str = "grpc_asyncio", request_type=spanner.BeginTransactionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.BeginTransactionRequest(),
+        {},
+    ],
+)
+async def test_begin_transaction_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4481,7 +4512,7 @@ async def test_begin_transaction_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4504,11 +4535,6 @@ async def test_begin_transaction_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, transaction.Transaction)
     assert response.id == b"id_blob"
-
-
-@pytest.mark.asyncio
-async def test_begin_transaction_async_from_dict():
-    await test_begin_transaction_async(request_type=dict)
 
 
 def test_begin_transaction_field_headers():
@@ -4699,8 +4725,8 @@ async def test_begin_transaction_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.CommitRequest,
-        dict,
+        spanner.CommitRequest(),
+        {},
     ],
 )
 def test_commit(request_type, transport: str = "grpc"):
@@ -4711,7 +4737,7 @@ def test_commit(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.commit), "__call__") as call:
@@ -4763,9 +4789,10 @@ def test_commit_non_empty_request_with_auto_populated_field():
         client.commit(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.CommitRequest(
+        request_msg = spanner.CommitRequest(
             session="session_value",
         )
+        assert args[0] == request_msg
 
 
 def test_commit_use_cached_wrapped_rpc():
@@ -4844,9 +4871,14 @@ async def test_commit_async_use_cached_wrapped_rpc(transport: str = "grpc_asynci
 
 
 @pytest.mark.asyncio
-async def test_commit_async(
-    transport: str = "grpc_asyncio", request_type=spanner.CommitRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.CommitRequest(),
+        {},
+    ],
+)
+async def test_commit_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4854,7 +4886,7 @@ async def test_commit_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.commit), "__call__") as call:
@@ -4883,11 +4915,6 @@ async def test_commit_async(
         response.read_lock_mode
         == transaction.TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC
     )
-
-
-@pytest.mark.asyncio
-async def test_commit_async_from_dict():
-    await test_commit_async(request_type=dict)
 
 
 def test_commit_field_headers():
@@ -5092,8 +5119,8 @@ async def test_commit_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.RollbackRequest,
-        dict,
+        spanner.RollbackRequest(),
+        {},
     ],
 )
 def test_rollback(request_type, transport: str = "grpc"):
@@ -5104,7 +5131,7 @@ def test_rollback(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rollback), "__call__") as call:
@@ -5145,9 +5172,10 @@ def test_rollback_non_empty_request_with_auto_populated_field():
         client.rollback(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.RollbackRequest(
+        request_msg = spanner.RollbackRequest(
             session="session_value",
         )
+        assert args[0] == request_msg
 
 
 def test_rollback_use_cached_wrapped_rpc():
@@ -5226,9 +5254,14 @@ async def test_rollback_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_rollback_async(
-    transport: str = "grpc_asyncio", request_type=spanner.RollbackRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.RollbackRequest(),
+        {},
+    ],
+)
+async def test_rollback_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5236,7 +5269,7 @@ async def test_rollback_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rollback), "__call__") as call:
@@ -5252,11 +5285,6 @@ async def test_rollback_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_rollback_async_from_dict():
-    await test_rollback_async(request_type=dict)
 
 
 def test_rollback_field_headers():
@@ -5411,8 +5439,8 @@ async def test_rollback_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.PartitionQueryRequest,
-        dict,
+        spanner.PartitionQueryRequest(),
+        {},
     ],
 )
 def test_partition_query(request_type, transport: str = "grpc"):
@@ -5423,7 +5451,7 @@ def test_partition_query(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.partition_query), "__call__") as call:
@@ -5465,10 +5493,11 @@ def test_partition_query_non_empty_request_with_auto_populated_field():
         client.partition_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.PartitionQueryRequest(
+        request_msg = spanner.PartitionQueryRequest(
             session="session_value",
             sql="sql_value",
         )
+        assert args[0] == request_msg
 
 
 def test_partition_query_use_cached_wrapped_rpc():
@@ -5549,9 +5578,14 @@ async def test_partition_query_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_partition_query_async(
-    transport: str = "grpc_asyncio", request_type=spanner.PartitionQueryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.PartitionQueryRequest(),
+        {},
+    ],
+)
+async def test_partition_query_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5559,7 +5593,7 @@ async def test_partition_query_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.partition_query), "__call__") as call:
@@ -5577,11 +5611,6 @@ async def test_partition_query_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner.PartitionResponse)
-
-
-@pytest.mark.asyncio
-async def test_partition_query_async_from_dict():
-    await test_partition_query_async(request_type=dict)
 
 
 def test_partition_query_field_headers():
@@ -5648,8 +5677,8 @@ async def test_partition_query_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.PartitionReadRequest,
-        dict,
+        spanner.PartitionReadRequest(),
+        {},
     ],
 )
 def test_partition_read(request_type, transport: str = "grpc"):
@@ -5660,7 +5689,7 @@ def test_partition_read(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.partition_read), "__call__") as call:
@@ -5703,11 +5732,12 @@ def test_partition_read_non_empty_request_with_auto_populated_field():
         client.partition_read(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.PartitionReadRequest(
+        request_msg = spanner.PartitionReadRequest(
             session="session_value",
             table="table_value",
             index="index_value",
         )
+        assert args[0] == request_msg
 
 
 def test_partition_read_use_cached_wrapped_rpc():
@@ -5788,9 +5818,14 @@ async def test_partition_read_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_partition_read_async(
-    transport: str = "grpc_asyncio", request_type=spanner.PartitionReadRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.PartitionReadRequest(),
+        {},
+    ],
+)
+async def test_partition_read_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5798,7 +5833,7 @@ async def test_partition_read_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.partition_read), "__call__") as call:
@@ -5816,11 +5851,6 @@ async def test_partition_read_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner.PartitionResponse)
-
-
-@pytest.mark.asyncio
-async def test_partition_read_async_from_dict():
-    await test_partition_read_async(request_type=dict)
 
 
 def test_partition_read_field_headers():
@@ -5887,8 +5917,8 @@ async def test_partition_read_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.BatchWriteRequest,
-        dict,
+        spanner.BatchWriteRequest(),
+        {},
     ],
 )
 def test_batch_write(request_type, transport: str = "grpc"):
@@ -5899,7 +5929,7 @@ def test_batch_write(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.batch_write), "__call__") as call:
@@ -5941,9 +5971,10 @@ def test_batch_write_non_empty_request_with_auto_populated_field():
         client.batch_write(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.BatchWriteRequest(
+        request_msg = spanner.BatchWriteRequest(
             session="session_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_write_use_cached_wrapped_rpc():
@@ -6024,9 +6055,14 @@ async def test_batch_write_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_write_async(
-    transport: str = "grpc_asyncio", request_type=spanner.BatchWriteRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.BatchWriteRequest(),
+        {},
+    ],
+)
+async def test_batch_write_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6034,7 +6070,7 @@ async def test_batch_write_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.batch_write), "__call__") as call:
@@ -6054,11 +6090,6 @@ async def test_batch_write_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, spanner.BatchWriteResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_write_async_from_dict():
-    await test_batch_write_async(request_type=dict)
 
 
 def test_batch_write_field_headers():
@@ -6264,8 +6295,8 @@ async def test_batch_write_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner.FetchCacheUpdateRequest,
-        dict,
+        spanner.FetchCacheUpdateRequest(),
+        {},
     ],
 )
 def test_fetch_cache_update(request_type, transport: str = "grpc"):
@@ -6276,7 +6307,7 @@ def test_fetch_cache_update(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6322,9 +6353,10 @@ def test_fetch_cache_update_non_empty_request_with_auto_populated_field():
         client.fetch_cache_update(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.FetchCacheUpdateRequest(
+        request_msg = spanner.FetchCacheUpdateRequest(
             database="database_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_cache_update_use_cached_wrapped_rpc():
@@ -6409,9 +6441,14 @@ async def test_fetch_cache_update_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_fetch_cache_update_async(
-    transport: str = "grpc_asyncio", request_type=spanner.FetchCacheUpdateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.FetchCacheUpdateRequest(),
+        {},
+    ],
+)
+async def test_fetch_cache_update_async(request_type, transport: str = "grpc_asyncio"):
     client = SpannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6419,7 +6456,7 @@ async def test_fetch_cache_update_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6439,11 +6476,6 @@ async def test_fetch_cache_update_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, location.CacheUpdate)
-
-
-@pytest.mark.asyncio
-async def test_fetch_cache_update_async_from_dict():
-    await test_fetch_cache_update_async(request_type=dict)
 
 
 def test_fetch_cache_update_field_headers():
@@ -6701,7 +6733,7 @@ def test_create_session_rest_required_fields(request_type=spanner.CreateSessionR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_session_rest_unset_required_fields():
@@ -6899,7 +6931,7 @@ def test_batch_create_sessions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_create_sessions_rest_unset_required_fields():
@@ -7087,7 +7119,7 @@ def test_get_session_rest_required_fields(request_type=spanner.GetSessionRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_session_rest_unset_required_fields():
@@ -7273,7 +7305,7 @@ def test_list_sessions_rest_required_fields(request_type=spanner.ListSessionsReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_sessions_rest_unset_required_fields():
@@ -7408,6 +7440,9 @@ def test_list_sessions_rest_pager(transport: str = "rest"):
 
         pager = client.list_sessions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, spanner.Session) for i in results)
@@ -7520,7 +7555,7 @@ def test_delete_session_rest_required_fields(request_type=spanner.DeleteSessionR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_session_rest_unset_required_fields():
@@ -7701,7 +7736,7 @@ def test_execute_sql_rest_required_fields(request_type=spanner.ExecuteSqlRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_execute_sql_rest_unset_required_fields():
@@ -7842,7 +7877,7 @@ def test_execute_streaming_sql_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_execute_streaming_sql_rest_unset_required_fields():
@@ -7977,7 +8012,7 @@ def test_execute_batch_dml_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_execute_batch_dml_rest_unset_required_fields():
@@ -8114,7 +8149,7 @@ def test_read_rest_required_fields(request_type=spanner.ReadRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_read_rest_unset_required_fields():
@@ -8254,7 +8289,7 @@ def test_streaming_read_rest_required_fields(request_type=spanner.ReadRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_streaming_read_rest_unset_required_fields():
@@ -8387,7 +8422,7 @@ def test_begin_transaction_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_begin_transaction_rest_unset_required_fields():
@@ -8584,7 +8619,7 @@ def test_commit_rest_required_fields(request_type=spanner.CommitRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_commit_rest_unset_required_fields():
@@ -8776,7 +8811,7 @@ def test_rollback_rest_required_fields(request_type=spanner.RollbackRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_rollback_rest_unset_required_fields():
@@ -8969,7 +9004,7 @@ def test_partition_query_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_partition_query_rest_unset_required_fields():
@@ -9100,7 +9135,7 @@ def test_partition_read_rest_required_fields(request_type=spanner.PartitionReadR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_partition_read_rest_unset_required_fields():
@@ -9231,7 +9266,7 @@ def test_batch_write_rest_required_fields(request_type=spanner.BatchWriteRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_write_rest_unset_required_fields():
@@ -9448,7 +9483,7 @@ def test_fetch_cache_update_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_cache_update_rest_unset_required_fields():
@@ -9646,7 +9681,6 @@ def test_create_session_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.CreateSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9669,7 +9703,6 @@ def test_batch_create_sessions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.BatchCreateSessionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9690,7 +9723,6 @@ def test_get_session_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.GetSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9711,7 +9743,6 @@ def test_list_sessions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ListSessionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9732,7 +9763,6 @@ def test_delete_session_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.DeleteSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9753,7 +9783,6 @@ def test_execute_sql_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ExecuteSqlRequest()
-
         assert args[0] == request_msg
 
 
@@ -9776,7 +9805,6 @@ def test_execute_streaming_sql_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ExecuteSqlRequest()
-
         assert args[0] == request_msg
 
 
@@ -9799,7 +9827,6 @@ def test_execute_batch_dml_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ExecuteBatchDmlRequest()
-
         assert args[0] == request_msg
 
 
@@ -9820,7 +9847,6 @@ def test_read_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ReadRequest()
-
         assert args[0] == request_msg
 
 
@@ -9841,7 +9867,6 @@ def test_streaming_read_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ReadRequest()
-
         assert args[0] == request_msg
 
 
@@ -9864,7 +9889,6 @@ def test_begin_transaction_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.BeginTransactionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9885,7 +9909,6 @@ def test_commit_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.CommitRequest()
-
         assert args[0] == request_msg
 
 
@@ -9906,7 +9929,6 @@ def test_rollback_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.RollbackRequest()
-
         assert args[0] == request_msg
 
 
@@ -9927,7 +9949,6 @@ def test_partition_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.PartitionQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -9948,7 +9969,6 @@ def test_partition_read_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.PartitionReadRequest()
-
         assert args[0] == request_msg
 
 
@@ -9969,7 +9989,6 @@ def test_batch_write_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.BatchWriteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9992,7 +10011,6 @@ def test_fetch_cache_update_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.FetchCacheUpdateRequest()
-
         assert args[0] == request_msg
 
 
@@ -10035,7 +10053,6 @@ async def test_create_session_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.CreateSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10062,7 +10079,6 @@ async def test_batch_create_sessions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.BatchCreateSessionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10091,7 +10107,6 @@ async def test_get_session_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.GetSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10118,7 +10133,6 @@ async def test_list_sessions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ListSessionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10141,7 +10155,6 @@ async def test_delete_session_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.DeleteSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10166,7 +10179,6 @@ async def test_execute_sql_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ExecuteSqlRequest()
-
         assert args[0] == request_msg
 
 
@@ -10194,7 +10206,6 @@ async def test_execute_streaming_sql_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ExecuteSqlRequest()
-
         assert args[0] == request_msg
 
 
@@ -10221,7 +10232,6 @@ async def test_execute_batch_dml_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ExecuteBatchDmlRequest()
-
         assert args[0] == request_msg
 
 
@@ -10246,7 +10256,6 @@ async def test_read_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ReadRequest()
-
         assert args[0] == request_msg
 
 
@@ -10272,7 +10281,6 @@ async def test_streaming_read_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ReadRequest()
-
         assert args[0] == request_msg
 
 
@@ -10301,7 +10309,6 @@ async def test_begin_transaction_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.BeginTransactionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10329,7 +10336,6 @@ async def test_commit_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.CommitRequest()
-
         assert args[0] == request_msg
 
 
@@ -10352,7 +10358,6 @@ async def test_rollback_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.RollbackRequest()
-
         assert args[0] == request_msg
 
 
@@ -10377,7 +10382,6 @@ async def test_partition_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.PartitionQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10402,7 +10406,6 @@ async def test_partition_read_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.PartitionReadRequest()
-
         assert args[0] == request_msg
 
 
@@ -10428,7 +10431,6 @@ async def test_batch_write_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.BatchWriteRequest()
-
         assert args[0] == request_msg
 
 
@@ -10454,7 +10456,6 @@ async def test_fetch_cache_update_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.FetchCacheUpdateRequest()
-
         assert args[0] == request_msg
 
 
@@ -12645,7 +12646,6 @@ def test_create_session_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.CreateSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12667,7 +12667,6 @@ def test_batch_create_sessions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.BatchCreateSessionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12687,7 +12686,6 @@ def test_get_session_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.GetSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12707,7 +12705,6 @@ def test_list_sessions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ListSessionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12727,7 +12724,6 @@ def test_delete_session_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.DeleteSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12747,7 +12743,6 @@ def test_execute_sql_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ExecuteSqlRequest()
-
         assert args[0] == request_msg
 
 
@@ -12769,7 +12764,6 @@ def test_execute_streaming_sql_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ExecuteSqlRequest()
-
         assert args[0] == request_msg
 
 
@@ -12791,7 +12785,6 @@ def test_execute_batch_dml_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ExecuteBatchDmlRequest()
-
         assert args[0] == request_msg
 
 
@@ -12811,7 +12804,6 @@ def test_read_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ReadRequest()
-
         assert args[0] == request_msg
 
 
@@ -12831,7 +12823,6 @@ def test_streaming_read_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.ReadRequest()
-
         assert args[0] == request_msg
 
 
@@ -12853,7 +12844,6 @@ def test_begin_transaction_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.BeginTransactionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12873,7 +12863,6 @@ def test_commit_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.CommitRequest()
-
         assert args[0] == request_msg
 
 
@@ -12893,7 +12882,6 @@ def test_rollback_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.RollbackRequest()
-
         assert args[0] == request_msg
 
 
@@ -12913,7 +12901,6 @@ def test_partition_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.PartitionQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -12933,7 +12920,6 @@ def test_partition_read_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.PartitionReadRequest()
-
         assert args[0] == request_msg
 
 
@@ -12953,7 +12939,6 @@ def test_batch_write_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.BatchWriteRequest()
-
         assert args[0] == request_msg
 
 
@@ -12975,7 +12960,6 @@ def test_fetch_cache_update_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner.FetchCacheUpdateRequest()
-
         assert args[0] == request_msg
 
 

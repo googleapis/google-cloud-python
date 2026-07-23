@@ -43,7 +43,7 @@ def convert_from_bq_json(type_, arg):
     import base64
     import collections
 
-    converters = collections.defaultdict(lambda: (lambda value: value))  # type: ignore
+    converters = collections.defaultdict(lambda: lambda value: value)  # type: ignore
     converters["BYTES"] = base64.b64decode
     converter = converters[type_]
     return converter(arg) if arg is not None else None
@@ -53,7 +53,7 @@ def convert_to_bq_json(type_, arg):
     import base64
     import collections
 
-    converters = collections.defaultdict(lambda: (lambda value: value))  # type: ignore
+    converters = collections.defaultdict(lambda: lambda value: value)  # type: ignore
     converters["BYTES"] = lambda value: base64.b64encode(value).decode("utf-8")
     converter = converters[type_]
     return converter(arg) if arg is not None else None
@@ -364,6 +364,14 @@ def generate_managed_function_code(
         )
 
     udf_code_block = []
+    if code_def.package_requirements:
+        # Include package requirements as comments to help force a new
+        # BigQuery UDF definition when only package requirements change.
+        packages_comment = "# Packages: " + ", ".join(
+            sorted(code_def.package_requirements)
+        )
+        udf_code_block.append(packages_comment)
+
     if not capture_references and signature.is_row_processor:
         # Enable postponed evaluation of type annotations. This converts all
         # type hints to strings at runtime, which is necessary for correctly

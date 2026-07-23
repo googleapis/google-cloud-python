@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -277,6 +277,32 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
         """Parses a data_store path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def document_path(
+        project: str,
+        location: str,
+        data_store: str,
+        branch: str,
+        document: str,
+    ) -> str:
+        """Returns a fully-qualified document string."""
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}".format(
+            project=project,
+            location=location,
+            data_store=data_store,
+            branch=branch,
+            document=document,
+        )
+
+    @staticmethod
+    def parse_document_path(path: str) -> Dict[str, str]:
+        """Parses a document path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/branches/(?P<branch>.+?)/documents/(?P<document>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -795,11 +821,11 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
                 # Initialize request argument(s)
                 control = discoveryengine_v1beta.Control()
-                control.boost_action.boost = 0.551
+                control.boost_action.fixed_boost = 0.1174
                 control.boost_action.filter = "filter_value"
                 control.boost_action.data_store = "data_store_value"
                 control.display_name = "display_name_value"
-                control.solution_type = "SOLUTION_TYPE_GENERATIVE_CHAT"
+                control.solution_type = "SOLUTION_TYPE_AI_MODE"
 
                 request = discoveryengine_v1beta.CreateControlRequest(
                     parent="parent_value",
@@ -1042,11 +1068,11 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
                 # Initialize request argument(s)
                 control = discoveryengine_v1beta.Control()
-                control.boost_action.boost = 0.551
+                control.boost_action.fixed_boost = 0.1174
                 control.boost_action.filter = "filter_value"
                 control.boost_action.data_store = "data_store_value"
                 control.display_name = "display_name_value"
-                control.solution_type = "SOLUTION_TYPE_GENERATIVE_CHAT"
+                control.solution_type = "SOLUTION_TYPE_AI_MODE"
 
                 request = discoveryengine_v1beta.UpdateControlRequest(
                     control=control,

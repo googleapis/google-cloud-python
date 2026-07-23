@@ -194,26 +194,27 @@ replacements:
       packages/google-cloud-bigtable/setup.py,
     ]
     before: |
-      "protobuf >= 4.25.8, < 8.0.0",
+      "protobuf >= 6.33.5, < 8.0.0",
       \]
     after: |
-      "protobuf >= 4.25.8, < 8.0.0",
-          "google-cloud-core >= 1.4.4, <3.0.0",
-          "grpc-google-iam-v1 >= 0.12.4, <1.0.0",
-          "google-crc32c>=1.5.0, <2.0.0dev",
+      "protobuf >= 6.33.5, < 8.0.0",
+          "google-cloud-core >= 2.0.0, <3.0.0",
+          "grpc-google-iam-v1 >= 0.14.2, <1.0.0",
+          "google-crc32c>=1.6.0, <2.0.0dev",
       ]
     count: 1
   - paths: [
-      packages/google-cloud-bigtable/testing/constraints-3.9.txt
+      packages/google-cloud-bigtable/testing/constraints-3.10.txt,
     ]
     before: |
-      google-api-core==2.21.0
-      google-auth==2.35.0
+        google-api-core==2.24.2
+        google-auth==2.14.1
     after: |
-      google-api-core==2.21.0
-      google-cloud-core==2.0.0
-      grpc-google-iam-v1==0.12.4
-      google-auth==2.35.0
+        google-api-core==2.24.2
+        google-cloud-core==2.0.0
+        grpc-google-iam-v1==0.14.2
+        google-crc32c==1.6.0
+        google-auth==2.14.1
     count: 1
   - paths: [
       packages/google-cloud-bigtable/google/cloud/bigtable_v2/services/bigtable/async_client.py,
@@ -356,52 +357,6 @@ replacements:
 
       Quick Start
     count: 1
-  - paths: [
-      packages/google-cloud-bigtable/mypy.ini
-    ]
-    before: |
-      \[mypy\]
-      [\s\S]*?incremental = True
-    after: |
-      [mypy]
-      python_version = 3.13
-      namespace_packages = True
-      check_untyped_defs = True
-      warn_unreachable = True
-      disallow_any_generics = True
-      exclude = tests/unit/gapic/
-
-      [mypy-grpc.*]
-      ignore_missing_imports = True
-
-      [mypy-google.auth.*]
-      ignore_missing_imports = True
-
-      [mypy-google.iam.*]
-      ignore_missing_imports = True
-
-      [mypy-google.longrunning.*]
-      ignore_missing_imports = True
-
-      [mypy-google.oauth2.*]
-      ignore_missing_imports = True
-
-      [mypy-google.rpc.*]
-      ignore_missing_imports = True
-
-      [mypy-proto.*]
-      ignore_missing_imports = True
-
-      [mypy-pytest]
-      ignore_missing_imports = True
-
-      [mypy-google.cloud.*]
-      ignore_errors = True
-
-      # only verify data client
-      [mypy-google.cloud.bigtable.data.*]
-      ignore_errors = False
-    count: 1
     # Note: noxfile.py is heavily customized so we clobber the whole file. 
   - paths: [
       packages/google-cloud-bigtable/noxfile.py
@@ -420,18 +375,17 @@ replacements:
       import nox
 
       RUFF_VERSION = "ruff==0.14.14"
-      BLACK_VERSION = "black[jupyter]==23.7.0"
       LINT_PATHS = ["google", "samples", "tests", "noxfile.py", "setup.py"]
 
       DEFAULT_PYTHON_VERSION = "3.14"
 
       ALL_PYTHON = [
-          "3.9",
           "3.10",
           "3.11",
           "3.12",
           "3.13",
           "3.14",
+          "3.15",
       ]
 
       UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -440,8 +394,7 @@ replacements:
           "pytest",
           "pytest-cov",
           "pytest-asyncio",
-          BLACK_VERSION,
-          "autoflake",
+          RUFF_VERSION,
       ]
       UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
       UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -457,7 +410,7 @@ replacements:
       ]
       SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
           "pytest-asyncio==0.21.2",
-          BLACK_VERSION,
+          RUFF_VERSION,
           "pyyaml==6.0.2",
       ]
       SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -466,6 +419,16 @@ replacements:
       SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
       CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+      # Path to the centralized mypy configuration file at the repository root.
+      # Search upwards to support running nox from both monorepo packages and integration test goldens.
+      MYPY_CONFIG_FILE = next(
+          (
+              str(p / "mypy.ini")
+              for p in CURRENT_DIRECTORY.parents
+              if (p / "mypy.ini").exists()
+          ),
+          str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+      )
 
       # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
       nox.options.sessions = [
@@ -575,7 +538,12 @@ replacements:
               "types-requests",
           )
           session.install("google-cloud-testutils")
-          session.run("mypy", "-p", "google.cloud.bigtable.data")
+          session.run(
+              "mypy",
+              f"--config-file={MYPY_CONFIG_FILE}",
+              "-p",
+              "google.cloud.bigtable.data",
+          )
 
 
       @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -616,27 +584,20 @@ replacements:
       @nox.session(python=ALL_PYTHON)
       @nox.parametrize(
           "protobuf_implementation",
-          ["python", "upb", "cpp"],
+          ["python", "upb"],
       )
       def unit(session, protobuf_implementation):
-          if session.python in ("3.7"):
-              session.skip("Python 3.7 is no longer supported")
-
           # Install all test dependencies, then install this package in-place.
-          py_version = tuple([int(v) for v in session.python.split(".")])
-          if protobuf_implementation == "cpp" and py_version >= (3, 11):
-              session.skip("cpp implementation is not supported in python 3.11+")
+
+          # TODO(https://github.com/googleapis/google-cloud-python/issues/17741):
+          # Remove once `google-crc32c` wheels are published for 3.15
+          if session.python == "3.15":
+              session.skip("Skipping 3.15 until wheels are available for google-crc32c.")
 
           constraints_path = str(
               CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
           )
           install_unittest_dependencies(session, "-c", constraints_path)
-
-          # TODO(https://github.com/googleapis/synthtool/issues/1976):
-          # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-          # The 'cpp' implementation requires Protobuf<4.
-          if protobuf_implementation == "cpp":
-              session.install("protobuf<4")
 
           # Run py.test against the unit tests.
           session.run(
@@ -658,10 +619,7 @@ replacements:
 
 
       def install_systemtest_dependencies(session, *constraints):
-          # Use pre-release gRPC for system tests.
-          # Exclude version 1.52.0rc1 which has a known issue.
-          # See https://github.com/grpc/grpc/issues/32163
-          session.install("--pre", "grpcio!=1.52.0rc1")
+          session.install("--pre", "grpcio")
 
           session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES, *constraints)
 
@@ -872,14 +830,10 @@ replacements:
       @nox.session(python=DEFAULT_PYTHON_VERSION)
       @nox.parametrize(
           "protobuf_implementation",
-          ["python", "upb", "cpp"],
+          ["python", "upb"],
       )
       def prerelease_deps(session, protobuf_implementation):
           """Run all tests with prerelease versions of dependencies installed."""
-
-          py_version = tuple([int(v) for v in session.python.split(".")])
-          if protobuf_implementation == "cpp" and py_version >= (3, 11):
-              session.skip("cpp implementation is not supported in python 3.11+")
 
           # Install all dependencies
           session.install("-e", ".[all, tests, tracing]")
@@ -956,8 +910,7 @@ replacements:
           """
           Re-generate sync files for the library from CrossSync-annotated async source
           """
-          session.install(BLACK_VERSION)
-          session.install("autoflake")
+          session.install(RUFF_VERSION)
           session.run("python", ".cross_sync/generate.py", ".")
 
 

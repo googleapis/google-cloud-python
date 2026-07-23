@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -123,6 +118,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1276,7 +1286,11 @@ def test_memorystore_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/memorystore.read-only",
+                "https://www.googleapis.com/auth/memorystore.read-write",
+            ),
             scopes=None,
             default_host="memorystore.googleapis.com",
             ssl_credentials=None,
@@ -1290,8 +1304,8 @@ def test_memorystore_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.ListInstancesRequest,
-        dict,
+        memorystore.ListInstancesRequest(),
+        {},
     ],
 )
 def test_list_instances(request_type, transport: str = "grpc"):
@@ -1302,7 +1316,7 @@ def test_list_instances(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -1351,12 +1365,13 @@ def test_list_instances_non_empty_request_with_auto_populated_field():
         client.list_instances(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.ListInstancesRequest(
+        request_msg = memorystore.ListInstancesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_instances_use_cached_wrapped_rpc():
@@ -1437,9 +1452,14 @@ async def test_list_instances_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_instances_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.ListInstancesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.ListInstancesRequest(),
+        {},
+    ],
+)
+async def test_list_instances_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1447,7 +1467,7 @@ async def test_list_instances_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -1470,11 +1490,6 @@ async def test_list_instances_async(
     assert isinstance(response, pagers.ListInstancesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_instances_async_from_dict():
-    await test_list_instances_async(request_type=dict)
 
 
 def test_list_instances_field_headers():
@@ -1669,6 +1684,9 @@ def test_list_instances_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, memorystore.Instance) for i in results)
@@ -1757,6 +1775,8 @@ async def test_list_instances_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1804,11 +1824,7 @@ async def test_list_instances_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_instances(request={})
-        ).pages:
+        async for page_ in (await client.list_instances(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1817,8 +1833,8 @@ async def test_list_instances_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.GetInstanceRequest,
-        dict,
+        memorystore.GetInstanceRequest(),
+        {},
     ],
 )
 def test_get_instance(request_type, transport: str = "grpc"):
@@ -1829,7 +1845,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -1934,9 +1950,10 @@ def test_get_instance_non_empty_request_with_auto_populated_field():
         client.get_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.GetInstanceRequest(
+        request_msg = memorystore.GetInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_instance_use_cached_wrapped_rpc():
@@ -2017,9 +2034,14 @@ async def test_get_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_instance_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.GetInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.GetInstanceRequest(),
+        {},
+    ],
+)
+async def test_get_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2027,7 +2049,7 @@ async def test_get_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -2109,11 +2131,6 @@ async def test_get_instance_async(
     )
     assert response.server_ca_pool == "server_ca_pool_value"
     assert response.rotate_server_certificate is True
-
-
-@pytest.mark.asyncio
-async def test_get_instance_async_from_dict():
-    await test_get_instance_async(request_type=dict)
 
 
 def test_get_instance_field_headers():
@@ -2262,8 +2279,8 @@ async def test_get_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.CreateInstanceRequest,
-        dict,
+        memorystore.CreateInstanceRequest(),
+        {},
     ],
 )
 def test_create_instance(request_type, transport: str = "grpc"):
@@ -2274,7 +2291,7 @@ def test_create_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -2316,10 +2333,11 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
         client.create_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.CreateInstanceRequest(
+        request_msg = memorystore.CreateInstanceRequest(
             parent="parent_value",
             instance_id="instance_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_instance_use_cached_wrapped_rpc():
@@ -2410,9 +2428,14 @@ async def test_create_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_instance_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.CreateInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.CreateInstanceRequest(),
+        {},
+    ],
+)
+async def test_create_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2420,7 +2443,7 @@ async def test_create_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -2438,11 +2461,6 @@ async def test_create_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_instance_async_from_dict():
-    await test_create_instance_async(request_type=dict)
 
 
 def test_create_instance_field_headers():
@@ -2623,8 +2641,8 @@ async def test_create_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.UpdateInstanceRequest,
-        dict,
+        memorystore.UpdateInstanceRequest(),
+        {},
     ],
 )
 def test_update_instance(request_type, transport: str = "grpc"):
@@ -2635,7 +2653,7 @@ def test_update_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -2674,7 +2692,8 @@ def test_update_instance_non_empty_request_with_auto_populated_field():
         client.update_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.UpdateInstanceRequest()
+        request_msg = memorystore.UpdateInstanceRequest()
+        assert args[0] == request_msg
 
 
 def test_update_instance_use_cached_wrapped_rpc():
@@ -2765,9 +2784,14 @@ async def test_update_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_instance_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.UpdateInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.UpdateInstanceRequest(),
+        {},
+    ],
+)
+async def test_update_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2775,7 +2799,7 @@ async def test_update_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -2793,11 +2817,6 @@ async def test_update_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_instance_async_from_dict():
-    await test_update_instance_async(request_type=dict)
 
 
 def test_update_instance_field_headers():
@@ -2968,8 +2987,8 @@ async def test_update_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.DeleteInstanceRequest,
-        dict,
+        memorystore.DeleteInstanceRequest(),
+        {},
     ],
 )
 def test_delete_instance(request_type, transport: str = "grpc"):
@@ -2980,7 +2999,7 @@ def test_delete_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -3021,9 +3040,10 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
         client.delete_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.DeleteInstanceRequest(
+        request_msg = memorystore.DeleteInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_instance_use_cached_wrapped_rpc():
@@ -3114,9 +3134,14 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_instance_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.DeleteInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.DeleteInstanceRequest(),
+        {},
+    ],
+)
+async def test_delete_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3124,7 +3149,7 @@ async def test_delete_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -3142,11 +3167,6 @@ async def test_delete_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_instance_async_from_dict():
-    await test_delete_instance_async(request_type=dict)
 
 
 def test_delete_instance_field_headers():
@@ -3295,8 +3315,8 @@ async def test_delete_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.GetCertificateAuthorityRequest,
-        dict,
+        memorystore.GetCertificateAuthorityRequest(),
+        {},
     ],
 )
 def test_get_certificate_authority(request_type, transport: str = "grpc"):
@@ -3307,7 +3327,7 @@ def test_get_certificate_authority(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3355,9 +3375,10 @@ def test_get_certificate_authority_non_empty_request_with_auto_populated_field()
         client.get_certificate_authority(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.GetCertificateAuthorityRequest(
+        request_msg = memorystore.GetCertificateAuthorityRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_certificate_authority_use_cached_wrapped_rpc():
@@ -3443,9 +3464,15 @@ async def test_get_certificate_authority_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.GetCertificateAuthorityRequest(),
+        {},
+    ],
+)
 async def test_get_certificate_authority_async(
-    transport: str = "grpc_asyncio",
-    request_type=memorystore.GetCertificateAuthorityRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3454,7 +3481,7 @@ async def test_get_certificate_authority_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3477,11 +3504,6 @@ async def test_get_certificate_authority_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, memorystore.CertificateAuthority)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_certificate_authority_async_from_dict():
-    await test_get_certificate_authority_async(request_type=dict)
 
 
 def test_get_certificate_authority_field_headers():
@@ -3638,8 +3660,8 @@ async def test_get_certificate_authority_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.GetSharedRegionalCertificateAuthorityRequest,
-        dict,
+        memorystore.GetSharedRegionalCertificateAuthorityRequest(),
+        {},
     ],
 )
 def test_get_shared_regional_certificate_authority(
@@ -3652,7 +3674,7 @@ def test_get_shared_regional_certificate_authority(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3700,9 +3722,10 @@ def test_get_shared_regional_certificate_authority_non_empty_request_with_auto_p
         client.get_shared_regional_certificate_authority(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.GetSharedRegionalCertificateAuthorityRequest(
+        request_msg = memorystore.GetSharedRegionalCertificateAuthorityRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_shared_regional_certificate_authority_use_cached_wrapped_rpc():
@@ -3788,9 +3811,15 @@ async def test_get_shared_regional_certificate_authority_async_use_cached_wrappe
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.GetSharedRegionalCertificateAuthorityRequest(),
+        {},
+    ],
+)
 async def test_get_shared_regional_certificate_authority_async(
-    transport: str = "grpc_asyncio",
-    request_type=memorystore.GetSharedRegionalCertificateAuthorityRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3799,7 +3828,7 @@ async def test_get_shared_regional_certificate_authority_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3822,11 +3851,6 @@ async def test_get_shared_regional_certificate_authority_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, memorystore.SharedRegionalCertificateAuthority)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_shared_regional_certificate_authority_async_from_dict():
-    await test_get_shared_regional_certificate_authority_async(request_type=dict)
 
 
 def test_get_shared_regional_certificate_authority_field_headers():
@@ -3983,8 +4007,8 @@ async def test_get_shared_regional_certificate_authority_flattened_error_async()
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.RescheduleMaintenanceRequest,
-        dict,
+        memorystore.RescheduleMaintenanceRequest(),
+        {},
     ],
 )
 def test_reschedule_maintenance(request_type, transport: str = "grpc"):
@@ -3995,7 +4019,7 @@ def test_reschedule_maintenance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4040,9 +4064,10 @@ def test_reschedule_maintenance_non_empty_request_with_auto_populated_field():
         client.reschedule_maintenance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.RescheduleMaintenanceRequest(
+        request_msg = memorystore.RescheduleMaintenanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reschedule_maintenance_use_cached_wrapped_rpc():
@@ -4138,9 +4163,15 @@ async def test_reschedule_maintenance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.RescheduleMaintenanceRequest(),
+        {},
+    ],
+)
 async def test_reschedule_maintenance_async(
-    transport: str = "grpc_asyncio",
-    request_type=memorystore.RescheduleMaintenanceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4149,7 +4180,7 @@ async def test_reschedule_maintenance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4169,11 +4200,6 @@ async def test_reschedule_maintenance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_reschedule_maintenance_async_from_dict():
-    await test_reschedule_maintenance_async(request_type=dict)
 
 
 def test_reschedule_maintenance_field_headers():
@@ -4350,8 +4376,8 @@ async def test_reschedule_maintenance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.ListBackupCollectionsRequest,
-        dict,
+        memorystore.ListBackupCollectionsRequest(),
+        {},
     ],
 )
 def test_list_backup_collections(request_type, transport: str = "grpc"):
@@ -4362,7 +4388,7 @@ def test_list_backup_collections(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4413,10 +4439,11 @@ def test_list_backup_collections_non_empty_request_with_auto_populated_field():
         client.list_backup_collections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.ListBackupCollectionsRequest(
+        request_msg = memorystore.ListBackupCollectionsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backup_collections_use_cached_wrapped_rpc():
@@ -4502,9 +4529,15 @@ async def test_list_backup_collections_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.ListBackupCollectionsRequest(),
+        {},
+    ],
+)
 async def test_list_backup_collections_async(
-    transport: str = "grpc_asyncio",
-    request_type=memorystore.ListBackupCollectionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4513,7 +4546,7 @@ async def test_list_backup_collections_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4538,11 +4571,6 @@ async def test_list_backup_collections_async(
     assert isinstance(response, pagers.ListBackupCollectionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_backup_collections_async_from_dict():
-    await test_list_backup_collections_async(request_type=dict)
 
 
 def test_list_backup_collections_field_headers():
@@ -4747,6 +4775,9 @@ def test_list_backup_collections_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, memorystore.BackupCollection) for i in results)
@@ -4839,6 +4870,8 @@ async def test_list_backup_collections_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4888,11 +4921,7 @@ async def test_list_backup_collections_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_backup_collections(request={})
-        ).pages:
+        async for page_ in (await client.list_backup_collections(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4901,8 +4930,8 @@ async def test_list_backup_collections_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.GetBackupCollectionRequest,
-        dict,
+        memorystore.GetBackupCollectionRequest(),
+        {},
     ],
 )
 def test_get_backup_collection(request_type, transport: str = "grpc"):
@@ -4913,7 +4942,7 @@ def test_get_backup_collection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4973,9 +5002,10 @@ def test_get_backup_collection_non_empty_request_with_auto_populated_field():
         client.get_backup_collection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.GetBackupCollectionRequest(
+        request_msg = memorystore.GetBackupCollectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_collection_use_cached_wrapped_rpc():
@@ -5061,8 +5091,15 @@ async def test_get_backup_collection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.GetBackupCollectionRequest(),
+        {},
+    ],
+)
 async def test_get_backup_collection_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.GetBackupCollectionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5071,7 +5108,7 @@ async def test_get_backup_collection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5106,11 +5143,6 @@ async def test_get_backup_collection_async(
     assert response.uid == "uid_value"
     assert response.total_backup_size_bytes == 2457
     assert response.total_backup_count == 1921
-
-
-@pytest.mark.asyncio
-async def test_get_backup_collection_async_from_dict():
-    await test_get_backup_collection_async(request_type=dict)
 
 
 def test_get_backup_collection_field_headers():
@@ -5267,8 +5299,8 @@ async def test_get_backup_collection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.ListBackupsRequest,
-        dict,
+        memorystore.ListBackupsRequest(),
+        {},
     ],
 )
 def test_list_backups(request_type, transport: str = "grpc"):
@@ -5279,7 +5311,7 @@ def test_list_backups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -5326,10 +5358,11 @@ def test_list_backups_non_empty_request_with_auto_populated_field():
         client.list_backups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.ListBackupsRequest(
+        request_msg = memorystore.ListBackupsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backups_use_cached_wrapped_rpc():
@@ -5410,9 +5443,14 @@ async def test_list_backups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_backups_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.ListBackupsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.ListBackupsRequest(),
+        {},
+    ],
+)
+async def test_list_backups_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5420,7 +5458,7 @@ async def test_list_backups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -5443,11 +5481,6 @@ async def test_list_backups_async(
     assert isinstance(response, pagers.ListBackupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_backups_async_from_dict():
-    await test_list_backups_async(request_type=dict)
 
 
 def test_list_backups_field_headers():
@@ -5642,6 +5675,9 @@ def test_list_backups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, memorystore.Backup) for i in results)
@@ -5730,6 +5766,8 @@ async def test_list_backups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5777,11 +5815,7 @@ async def test_list_backups_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_backups(request={})
-        ).pages:
+        async for page_ in (await client.list_backups(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5790,8 +5824,8 @@ async def test_list_backups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.GetBackupRequest,
-        dict,
+        memorystore.GetBackupRequest(),
+        {},
     ],
 )
 def test_get_backup(request_type, transport: str = "grpc"):
@@ -5802,7 +5836,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -5866,9 +5900,10 @@ def test_get_backup_non_empty_request_with_auto_populated_field():
         client.get_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.GetBackupRequest(
+        request_msg = memorystore.GetBackupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_use_cached_wrapped_rpc():
@@ -5947,9 +5982,14 @@ async def test_get_backup_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_backup_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.GetBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.GetBackupRequest(),
+        {},
+    ],
+)
+async def test_get_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5957,7 +5997,7 @@ async def test_get_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -5998,11 +6038,6 @@ async def test_get_backup_async(
     assert response.backup_type == memorystore.Backup.BackupType.ON_DEMAND
     assert response.state == memorystore.Backup.State.CREATING
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_backup_async_from_dict():
-    await test_get_backup_async(request_type=dict)
 
 
 def test_get_backup_field_headers():
@@ -6147,8 +6182,8 @@ async def test_get_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.DeleteBackupRequest,
-        dict,
+        memorystore.DeleteBackupRequest(),
+        {},
     ],
 )
 def test_delete_backup(request_type, transport: str = "grpc"):
@@ -6159,7 +6194,7 @@ def test_delete_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -6200,9 +6235,10 @@ def test_delete_backup_non_empty_request_with_auto_populated_field():
         client.delete_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.DeleteBackupRequest(
+        request_msg = memorystore.DeleteBackupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_backup_use_cached_wrapped_rpc():
@@ -6293,9 +6329,14 @@ async def test_delete_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_backup_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.DeleteBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.DeleteBackupRequest(),
+        {},
+    ],
+)
+async def test_delete_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6303,7 +6344,7 @@ async def test_delete_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -6321,11 +6362,6 @@ async def test_delete_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_backup_async_from_dict():
-    await test_delete_backup_async(request_type=dict)
 
 
 def test_delete_backup_field_headers():
@@ -6474,8 +6510,8 @@ async def test_delete_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.ExportBackupRequest,
-        dict,
+        memorystore.ExportBackupRequest(),
+        {},
     ],
 )
 def test_export_backup(request_type, transport: str = "grpc"):
@@ -6486,7 +6522,7 @@ def test_export_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_backup), "__call__") as call:
@@ -6528,10 +6564,11 @@ def test_export_backup_non_empty_request_with_auto_populated_field():
         client.export_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.ExportBackupRequest(
+        request_msg = memorystore.ExportBackupRequest(
             gcs_bucket="gcs_bucket_value",
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_backup_use_cached_wrapped_rpc():
@@ -6622,9 +6659,14 @@ async def test_export_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_backup_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.ExportBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.ExportBackupRequest(),
+        {},
+    ],
+)
+async def test_export_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6632,7 +6674,7 @@ async def test_export_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_backup), "__call__") as call:
@@ -6650,11 +6692,6 @@ async def test_export_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_backup_async_from_dict():
-    await test_export_backup_async(request_type=dict)
 
 
 def test_export_backup_field_headers():
@@ -6721,8 +6758,8 @@ async def test_export_backup_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.BackupInstanceRequest,
-        dict,
+        memorystore.BackupInstanceRequest(),
+        {},
     ],
 )
 def test_backup_instance(request_type, transport: str = "grpc"):
@@ -6733,7 +6770,7 @@ def test_backup_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.backup_instance), "__call__") as call:
@@ -6775,10 +6812,11 @@ def test_backup_instance_non_empty_request_with_auto_populated_field():
         client.backup_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.BackupInstanceRequest(
+        request_msg = memorystore.BackupInstanceRequest(
             name="name_value",
             backup_id="backup_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_backup_instance_use_cached_wrapped_rpc():
@@ -6869,9 +6907,14 @@ async def test_backup_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_backup_instance_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.BackupInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.BackupInstanceRequest(),
+        {},
+    ],
+)
+async def test_backup_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6879,7 +6922,7 @@ async def test_backup_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.backup_instance), "__call__") as call:
@@ -6897,11 +6940,6 @@ async def test_backup_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_backup_instance_async_from_dict():
-    await test_backup_instance_async(request_type=dict)
 
 
 def test_backup_instance_field_headers():
@@ -7047,6 +7085,592 @@ async def test_backup_instance_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.StartMigrationRequest(),
+        {},
+    ],
+)
+def test_start_migration(request_type, transport: str = "grpc"):
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_migration), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.start_migration(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = memorystore.StartMigrationRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_start_migration_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = memorystore.StartMigrationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_migration), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.start_migration(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = memorystore.StartMigrationRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_start_migration_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = MemorystoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.start_migration in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.start_migration] = mock_rpc
+        request = {}
+        client.start_migration(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.start_migration(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_start_migration_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = MemorystoreAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.start_migration
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.start_migration
+        ] = mock_rpc
+
+        request = {}
+        await client.start_migration(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.start_migration(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.StartMigrationRequest(),
+        {},
+    ],
+)
+async def test_start_migration_async(request_type, transport: str = "grpc_asyncio"):
+    client = MemorystoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_migration), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.start_migration(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = memorystore.StartMigrationRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_start_migration_field_headers():
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = memorystore.StartMigrationRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_migration), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.start_migration(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_start_migration_field_headers_async():
+    client = MemorystoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = memorystore.StartMigrationRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_migration), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.start_migration(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.FinishMigrationRequest(),
+        {},
+    ],
+)
+def test_finish_migration(request_type, transport: str = "grpc"):
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.finish_migration), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.finish_migration(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = memorystore.FinishMigrationRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_finish_migration_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = memorystore.FinishMigrationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.finish_migration), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.finish_migration(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = memorystore.FinishMigrationRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_finish_migration_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = MemorystoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.finish_migration in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.finish_migration] = (
+            mock_rpc
+        )
+        request = {}
+        client.finish_migration(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.finish_migration(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_finish_migration_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = MemorystoreAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.finish_migration
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.finish_migration
+        ] = mock_rpc
+
+        request = {}
+        await client.finish_migration(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.finish_migration(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.FinishMigrationRequest(),
+        {},
+    ],
+)
+async def test_finish_migration_async(request_type, transport: str = "grpc_asyncio"):
+    client = MemorystoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.finish_migration), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.finish_migration(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = memorystore.FinishMigrationRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_finish_migration_field_headers():
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = memorystore.FinishMigrationRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.finish_migration), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.finish_migration(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_finish_migration_field_headers_async():
+    client = MemorystoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = memorystore.FinishMigrationRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.finish_migration), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.finish_migration(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_finish_migration_flattened():
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.finish_migration), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.finish_migration(
+            name="name_value",
+            force=True,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].force
+        mock_val = True
+        assert arg == mock_val
+
+
+def test_finish_migration_flattened_error():
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.finish_migration(
+            memorystore.FinishMigrationRequest(),
+            name="name_value",
+            force=True,
+        )
+
+
+@pytest.mark.asyncio
+async def test_finish_migration_flattened_async():
+    client = MemorystoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.finish_migration), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.finish_migration(
+            name="name_value",
+            force=True,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].force
+        mock_val = True
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_finish_migration_flattened_error_async():
+    client = MemorystoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.finish_migration(
+            memorystore.FinishMigrationRequest(),
+            name="name_value",
+            force=True,
+        )
+
+
 def test_list_instances_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -7164,7 +7788,7 @@ def test_list_instances_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_instances_rest_unset_required_fields():
@@ -7295,6 +7919,9 @@ def test_list_instances_rest_pager(transport: str = "rest"):
 
         pager = client.list_instances(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, memorystore.Instance) for i in results)
@@ -7410,7 +8037,7 @@ def test_get_instance_rest_required_fields(request_type=memorystore.GetInstanceR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_instance_rest_unset_required_fields():
@@ -7611,7 +8238,7 @@ def test_create_instance_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_instance_rest_unset_required_fields():
@@ -7812,7 +8439,7 @@ def test_update_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_instance_rest_unset_required_fields():
@@ -8007,7 +8634,7 @@ def test_delete_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_instance_rest_unset_required_fields():
@@ -8189,7 +8816,7 @@ def test_get_certificate_authority_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_certificate_authority_rest_unset_required_fields():
@@ -8380,7 +9007,7 @@ def test_get_shared_regional_certificate_authority_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_shared_regional_certificate_authority_rest_unset_required_fields():
@@ -8573,7 +9200,7 @@ def test_reschedule_maintenance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_reschedule_maintenance_rest_unset_required_fields():
@@ -8775,7 +9402,7 @@ def test_list_backup_collections_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_backup_collections_rest_unset_required_fields():
@@ -8907,6 +9534,9 @@ def test_list_backup_collections_rest_pager(transport: str = "rest"):
 
         pager = client.list_backup_collections(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, memorystore.BackupCollection) for i in results)
@@ -9029,7 +9659,7 @@ def test_get_backup_collection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_backup_collection_rest_unset_required_fields():
@@ -9214,7 +9844,7 @@ def test_list_backups_rest_required_fields(request_type=memorystore.ListBackupsR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_backups_rest_unset_required_fields():
@@ -9348,6 +9978,9 @@ def test_list_backups_rest_pager(transport: str = "rest"):
 
         pager = client.list_backups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, memorystore.Backup) for i in results)
@@ -9463,7 +10096,7 @@ def test_get_backup_rest_required_fields(request_type=memorystore.GetBackupReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_backup_rest_unset_required_fields():
@@ -9646,7 +10279,7 @@ def test_delete_backup_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_backup_rest_unset_required_fields():
@@ -9826,7 +10459,7 @@ def test_export_backup_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_export_backup_rest_unset_required_fields():
@@ -9948,7 +10581,7 @@ def test_backup_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_backup_instance_rest_unset_required_fields():
@@ -10015,6 +10648,320 @@ def test_backup_instance_rest_flattened_error(transport: str = "rest"):
         client.backup_instance(
             memorystore.BackupInstanceRequest(),
             name="name_value",
+        )
+
+
+def test_start_migration_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = MemorystoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.start_migration in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.start_migration] = mock_rpc
+
+        request = {}
+        client.start_migration(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.start_migration(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_start_migration_rest_required_fields(
+    request_type=memorystore.StartMigrationRequest,
+):
+    transport_class = transports.MemorystoreRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).start_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).start_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.start_migration(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_start_migration_rest_unset_required_fields():
+    transport = transports.MemorystoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.start_migration._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "selfManagedSource",
+                "name",
+            )
+        )
+    )
+
+
+def test_finish_migration_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = MemorystoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.finish_migration in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.finish_migration] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.finish_migration(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.finish_migration(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_finish_migration_rest_required_fields(
+    request_type=memorystore.FinishMigrationRequest,
+):
+    transport_class = transports.MemorystoreRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).finish_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).finish_migration._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.finish_migration(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_finish_migration_rest_unset_required_fields():
+    transport = transports.MemorystoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.finish_migration._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_finish_migration_rest_flattened():
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            force=True,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.finish_migration(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/instances/*}:finishMigration"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_finish_migration_rest_flattened_error(transport: str = "rest"):
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.finish_migration(
+            memorystore.FinishMigrationRequest(),
+            name="name_value",
+            force=True,
         )
 
 
@@ -10141,7 +11088,6 @@ def test_list_instances_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10162,7 +11108,6 @@ def test_get_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10183,7 +11128,6 @@ def test_create_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10204,7 +11148,6 @@ def test_update_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10225,7 +11168,6 @@ def test_delete_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10248,7 +11190,6 @@ def test_get_certificate_authority_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -10271,7 +11212,6 @@ def test_get_shared_regional_certificate_authority_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetSharedRegionalCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -10294,7 +11234,6 @@ def test_reschedule_maintenance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.RescheduleMaintenanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10317,7 +11256,6 @@ def test_list_backup_collections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListBackupCollectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10340,7 +11278,6 @@ def test_get_backup_collection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetBackupCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10361,7 +11298,6 @@ def test_list_backups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10382,7 +11318,6 @@ def test_get_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10403,7 +11338,6 @@ def test_delete_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10424,7 +11358,6 @@ def test_export_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ExportBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10445,7 +11378,46 @@ def test_backup_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.BackupInstanceRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_start_migration_empty_call_grpc():
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.start_migration), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.start_migration(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = memorystore.StartMigrationRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_finish_migration_empty_call_grpc():
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.finish_migration), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.finish_migration(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = memorystore.FinishMigrationRequest()
         assert args[0] == request_msg
 
 
@@ -10487,7 +11459,6 @@ async def test_list_instances_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10538,7 +11509,6 @@ async def test_get_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10563,7 +11533,6 @@ async def test_create_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10588,7 +11557,6 @@ async def test_update_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10613,7 +11581,6 @@ async def test_delete_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10642,7 +11609,6 @@ async def test_get_certificate_authority_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -10671,7 +11637,6 @@ async def test_get_shared_regional_certificate_authority_empty_call_grpc_asyncio
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetSharedRegionalCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -10698,7 +11663,6 @@ async def test_reschedule_maintenance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.RescheduleMaintenanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10728,7 +11692,6 @@ async def test_list_backup_collections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListBackupCollectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10763,7 +11726,6 @@ async def test_get_backup_collection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetBackupCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10791,7 +11753,6 @@ async def test_list_backups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10828,7 +11789,6 @@ async def test_get_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10853,7 +11813,6 @@ async def test_delete_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10878,7 +11837,6 @@ async def test_export_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ExportBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10903,7 +11861,54 @@ async def test_backup_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.BackupInstanceRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_start_migration_empty_call_grpc_asyncio():
+    client = MemorystoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.start_migration), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.start_migration(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = memorystore.StartMigrationRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_finish_migration_empty_call_grpc_asyncio():
+    client = MemorystoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.finish_migration), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.finish_migration(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = memorystore.FinishMigrationRequest()
         assert args[0] == request_msg
 
 
@@ -11396,6 +12401,15 @@ def test_create_instance_rest_call_success(request_type):
         "server_ca_mode": 1,
         "server_ca_pool": "server_ca_pool_value",
         "rotate_server_certificate": True,
+        "migration_config": {
+            "self_managed_source": {
+                "ip_address": "ip_address_value",
+                "port": 453,
+                "network_attachment": "network_attachment_value",
+            },
+            "state": 1,
+            "force_finish_migration": True,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11716,6 +12730,15 @@ def test_update_instance_rest_call_success(request_type):
         "server_ca_mode": 1,
         "server_ca_pool": "server_ca_pool_value",
         "rotate_server_certificate": True,
+        "migration_config": {
+            "self_managed_source": {
+                "ip_address": "ip_address_value",
+                "port": 453,
+                "network_attachment": "network_attachment_value",
+            },
+            "state": 1,
+            "force_finish_migration": True,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -13345,6 +14368,256 @@ def test_backup_instance_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_start_migration_rest_bad_request(
+    request_type=memorystore.StartMigrationRequest,
+):
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.start_migration(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.StartMigrationRequest,
+        dict,
+    ],
+)
+def test_start_migration_rest_call_success(request_type):
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.start_migration(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_start_migration_rest_interceptors(null_interceptor):
+    transport = transports.MemorystoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.MemorystoreRestInterceptor(),
+    )
+    client = MemorystoreClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_start_migration"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_start_migration_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_start_migration"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = memorystore.StartMigrationRequest.pb(
+            memorystore.StartMigrationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = memorystore.StartMigrationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.start_migration(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_finish_migration_rest_bad_request(
+    request_type=memorystore.FinishMigrationRequest,
+):
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.finish_migration(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.FinishMigrationRequest,
+        dict,
+    ],
+)
+def test_finish_migration_rest_call_success(request_type):
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.finish_migration(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_finish_migration_rest_interceptors(null_interceptor):
+    transport = transports.MemorystoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.MemorystoreRestInterceptor(),
+    )
+    client = MemorystoreClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_finish_migration"
+        ) as post,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "post_finish_migration_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MemorystoreRestInterceptor, "pre_finish_migration"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = memorystore.FinishMigrationRequest.pb(
+            memorystore.FinishMigrationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = memorystore.FinishMigrationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.finish_migration(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
     client = MemorystoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13742,7 +15015,6 @@ def test_list_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13762,7 +15034,6 @@ def test_get_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -13782,7 +15053,6 @@ def test_create_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -13802,7 +15072,6 @@ def test_update_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -13822,7 +15091,6 @@ def test_delete_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -13844,7 +15112,6 @@ def test_get_certificate_authority_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -13866,7 +15133,6 @@ def test_get_shared_regional_certificate_authority_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetSharedRegionalCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -13888,7 +15154,6 @@ def test_reschedule_maintenance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.RescheduleMaintenanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -13910,7 +15175,6 @@ def test_list_backup_collections_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListBackupCollectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13932,7 +15196,6 @@ def test_get_backup_collection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetBackupCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13952,7 +15215,6 @@ def test_list_backups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13972,7 +15234,6 @@ def test_get_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -13992,7 +15253,6 @@ def test_delete_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14012,7 +15272,6 @@ def test_export_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ExportBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14032,7 +15291,44 @@ def test_backup_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.BackupInstanceRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_start_migration_empty_call_rest():
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.start_migration), "__call__") as call:
+        client.start_migration(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = memorystore.StartMigrationRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_finish_migration_empty_call_rest():
+    client = MemorystoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.finish_migration), "__call__") as call:
+        client.finish_migration(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = memorystore.FinishMigrationRequest()
         assert args[0] == request_msg
 
 
@@ -14101,6 +15397,8 @@ def test_memorystore_base_transport():
         "delete_backup",
         "export_backup",
         "backup_instance",
+        "start_migration",
+        "finish_migration",
         "get_location",
         "list_locations",
         "get_operation",
@@ -14148,7 +15446,11 @@ def test_memorystore_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/memorystore.read-only",
+                "https://www.googleapis.com/auth/memorystore.read-write",
+            ),
             quota_project_id="octopus",
         )
 
@@ -14174,7 +15476,11 @@ def test_memorystore_auth_adc():
         MemorystoreClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/memorystore.read-only",
+                "https://www.googleapis.com/auth/memorystore.read-write",
+            ),
             quota_project_id=None,
         )
 
@@ -14194,7 +15500,11 @@ def test_memorystore_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/memorystore.read-only",
+                "https://www.googleapis.com/auth/memorystore.read-write",
+            ),
             quota_project_id="octopus",
         )
 
@@ -14247,7 +15557,11 @@ def test_memorystore_transport_create_channel(transport_class, grpc_helpers):
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/memorystore.read-only",
+                "https://www.googleapis.com/auth/memorystore.read-write",
+            ),
             scopes=["1", "2"],
             default_host="memorystore.googleapis.com",
             ssl_credentials=None,
@@ -14418,6 +15732,12 @@ def test_memorystore_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.backup_instance._session
     session2 = client2.transport.backup_instance._session
+    assert session1 != session2
+    session1 = client1.transport.start_migration._session
+    session2 = client2.transport.start_migration._session
+    assert session1 != session2
+    session1 = client1.transport.finish_migration._session
+    session2 = client2.transport.finish_migration._session
     assert session1 != session2
 
 
@@ -14823,10 +16143,38 @@ def test_parse_network_path():
     assert expected == actual
 
 
-def test_service_attachment_path():
+def test_network_attachment_path():
     project = "squid"
     region = "clam"
-    service_attachment = "whelk"
+    network_attachment = "whelk"
+    expected = "projects/{project}/regions/{region}/networkAttachments/{network_attachment}".format(
+        project=project,
+        region=region,
+        network_attachment=network_attachment,
+    )
+    actual = MemorystoreClient.network_attachment_path(
+        project, region, network_attachment
+    )
+    assert expected == actual
+
+
+def test_parse_network_attachment_path():
+    expected = {
+        "project": "octopus",
+        "region": "oyster",
+        "network_attachment": "nudibranch",
+    }
+    path = MemorystoreClient.network_attachment_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = MemorystoreClient.parse_network_attachment_path(path)
+    assert expected == actual
+
+
+def test_service_attachment_path():
+    project = "cuttlefish"
+    region = "mussel"
+    service_attachment = "winkle"
     expected = "projects/{project}/regions/{region}/serviceAttachments/{service_attachment}".format(
         project=project,
         region=region,
@@ -14840,9 +16188,9 @@ def test_service_attachment_path():
 
 def test_parse_service_attachment_path():
     expected = {
-        "project": "octopus",
-        "region": "oyster",
-        "service_attachment": "nudibranch",
+        "project": "nautilus",
+        "region": "scallop",
+        "service_attachment": "abalone",
     }
     path = MemorystoreClient.service_attachment_path(**expected)
 
@@ -14852,8 +16200,8 @@ def test_parse_service_attachment_path():
 
 
 def test_shared_regional_certificate_authority_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}/sharedRegionalCertificateAuthority".format(
         project=project,
         location=location,
@@ -14866,8 +16214,8 @@ def test_shared_regional_certificate_authority_path():
 
 def test_parse_shared_regional_certificate_authority_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = MemorystoreClient.shared_regional_certificate_authority_path(**expected)
 
@@ -14877,7 +16225,7 @@ def test_parse_shared_regional_certificate_authority_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -14887,7 +16235,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "nudibranch",
     }
     path = MemorystoreClient.common_billing_account_path(**expected)
 
@@ -14897,7 +16245,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -14907,7 +16255,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "mussel",
     }
     path = MemorystoreClient.common_folder_path(**expected)
 
@@ -14917,7 +16265,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -14927,7 +16275,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "nautilus",
     }
     path = MemorystoreClient.common_organization_path(**expected)
 
@@ -14937,7 +16285,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -14947,7 +16295,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "abalone",
     }
     path = MemorystoreClient.common_project_path(**expected)
 
@@ -14957,8 +16305,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -14969,8 +16317,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = MemorystoreClient.common_location_path(**expected)
 

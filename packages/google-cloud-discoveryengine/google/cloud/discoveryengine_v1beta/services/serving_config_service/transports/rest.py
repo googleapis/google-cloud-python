@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import warnings
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
@@ -80,6 +81,18 @@ class ServingConfigServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomServingConfigServiceInterceptor(ServingConfigServiceRestInterceptor):
+            def pre_create_serving_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_serving_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_serving_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_get_serving_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -109,6 +122,72 @@ class ServingConfigServiceRestInterceptor:
 
 
     """
+
+    def pre_create_serving_config(
+        self,
+        request: serving_config_service.CreateServingConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        serving_config_service.CreateServingConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_serving_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ServingConfigService server.
+        """
+        return request, metadata
+
+    def post_create_serving_config(
+        self, response: gcd_serving_config.ServingConfig
+    ) -> gcd_serving_config.ServingConfig:
+        """Post-rpc interceptor for create_serving_config
+
+        DEPRECATED. Please use the `post_create_serving_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ServingConfigService server but before
+        it is returned to user code. This `post_create_serving_config` interceptor runs
+        before the `post_create_serving_config_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_serving_config_with_metadata(
+        self,
+        response: gcd_serving_config.ServingConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcd_serving_config.ServingConfig, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_serving_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ServingConfigService server but before it is returned to user code.
+
+        We recommend only using this `post_create_serving_config_with_metadata`
+        interceptor in new development instead of the `post_create_serving_config` interceptor.
+        When both interceptors are used, this `post_create_serving_config_with_metadata` interceptor runs after the
+        `post_create_serving_config` interceptor. The (possibly modified) response returned by
+        `post_create_serving_config` will be passed to
+        `post_create_serving_config_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_serving_config(
+        self,
+        request: serving_config_service.DeleteServingConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        serving_config_service.DeleteServingConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_serving_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ServingConfigService server.
+        """
+        return request, metadata
 
     def pre_get_serving_config(
         self,
@@ -429,6 +508,278 @@ class ServingConfigServiceRestTransport(_BaseServingConfigServiceRestTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ServingConfigServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _CreateServingConfig(
+        _BaseServingConfigServiceRestTransport._BaseCreateServingConfig,
+        ServingConfigServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ServingConfigServiceRestTransport.CreateServingConfig")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: serving_config_service.CreateServingConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> gcd_serving_config.ServingConfig:
+            r"""Call the create serving config method over HTTP.
+
+            Args:
+                request (~.serving_config_service.CreateServingConfigRequest):
+                    The request object. Request for CreateServingConfig
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.gcd_serving_config.ServingConfig:
+                    Configures metadata that is used to
+                generate serving time results (e.g.
+                search results or recommendation
+                predictions). The ServingConfig is
+                passed in the search and predict request
+                and generates results.
+
+            """
+
+            http_options = _BaseServingConfigServiceRestTransport._BaseCreateServingConfig._get_http_options()
+
+            request, metadata = self._interceptor.pre_create_serving_config(
+                request, metadata
+            )
+            transcoded_request = _BaseServingConfigServiceRestTransport._BaseCreateServingConfig._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseServingConfigServiceRestTransport._BaseCreateServingConfig._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseServingConfigServiceRestTransport._BaseCreateServingConfig._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ServingConfigServiceClient.CreateServingConfig",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ServingConfigService",
+                        "rpcName": "CreateServingConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ServingConfigServiceRestTransport._CreateServingConfig._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gcd_serving_config.ServingConfig()
+            pb_resp = gcd_serving_config.ServingConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_serving_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_serving_config_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_serving_config.ServingConfig.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ServingConfigServiceClient.create_serving_config",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ServingConfigService",
+                        "rpcName": "CreateServingConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeleteServingConfig(
+        _BaseServingConfigServiceRestTransport._BaseDeleteServingConfig,
+        ServingConfigServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ServingConfigServiceRestTransport.DeleteServingConfig")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: serving_config_service.DeleteServingConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the delete serving config method over HTTP.
+
+            Args:
+                request (~.serving_config_service.DeleteServingConfigRequest):
+                    The request object. Request for DeleteServingConfig
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = _BaseServingConfigServiceRestTransport._BaseDeleteServingConfig._get_http_options()
+
+            request, metadata = self._interceptor.pre_delete_serving_config(
+                request, metadata
+            )
+            transcoded_request = _BaseServingConfigServiceRestTransport._BaseDeleteServingConfig._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseServingConfigServiceRestTransport._BaseDeleteServingConfig._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ServingConfigServiceClient.DeleteServingConfig",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ServingConfigService",
+                        "rpcName": "DeleteServingConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ServingConfigServiceRestTransport._DeleteServingConfig._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
     class _GetServingConfig(
         _BaseServingConfigServiceRestTransport._BaseGetServingConfig,
@@ -898,6 +1249,25 @@ class ServingConfigServiceRestTransport(_BaseServingConfigServiceRestTransport):
                     },
                 )
             return resp
+
+    @property
+    def create_serving_config(
+        self,
+    ) -> Callable[
+        [serving_config_service.CreateServingConfigRequest],
+        gcd_serving_config.ServingConfig,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateServingConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_serving_config(
+        self,
+    ) -> Callable[[serving_config_service.DeleteServingConfigRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteServingConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_serving_config(

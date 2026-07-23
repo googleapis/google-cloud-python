@@ -26,7 +26,6 @@ from bigframes.operations.ai_ops import (
     AISimilarity,
 )
 from bigframes.operations.array_ops import (
-    ArrayIndexOp,
     ArrayMapOp,
     ArrayReduceOp,
     ArraySliceOp,
@@ -93,6 +92,9 @@ from bigframes.operations.frequency_ops import (
 from bigframes.operations.generic_ops import (
     AsTypeOp,
     CaseWhenOp,
+    CoerceToBoolOp,
+    DynamicGetItemOp,
+    GetItemOp,
     IsInOp,
     MapOp,
     RowKey,
@@ -100,6 +102,7 @@ from bigframes.operations.generic_ops import (
     case_when_op,
     clip_op,
     coalesce_op,
+    coerce_to_bool_op,
     fillna_op,
     hash_op,
     invert_op,
@@ -115,10 +118,8 @@ from bigframes.operations.geo_ops import (
     GeoStLengthOp,
     GeoStRegionStatsOp,
     GeoStSimplifyOp,
-    geo_area_op,
     geo_st_astext_op,
     geo_st_boundary_op,
-    geo_st_centroid_op,
     geo_st_convexhull_op,
     geo_st_difference_op,
     geo_st_geogfromtext_op,
@@ -128,7 +129,9 @@ from bigframes.operations.geo_ops import (
     geo_x_op,
     geo_y_op,
 )
+from bigframes.operations.googlesql import GoogleSqlScalarOp
 from bigframes.operations.json_ops import (
+    JSONDecode,
     JSONExtract,
     JSONExtractArray,
     JSONExtractStringArray,
@@ -184,8 +187,7 @@ from bigframes.operations.numeric_ops import (
 )
 from bigframes.operations.numpy_op_maps import NUMPY_TO_BINOP, NUMPY_TO_OP
 from bigframes.operations.remote_function_ops import (
-    BinaryRemoteFunctionOp,
-    NaryRemoteFunctionOp,
+    PythonUdfOp,
     RemoteFunctionOp,
 )
 from bigframes.operations.string_ops import (
@@ -197,7 +199,6 @@ from bigframes.operations.string_ops import (
     StrContainsRegexOp,
     StrExtractOp,
     StrFindOp,
-    StrGetOp,
     StringSplitOp,
     StrLstripOp,
     StrPadOp,
@@ -231,6 +232,7 @@ from bigframes.operations.timedelta_ops import (
     timestamp_add_op,
     timestamp_sub_op,
 )
+from bigframes.operations.to_op import func_to_expr
 
 __all__ = [
     # Base ops
@@ -247,6 +249,8 @@ __all__ = [
     "clip_op",
     "coalesce_op",
     "fillna_op",
+    "DynamicGetItemOp",
+    "GetItemOp",
     "hash_op",
     "invert_op",
     "IsInOp",
@@ -255,6 +259,8 @@ __all__ = [
     "maximum_op",
     "minimum_op",
     "notnull_op",
+    "CoerceToBoolOp",
+    "coerce_to_bool_op",
     "RowKey",
     "SqlScalarOp",
     "where_op",
@@ -280,7 +286,6 @@ __all__ = [
     "StrContainsRegexOp",
     "StrExtractOp",
     "StrFindOp",
-    "StrGetOp",
     "StrLstripOp",
     "StringSplitOp",
     "strip_op",
@@ -364,7 +369,6 @@ __all__ = [
     "tanh_op",
     "unsafe_pow_op",
     # Array ops
-    "ArrayIndexOp",
     "ArraySliceOp",
     "ArrayToStringOp",
     # Blob ops
@@ -376,14 +380,14 @@ __all__ = [
     "StructFieldOp",
     "StructOp",
     # Remote Functions ops
-    "BinaryRemoteFunctionOp",
-    "NaryRemoteFunctionOp",
     "RemoteFunctionOp",
+    "PythonUdfOp",
     # Frequency ops
     "DatetimeToIntegerLabelOp",
     "FloorDtOp",
     "IntegerLabelToDatetimeOp",
     # JSON ops
+    "JSONDecode",
     "JSONExtract",
     "JSONExtractArray",
     "JSONExtractStringArray",
@@ -413,9 +417,7 @@ __all__ = [
     "euclidean_distance_op",
     "manhattan_distance_op",
     # Geo ops
-    "geo_area_op",
     "geo_st_boundary_op",
-    "geo_st_centroid_op",
     "geo_st_convexhull_op",
     "geo_st_difference_op",
     "geo_st_astext_op",
@@ -440,10 +442,14 @@ __all__ = [
     "AIIf",
     "AIScore",
     "AISimilarity",
+    # Helper functions
+    "func_to_expr",
     # Numpy ops mapping
     "NUMPY_TO_BINOP",
     "NUMPY_TO_OP",
     "ToArrayOp",
     "ArrayReduceOp",
     "ArrayMapOp",
+    # GoogleSql
+    "GoogleSqlScalarOp",
 ]

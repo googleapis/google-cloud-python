@@ -411,8 +411,8 @@ def test_filter_multi_model(session, gemini_flash_model):
         THRESHOLD_OPTION,
         10,
     ):
-        df = session.from_glob_path(
-            "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+        df = session._from_glob_path(
+            "gs://bigframes-dev-testing/a_multimodal/images/*", name="image"
         )
         df["prey"] = series.Series(
             ["building", "cross road", "rock", "squirrel", "rabbit"], session=session
@@ -571,7 +571,7 @@ def test_map(session, gemini_flash_model):
     )
 
 
-def test_map_multimodel(session, gemini_flash_model):
+def test_map_multimodal(session, gemini_flash_model):
     with bigframes.option_context(
         SEM_OP_EXP_OPTION,
         True,
@@ -580,8 +580,8 @@ def test_map_multimodel(session, gemini_flash_model):
         THRESHOLD_OPTION,
         10,
     ):
-        df = session.from_glob_path(
-            "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+        df = session._from_glob_path(
+            "gs://bigframes-dev-testing/a_multimodal/images/*", name="image"
         )
         df["scenario"] = series.Series(
             ["building", "cross road", "tree", "squirrel", "rabbit"], session=session

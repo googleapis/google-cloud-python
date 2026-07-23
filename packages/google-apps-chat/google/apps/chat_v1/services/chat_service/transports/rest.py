@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ from requests import __version__ as requests_version
 
 from google.apps.chat_v1.types import (
     attachment,
+    availability,
     membership,
     message,
     reaction,
@@ -42,6 +43,7 @@ from google.apps.chat_v1.types import (
     space_setup,
     thread_read_state,
 )
+from google.apps.chat_v1.types import availability as gc_availability
 from google.apps.chat_v1.types import membership as gc_membership
 from google.apps.chat_v1.types import message as gc_message
 from google.apps.chat_v1.types import reaction as gc_reaction
@@ -202,6 +204,14 @@ class ChatServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_availability(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_availability(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_custom_emoji(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -330,6 +340,30 @@ class ChatServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_mark_as_active(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_mark_as_active(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_mark_as_away(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_mark_as_away(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_mark_as_do_not_disturb(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_mark_as_do_not_disturb(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_move_section_item(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -359,6 +393,14 @@ class ChatServiceRestInterceptor:
                 return request, metadata
 
             def post_set_up_space(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_availability(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_availability(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -997,6 +1039,54 @@ class ChatServiceRestInterceptor:
         `post_get_attachment` interceptor. The (possibly modified) response returned by
         `post_get_attachment` will be passed to
         `post_get_attachment_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_availability(
+        self,
+        request: availability.GetAvailabilityRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        availability.GetAvailabilityRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_availability
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_get_availability(
+        self, response: availability.Availability
+    ) -> availability.Availability:
+        """Post-rpc interceptor for get_availability
+
+        DEPRECATED. Please use the `post_get_availability_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_get_availability` interceptor runs
+        before the `post_get_availability_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_availability_with_metadata(
+        self,
+        response: availability.Availability,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[availability.Availability, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_availability
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_get_availability_with_metadata`
+        interceptor in new development instead of the `post_get_availability` interceptor.
+        When both interceptors are used, this `post_get_availability_with_metadata` interceptor runs after the
+        `post_get_availability` interceptor. The (possibly modified) response returned by
+        `post_get_availability` will be passed to
+        `post_get_availability_with_metadata`.
         """
         return response, metadata
 
@@ -1766,6 +1856,148 @@ class ChatServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_mark_as_active(
+        self,
+        request: availability.MarkAsActiveRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        availability.MarkAsActiveRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for mark_as_active
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_mark_as_active(
+        self, response: availability.Availability
+    ) -> availability.Availability:
+        """Post-rpc interceptor for mark_as_active
+
+        DEPRECATED. Please use the `post_mark_as_active_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_mark_as_active` interceptor runs
+        before the `post_mark_as_active_with_metadata` interceptor.
+        """
+        return response
+
+    def post_mark_as_active_with_metadata(
+        self,
+        response: availability.Availability,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[availability.Availability, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for mark_as_active
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_mark_as_active_with_metadata`
+        interceptor in new development instead of the `post_mark_as_active` interceptor.
+        When both interceptors are used, this `post_mark_as_active_with_metadata` interceptor runs after the
+        `post_mark_as_active` interceptor. The (possibly modified) response returned by
+        `post_mark_as_active` will be passed to
+        `post_mark_as_active_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_mark_as_away(
+        self,
+        request: availability.MarkAsAwayRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[availability.MarkAsAwayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for mark_as_away
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_mark_as_away(
+        self, response: availability.Availability
+    ) -> availability.Availability:
+        """Post-rpc interceptor for mark_as_away
+
+        DEPRECATED. Please use the `post_mark_as_away_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_mark_as_away` interceptor runs
+        before the `post_mark_as_away_with_metadata` interceptor.
+        """
+        return response
+
+    def post_mark_as_away_with_metadata(
+        self,
+        response: availability.Availability,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[availability.Availability, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for mark_as_away
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_mark_as_away_with_metadata`
+        interceptor in new development instead of the `post_mark_as_away` interceptor.
+        When both interceptors are used, this `post_mark_as_away_with_metadata` interceptor runs after the
+        `post_mark_as_away` interceptor. The (possibly modified) response returned by
+        `post_mark_as_away` will be passed to
+        `post_mark_as_away_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_mark_as_do_not_disturb(
+        self,
+        request: availability.MarkAsDoNotDisturbRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        availability.MarkAsDoNotDisturbRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for mark_as_do_not_disturb
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_mark_as_do_not_disturb(
+        self, response: availability.Availability
+    ) -> availability.Availability:
+        """Post-rpc interceptor for mark_as_do_not_disturb
+
+        DEPRECATED. Please use the `post_mark_as_do_not_disturb_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_mark_as_do_not_disturb` interceptor runs
+        before the `post_mark_as_do_not_disturb_with_metadata` interceptor.
+        """
+        return response
+
+    def post_mark_as_do_not_disturb_with_metadata(
+        self,
+        response: availability.Availability,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[availability.Availability, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for mark_as_do_not_disturb
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_mark_as_do_not_disturb_with_metadata`
+        interceptor in new development instead of the `post_mark_as_do_not_disturb` interceptor.
+        When both interceptors are used, this `post_mark_as_do_not_disturb_with_metadata` interceptor runs after the
+        `post_mark_as_do_not_disturb` interceptor. The (possibly modified) response returned by
+        `post_mark_as_do_not_disturb` will be passed to
+        `post_mark_as_do_not_disturb_with_metadata`.
+        """
+        return response, metadata
+
     def pre_move_section_item(
         self,
         request: section.MoveSectionItemRequest,
@@ -1947,6 +2179,55 @@ class ChatServiceRestInterceptor:
         `post_set_up_space` interceptor. The (possibly modified) response returned by
         `post_set_up_space` will be passed to
         `post_set_up_space_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_availability(
+        self,
+        request: gc_availability.UpdateAvailabilityRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gc_availability.UpdateAvailabilityRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_availability
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_update_availability(
+        self, response: gc_availability.Availability
+    ) -> gc_availability.Availability:
+        """Post-rpc interceptor for update_availability
+
+        DEPRECATED. Please use the `post_update_availability_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_update_availability` interceptor runs
+        before the `post_update_availability_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_availability_with_metadata(
+        self,
+        response: gc_availability.Availability,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gc_availability.Availability, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_availability
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_update_availability_with_metadata`
+        interceptor in new development instead of the `post_update_availability` interceptor.
+        When both interceptors are used, this `post_update_availability_with_metadata` interceptor runs after the
+        `post_update_availability` interceptor. The (possibly modified) response returned by
+        `post_update_availability` will be passed to
+        `post_update_availability_with_metadata`.
         """
         return response, metadata
 
@@ -4627,6 +4908,157 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 )
             return resp
 
+    class _GetAvailability(
+        _BaseChatServiceRestTransport._BaseGetAvailability, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.GetAvailability")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: availability.GetAvailabilityRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> availability.Availability:
+            r"""Call the get availability method over HTTP.
+
+            Args:
+                request (~.availability.GetAvailabilityRequest):
+                    The request object. Request message for the ``GetAvailability`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.availability.Availability:
+                    Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseGetAvailability._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_availability(
+                request, metadata
+            )
+            transcoded_request = _BaseChatServiceRestTransport._BaseGetAvailability._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseChatServiceRestTransport._BaseGetAvailability._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.GetAvailability",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetAvailability",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._GetAvailability._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = availability.Availability()
+            pb_resp = availability.Availability.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_availability(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_availability_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = availability.Availability.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.get_availability",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetAvailability",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetCustomEmoji(
         _BaseChatServiceRestTransport._BaseGetCustomEmoji, ChatServiceRestStub
     ):
@@ -7035,6 +7467,481 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 )
             return resp
 
+    class _MarkAsActive(
+        _BaseChatServiceRestTransport._BaseMarkAsActive, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.MarkAsActive")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: availability.MarkAsActiveRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> availability.Availability:
+            r"""Call the mark as active method over HTTP.
+
+            Args:
+                request (~.availability.MarkAsActiveRequest):
+                    The request object. Request message for the ``MarkAsActive`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.availability.Availability:
+                    Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseMarkAsActive._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_mark_as_active(request, metadata)
+            transcoded_request = (
+                _BaseChatServiceRestTransport._BaseMarkAsActive._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = (
+                _BaseChatServiceRestTransport._BaseMarkAsActive._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseMarkAsActive._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.MarkAsActive",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "MarkAsActive",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._MarkAsActive._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = availability.Availability()
+            pb_resp = availability.Availability.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_mark_as_active(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_mark_as_active_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = availability.Availability.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.mark_as_active",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "MarkAsActive",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _MarkAsAway(
+        _BaseChatServiceRestTransport._BaseMarkAsAway, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.MarkAsAway")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: availability.MarkAsAwayRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> availability.Availability:
+            r"""Call the mark as away method over HTTP.
+
+            Args:
+                request (~.availability.MarkAsAwayRequest):
+                    The request object. Request message for the ``MarkAsAway`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.availability.Availability:
+                    Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseMarkAsAway._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_mark_as_away(request, metadata)
+            transcoded_request = (
+                _BaseChatServiceRestTransport._BaseMarkAsAway._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseChatServiceRestTransport._BaseMarkAsAway._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseMarkAsAway._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.MarkAsAway",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "MarkAsAway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._MarkAsAway._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = availability.Availability()
+            pb_resp = availability.Availability.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_mark_as_away(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_mark_as_away_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = availability.Availability.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.mark_as_away",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "MarkAsAway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _MarkAsDoNotDisturb(
+        _BaseChatServiceRestTransport._BaseMarkAsDoNotDisturb, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.MarkAsDoNotDisturb")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: availability.MarkAsDoNotDisturbRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> availability.Availability:
+            r"""Call the mark as do not disturb method over HTTP.
+
+            Args:
+                request (~.availability.MarkAsDoNotDisturbRequest):
+                    The request object. Request message for the ``MarkAsDoNotDisturb`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.availability.Availability:
+                    Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+            """
+
+            http_options = _BaseChatServiceRestTransport._BaseMarkAsDoNotDisturb._get_http_options()
+
+            request, metadata = self._interceptor.pre_mark_as_do_not_disturb(
+                request, metadata
+            )
+            transcoded_request = _BaseChatServiceRestTransport._BaseMarkAsDoNotDisturb._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseChatServiceRestTransport._BaseMarkAsDoNotDisturb._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseChatServiceRestTransport._BaseMarkAsDoNotDisturb._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.MarkAsDoNotDisturb",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "MarkAsDoNotDisturb",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._MarkAsDoNotDisturb._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = availability.Availability()
+            pb_resp = availability.Availability.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_mark_as_do_not_disturb(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_mark_as_do_not_disturb_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = availability.Availability.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.mark_as_do_not_disturb",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "MarkAsDoNotDisturb",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _MoveSectionItem(
         _BaseChatServiceRestTransport._BaseMoveSectionItem, ChatServiceRestStub
     ):
@@ -7650,6 +8557,161 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     extra={
                         "serviceName": "google.chat.v1.ChatService",
                         "rpcName": "SetUpSpace",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdateAvailability(
+        _BaseChatServiceRestTransport._BaseUpdateAvailability, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.UpdateAvailability")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gc_availability.UpdateAvailabilityRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> gc_availability.Availability:
+            r"""Call the update availability method over HTTP.
+
+            Args:
+                request (~.gc_availability.UpdateAvailabilityRequest):
+                    The request object. Request message for the ``UpdateAvailability`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.gc_availability.Availability:
+                    Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+            """
+
+            http_options = _BaseChatServiceRestTransport._BaseUpdateAvailability._get_http_options()
+
+            request, metadata = self._interceptor.pre_update_availability(
+                request, metadata
+            )
+            transcoded_request = _BaseChatServiceRestTransport._BaseUpdateAvailability._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseChatServiceRestTransport._BaseUpdateAvailability._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseChatServiceRestTransport._BaseUpdateAvailability._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.UpdateAvailability",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UpdateAvailability",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._UpdateAvailability._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gc_availability.Availability()
+            pb_resp = gc_availability.Availability.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_availability(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_availability_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gc_availability.Availability.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.update_availability",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UpdateAvailability",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -8904,6 +9966,14 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         return self._GetAttachment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_availability(
+        self,
+    ) -> Callable[[availability.GetAvailabilityRequest], availability.Availability]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAvailability(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_custom_emoji(
         self,
     ) -> Callable[[reaction.GetCustomEmojiRequest], reaction.CustomEmoji]:
@@ -9043,6 +10113,30 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         return self._ListSpaces(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def mark_as_active(
+        self,
+    ) -> Callable[[availability.MarkAsActiveRequest], availability.Availability]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._MarkAsActive(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def mark_as_away(
+        self,
+    ) -> Callable[[availability.MarkAsAwayRequest], availability.Availability]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._MarkAsAway(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def mark_as_do_not_disturb(
+        self,
+    ) -> Callable[[availability.MarkAsDoNotDisturbRequest], availability.Availability]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._MarkAsDoNotDisturb(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def move_section_item(
         self,
     ) -> Callable[[section.MoveSectionItemRequest], section.MoveSectionItemResponse]:
@@ -9071,6 +10165,16 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetUpSpace(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_availability(
+        self,
+    ) -> Callable[
+        [gc_availability.UpdateAvailabilityRequest], gc_availability.Availability
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateAvailability(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_membership(

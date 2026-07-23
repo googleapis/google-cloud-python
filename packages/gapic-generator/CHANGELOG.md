@@ -4,6 +4,68 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.37.1](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.37.0...gapic-generator-v1.37.1) (2026-07-22)
+
+
+### Bug Fixes
+
+* **gapic-generator:** remove lagging 3.9 refs ([#16924](https://github.com/googleapis/google-cloud-python/issues/16924)) ([a719055](https://github.com/googleapis/google-cloud-python/commit/a7190556f487028f04e42ade1f922075127028c3))
+* **gapic:** mock os.path.exists in mTLS tests to support newer google auth ([#17807](https://github.com/googleapis/google-cloud-python/issues/17807)) ([df0541a](https://github.com/googleapis/google-cloud-python/commit/df0541abf6aae710fc3e6644a5d8f3f706d29c5a))
+
+## [1.37.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.36.0...gapic-generator-v1.37.0) (2026-07-07)
+
+
+### Features
+
+* implement native PEP 0810 lazy loading ([#17591](https://github.com/googleapis/google-cloud-python/issues/17591)) ([8a1270c](https://github.com/googleapis/google-cloud-python/commit/8a1270cc29e5d8afd4edb59395ebbdac31792ebd))
+
+
+### Bug Fixes
+
+* **deps:** bump google-api-core to 2.25.0 ([#17599](https://github.com/googleapis/google-cloud-python/issues/17599)) ([8b359e2](https://github.com/googleapis/google-cloud-python/commit/8b359e24279bc9c444114a1476c715647b960c4f))
+* **tests:** add --cov-append to gapic-generator and proto-plus to preserve monorepo coverage ([#17603](https://github.com/googleapis/google-cloud-python/issues/17603)) ([2ddcf4d](https://github.com/googleapis/google-cloud-python/commit/2ddcf4dfc711771b284797569f7f8a2de902ade8))
+
+## [1.36.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.35.0...gapic-generator-v1.36.0) (2026-06-25)
+
+
+### Features
+
+* **mypy:** centralize mypy.ini and update templates ([#17523](https://github.com/googleapis/google-cloud-python/issues/17523)) ([3a67b7f](https://github.com/googleapis/google-cloud-python/commit/3a67b7f05f0e24d2e3fb826e79a5ed69257a49cd))
+
+## [1.35.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.34.1...gapic-generator-v1.35.0) (2026-06-11)
+
+
+### Features
+
+* setup.py matches prerelease versions (#17370) ([25b857e1bc196da5b56cf599ec346967c6559922](https://github.com/googleapis/google-cloud-python/commit/25b857e1bc196da5b56cf599ec346967c6559922))
+
+
+### Bug Fixes
+
+* require protobuf 6.33.5 to address CVE-2026-0994 (#17349) ([66422636633e980324877f2ff3805a284001ad38](https://github.com/googleapis/google-cloud-python/commit/66422636633e980324877f2ff3805a284001ad38))
+
+## [1.34.1](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.34.0...gapic-generator-v1.34.1) (2026-05-27)
+
+## [1.34.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.33.0...gapic-generator-v1.34.0) (2026-05-27)
+
+
+### Bug Fixes
+
+* add pragma to `constants.py` to resolve coverage failure and correct `if` block (#17268) ([1436a23c923e799f9909d039e1f418435845565d](https://github.com/googleapis/google-cloud-python/commit/1436a23c923e799f9909d039e1f418435845565d))
+* update incorrect urls in setup.py to point at monorepo vs splitrepo (#17237) ([eaed04baf3cd356c3811c66e64c277c8841c7563](https://github.com/googleapis/google-cloud-python/commit/eaed04baf3cd356c3811c66e64c277c8841c7563))
+
+## [1.33.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.32.0...gapic-generator-v1.33.0) (2026-05-21)
+
+
+### Bug Fixes
+
+* restore messages not attached to rpc in selective_gapic_generation (#16951) ([3ef95d61995869318097e414e439da1d6c214d1f](https://github.com/googleapis/google-cloud-python/commit/3ef95d61995869318097e414e439da1d6c214d1f))
+* bump idna from 3.14 to 3.15 in /packages/gapic-generator (#17179) ([0f7c68bfd437e7f366dacd4080f31e219d7c7090](https://github.com/googleapis/google-cloud-python/commit/0f7c68bfd437e7f366dacd4080f31e219d7c7090))
+* resolve core dependencies locally and batch pip installs (#17032) ([5ca88030476fd6be7a2eceef9c94c4fc76820f40](https://github.com/googleapis/google-cloud-python/commit/5ca88030476fd6be7a2eceef9c94c4fc76820f40))
+* resolve core dependencies locally and batch pip installs ([5ca88030476fd6be7a2eceef9c94c4fc76820f40](https://github.com/googleapis/google-cloud-python/commit/5ca88030476fd6be7a2eceef9c94c4fc76820f40))
+
+## [1.32.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.31.0...gapic-generator-v1.32.0) (2026-05-11)
+
 ## [1.31.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.30.14...gapic-generator-v1.31.0) (2026-05-06)
 
 

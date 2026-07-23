@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -120,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1385,8 +1395,8 @@ def test_serving_config_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        serving_config_service.CreateServingConfigRequest,
-        dict,
+        serving_config_service.CreateServingConfigRequest(),
+        {},
     ],
 )
 def test_create_serving_config(request_type, transport: str = "grpc"):
@@ -1397,7 +1407,7 @@ def test_create_serving_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1485,10 +1495,11 @@ def test_create_serving_config_non_empty_request_with_auto_populated_field():
         client.create_serving_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == serving_config_service.CreateServingConfigRequest(
+        request_msg = serving_config_service.CreateServingConfigRequest(
             parent="parent_value",
             serving_config_id="serving_config_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_serving_config_use_cached_wrapped_rpc():
@@ -1574,9 +1585,15 @@ async def test_create_serving_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        serving_config_service.CreateServingConfigRequest(),
+        {},
+    ],
+)
 async def test_create_serving_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=serving_config_service.CreateServingConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ServingConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1585,7 +1602,7 @@ async def test_create_serving_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1647,11 +1664,6 @@ async def test_create_serving_config_async(
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-
-
-@pytest.mark.asyncio
-async def test_create_serving_config_async_from_dict():
-    await test_create_serving_config_async(request_type=dict)
 
 
 def test_create_serving_config_field_headers():
@@ -1828,8 +1840,8 @@ async def test_create_serving_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        serving_config_service.DeleteServingConfigRequest,
-        dict,
+        serving_config_service.DeleteServingConfigRequest(),
+        {},
     ],
 )
 def test_delete_serving_config(request_type, transport: str = "grpc"):
@@ -1840,7 +1852,7 @@ def test_delete_serving_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1885,9 +1897,10 @@ def test_delete_serving_config_non_empty_request_with_auto_populated_field():
         client.delete_serving_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == serving_config_service.DeleteServingConfigRequest(
+        request_msg = serving_config_service.DeleteServingConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_serving_config_use_cached_wrapped_rpc():
@@ -1973,9 +1986,15 @@ async def test_delete_serving_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        serving_config_service.DeleteServingConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_serving_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=serving_config_service.DeleteServingConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ServingConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1984,7 +2003,7 @@ async def test_delete_serving_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2002,11 +2021,6 @@ async def test_delete_serving_config_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_serving_config_async_from_dict():
-    await test_delete_serving_config_async(request_type=dict)
 
 
 def test_delete_serving_config_field_headers():
@@ -2159,8 +2173,8 @@ async def test_delete_serving_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        serving_config_service.UpdateServingConfigRequest,
-        dict,
+        serving_config_service.UpdateServingConfigRequest(),
+        {},
     ],
 )
 def test_update_serving_config(request_type, transport: str = "grpc"):
@@ -2171,7 +2185,7 @@ def test_update_serving_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2256,7 +2270,8 @@ def test_update_serving_config_non_empty_request_with_auto_populated_field():
         client.update_serving_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == serving_config_service.UpdateServingConfigRequest()
+        request_msg = serving_config_service.UpdateServingConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_serving_config_use_cached_wrapped_rpc():
@@ -2342,9 +2357,15 @@ async def test_update_serving_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        serving_config_service.UpdateServingConfigRequest(),
+        {},
+    ],
+)
 async def test_update_serving_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=serving_config_service.UpdateServingConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ServingConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2353,7 +2374,7 @@ async def test_update_serving_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2415,11 +2436,6 @@ async def test_update_serving_config_async(
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-
-
-@pytest.mark.asyncio
-async def test_update_serving_config_async_from_dict():
-    await test_update_serving_config_async(request_type=dict)
 
 
 def test_update_serving_config_field_headers():
@@ -2586,8 +2602,8 @@ async def test_update_serving_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        serving_config_service.GetServingConfigRequest,
-        dict,
+        serving_config_service.GetServingConfigRequest(),
+        {},
     ],
 )
 def test_get_serving_config(request_type, transport: str = "grpc"):
@@ -2598,7 +2614,7 @@ def test_get_serving_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2685,9 +2701,10 @@ def test_get_serving_config_non_empty_request_with_auto_populated_field():
         client.get_serving_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == serving_config_service.GetServingConfigRequest(
+        request_msg = serving_config_service.GetServingConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_serving_config_use_cached_wrapped_rpc():
@@ -2772,10 +2789,14 @@ async def test_get_serving_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_serving_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=serving_config_service.GetServingConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        serving_config_service.GetServingConfigRequest(),
+        {},
+    ],
+)
+async def test_get_serving_config_async(request_type, transport: str = "grpc_asyncio"):
     client = ServingConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2783,7 +2804,7 @@ async def test_get_serving_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2845,11 +2866,6 @@ async def test_get_serving_config_async(
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-
-
-@pytest.mark.asyncio
-async def test_get_serving_config_async_from_dict():
-    await test_get_serving_config_async(request_type=dict)
 
 
 def test_get_serving_config_field_headers():
@@ -3006,8 +3022,8 @@ async def test_get_serving_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        serving_config_service.ListServingConfigsRequest,
-        dict,
+        serving_config_service.ListServingConfigsRequest(),
+        {},
     ],
 )
 def test_list_serving_configs(request_type, transport: str = "grpc"):
@@ -3018,7 +3034,7 @@ def test_list_serving_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3067,10 +3083,11 @@ def test_list_serving_configs_non_empty_request_with_auto_populated_field():
         client.list_serving_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == serving_config_service.ListServingConfigsRequest(
+        request_msg = serving_config_service.ListServingConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_serving_configs_use_cached_wrapped_rpc():
@@ -3155,9 +3172,15 @@ async def test_list_serving_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        serving_config_service.ListServingConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_serving_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=serving_config_service.ListServingConfigsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ServingConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3166,7 +3189,7 @@ async def test_list_serving_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3189,11 +3212,6 @@ async def test_list_serving_configs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServingConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_serving_configs_async_from_dict():
-    await test_list_serving_configs_async(request_type=dict)
 
 
 def test_list_serving_configs_field_headers():
@@ -3398,6 +3416,9 @@ def test_list_serving_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, serving_config.ServingConfig) for i in results)
@@ -3490,6 +3511,8 @@ async def test_list_serving_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3539,11 +3562,7 @@ async def test_list_serving_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_serving_configs(request={})
-        ).pages:
+        async for page_ in (await client.list_serving_configs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3552,8 +3571,8 @@ async def test_list_serving_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        serving_config_service.AddControlRequest,
-        dict,
+        serving_config_service.AddControlRequest(),
+        {},
     ],
 )
 def test_add_control(request_type, transport: str = "grpc"):
@@ -3564,7 +3583,7 @@ def test_add_control(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.add_control), "__call__") as call:
@@ -3648,10 +3667,11 @@ def test_add_control_non_empty_request_with_auto_populated_field():
         client.add_control(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == serving_config_service.AddControlRequest(
+        request_msg = serving_config_service.AddControlRequest(
             serving_config="serving_config_value",
             control_id="control_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_add_control_use_cached_wrapped_rpc():
@@ -3732,10 +3752,14 @@ async def test_add_control_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_add_control_async(
-    transport: str = "grpc_asyncio",
-    request_type=serving_config_service.AddControlRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        serving_config_service.AddControlRequest(),
+        {},
+    ],
+)
+async def test_add_control_async(request_type, transport: str = "grpc_asyncio"):
     client = ServingConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3743,7 +3767,7 @@ async def test_add_control_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.add_control), "__call__") as call:
@@ -3803,11 +3827,6 @@ async def test_add_control_async(
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-
-
-@pytest.mark.asyncio
-async def test_add_control_async_from_dict():
-    await test_add_control_async(request_type=dict)
 
 
 def test_add_control_field_headers():
@@ -3956,8 +3975,8 @@ async def test_add_control_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        serving_config_service.RemoveControlRequest,
-        dict,
+        serving_config_service.RemoveControlRequest(),
+        {},
     ],
 )
 def test_remove_control(request_type, transport: str = "grpc"):
@@ -3968,7 +3987,7 @@ def test_remove_control(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.remove_control), "__call__") as call:
@@ -4052,10 +4071,11 @@ def test_remove_control_non_empty_request_with_auto_populated_field():
         client.remove_control(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == serving_config_service.RemoveControlRequest(
+        request_msg = serving_config_service.RemoveControlRequest(
             serving_config="serving_config_value",
             control_id="control_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_remove_control_use_cached_wrapped_rpc():
@@ -4136,10 +4156,14 @@ async def test_remove_control_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_remove_control_async(
-    transport: str = "grpc_asyncio",
-    request_type=serving_config_service.RemoveControlRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        serving_config_service.RemoveControlRequest(),
+        {},
+    ],
+)
+async def test_remove_control_async(request_type, transport: str = "grpc_asyncio"):
     client = ServingConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4147,7 +4171,7 @@ async def test_remove_control_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.remove_control), "__call__") as call:
@@ -4207,11 +4231,6 @@ async def test_remove_control_async(
     assert response.enable_category_filter_level == "enable_category_filter_level_value"
     assert response.ignore_recs_denylist is True
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-
-
-@pytest.mark.asyncio
-async def test_remove_control_async_from_dict():
-    await test_remove_control_async(request_type=dict)
 
 
 def test_remove_control_field_headers():
@@ -4486,7 +4505,7 @@ def test_create_serving_config_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_serving_config_rest_unset_required_fields():
@@ -4681,7 +4700,7 @@ def test_delete_serving_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_serving_config_rest_unset_required_fields():
@@ -4862,7 +4881,7 @@ def test_update_serving_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_serving_config_rest_unset_required_fields():
@@ -5050,7 +5069,7 @@ def test_get_serving_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_serving_config_rest_unset_required_fields():
@@ -5243,7 +5262,7 @@ def test_list_serving_configs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_serving_configs_rest_unset_required_fields():
@@ -5382,6 +5401,9 @@ def test_list_serving_configs_rest_pager(transport: str = "rest"):
 
         pager = client.list_serving_configs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, serving_config.ServingConfig) for i in results)
@@ -5504,7 +5526,7 @@ def test_add_control_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_control_rest_unset_required_fields():
@@ -5697,7 +5719,7 @@ def test_remove_control_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_remove_control_rest_unset_required_fields():
@@ -5902,7 +5924,6 @@ def test_create_serving_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.CreateServingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5925,7 +5946,6 @@ def test_delete_serving_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.DeleteServingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5948,7 +5968,6 @@ def test_update_serving_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.UpdateServingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5971,7 +5990,6 @@ def test_get_serving_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.GetServingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5994,7 +6012,6 @@ def test_list_serving_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.ListServingConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6015,7 +6032,6 @@ def test_add_control_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.AddControlRequest()
-
         assert args[0] == request_msg
 
 
@@ -6036,7 +6052,6 @@ def test_remove_control_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.RemoveControlRequest()
-
         assert args[0] == request_msg
 
 
@@ -6096,7 +6111,6 @@ async def test_create_serving_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.CreateServingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -6121,7 +6135,6 @@ async def test_delete_serving_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.DeleteServingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -6167,7 +6180,6 @@ async def test_update_serving_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.UpdateServingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -6213,7 +6225,6 @@ async def test_get_serving_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.GetServingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -6242,7 +6253,6 @@ async def test_list_serving_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.ListServingConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6286,7 +6296,6 @@ async def test_add_control_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.AddControlRequest()
-
         assert args[0] == request_msg
 
 
@@ -6330,7 +6339,6 @@ async def test_remove_control_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.RemoveControlRequest()
-
         assert args[0] == request_msg
 
 
@@ -7848,7 +7856,6 @@ def test_create_serving_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.CreateServingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7870,7 +7877,6 @@ def test_delete_serving_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.DeleteServingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7892,7 +7898,6 @@ def test_update_serving_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.UpdateServingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7914,7 +7919,6 @@ def test_get_serving_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.GetServingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7936,7 +7940,6 @@ def test_list_serving_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.ListServingConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7956,7 +7959,6 @@ def test_add_control_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.AddControlRequest()
-
         assert args[0] == request_msg
 
 
@@ -7976,7 +7978,6 @@ def test_remove_control_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = serving_config_service.RemoveControlRequest()
-
         assert args[0] == request_msg
 
 

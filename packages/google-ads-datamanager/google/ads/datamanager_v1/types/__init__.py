@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,11 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .ad_event import (
+    AdEvent,
+    AdFormat,
+    AdPlacement,
+    AdType,
+    AttributionHint,
+    Platform,
+    PlatformType,
+    TargetingType,
+)
 from .age_range import (
     AgeRange,
 )
 from .audience import (
     AudienceMember,
+    CompositeData,
+    IpData,
     MobileData,
     PairData,
     PpidData,
@@ -26,6 +38,7 @@ from .audience import (
 from .cart_data import (
     CartData,
     Item,
+    ItemCustomVariable,
 )
 from .consent import (
     Consent,
@@ -39,8 +52,12 @@ from .destination import (
 from .device_info import (
     DeviceInfo,
 )
+from .encrypted_user_id import (
+    EncryptedUserId,
+)
 from .encryption_info import (
     AwsWrappedKeyInfo,
+    CoordinatorKeyInfo,
     EncryptionInfo,
     GcpWrappedKeyInfo,
 )
@@ -51,6 +68,7 @@ from .event import (
     AdIdentifiers,
     CustomVariable,
     Event,
+    EventLocation,
     EventParameter,
     EventSource,
 )
@@ -62,6 +80,8 @@ from .gender import (
 )
 from .ingestion_service import (
     Encoding,
+    IngestAdEventsRequest,
+    IngestAdEventsResponse,
     IngestAudienceMembersRequest,
     IngestAudienceMembersResponse,
     IngestEventsRequest,
@@ -85,7 +105,10 @@ from .match_rate import (
 from .partner_link_service import (
     CreatePartnerLinkRequest,
     DeletePartnerLinkRequest,
+    FeatureSet,
+    PartnerCustomerAccount,
     PartnerLink,
+    PartnerLinkMetadata,
     SearchPartnerLinksRequest,
     SearchPartnerLinksResponse,
 )
@@ -174,33 +197,54 @@ from .user_properties import (
     UserProperties,
     UserProperty,
 )
+from .viewability_info import (
+    MediaQuartile,
+    ViewabilityInfo,
+    ViewType,
+)
 
 __all__ = (
+    "AdEvent",
+    "AdFormat",
+    "AdPlacement",
+    "AdType",
+    "AttributionHint",
+    "Platform",
+    "PlatformType",
+    "TargetingType",
     "AgeRange",
     "AudienceMember",
+    "CompositeData",
+    "IpData",
     "MobileData",
     "PairData",
     "PpidData",
     "UserIdData",
     "CartData",
     "Item",
+    "ItemCustomVariable",
     "Consent",
     "ConsentStatus",
     "Destination",
     "ProductAccount",
     "Product",
     "DeviceInfo",
+    "EncryptedUserId",
     "AwsWrappedKeyInfo",
+    "CoordinatorKeyInfo",
     "EncryptionInfo",
     "GcpWrappedKeyInfo",
     "ErrorReason",
     "AdIdentifiers",
     "CustomVariable",
     "Event",
+    "EventLocation",
     "EventParameter",
     "EventSource",
     "ExperimentalField",
     "Gender",
+    "IngestAdEventsRequest",
+    "IngestAdEventsResponse",
     "IngestAudienceMembersRequest",
     "IngestAudienceMembersResponse",
     "IngestEventsRequest",
@@ -217,9 +261,12 @@ __all__ = (
     "MatchRateRange",
     "CreatePartnerLinkRequest",
     "DeletePartnerLinkRequest",
+    "PartnerCustomerAccount",
     "PartnerLink",
+    "PartnerLinkMetadata",
     "SearchPartnerLinksRequest",
     "SearchPartnerLinksResponse",
+    "FeatureSet",
     "ErrorCount",
     "ErrorInfo",
     "WarningCount",
@@ -273,4 +320,7 @@ __all__ = (
     "UserProperty",
     "CustomerType",
     "CustomerValueBucket",
+    "ViewabilityInfo",
+    "MediaQuartile",
+    "ViewType",
 )

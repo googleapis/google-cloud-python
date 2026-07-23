@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -85,6 +85,10 @@ class ParticipantsAsyncClient:
 
     answer_record_path = staticmethod(ParticipantsClient.answer_record_path)
     parse_answer_record_path = staticmethod(ParticipantsClient.parse_answer_record_path)
+    app_path = staticmethod(ParticipantsClient.app_path)
+    parse_app_path = staticmethod(ParticipantsClient.parse_app_path)
+    ces_tool_path = staticmethod(ParticipantsClient.ces_tool_path)
+    parse_ces_tool_path = staticmethod(ParticipantsClient.parse_ces_tool_path)
     context_path = staticmethod(ParticipantsClient.context_path)
     parse_context_path = staticmethod(ParticipantsClient.parse_context_path)
     intent_path = staticmethod(ParticipantsClient.intent_path)
@@ -101,6 +105,8 @@ class ParticipantsAsyncClient:
     )
     tool_path = staticmethod(ParticipantsClient.tool_path)
     parse_tool_path = staticmethod(ParticipantsClient.parse_tool_path)
+    toolset_path = staticmethod(ParticipantsClient.toolset_path)
+    parse_toolset_path = staticmethod(ParticipantsClient.parse_toolset_path)
     common_billing_account_path = staticmethod(
         ParticipantsClient.common_billing_account_path
     )
@@ -1077,8 +1083,14 @@ class ParticipantsAsyncClient:
                    1. If the input was set to streaming audio, the first
                       one or more messages contain recognition_result.
                       Each recognition_result represents a more complete
-                      transcript of what the user said. The last
-                      recognition_result has is_final set to true.
+                      transcript of what the user said. When a user
+                      speaks multiple sentences, the API will emit
+                      multiple messages where is_final = true. Each time
+                      the system detects a distinct pause or completed
+                      thought, it locks in that segment, marks it
+                      is_final = true, and then immediately starts a new
+                      recognition cycle for the next sentence on the
+                      same stream.
 
                    2. In virtual agent stage: if
                       enable_partial_automated_agent_reply is true, the

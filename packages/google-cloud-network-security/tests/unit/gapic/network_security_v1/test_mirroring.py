@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -125,6 +120,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1284,8 +1294,8 @@ def test_mirroring_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.ListMirroringEndpointGroupsRequest,
-        dict,
+        mirroring.ListMirroringEndpointGroupsRequest(),
+        {},
     ],
 )
 def test_list_mirroring_endpoint_groups(request_type, transport: str = "grpc"):
@@ -1296,7 +1306,7 @@ def test_list_mirroring_endpoint_groups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1347,12 +1357,13 @@ def test_list_mirroring_endpoint_groups_non_empty_request_with_auto_populated_fi
         client.list_mirroring_endpoint_groups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.ListMirroringEndpointGroupsRequest(
+        request_msg = mirroring.ListMirroringEndpointGroupsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_mirroring_endpoint_groups_use_cached_wrapped_rpc():
@@ -1438,9 +1449,15 @@ async def test_list_mirroring_endpoint_groups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.ListMirroringEndpointGroupsRequest(),
+        {},
+    ],
+)
 async def test_list_mirroring_endpoint_groups_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.ListMirroringEndpointGroupsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1449,7 +1466,7 @@ async def test_list_mirroring_endpoint_groups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1472,11 +1489,6 @@ async def test_list_mirroring_endpoint_groups_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMirroringEndpointGroupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_mirroring_endpoint_groups_async_from_dict():
-    await test_list_mirroring_endpoint_groups_async(request_type=dict)
 
 
 def test_list_mirroring_endpoint_groups_field_headers():
@@ -1683,6 +1695,9 @@ def test_list_mirroring_endpoint_groups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, mirroring.MirroringEndpointGroup) for i in results)
@@ -1775,6 +1790,8 @@ async def test_list_mirroring_endpoint_groups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1824,9 +1841,7 @@ async def test_list_mirroring_endpoint_groups_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_mirroring_endpoint_groups(request={})
         ).pages:
             pages.append(page_)
@@ -1837,8 +1852,8 @@ async def test_list_mirroring_endpoint_groups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.GetMirroringEndpointGroupRequest,
-        dict,
+        mirroring.GetMirroringEndpointGroupRequest(),
+        {},
     ],
 )
 def test_get_mirroring_endpoint_group(request_type, transport: str = "grpc"):
@@ -1849,7 +1864,7 @@ def test_get_mirroring_endpoint_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1907,9 +1922,10 @@ def test_get_mirroring_endpoint_group_non_empty_request_with_auto_populated_fiel
         client.get_mirroring_endpoint_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.GetMirroringEndpointGroupRequest(
+        request_msg = mirroring.GetMirroringEndpointGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_mirroring_endpoint_group_use_cached_wrapped_rpc():
@@ -1995,9 +2011,15 @@ async def test_get_mirroring_endpoint_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.GetMirroringEndpointGroupRequest(),
+        {},
+    ],
+)
 async def test_get_mirroring_endpoint_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.GetMirroringEndpointGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2006,7 +2028,7 @@ async def test_get_mirroring_endpoint_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2039,11 +2061,6 @@ async def test_get_mirroring_endpoint_group_async(
     assert response.reconciling is True
     assert response.type_ == mirroring.MirroringEndpointGroup.Type.DIRECT
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_mirroring_endpoint_group_async_from_dict():
-    await test_get_mirroring_endpoint_group_async(request_type=dict)
 
 
 def test_get_mirroring_endpoint_group_field_headers():
@@ -2200,8 +2217,8 @@ async def test_get_mirroring_endpoint_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.CreateMirroringEndpointGroupRequest,
-        dict,
+        mirroring.CreateMirroringEndpointGroupRequest(),
+        {},
     ],
 )
 def test_create_mirroring_endpoint_group(request_type, transport: str = "grpc"):
@@ -2212,7 +2229,7 @@ def test_create_mirroring_endpoint_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2258,10 +2275,11 @@ def test_create_mirroring_endpoint_group_non_empty_request_with_auto_populated_f
         client.create_mirroring_endpoint_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.CreateMirroringEndpointGroupRequest(
+        request_msg = mirroring.CreateMirroringEndpointGroupRequest(
             parent="parent_value",
             mirroring_endpoint_group_id="mirroring_endpoint_group_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_mirroring_endpoint_group_use_cached_wrapped_rpc():
@@ -2357,9 +2375,15 @@ async def test_create_mirroring_endpoint_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.CreateMirroringEndpointGroupRequest(),
+        {},
+    ],
+)
 async def test_create_mirroring_endpoint_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.CreateMirroringEndpointGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2368,7 +2392,7 @@ async def test_create_mirroring_endpoint_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2388,11 +2412,6 @@ async def test_create_mirroring_endpoint_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_mirroring_endpoint_group_async_from_dict():
-    await test_create_mirroring_endpoint_group_async(request_type=dict)
 
 
 def test_create_mirroring_endpoint_group_field_headers():
@@ -2577,8 +2596,8 @@ async def test_create_mirroring_endpoint_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.UpdateMirroringEndpointGroupRequest,
-        dict,
+        mirroring.UpdateMirroringEndpointGroupRequest(),
+        {},
     ],
 )
 def test_update_mirroring_endpoint_group(request_type, transport: str = "grpc"):
@@ -2589,7 +2608,7 @@ def test_update_mirroring_endpoint_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2632,7 +2651,8 @@ def test_update_mirroring_endpoint_group_non_empty_request_with_auto_populated_f
         client.update_mirroring_endpoint_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.UpdateMirroringEndpointGroupRequest()
+        request_msg = mirroring.UpdateMirroringEndpointGroupRequest()
+        assert args[0] == request_msg
 
 
 def test_update_mirroring_endpoint_group_use_cached_wrapped_rpc():
@@ -2728,9 +2748,15 @@ async def test_update_mirroring_endpoint_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.UpdateMirroringEndpointGroupRequest(),
+        {},
+    ],
+)
 async def test_update_mirroring_endpoint_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.UpdateMirroringEndpointGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2739,7 +2765,7 @@ async def test_update_mirroring_endpoint_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2759,11 +2785,6 @@ async def test_update_mirroring_endpoint_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_mirroring_endpoint_group_async_from_dict():
-    await test_update_mirroring_endpoint_group_async(request_type=dict)
 
 
 def test_update_mirroring_endpoint_group_field_headers():
@@ -2938,8 +2959,8 @@ async def test_update_mirroring_endpoint_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.DeleteMirroringEndpointGroupRequest,
-        dict,
+        mirroring.DeleteMirroringEndpointGroupRequest(),
+        {},
     ],
 )
 def test_delete_mirroring_endpoint_group(request_type, transport: str = "grpc"):
@@ -2950,7 +2971,7 @@ def test_delete_mirroring_endpoint_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2995,9 +3016,10 @@ def test_delete_mirroring_endpoint_group_non_empty_request_with_auto_populated_f
         client.delete_mirroring_endpoint_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.DeleteMirroringEndpointGroupRequest(
+        request_msg = mirroring.DeleteMirroringEndpointGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_mirroring_endpoint_group_use_cached_wrapped_rpc():
@@ -3093,9 +3115,15 @@ async def test_delete_mirroring_endpoint_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.DeleteMirroringEndpointGroupRequest(),
+        {},
+    ],
+)
 async def test_delete_mirroring_endpoint_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.DeleteMirroringEndpointGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3104,7 +3132,7 @@ async def test_delete_mirroring_endpoint_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3124,11 +3152,6 @@ async def test_delete_mirroring_endpoint_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_mirroring_endpoint_group_async_from_dict():
-    await test_delete_mirroring_endpoint_group_async(request_type=dict)
 
 
 def test_delete_mirroring_endpoint_group_field_headers():
@@ -3285,8 +3308,8 @@ async def test_delete_mirroring_endpoint_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.ListMirroringEndpointGroupAssociationsRequest,
-        dict,
+        mirroring.ListMirroringEndpointGroupAssociationsRequest(),
+        {},
     ],
 )
 def test_list_mirroring_endpoint_group_associations(
@@ -3299,7 +3322,7 @@ def test_list_mirroring_endpoint_group_associations(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3350,12 +3373,13 @@ def test_list_mirroring_endpoint_group_associations_non_empty_request_with_auto_
         client.list_mirroring_endpoint_group_associations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.ListMirroringEndpointGroupAssociationsRequest(
+        request_msg = mirroring.ListMirroringEndpointGroupAssociationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_mirroring_endpoint_group_associations_use_cached_wrapped_rpc():
@@ -3441,9 +3465,15 @@ async def test_list_mirroring_endpoint_group_associations_async_use_cached_wrapp
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.ListMirroringEndpointGroupAssociationsRequest(),
+        {},
+    ],
+)
 async def test_list_mirroring_endpoint_group_associations_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.ListMirroringEndpointGroupAssociationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3452,7 +3482,7 @@ async def test_list_mirroring_endpoint_group_associations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3475,11 +3505,6 @@ async def test_list_mirroring_endpoint_group_associations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMirroringEndpointGroupAssociationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_mirroring_endpoint_group_associations_async_from_dict():
-    await test_list_mirroring_endpoint_group_associations_async(request_type=dict)
 
 
 def test_list_mirroring_endpoint_group_associations_field_headers():
@@ -3686,6 +3711,9 @@ def test_list_mirroring_endpoint_group_associations_pager(transport_name: str = 
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -3782,6 +3810,8 @@ async def test_list_mirroring_endpoint_group_associations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3834,9 +3864,7 @@ async def test_list_mirroring_endpoint_group_associations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_mirroring_endpoint_group_associations(request={})
         ).pages:
             pages.append(page_)
@@ -3847,8 +3875,8 @@ async def test_list_mirroring_endpoint_group_associations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.GetMirroringEndpointGroupAssociationRequest,
-        dict,
+        mirroring.GetMirroringEndpointGroupAssociationRequest(),
+        {},
     ],
 )
 def test_get_mirroring_endpoint_group_association(
@@ -3861,7 +3889,7 @@ def test_get_mirroring_endpoint_group_association(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3917,9 +3945,10 @@ def test_get_mirroring_endpoint_group_association_non_empty_request_with_auto_po
         client.get_mirroring_endpoint_group_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.GetMirroringEndpointGroupAssociationRequest(
+        request_msg = mirroring.GetMirroringEndpointGroupAssociationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_mirroring_endpoint_group_association_use_cached_wrapped_rpc():
@@ -4005,9 +4034,15 @@ async def test_get_mirroring_endpoint_group_association_async_use_cached_wrapped
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.GetMirroringEndpointGroupAssociationRequest(),
+        {},
+    ],
+)
 async def test_get_mirroring_endpoint_group_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.GetMirroringEndpointGroupAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4016,7 +4051,7 @@ async def test_get_mirroring_endpoint_group_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4047,11 +4082,6 @@ async def test_get_mirroring_endpoint_group_association_async(
     assert response.network == "network_value"
     assert response.state == mirroring.MirroringEndpointGroupAssociation.State.ACTIVE
     assert response.reconciling is True
-
-
-@pytest.mark.asyncio
-async def test_get_mirroring_endpoint_group_association_async_from_dict():
-    await test_get_mirroring_endpoint_group_association_async(request_type=dict)
 
 
 def test_get_mirroring_endpoint_group_association_field_headers():
@@ -4208,8 +4238,8 @@ async def test_get_mirroring_endpoint_group_association_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.CreateMirroringEndpointGroupAssociationRequest,
-        dict,
+        mirroring.CreateMirroringEndpointGroupAssociationRequest(),
+        {},
     ],
 )
 def test_create_mirroring_endpoint_group_association(
@@ -4222,7 +4252,7 @@ def test_create_mirroring_endpoint_group_association(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4268,10 +4298,11 @@ def test_create_mirroring_endpoint_group_association_non_empty_request_with_auto
         client.create_mirroring_endpoint_group_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.CreateMirroringEndpointGroupAssociationRequest(
+        request_msg = mirroring.CreateMirroringEndpointGroupAssociationRequest(
             parent="parent_value",
             mirroring_endpoint_group_association_id="mirroring_endpoint_group_association_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_mirroring_endpoint_group_association_use_cached_wrapped_rpc():
@@ -4367,9 +4398,15 @@ async def test_create_mirroring_endpoint_group_association_async_use_cached_wrap
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.CreateMirroringEndpointGroupAssociationRequest(),
+        {},
+    ],
+)
 async def test_create_mirroring_endpoint_group_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.CreateMirroringEndpointGroupAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4378,7 +4415,7 @@ async def test_create_mirroring_endpoint_group_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4398,11 +4435,6 @@ async def test_create_mirroring_endpoint_group_association_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_mirroring_endpoint_group_association_async_from_dict():
-    await test_create_mirroring_endpoint_group_association_async(request_type=dict)
 
 
 def test_create_mirroring_endpoint_group_association_field_headers():
@@ -4587,8 +4619,8 @@ async def test_create_mirroring_endpoint_group_association_flattened_error_async
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.UpdateMirroringEndpointGroupAssociationRequest,
-        dict,
+        mirroring.UpdateMirroringEndpointGroupAssociationRequest(),
+        {},
     ],
 )
 def test_update_mirroring_endpoint_group_association(
@@ -4601,7 +4633,7 @@ def test_update_mirroring_endpoint_group_association(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4644,7 +4676,8 @@ def test_update_mirroring_endpoint_group_association_non_empty_request_with_auto
         client.update_mirroring_endpoint_group_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.UpdateMirroringEndpointGroupAssociationRequest()
+        request_msg = mirroring.UpdateMirroringEndpointGroupAssociationRequest()
+        assert args[0] == request_msg
 
 
 def test_update_mirroring_endpoint_group_association_use_cached_wrapped_rpc():
@@ -4740,9 +4773,15 @@ async def test_update_mirroring_endpoint_group_association_async_use_cached_wrap
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.UpdateMirroringEndpointGroupAssociationRequest(),
+        {},
+    ],
+)
 async def test_update_mirroring_endpoint_group_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.UpdateMirroringEndpointGroupAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4751,7 +4790,7 @@ async def test_update_mirroring_endpoint_group_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4771,11 +4810,6 @@ async def test_update_mirroring_endpoint_group_association_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_mirroring_endpoint_group_association_async_from_dict():
-    await test_update_mirroring_endpoint_group_association_async(request_type=dict)
 
 
 def test_update_mirroring_endpoint_group_association_field_headers():
@@ -4950,8 +4984,8 @@ async def test_update_mirroring_endpoint_group_association_flattened_error_async
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.DeleteMirroringEndpointGroupAssociationRequest,
-        dict,
+        mirroring.DeleteMirroringEndpointGroupAssociationRequest(),
+        {},
     ],
 )
 def test_delete_mirroring_endpoint_group_association(
@@ -4964,7 +4998,7 @@ def test_delete_mirroring_endpoint_group_association(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5009,9 +5043,10 @@ def test_delete_mirroring_endpoint_group_association_non_empty_request_with_auto
         client.delete_mirroring_endpoint_group_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.DeleteMirroringEndpointGroupAssociationRequest(
+        request_msg = mirroring.DeleteMirroringEndpointGroupAssociationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_mirroring_endpoint_group_association_use_cached_wrapped_rpc():
@@ -5107,9 +5142,15 @@ async def test_delete_mirroring_endpoint_group_association_async_use_cached_wrap
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.DeleteMirroringEndpointGroupAssociationRequest(),
+        {},
+    ],
+)
 async def test_delete_mirroring_endpoint_group_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.DeleteMirroringEndpointGroupAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5118,7 +5159,7 @@ async def test_delete_mirroring_endpoint_group_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5138,11 +5179,6 @@ async def test_delete_mirroring_endpoint_group_association_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_mirroring_endpoint_group_association_async_from_dict():
-    await test_delete_mirroring_endpoint_group_association_async(request_type=dict)
 
 
 def test_delete_mirroring_endpoint_group_association_field_headers():
@@ -5299,8 +5335,8 @@ async def test_delete_mirroring_endpoint_group_association_flattened_error_async
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.ListMirroringDeploymentGroupsRequest,
-        dict,
+        mirroring.ListMirroringDeploymentGroupsRequest(),
+        {},
     ],
 )
 def test_list_mirroring_deployment_groups(request_type, transport: str = "grpc"):
@@ -5311,7 +5347,7 @@ def test_list_mirroring_deployment_groups(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5362,12 +5398,13 @@ def test_list_mirroring_deployment_groups_non_empty_request_with_auto_populated_
         client.list_mirroring_deployment_groups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.ListMirroringDeploymentGroupsRequest(
+        request_msg = mirroring.ListMirroringDeploymentGroupsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_mirroring_deployment_groups_use_cached_wrapped_rpc():
@@ -5453,9 +5490,15 @@ async def test_list_mirroring_deployment_groups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.ListMirroringDeploymentGroupsRequest(),
+        {},
+    ],
+)
 async def test_list_mirroring_deployment_groups_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.ListMirroringDeploymentGroupsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5464,7 +5507,7 @@ async def test_list_mirroring_deployment_groups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5487,11 +5530,6 @@ async def test_list_mirroring_deployment_groups_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMirroringDeploymentGroupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_mirroring_deployment_groups_async_from_dict():
-    await test_list_mirroring_deployment_groups_async(request_type=dict)
 
 
 def test_list_mirroring_deployment_groups_field_headers():
@@ -5698,6 +5736,9 @@ def test_list_mirroring_deployment_groups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, mirroring.MirroringDeploymentGroup) for i in results)
@@ -5790,6 +5831,8 @@ async def test_list_mirroring_deployment_groups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5839,9 +5882,7 @@ async def test_list_mirroring_deployment_groups_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_mirroring_deployment_groups(request={})
         ).pages:
             pages.append(page_)
@@ -5852,8 +5893,8 @@ async def test_list_mirroring_deployment_groups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.GetMirroringDeploymentGroupRequest,
-        dict,
+        mirroring.GetMirroringDeploymentGroupRequest(),
+        {},
     ],
 )
 def test_get_mirroring_deployment_group(request_type, transport: str = "grpc"):
@@ -5864,7 +5905,7 @@ def test_get_mirroring_deployment_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5920,9 +5961,10 @@ def test_get_mirroring_deployment_group_non_empty_request_with_auto_populated_fi
         client.get_mirroring_deployment_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.GetMirroringDeploymentGroupRequest(
+        request_msg = mirroring.GetMirroringDeploymentGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_mirroring_deployment_group_use_cached_wrapped_rpc():
@@ -6008,9 +6050,15 @@ async def test_get_mirroring_deployment_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.GetMirroringDeploymentGroupRequest(),
+        {},
+    ],
+)
 async def test_get_mirroring_deployment_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.GetMirroringDeploymentGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6019,7 +6067,7 @@ async def test_get_mirroring_deployment_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6050,11 +6098,6 @@ async def test_get_mirroring_deployment_group_async(
     assert response.state == mirroring.MirroringDeploymentGroup.State.ACTIVE
     assert response.reconciling is True
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_mirroring_deployment_group_async_from_dict():
-    await test_get_mirroring_deployment_group_async(request_type=dict)
 
 
 def test_get_mirroring_deployment_group_field_headers():
@@ -6211,8 +6254,8 @@ async def test_get_mirroring_deployment_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.CreateMirroringDeploymentGroupRequest,
-        dict,
+        mirroring.CreateMirroringDeploymentGroupRequest(),
+        {},
     ],
 )
 def test_create_mirroring_deployment_group(request_type, transport: str = "grpc"):
@@ -6223,7 +6266,7 @@ def test_create_mirroring_deployment_group(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6269,10 +6312,11 @@ def test_create_mirroring_deployment_group_non_empty_request_with_auto_populated
         client.create_mirroring_deployment_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.CreateMirroringDeploymentGroupRequest(
+        request_msg = mirroring.CreateMirroringDeploymentGroupRequest(
             parent="parent_value",
             mirroring_deployment_group_id="mirroring_deployment_group_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_mirroring_deployment_group_use_cached_wrapped_rpc():
@@ -6368,9 +6412,15 @@ async def test_create_mirroring_deployment_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.CreateMirroringDeploymentGroupRequest(),
+        {},
+    ],
+)
 async def test_create_mirroring_deployment_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.CreateMirroringDeploymentGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6379,7 +6429,7 @@ async def test_create_mirroring_deployment_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6399,11 +6449,6 @@ async def test_create_mirroring_deployment_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_mirroring_deployment_group_async_from_dict():
-    await test_create_mirroring_deployment_group_async(request_type=dict)
 
 
 def test_create_mirroring_deployment_group_field_headers():
@@ -6588,8 +6633,8 @@ async def test_create_mirroring_deployment_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.UpdateMirroringDeploymentGroupRequest,
-        dict,
+        mirroring.UpdateMirroringDeploymentGroupRequest(),
+        {},
     ],
 )
 def test_update_mirroring_deployment_group(request_type, transport: str = "grpc"):
@@ -6600,7 +6645,7 @@ def test_update_mirroring_deployment_group(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6643,7 +6688,8 @@ def test_update_mirroring_deployment_group_non_empty_request_with_auto_populated
         client.update_mirroring_deployment_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.UpdateMirroringDeploymentGroupRequest()
+        request_msg = mirroring.UpdateMirroringDeploymentGroupRequest()
+        assert args[0] == request_msg
 
 
 def test_update_mirroring_deployment_group_use_cached_wrapped_rpc():
@@ -6739,9 +6785,15 @@ async def test_update_mirroring_deployment_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.UpdateMirroringDeploymentGroupRequest(),
+        {},
+    ],
+)
 async def test_update_mirroring_deployment_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.UpdateMirroringDeploymentGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6750,7 +6802,7 @@ async def test_update_mirroring_deployment_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6770,11 +6822,6 @@ async def test_update_mirroring_deployment_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_mirroring_deployment_group_async_from_dict():
-    await test_update_mirroring_deployment_group_async(request_type=dict)
 
 
 def test_update_mirroring_deployment_group_field_headers():
@@ -6949,8 +6996,8 @@ async def test_update_mirroring_deployment_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.DeleteMirroringDeploymentGroupRequest,
-        dict,
+        mirroring.DeleteMirroringDeploymentGroupRequest(),
+        {},
     ],
 )
 def test_delete_mirroring_deployment_group(request_type, transport: str = "grpc"):
@@ -6961,7 +7008,7 @@ def test_delete_mirroring_deployment_group(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7006,9 +7053,10 @@ def test_delete_mirroring_deployment_group_non_empty_request_with_auto_populated
         client.delete_mirroring_deployment_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.DeleteMirroringDeploymentGroupRequest(
+        request_msg = mirroring.DeleteMirroringDeploymentGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_mirroring_deployment_group_use_cached_wrapped_rpc():
@@ -7104,9 +7152,15 @@ async def test_delete_mirroring_deployment_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.DeleteMirroringDeploymentGroupRequest(),
+        {},
+    ],
+)
 async def test_delete_mirroring_deployment_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.DeleteMirroringDeploymentGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7115,7 +7169,7 @@ async def test_delete_mirroring_deployment_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7135,11 +7189,6 @@ async def test_delete_mirroring_deployment_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_mirroring_deployment_group_async_from_dict():
-    await test_delete_mirroring_deployment_group_async(request_type=dict)
 
 
 def test_delete_mirroring_deployment_group_field_headers():
@@ -7296,8 +7345,8 @@ async def test_delete_mirroring_deployment_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.ListMirroringDeploymentsRequest,
-        dict,
+        mirroring.ListMirroringDeploymentsRequest(),
+        {},
     ],
 )
 def test_list_mirroring_deployments(request_type, transport: str = "grpc"):
@@ -7308,7 +7357,7 @@ def test_list_mirroring_deployments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7361,12 +7410,13 @@ def test_list_mirroring_deployments_non_empty_request_with_auto_populated_field(
         client.list_mirroring_deployments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.ListMirroringDeploymentsRequest(
+        request_msg = mirroring.ListMirroringDeploymentsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_mirroring_deployments_use_cached_wrapped_rpc():
@@ -7452,9 +7502,15 @@ async def test_list_mirroring_deployments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.ListMirroringDeploymentsRequest(),
+        {},
+    ],
+)
 async def test_list_mirroring_deployments_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.ListMirroringDeploymentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7463,7 +7519,7 @@ async def test_list_mirroring_deployments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7488,11 +7544,6 @@ async def test_list_mirroring_deployments_async(
     assert isinstance(response, pagers.ListMirroringDeploymentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_mirroring_deployments_async_from_dict():
-    await test_list_mirroring_deployments_async(request_type=dict)
 
 
 def test_list_mirroring_deployments_field_headers():
@@ -7699,6 +7750,9 @@ def test_list_mirroring_deployments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, mirroring.MirroringDeployment) for i in results)
@@ -7791,6 +7845,8 @@ async def test_list_mirroring_deployments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7840,11 +7896,7 @@ async def test_list_mirroring_deployments_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_mirroring_deployments(request={})
-        ).pages:
+        async for page_ in (await client.list_mirroring_deployments(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7853,8 +7905,8 @@ async def test_list_mirroring_deployments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.GetMirroringDeploymentRequest,
-        dict,
+        mirroring.GetMirroringDeploymentRequest(),
+        {},
     ],
 )
 def test_get_mirroring_deployment(request_type, transport: str = "grpc"):
@@ -7865,7 +7917,7 @@ def test_get_mirroring_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7923,9 +7975,10 @@ def test_get_mirroring_deployment_non_empty_request_with_auto_populated_field():
         client.get_mirroring_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.GetMirroringDeploymentRequest(
+        request_msg = mirroring.GetMirroringDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_mirroring_deployment_use_cached_wrapped_rpc():
@@ -8011,9 +8064,15 @@ async def test_get_mirroring_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.GetMirroringDeploymentRequest(),
+        {},
+    ],
+)
 async def test_get_mirroring_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.GetMirroringDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8022,7 +8081,7 @@ async def test_get_mirroring_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8055,11 +8114,6 @@ async def test_get_mirroring_deployment_async(
     assert response.state == mirroring.MirroringDeployment.State.ACTIVE
     assert response.reconciling is True
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_mirroring_deployment_async_from_dict():
-    await test_get_mirroring_deployment_async(request_type=dict)
 
 
 def test_get_mirroring_deployment_field_headers():
@@ -8216,8 +8270,8 @@ async def test_get_mirroring_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.CreateMirroringDeploymentRequest,
-        dict,
+        mirroring.CreateMirroringDeploymentRequest(),
+        {},
     ],
 )
 def test_create_mirroring_deployment(request_type, transport: str = "grpc"):
@@ -8228,7 +8282,7 @@ def test_create_mirroring_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8274,10 +8328,11 @@ def test_create_mirroring_deployment_non_empty_request_with_auto_populated_field
         client.create_mirroring_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.CreateMirroringDeploymentRequest(
+        request_msg = mirroring.CreateMirroringDeploymentRequest(
             parent="parent_value",
             mirroring_deployment_id="mirroring_deployment_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_mirroring_deployment_use_cached_wrapped_rpc():
@@ -8373,9 +8428,15 @@ async def test_create_mirroring_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.CreateMirroringDeploymentRequest(),
+        {},
+    ],
+)
 async def test_create_mirroring_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.CreateMirroringDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8384,7 +8445,7 @@ async def test_create_mirroring_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8404,11 +8465,6 @@ async def test_create_mirroring_deployment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_mirroring_deployment_async_from_dict():
-    await test_create_mirroring_deployment_async(request_type=dict)
 
 
 def test_create_mirroring_deployment_field_headers():
@@ -8585,8 +8641,8 @@ async def test_create_mirroring_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.UpdateMirroringDeploymentRequest,
-        dict,
+        mirroring.UpdateMirroringDeploymentRequest(),
+        {},
     ],
 )
 def test_update_mirroring_deployment(request_type, transport: str = "grpc"):
@@ -8597,7 +8653,7 @@ def test_update_mirroring_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8640,7 +8696,8 @@ def test_update_mirroring_deployment_non_empty_request_with_auto_populated_field
         client.update_mirroring_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.UpdateMirroringDeploymentRequest()
+        request_msg = mirroring.UpdateMirroringDeploymentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_mirroring_deployment_use_cached_wrapped_rpc():
@@ -8736,9 +8793,15 @@ async def test_update_mirroring_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.UpdateMirroringDeploymentRequest(),
+        {},
+    ],
+)
 async def test_update_mirroring_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.UpdateMirroringDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8747,7 +8810,7 @@ async def test_update_mirroring_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8767,11 +8830,6 @@ async def test_update_mirroring_deployment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_mirroring_deployment_async_from_dict():
-    await test_update_mirroring_deployment_async(request_type=dict)
 
 
 def test_update_mirroring_deployment_field_headers():
@@ -8938,8 +8996,8 @@ async def test_update_mirroring_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        mirroring.DeleteMirroringDeploymentRequest,
-        dict,
+        mirroring.DeleteMirroringDeploymentRequest(),
+        {},
     ],
 )
 def test_delete_mirroring_deployment(request_type, transport: str = "grpc"):
@@ -8950,7 +9008,7 @@ def test_delete_mirroring_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8995,9 +9053,10 @@ def test_delete_mirroring_deployment_non_empty_request_with_auto_populated_field
         client.delete_mirroring_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == mirroring.DeleteMirroringDeploymentRequest(
+        request_msg = mirroring.DeleteMirroringDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_mirroring_deployment_use_cached_wrapped_rpc():
@@ -9093,9 +9152,15 @@ async def test_delete_mirroring_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        mirroring.DeleteMirroringDeploymentRequest(),
+        {},
+    ],
+)
 async def test_delete_mirroring_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=mirroring.DeleteMirroringDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MirroringAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9104,7 +9169,7 @@ async def test_delete_mirroring_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9124,11 +9189,6 @@ async def test_delete_mirroring_deployment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_mirroring_deployment_async_from_dict():
-    await test_delete_mirroring_deployment_async(request_type=dict)
 
 
 def test_delete_mirroring_deployment_field_headers():
@@ -9406,7 +9466,7 @@ def test_list_mirroring_endpoint_groups_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_mirroring_endpoint_groups_rest_unset_required_fields():
@@ -9542,6 +9602,9 @@ def test_list_mirroring_endpoint_groups_rest_pager(transport: str = "rest"):
 
         pager = client.list_mirroring_endpoint_groups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, mirroring.MirroringEndpointGroup) for i in results)
@@ -9666,7 +9729,7 @@ def test_get_mirroring_endpoint_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_mirroring_endpoint_group_rest_unset_required_fields():
@@ -9879,7 +9942,7 @@ def test_create_mirroring_endpoint_group_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_mirroring_endpoint_group_rest_unset_required_fields():
@@ -10088,7 +10151,7 @@ def test_update_mirroring_endpoint_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_mirroring_endpoint_group_rest_unset_required_fields():
@@ -10292,7 +10355,7 @@ def test_delete_mirroring_endpoint_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_mirroring_endpoint_group_rest_unset_required_fields():
@@ -10492,7 +10555,7 @@ def test_list_mirroring_endpoint_group_associations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_mirroring_endpoint_group_associations_rest_unset_required_fields():
@@ -10637,6 +10700,9 @@ def test_list_mirroring_endpoint_group_associations_rest_pager(transport: str = 
             request=sample_request
         )
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -10769,7 +10835,7 @@ def test_get_mirroring_endpoint_group_association_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_mirroring_endpoint_group_association_rest_unset_required_fields():
@@ -10973,7 +11039,7 @@ def test_create_mirroring_endpoint_group_association_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_mirroring_endpoint_group_association_rest_unset_required_fields():
@@ -11187,7 +11253,7 @@ def test_update_mirroring_endpoint_group_association_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_mirroring_endpoint_group_association_rest_unset_required_fields():
@@ -11397,7 +11463,7 @@ def test_delete_mirroring_endpoint_group_association_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_mirroring_endpoint_group_association_rest_unset_required_fields():
@@ -11595,7 +11661,7 @@ def test_list_mirroring_deployment_groups_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_mirroring_deployment_groups_rest_unset_required_fields():
@@ -11731,6 +11797,9 @@ def test_list_mirroring_deployment_groups_rest_pager(transport: str = "rest"):
 
         pager = client.list_mirroring_deployment_groups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, mirroring.MirroringDeploymentGroup) for i in results)
@@ -11855,7 +11924,7 @@ def test_get_mirroring_deployment_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_mirroring_deployment_group_rest_unset_required_fields():
@@ -12072,7 +12141,7 @@ def test_create_mirroring_deployment_group_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_mirroring_deployment_group_rest_unset_required_fields():
@@ -12283,7 +12352,7 @@ def test_update_mirroring_deployment_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_mirroring_deployment_group_rest_unset_required_fields():
@@ -12489,7 +12558,7 @@ def test_delete_mirroring_deployment_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_mirroring_deployment_group_rest_unset_required_fields():
@@ -12685,7 +12754,7 @@ def test_list_mirroring_deployments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_mirroring_deployments_rest_unset_required_fields():
@@ -12819,6 +12888,9 @@ def test_list_mirroring_deployments_rest_pager(transport: str = "rest"):
 
         pager = client.list_mirroring_deployments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, mirroring.MirroringDeployment) for i in results)
@@ -12941,7 +13013,7 @@ def test_get_mirroring_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_mirroring_deployment_rest_unset_required_fields():
@@ -13151,7 +13223,7 @@ def test_create_mirroring_deployment_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_mirroring_deployment_rest_unset_required_fields():
@@ -13354,7 +13426,7 @@ def test_update_mirroring_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_mirroring_deployment_rest_unset_required_fields():
@@ -13552,7 +13624,7 @@ def test_delete_mirroring_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_mirroring_deployment_rest_unset_required_fields():
@@ -13747,7 +13819,6 @@ def test_list_mirroring_endpoint_groups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.ListMirroringEndpointGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13770,7 +13841,6 @@ def test_get_mirroring_endpoint_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.GetMirroringEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -13793,7 +13863,6 @@ def test_create_mirroring_endpoint_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.CreateMirroringEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -13816,7 +13885,6 @@ def test_update_mirroring_endpoint_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.UpdateMirroringEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -13839,7 +13907,6 @@ def test_delete_mirroring_endpoint_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.DeleteMirroringEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -13862,7 +13929,6 @@ def test_list_mirroring_endpoint_group_associations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.ListMirroringEndpointGroupAssociationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13885,7 +13951,6 @@ def test_get_mirroring_endpoint_group_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.GetMirroringEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -13908,7 +13973,6 @@ def test_create_mirroring_endpoint_group_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.CreateMirroringEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -13931,7 +13995,6 @@ def test_update_mirroring_endpoint_group_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.UpdateMirroringEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -13954,7 +14017,6 @@ def test_delete_mirroring_endpoint_group_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.DeleteMirroringEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -13977,7 +14039,6 @@ def test_list_mirroring_deployment_groups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.ListMirroringDeploymentGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14000,7 +14061,6 @@ def test_get_mirroring_deployment_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.GetMirroringDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14023,7 +14083,6 @@ def test_create_mirroring_deployment_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.CreateMirroringDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14046,7 +14105,6 @@ def test_update_mirroring_deployment_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.UpdateMirroringDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14069,7 +14127,6 @@ def test_delete_mirroring_deployment_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.DeleteMirroringDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14092,7 +14149,6 @@ def test_list_mirroring_deployments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.ListMirroringDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14115,7 +14171,6 @@ def test_get_mirroring_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.GetMirroringDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14138,7 +14193,6 @@ def test_create_mirroring_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.CreateMirroringDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14161,7 +14215,6 @@ def test_update_mirroring_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.UpdateMirroringDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14184,7 +14237,6 @@ def test_delete_mirroring_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.DeleteMirroringDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14227,7 +14279,6 @@ async def test_list_mirroring_endpoint_groups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.ListMirroringEndpointGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14261,7 +14312,6 @@ async def test_get_mirroring_endpoint_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.GetMirroringEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14288,7 +14338,6 @@ async def test_create_mirroring_endpoint_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.CreateMirroringEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14315,7 +14364,6 @@ async def test_update_mirroring_endpoint_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.UpdateMirroringEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14342,7 +14390,6 @@ async def test_delete_mirroring_endpoint_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.DeleteMirroringEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14371,7 +14418,6 @@ async def test_list_mirroring_endpoint_group_associations_empty_call_grpc_asynci
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.ListMirroringEndpointGroupAssociationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14404,7 +14450,6 @@ async def test_get_mirroring_endpoint_group_association_empty_call_grpc_asyncio(
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.GetMirroringEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14431,7 +14476,6 @@ async def test_create_mirroring_endpoint_group_association_empty_call_grpc_async
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.CreateMirroringEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14458,7 +14502,6 @@ async def test_update_mirroring_endpoint_group_association_empty_call_grpc_async
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.UpdateMirroringEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14485,7 +14528,6 @@ async def test_delete_mirroring_endpoint_group_association_empty_call_grpc_async
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.DeleteMirroringEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14514,7 +14556,6 @@ async def test_list_mirroring_deployment_groups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.ListMirroringDeploymentGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14547,7 +14588,6 @@ async def test_get_mirroring_deployment_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.GetMirroringDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14574,7 +14614,6 @@ async def test_create_mirroring_deployment_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.CreateMirroringDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14601,7 +14640,6 @@ async def test_update_mirroring_deployment_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.UpdateMirroringDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14628,7 +14666,6 @@ async def test_delete_mirroring_deployment_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.DeleteMirroringDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14658,7 +14695,6 @@ async def test_list_mirroring_deployments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.ListMirroringDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14692,7 +14728,6 @@ async def test_get_mirroring_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.GetMirroringDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14719,7 +14754,6 @@ async def test_create_mirroring_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.CreateMirroringDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14746,7 +14780,6 @@ async def test_update_mirroring_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.UpdateMirroringDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14773,7 +14806,6 @@ async def test_delete_mirroring_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.DeleteMirroringDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18751,7 +18783,6 @@ def test_list_mirroring_endpoint_groups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.ListMirroringEndpointGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18773,7 +18804,6 @@ def test_get_mirroring_endpoint_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.GetMirroringEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18795,7 +18825,6 @@ def test_create_mirroring_endpoint_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.CreateMirroringEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18817,7 +18846,6 @@ def test_update_mirroring_endpoint_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.UpdateMirroringEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18839,7 +18867,6 @@ def test_delete_mirroring_endpoint_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.DeleteMirroringEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18861,7 +18888,6 @@ def test_list_mirroring_endpoint_group_associations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.ListMirroringEndpointGroupAssociationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18883,7 +18909,6 @@ def test_get_mirroring_endpoint_group_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.GetMirroringEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18905,7 +18930,6 @@ def test_create_mirroring_endpoint_group_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.CreateMirroringEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18927,7 +18951,6 @@ def test_update_mirroring_endpoint_group_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.UpdateMirroringEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18949,7 +18972,6 @@ def test_delete_mirroring_endpoint_group_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.DeleteMirroringEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18971,7 +18993,6 @@ def test_list_mirroring_deployment_groups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.ListMirroringDeploymentGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18993,7 +19014,6 @@ def test_get_mirroring_deployment_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.GetMirroringDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -19015,7 +19035,6 @@ def test_create_mirroring_deployment_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.CreateMirroringDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -19037,7 +19056,6 @@ def test_update_mirroring_deployment_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.UpdateMirroringDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -19059,7 +19077,6 @@ def test_delete_mirroring_deployment_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.DeleteMirroringDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -19081,7 +19098,6 @@ def test_list_mirroring_deployments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.ListMirroringDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19103,7 +19119,6 @@ def test_get_mirroring_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.GetMirroringDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -19125,7 +19140,6 @@ def test_create_mirroring_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.CreateMirroringDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -19147,7 +19161,6 @@ def test_update_mirroring_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.UpdateMirroringDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -19169,7 +19182,6 @@ def test_delete_mirroring_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = mirroring.DeleteMirroringDeploymentRequest()
-
         assert args[0] == request_msg
 
 

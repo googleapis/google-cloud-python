@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -133,6 +128,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1270,8 +1280,8 @@ def test_agents_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        agent.ListAgentsRequest,
-        dict,
+        agent.ListAgentsRequest(),
+        {},
     ],
 )
 def test_list_agents(request_type, transport: str = "grpc"):
@@ -1282,7 +1292,7 @@ def test_list_agents(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_agents), "__call__") as call:
@@ -1327,10 +1337,11 @@ def test_list_agents_non_empty_request_with_auto_populated_field():
         client.list_agents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == agent.ListAgentsRequest(
+        request_msg = agent.ListAgentsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_agents_use_cached_wrapped_rpc():
@@ -1411,9 +1422,14 @@ async def test_list_agents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_agents_async(
-    transport: str = "grpc_asyncio", request_type=agent.ListAgentsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.ListAgentsRequest(),
+        {},
+    ],
+)
+async def test_list_agents_async(request_type, transport: str = "grpc_asyncio"):
     client = AgentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1421,7 +1437,7 @@ async def test_list_agents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_agents), "__call__") as call:
@@ -1442,11 +1458,6 @@ async def test_list_agents_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAgentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_agents_async_from_dict():
-    await test_list_agents_async(request_type=dict)
 
 
 def test_list_agents_field_headers():
@@ -1641,6 +1652,9 @@ def test_list_agents_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, agent.Agent) for i in results)
@@ -1729,6 +1743,8 @@ async def test_list_agents_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1776,11 +1792,7 @@ async def test_list_agents_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_agents(request={})
-        ).pages:
+        async for page_ in (await client.list_agents(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1789,8 +1801,8 @@ async def test_list_agents_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        agent.GetAgentRequest,
-        dict,
+        agent.GetAgentRequest(),
+        {},
     ],
 )
 def test_get_agent(request_type, transport: str = "grpc"):
@@ -1801,7 +1813,7 @@ def test_get_agent(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_agent), "__call__") as call:
@@ -1872,9 +1884,10 @@ def test_get_agent_non_empty_request_with_auto_populated_field():
         client.get_agent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == agent.GetAgentRequest(
+        request_msg = agent.GetAgentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_agent_use_cached_wrapped_rpc():
@@ -1953,9 +1966,14 @@ async def test_get_agent_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_agent_async(
-    transport: str = "grpc_asyncio", request_type=agent.GetAgentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.GetAgentRequest(),
+        {},
+    ],
+)
+async def test_get_agent_async(request_type, transport: str = "grpc_asyncio"):
     client = AgentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1963,7 +1981,7 @@ async def test_get_agent_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_agent), "__call__") as call:
@@ -2010,11 +2028,6 @@ async def test_get_agent_async(
     assert response.locked is True
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
-
-
-@pytest.mark.asyncio
-async def test_get_agent_async_from_dict():
-    await test_get_agent_async(request_type=dict)
 
 
 def test_get_agent_field_headers():
@@ -2159,8 +2172,8 @@ async def test_get_agent_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_agent.CreateAgentRequest,
-        dict,
+        gcdc_agent.CreateAgentRequest(),
+        {},
     ],
 )
 def test_create_agent(request_type, transport: str = "grpc"):
@@ -2171,7 +2184,7 @@ def test_create_agent(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_agent), "__call__") as call:
@@ -2242,9 +2255,10 @@ def test_create_agent_non_empty_request_with_auto_populated_field():
         client.create_agent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_agent.CreateAgentRequest(
+        request_msg = gcdc_agent.CreateAgentRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_agent_use_cached_wrapped_rpc():
@@ -2325,9 +2339,14 @@ async def test_create_agent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_agent_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_agent.CreateAgentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_agent.CreateAgentRequest(),
+        {},
+    ],
+)
+async def test_create_agent_async(request_type, transport: str = "grpc_asyncio"):
     client = AgentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2335,7 +2354,7 @@ async def test_create_agent_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_agent), "__call__") as call:
@@ -2382,11 +2401,6 @@ async def test_create_agent_async(
     assert response.locked is True
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
-
-
-@pytest.mark.asyncio
-async def test_create_agent_async_from_dict():
-    await test_create_agent_async(request_type=dict)
 
 
 def test_create_agent_field_headers():
@@ -2541,8 +2555,8 @@ async def test_create_agent_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_agent.UpdateAgentRequest,
-        dict,
+        gcdc_agent.UpdateAgentRequest(),
+        {},
     ],
 )
 def test_update_agent(request_type, transport: str = "grpc"):
@@ -2553,7 +2567,7 @@ def test_update_agent(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_agent), "__call__") as call:
@@ -2622,7 +2636,8 @@ def test_update_agent_non_empty_request_with_auto_populated_field():
         client.update_agent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_agent.UpdateAgentRequest()
+        request_msg = gcdc_agent.UpdateAgentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_agent_use_cached_wrapped_rpc():
@@ -2703,9 +2718,14 @@ async def test_update_agent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_agent_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_agent.UpdateAgentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_agent.UpdateAgentRequest(),
+        {},
+    ],
+)
+async def test_update_agent_async(request_type, transport: str = "grpc_asyncio"):
     client = AgentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2713,7 +2733,7 @@ async def test_update_agent_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_agent), "__call__") as call:
@@ -2760,11 +2780,6 @@ async def test_update_agent_async(
     assert response.locked is True
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
-
-
-@pytest.mark.asyncio
-async def test_update_agent_async_from_dict():
-    await test_update_agent_async(request_type=dict)
 
 
 def test_update_agent_field_headers():
@@ -2919,8 +2934,8 @@ async def test_update_agent_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        agent.DeleteAgentRequest,
-        dict,
+        agent.DeleteAgentRequest(),
+        {},
     ],
 )
 def test_delete_agent(request_type, transport: str = "grpc"):
@@ -2931,7 +2946,7 @@ def test_delete_agent(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_agent), "__call__") as call:
@@ -2972,9 +2987,10 @@ def test_delete_agent_non_empty_request_with_auto_populated_field():
         client.delete_agent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == agent.DeleteAgentRequest(
+        request_msg = agent.DeleteAgentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_agent_use_cached_wrapped_rpc():
@@ -3055,9 +3071,14 @@ async def test_delete_agent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_agent_async(
-    transport: str = "grpc_asyncio", request_type=agent.DeleteAgentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.DeleteAgentRequest(),
+        {},
+    ],
+)
+async def test_delete_agent_async(request_type, transport: str = "grpc_asyncio"):
     client = AgentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3065,7 +3086,7 @@ async def test_delete_agent_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_agent), "__call__") as call:
@@ -3081,11 +3102,6 @@ async def test_delete_agent_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_agent_async_from_dict():
-    await test_delete_agent_async(request_type=dict)
 
 
 def test_delete_agent_field_headers():
@@ -3230,8 +3246,8 @@ async def test_delete_agent_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        agent.ExportAgentRequest,
-        dict,
+        agent.ExportAgentRequest(),
+        {},
     ],
 )
 def test_export_agent(request_type, transport: str = "grpc"):
@@ -3242,7 +3258,7 @@ def test_export_agent(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_agent), "__call__") as call:
@@ -3285,11 +3301,12 @@ def test_export_agent_non_empty_request_with_auto_populated_field():
         client.export_agent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == agent.ExportAgentRequest(
+        request_msg = agent.ExportAgentRequest(
             name="name_value",
             agent_uri="agent_uri_value",
             environment="environment_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_agent_use_cached_wrapped_rpc():
@@ -3380,9 +3397,14 @@ async def test_export_agent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_agent_async(
-    transport: str = "grpc_asyncio", request_type=agent.ExportAgentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.ExportAgentRequest(),
+        {},
+    ],
+)
+async def test_export_agent_async(request_type, transport: str = "grpc_asyncio"):
     client = AgentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3390,7 +3412,7 @@ async def test_export_agent_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_agent), "__call__") as call:
@@ -3408,11 +3430,6 @@ async def test_export_agent_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_agent_async_from_dict():
-    await test_export_agent_async(request_type=dict)
 
 
 def test_export_agent_field_headers():
@@ -3479,8 +3496,8 @@ async def test_export_agent_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        agent.RestoreAgentRequest,
-        dict,
+        agent.RestoreAgentRequest(),
+        {},
     ],
 )
 def test_restore_agent(request_type, transport: str = "grpc"):
@@ -3491,7 +3508,7 @@ def test_restore_agent(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_agent), "__call__") as call:
@@ -3533,10 +3550,11 @@ def test_restore_agent_non_empty_request_with_auto_populated_field():
         client.restore_agent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == agent.RestoreAgentRequest(
+        request_msg = agent.RestoreAgentRequest(
             name="name_value",
             agent_uri="agent_uri_value",
         )
+        assert args[0] == request_msg
 
 
 def test_restore_agent_use_cached_wrapped_rpc():
@@ -3627,9 +3645,14 @@ async def test_restore_agent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_restore_agent_async(
-    transport: str = "grpc_asyncio", request_type=agent.RestoreAgentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.RestoreAgentRequest(),
+        {},
+    ],
+)
+async def test_restore_agent_async(request_type, transport: str = "grpc_asyncio"):
     client = AgentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3637,7 +3660,7 @@ async def test_restore_agent_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_agent), "__call__") as call:
@@ -3655,11 +3678,6 @@ async def test_restore_agent_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_restore_agent_async_from_dict():
-    await test_restore_agent_async(request_type=dict)
 
 
 def test_restore_agent_field_headers():
@@ -3726,8 +3744,8 @@ async def test_restore_agent_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        agent.ValidateAgentRequest,
-        dict,
+        agent.ValidateAgentRequest(),
+        {},
     ],
 )
 def test_validate_agent(request_type, transport: str = "grpc"):
@@ -3738,7 +3756,7 @@ def test_validate_agent(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.validate_agent), "__call__") as call:
@@ -3783,10 +3801,11 @@ def test_validate_agent_non_empty_request_with_auto_populated_field():
         client.validate_agent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == agent.ValidateAgentRequest(
+        request_msg = agent.ValidateAgentRequest(
             name="name_value",
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_validate_agent_use_cached_wrapped_rpc():
@@ -3867,9 +3886,14 @@ async def test_validate_agent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_validate_agent_async(
-    transport: str = "grpc_asyncio", request_type=agent.ValidateAgentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.ValidateAgentRequest(),
+        {},
+    ],
+)
+async def test_validate_agent_async(request_type, transport: str = "grpc_asyncio"):
     client = AgentsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3877,7 +3901,7 @@ async def test_validate_agent_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.validate_agent), "__call__") as call:
@@ -3898,11 +3922,6 @@ async def test_validate_agent_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, agent.AgentValidationResult)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_validate_agent_async_from_dict():
-    await test_validate_agent_async(request_type=dict)
 
 
 def test_validate_agent_field_headers():
@@ -3969,8 +3988,8 @@ async def test_validate_agent_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        agent.GetAgentValidationResultRequest,
-        dict,
+        agent.GetAgentValidationResultRequest(),
+        {},
     ],
 )
 def test_get_agent_validation_result(request_type, transport: str = "grpc"):
@@ -3981,7 +4000,7 @@ def test_get_agent_validation_result(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4030,10 +4049,11 @@ def test_get_agent_validation_result_non_empty_request_with_auto_populated_field
         client.get_agent_validation_result(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == agent.GetAgentValidationResultRequest(
+        request_msg = agent.GetAgentValidationResultRequest(
             name="name_value",
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_agent_validation_result_use_cached_wrapped_rpc():
@@ -4119,8 +4139,15 @@ async def test_get_agent_validation_result_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.GetAgentValidationResultRequest(),
+        {},
+    ],
+)
 async def test_get_agent_validation_result_async(
-    transport: str = "grpc_asyncio", request_type=agent.GetAgentValidationResultRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AgentsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4129,7 +4156,7 @@ async def test_get_agent_validation_result_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4152,11 +4179,6 @@ async def test_get_agent_validation_result_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, agent.AgentValidationResult)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_agent_validation_result_async_from_dict():
-    await test_get_agent_validation_result_async(request_type=dict)
 
 
 def test_get_agent_validation_result_field_headers():
@@ -4313,8 +4335,8 @@ async def test_get_agent_validation_result_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        agent.GetGenerativeSettingsRequest,
-        dict,
+        agent.GetGenerativeSettingsRequest(),
+        {},
     ],
 )
 def test_get_generative_settings(request_type, transport: str = "grpc"):
@@ -4325,7 +4347,7 @@ def test_get_generative_settings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4376,10 +4398,11 @@ def test_get_generative_settings_non_empty_request_with_auto_populated_field():
         client.get_generative_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == agent.GetGenerativeSettingsRequest(
+        request_msg = agent.GetGenerativeSettingsRequest(
             name="name_value",
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_generative_settings_use_cached_wrapped_rpc():
@@ -4465,8 +4488,15 @@ async def test_get_generative_settings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.GetGenerativeSettingsRequest(),
+        {},
+    ],
+)
 async def test_get_generative_settings_async(
-    transport: str = "grpc_asyncio", request_type=agent.GetGenerativeSettingsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AgentsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4475,7 +4505,7 @@ async def test_get_generative_settings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4500,11 +4530,6 @@ async def test_get_generative_settings_async(
     assert isinstance(response, generative_settings.GenerativeSettings)
     assert response.name == "name_value"
     assert response.language_code == "language_code_value"
-
-
-@pytest.mark.asyncio
-async def test_get_generative_settings_async_from_dict():
-    await test_get_generative_settings_async(request_type=dict)
 
 
 def test_get_generative_settings_field_headers():
@@ -4671,8 +4696,8 @@ async def test_get_generative_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        agent.UpdateGenerativeSettingsRequest,
-        dict,
+        agent.UpdateGenerativeSettingsRequest(),
+        {},
     ],
 )
 def test_update_generative_settings(request_type, transport: str = "grpc"):
@@ -4683,7 +4708,7 @@ def test_update_generative_settings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4731,7 +4756,8 @@ def test_update_generative_settings_non_empty_request_with_auto_populated_field(
         client.update_generative_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == agent.UpdateGenerativeSettingsRequest()
+        request_msg = agent.UpdateGenerativeSettingsRequest()
+        assert args[0] == request_msg
 
 
 def test_update_generative_settings_use_cached_wrapped_rpc():
@@ -4817,8 +4843,15 @@ async def test_update_generative_settings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.UpdateGenerativeSettingsRequest(),
+        {},
+    ],
+)
 async def test_update_generative_settings_async(
-    transport: str = "grpc_asyncio", request_type=agent.UpdateGenerativeSettingsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AgentsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4827,7 +4860,7 @@ async def test_update_generative_settings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4852,11 +4885,6 @@ async def test_update_generative_settings_async(
     assert isinstance(response, gcdc_generative_settings.GenerativeSettings)
     assert response.name == "name_value"
     assert response.language_code == "language_code_value"
-
-
-@pytest.mark.asyncio
-async def test_update_generative_settings_async_from_dict():
-    await test_update_generative_settings_async(request_type=dict)
 
 
 def test_update_generative_settings_field_headers():
@@ -5141,7 +5169,7 @@ def test_list_agents_rest_required_fields(request_type=agent.ListAgentsRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_agents_rest_unset_required_fields():
@@ -5270,6 +5298,9 @@ def test_list_agents_rest_pager(transport: str = "rest"):
 
         pager = client.list_agents(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, agent.Agent) for i in results)
@@ -5385,7 +5416,7 @@ def test_get_agent_rest_required_fields(request_type=agent.GetAgentRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_agent_rest_unset_required_fields():
@@ -5561,7 +5592,7 @@ def test_create_agent_rest_required_fields(request_type=gcdc_agent.CreateAgentRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_agent_rest_unset_required_fields():
@@ -5744,7 +5775,7 @@ def test_update_agent_rest_required_fields(request_type=gcdc_agent.UpdateAgentRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_agent_rest_unset_required_fields():
@@ -5921,7 +5952,7 @@ def test_delete_agent_rest_required_fields(request_type=agent.DeleteAgentRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_agent_rest_unset_required_fields():
@@ -6096,7 +6127,7 @@ def test_export_agent_rest_required_fields(request_type=agent.ExportAgentRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_export_agent_rest_unset_required_fields():
@@ -6216,7 +6247,7 @@ def test_restore_agent_rest_required_fields(request_type=agent.RestoreAgentReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_restore_agent_rest_unset_required_fields():
@@ -6335,7 +6366,7 @@ def test_validate_agent_rest_required_fields(request_type=agent.ValidateAgentReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_validate_agent_rest_unset_required_fields():
@@ -6462,7 +6493,7 @@ def test_get_agent_validation_result_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_agent_validation_result_rest_unset_required_fields():
@@ -6662,7 +6693,7 @@ def test_get_generative_settings_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_generative_settings_rest_unset_required_fields():
@@ -6855,7 +6886,7 @@ def test_update_generative_settings_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_generative_settings_rest_unset_required_fields():
@@ -7058,7 +7089,6 @@ def test_list_agents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.ListAgentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7079,7 +7109,6 @@ def test_get_agent_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.GetAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -7100,7 +7129,6 @@ def test_create_agent_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_agent.CreateAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -7121,7 +7149,6 @@ def test_update_agent_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_agent.UpdateAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -7142,7 +7169,6 @@ def test_delete_agent_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.DeleteAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -7163,7 +7189,6 @@ def test_export_agent_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.ExportAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -7184,7 +7209,6 @@ def test_restore_agent_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.RestoreAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -7205,7 +7229,6 @@ def test_validate_agent_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.ValidateAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -7228,7 +7251,6 @@ def test_get_agent_validation_result_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.GetAgentValidationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -7251,7 +7273,6 @@ def test_get_generative_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.GetGenerativeSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7274,7 +7295,6 @@ def test_update_generative_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.UpdateGenerativeSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7315,7 +7335,6 @@ async def test_list_agents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.ListAgentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7355,7 +7374,6 @@ async def test_get_agent_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.GetAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -7395,7 +7413,6 @@ async def test_create_agent_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_agent.CreateAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -7435,7 +7452,6 @@ async def test_update_agent_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_agent.UpdateAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -7458,7 +7474,6 @@ async def test_delete_agent_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.DeleteAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -7483,7 +7498,6 @@ async def test_export_agent_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.ExportAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -7508,7 +7522,6 @@ async def test_restore_agent_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.RestoreAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -7535,7 +7548,6 @@ async def test_validate_agent_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.ValidateAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -7564,7 +7576,6 @@ async def test_get_agent_validation_result_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.GetAgentValidationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -7594,7 +7605,6 @@ async def test_get_generative_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.GetGenerativeSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7624,7 +7634,6 @@ async def test_update_generative_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.UpdateGenerativeSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9777,7 +9786,6 @@ def test_list_agents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.ListAgentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9797,7 +9805,6 @@ def test_get_agent_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.GetAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9817,7 +9824,6 @@ def test_create_agent_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_agent.CreateAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9837,7 +9843,6 @@ def test_update_agent_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_agent.UpdateAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9857,7 +9862,6 @@ def test_delete_agent_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.DeleteAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9877,7 +9881,6 @@ def test_export_agent_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.ExportAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9897,7 +9900,6 @@ def test_restore_agent_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.RestoreAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9917,7 +9919,6 @@ def test_validate_agent_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.ValidateAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9939,7 +9940,6 @@ def test_get_agent_validation_result_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.GetAgentValidationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -9961,7 +9961,6 @@ def test_get_generative_settings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.GetGenerativeSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9983,7 +9982,6 @@ def test_update_generative_settings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = agent.UpdateGenerativeSettingsRequest()
-
         assert args[0] == request_msg
 
 

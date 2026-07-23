@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -118,6 +113,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1402,8 +1412,8 @@ def test_backup_dr_protection_summary_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        protection_summary.ListResourceBackupConfigsRequest,
-        dict,
+        protection_summary.ListResourceBackupConfigsRequest(),
+        {},
     ],
 )
 def test_list_resource_backup_configs(request_type, transport: str = "grpc"):
@@ -1414,7 +1424,7 @@ def test_list_resource_backup_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1465,12 +1475,13 @@ def test_list_resource_backup_configs_non_empty_request_with_auto_populated_fiel
         client.list_resource_backup_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == protection_summary.ListResourceBackupConfigsRequest(
+        request_msg = protection_summary.ListResourceBackupConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_resource_backup_configs_use_cached_wrapped_rpc():
@@ -1556,9 +1567,15 @@ async def test_list_resource_backup_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        protection_summary.ListResourceBackupConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_resource_backup_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=protection_summary.ListResourceBackupConfigsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupDrProtectionSummaryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1567,7 +1584,7 @@ async def test_list_resource_backup_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1590,11 +1607,6 @@ async def test_list_resource_backup_configs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListResourceBackupConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_resource_backup_configs_async_from_dict():
-    await test_list_resource_backup_configs_async(request_type=dict)
 
 
 def test_list_resource_backup_configs_field_headers():
@@ -1801,6 +1813,9 @@ def test_list_resource_backup_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1895,6 +1910,8 @@ async def test_list_resource_backup_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1946,9 +1963,7 @@ async def test_list_resource_backup_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_resource_backup_configs(request={})
         ).pages:
             pages.append(page_)
@@ -2080,7 +2095,7 @@ def test_list_resource_backup_configs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_resource_backup_configs_rest_unset_required_fields():
@@ -2216,6 +2231,9 @@ def test_list_resource_backup_configs_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_resource_backup_configs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -2353,7 +2371,6 @@ def test_list_resource_backup_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = protection_summary.ListResourceBackupConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2396,7 +2413,6 @@ async def test_list_resource_backup_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = protection_summary.ListResourceBackupConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3144,7 +3160,6 @@ def test_list_resource_backup_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = protection_summary.ListResourceBackupConfigsRequest()
-
         assert args[0] == request_msg
 
 

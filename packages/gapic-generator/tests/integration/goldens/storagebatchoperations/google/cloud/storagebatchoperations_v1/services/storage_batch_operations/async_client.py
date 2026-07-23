@@ -17,6 +17,7 @@ import logging as std_logging
 from collections import OrderedDict
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+import uuid
 
 from google.cloud.storagebatchoperations_v1 import gapic_version as package_version
 
@@ -620,6 +621,8 @@ class StorageBatchOperationsAsyncClient:
             )),
         )
 
+        self._client._setup_request_id(request, 'request_id', False)
+
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
@@ -724,6 +727,8 @@ class StorageBatchOperationsAsyncClient:
             )),
         )
 
+        self._client._setup_request_id(request, 'request_id', False)
+
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
@@ -823,6 +828,8 @@ class StorageBatchOperationsAsyncClient:
                 ("name", request.name),
             )),
         )
+
+        self._client._setup_request_id(request, 'request_id', False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1408,9 +1415,7 @@ class StorageBatchOperationsAsyncClient:
         await self.transport.close()
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = (

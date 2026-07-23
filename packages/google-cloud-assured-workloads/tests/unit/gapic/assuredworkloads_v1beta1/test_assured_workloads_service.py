@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -119,6 +114,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1390,8 +1400,8 @@ def test_assured_workloads_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        assuredworkloads.CreateWorkloadRequest,
-        dict,
+        assuredworkloads.CreateWorkloadRequest(),
+        {},
     ],
 )
 def test_create_workload(request_type, transport: str = "grpc"):
@@ -1402,7 +1412,7 @@ def test_create_workload(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
@@ -1444,10 +1454,11 @@ def test_create_workload_non_empty_request_with_auto_populated_field():
         client.create_workload(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == assuredworkloads.CreateWorkloadRequest(
+        request_msg = assuredworkloads.CreateWorkloadRequest(
             parent="parent_value",
             external_id="external_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_workload_use_cached_wrapped_rpc():
@@ -1538,9 +1549,14 @@ async def test_create_workload_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_workload_async(
-    transport: str = "grpc_asyncio", request_type=assuredworkloads.CreateWorkloadRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        assuredworkloads.CreateWorkloadRequest(),
+        {},
+    ],
+)
+async def test_create_workload_async(request_type, transport: str = "grpc_asyncio"):
     client = AssuredWorkloadsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1548,7 +1564,7 @@ async def test_create_workload_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
@@ -1566,11 +1582,6 @@ async def test_create_workload_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_workload_async_from_dict():
-    await test_create_workload_async(request_type=dict)
 
 
 def test_create_workload_field_headers():
@@ -1729,8 +1740,8 @@ async def test_create_workload_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        assuredworkloads.UpdateWorkloadRequest,
-        dict,
+        assuredworkloads.UpdateWorkloadRequest(),
+        {},
     ],
 )
 def test_update_workload(request_type, transport: str = "grpc"):
@@ -1741,7 +1752,7 @@ def test_update_workload(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
@@ -1806,7 +1817,8 @@ def test_update_workload_non_empty_request_with_auto_populated_field():
         client.update_workload(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == assuredworkloads.UpdateWorkloadRequest()
+        request_msg = assuredworkloads.UpdateWorkloadRequest()
+        assert args[0] == request_msg
 
 
 def test_update_workload_use_cached_wrapped_rpc():
@@ -1887,9 +1899,14 @@ async def test_update_workload_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_workload_async(
-    transport: str = "grpc_asyncio", request_type=assuredworkloads.UpdateWorkloadRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        assuredworkloads.UpdateWorkloadRequest(),
+        {},
+    ],
+)
+async def test_update_workload_async(request_type, transport: str = "grpc_asyncio"):
     client = AssuredWorkloadsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1897,7 +1914,7 @@ async def test_update_workload_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
@@ -1941,11 +1958,6 @@ async def test_update_workload_async(
     assert response.compliant_but_disallowed_services == [
         "compliant_but_disallowed_services_value"
     ]
-
-
-@pytest.mark.asyncio
-async def test_update_workload_async_from_dict():
-    await test_update_workload_async(request_type=dict)
 
 
 def test_update_workload_flattened():
@@ -2043,8 +2055,8 @@ async def test_update_workload_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        assuredworkloads.RestrictAllowedResourcesRequest,
-        dict,
+        assuredworkloads.RestrictAllowedResourcesRequest(),
+        {},
     ],
 )
 def test_restrict_allowed_resources(request_type, transport: str = "grpc"):
@@ -2055,7 +2067,7 @@ def test_restrict_allowed_resources(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2100,9 +2112,10 @@ def test_restrict_allowed_resources_non_empty_request_with_auto_populated_field(
         client.restrict_allowed_resources(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == assuredworkloads.RestrictAllowedResourcesRequest(
+        request_msg = assuredworkloads.RestrictAllowedResourcesRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_restrict_allowed_resources_use_cached_wrapped_rpc():
@@ -2188,9 +2201,15 @@ async def test_restrict_allowed_resources_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        assuredworkloads.RestrictAllowedResourcesRequest(),
+        {},
+    ],
+)
 async def test_restrict_allowed_resources_async(
-    transport: str = "grpc_asyncio",
-    request_type=assuredworkloads.RestrictAllowedResourcesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AssuredWorkloadsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2199,7 +2218,7 @@ async def test_restrict_allowed_resources_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2219,11 +2238,6 @@ async def test_restrict_allowed_resources_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, assuredworkloads.RestrictAllowedResourcesResponse)
-
-
-@pytest.mark.asyncio
-async def test_restrict_allowed_resources_async_from_dict():
-    await test_restrict_allowed_resources_async(request_type=dict)
 
 
 def test_restrict_allowed_resources_field_headers():
@@ -2294,8 +2308,8 @@ async def test_restrict_allowed_resources_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        assuredworkloads.DeleteWorkloadRequest,
-        dict,
+        assuredworkloads.DeleteWorkloadRequest(),
+        {},
     ],
 )
 def test_delete_workload(request_type, transport: str = "grpc"):
@@ -2306,7 +2320,7 @@ def test_delete_workload(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
@@ -2348,10 +2362,11 @@ def test_delete_workload_non_empty_request_with_auto_populated_field():
         client.delete_workload(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == assuredworkloads.DeleteWorkloadRequest(
+        request_msg = assuredworkloads.DeleteWorkloadRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_workload_use_cached_wrapped_rpc():
@@ -2432,9 +2447,14 @@ async def test_delete_workload_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_workload_async(
-    transport: str = "grpc_asyncio", request_type=assuredworkloads.DeleteWorkloadRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        assuredworkloads.DeleteWorkloadRequest(),
+        {},
+    ],
+)
+async def test_delete_workload_async(request_type, transport: str = "grpc_asyncio"):
     client = AssuredWorkloadsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2442,7 +2462,7 @@ async def test_delete_workload_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
@@ -2458,11 +2478,6 @@ async def test_delete_workload_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_workload_async_from_dict():
-    await test_delete_workload_async(request_type=dict)
 
 
 def test_delete_workload_field_headers():
@@ -2607,8 +2622,8 @@ async def test_delete_workload_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        assuredworkloads.GetWorkloadRequest,
-        dict,
+        assuredworkloads.GetWorkloadRequest(),
+        {},
     ],
 )
 def test_get_workload(request_type, transport: str = "grpc"):
@@ -2619,7 +2634,7 @@ def test_get_workload(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
@@ -2686,9 +2701,10 @@ def test_get_workload_non_empty_request_with_auto_populated_field():
         client.get_workload(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == assuredworkloads.GetWorkloadRequest(
+        request_msg = assuredworkloads.GetWorkloadRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_workload_use_cached_wrapped_rpc():
@@ -2769,9 +2785,14 @@ async def test_get_workload_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_workload_async(
-    transport: str = "grpc_asyncio", request_type=assuredworkloads.GetWorkloadRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        assuredworkloads.GetWorkloadRequest(),
+        {},
+    ],
+)
+async def test_get_workload_async(request_type, transport: str = "grpc_asyncio"):
     client = AssuredWorkloadsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2779,7 +2800,7 @@ async def test_get_workload_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
@@ -2823,11 +2844,6 @@ async def test_get_workload_async(
     assert response.compliant_but_disallowed_services == [
         "compliant_but_disallowed_services_value"
     ]
-
-
-@pytest.mark.asyncio
-async def test_get_workload_async_from_dict():
-    await test_get_workload_async(request_type=dict)
 
 
 def test_get_workload_flattened():
@@ -2915,8 +2931,8 @@ async def test_get_workload_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        assuredworkloads.AnalyzeWorkloadMoveRequest,
-        dict,
+        assuredworkloads.AnalyzeWorkloadMoveRequest(),
+        {},
     ],
 )
 def test_analyze_workload_move(request_type, transport: str = "grpc"):
@@ -2927,7 +2943,7 @@ def test_analyze_workload_move(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2977,11 +2993,12 @@ def test_analyze_workload_move_non_empty_request_with_auto_populated_field():
         client.analyze_workload_move(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == assuredworkloads.AnalyzeWorkloadMoveRequest(
+        request_msg = assuredworkloads.AnalyzeWorkloadMoveRequest(
             source="source_value",
             project="project_value",
             target="target_value",
         )
+        assert args[0] == request_msg
 
 
 def test_analyze_workload_move_use_cached_wrapped_rpc():
@@ -3067,9 +3084,15 @@ async def test_analyze_workload_move_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        assuredworkloads.AnalyzeWorkloadMoveRequest(),
+        {},
+    ],
+)
 async def test_analyze_workload_move_async(
-    transport: str = "grpc_asyncio",
-    request_type=assuredworkloads.AnalyzeWorkloadMoveRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AssuredWorkloadsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3078,7 +3101,7 @@ async def test_analyze_workload_move_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3101,11 +3124,6 @@ async def test_analyze_workload_move_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, assuredworkloads.AnalyzeWorkloadMoveResponse)
     assert response.blockers == ["blockers_value"]
-
-
-@pytest.mark.asyncio
-async def test_analyze_workload_move_async_from_dict():
-    await test_analyze_workload_move_async(request_type=dict)
 
 
 def test_analyze_workload_move_flattened():
@@ -3203,8 +3221,8 @@ async def test_analyze_workload_move_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        assuredworkloads.ListWorkloadsRequest,
-        dict,
+        assuredworkloads.ListWorkloadsRequest(),
+        {},
     ],
 )
 def test_list_workloads(request_type, transport: str = "grpc"):
@@ -3215,7 +3233,7 @@ def test_list_workloads(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
@@ -3261,11 +3279,12 @@ def test_list_workloads_non_empty_request_with_auto_populated_field():
         client.list_workloads(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == assuredworkloads.ListWorkloadsRequest(
+        request_msg = assuredworkloads.ListWorkloadsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_workloads_use_cached_wrapped_rpc():
@@ -3346,9 +3365,14 @@ async def test_list_workloads_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_workloads_async(
-    transport: str = "grpc_asyncio", request_type=assuredworkloads.ListWorkloadsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        assuredworkloads.ListWorkloadsRequest(),
+        {},
+    ],
+)
+async def test_list_workloads_async(request_type, transport: str = "grpc_asyncio"):
     client = AssuredWorkloadsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3356,7 +3380,7 @@ async def test_list_workloads_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
@@ -3377,11 +3401,6 @@ async def test_list_workloads_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkloadsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_workloads_async_from_dict():
-    await test_list_workloads_async(request_type=dict)
 
 
 def test_list_workloads_flattened():
@@ -3512,6 +3531,9 @@ def test_list_workloads_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assuredworkloads.Workload) for i in results)
@@ -3600,6 +3622,8 @@ async def test_list_workloads_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3647,11 +3671,7 @@ async def test_list_workloads_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_workloads(request={})
-        ).pages:
+        async for page_ in (await client.list_workloads(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3769,7 +3789,7 @@ def test_create_workload_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_workload_rest_unset_required_fields():
@@ -3973,7 +3993,7 @@ def test_restrict_allowed_resources_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_restrict_allowed_resources_rest_unset_required_fields():
@@ -4100,7 +4120,7 @@ def test_delete_workload_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_workload_rest_unset_required_fields():
@@ -4375,7 +4395,6 @@ def test_create_workload_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.CreateWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -4396,7 +4415,6 @@ def test_update_workload_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.UpdateWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -4419,7 +4437,6 @@ def test_restrict_allowed_resources_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.RestrictAllowedResourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4440,7 +4457,6 @@ def test_delete_workload_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.DeleteWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -4461,7 +4477,6 @@ def test_get_workload_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.GetWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -4484,7 +4499,6 @@ def test_analyze_workload_move_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.AnalyzeWorkloadMoveRequest()
-
         assert args[0] == request_msg
 
 
@@ -4505,7 +4519,6 @@ def test_list_workloads_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.ListWorkloadsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4544,7 +4557,6 @@ async def test_create_workload_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.CreateWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -4581,7 +4593,6 @@ async def test_update_workload_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.UpdateWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -4608,7 +4619,6 @@ async def test_restrict_allowed_resources_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.RestrictAllowedResourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4631,7 +4641,6 @@ async def test_delete_workload_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.DeleteWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -4668,7 +4677,6 @@ async def test_get_workload_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.GetWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -4697,7 +4705,6 @@ async def test_analyze_workload_move_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.AnalyzeWorkloadMoveRequest()
-
         assert args[0] == request_msg
 
 
@@ -4724,7 +4731,6 @@ async def test_list_workloads_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.ListWorkloadsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5409,7 +5415,6 @@ def test_create_workload_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.CreateWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -5429,7 +5434,6 @@ def test_update_workload_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.UpdateWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -5451,7 +5455,6 @@ def test_restrict_allowed_resources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.RestrictAllowedResourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5471,7 +5474,6 @@ def test_delete_workload_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.DeleteWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -5491,7 +5493,6 @@ def test_get_workload_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.GetWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -5513,7 +5514,6 @@ def test_analyze_workload_move_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.AnalyzeWorkloadMoveRequest()
-
         assert args[0] == request_msg
 
 
@@ -5533,7 +5533,6 @@ def test_list_workloads_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = assuredworkloads.ListWorkloadsRequest()
-
         assert args[0] == request_msg
 
 

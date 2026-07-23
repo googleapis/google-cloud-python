@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -127,6 +122,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1402,8 +1412,8 @@ def test_bigtable_instance_admin_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateInstanceRequest,
-        dict,
+        bigtable_instance_admin.CreateInstanceRequest(),
+        {},
     ],
 )
 def test_create_instance(request_type, transport: str = "grpc"):
@@ -1414,7 +1424,7 @@ def test_create_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -1456,10 +1466,11 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
         client.create_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.CreateInstanceRequest(
+        request_msg = bigtable_instance_admin.CreateInstanceRequest(
             parent="parent_value",
             instance_id="instance_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_instance_use_cached_wrapped_rpc():
@@ -1550,10 +1561,14 @@ async def test_create_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.CreateInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.CreateInstanceRequest(),
+        {},
+    ],
+)
+async def test_create_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1561,7 +1576,7 @@ async def test_create_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -1579,11 +1594,6 @@ async def test_create_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_instance_async_from_dict():
-    await test_create_instance_async(request_type=dict)
 
 
 def test_create_instance_field_headers():
@@ -1762,8 +1772,8 @@ async def test_create_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetInstanceRequest,
-        dict,
+        bigtable_instance_admin.GetInstanceRequest(),
+        {},
     ],
 )
 def test_get_instance(request_type, transport: str = "grpc"):
@@ -1774,7 +1784,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -1784,6 +1794,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=instance.Instance.State.READY,
             type_=instance.Instance.Type.PRODUCTION,
+            edition=instance.Instance.Edition.ENTERPRISE,
             satisfies_pzs=True,
             satisfies_pzi=True,
         )
@@ -1801,6 +1812,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -1828,9 +1840,10 @@ def test_get_instance_non_empty_request_with_auto_populated_field():
         client.get_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.GetInstanceRequest(
+        request_msg = bigtable_instance_admin.GetInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_instance_use_cached_wrapped_rpc():
@@ -1911,10 +1924,14 @@ async def test_get_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.GetInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.GetInstanceRequest(),
+        {},
+    ],
+)
+async def test_get_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1922,7 +1939,7 @@ async def test_get_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -1933,6 +1950,7 @@ async def test_get_instance_async(
                 display_name="display_name_value",
                 state=instance.Instance.State.READY,
                 type_=instance.Instance.Type.PRODUCTION,
+                edition=instance.Instance.Edition.ENTERPRISE,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
             )
@@ -1951,13 +1969,9 @@ async def test_get_instance_async(
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
-
-
-@pytest.mark.asyncio
-async def test_get_instance_async_from_dict():
-    await test_get_instance_async(request_type=dict)
 
 
 def test_get_instance_field_headers():
@@ -2102,8 +2116,8 @@ async def test_get_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListInstancesRequest,
-        dict,
+        bigtable_instance_admin.ListInstancesRequest(),
+        {},
     ],
 )
 def test_list_instances(request_type, transport: str = "grpc"):
@@ -2114,7 +2128,7 @@ def test_list_instances(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -2162,10 +2176,11 @@ def test_list_instances_non_empty_request_with_auto_populated_field():
         client.list_instances(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.ListInstancesRequest(
+        request_msg = bigtable_instance_admin.ListInstancesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_instances_use_cached_wrapped_rpc():
@@ -2246,10 +2261,14 @@ async def test_list_instances_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_instances_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.ListInstancesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.ListInstancesRequest(),
+        {},
+    ],
+)
+async def test_list_instances_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2257,7 +2276,7 @@ async def test_list_instances_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -2280,11 +2299,6 @@ async def test_list_instances_async(
     assert isinstance(response, bigtable_instance_admin.ListInstancesResponse)
     assert response.failed_locations == ["failed_locations_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_instances_async_from_dict():
-    await test_list_instances_async(request_type=dict)
 
 
 def test_list_instances_field_headers():
@@ -2433,8 +2447,8 @@ async def test_list_instances_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        instance.Instance,
-        dict,
+        instance.Instance(),
+        {},
     ],
 )
 def test_update_instance(request_type, transport: str = "grpc"):
@@ -2445,7 +2459,7 @@ def test_update_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -2455,6 +2469,7 @@ def test_update_instance(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=instance.Instance.State.READY,
             type_=instance.Instance.Type.PRODUCTION,
+            edition=instance.Instance.Edition.ENTERPRISE,
             satisfies_pzs=True,
             satisfies_pzi=True,
         )
@@ -2472,6 +2487,7 @@ def test_update_instance(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -2500,10 +2516,11 @@ def test_update_instance_non_empty_request_with_auto_populated_field():
         client.update_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == instance.Instance(
+        request_msg = instance.Instance(
             name="name_value",
             display_name="display_name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_instance_use_cached_wrapped_rpc():
@@ -2584,9 +2601,14 @@ async def test_update_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_instance_async(
-    transport: str = "grpc_asyncio", request_type=instance.Instance
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.Instance(),
+        {},
+    ],
+)
+async def test_update_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2594,7 +2616,7 @@ async def test_update_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -2605,6 +2627,7 @@ async def test_update_instance_async(
                 display_name="display_name_value",
                 state=instance.Instance.State.READY,
                 type_=instance.Instance.Type.PRODUCTION,
+                edition=instance.Instance.Edition.ENTERPRISE,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
             )
@@ -2623,13 +2646,9 @@ async def test_update_instance_async(
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
-
-
-@pytest.mark.asyncio
-async def test_update_instance_async_from_dict():
-    await test_update_instance_async(request_type=dict)
 
 
 def test_update_instance_field_headers():
@@ -2694,8 +2713,8 @@ async def test_update_instance_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.PartialUpdateInstanceRequest,
-        dict,
+        bigtable_instance_admin.PartialUpdateInstanceRequest(),
+        {},
     ],
 )
 def test_partial_update_instance(request_type, transport: str = "grpc"):
@@ -2706,7 +2725,7 @@ def test_partial_update_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2749,7 +2768,8 @@ def test_partial_update_instance_non_empty_request_with_auto_populated_field():
         client.partial_update_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.PartialUpdateInstanceRequest()
+        request_msg = bigtable_instance_admin.PartialUpdateInstanceRequest()
+        assert args[0] == request_msg
 
 
 def test_partial_update_instance_use_cached_wrapped_rpc():
@@ -2845,9 +2865,15 @@ async def test_partial_update_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.PartialUpdateInstanceRequest(),
+        {},
+    ],
+)
 async def test_partial_update_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.PartialUpdateInstanceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2856,7 +2882,7 @@ async def test_partial_update_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2876,11 +2902,6 @@ async def test_partial_update_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_partial_update_instance_async_from_dict():
-    await test_partial_update_instance_async(request_type=dict)
 
 
 def test_partial_update_instance_field_headers():
@@ -3047,8 +3068,8 @@ async def test_partial_update_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteInstanceRequest,
-        dict,
+        bigtable_instance_admin.DeleteInstanceRequest(),
+        {},
     ],
 )
 def test_delete_instance(request_type, transport: str = "grpc"):
@@ -3059,7 +3080,7 @@ def test_delete_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -3100,9 +3121,10 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
         client.delete_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.DeleteInstanceRequest(
+        request_msg = bigtable_instance_admin.DeleteInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_instance_use_cached_wrapped_rpc():
@@ -3183,10 +3205,14 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.DeleteInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.DeleteInstanceRequest(),
+        {},
+    ],
+)
+async def test_delete_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3194,7 +3220,7 @@ async def test_delete_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -3210,11 +3236,6 @@ async def test_delete_instance_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_instance_async_from_dict():
-    await test_delete_instance_async(request_type=dict)
 
 
 def test_delete_instance_field_headers():
@@ -3359,8 +3380,8 @@ async def test_delete_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateClusterRequest,
-        dict,
+        bigtable_instance_admin.CreateClusterRequest(),
+        {},
     ],
 )
 def test_create_cluster(request_type, transport: str = "grpc"):
@@ -3371,7 +3392,7 @@ def test_create_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
@@ -3413,10 +3434,11 @@ def test_create_cluster_non_empty_request_with_auto_populated_field():
         client.create_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.CreateClusterRequest(
+        request_msg = bigtable_instance_admin.CreateClusterRequest(
             parent="parent_value",
             cluster_id="cluster_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_cluster_use_cached_wrapped_rpc():
@@ -3507,10 +3529,14 @@ async def test_create_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.CreateClusterRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.CreateClusterRequest(),
+        {},
+    ],
+)
+async def test_create_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3518,7 +3544,7 @@ async def test_create_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
@@ -3536,11 +3562,6 @@ async def test_create_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_cluster_async_from_dict():
-    await test_create_cluster_async(request_type=dict)
 
 
 def test_create_cluster_field_headers():
@@ -3709,8 +3730,8 @@ async def test_create_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetClusterRequest,
-        dict,
+        bigtable_instance_admin.GetClusterRequest(),
+        {},
     ],
 )
 def test_get_cluster(request_type, transport: str = "grpc"):
@@ -3721,7 +3742,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
@@ -3778,9 +3799,10 @@ def test_get_cluster_non_empty_request_with_auto_populated_field():
         client.get_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.GetClusterRequest(
+        request_msg = bigtable_instance_admin.GetClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_cluster_use_cached_wrapped_rpc():
@@ -3861,10 +3883,14 @@ async def test_get_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.GetClusterRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.GetClusterRequest(),
+        {},
+    ],
+)
+async def test_get_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3872,7 +3898,7 @@ async def test_get_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
@@ -3906,11 +3932,6 @@ async def test_get_cluster_async(
         == instance.Cluster.NodeScalingFactor.NODE_SCALING_FACTOR_1X
     )
     assert response.default_storage_type == common.StorageType.SSD
-
-
-@pytest.mark.asyncio
-async def test_get_cluster_async_from_dict():
-    await test_get_cluster_async(request_type=dict)
 
 
 def test_get_cluster_field_headers():
@@ -4055,8 +4076,8 @@ async def test_get_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListClustersRequest,
-        dict,
+        bigtable_instance_admin.ListClustersRequest(),
+        {},
     ],
 )
 def test_list_clusters(request_type, transport: str = "grpc"):
@@ -4067,7 +4088,7 @@ def test_list_clusters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -4115,10 +4136,11 @@ def test_list_clusters_non_empty_request_with_auto_populated_field():
         client.list_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.ListClustersRequest(
+        request_msg = bigtable_instance_admin.ListClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_clusters_use_cached_wrapped_rpc():
@@ -4199,10 +4221,14 @@ async def test_list_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_clusters_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.ListClustersRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.ListClustersRequest(),
+        {},
+    ],
+)
+async def test_list_clusters_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4210,7 +4236,7 @@ async def test_list_clusters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -4233,11 +4259,6 @@ async def test_list_clusters_async(
     assert isinstance(response, bigtable_instance_admin.ListClustersResponse)
     assert response.failed_locations == ["failed_locations_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_clusters_async_from_dict():
-    await test_list_clusters_async(request_type=dict)
 
 
 def test_list_clusters_field_headers():
@@ -4386,8 +4407,8 @@ async def test_list_clusters_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        instance.Cluster,
-        dict,
+        instance.Cluster(),
+        {},
     ],
 )
 def test_update_cluster(request_type, transport: str = "grpc"):
@@ -4398,7 +4419,7 @@ def test_update_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
@@ -4440,10 +4461,11 @@ def test_update_cluster_non_empty_request_with_auto_populated_field():
         client.update_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == instance.Cluster(
+        request_msg = instance.Cluster(
             name="name_value",
             location="location_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_cluster_use_cached_wrapped_rpc():
@@ -4534,9 +4556,14 @@ async def test_update_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_cluster_async(
-    transport: str = "grpc_asyncio", request_type=instance.Cluster
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.Cluster(),
+        {},
+    ],
+)
+async def test_update_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4544,7 +4571,7 @@ async def test_update_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
@@ -4562,11 +4589,6 @@ async def test_update_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_cluster_async_from_dict():
-    await test_update_cluster_async(request_type=dict)
 
 
 def test_update_cluster_field_headers():
@@ -4633,8 +4655,8 @@ async def test_update_cluster_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.PartialUpdateClusterRequest,
-        dict,
+        bigtable_instance_admin.PartialUpdateClusterRequest(),
+        {},
     ],
 )
 def test_partial_update_cluster(request_type, transport: str = "grpc"):
@@ -4645,7 +4667,7 @@ def test_partial_update_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4688,7 +4710,8 @@ def test_partial_update_cluster_non_empty_request_with_auto_populated_field():
         client.partial_update_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.PartialUpdateClusterRequest()
+        request_msg = bigtable_instance_admin.PartialUpdateClusterRequest()
+        assert args[0] == request_msg
 
 
 def test_partial_update_cluster_use_cached_wrapped_rpc():
@@ -4784,9 +4807,15 @@ async def test_partial_update_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.PartialUpdateClusterRequest(),
+        {},
+    ],
+)
 async def test_partial_update_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.PartialUpdateClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4795,7 +4824,7 @@ async def test_partial_update_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4815,11 +4844,6 @@ async def test_partial_update_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_partial_update_cluster_async_from_dict():
-    await test_partial_update_cluster_async(request_type=dict)
 
 
 def test_partial_update_cluster_field_headers():
@@ -4986,8 +5010,8 @@ async def test_partial_update_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteClusterRequest,
-        dict,
+        bigtable_instance_admin.DeleteClusterRequest(),
+        {},
     ],
 )
 def test_delete_cluster(request_type, transport: str = "grpc"):
@@ -4998,7 +5022,7 @@ def test_delete_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
@@ -5039,9 +5063,10 @@ def test_delete_cluster_non_empty_request_with_auto_populated_field():
         client.delete_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.DeleteClusterRequest(
+        request_msg = bigtable_instance_admin.DeleteClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_cluster_use_cached_wrapped_rpc():
@@ -5122,10 +5147,14 @@ async def test_delete_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.DeleteClusterRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.DeleteClusterRequest(),
+        {},
+    ],
+)
+async def test_delete_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5133,7 +5162,7 @@ async def test_delete_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
@@ -5149,11 +5178,6 @@ async def test_delete_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_cluster_async_from_dict():
-    await test_delete_cluster_async(request_type=dict)
 
 
 def test_delete_cluster_field_headers():
@@ -5298,8 +5322,8 @@ async def test_delete_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateAppProfileRequest,
-        dict,
+        bigtable_instance_admin.CreateAppProfileRequest(),
+        {},
     ],
 )
 def test_create_app_profile(request_type, transport: str = "grpc"):
@@ -5310,7 +5334,7 @@ def test_create_app_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5364,10 +5388,11 @@ def test_create_app_profile_non_empty_request_with_auto_populated_field():
         client.create_app_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.CreateAppProfileRequest(
+        request_msg = bigtable_instance_admin.CreateAppProfileRequest(
             parent="parent_value",
             app_profile_id="app_profile_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_app_profile_use_cached_wrapped_rpc():
@@ -5452,10 +5477,14 @@ async def test_create_app_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_app_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.CreateAppProfileRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.CreateAppProfileRequest(),
+        {},
+    ],
+)
+async def test_create_app_profile_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5463,7 +5492,7 @@ async def test_create_app_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5490,11 +5519,6 @@ async def test_create_app_profile_async(
     assert response.name == "name_value"
     assert response.etag == "etag_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_create_app_profile_async_from_dict():
-    await test_create_app_profile_async(request_type=dict)
 
 
 def test_create_app_profile_field_headers():
@@ -5667,8 +5691,8 @@ async def test_create_app_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetAppProfileRequest,
-        dict,
+        bigtable_instance_admin.GetAppProfileRequest(),
+        {},
     ],
 )
 def test_get_app_profile(request_type, transport: str = "grpc"):
@@ -5679,7 +5703,7 @@ def test_get_app_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_app_profile), "__call__") as call:
@@ -5728,9 +5752,10 @@ def test_get_app_profile_non_empty_request_with_auto_populated_field():
         client.get_app_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.GetAppProfileRequest(
+        request_msg = bigtable_instance_admin.GetAppProfileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_app_profile_use_cached_wrapped_rpc():
@@ -5811,10 +5836,14 @@ async def test_get_app_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_app_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.GetAppProfileRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.GetAppProfileRequest(),
+        {},
+    ],
+)
+async def test_get_app_profile_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5822,7 +5851,7 @@ async def test_get_app_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_app_profile), "__call__") as call:
@@ -5847,11 +5876,6 @@ async def test_get_app_profile_async(
     assert response.name == "name_value"
     assert response.etag == "etag_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_app_profile_async_from_dict():
-    await test_get_app_profile_async(request_type=dict)
 
 
 def test_get_app_profile_field_headers():
@@ -5996,8 +6020,8 @@ async def test_get_app_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListAppProfilesRequest,
-        dict,
+        bigtable_instance_admin.ListAppProfilesRequest(),
+        {},
     ],
 )
 def test_list_app_profiles(request_type, transport: str = "grpc"):
@@ -6008,7 +6032,7 @@ def test_list_app_profiles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6059,10 +6083,11 @@ def test_list_app_profiles_non_empty_request_with_auto_populated_field():
         client.list_app_profiles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.ListAppProfilesRequest(
+        request_msg = bigtable_instance_admin.ListAppProfilesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_app_profiles_use_cached_wrapped_rpc():
@@ -6145,10 +6170,14 @@ async def test_list_app_profiles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_app_profiles_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.ListAppProfilesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.ListAppProfilesRequest(),
+        {},
+    ],
+)
+async def test_list_app_profiles_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6156,7 +6185,7 @@ async def test_list_app_profiles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6181,11 +6210,6 @@ async def test_list_app_profiles_async(
     assert isinstance(response, pagers.ListAppProfilesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.failed_locations == ["failed_locations_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_app_profiles_async_from_dict():
-    await test_list_app_profiles_async(request_type=dict)
 
 
 def test_list_app_profiles_field_headers():
@@ -6390,6 +6414,9 @@ def test_list_app_profiles_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, instance.AppProfile) for i in results)
@@ -6482,6 +6509,8 @@ async def test_list_app_profiles_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6531,11 +6560,7 @@ async def test_list_app_profiles_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_app_profiles(request={})
-        ).pages:
+        async for page_ in (await client.list_app_profiles(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6544,8 +6569,8 @@ async def test_list_app_profiles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.UpdateAppProfileRequest,
-        dict,
+        bigtable_instance_admin.UpdateAppProfileRequest(),
+        {},
     ],
 )
 def test_update_app_profile(request_type, transport: str = "grpc"):
@@ -6556,7 +6581,7 @@ def test_update_app_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6599,7 +6624,8 @@ def test_update_app_profile_non_empty_request_with_auto_populated_field():
         client.update_app_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.UpdateAppProfileRequest()
+        request_msg = bigtable_instance_admin.UpdateAppProfileRequest()
+        assert args[0] == request_msg
 
 
 def test_update_app_profile_use_cached_wrapped_rpc():
@@ -6694,10 +6720,14 @@ async def test_update_app_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_app_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.UpdateAppProfileRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.UpdateAppProfileRequest(),
+        {},
+    ],
+)
+async def test_update_app_profile_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6705,7 +6735,7 @@ async def test_update_app_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6725,11 +6755,6 @@ async def test_update_app_profile_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_app_profile_async_from_dict():
-    await test_update_app_profile_async(request_type=dict)
 
 
 def test_update_app_profile_field_headers():
@@ -6896,8 +6921,8 @@ async def test_update_app_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteAppProfileRequest,
-        dict,
+        bigtable_instance_admin.DeleteAppProfileRequest(),
+        {},
     ],
 )
 def test_delete_app_profile(request_type, transport: str = "grpc"):
@@ -6908,7 +6933,7 @@ def test_delete_app_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6953,9 +6978,10 @@ def test_delete_app_profile_non_empty_request_with_auto_populated_field():
         client.delete_app_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.DeleteAppProfileRequest(
+        request_msg = bigtable_instance_admin.DeleteAppProfileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_app_profile_use_cached_wrapped_rpc():
@@ -7040,10 +7066,14 @@ async def test_delete_app_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_app_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.DeleteAppProfileRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.DeleteAppProfileRequest(),
+        {},
+    ],
+)
+async def test_delete_app_profile_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7051,7 +7081,7 @@ async def test_delete_app_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7069,11 +7099,6 @@ async def test_delete_app_profile_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_app_profile_async_from_dict():
-    await test_delete_app_profile_async(request_type=dict)
 
 
 def test_delete_app_profile_field_headers():
@@ -7236,8 +7261,8 @@ async def test_delete_app_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -7248,7 +7273,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -7294,9 +7319,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -7377,9 +7403,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7387,7 +7418,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -7410,11 +7441,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -7576,8 +7602,8 @@ async def test_get_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -7588,7 +7614,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -7634,9 +7660,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -7717,9 +7744,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7727,7 +7759,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -7750,11 +7782,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -7917,8 +7944,8 @@ async def test_set_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -7929,7 +7956,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7977,9 +8004,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -8064,9 +8092,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8075,7 +8109,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8098,11 +8132,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -8288,8 +8317,8 @@ async def test_test_iam_permissions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListHotTabletsRequest,
-        dict,
+        bigtable_instance_admin.ListHotTabletsRequest(),
+        {},
     ],
 )
 def test_list_hot_tablets(request_type, transport: str = "grpc"):
@@ -8300,7 +8329,7 @@ def test_list_hot_tablets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_hot_tablets), "__call__") as call:
@@ -8345,10 +8374,11 @@ def test_list_hot_tablets_non_empty_request_with_auto_populated_field():
         client.list_hot_tablets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.ListHotTabletsRequest(
+        request_msg = bigtable_instance_admin.ListHotTabletsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_hot_tablets_use_cached_wrapped_rpc():
@@ -8431,10 +8461,14 @@ async def test_list_hot_tablets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_hot_tablets_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.ListHotTabletsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.ListHotTabletsRequest(),
+        {},
+    ],
+)
+async def test_list_hot_tablets_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8442,7 +8476,7 @@ async def test_list_hot_tablets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_hot_tablets), "__call__") as call:
@@ -8463,11 +8497,6 @@ async def test_list_hot_tablets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListHotTabletsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_hot_tablets_async_from_dict():
-    await test_list_hot_tablets_async(request_type=dict)
 
 
 def test_list_hot_tablets_field_headers():
@@ -8662,6 +8691,9 @@ def test_list_hot_tablets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, instance.HotTablet) for i in results)
@@ -8750,6 +8782,8 @@ async def test_list_hot_tablets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8797,11 +8831,7 @@ async def test_list_hot_tablets_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_hot_tablets(request={})
-        ).pages:
+        async for page_ in (await client.list_hot_tablets(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8810,8 +8840,8 @@ async def test_list_hot_tablets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateLogicalViewRequest,
-        dict,
+        bigtable_instance_admin.CreateLogicalViewRequest(),
+        {},
     ],
 )
 def test_create_logical_view(request_type, transport: str = "grpc"):
@@ -8822,7 +8852,7 @@ def test_create_logical_view(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8868,10 +8898,11 @@ def test_create_logical_view_non_empty_request_with_auto_populated_field():
         client.create_logical_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.CreateLogicalViewRequest(
+        request_msg = bigtable_instance_admin.CreateLogicalViewRequest(
             parent="parent_value",
             logical_view_id="logical_view_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_logical_view_use_cached_wrapped_rpc():
@@ -8966,10 +8997,14 @@ async def test_create_logical_view_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_logical_view_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.CreateLogicalViewRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.CreateLogicalViewRequest(),
+        {},
+    ],
+)
+async def test_create_logical_view_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8977,7 +9012,7 @@ async def test_create_logical_view_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8997,11 +9032,6 @@ async def test_create_logical_view_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_logical_view_async_from_dict():
-    await test_create_logical_view_async(request_type=dict)
 
 
 def test_create_logical_view_field_headers():
@@ -9178,8 +9208,8 @@ async def test_create_logical_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetLogicalViewRequest,
-        dict,
+        bigtable_instance_admin.GetLogicalViewRequest(),
+        {},
     ],
 )
 def test_get_logical_view(request_type, transport: str = "grpc"):
@@ -9190,7 +9220,7 @@ def test_get_logical_view(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_logical_view), "__call__") as call:
@@ -9240,9 +9270,10 @@ def test_get_logical_view_non_empty_request_with_auto_populated_field():
         client.get_logical_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.GetLogicalViewRequest(
+        request_msg = bigtable_instance_admin.GetLogicalViewRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_logical_view_use_cached_wrapped_rpc():
@@ -9325,10 +9356,14 @@ async def test_get_logical_view_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_logical_view_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.GetLogicalViewRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.GetLogicalViewRequest(),
+        {},
+    ],
+)
+async def test_get_logical_view_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9336,7 +9371,7 @@ async def test_get_logical_view_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_logical_view), "__call__") as call:
@@ -9363,11 +9398,6 @@ async def test_get_logical_view_async(
     assert response.query == "query_value"
     assert response.etag == "etag_value"
     assert response.deletion_protection is True
-
-
-@pytest.mark.asyncio
-async def test_get_logical_view_async_from_dict():
-    await test_get_logical_view_async(request_type=dict)
 
 
 def test_get_logical_view_field_headers():
@@ -9516,8 +9546,8 @@ async def test_get_logical_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListLogicalViewsRequest,
-        dict,
+        bigtable_instance_admin.ListLogicalViewsRequest(),
+        {},
     ],
 )
 def test_list_logical_views(request_type, transport: str = "grpc"):
@@ -9528,7 +9558,7 @@ def test_list_logical_views(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9577,10 +9607,11 @@ def test_list_logical_views_non_empty_request_with_auto_populated_field():
         client.list_logical_views(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.ListLogicalViewsRequest(
+        request_msg = bigtable_instance_admin.ListLogicalViewsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_logical_views_use_cached_wrapped_rpc():
@@ -9665,10 +9696,14 @@ async def test_list_logical_views_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_logical_views_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.ListLogicalViewsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.ListLogicalViewsRequest(),
+        {},
+    ],
+)
+async def test_list_logical_views_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9676,7 +9711,7 @@ async def test_list_logical_views_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9699,11 +9734,6 @@ async def test_list_logical_views_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogicalViewsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_logical_views_async_from_dict():
-    await test_list_logical_views_async(request_type=dict)
 
 
 def test_list_logical_views_field_headers():
@@ -9908,6 +9938,9 @@ def test_list_logical_views_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, instance.LogicalView) for i in results)
@@ -10000,6 +10033,8 @@ async def test_list_logical_views_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -10049,11 +10084,7 @@ async def test_list_logical_views_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_logical_views(request={})
-        ).pages:
+        async for page_ in (await client.list_logical_views(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -10062,8 +10093,8 @@ async def test_list_logical_views_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.UpdateLogicalViewRequest,
-        dict,
+        bigtable_instance_admin.UpdateLogicalViewRequest(),
+        {},
     ],
 )
 def test_update_logical_view(request_type, transport: str = "grpc"):
@@ -10074,7 +10105,7 @@ def test_update_logical_view(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10117,7 +10148,8 @@ def test_update_logical_view_non_empty_request_with_auto_populated_field():
         client.update_logical_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.UpdateLogicalViewRequest()
+        request_msg = bigtable_instance_admin.UpdateLogicalViewRequest()
+        assert args[0] == request_msg
 
 
 def test_update_logical_view_use_cached_wrapped_rpc():
@@ -10212,10 +10244,14 @@ async def test_update_logical_view_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_logical_view_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.UpdateLogicalViewRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.UpdateLogicalViewRequest(),
+        {},
+    ],
+)
+async def test_update_logical_view_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10223,7 +10259,7 @@ async def test_update_logical_view_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10243,11 +10279,6 @@ async def test_update_logical_view_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_logical_view_async_from_dict():
-    await test_update_logical_view_async(request_type=dict)
 
 
 def test_update_logical_view_field_headers():
@@ -10414,8 +10445,8 @@ async def test_update_logical_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteLogicalViewRequest,
-        dict,
+        bigtable_instance_admin.DeleteLogicalViewRequest(),
+        {},
     ],
 )
 def test_delete_logical_view(request_type, transport: str = "grpc"):
@@ -10426,7 +10457,7 @@ def test_delete_logical_view(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10472,10 +10503,11 @@ def test_delete_logical_view_non_empty_request_with_auto_populated_field():
         client.delete_logical_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.DeleteLogicalViewRequest(
+        request_msg = bigtable_instance_admin.DeleteLogicalViewRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_logical_view_use_cached_wrapped_rpc():
@@ -10560,10 +10592,14 @@ async def test_delete_logical_view_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_logical_view_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.DeleteLogicalViewRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.DeleteLogicalViewRequest(),
+        {},
+    ],
+)
+async def test_delete_logical_view_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10571,7 +10607,7 @@ async def test_delete_logical_view_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10589,11 +10625,6 @@ async def test_delete_logical_view_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_logical_view_async_from_dict():
-    await test_delete_logical_view_async(request_type=dict)
 
 
 def test_delete_logical_view_field_headers():
@@ -10746,8 +10777,8 @@ async def test_delete_logical_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateMaterializedViewRequest,
-        dict,
+        bigtable_instance_admin.CreateMaterializedViewRequest(),
+        {},
     ],
 )
 def test_create_materialized_view(request_type, transport: str = "grpc"):
@@ -10758,7 +10789,7 @@ def test_create_materialized_view(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10804,10 +10835,11 @@ def test_create_materialized_view_non_empty_request_with_auto_populated_field():
         client.create_materialized_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.CreateMaterializedViewRequest(
+        request_msg = bigtable_instance_admin.CreateMaterializedViewRequest(
             parent="parent_value",
             materialized_view_id="materialized_view_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_materialized_view_use_cached_wrapped_rpc():
@@ -10903,9 +10935,15 @@ async def test_create_materialized_view_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.CreateMaterializedViewRequest(),
+        {},
+    ],
+)
 async def test_create_materialized_view_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.CreateMaterializedViewRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10914,7 +10952,7 @@ async def test_create_materialized_view_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10934,11 +10972,6 @@ async def test_create_materialized_view_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_materialized_view_async_from_dict():
-    await test_create_materialized_view_async(request_type=dict)
 
 
 def test_create_materialized_view_field_headers():
@@ -11115,8 +11148,8 @@ async def test_create_materialized_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetMaterializedViewRequest,
-        dict,
+        bigtable_instance_admin.GetMaterializedViewRequest(),
+        {},
     ],
 )
 def test_get_materialized_view(request_type, transport: str = "grpc"):
@@ -11127,7 +11160,7 @@ def test_get_materialized_view(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11181,9 +11214,10 @@ def test_get_materialized_view_non_empty_request_with_auto_populated_field():
         client.get_materialized_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.GetMaterializedViewRequest(
+        request_msg = bigtable_instance_admin.GetMaterializedViewRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_materialized_view_use_cached_wrapped_rpc():
@@ -11269,9 +11303,15 @@ async def test_get_materialized_view_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.GetMaterializedViewRequest(),
+        {},
+    ],
+)
 async def test_get_materialized_view_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.GetMaterializedViewRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11280,7 +11320,7 @@ async def test_get_materialized_view_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11309,11 +11349,6 @@ async def test_get_materialized_view_async(
     assert response.query == "query_value"
     assert response.etag == "etag_value"
     assert response.deletion_protection is True
-
-
-@pytest.mark.asyncio
-async def test_get_materialized_view_async_from_dict():
-    await test_get_materialized_view_async(request_type=dict)
 
 
 def test_get_materialized_view_field_headers():
@@ -11470,8 +11505,8 @@ async def test_get_materialized_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListMaterializedViewsRequest,
-        dict,
+        bigtable_instance_admin.ListMaterializedViewsRequest(),
+        {},
     ],
 )
 def test_list_materialized_views(request_type, transport: str = "grpc"):
@@ -11482,7 +11517,7 @@ def test_list_materialized_views(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11531,10 +11566,11 @@ def test_list_materialized_views_non_empty_request_with_auto_populated_field():
         client.list_materialized_views(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.ListMaterializedViewsRequest(
+        request_msg = bigtable_instance_admin.ListMaterializedViewsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_materialized_views_use_cached_wrapped_rpc():
@@ -11620,9 +11656,15 @@ async def test_list_materialized_views_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.ListMaterializedViewsRequest(),
+        {},
+    ],
+)
 async def test_list_materialized_views_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.ListMaterializedViewsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11631,7 +11673,7 @@ async def test_list_materialized_views_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11654,11 +11696,6 @@ async def test_list_materialized_views_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMaterializedViewsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_materialized_views_async_from_dict():
-    await test_list_materialized_views_async(request_type=dict)
 
 
 def test_list_materialized_views_field_headers():
@@ -11863,6 +11900,9 @@ def test_list_materialized_views_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, instance.MaterializedView) for i in results)
@@ -11955,6 +11995,8 @@ async def test_list_materialized_views_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12004,11 +12046,7 @@ async def test_list_materialized_views_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_materialized_views(request={})
-        ).pages:
+        async for page_ in (await client.list_materialized_views(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -12017,8 +12055,8 @@ async def test_list_materialized_views_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.UpdateMaterializedViewRequest,
-        dict,
+        bigtable_instance_admin.UpdateMaterializedViewRequest(),
+        {},
     ],
 )
 def test_update_materialized_view(request_type, transport: str = "grpc"):
@@ -12029,7 +12067,7 @@ def test_update_materialized_view(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12072,7 +12110,8 @@ def test_update_materialized_view_non_empty_request_with_auto_populated_field():
         client.update_materialized_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.UpdateMaterializedViewRequest()
+        request_msg = bigtable_instance_admin.UpdateMaterializedViewRequest()
+        assert args[0] == request_msg
 
 
 def test_update_materialized_view_use_cached_wrapped_rpc():
@@ -12168,9 +12207,15 @@ async def test_update_materialized_view_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.UpdateMaterializedViewRequest(),
+        {},
+    ],
+)
 async def test_update_materialized_view_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.UpdateMaterializedViewRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12179,7 +12224,7 @@ async def test_update_materialized_view_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12199,11 +12244,6 @@ async def test_update_materialized_view_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_materialized_view_async_from_dict():
-    await test_update_materialized_view_async(request_type=dict)
 
 
 def test_update_materialized_view_field_headers():
@@ -12370,8 +12410,8 @@ async def test_update_materialized_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteMaterializedViewRequest,
-        dict,
+        bigtable_instance_admin.DeleteMaterializedViewRequest(),
+        {},
     ],
 )
 def test_delete_materialized_view(request_type, transport: str = "grpc"):
@@ -12382,7 +12422,7 @@ def test_delete_materialized_view(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12428,10 +12468,11 @@ def test_delete_materialized_view_non_empty_request_with_auto_populated_field():
         client.delete_materialized_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_instance_admin.DeleteMaterializedViewRequest(
+        request_msg = bigtable_instance_admin.DeleteMaterializedViewRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_materialized_view_use_cached_wrapped_rpc():
@@ -12517,9 +12558,15 @@ async def test_delete_materialized_view_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_instance_admin.DeleteMaterializedViewRequest(),
+        {},
+    ],
+)
 async def test_delete_materialized_view_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable_instance_admin.DeleteMaterializedViewRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BigtableInstanceAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12528,7 +12575,7 @@ async def test_delete_materialized_view_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12546,11 +12593,6 @@ async def test_delete_materialized_view_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_materialized_view_async_from_dict():
-    await test_delete_materialized_view_async(request_type=dict)
 
 
 def test_delete_materialized_view_field_headers():
@@ -12814,7 +12856,7 @@ def test_create_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_instance_rest_unset_required_fields():
@@ -13004,7 +13046,7 @@ def test_get_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_instance_rest_unset_required_fields():
@@ -13184,7 +13226,7 @@ def test_list_instances_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_instances_rest_unset_required_fields():
@@ -13359,7 +13401,7 @@ def test_update_instance_rest_required_fields(request_type=instance.Instance):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_instance_rest_unset_required_fields():
@@ -13483,7 +13525,7 @@ def test_partial_update_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_partial_update_instance_rest_unset_required_fields():
@@ -13665,7 +13707,7 @@ def test_delete_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_instance_rest_unset_required_fields():
@@ -13856,7 +13898,7 @@ def test_create_cluster_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_cluster_rest_unset_required_fields():
@@ -14044,7 +14086,7 @@ def test_get_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_cluster_rest_unset_required_fields():
@@ -14223,7 +14265,7 @@ def test_list_clusters_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_clusters_rest_unset_required_fields():
@@ -14444,7 +14486,7 @@ def test_partial_update_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_partial_update_cluster_rest_unset_required_fields():
@@ -14629,7 +14671,7 @@ def test_delete_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_cluster_rest_unset_required_fields():
@@ -14829,7 +14871,7 @@ def test_create_app_profile_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_app_profile_rest_unset_required_fields():
@@ -15025,7 +15067,7 @@ def test_get_app_profile_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_app_profile_rest_unset_required_fields():
@@ -15216,7 +15258,7 @@ def test_list_app_profiles_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_app_profiles_rest_unset_required_fields():
@@ -15348,6 +15390,9 @@ def test_list_app_profiles_rest_pager(transport: str = "rest"):
 
         pager = client.list_app_profiles(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, instance.AppProfile) for i in results)
@@ -15473,7 +15518,7 @@ def test_update_app_profile_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_app_profile_rest_unset_required_fields():
@@ -15684,7 +15729,7 @@ def test_delete_app_profile_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_app_profile_rest_unset_required_fields():
@@ -15871,7 +15916,7 @@ def test_get_iam_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_iam_policy_rest_unset_required_fields():
@@ -16046,7 +16091,7 @@ def test_set_iam_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_iam_policy_rest_unset_required_fields():
@@ -16237,7 +16282,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -16436,7 +16481,7 @@ def test_list_hot_tablets_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_hot_tablets_rest_unset_required_fields():
@@ -16573,6 +16618,9 @@ def test_list_hot_tablets_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_hot_tablets(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -16712,7 +16760,7 @@ def test_create_logical_view_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_logical_view_rest_unset_required_fields():
@@ -16903,7 +16951,7 @@ def test_get_logical_view_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_logical_view_rest_unset_required_fields():
@@ -17096,7 +17144,7 @@ def test_list_logical_views_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_logical_views_rest_unset_required_fields():
@@ -17229,6 +17277,9 @@ def test_list_logical_views_rest_pager(transport: str = "rest"):
 
         pager = client.list_logical_views(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, instance.LogicalView) for i in results)
@@ -17349,7 +17400,7 @@ def test_update_logical_view_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_logical_view_rest_unset_required_fields():
@@ -17534,7 +17585,7 @@ def test_delete_logical_view_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_logical_view_rest_unset_required_fields():
@@ -17736,7 +17787,7 @@ def test_create_materialized_view_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_materialized_view_rest_unset_required_fields():
@@ -17930,7 +17981,7 @@ def test_get_materialized_view_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_materialized_view_rest_unset_required_fields():
@@ -18124,7 +18175,7 @@ def test_list_materialized_views_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_materialized_views_rest_unset_required_fields():
@@ -18259,6 +18310,9 @@ def test_list_materialized_views_rest_pager(transport: str = "rest"):
 
         pager = client.list_materialized_views(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, instance.MaterializedView) for i in results)
@@ -18380,7 +18434,7 @@ def test_update_materialized_view_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_materialized_view_rest_unset_required_fields():
@@ -18566,7 +18620,7 @@ def test_delete_materialized_view_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_materialized_view_rest_unset_required_fields():
@@ -18759,7 +18813,6 @@ def test_create_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18780,7 +18833,6 @@ def test_get_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18801,7 +18853,6 @@ def test_list_instances_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -18822,7 +18873,6 @@ def test_update_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.Instance()
-
         assert args[0] == request_msg
 
 
@@ -18845,7 +18895,6 @@ def test_partial_update_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.PartialUpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18866,7 +18915,6 @@ def test_delete_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18887,7 +18935,6 @@ def test_create_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -18908,7 +18955,6 @@ def test_get_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -18929,7 +18975,6 @@ def test_list_clusters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -18950,7 +18995,6 @@ def test_update_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.Cluster()
-
         assert args[0] == request_msg
 
 
@@ -18973,7 +19017,6 @@ def test_partial_update_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.PartialUpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -18994,7 +19037,6 @@ def test_delete_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -19017,7 +19059,6 @@ def test_create_app_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateAppProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -19038,7 +19079,6 @@ def test_get_app_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetAppProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -19061,7 +19101,6 @@ def test_list_app_profiles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListAppProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -19084,7 +19123,6 @@ def test_update_app_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.UpdateAppProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -19107,7 +19145,6 @@ def test_delete_app_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteAppProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -19128,7 +19165,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -19149,7 +19185,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -19172,7 +19207,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19193,7 +19227,6 @@ def test_list_hot_tablets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListHotTabletsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19216,7 +19249,6 @@ def test_create_logical_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateLogicalViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -19237,7 +19269,6 @@ def test_get_logical_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetLogicalViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -19260,7 +19291,6 @@ def test_list_logical_views_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListLogicalViewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19283,7 +19313,6 @@ def test_update_logical_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.UpdateLogicalViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -19306,7 +19335,6 @@ def test_delete_logical_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteLogicalViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -19329,7 +19357,6 @@ def test_create_materialized_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateMaterializedViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -19352,7 +19379,6 @@ def test_get_materialized_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetMaterializedViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -19375,7 +19401,6 @@ def test_list_materialized_views_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListMaterializedViewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19398,7 +19423,6 @@ def test_update_materialized_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.UpdateMaterializedViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -19421,7 +19445,6 @@ def test_delete_materialized_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteMaterializedViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -19460,7 +19483,6 @@ async def test_create_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -19482,6 +19504,7 @@ async def test_get_instance_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 state=instance.Instance.State.READY,
                 type_=instance.Instance.Type.PRODUCTION,
+                edition=instance.Instance.Edition.ENTERPRISE,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
             )
@@ -19492,7 +19515,6 @@ async def test_get_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -19520,7 +19542,6 @@ async def test_list_instances_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -19542,6 +19563,7 @@ async def test_update_instance_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 state=instance.Instance.State.READY,
                 type_=instance.Instance.Type.PRODUCTION,
+                edition=instance.Instance.Edition.ENTERPRISE,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
             )
@@ -19552,7 +19574,6 @@ async def test_update_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.Instance()
-
         assert args[0] == request_msg
 
 
@@ -19579,7 +19600,6 @@ async def test_partial_update_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.PartialUpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -19602,7 +19622,6 @@ async def test_delete_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -19627,7 +19646,6 @@ async def test_create_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -19659,7 +19677,6 @@ async def test_get_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -19687,7 +19704,6 @@ async def test_list_clusters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -19712,7 +19728,6 @@ async def test_update_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.Cluster()
-
         assert args[0] == request_msg
 
 
@@ -19739,7 +19754,6 @@ async def test_partial_update_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.PartialUpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -19762,7 +19776,6 @@ async def test_delete_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -19793,7 +19806,6 @@ async def test_create_app_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateAppProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -19822,7 +19834,6 @@ async def test_get_app_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetAppProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -19852,7 +19863,6 @@ async def test_list_app_profiles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListAppProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -19879,7 +19889,6 @@ async def test_update_app_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.UpdateAppProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -19904,7 +19913,6 @@ async def test_delete_app_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteAppProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -19932,7 +19940,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -19960,7 +19967,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -19989,7 +19995,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20016,7 +20021,6 @@ async def test_list_hot_tablets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListHotTabletsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20043,7 +20047,6 @@ async def test_create_logical_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateLogicalViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -20073,7 +20076,6 @@ async def test_get_logical_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetLogicalViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -20102,7 +20104,6 @@ async def test_list_logical_views_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListLogicalViewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20129,7 +20130,6 @@ async def test_update_logical_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.UpdateLogicalViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -20154,7 +20154,6 @@ async def test_delete_logical_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteLogicalViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -20181,7 +20180,6 @@ async def test_create_materialized_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateMaterializedViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -20213,7 +20211,6 @@ async def test_get_materialized_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetMaterializedViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -20242,7 +20239,6 @@ async def test_list_materialized_views_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListMaterializedViewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20269,7 +20265,6 @@ async def test_update_materialized_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.UpdateMaterializedViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -20294,7 +20289,6 @@ async def test_delete_materialized_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteMaterializedViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -20481,6 +20475,7 @@ def test_get_instance_rest_call_success(request_type):
             display_name="display_name_value",
             state=instance.Instance.State.READY,
             type_=instance.Instance.Type.PRODUCTION,
+            edition=instance.Instance.Edition.ENTERPRISE,
             satisfies_pzs=True,
             satisfies_pzi=True,
         )
@@ -20503,6 +20498,7 @@ def test_get_instance_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -20760,6 +20756,7 @@ def test_update_instance_rest_call_success(request_type):
             display_name="display_name_value",
             state=instance.Instance.State.READY,
             type_=instance.Instance.Type.PRODUCTION,
+            edition=instance.Instance.Edition.ENTERPRISE,
             satisfies_pzs=True,
             satisfies_pzi=True,
         )
@@ -20782,6 +20779,7 @@ def test_update_instance_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -20894,6 +20892,7 @@ def test_partial_update_instance_rest_call_success(request_type):
         "display_name": "display_name_value",
         "state": 1,
         "type_": 1,
+        "edition": 1,
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
         "satisfies_pzs": True,
@@ -25093,7 +25092,6 @@ def test_create_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -25113,7 +25111,6 @@ def test_get_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -25133,7 +25130,6 @@ def test_list_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -25153,7 +25149,6 @@ def test_update_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.Instance()
-
         assert args[0] == request_msg
 
 
@@ -25175,7 +25170,6 @@ def test_partial_update_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.PartialUpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -25195,7 +25189,6 @@ def test_delete_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -25215,7 +25208,6 @@ def test_create_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -25235,7 +25227,6 @@ def test_get_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -25255,7 +25246,6 @@ def test_list_clusters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -25275,7 +25265,6 @@ def test_update_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.Cluster()
-
         assert args[0] == request_msg
 
 
@@ -25297,7 +25286,6 @@ def test_partial_update_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.PartialUpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -25317,7 +25305,6 @@ def test_delete_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -25339,7 +25326,6 @@ def test_create_app_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateAppProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -25359,7 +25345,6 @@ def test_get_app_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetAppProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -25381,7 +25366,6 @@ def test_list_app_profiles_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListAppProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -25403,7 +25387,6 @@ def test_update_app_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.UpdateAppProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -25425,7 +25408,6 @@ def test_delete_app_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteAppProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -25445,7 +25427,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -25465,7 +25446,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -25487,7 +25467,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25507,7 +25486,6 @@ def test_list_hot_tablets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListHotTabletsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25529,7 +25507,6 @@ def test_create_logical_view_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateLogicalViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -25549,7 +25526,6 @@ def test_get_logical_view_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetLogicalViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -25571,7 +25547,6 @@ def test_list_logical_views_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListLogicalViewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25593,7 +25568,6 @@ def test_update_logical_view_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.UpdateLogicalViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -25615,7 +25589,6 @@ def test_delete_logical_view_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteLogicalViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -25637,7 +25610,6 @@ def test_create_materialized_view_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.CreateMaterializedViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -25659,7 +25631,6 @@ def test_get_materialized_view_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.GetMaterializedViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -25681,7 +25652,6 @@ def test_list_materialized_views_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.ListMaterializedViewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25703,7 +25673,6 @@ def test_update_materialized_view_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.UpdateMaterializedViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -25725,7 +25694,6 @@ def test_delete_materialized_view_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable_instance_admin.DeleteMaterializedViewRequest()
-
         assert args[0] == request_msg
 
 

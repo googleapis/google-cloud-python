@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,6 +30,10 @@ __protobuf__ = proto.module(
         "PscConnectionStatus",
         "ConnectionType",
         "Instance",
+        "StartMigrationRequest",
+        "FinishMigrationRequest",
+        "SelfManagedSource",
+        "MigrationConfig",
         "AutomatedBackupConfig",
         "BackupCollection",
         "Backup",
@@ -209,7 +213,8 @@ class Instance(proto.Message):
         endpoints (MutableSequence[google.cloud.memorystore_v1.types.Instance.InstanceEndpoint]):
             Optional. Endpoints for the instance.
         mode (google.cloud.memorystore_v1.types.Instance.Mode):
-            Optional. The mode config for the instance.
+            Optional. Immutable. The mode config for the
+            instance.
         simulate_maintenance_event (bool):
             Optional. Input only. Simulate a maintenance
             event.
@@ -301,6 +306,9 @@ class Instance(proto.Message):
             certificates.
 
             This field is a member of `oneof`_ ``_rotate_server_certificate``.
+        migration_config (google.cloud.memorystore_v1.types.MigrationConfig):
+            Output only. Migration config for the
+            instance.
     """
 
     class State(proto.Enum):
@@ -317,6 +325,8 @@ class Instance(proto.Message):
                 Instance is being updated.
             DELETING (4):
                 Instance is being deleted.
+            MIGRATING (6):
+                Instance is being migrated.
         """
 
         STATE_UNSPECIFIED = 0
@@ -324,6 +334,7 @@ class Instance(proto.Message):
         ACTIVE = 2
         UPDATING = 3
         DELETING = 4
+        MIGRATING = 6
 
     class AuthorizationMode(proto.Enum):
         r"""Possible authorization modes of the instance.
@@ -383,7 +394,7 @@ class Instance(proto.Message):
             STANDARD_LARGE (8):
                 Standard large.
             HIGHMEM_2XLARGE (9):
-                High memory 2x large.
+                High memory 2xlarge.
             CUSTOM_PICO (10):
                 Custom pico.
         """
@@ -830,6 +841,182 @@ class Instance(proto.Message):
         proto.BOOL,
         number=58,
         optional=True,
+    )
+    migration_config: "MigrationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=59,
+        message="MigrationConfig",
+    )
+
+
+class StartMigrationRequest(proto.Message):
+    r"""Request for ``StartMigration``.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        self_managed_source (google.cloud.memorystore_v1.types.SelfManagedSource):
+            Required. Configuration for migrating from a
+            self-managed Valkey/Redis instance
+
+            This field is a member of `oneof`_ ``source``.
+        name (str):
+            Required. The resource name of the instance
+            to start migration on. Format:
+            projects/{project}/locations/{location}/instances/{instance}
+    """
+
+    self_managed_source: "SelfManagedSource" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="SelfManagedSource",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class FinishMigrationRequest(proto.Message):
+    r"""Request for ``FinishMigration``.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the instance
+            to finalize migration on. Format:
+            projects/{project}/locations/{location}/instances/{instance}
+        force (bool):
+            Optional. By default, the ``FinishMigration`` operation
+            ensures the target replication offset to catch up to the
+            source offset as of the time of the call. Set this field to
+            ``true`` to bypass this offset verification check.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class SelfManagedSource(proto.Message):
+    r"""Details of the self-managed source instance.
+
+    Attributes:
+        ip_address (str):
+            Required. The IP address of the source
+            instance. This IP address should be a stable IP
+            address that can be accessed by the Memorystore
+            instance throughout the migration process.
+        port (int):
+            Required. The port of the source instance.
+            This port should be a stable port that can be
+            accessed by the Memorystore instance throughout
+            the migration process.
+        network_attachment (str):
+            Required. The resource name of the Private Service Connect
+            Network Attachment used to establish connectivity to the
+            source instance. This network attachment has the following
+            requirements:
+
+            1. It must be in the same project as the Memorystore
+               instance.
+            2. It must be in the same region as the Memorystore
+               instance.
+            3. The subnet attached to the network attachment must be in
+               the same VPC network as the source instance nodes.
+
+            Format:
+            projects/{project}/regions/{region}/networkAttachments/{network_attachment}
+    """
+
+    ip_address: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    port: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    network_attachment: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class MigrationConfig(proto.Message):
+    r"""Configuration for the migration of an instance.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        self_managed_source (google.cloud.memorystore_v1.types.SelfManagedSource):
+            Output only. Configuration for migrating from
+            a self-managed Valkey/Redis instance
+
+            This field is a member of `oneof`_ ``source``.
+        state (google.cloud.memorystore_v1.types.MigrationConfig.State):
+            Output only. Migration state of the instance.
+        force_finish_migration (bool):
+            Output only. Represents a boolean flag to
+            force migration finalization without offset
+            catch up validation between source and target
+            before stopping replication.
+    """
+
+    class State(proto.Enum):
+        r"""Migration state of the instance.
+        New values may be added in the future.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Instance has no migration related activity.
+                This is the initial state.
+            ROLLED_BACK (1):
+                Instance is not currently migrating. The
+                instance underwent a migration attempt that
+                failed, and the subsequent rollback was
+                successful. The instance is now ready for a new
+                migration attempt if desired.
+            ROLLING_BACK (5):
+                Indicates a previous migration attempt failed. The
+                high-level instance state will be ``MIGRATING``. The
+                instance is not ready for a new migration attempt. Rollback
+                is in progress to restore the instance to its original
+                state. The instance will remain in this state until rollback
+                is successful.
+            REPLICATION_ESTABLISHED (6):
+                Instance is in the process of migration.
+                Instance has established successful replication
+                and is ready for cutover.
+            MIGRATED (4):
+                Instance is successfully migrated.
+        """
+
+        STATE_UNSPECIFIED = 0
+        ROLLED_BACK = 1
+        ROLLING_BACK = 5
+        REPLICATION_ESTABLISHED = 6
+        MIGRATED = 4
+
+    self_managed_source: "SelfManagedSource" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="SelfManagedSource",
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    force_finish_migration: bool = proto.Field(
+        proto.BOOL,
+        number=4,
     )
 
 
@@ -1448,7 +1635,7 @@ class PscAutoConnection(proto.Message):
         network (str):
             Required. The network where the PSC endpoints are created,
             in the form of
-            projects/{project_id}/global/networks/{network_id}.
+            projects/{project_id}/global/networks/{network_name}.
         service_attachment (str):
             Output only. The service attachment which is
             the target of the PSC connection, in the form of
@@ -1533,7 +1720,7 @@ class PscConnection(proto.Message):
         network (str):
             Required. The consumer network where the IP address resides,
             in the form of
-            projects/{project_id}/global/networks/{network_id}.
+            projects/{project_id}/global/networks/{network_name}.
         service_attachment (str):
             Required. The service attachment which is the
             target of the PSC connection, in the form of
@@ -1604,7 +1791,7 @@ class DiscoveryEndpoint(proto.Message):
         network (str):
             Output only. The network where the IP address of the
             discovery endpoint will be reserved, in the form of
-            projects/{network_project}/global/networks/{network_id}.
+            projects/{network_project}/global/networks/{network_name}.
     """
 
     address: str = proto.Field(
@@ -1908,7 +2095,7 @@ class ListInstancesRequest(proto.Message):
 
 
 class ListInstancesResponse(proto.Message):
-    r"""Response message for [ListInstances][].
+    r"""Response message for ``ListInstances``.
 
     Attributes:
         instances (MutableSequence[google.cloud.memorystore_v1.types.Instance]):
@@ -2110,7 +2297,7 @@ class DeleteInstanceRequest(proto.Message):
 
 
 class ListBackupCollectionsRequest(proto.Message):
-    r"""Request for [ListBackupCollections]
+    r"""Request for ``ListBackupCollections``.
 
     Attributes:
         parent (str):
@@ -2124,12 +2311,11 @@ class ListBackupCollectionsRequest(proto.Message):
             If not specified, a default value of 1000 will be used by
             the service. Regardless of the page_size value, the response
             may include a partial list and a caller should only rely on
-            response's
-            [``next_page_token``][google.cloud.memorystore.v1.ListBackupCollectionsResponse.next_page_token]
-            to determine if there are more clusters left to be queried.
+            response's ``next_page_token`` to determine if there are
+            more clusters left to be queried.
         page_token (str):
             Optional. The ``next_page_token`` value returned from a
-            previous [ListBackupCollections] request, if any.
+            previous ``ListBackupCollections`` request, if any.
     """
 
     parent: str = proto.Field(
@@ -2147,7 +2333,7 @@ class ListBackupCollectionsRequest(proto.Message):
 
 
 class ListBackupCollectionsResponse(proto.Message):
-    r"""Response for [ListBackupCollections].
+    r"""Response for ``ListBackupCollections``.
 
     Attributes:
         backup_collections (MutableSequence[google.cloud.memorystore_v1.types.BackupCollection]):
@@ -2191,7 +2377,7 @@ class ListBackupCollectionsResponse(proto.Message):
 
 
 class GetBackupCollectionRequest(proto.Message):
-    r"""Request for [GetBackupCollection].
+    r"""Request for ``GetBackupCollection``.
 
     Attributes:
         name (str):
@@ -2208,7 +2394,7 @@ class GetBackupCollectionRequest(proto.Message):
 
 
 class ListBackupsRequest(proto.Message):
-    r"""Request for [ListBackups].
+    r"""Request for ``ListBackups``.
 
     Attributes:
         parent (str):
@@ -2221,12 +2407,11 @@ class ListBackupsRequest(proto.Message):
             If not specified, a default value of 1000 will be used by
             the service. Regardless of the page_size value, the response
             may include a partial list and a caller should only rely on
-            response's
-            [``next_page_token``][google.cloud.memorystore.v1.ListBackupsResponse.next_page_token]
-            to determine if there are more clusters left to be queried.
+            response's ``next_page_token`` to determine if there are
+            more clusters left to be queried.
         page_token (str):
             Optional. The ``next_page_token`` value returned from a
-            previous [ListBackupCollections] request, if any.
+            previous ``ListBackupCollections`` request, if any.
     """
 
     parent: str = proto.Field(
@@ -2244,7 +2429,7 @@ class ListBackupsRequest(proto.Message):
 
 
 class ListBackupsResponse(proto.Message):
-    r"""Response for [ListBackups].
+    r"""Response for ``ListBackups``.
 
     Attributes:
         backups (MutableSequence[google.cloud.memorystore_v1.types.Backup]):
@@ -2277,7 +2462,7 @@ class ListBackupsResponse(proto.Message):
 
 
 class GetBackupRequest(proto.Message):
-    r"""Request for [GetBackup].
+    r"""Request for ``GetBackup``.
 
     Attributes:
         name (str):
@@ -2292,7 +2477,7 @@ class GetBackupRequest(proto.Message):
 
 
 class DeleteBackupRequest(proto.Message):
-    r"""Request for [DeleteBackup].
+    r"""Request for ``DeleteBackup``.
 
     Attributes:
         name (str):
@@ -2313,7 +2498,7 @@ class DeleteBackupRequest(proto.Message):
 
 
 class ExportBackupRequest(proto.Message):
-    r"""Request for [ExportBackup].
+    r"""Request for ``ExportBackup``.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -2340,7 +2525,7 @@ class ExportBackupRequest(proto.Message):
 
 
 class BackupInstanceRequest(proto.Message):
-    r"""Request for [BackupInstance].
+    r"""Request for ``BackupInstance``.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -2378,7 +2563,7 @@ class BackupInstanceRequest(proto.Message):
 
 
 class GetCertificateAuthorityRequest(proto.Message):
-    r"""Request message for [GetCertificateAuthority][].
+    r"""Request message for ``GetCertificateAuthority``.
 
     Attributes:
         name (str):
@@ -2517,8 +2702,7 @@ class SharedRegionalCertificateAuthority(proto.Message):
 
 
 class GetSharedRegionalCertificateAuthorityRequest(proto.Message):
-    r"""Request for
-    [GetSharedRegionalCertificateAuthority][google.cloud.memorystore.v1.Memorystore.GetSharedRegionalCertificateAuthority].
+    r"""Request for ``GetSharedRegionalCertificateAuthority``.
 
     Attributes:
         name (str):

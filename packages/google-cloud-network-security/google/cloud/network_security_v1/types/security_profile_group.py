@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -59,8 +59,8 @@ class SecurityProfileGroup(proto.Message):
             ensure the client has an up-to-date value before
             proceeding.
         data_path_id (int):
-            Output only. Identifier used by the
-            data-path. Unique within {container, location}.
+            Output only. Identifier used by the data-path. Unique within
+            ``{container, location}``.
         labels (MutableMapping[str, str]):
             Optional. Labels as key value pairs.
         threat_prevention_profile (str):

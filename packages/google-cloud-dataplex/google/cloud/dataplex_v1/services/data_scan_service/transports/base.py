@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,7 +45,12 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class DataScanServiceTransport(abc.ABC):
     """Abstract transport class for DataScanService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/cloud-platform.read-only",
+        "https://www.googleapis.com/auth/dataplex.read-write",
+        "https://www.googleapis.com/auth/dataplex.readonly",
+    )
 
     DEFAULT_HOST: str = "dataplex.googleapis.com"
 
@@ -188,6 +193,11 @@ class DataScanServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.cancel_data_scan_job: gapic_v1.method.wrap_method(
+                self.cancel_data_scan_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.generate_data_quality_rules: gapic_v1.method.wrap_method(
                 self.generate_data_quality_rules,
                 default_timeout=None,
@@ -327,6 +337,18 @@ class DataScanServiceTransport(abc.ABC):
         Union[
             datascans.ListDataScanJobsResponse,
             Awaitable[datascans.ListDataScanJobsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_data_scan_job(
+        self,
+    ) -> Callable[
+        [datascans.CancelDataScanJobRequest],
+        Union[
+            datascans.CancelDataScanJobResponse,
+            Awaitable[datascans.CancelDataScanJobResponse],
         ],
     ]:
         raise NotImplementedError()

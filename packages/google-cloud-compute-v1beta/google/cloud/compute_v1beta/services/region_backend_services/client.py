@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1936,8 +1936,11 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListUsablePager:
-        r"""Retrieves a list of all usable backend services in
-        the specified project in the given region.
+        r"""Retrieves a list of all usable backend services for
+        Application Load Balancers and Proxy Network Load
+        Balancers in the specified project in the given region.
+        Backend services for external and internal passthrough
+        Network Load Balancers are not included in the response.
 
         .. code-block:: python
 

@@ -33,7 +33,7 @@ except ImportError:
 try:
     import pyarrow  # type: ignore
 except ImportError:
-    pyarrow = None
+    pyarrow = None  # type: ignore[assignment]
 
 try:
     import db_dtypes  # type: ignore
@@ -72,6 +72,7 @@ from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
 from google.cloud.bigquery.schema import _to_schema_fields
 from google.cloud.bigquery import external_config
+from google.cloud.bigquery import _string_references
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     # Unconditionally import optional dependencies again to tell pytype that
@@ -281,22 +282,17 @@ class TableReference(_TableBase):
                 If ``table_id`` is not a fully-qualified table ID in
                 standard SQL format.
         """
-        from google.cloud.bigquery.dataset import DatasetReference
-
-        (
-            output_project_id,
-            output_dataset_id,
-            output_table_id,
-        ) = _helpers._parse_3_part_id(
-            table_id, default_project=default_project, property_name="table_id"
-        )
-
-        return cls(
-            DatasetReference(output_project_id, output_dataset_id), output_table_id
+        return cls.from_api_repr(
+            _string_references.parse_table_reference(
+                table_id=table_id,
+                default_project=default_project,
+            )
         )
 
     @classmethod
-    def from_api_repr(cls, resource: dict) -> "TableReference":
+    def from_api_repr(
+        cls, resource: Union[dict, _string_references.ParsedTableReference]
+    ) -> "TableReference":
         """Factory:  construct a table reference given its API representation
 
         Args:
@@ -2357,7 +2353,9 @@ class RowIterator(HTTPIterator):
                 progress_bar.close()
         finally:
             if owns_bqstorage_client:
-                bqstorage_client._transport.grpc_channel.close()  # type: ignore
+                # mypy: bqstorage_client is guaranteed to be not None when owns_bqstorage_client is True,
+                # but mypy cannot infer this correlation. We ignore the union-attr error here.
+                bqstorage_client._transport.close()  # type: ignore[union-attr]
 
         if record_batches and bqstorage_client is not None:
             return pyarrow.Table.from_batches(record_batches)

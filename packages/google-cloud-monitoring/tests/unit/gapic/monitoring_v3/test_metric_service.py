@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -119,6 +114,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1308,8 +1318,8 @@ def test_metric_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        metric_service.ListMonitoredResourceDescriptorsRequest,
-        dict,
+        metric_service.ListMonitoredResourceDescriptorsRequest(),
+        {},
     ],
 )
 def test_list_monitored_resource_descriptors(request_type, transport: str = "grpc"):
@@ -1320,7 +1330,7 @@ def test_list_monitored_resource_descriptors(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1370,11 +1380,12 @@ def test_list_monitored_resource_descriptors_non_empty_request_with_auto_populat
         client.list_monitored_resource_descriptors(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metric_service.ListMonitoredResourceDescriptorsRequest(
+        request_msg = metric_service.ListMonitoredResourceDescriptorsRequest(
             name="name_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_monitored_resource_descriptors_use_cached_wrapped_rpc():
@@ -1460,9 +1471,15 @@ async def test_list_monitored_resource_descriptors_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metric_service.ListMonitoredResourceDescriptorsRequest(),
+        {},
+    ],
+)
 async def test_list_monitored_resource_descriptors_async(
-    transport: str = "grpc_asyncio",
-    request_type=metric_service.ListMonitoredResourceDescriptorsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MetricServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1471,7 +1488,7 @@ async def test_list_monitored_resource_descriptors_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1494,11 +1511,6 @@ async def test_list_monitored_resource_descriptors_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMonitoredResourceDescriptorsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_monitored_resource_descriptors_async_from_dict():
-    await test_list_monitored_resource_descriptors_async(request_type=dict)
 
 
 def test_list_monitored_resource_descriptors_field_headers():
@@ -1705,6 +1717,9 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1800,6 +1815,8 @@ async def test_list_monitored_resource_descriptors_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1852,9 +1869,7 @@ async def test_list_monitored_resource_descriptors_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_monitored_resource_descriptors(request={})
         ).pages:
             pages.append(page_)
@@ -1865,8 +1880,8 @@ async def test_list_monitored_resource_descriptors_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metric_service.GetMonitoredResourceDescriptorRequest,
-        dict,
+        metric_service.GetMonitoredResourceDescriptorRequest(),
+        {},
     ],
 )
 def test_get_monitored_resource_descriptor(request_type, transport: str = "grpc"):
@@ -1877,7 +1892,7 @@ def test_get_monitored_resource_descriptor(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1933,9 +1948,10 @@ def test_get_monitored_resource_descriptor_non_empty_request_with_auto_populated
         client.get_monitored_resource_descriptor(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metric_service.GetMonitoredResourceDescriptorRequest(
+        request_msg = metric_service.GetMonitoredResourceDescriptorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_monitored_resource_descriptor_use_cached_wrapped_rpc():
@@ -2021,9 +2037,15 @@ async def test_get_monitored_resource_descriptor_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metric_service.GetMonitoredResourceDescriptorRequest(),
+        {},
+    ],
+)
 async def test_get_monitored_resource_descriptor_async(
-    transport: str = "grpc_asyncio",
-    request_type=metric_service.GetMonitoredResourceDescriptorRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MetricServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2032,7 +2054,7 @@ async def test_get_monitored_resource_descriptor_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2063,11 +2085,6 @@ async def test_get_monitored_resource_descriptor_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
-
-
-@pytest.mark.asyncio
-async def test_get_monitored_resource_descriptor_async_from_dict():
-    await test_get_monitored_resource_descriptor_async(request_type=dict)
 
 
 def test_get_monitored_resource_descriptor_field_headers():
@@ -2224,8 +2241,8 @@ async def test_get_monitored_resource_descriptor_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metric_service.ListMetricDescriptorsRequest,
-        dict,
+        metric_service.ListMetricDescriptorsRequest(),
+        {},
     ],
 )
 def test_list_metric_descriptors(request_type, transport: str = "grpc"):
@@ -2236,7 +2253,7 @@ def test_list_metric_descriptors(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2286,11 +2303,12 @@ def test_list_metric_descriptors_non_empty_request_with_auto_populated_field():
         client.list_metric_descriptors(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metric_service.ListMetricDescriptorsRequest(
+        request_msg = metric_service.ListMetricDescriptorsRequest(
             name="name_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_metric_descriptors_use_cached_wrapped_rpc():
@@ -2376,9 +2394,15 @@ async def test_list_metric_descriptors_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metric_service.ListMetricDescriptorsRequest(),
+        {},
+    ],
+)
 async def test_list_metric_descriptors_async(
-    transport: str = "grpc_asyncio",
-    request_type=metric_service.ListMetricDescriptorsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MetricServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2387,7 +2411,7 @@ async def test_list_metric_descriptors_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2410,11 +2434,6 @@ async def test_list_metric_descriptors_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMetricDescriptorsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_metric_descriptors_async_from_dict():
-    await test_list_metric_descriptors_async(request_type=dict)
 
 
 def test_list_metric_descriptors_field_headers():
@@ -2619,6 +2638,9 @@ def test_list_metric_descriptors_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, metric_pb2.MetricDescriptor) for i in results)
@@ -2711,6 +2733,8 @@ async def test_list_metric_descriptors_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2760,11 +2784,7 @@ async def test_list_metric_descriptors_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_metric_descriptors(request={})
-        ).pages:
+        async for page_ in (await client.list_metric_descriptors(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2773,8 +2793,8 @@ async def test_list_metric_descriptors_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metric_service.GetMetricDescriptorRequest,
-        dict,
+        metric_service.GetMetricDescriptorRequest(),
+        {},
     ],
 )
 def test_get_metric_descriptor(request_type, transport: str = "grpc"):
@@ -2785,7 +2805,7 @@ def test_get_metric_descriptor(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2849,9 +2869,10 @@ def test_get_metric_descriptor_non_empty_request_with_auto_populated_field():
         client.get_metric_descriptor(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metric_service.GetMetricDescriptorRequest(
+        request_msg = metric_service.GetMetricDescriptorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_metric_descriptor_use_cached_wrapped_rpc():
@@ -2937,9 +2958,15 @@ async def test_get_metric_descriptor_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metric_service.GetMetricDescriptorRequest(),
+        {},
+    ],
+)
 async def test_get_metric_descriptor_async(
-    transport: str = "grpc_asyncio",
-    request_type=metric_service.GetMetricDescriptorRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MetricServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2948,7 +2975,7 @@ async def test_get_metric_descriptor_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2987,11 +3014,6 @@ async def test_get_metric_descriptor_async(
     assert response.display_name == "display_name_value"
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
     assert response.monitored_resource_types == ["monitored_resource_types_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_metric_descriptor_async_from_dict():
-    await test_get_metric_descriptor_async(request_type=dict)
 
 
 def test_get_metric_descriptor_field_headers():
@@ -3148,8 +3170,8 @@ async def test_get_metric_descriptor_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metric_service.CreateMetricDescriptorRequest,
-        dict,
+        metric_service.CreateMetricDescriptorRequest(),
+        {},
     ],
 )
 def test_create_metric_descriptor(request_type, transport: str = "grpc"):
@@ -3160,7 +3182,7 @@ def test_create_metric_descriptor(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3224,9 +3246,10 @@ def test_create_metric_descriptor_non_empty_request_with_auto_populated_field():
         client.create_metric_descriptor(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metric_service.CreateMetricDescriptorRequest(
+        request_msg = metric_service.CreateMetricDescriptorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_metric_descriptor_use_cached_wrapped_rpc():
@@ -3312,9 +3335,15 @@ async def test_create_metric_descriptor_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metric_service.CreateMetricDescriptorRequest(),
+        {},
+    ],
+)
 async def test_create_metric_descriptor_async(
-    transport: str = "grpc_asyncio",
-    request_type=metric_service.CreateMetricDescriptorRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MetricServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3323,7 +3352,7 @@ async def test_create_metric_descriptor_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3362,11 +3391,6 @@ async def test_create_metric_descriptor_async(
     assert response.display_name == "display_name_value"
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
     assert response.monitored_resource_types == ["monitored_resource_types_value"]
-
-
-@pytest.mark.asyncio
-async def test_create_metric_descriptor_async_from_dict():
-    await test_create_metric_descriptor_async(request_type=dict)
 
 
 def test_create_metric_descriptor_field_headers():
@@ -3533,8 +3557,8 @@ async def test_create_metric_descriptor_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metric_service.DeleteMetricDescriptorRequest,
-        dict,
+        metric_service.DeleteMetricDescriptorRequest(),
+        {},
     ],
 )
 def test_delete_metric_descriptor(request_type, transport: str = "grpc"):
@@ -3545,7 +3569,7 @@ def test_delete_metric_descriptor(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3590,9 +3614,10 @@ def test_delete_metric_descriptor_non_empty_request_with_auto_populated_field():
         client.delete_metric_descriptor(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metric_service.DeleteMetricDescriptorRequest(
+        request_msg = metric_service.DeleteMetricDescriptorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_metric_descriptor_use_cached_wrapped_rpc():
@@ -3678,9 +3703,15 @@ async def test_delete_metric_descriptor_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metric_service.DeleteMetricDescriptorRequest(),
+        {},
+    ],
+)
 async def test_delete_metric_descriptor_async(
-    transport: str = "grpc_asyncio",
-    request_type=metric_service.DeleteMetricDescriptorRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MetricServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3689,7 +3720,7 @@ async def test_delete_metric_descriptor_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3707,11 +3738,6 @@ async def test_delete_metric_descriptor_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_metric_descriptor_async_from_dict():
-    await test_delete_metric_descriptor_async(request_type=dict)
 
 
 def test_delete_metric_descriptor_field_headers():
@@ -3864,8 +3890,8 @@ async def test_delete_metric_descriptor_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metric_service.ListTimeSeriesRequest,
-        dict,
+        metric_service.ListTimeSeriesRequest(),
+        {},
     ],
 )
 def test_list_time_series(request_type, transport: str = "grpc"):
@@ -3876,7 +3902,7 @@ def test_list_time_series(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_time_series), "__call__") as call:
@@ -3925,12 +3951,13 @@ def test_list_time_series_non_empty_request_with_auto_populated_field():
         client.list_time_series(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metric_service.ListTimeSeriesRequest(
+        request_msg = metric_service.ListTimeSeriesRequest(
             name="name_value",
             filter="filter_value",
             order_by="order_by_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_time_series_use_cached_wrapped_rpc():
@@ -4013,9 +4040,14 @@ async def test_list_time_series_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_time_series_async(
-    transport: str = "grpc_asyncio", request_type=metric_service.ListTimeSeriesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metric_service.ListTimeSeriesRequest(),
+        {},
+    ],
+)
+async def test_list_time_series_async(request_type, transport: str = "grpc_asyncio"):
     client = MetricServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4023,7 +4055,7 @@ async def test_list_time_series_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_time_series), "__call__") as call:
@@ -4046,11 +4078,6 @@ async def test_list_time_series_async(
     assert isinstance(response, pagers.ListTimeSeriesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unit == "unit_value"
-
-
-@pytest.mark.asyncio
-async def test_list_time_series_async_from_dict():
-    await test_list_time_series_async(request_type=dict)
 
 
 def test_list_time_series_field_headers():
@@ -4275,6 +4302,9 @@ def test_list_time_series_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, gm_metric.TimeSeries) for i in results)
@@ -4363,6 +4393,8 @@ async def test_list_time_series_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4410,11 +4442,7 @@ async def test_list_time_series_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_time_series(request={})
-        ).pages:
+        async for page_ in (await client.list_time_series(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4423,8 +4451,8 @@ async def test_list_time_series_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metric_service.CreateTimeSeriesRequest,
-        dict,
+        metric_service.CreateTimeSeriesRequest(),
+        {},
     ],
 )
 def test_create_time_series(request_type, transport: str = "grpc"):
@@ -4435,7 +4463,7 @@ def test_create_time_series(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4480,9 +4508,10 @@ def test_create_time_series_non_empty_request_with_auto_populated_field():
         client.create_time_series(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metric_service.CreateTimeSeriesRequest(
+        request_msg = metric_service.CreateTimeSeriesRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_time_series_use_cached_wrapped_rpc():
@@ -4567,9 +4596,14 @@ async def test_create_time_series_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_time_series_async(
-    transport: str = "grpc_asyncio", request_type=metric_service.CreateTimeSeriesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metric_service.CreateTimeSeriesRequest(),
+        {},
+    ],
+)
+async def test_create_time_series_async(request_type, transport: str = "grpc_asyncio"):
     client = MetricServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4577,7 +4611,7 @@ async def test_create_time_series_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4595,11 +4629,6 @@ async def test_create_time_series_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_create_time_series_async_from_dict():
-    await test_create_time_series_async(request_type=dict)
 
 
 def test_create_time_series_field_headers():
@@ -4770,8 +4799,8 @@ async def test_create_time_series_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metric_service.CreateTimeSeriesRequest,
-        dict,
+        metric_service.CreateTimeSeriesRequest(),
+        {},
     ],
 )
 def test_create_service_time_series(request_type, transport: str = "grpc"):
@@ -4782,7 +4811,7 @@ def test_create_service_time_series(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4827,9 +4856,10 @@ def test_create_service_time_series_non_empty_request_with_auto_populated_field(
         client.create_service_time_series(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metric_service.CreateTimeSeriesRequest(
+        request_msg = metric_service.CreateTimeSeriesRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_service_time_series_use_cached_wrapped_rpc():
@@ -4915,8 +4945,15 @@ async def test_create_service_time_series_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metric_service.CreateTimeSeriesRequest(),
+        {},
+    ],
+)
 async def test_create_service_time_series_async(
-    transport: str = "grpc_asyncio", request_type=metric_service.CreateTimeSeriesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MetricServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4925,7 +4962,7 @@ async def test_create_service_time_series_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4943,11 +4980,6 @@ async def test_create_service_time_series_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_create_service_time_series_async_from_dict():
-    await test_create_service_time_series_async(request_type=dict)
 
 
 def test_create_service_time_series_field_headers():
@@ -5239,7 +5271,6 @@ def test_list_monitored_resource_descriptors_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.ListMonitoredResourceDescriptorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5262,7 +5293,6 @@ def test_get_monitored_resource_descriptor_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.GetMonitoredResourceDescriptorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5285,7 +5315,6 @@ def test_list_metric_descriptors_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.ListMetricDescriptorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5308,7 +5337,6 @@ def test_get_metric_descriptor_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.GetMetricDescriptorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5331,7 +5359,6 @@ def test_create_metric_descriptor_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.CreateMetricDescriptorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5354,7 +5381,6 @@ def test_delete_metric_descriptor_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.DeleteMetricDescriptorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5375,7 +5401,6 @@ def test_list_time_series_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.ListTimeSeriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5398,7 +5423,6 @@ def test_create_time_series_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.CreateTimeSeriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5421,7 +5445,6 @@ def test_create_service_time_series_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.CreateTimeSeriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5464,7 +5487,6 @@ async def test_list_monitored_resource_descriptors_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.ListMonitoredResourceDescriptorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5497,7 +5519,6 @@ async def test_get_monitored_resource_descriptor_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.GetMonitoredResourceDescriptorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5526,7 +5547,6 @@ async def test_list_metric_descriptors_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.ListMetricDescriptorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5563,7 +5583,6 @@ async def test_get_metric_descriptor_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.GetMetricDescriptorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5600,7 +5619,6 @@ async def test_create_metric_descriptor_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.CreateMetricDescriptorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5625,7 +5643,6 @@ async def test_delete_metric_descriptor_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.DeleteMetricDescriptorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5653,7 +5670,6 @@ async def test_list_time_series_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.ListTimeSeriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5678,7 +5694,6 @@ async def test_create_time_series_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.CreateTimeSeriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5703,7 +5718,6 @@ async def test_create_service_time_series_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metric_service.CreateTimeSeriesRequest()
-
         assert args[0] == request_msg
 
 

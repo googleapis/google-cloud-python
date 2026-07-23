@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -4912,6 +4912,39 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
                 )
             )
         return self._stubs["get_reporting_identity_settings"]
+
+    @property
+    def update_reporting_identity_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateReportingIdentitySettingsRequest],
+        resources.ReportingIdentitySettings,
+    ]:
+        r"""Return a callable for the update reporting identity
+        settings method over gRPC.
+
+        Updates the reporting identity settings for this
+        property.
+
+        Returns:
+            Callable[[~.UpdateReportingIdentitySettingsRequest],
+                    ~.ReportingIdentitySettings]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_reporting_identity_settings" not in self._stubs:
+            self._stubs["update_reporting_identity_settings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateReportingIdentitySettings",
+                    request_serializer=analytics_admin.UpdateReportingIdentitySettingsRequest.serialize,
+                    response_deserializer=resources.ReportingIdentitySettings.deserialize,
+                )
+            )
+        return self._stubs["update_reporting_identity_settings"]
 
     @property
     def get_user_provided_data_settings(

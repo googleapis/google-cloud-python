@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.network_services_v1.types import (
+    agent_gateway,
     endpoint_policy,
     extensibility,
     gateway,
@@ -47,6 +48,7 @@ from google.cloud.network_services_v1.types import (
     tcp_route,
     tls_route,
 )
+from google.cloud.network_services_v1.types import agent_gateway as gcn_agent_gateway
 from google.cloud.network_services_v1.types import (
     endpoint_policy as gcn_endpoint_policy,
 )
@@ -105,6 +107,14 @@ class NetworkServicesRestInterceptor:
 
     .. code-block:: python
         class MyCustomNetworkServicesInterceptor(NetworkServicesRestInterceptor):
+            def pre_create_agent_gateway(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_agent_gateway(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_endpoint_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -193,6 +203,14 @@ class NetworkServicesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_agent_gateway(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_agent_gateway(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_endpoint_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -278,6 +296,14 @@ class NetworkServicesRestInterceptor:
                 return request, metadata
 
             def post_delete_wasm_plugin_version(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_agent_gateway(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_agent_gateway(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -385,6 +411,14 @@ class NetworkServicesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_agent_gateways(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_agent_gateways(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_endpoint_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -489,6 +523,14 @@ class NetworkServicesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_agent_gateway(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_agent_gateway(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_endpoint_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -574,6 +616,55 @@ class NetworkServicesRestInterceptor:
 
 
     """
+
+    def pre_create_agent_gateway(
+        self,
+        request: gcn_agent_gateway.CreateAgentGatewayRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_agent_gateway.CreateAgentGatewayRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_agent_gateway
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_create_agent_gateway(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_agent_gateway
+
+        DEPRECATED. Please use the `post_create_agent_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_create_agent_gateway` interceptor runs
+        before the `post_create_agent_gateway_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_agent_gateway_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_agent_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_create_agent_gateway_with_metadata`
+        interceptor in new development instead of the `post_create_agent_gateway` interceptor.
+        When both interceptors are used, this `post_create_agent_gateway_with_metadata` interceptor runs after the
+        `post_create_agent_gateway` interceptor. The (possibly modified) response returned by
+        `post_create_agent_gateway` will be passed to
+        `post_create_agent_gateway_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_endpoint_policy(
         self,
@@ -1105,6 +1196,54 @@ class NetworkServicesRestInterceptor:
         """
         return response, metadata
 
+    def pre_delete_agent_gateway(
+        self,
+        request: agent_gateway.DeleteAgentGatewayRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        agent_gateway.DeleteAgentGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_agent_gateway
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_delete_agent_gateway(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_agent_gateway
+
+        DEPRECATED. Please use the `post_delete_agent_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_delete_agent_gateway` interceptor runs
+        before the `post_delete_agent_gateway_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_agent_gateway_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_agent_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_delete_agent_gateway_with_metadata`
+        interceptor in new development instead of the `post_delete_agent_gateway` interceptor.
+        When both interceptors are used, this `post_delete_agent_gateway_with_metadata` interceptor runs after the
+        `post_delete_agent_gateway` interceptor. The (possibly modified) response returned by
+        `post_delete_agent_gateway` will be passed to
+        `post_delete_agent_gateway_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_endpoint_policy(
         self,
         request: endpoint_policy.DeleteEndpointPolicyRequest,
@@ -1630,6 +1769,54 @@ class NetworkServicesRestInterceptor:
         `post_delete_wasm_plugin_version` interceptor. The (possibly modified) response returned by
         `post_delete_wasm_plugin_version` will be passed to
         `post_delete_wasm_plugin_version_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_agent_gateway(
+        self,
+        request: agent_gateway.GetAgentGatewayRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        agent_gateway.GetAgentGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_agent_gateway
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_get_agent_gateway(
+        self, response: agent_gateway.AgentGateway
+    ) -> agent_gateway.AgentGateway:
+        """Post-rpc interceptor for get_agent_gateway
+
+        DEPRECATED. Please use the `post_get_agent_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_get_agent_gateway` interceptor runs
+        before the `post_get_agent_gateway_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_agent_gateway_with_metadata(
+        self,
+        response: agent_gateway.AgentGateway,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[agent_gateway.AgentGateway, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_agent_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_get_agent_gateway_with_metadata`
+        interceptor in new development instead of the `post_get_agent_gateway` interceptor.
+        When both interceptors are used, this `post_get_agent_gateway_with_metadata` interceptor runs after the
+        `post_get_agent_gateway` interceptor. The (possibly modified) response returned by
+        `post_get_agent_gateway` will be passed to
+        `post_get_agent_gateway_with_metadata`.
         """
         return response, metadata
 
@@ -2240,6 +2427,56 @@ class NetworkServicesRestInterceptor:
         `post_get_wasm_plugin_version` interceptor. The (possibly modified) response returned by
         `post_get_wasm_plugin_version` will be passed to
         `post_get_wasm_plugin_version_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_agent_gateways(
+        self,
+        request: agent_gateway.ListAgentGatewaysRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        agent_gateway.ListAgentGatewaysRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_agent_gateways
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_list_agent_gateways(
+        self, response: agent_gateway.ListAgentGatewaysResponse
+    ) -> agent_gateway.ListAgentGatewaysResponse:
+        """Post-rpc interceptor for list_agent_gateways
+
+        DEPRECATED. Please use the `post_list_agent_gateways_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_list_agent_gateways` interceptor runs
+        before the `post_list_agent_gateways_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_agent_gateways_with_metadata(
+        self,
+        response: agent_gateway.ListAgentGatewaysResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        agent_gateway.ListAgentGatewaysResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_agent_gateways
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_list_agent_gateways_with_metadata`
+        interceptor in new development instead of the `post_list_agent_gateways` interceptor.
+        When both interceptors are used, this `post_list_agent_gateways_with_metadata` interceptor runs after the
+        `post_list_agent_gateways` interceptor. The (possibly modified) response returned by
+        `post_list_agent_gateways` will be passed to
+        `post_list_agent_gateways_with_metadata`.
         """
         return response, metadata
 
@@ -2887,6 +3124,55 @@ class NetworkServicesRestInterceptor:
         `post_list_wasm_plugin_versions` interceptor. The (possibly modified) response returned by
         `post_list_wasm_plugin_versions` will be passed to
         `post_list_wasm_plugin_versions_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_agent_gateway(
+        self,
+        request: gcn_agent_gateway.UpdateAgentGatewayRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_agent_gateway.UpdateAgentGatewayRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_agent_gateway
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_update_agent_gateway(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_agent_gateway
+
+        DEPRECATED. Please use the `post_update_agent_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_update_agent_gateway` interceptor runs
+        before the `post_update_agent_gateway_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_agent_gateway_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_agent_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_update_agent_gateway_with_metadata`
+        interceptor in new development instead of the `post_update_agent_gateway` interceptor.
+        When both interceptors are used, this `post_update_agent_gateway_with_metadata` interceptor runs after the
+        `post_update_agent_gateway` interceptor. The (possibly modified) response returned by
+        `post_update_agent_gateway` will be passed to
+        `post_update_agent_gateway_with_metadata`.
         """
         return response, metadata
 
@@ -3736,6 +4022,159 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
         # Return the client from cache.
         return self._operations_client
+
+    class _CreateAgentGateway(
+        _BaseNetworkServicesRestTransport._BaseCreateAgentGateway,
+        NetworkServicesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.CreateAgentGateway")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gcn_agent_gateway.CreateAgentGatewayRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create agent gateway method over HTTP.
+
+            Args:
+                request (~.gcn_agent_gateway.CreateAgentGatewayRequest):
+                    The request object. Request used by the
+                CreateAgentGateway method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseNetworkServicesRestTransport._BaseCreateAgentGateway._get_http_options()
+
+            request, metadata = self._interceptor.pre_create_agent_gateway(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateAgentGateway._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseNetworkServicesRestTransport._BaseCreateAgentGateway._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkServicesRestTransport._BaseCreateAgentGateway._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.CreateAgentGateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateAgentGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._CreateAgentGateway._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_agent_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_agent_gateway_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.create_agent_gateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateAgentGateway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _CreateEndpointPolicy(
         _BaseNetworkServicesRestTransport._BaseCreateEndpointPolicy,
@@ -5413,6 +5852,153 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 )
             return resp
 
+    class _DeleteAgentGateway(
+        _BaseNetworkServicesRestTransport._BaseDeleteAgentGateway,
+        NetworkServicesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.DeleteAgentGateway")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: agent_gateway.DeleteAgentGatewayRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete agent gateway method over HTTP.
+
+            Args:
+                request (~.agent_gateway.DeleteAgentGatewayRequest):
+                    The request object. Request used by the
+                DeleteAgentGateway method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseNetworkServicesRestTransport._BaseDeleteAgentGateway._get_http_options()
+
+            request, metadata = self._interceptor.pre_delete_agent_gateway(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteAgentGateway._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkServicesRestTransport._BaseDeleteAgentGateway._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.DeleteAgentGateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteAgentGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._DeleteAgentGateway._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_agent_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_agent_gateway_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.delete_agent_gateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteAgentGateway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteEndpointPolicy(
         _BaseNetworkServicesRestTransport._BaseDeleteEndpointPolicy,
         NetworkServicesRestStub,
@@ -7020,6 +7606,153 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     extra={
                         "serviceName": "google.cloud.networkservices.v1.NetworkServices",
                         "rpcName": "DeleteWasmPluginVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetAgentGateway(
+        _BaseNetworkServicesRestTransport._BaseGetAgentGateway, NetworkServicesRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.GetAgentGateway")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: agent_gateway.GetAgentGatewayRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> agent_gateway.AgentGateway:
+            r"""Call the get agent gateway method over HTTP.
+
+            Args:
+                request (~.agent_gateway.GetAgentGatewayRequest):
+                    The request object. Request used by the GetAgentGateway
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.agent_gateway.AgentGateway:
+                    AgentGateway represents the agent
+                gateway resource.
+
+            """
+
+            http_options = _BaseNetworkServicesRestTransport._BaseGetAgentGateway._get_http_options()
+
+            request, metadata = self._interceptor.pre_get_agent_gateway(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetAgentGateway._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkServicesRestTransport._BaseGetAgentGateway._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetAgentGateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetAgentGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._GetAgentGateway._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = agent_gateway.AgentGateway()
+            pb_resp = agent_gateway.AgentGateway.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_agent_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_agent_gateway_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = agent_gateway.AgentGateway.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.get_agent_gateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetAgentGateway",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -8976,6 +9709,156 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 )
             return resp
 
+    class _ListAgentGateways(
+        _BaseNetworkServicesRestTransport._BaseListAgentGateways,
+        NetworkServicesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.ListAgentGateways")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: agent_gateway.ListAgentGatewaysRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> agent_gateway.ListAgentGatewaysResponse:
+            r"""Call the list agent gateways method over HTTP.
+
+            Args:
+                request (~.agent_gateway.ListAgentGatewaysRequest):
+                    The request object. Request used with the
+                ListAgentGateways method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.agent_gateway.ListAgentGatewaysResponse:
+                    Response returned by the
+                ListAgentGateways method.
+
+            """
+
+            http_options = _BaseNetworkServicesRestTransport._BaseListAgentGateways._get_http_options()
+
+            request, metadata = self._interceptor.pre_list_agent_gateways(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkServicesRestTransport._BaseListAgentGateways._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkServicesRestTransport._BaseListAgentGateways._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.ListAgentGateways",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListAgentGateways",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._ListAgentGateways._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = agent_gateway.ListAgentGatewaysResponse()
+            pb_resp = agent_gateway.ListAgentGatewaysResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_agent_gateways(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_agent_gateways_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = agent_gateway.ListAgentGatewaysResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.list_agent_gateways",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListAgentGateways",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListEndpointPolicies(
         _BaseNetworkServicesRestTransport._BaseListEndpointPolicies,
         NetworkServicesRestStub,
@@ -10915,6 +11798,159 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 )
             return resp
 
+    class _UpdateAgentGateway(
+        _BaseNetworkServicesRestTransport._BaseUpdateAgentGateway,
+        NetworkServicesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.UpdateAgentGateway")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gcn_agent_gateway.UpdateAgentGatewayRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update agent gateway method over HTTP.
+
+            Args:
+                request (~.gcn_agent_gateway.UpdateAgentGatewayRequest):
+                    The request object. Request used by the
+                UpdateAgentGateway method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseNetworkServicesRestTransport._BaseUpdateAgentGateway._get_http_options()
+
+            request, metadata = self._interceptor.pre_update_agent_gateway(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkServicesRestTransport._BaseUpdateAgentGateway._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseNetworkServicesRestTransport._BaseUpdateAgentGateway._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkServicesRestTransport._BaseUpdateAgentGateway._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.UpdateAgentGateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateAgentGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._UpdateAgentGateway._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_agent_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_agent_gateway_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.update_agent_gateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateAgentGateway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateEndpointPolicy(
         _BaseNetworkServicesRestTransport._BaseUpdateEndpointPolicy,
         NetworkServicesRestStub,
@@ -12440,6 +13476,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             return resp
 
     @property
+    def create_agent_gateway(
+        self,
+    ) -> Callable[
+        [gcn_agent_gateway.CreateAgentGatewayRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateAgentGateway(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_endpoint_policy(
         self,
     ) -> Callable[
@@ -12538,6 +13584,14 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
         )  # type: ignore
 
     @property
+    def delete_agent_gateway(
+        self,
+    ) -> Callable[[agent_gateway.DeleteAgentGatewayRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAgentGateway(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_endpoint_policy(
         self,
     ) -> Callable[
@@ -12634,6 +13688,14 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
         return self._DeleteWasmPluginVersion(
             self._session, self._host, self._interceptor
         )  # type: ignore
+
+    @property
+    def get_agent_gateway(
+        self,
+    ) -> Callable[[agent_gateway.GetAgentGatewayRequest], agent_gateway.AgentGateway]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAgentGateway(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_endpoint_policy(
@@ -12742,6 +13804,17 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetWasmPluginVersion(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_agent_gateways(
+        self,
+    ) -> Callable[
+        [agent_gateway.ListAgentGatewaysRequest],
+        agent_gateway.ListAgentGatewaysResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAgentGateways(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_endpoint_policies(
@@ -12871,6 +13944,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
         return self._ListWasmPluginVersions(
             self._session, self._host, self._interceptor
         )  # type: ignore
+
+    @property
+    def update_agent_gateway(
+        self,
+    ) -> Callable[
+        [gcn_agent_gateway.UpdateAgentGatewayRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateAgentGateway(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_endpoint_policy(

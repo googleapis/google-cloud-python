@@ -1,5 +1,5 @@
 {
-    "api_description": "The management interface for Binary Authorization, a system providing\npolicy control for images deployed to Kubernetes Engine clusters, Anthos\nclusters on VMware, and Cloud Run.",
+    "api_description": "The management interface for Binary Authorization, a service that provides\npolicy-based deployment validation and control for images deployed to\nGoogle Kubernetes Engine (GKE), Anthos Service Mesh, Anthos Clusters, and\nCloud Run.",
     "api_id": "binaryauthorization.googleapis.com",
     "api_shortname": "binaryauthorization",
     "client_documentation": "https://cloud.google.com/python/docs/reference/binaryauthorization/latest",

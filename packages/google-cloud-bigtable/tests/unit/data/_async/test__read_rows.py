@@ -12,17 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest import mock
+
 import pytest
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._metrics import ActiveOperationMetric
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock  # type: ignore
-
 
 __CROSS_SYNC_OUTPUT__ = "tests.unit.data._sync_autogen.test__read_rows"
 

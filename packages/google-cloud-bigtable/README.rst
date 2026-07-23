@@ -1,11 +1,10 @@
-Python Client for Google Cloud Bigtable
-=======================================
+Python Client for Cloud Bigtable
+================================
 
 |stable| |pypi| |versions|
 
-`Google Cloud Bigtable`_: is Google's NoSQL Big Data database service. It's the
-same database that powers many core Google services, including Search,
-Analytics, Maps, and Gmail.
+`Cloud Bigtable`_: API for reading and writing the contents of Bigtable tables associated with
+a Google Cloud project.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -16,7 +15,7 @@ Analytics, Maps, and Gmail.
    :target: https://pypi.org/project/google-cloud-bigtable/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigtable.svg
    :target: https://pypi.org/project/google-cloud-bigtable/
-.. _Google Cloud Bigtable: https://cloud.google.com/bigtable
+.. _Cloud Bigtable: https://cloud.google.com/bigtable/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigtable/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/bigtable/docs
 
@@ -51,12 +50,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud Bigtable.`_
+3. `Enable the Cloud Bigtable.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Bigtable.:  https://cloud.google.com/bigtable
+.. _Enable the Cloud Bigtable.:  https://cloud.google.com/bigtable/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -87,14 +86,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.9, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.8
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -123,14 +123,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Cloud Bigtable
+-  Read the `Client Library Documentation`_ for Cloud Bigtable
    to see other available methods on the client.
--  Read the `Google Cloud Bigtable Product documentation`_ to learn
+-  Read the `Cloud Bigtable Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google Cloud Bigtable Product documentation:  https://cloud.google.com/bigtable
+.. _Cloud Bigtable Product documentation:  https://cloud.google.com/bigtable/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

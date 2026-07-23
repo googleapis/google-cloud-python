@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -418,6 +418,38 @@ class IngestionServiceGrpcTransport(IngestionServiceTransport):
                 response_deserializer=ingestion_service.IngestEventsResponse.deserialize,
             )
         return self._stubs["ingest_events"]
+
+    @property
+    def ingest_ad_events(
+        self,
+    ) -> Callable[
+        [ingestion_service.IngestAdEventsRequest],
+        ingestion_service.IngestAdEventsResponse,
+    ]:
+        r"""Return a callable for the ingest ad events method over gRPC.
+
+        Uploads a list of [AdEvent][google.ads.datamanager.v1.AdEvent]
+        resources to Google Analytics.
+
+        This feature is only available to accounts on an allowlist.
+
+        Returns:
+            Callable[[~.IngestAdEventsRequest],
+                    ~.IngestAdEventsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "ingest_ad_events" not in self._stubs:
+            self._stubs["ingest_ad_events"] = self._logged_channel.unary_unary(
+                "/google.ads.datamanager.v1.IngestionService/IngestAdEvents",
+                request_serializer=ingestion_service.IngestAdEventsRequest.serialize,
+                response_deserializer=ingestion_service.IngestAdEventsResponse.deserialize,
+            )
+        return self._stubs["ingest_ad_events"]
 
     @property
     def retrieve_request_status(

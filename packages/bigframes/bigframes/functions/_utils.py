@@ -13,13 +13,14 @@
 # limitations under the License.
 
 
+import collections
 import hashlib
 import inspect
 import json
 import sys
 import typing
 import warnings
-from typing import Any, Optional, Sequence, Set, cast
+from typing import Any, Mapping, Optional, Sequence, Set, cast
 
 import cloudpickle
 import google.api_core.exceptions
@@ -31,7 +32,7 @@ from packaging.requirements import Requirement
 
 import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as bf_formatting
-from bigframes.functions import function_typing
+from bigframes.functions import function_typing, udf_def
 
 # Naming convention for the function artifacts
 _BIGFRAMES_FUNCTION_PREFIX = "bigframes"
@@ -43,25 +44,19 @@ _GCF_FUNCTION_NAME_SEPERATOR = "-"
 _pickle_protocol_version = 4
 
 
-def get_remote_function_locations(bq_location):
-    """Get BQ location and cloud functions region given a BQ client."""
-    # TODO(shobs, b/274647164): Find the best way to determine default location.
-    # For now let's assume that if no BQ location is set in the client then it
-    # defaults to US multi region
-    bq_location = bq_location.lower() if bq_location else "us"
-
-    # Cloud function should be in the same region as the bigquery remote function
-    cloud_function_region = bq_location
+def gcf_location_from_bq_location(bq_location: str) -> str:
+    """Get the cloud functions region that corresponds to a BQ location."""
+    bq_location = bq_location.lower()
 
     # BigQuery has multi region but cloud functions does not.
     # Any region in the multi region that supports cloud functions should work
     # https://cloud.google.com/functions/docs/locations
     if bq_location == "us":
-        cloud_function_region = "us-central1"
+        return "us-central1"
     elif bq_location == "eu":
-        cloud_function_region = "europe-west1"
+        return "europe-west1"
 
-    return bq_location, cloud_function_region
+    return bq_location
 
 
 def _package_existed(package_requirements: list[str], package: str) -> bool:
@@ -108,7 +103,7 @@ def get_updated_package_requirements(
             requirements.append(f"numpy=={numpy.__version__}")
 
     if not requirements:
-        return package_requirements
+        return list(package_requirements)
 
     result = list(package_requirements)
     for package in requirements:
@@ -164,7 +159,7 @@ def clean_up_by_session_id(
 
     # Now clean up the cloud functions
     bq_location = bqclient.get_dataset(dataset).location
-    bq_location, gcf_location = get_remote_function_locations(bq_location)
+    gcf_location = gcf_location_from_bq_location(bq_location)
     parent_path = gcfclient.common_location_path(
         project=dataset.project, location=gcf_location
     )
@@ -310,3 +305,54 @@ def has_conflict_output_type(
         return False
 
     return return_annotation != output_type
+
+
+def get_func_signature(
+    func,
+    input_types: type | Sequence[type] | None = None,
+    output_type: type | None = None,
+) -> udf_def.UdfSignature:
+    if sys.version_info >= (3, 10):
+        # Add `eval_str = True` so that deferred annotations are turned into their
+        # corresponding type objects. Need Python 3.10 for eval_str parameter.
+        # https://docs.python.org/3/library/inspect.html#inspect.signature
+        signature_kwargs: Mapping[str, Any] = {"eval_str": True}
+    else:
+        signature_kwargs = {}  # type: ignore
+
+    py_sig = resolve_signature(
+        inspect.signature(func, **signature_kwargs),
+        input_types,
+        output_type,
+    )
+    return udf_def.UdfSignature.from_py_signature(py_sig)
+
+
+def resolve_signature(
+    py_sig: inspect.Signature,
+    input_types: type | Sequence[type] | None = None,
+    output_type: type | None = None,
+) -> inspect.Signature:
+    if input_types is not None:
+        if not isinstance(input_types, collections.abc.Sequence):
+            input_types = [input_types]
+        if has_conflict_input_type(py_sig, input_types):
+            msg = bfe.format_message(
+                "Conflicting input types detected, using the one from the decorator."
+            )
+            warnings.warn(msg, category=bfe.FunctionConflictTypeHintWarning)
+        py_sig = py_sig.replace(
+            parameters=[
+                par.replace(annotation=itype)
+                for par, itype in zip(py_sig.parameters.values(), input_types)
+            ]
+        )
+    if output_type:
+        if has_conflict_output_type(py_sig, output_type):
+            msg = bfe.format_message(
+                "Conflicting return type detected, using the one from the decorator."
+            )
+            warnings.warn(msg, category=bfe.FunctionConflictTypeHintWarning)
+        py_sig = py_sig.replace(return_annotation=output_type)
+
+    return py_sig

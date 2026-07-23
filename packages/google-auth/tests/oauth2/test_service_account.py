@@ -224,19 +224,75 @@ class TestCredentials(object):
         credentials = self.make_credentials()
         new_credentials = credentials.with_quota_project("new-project-456")
         assert new_credentials.quota_project_id == "new-project-456"
+        request = mock.create_autospec(transport.Request, instance=True)
         hdrs = {}
-        new_credentials.apply(hdrs, token="tok")
-        assert "x-goog-user-project" in hdrs
+        new_credentials.token = "tok"
+        new_credentials.before_request(request, "GET", "https://example.com", hdrs)
+        assert hdrs.get("x-goog-user-project") == "new-project-456"
 
-    def test_build_regional_access_boundary_lookup_url(self):
+    def test_copy_regional_access_boundary_manager_state_and_config_with_scopes(self):
         credentials = self.make_credentials()
-        expected_url = (
-            "https://iamcredentials.googleapis.com/v1/projects/-/"
-            "serviceAccounts/{}/allowedLocations".format(
-                credentials.service_account_email
-            )
+        credentials._rab_manager._data = mock.sentinel.rab_data
+        credentials._rab_manager._use_blocking_regional_access_boundary_lookup = True
+
+        new_credentials = credentials.with_scopes(["scope-foo"])
+
+        # Verify references to boundary data are shared
+        assert new_credentials._rab_manager._data == mock.sentinel.rab_data
+        # Verify blocking config flag is preserved
+        assert (
+            new_credentials._rab_manager._use_blocking_regional_access_boundary_lookup
+            is True
         )
-        assert credentials._build_regional_access_boundary_lookup_url() == expected_url
+        # Verify target manager object is not replaced
+        assert new_credentials._rab_manager is not credentials._rab_manager
+
+    def test_copy_regional_access_boundary_manager_state_and_config_with_quota_project(
+        self,
+    ):
+        credentials = self.make_credentials()
+        credentials._rab_manager._data = mock.sentinel.rab_data
+        credentials._rab_manager._use_blocking_regional_access_boundary_lookup = True
+
+        new_credentials = credentials.with_quota_project("new-project-foo")
+
+        # Verify references to boundary data are shared
+        assert new_credentials._rab_manager._data == mock.sentinel.rab_data
+        # Verify blocking config flag is preserved
+        assert (
+            new_credentials._rab_manager._use_blocking_regional_access_boundary_lookup
+            is True
+        )
+        # Verify target manager object is not replaced
+        assert new_credentials._rab_manager is not credentials._rab_manager
+
+    def test_build_regional_access_boundary_lookup_url_standard(self, monkeypatch):
+        from google.auth.transport import _mtls_helper
+
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+
+        credentials = self.make_credentials()
+        url = credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
+            credentials.service_account_email
+        )
+        assert url == expected_url
+
+    def test_build_regional_access_boundary_lookup_url_mtls(self, monkeypatch):
+        from google.auth.transport import _mtls_helper
+
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+
+        credentials = self.make_credentials()
+        url = credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
+            credentials.service_account_email
+        )
+        assert url == expected_url
+
+    def test_build_regional_access_boundary_lookup_url_with_subject(self):
+        credentials = self.make_credentials().with_subject("user@example.com")
+        assert credentials._build_regional_access_boundary_lookup_url() is None
 
     def test_with_token_uri(self):
         credentials = self.make_credentials()

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -123,6 +118,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1269,8 +1279,8 @@ def test_hub_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.ListHubsRequest,
-        dict,
+        hub.ListHubsRequest(),
+        {},
     ],
 )
 def test_list_hubs(request_type, transport: str = "grpc"):
@@ -1281,7 +1291,7 @@ def test_list_hubs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_hubs), "__call__") as call:
@@ -1330,12 +1340,13 @@ def test_list_hubs_non_empty_request_with_auto_populated_field():
         client.list_hubs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.ListHubsRequest(
+        request_msg = hub.ListHubsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_hubs_use_cached_wrapped_rpc():
@@ -1414,9 +1425,14 @@ async def test_list_hubs_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_list_hubs_async(
-    transport: str = "grpc_asyncio", request_type=hub.ListHubsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.ListHubsRequest(),
+        {},
+    ],
+)
+async def test_list_hubs_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1424,7 +1440,7 @@ async def test_list_hubs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_hubs), "__call__") as call:
@@ -1447,11 +1463,6 @@ async def test_list_hubs_async(
     assert isinstance(response, pagers.ListHubsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_hubs_async_from_dict():
-    await test_list_hubs_async(request_type=dict)
 
 
 def test_list_hubs_field_headers():
@@ -1646,6 +1657,9 @@ def test_list_hubs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, hub.Hub) for i in results)
@@ -1734,6 +1748,8 @@ async def test_list_hubs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1781,11 +1797,7 @@ async def test_list_hubs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_hubs(request={})
-        ).pages:
+        async for page_ in (await client.list_hubs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1794,8 +1806,8 @@ async def test_list_hubs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.GetHubRequest,
-        dict,
+        hub.GetHubRequest(),
+        {},
     ],
 )
 def test_get_hub(request_type, transport: str = "grpc"):
@@ -1806,7 +1818,7 @@ def test_get_hub(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_hub), "__call__") as call:
@@ -1864,9 +1876,10 @@ def test_get_hub_non_empty_request_with_auto_populated_field():
         client.get_hub(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.GetHubRequest(
+        request_msg = hub.GetHubRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_hub_use_cached_wrapped_rpc():
@@ -1945,9 +1958,14 @@ async def test_get_hub_async_use_cached_wrapped_rpc(transport: str = "grpc_async
 
 
 @pytest.mark.asyncio
-async def test_get_hub_async(
-    transport: str = "grpc_asyncio", request_type=hub.GetHubRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.GetHubRequest(),
+        {},
+    ],
+)
+async def test_get_hub_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1955,7 +1973,7 @@ async def test_get_hub_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_hub), "__call__") as call:
@@ -1990,11 +2008,6 @@ async def test_get_hub_async(
     assert response.policy_mode == hub.PolicyMode.PRESET
     assert response.preset_topology == hub.PresetTopology.MESH
     assert response.export_psc is True
-
-
-@pytest.mark.asyncio
-async def test_get_hub_async_from_dict():
-    await test_get_hub_async(request_type=dict)
 
 
 def test_get_hub_field_headers():
@@ -2139,8 +2152,8 @@ async def test_get_hub_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_hub.CreateHubRequest,
-        dict,
+        gcn_hub.CreateHubRequest(),
+        {},
     ],
 )
 def test_create_hub(request_type, transport: str = "grpc"):
@@ -2151,7 +2164,7 @@ def test_create_hub(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_hub), "__call__") as call:
@@ -2194,11 +2207,12 @@ def test_create_hub_non_empty_request_with_auto_populated_field():
         client.create_hub(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_hub.CreateHubRequest(
+        request_msg = gcn_hub.CreateHubRequest(
             parent="parent_value",
             hub_id="hub_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_hub_use_cached_wrapped_rpc():
@@ -2287,9 +2301,14 @@ async def test_create_hub_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_create_hub_async(
-    transport: str = "grpc_asyncio", request_type=gcn_hub.CreateHubRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_hub.CreateHubRequest(),
+        {},
+    ],
+)
+async def test_create_hub_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2297,7 +2316,7 @@ async def test_create_hub_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_hub), "__call__") as call:
@@ -2315,11 +2334,6 @@ async def test_create_hub_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_hub_async_from_dict():
-    await test_create_hub_async(request_type=dict)
 
 
 def test_create_hub_field_headers():
@@ -2488,8 +2502,8 @@ async def test_create_hub_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_hub.UpdateHubRequest,
-        dict,
+        gcn_hub.UpdateHubRequest(),
+        {},
     ],
 )
 def test_update_hub(request_type, transport: str = "grpc"):
@@ -2500,7 +2514,7 @@ def test_update_hub(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_hub), "__call__") as call:
@@ -2541,9 +2555,10 @@ def test_update_hub_non_empty_request_with_auto_populated_field():
         client.update_hub(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_hub.UpdateHubRequest(
+        request_msg = gcn_hub.UpdateHubRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_hub_use_cached_wrapped_rpc():
@@ -2632,9 +2647,14 @@ async def test_update_hub_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_update_hub_async(
-    transport: str = "grpc_asyncio", request_type=gcn_hub.UpdateHubRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_hub.UpdateHubRequest(),
+        {},
+    ],
+)
+async def test_update_hub_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2642,7 +2662,7 @@ async def test_update_hub_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_hub), "__call__") as call:
@@ -2660,11 +2680,6 @@ async def test_update_hub_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_hub_async_from_dict():
-    await test_update_hub_async(request_type=dict)
 
 
 def test_update_hub_field_headers():
@@ -2823,8 +2838,8 @@ async def test_update_hub_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.DeleteHubRequest,
-        dict,
+        hub.DeleteHubRequest(),
+        {},
     ],
 )
 def test_delete_hub(request_type, transport: str = "grpc"):
@@ -2835,7 +2850,7 @@ def test_delete_hub(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_hub), "__call__") as call:
@@ -2877,10 +2892,11 @@ def test_delete_hub_non_empty_request_with_auto_populated_field():
         client.delete_hub(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.DeleteHubRequest(
+        request_msg = hub.DeleteHubRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_hub_use_cached_wrapped_rpc():
@@ -2969,9 +2985,14 @@ async def test_delete_hub_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_delete_hub_async(
-    transport: str = "grpc_asyncio", request_type=hub.DeleteHubRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.DeleteHubRequest(),
+        {},
+    ],
+)
+async def test_delete_hub_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2979,7 +3000,7 @@ async def test_delete_hub_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_hub), "__call__") as call:
@@ -2997,11 +3018,6 @@ async def test_delete_hub_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_hub_async_from_dict():
-    await test_delete_hub_async(request_type=dict)
 
 
 def test_delete_hub_field_headers():
@@ -3150,8 +3166,8 @@ async def test_delete_hub_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.ListHubSpokesRequest,
-        dict,
+        hub.ListHubSpokesRequest(),
+        {},
     ],
 )
 def test_list_hub_spokes(request_type, transport: str = "grpc"):
@@ -3162,7 +3178,7 @@ def test_list_hub_spokes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_hub_spokes), "__call__") as call:
@@ -3211,12 +3227,13 @@ def test_list_hub_spokes_non_empty_request_with_auto_populated_field():
         client.list_hub_spokes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.ListHubSpokesRequest(
+        request_msg = hub.ListHubSpokesRequest(
             name="name_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_hub_spokes_use_cached_wrapped_rpc():
@@ -3297,9 +3314,14 @@ async def test_list_hub_spokes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_hub_spokes_async(
-    transport: str = "grpc_asyncio", request_type=hub.ListHubSpokesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.ListHubSpokesRequest(),
+        {},
+    ],
+)
+async def test_list_hub_spokes_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3307,7 +3329,7 @@ async def test_list_hub_spokes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_hub_spokes), "__call__") as call:
@@ -3330,11 +3352,6 @@ async def test_list_hub_spokes_async(
     assert isinstance(response, pagers.ListHubSpokesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_hub_spokes_async_from_dict():
-    await test_list_hub_spokes_async(request_type=dict)
 
 
 def test_list_hub_spokes_field_headers():
@@ -3529,6 +3546,9 @@ def test_list_hub_spokes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, hub.Spoke) for i in results)
@@ -3617,6 +3637,8 @@ async def test_list_hub_spokes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3664,11 +3686,7 @@ async def test_list_hub_spokes_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_hub_spokes(request={})
-        ).pages:
+        async for page_ in (await client.list_hub_spokes(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3677,8 +3695,8 @@ async def test_list_hub_spokes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.QueryHubStatusRequest,
-        dict,
+        hub.QueryHubStatusRequest(),
+        {},
     ],
 )
 def test_query_hub_status(request_type, transport: str = "grpc"):
@@ -3689,7 +3707,7 @@ def test_query_hub_status(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_hub_status), "__call__") as call:
@@ -3737,13 +3755,14 @@ def test_query_hub_status_non_empty_request_with_auto_populated_field():
         client.query_hub_status(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.QueryHubStatusRequest(
+        request_msg = hub.QueryHubStatusRequest(
             name="name_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
             group_by="group_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_hub_status_use_cached_wrapped_rpc():
@@ -3826,9 +3845,14 @@ async def test_query_hub_status_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_hub_status_async(
-    transport: str = "grpc_asyncio", request_type=hub.QueryHubStatusRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.QueryHubStatusRequest(),
+        {},
+    ],
+)
+async def test_query_hub_status_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3836,7 +3860,7 @@ async def test_query_hub_status_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_hub_status), "__call__") as call:
@@ -3857,11 +3881,6 @@ async def test_query_hub_status_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryHubStatusAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_query_hub_status_async_from_dict():
-    await test_query_hub_status_async(request_type=dict)
 
 
 def test_query_hub_status_field_headers():
@@ -4056,6 +4075,9 @@ def test_query_hub_status_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, hub.HubStatusEntry) for i in results)
@@ -4144,6 +4166,8 @@ async def test_query_hub_status_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4191,11 +4215,7 @@ async def test_query_hub_status_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.query_hub_status(request={})
-        ).pages:
+        async for page_ in (await client.query_hub_status(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4204,8 +4224,8 @@ async def test_query_hub_status_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.ListSpokesRequest,
-        dict,
+        hub.ListSpokesRequest(),
+        {},
     ],
 )
 def test_list_spokes(request_type, transport: str = "grpc"):
@@ -4216,7 +4236,7 @@ def test_list_spokes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_spokes), "__call__") as call:
@@ -4265,12 +4285,13 @@ def test_list_spokes_non_empty_request_with_auto_populated_field():
         client.list_spokes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.ListSpokesRequest(
+        request_msg = hub.ListSpokesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_spokes_use_cached_wrapped_rpc():
@@ -4351,9 +4372,14 @@ async def test_list_spokes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_spokes_async(
-    transport: str = "grpc_asyncio", request_type=hub.ListSpokesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.ListSpokesRequest(),
+        {},
+    ],
+)
+async def test_list_spokes_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4361,7 +4387,7 @@ async def test_list_spokes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_spokes), "__call__") as call:
@@ -4384,11 +4410,6 @@ async def test_list_spokes_async(
     assert isinstance(response, pagers.ListSpokesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_spokes_async_from_dict():
-    await test_list_spokes_async(request_type=dict)
 
 
 def test_list_spokes_field_headers():
@@ -4583,6 +4604,9 @@ def test_list_spokes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, hub.Spoke) for i in results)
@@ -4671,6 +4695,8 @@ async def test_list_spokes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4718,11 +4744,7 @@ async def test_list_spokes_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_spokes(request={})
-        ).pages:
+        async for page_ in (await client.list_spokes(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4731,8 +4753,8 @@ async def test_list_spokes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.GetSpokeRequest,
-        dict,
+        hub.GetSpokeRequest(),
+        {},
     ],
 )
 def test_get_spoke(request_type, transport: str = "grpc"):
@@ -4743,7 +4765,7 @@ def test_get_spoke(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_spoke), "__call__") as call:
@@ -4803,9 +4825,10 @@ def test_get_spoke_non_empty_request_with_auto_populated_field():
         client.get_spoke(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.GetSpokeRequest(
+        request_msg = hub.GetSpokeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_spoke_use_cached_wrapped_rpc():
@@ -4884,9 +4907,14 @@ async def test_get_spoke_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_spoke_async(
-    transport: str = "grpc_asyncio", request_type=hub.GetSpokeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.GetSpokeRequest(),
+        {},
+    ],
+)
+async def test_get_spoke_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4894,7 +4922,7 @@ async def test_get_spoke_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_spoke), "__call__") as call:
@@ -4931,11 +4959,6 @@ async def test_get_spoke_async(
     assert response.spoke_type == hub.SpokeType.VPN_TUNNEL
     assert response.etag == "etag_value"
     assert response.field_paths_pending_update == ["field_paths_pending_update_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_spoke_async_from_dict():
-    await test_get_spoke_async(request_type=dict)
 
 
 def test_get_spoke_field_headers():
@@ -5080,8 +5103,8 @@ async def test_get_spoke_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.CreateSpokeRequest,
-        dict,
+        hub.CreateSpokeRequest(),
+        {},
     ],
 )
 def test_create_spoke(request_type, transport: str = "grpc"):
@@ -5092,7 +5115,7 @@ def test_create_spoke(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_spoke), "__call__") as call:
@@ -5135,11 +5158,12 @@ def test_create_spoke_non_empty_request_with_auto_populated_field():
         client.create_spoke(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.CreateSpokeRequest(
+        request_msg = hub.CreateSpokeRequest(
             parent="parent_value",
             spoke_id="spoke_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_spoke_use_cached_wrapped_rpc():
@@ -5230,9 +5254,14 @@ async def test_create_spoke_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_spoke_async(
-    transport: str = "grpc_asyncio", request_type=hub.CreateSpokeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.CreateSpokeRequest(),
+        {},
+    ],
+)
+async def test_create_spoke_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5240,7 +5269,7 @@ async def test_create_spoke_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_spoke), "__call__") as call:
@@ -5258,11 +5287,6 @@ async def test_create_spoke_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_spoke_async_from_dict():
-    await test_create_spoke_async(request_type=dict)
 
 
 def test_create_spoke_field_headers():
@@ -5431,8 +5455,8 @@ async def test_create_spoke_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.UpdateSpokeRequest,
-        dict,
+        hub.UpdateSpokeRequest(),
+        {},
     ],
 )
 def test_update_spoke(request_type, transport: str = "grpc"):
@@ -5443,7 +5467,7 @@ def test_update_spoke(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_spoke), "__call__") as call:
@@ -5484,9 +5508,10 @@ def test_update_spoke_non_empty_request_with_auto_populated_field():
         client.update_spoke(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.UpdateSpokeRequest(
+        request_msg = hub.UpdateSpokeRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_spoke_use_cached_wrapped_rpc():
@@ -5577,9 +5602,14 @@ async def test_update_spoke_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_spoke_async(
-    transport: str = "grpc_asyncio", request_type=hub.UpdateSpokeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.UpdateSpokeRequest(),
+        {},
+    ],
+)
+async def test_update_spoke_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5587,7 +5617,7 @@ async def test_update_spoke_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_spoke), "__call__") as call:
@@ -5605,11 +5635,6 @@ async def test_update_spoke_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_spoke_async_from_dict():
-    await test_update_spoke_async(request_type=dict)
 
 
 def test_update_spoke_field_headers():
@@ -5768,8 +5793,8 @@ async def test_update_spoke_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.RejectHubSpokeRequest,
-        dict,
+        hub.RejectHubSpokeRequest(),
+        {},
     ],
 )
 def test_reject_hub_spoke(request_type, transport: str = "grpc"):
@@ -5780,7 +5805,7 @@ def test_reject_hub_spoke(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.reject_hub_spoke), "__call__") as call:
@@ -5824,12 +5849,13 @@ def test_reject_hub_spoke_non_empty_request_with_auto_populated_field():
         client.reject_hub_spoke(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.RejectHubSpokeRequest(
+        request_msg = hub.RejectHubSpokeRequest(
             name="name_value",
             spoke_uri="spoke_uri_value",
             request_id="request_id_value",
             details="details_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reject_hub_spoke_use_cached_wrapped_rpc():
@@ -5922,9 +5948,14 @@ async def test_reject_hub_spoke_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_reject_hub_spoke_async(
-    transport: str = "grpc_asyncio", request_type=hub.RejectHubSpokeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.RejectHubSpokeRequest(),
+        {},
+    ],
+)
+async def test_reject_hub_spoke_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5932,7 +5963,7 @@ async def test_reject_hub_spoke_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.reject_hub_spoke), "__call__") as call:
@@ -5950,11 +5981,6 @@ async def test_reject_hub_spoke_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_reject_hub_spoke_async_from_dict():
-    await test_reject_hub_spoke_async(request_type=dict)
 
 
 def test_reject_hub_spoke_field_headers():
@@ -6113,8 +6139,8 @@ async def test_reject_hub_spoke_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.AcceptHubSpokeRequest,
-        dict,
+        hub.AcceptHubSpokeRequest(),
+        {},
     ],
 )
 def test_accept_hub_spoke(request_type, transport: str = "grpc"):
@@ -6125,7 +6151,7 @@ def test_accept_hub_spoke(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.accept_hub_spoke), "__call__") as call:
@@ -6168,11 +6194,12 @@ def test_accept_hub_spoke_non_empty_request_with_auto_populated_field():
         client.accept_hub_spoke(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.AcceptHubSpokeRequest(
+        request_msg = hub.AcceptHubSpokeRequest(
             name="name_value",
             spoke_uri="spoke_uri_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_accept_hub_spoke_use_cached_wrapped_rpc():
@@ -6265,9 +6292,14 @@ async def test_accept_hub_spoke_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_accept_hub_spoke_async(
-    transport: str = "grpc_asyncio", request_type=hub.AcceptHubSpokeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.AcceptHubSpokeRequest(),
+        {},
+    ],
+)
+async def test_accept_hub_spoke_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6275,7 +6307,7 @@ async def test_accept_hub_spoke_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.accept_hub_spoke), "__call__") as call:
@@ -6293,11 +6325,6 @@ async def test_accept_hub_spoke_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_accept_hub_spoke_async_from_dict():
-    await test_accept_hub_spoke_async(request_type=dict)
 
 
 def test_accept_hub_spoke_field_headers():
@@ -6456,8 +6483,8 @@ async def test_accept_hub_spoke_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.AcceptSpokeUpdateRequest,
-        dict,
+        hub.AcceptSpokeUpdateRequest(),
+        {},
     ],
 )
 def test_accept_spoke_update(request_type, transport: str = "grpc"):
@@ -6468,7 +6495,7 @@ def test_accept_spoke_update(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6515,11 +6542,12 @@ def test_accept_spoke_update_non_empty_request_with_auto_populated_field():
         client.accept_spoke_update(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.AcceptSpokeUpdateRequest(
+        request_msg = hub.AcceptSpokeUpdateRequest(
             name="name_value",
             spoke_uri="spoke_uri_value",
             spoke_etag="spoke_etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_accept_spoke_update_use_cached_wrapped_rpc():
@@ -6614,9 +6642,14 @@ async def test_accept_spoke_update_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_accept_spoke_update_async(
-    transport: str = "grpc_asyncio", request_type=hub.AcceptSpokeUpdateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.AcceptSpokeUpdateRequest(),
+        {},
+    ],
+)
+async def test_accept_spoke_update_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6624,7 +6657,7 @@ async def test_accept_spoke_update_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6644,11 +6677,6 @@ async def test_accept_spoke_update_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_accept_spoke_update_async_from_dict():
-    await test_accept_spoke_update_async(request_type=dict)
 
 
 def test_accept_spoke_update_field_headers():
@@ -6825,8 +6853,8 @@ async def test_accept_spoke_update_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.RejectSpokeUpdateRequest,
-        dict,
+        hub.RejectSpokeUpdateRequest(),
+        {},
     ],
 )
 def test_reject_spoke_update(request_type, transport: str = "grpc"):
@@ -6837,7 +6865,7 @@ def test_reject_spoke_update(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6885,12 +6913,13 @@ def test_reject_spoke_update_non_empty_request_with_auto_populated_field():
         client.reject_spoke_update(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.RejectSpokeUpdateRequest(
+        request_msg = hub.RejectSpokeUpdateRequest(
             name="name_value",
             spoke_uri="spoke_uri_value",
             spoke_etag="spoke_etag_value",
             details="details_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reject_spoke_update_use_cached_wrapped_rpc():
@@ -6985,9 +7014,14 @@ async def test_reject_spoke_update_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_reject_spoke_update_async(
-    transport: str = "grpc_asyncio", request_type=hub.RejectSpokeUpdateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.RejectSpokeUpdateRequest(),
+        {},
+    ],
+)
+async def test_reject_spoke_update_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6995,7 +7029,7 @@ async def test_reject_spoke_update_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7015,11 +7049,6 @@ async def test_reject_spoke_update_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_reject_spoke_update_async_from_dict():
-    await test_reject_spoke_update_async(request_type=dict)
 
 
 def test_reject_spoke_update_field_headers():
@@ -7196,8 +7225,8 @@ async def test_reject_spoke_update_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.DeleteSpokeRequest,
-        dict,
+        hub.DeleteSpokeRequest(),
+        {},
     ],
 )
 def test_delete_spoke(request_type, transport: str = "grpc"):
@@ -7208,7 +7237,7 @@ def test_delete_spoke(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_spoke), "__call__") as call:
@@ -7250,10 +7279,11 @@ def test_delete_spoke_non_empty_request_with_auto_populated_field():
         client.delete_spoke(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.DeleteSpokeRequest(
+        request_msg = hub.DeleteSpokeRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_spoke_use_cached_wrapped_rpc():
@@ -7344,9 +7374,14 @@ async def test_delete_spoke_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_spoke_async(
-    transport: str = "grpc_asyncio", request_type=hub.DeleteSpokeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.DeleteSpokeRequest(),
+        {},
+    ],
+)
+async def test_delete_spoke_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7354,7 +7389,7 @@ async def test_delete_spoke_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_spoke), "__call__") as call:
@@ -7372,11 +7407,6 @@ async def test_delete_spoke_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_spoke_async_from_dict():
-    await test_delete_spoke_async(request_type=dict)
 
 
 def test_delete_spoke_field_headers():
@@ -7525,8 +7555,8 @@ async def test_delete_spoke_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.GetRouteTableRequest,
-        dict,
+        hub.GetRouteTableRequest(),
+        {},
     ],
 )
 def test_get_route_table(request_type, transport: str = "grpc"):
@@ -7537,7 +7567,7 @@ def test_get_route_table(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_route_table), "__call__") as call:
@@ -7587,9 +7617,10 @@ def test_get_route_table_non_empty_request_with_auto_populated_field():
         client.get_route_table(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.GetRouteTableRequest(
+        request_msg = hub.GetRouteTableRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_route_table_use_cached_wrapped_rpc():
@@ -7670,9 +7701,14 @@ async def test_get_route_table_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_route_table_async(
-    transport: str = "grpc_asyncio", request_type=hub.GetRouteTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.GetRouteTableRequest(),
+        {},
+    ],
+)
+async def test_get_route_table_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7680,7 +7716,7 @@ async def test_get_route_table_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_route_table), "__call__") as call:
@@ -7707,11 +7743,6 @@ async def test_get_route_table_async(
     assert response.description == "description_value"
     assert response.uid == "uid_value"
     assert response.state == hub.State.CREATING
-
-
-@pytest.mark.asyncio
-async def test_get_route_table_async_from_dict():
-    await test_get_route_table_async(request_type=dict)
 
 
 def test_get_route_table_field_headers():
@@ -7856,8 +7887,8 @@ async def test_get_route_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.GetRouteRequest,
-        dict,
+        hub.GetRouteRequest(),
+        {},
     ],
 )
 def test_get_route(request_type, transport: str = "grpc"):
@@ -7868,7 +7899,7 @@ def test_get_route(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_route), "__call__") as call:
@@ -7928,9 +7959,10 @@ def test_get_route_non_empty_request_with_auto_populated_field():
         client.get_route(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.GetRouteRequest(
+        request_msg = hub.GetRouteRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_route_use_cached_wrapped_rpc():
@@ -8009,9 +8041,14 @@ async def test_get_route_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_route_async(
-    transport: str = "grpc_asyncio", request_type=hub.GetRouteRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.GetRouteRequest(),
+        {},
+    ],
+)
+async def test_get_route_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8019,7 +8056,7 @@ async def test_get_route_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_route), "__call__") as call:
@@ -8056,11 +8093,6 @@ async def test_get_route_async(
     assert response.spoke == "spoke_value"
     assert response.location == "location_value"
     assert response.priority == 898
-
-
-@pytest.mark.asyncio
-async def test_get_route_async_from_dict():
-    await test_get_route_async(request_type=dict)
 
 
 def test_get_route_field_headers():
@@ -8205,8 +8237,8 @@ async def test_get_route_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.ListRoutesRequest,
-        dict,
+        hub.ListRoutesRequest(),
+        {},
     ],
 )
 def test_list_routes(request_type, transport: str = "grpc"):
@@ -8217,7 +8249,7 @@ def test_list_routes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_routes), "__call__") as call:
@@ -8266,12 +8298,13 @@ def test_list_routes_non_empty_request_with_auto_populated_field():
         client.list_routes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.ListRoutesRequest(
+        request_msg = hub.ListRoutesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_routes_use_cached_wrapped_rpc():
@@ -8352,9 +8385,14 @@ async def test_list_routes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_routes_async(
-    transport: str = "grpc_asyncio", request_type=hub.ListRoutesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.ListRoutesRequest(),
+        {},
+    ],
+)
+async def test_list_routes_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8362,7 +8400,7 @@ async def test_list_routes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_routes), "__call__") as call:
@@ -8385,11 +8423,6 @@ async def test_list_routes_async(
     assert isinstance(response, pagers.ListRoutesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_routes_async_from_dict():
-    await test_list_routes_async(request_type=dict)
 
 
 def test_list_routes_field_headers():
@@ -8584,6 +8617,9 @@ def test_list_routes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, hub.Route) for i in results)
@@ -8672,6 +8708,8 @@ async def test_list_routes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8719,11 +8757,7 @@ async def test_list_routes_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_routes(request={})
-        ).pages:
+        async for page_ in (await client.list_routes(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8732,8 +8766,8 @@ async def test_list_routes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.ListRouteTablesRequest,
-        dict,
+        hub.ListRouteTablesRequest(),
+        {},
     ],
 )
 def test_list_route_tables(request_type, transport: str = "grpc"):
@@ -8744,7 +8778,7 @@ def test_list_route_tables(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8797,12 +8831,13 @@ def test_list_route_tables_non_empty_request_with_auto_populated_field():
         client.list_route_tables(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.ListRouteTablesRequest(
+        request_msg = hub.ListRouteTablesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_route_tables_use_cached_wrapped_rpc():
@@ -8885,9 +8920,14 @@ async def test_list_route_tables_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_route_tables_async(
-    transport: str = "grpc_asyncio", request_type=hub.ListRouteTablesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.ListRouteTablesRequest(),
+        {},
+    ],
+)
+async def test_list_route_tables_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8895,7 +8935,7 @@ async def test_list_route_tables_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8920,11 +8960,6 @@ async def test_list_route_tables_async(
     assert isinstance(response, pagers.ListRouteTablesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_route_tables_async_from_dict():
-    await test_list_route_tables_async(request_type=dict)
 
 
 def test_list_route_tables_field_headers():
@@ -9129,6 +9164,9 @@ def test_list_route_tables_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, hub.RouteTable) for i in results)
@@ -9221,6 +9259,8 @@ async def test_list_route_tables_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9270,11 +9310,7 @@ async def test_list_route_tables_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_route_tables(request={})
-        ).pages:
+        async for page_ in (await client.list_route_tables(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9283,8 +9319,8 @@ async def test_list_route_tables_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.GetGroupRequest,
-        dict,
+        hub.GetGroupRequest(),
+        {},
     ],
 )
 def test_get_group(request_type, transport: str = "grpc"):
@@ -9295,7 +9331,7 @@ def test_get_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_group), "__call__") as call:
@@ -9347,9 +9383,10 @@ def test_get_group_non_empty_request_with_auto_populated_field():
         client.get_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.GetGroupRequest(
+        request_msg = hub.GetGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_group_use_cached_wrapped_rpc():
@@ -9428,9 +9465,14 @@ async def test_get_group_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_group_async(
-    transport: str = "grpc_asyncio", request_type=hub.GetGroupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.GetGroupRequest(),
+        {},
+    ],
+)
+async def test_get_group_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9438,7 +9480,7 @@ async def test_get_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_group), "__call__") as call:
@@ -9467,11 +9509,6 @@ async def test_get_group_async(
     assert response.uid == "uid_value"
     assert response.state == hub.State.CREATING
     assert response.route_table == "route_table_value"
-
-
-@pytest.mark.asyncio
-async def test_get_group_async_from_dict():
-    await test_get_group_async(request_type=dict)
 
 
 def test_get_group_field_headers():
@@ -9616,8 +9653,8 @@ async def test_get_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.ListGroupsRequest,
-        dict,
+        hub.ListGroupsRequest(),
+        {},
     ],
 )
 def test_list_groups(request_type, transport: str = "grpc"):
@@ -9628,7 +9665,7 @@ def test_list_groups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
@@ -9677,12 +9714,13 @@ def test_list_groups_non_empty_request_with_auto_populated_field():
         client.list_groups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.ListGroupsRequest(
+        request_msg = hub.ListGroupsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_groups_use_cached_wrapped_rpc():
@@ -9763,9 +9801,14 @@ async def test_list_groups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_groups_async(
-    transport: str = "grpc_asyncio", request_type=hub.ListGroupsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.ListGroupsRequest(),
+        {},
+    ],
+)
+async def test_list_groups_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9773,7 +9816,7 @@ async def test_list_groups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
@@ -9796,11 +9839,6 @@ async def test_list_groups_async(
     assert isinstance(response, pagers.ListGroupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_groups_async_from_dict():
-    await test_list_groups_async(request_type=dict)
 
 
 def test_list_groups_field_headers():
@@ -9995,6 +10033,9 @@ def test_list_groups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, hub.Group) for i in results)
@@ -10083,6 +10124,8 @@ async def test_list_groups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -10130,11 +10173,7 @@ async def test_list_groups_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_groups(request={})
-        ).pages:
+        async for page_ in (await client.list_groups(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -10143,8 +10182,8 @@ async def test_list_groups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hub.UpdateGroupRequest,
-        dict,
+        hub.UpdateGroupRequest(),
+        {},
     ],
 )
 def test_update_group(request_type, transport: str = "grpc"):
@@ -10155,7 +10194,7 @@ def test_update_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_group), "__call__") as call:
@@ -10196,9 +10235,10 @@ def test_update_group_non_empty_request_with_auto_populated_field():
         client.update_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.UpdateGroupRequest(
+        request_msg = hub.UpdateGroupRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_group_use_cached_wrapped_rpc():
@@ -10289,9 +10329,14 @@ async def test_update_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_group_async(
-    transport: str = "grpc_asyncio", request_type=hub.UpdateGroupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.UpdateGroupRequest(),
+        {},
+    ],
+)
+async def test_update_group_async(request_type, transport: str = "grpc_asyncio"):
     client = HubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10299,7 +10344,7 @@ async def test_update_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_group), "__call__") as call:
@@ -10317,11 +10362,6 @@ async def test_update_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_group_async_from_dict():
-    await test_update_group_async(request_type=dict)
 
 
 def test_update_group_field_headers():
@@ -10599,7 +10639,6 @@ def test_list_hubs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListHubsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10620,7 +10659,6 @@ def test_get_hub_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.GetHubRequest()
-
         assert args[0] == request_msg
 
 
@@ -10641,7 +10679,6 @@ def test_create_hub_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_hub.CreateHubRequest()
-
         assert args[0] == request_msg
 
 
@@ -10662,7 +10699,6 @@ def test_update_hub_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_hub.UpdateHubRequest()
-
         assert args[0] == request_msg
 
 
@@ -10683,7 +10719,6 @@ def test_delete_hub_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.DeleteHubRequest()
-
         assert args[0] == request_msg
 
 
@@ -10704,7 +10739,6 @@ def test_list_hub_spokes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListHubSpokesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10725,7 +10759,6 @@ def test_query_hub_status_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.QueryHubStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -10746,7 +10779,6 @@ def test_list_spokes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListSpokesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10767,7 +10799,6 @@ def test_get_spoke_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.GetSpokeRequest()
-
         assert args[0] == request_msg
 
 
@@ -10788,7 +10819,6 @@ def test_create_spoke_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.CreateSpokeRequest()
-
         assert args[0] == request_msg
 
 
@@ -10809,7 +10839,6 @@ def test_update_spoke_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.UpdateSpokeRequest()
-
         assert args[0] == request_msg
 
 
@@ -10830,7 +10859,6 @@ def test_reject_hub_spoke_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.RejectHubSpokeRequest()
-
         assert args[0] == request_msg
 
 
@@ -10851,7 +10879,6 @@ def test_accept_hub_spoke_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.AcceptHubSpokeRequest()
-
         assert args[0] == request_msg
 
 
@@ -10874,7 +10901,6 @@ def test_accept_spoke_update_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.AcceptSpokeUpdateRequest()
-
         assert args[0] == request_msg
 
 
@@ -10897,7 +10923,6 @@ def test_reject_spoke_update_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.RejectSpokeUpdateRequest()
-
         assert args[0] == request_msg
 
 
@@ -10918,7 +10943,6 @@ def test_delete_spoke_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.DeleteSpokeRequest()
-
         assert args[0] == request_msg
 
 
@@ -10939,7 +10963,6 @@ def test_get_route_table_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.GetRouteTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10960,7 +10983,6 @@ def test_get_route_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.GetRouteRequest()
-
         assert args[0] == request_msg
 
 
@@ -10981,7 +11003,6 @@ def test_list_routes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListRoutesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11004,7 +11025,6 @@ def test_list_route_tables_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListRouteTablesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11025,7 +11045,6 @@ def test_get_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.GetGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -11046,7 +11065,6 @@ def test_list_groups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11067,7 +11085,6 @@ def test_update_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.UpdateGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -11109,7 +11126,6 @@ async def test_list_hubs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListHubsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11143,7 +11159,6 @@ async def test_get_hub_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.GetHubRequest()
-
         assert args[0] == request_msg
 
 
@@ -11168,7 +11183,6 @@ async def test_create_hub_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_hub.CreateHubRequest()
-
         assert args[0] == request_msg
 
 
@@ -11193,7 +11207,6 @@ async def test_update_hub_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_hub.UpdateHubRequest()
-
         assert args[0] == request_msg
 
 
@@ -11218,7 +11231,6 @@ async def test_delete_hub_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.DeleteHubRequest()
-
         assert args[0] == request_msg
 
 
@@ -11246,7 +11258,6 @@ async def test_list_hub_spokes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListHubSpokesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11273,7 +11284,6 @@ async def test_query_hub_status_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.QueryHubStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -11301,7 +11311,6 @@ async def test_list_spokes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListSpokesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11336,7 +11345,6 @@ async def test_get_spoke_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.GetSpokeRequest()
-
         assert args[0] == request_msg
 
 
@@ -11361,7 +11369,6 @@ async def test_create_spoke_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.CreateSpokeRequest()
-
         assert args[0] == request_msg
 
 
@@ -11386,7 +11393,6 @@ async def test_update_spoke_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.UpdateSpokeRequest()
-
         assert args[0] == request_msg
 
 
@@ -11411,7 +11417,6 @@ async def test_reject_hub_spoke_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.RejectHubSpokeRequest()
-
         assert args[0] == request_msg
 
 
@@ -11436,7 +11441,6 @@ async def test_accept_hub_spoke_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.AcceptHubSpokeRequest()
-
         assert args[0] == request_msg
 
 
@@ -11463,7 +11467,6 @@ async def test_accept_spoke_update_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.AcceptSpokeUpdateRequest()
-
         assert args[0] == request_msg
 
 
@@ -11490,7 +11493,6 @@ async def test_reject_spoke_update_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.RejectSpokeUpdateRequest()
-
         assert args[0] == request_msg
 
 
@@ -11515,7 +11517,6 @@ async def test_delete_spoke_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.DeleteSpokeRequest()
-
         assert args[0] == request_msg
 
 
@@ -11545,7 +11546,6 @@ async def test_get_route_table_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.GetRouteTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -11580,7 +11580,6 @@ async def test_get_route_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.GetRouteRequest()
-
         assert args[0] == request_msg
 
 
@@ -11608,7 +11607,6 @@ async def test_list_routes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListRoutesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11638,7 +11636,6 @@ async def test_list_route_tables_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListRouteTablesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11669,7 +11666,6 @@ async def test_get_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.GetGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -11697,7 +11693,6 @@ async def test_list_groups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11722,7 +11717,6 @@ async def test_update_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.UpdateGroupRequest()
-
         assert args[0] == request_msg
 
 

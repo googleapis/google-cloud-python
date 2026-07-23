@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -559,11 +559,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.upload_conversation(request=request)
+                operation = await client.upload_conversation(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1134,11 +1134,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_analysis(request=request)
+                operation = await client.create_analysis(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1609,11 +1609,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.bulk_analyze_conversations(request=request)
+                operation = await client.bulk_analyze_conversations(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1758,11 +1758,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.bulk_delete_conversations(request=request)
+                operation = await client.bulk_delete_conversations(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1908,11 +1908,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.ingest_conversations(request=request)
+                operation = await client.ingest_conversations(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2040,11 +2040,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_insights_data(request=request)
+                operation = await client.export_insights_data(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2168,11 +2168,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_issue_model(request=request)
+                operation = await client.create_issue_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2641,11 +2641,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_issue_model(request=request)
+                operation = await client.delete_issue_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2777,11 +2777,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.deploy_issue_model(request=request)
+                operation = await client.deploy_issue_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2904,11 +2904,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.undeploy_issue_model(request=request)
+                operation = await client.undeploy_issue_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3036,11 +3036,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_issue_model(request=request)
+                operation = await client.export_issue_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3165,11 +3165,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_issue_model(request=request)
+                operation = await client.import_issue_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5528,11 +5528,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.initialize_encryption_spec(request=request)
+                operation = await client.initialize_encryption_spec(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6235,11 +6235,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.query_metrics(request=request)
+                operation = await client.query_metrics(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7827,11 +7827,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.tune_qa_scorecard_revision(request=request)
+                operation = await client.tune_qa_scorecard_revision(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -9160,11 +9160,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.bulk_upload_feedback_labels(request=request)
+                operation = await client.bulk_upload_feedback_labels(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -9295,11 +9295,11 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.bulk_download_feedback_labels(request=request)
+                operation = await client.bulk_download_feedback_labels(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

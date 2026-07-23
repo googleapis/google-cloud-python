@@ -16,18 +16,20 @@ jobs:
   unit:
     runs-on: ubuntu-22.04
     strategy:
+      fail-fast: true
       matrix:
-        python: ['3.9', '3.10', "3.11", "3.12", "3.13", "3.14"]
+        python: ['3.10', "3.11", "3.12", "3.13", "3.14"]
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
       # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
       # See https://github.com/googleapis/google-cloud-python/issues/12013
       # and https://github.com/actions/checkout#checkout-head.
       with:
         fetch-depth: 2
+        persist-credentials: false
     - name: Setup Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
       with:
         python-version: ${{ matrix.python }}
     - name: Install nox
@@ -36,7 +38,7 @@ jobs:
         python -m pip install nox
     - name: Run unit tests
       env:
-        COVERAGE_FILE: .coverage-${{ matrix.python }}
+        COVERAGE_FILE: ${{ github.workspace }}/.coverage-${{ matrix.python }}
         BUILD_TYPE: presubmit
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
         TEST_TYPE: unit
@@ -44,75 +46,11 @@ jobs:
       run: |
         ci/run_conditional_tests.sh
     - name: Upload coverage results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       with:
-        name: coverage-artifact-${{ '{{' }} matrix.python {{ '}}' }}
+        name: coverage-artifact-${{ matrix.python }}
         path: .coverage-${{ matrix.python }}
-  unit-prerelease:
-    name: ${{ matrix.option }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python: ["3.14"]
-        option: ["prerelease"]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
-      # See https://github.com/googleapis/google-cloud-python/issues/12013
-      # and https://github.com/actions/checkout#checkout-head.
-      with:
-        fetch-depth: 2
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python }}
-        allow-prereleases: true
-    - name: Install nox
-      run: |
-        python -m pip install --upgrade setuptools pip wheel
-        python -m pip install nox
-    - name: Run ${{ matrix.option }} tests
-      env:
-        BUILD_TYPE: presubmit
-        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
-        TEST_TYPE: ${{ matrix.option }}
-        # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
-        PY_VERSION: "unused"
-      run: |
-        ci/run_conditional_tests.sh
-  unit-core-deps-from-source:
-    name: ${{ matrix.option }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python: ["3.14"]
-        option: ["core_deps_from_source-3.14"]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
-      # See https://github.com/googleapis/google-cloud-python/issues/12013
-      # and https://github.com/actions/checkout#checkout-head.
-      with:
-        fetch-depth: 2
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python }}
-    - name: Install nox
-      run: |
-        python -m pip install --upgrade setuptools pip wheel
-        python -m pip install nox
-    - name: Run ${{ matrix.option }} tests
-      env:
-        BUILD_TYPE: presubmit
-        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
-        TEST_TYPE: ${{ matrix.option }}
-        # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
-        PY_VERSION: "unused"
-      run: |
-        ci/run_conditional_tests.sh
+        include-hidden-files: true
 
   cover:
     runs-on: ubuntu-latest
@@ -120,32 +58,112 @@ jobs:
         - unit
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
       # See https://github.com/googleapis/google-cloud-python/issues/12013
       # and https://github.com/actions/checkout#checkout-head.
       with:
         fetch-depth: 2
+        persist-credentials: false
     - name: Setup Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
       with:
         python-version: "3.10"
     - name: Set number of files changes in packages directory
       id: packages
-      run: echo "::set-output name=num_files_changed::$(git diff HEAD~1 -- packages | wc -l)"
+      run: |
+        git diff HEAD~1 -- packages > /dev/null
+        num_files_changed=$(git diff HEAD~1 -- packages | wc -l | tr -d ' ')
+        echo "num_files_changed=${num_files_changed}" >> "$GITHUB_OUTPUT"
     - name: Install coverage
-      if: steps.packages.num_files_changed > 0
+      if: ${{ steps.packages.outputs.num_files_changed > 0 }}
       run: |
         python -m pip install --upgrade setuptools pip wheel
         python -m pip install coverage
     - name: Download coverage results
-      if: ${{ steps.date.packages.num_files_changed > 0 }}
-      uses: actions/download-artifact@v4
+      if: ${{ steps.packages.outputs.num_files_changed > 0 }}
+      uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
       with:
         path: .coverage-results/
     - name: Report coverage results
-      if: ${{ steps.date.packages.num_files_changed > 0 }}
+      if: ${{ steps.packages.outputs.num_files_changed > 0 }}
+      env:
+        # TODO: default to 100% coverage after next gapic-generator release
+        # https://github.com/googleapis/google-cloud-python/issues/17459
+        DEFAULT_FAIL_UNDER: 99
       run: |
-        find .coverage-results -type f -name '*.zip' -exec unzip {} \;
-        coverage combine .coverage-results/**/.coverage*
-        coverage report --show-missing --fail-under=100
+        if [ -d .coverage-results ]; then
+          # Unzip any zipped coverage results
+          find .coverage-results -type f -name '*.zip' -exec unzip -o {} \;
+
+          # Find all coverage files and combine them.
+          # We find files starting with .coverage (excluding .coveragerc files and templates)
+          coverage_files=$(find .coverage-results . -type f -name '.coverage*' ! -name '.coveragerc*')
+          if [ -n "${coverage_files}" ]; then
+            coverage combine ${coverage_files}
+          else
+            echo "Error: No coverage files found to combine."
+            exit 1
+          fi
+
+          # Find all modified packages
+          modified_packages=$(git diff --name-only HEAD~1 -- packages | cut -d/ -f1,2 | sort -u)
+
+          failed_packages=()
+          passed_packages=()
+
+          for pkg in ${modified_packages}; do
+            if [ -d "${pkg}" ]; then
+              echo "============================================================"
+              echo "Evaluating coverage for package: ${pkg}"
+              echo "============================================================"
+
+              set +e
+              pushd "${pkg}" > /dev/null
+              if [ -f ".coveragerc" ]; then
+                echo "Using package-specific configuration: ${pkg}/.coveragerc"
+                # If fail_under is specified in the package-specific .coveragerc, coverage report
+                # will automatically enforce it. Otherwise, we enforce the default.
+                if grep -q "fail_under" ".coveragerc"; then
+                  COVERAGE_FILE=../../.coverage coverage report --include="$PWD/**"
+                else
+                  echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default"
+                  COVERAGE_FILE=../../.coverage coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}"
+                fi
+              else
+                echo "No .coveragerc found for ${pkg}, enforcing default"
+                COVERAGE_FILE=../../.coverage coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}"
+              fi
+              status=$?
+              popd > /dev/null
+              set -e
+
+              if [ ${status} -ne 0 ]; then
+                failed_packages+=("${pkg}")
+              else
+                passed_packages+=("${pkg}")
+              fi
+            fi
+          done
+
+          echo "============================================================"
+          echo "Coverage Evaluation Summary"
+          echo "============================================================"
+          if [ ${#passed_packages[@]} -gt 0 ]; then
+            echo "Passed packages:"
+            for pkg in "${passed_packages[@]}"; do
+              echo "  - ${pkg}"
+            done
+          fi
+          if [ ${#failed_packages[@]} -gt 0 ]; then
+            echo "Failed packages:"
+            for pkg in "${failed_packages[@]}"; do
+              echo "  - ${pkg}"
+            done
+            exit 1
+          fi
+        else
+          echo "Error: No coverage results were downloaded from the unit test jobs."
+          echo "This usually means the unit tests did not run or failed to upload their coverage files."
+          exit 1
+        fi

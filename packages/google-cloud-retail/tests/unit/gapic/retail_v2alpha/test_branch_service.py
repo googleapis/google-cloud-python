@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -113,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1314,8 +1324,8 @@ def test_branch_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        branch_service.ListBranchesRequest,
-        dict,
+        branch_service.ListBranchesRequest(),
+        {},
     ],
 )
 def test_list_branches(request_type, transport: str = "grpc"):
@@ -1326,7 +1336,7 @@ def test_list_branches(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_branches), "__call__") as call:
@@ -1367,9 +1377,10 @@ def test_list_branches_non_empty_request_with_auto_populated_field():
         client.list_branches(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == branch_service.ListBranchesRequest(
+        request_msg = branch_service.ListBranchesRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_branches_use_cached_wrapped_rpc():
@@ -1450,9 +1461,14 @@ async def test_list_branches_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_branches_async(
-    transport: str = "grpc_asyncio", request_type=branch_service.ListBranchesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        branch_service.ListBranchesRequest(),
+        {},
+    ],
+)
+async def test_list_branches_async(request_type, transport: str = "grpc_asyncio"):
     client = BranchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1460,7 +1476,7 @@ async def test_list_branches_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_branches), "__call__") as call:
@@ -1478,11 +1494,6 @@ async def test_list_branches_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, branch_service.ListBranchesResponse)
-
-
-@pytest.mark.asyncio
-async def test_list_branches_async_from_dict():
-    await test_list_branches_async(request_type=dict)
 
 
 def test_list_branches_field_headers():
@@ -1631,8 +1642,8 @@ async def test_list_branches_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        branch_service.GetBranchRequest,
-        dict,
+        branch_service.GetBranchRequest(),
+        {},
     ],
 )
 def test_get_branch(request_type, transport: str = "grpc"):
@@ -1643,7 +1654,7 @@ def test_get_branch(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_branch), "__call__") as call:
@@ -1691,9 +1702,10 @@ def test_get_branch_non_empty_request_with_auto_populated_field():
         client.get_branch(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == branch_service.GetBranchRequest(
+        request_msg = branch_service.GetBranchRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_branch_use_cached_wrapped_rpc():
@@ -1772,9 +1784,14 @@ async def test_get_branch_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_branch_async(
-    transport: str = "grpc_asyncio", request_type=branch_service.GetBranchRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        branch_service.GetBranchRequest(),
+        {},
+    ],
+)
+async def test_get_branch_async(request_type, transport: str = "grpc_asyncio"):
     client = BranchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1782,7 +1799,7 @@ async def test_get_branch_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_branch), "__call__") as call:
@@ -1807,11 +1824,6 @@ async def test_get_branch_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.is_default is True
-
-
-@pytest.mark.asyncio
-async def test_get_branch_async_from_dict():
-    await test_get_branch_async(request_type=dict)
 
 
 def test_get_branch_field_headers():
@@ -2063,7 +2075,7 @@ def test_list_branches_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_branches_rest_unset_required_fields():
@@ -2243,7 +2255,7 @@ def test_get_branch_rest_required_fields(request_type=branch_service.GetBranchRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_branch_rest_unset_required_fields():
@@ -2438,7 +2450,6 @@ def test_list_branches_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = branch_service.ListBranchesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2459,7 +2470,6 @@ def test_get_branch_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = branch_service.GetBranchRequest()
-
         assert args[0] == request_msg
 
 
@@ -2498,7 +2508,6 @@ async def test_list_branches_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = branch_service.ListBranchesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2527,7 +2536,6 @@ async def test_get_branch_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = branch_service.GetBranchRequest()
-
         assert args[0] == request_msg
 
 
@@ -2960,7 +2968,6 @@ def test_list_branches_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = branch_service.ListBranchesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2980,7 +2987,6 @@ def test_get_branch_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = branch_service.GetBranchRequest()
-
         assert args[0] == request_msg
 
 

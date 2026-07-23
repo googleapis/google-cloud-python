@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -125,6 +120,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1284,8 +1294,8 @@ def test_intercept_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.ListInterceptEndpointGroupsRequest,
-        dict,
+        intercept.ListInterceptEndpointGroupsRequest(),
+        {},
     ],
 )
 def test_list_intercept_endpoint_groups(request_type, transport: str = "grpc"):
@@ -1296,7 +1306,7 @@ def test_list_intercept_endpoint_groups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1347,12 +1357,13 @@ def test_list_intercept_endpoint_groups_non_empty_request_with_auto_populated_fi
         client.list_intercept_endpoint_groups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.ListInterceptEndpointGroupsRequest(
+        request_msg = intercept.ListInterceptEndpointGroupsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_intercept_endpoint_groups_use_cached_wrapped_rpc():
@@ -1438,9 +1449,15 @@ async def test_list_intercept_endpoint_groups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.ListInterceptEndpointGroupsRequest(),
+        {},
+    ],
+)
 async def test_list_intercept_endpoint_groups_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.ListInterceptEndpointGroupsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1449,7 +1466,7 @@ async def test_list_intercept_endpoint_groups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1472,11 +1489,6 @@ async def test_list_intercept_endpoint_groups_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInterceptEndpointGroupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_intercept_endpoint_groups_async_from_dict():
-    await test_list_intercept_endpoint_groups_async(request_type=dict)
 
 
 def test_list_intercept_endpoint_groups_field_headers():
@@ -1683,6 +1695,9 @@ def test_list_intercept_endpoint_groups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, intercept.InterceptEndpointGroup) for i in results)
@@ -1775,6 +1790,8 @@ async def test_list_intercept_endpoint_groups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1824,9 +1841,7 @@ async def test_list_intercept_endpoint_groups_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_intercept_endpoint_groups(request={})
         ).pages:
             pages.append(page_)
@@ -1837,8 +1852,8 @@ async def test_list_intercept_endpoint_groups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.GetInterceptEndpointGroupRequest,
-        dict,
+        intercept.GetInterceptEndpointGroupRequest(),
+        {},
     ],
 )
 def test_get_intercept_endpoint_group(request_type, transport: str = "grpc"):
@@ -1849,7 +1864,7 @@ def test_get_intercept_endpoint_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1905,9 +1920,10 @@ def test_get_intercept_endpoint_group_non_empty_request_with_auto_populated_fiel
         client.get_intercept_endpoint_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.GetInterceptEndpointGroupRequest(
+        request_msg = intercept.GetInterceptEndpointGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_intercept_endpoint_group_use_cached_wrapped_rpc():
@@ -1993,9 +2009,15 @@ async def test_get_intercept_endpoint_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.GetInterceptEndpointGroupRequest(),
+        {},
+    ],
+)
 async def test_get_intercept_endpoint_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.GetInterceptEndpointGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2004,7 +2026,7 @@ async def test_get_intercept_endpoint_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2035,11 +2057,6 @@ async def test_get_intercept_endpoint_group_async(
     assert response.state == intercept.InterceptEndpointGroup.State.ACTIVE
     assert response.reconciling is True
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_intercept_endpoint_group_async_from_dict():
-    await test_get_intercept_endpoint_group_async(request_type=dict)
 
 
 def test_get_intercept_endpoint_group_field_headers():
@@ -2196,8 +2213,8 @@ async def test_get_intercept_endpoint_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.CreateInterceptEndpointGroupRequest,
-        dict,
+        intercept.CreateInterceptEndpointGroupRequest(),
+        {},
     ],
 )
 def test_create_intercept_endpoint_group(request_type, transport: str = "grpc"):
@@ -2208,7 +2225,7 @@ def test_create_intercept_endpoint_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2254,10 +2271,11 @@ def test_create_intercept_endpoint_group_non_empty_request_with_auto_populated_f
         client.create_intercept_endpoint_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.CreateInterceptEndpointGroupRequest(
+        request_msg = intercept.CreateInterceptEndpointGroupRequest(
             parent="parent_value",
             intercept_endpoint_group_id="intercept_endpoint_group_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_intercept_endpoint_group_use_cached_wrapped_rpc():
@@ -2353,9 +2371,15 @@ async def test_create_intercept_endpoint_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.CreateInterceptEndpointGroupRequest(),
+        {},
+    ],
+)
 async def test_create_intercept_endpoint_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.CreateInterceptEndpointGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2364,7 +2388,7 @@ async def test_create_intercept_endpoint_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2384,11 +2408,6 @@ async def test_create_intercept_endpoint_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_intercept_endpoint_group_async_from_dict():
-    await test_create_intercept_endpoint_group_async(request_type=dict)
 
 
 def test_create_intercept_endpoint_group_field_headers():
@@ -2573,8 +2592,8 @@ async def test_create_intercept_endpoint_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.UpdateInterceptEndpointGroupRequest,
-        dict,
+        intercept.UpdateInterceptEndpointGroupRequest(),
+        {},
     ],
 )
 def test_update_intercept_endpoint_group(request_type, transport: str = "grpc"):
@@ -2585,7 +2604,7 @@ def test_update_intercept_endpoint_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2628,7 +2647,8 @@ def test_update_intercept_endpoint_group_non_empty_request_with_auto_populated_f
         client.update_intercept_endpoint_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.UpdateInterceptEndpointGroupRequest()
+        request_msg = intercept.UpdateInterceptEndpointGroupRequest()
+        assert args[0] == request_msg
 
 
 def test_update_intercept_endpoint_group_use_cached_wrapped_rpc():
@@ -2724,9 +2744,15 @@ async def test_update_intercept_endpoint_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.UpdateInterceptEndpointGroupRequest(),
+        {},
+    ],
+)
 async def test_update_intercept_endpoint_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.UpdateInterceptEndpointGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2735,7 +2761,7 @@ async def test_update_intercept_endpoint_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2755,11 +2781,6 @@ async def test_update_intercept_endpoint_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_intercept_endpoint_group_async_from_dict():
-    await test_update_intercept_endpoint_group_async(request_type=dict)
 
 
 def test_update_intercept_endpoint_group_field_headers():
@@ -2934,8 +2955,8 @@ async def test_update_intercept_endpoint_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.DeleteInterceptEndpointGroupRequest,
-        dict,
+        intercept.DeleteInterceptEndpointGroupRequest(),
+        {},
     ],
 )
 def test_delete_intercept_endpoint_group(request_type, transport: str = "grpc"):
@@ -2946,7 +2967,7 @@ def test_delete_intercept_endpoint_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2991,9 +3012,10 @@ def test_delete_intercept_endpoint_group_non_empty_request_with_auto_populated_f
         client.delete_intercept_endpoint_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.DeleteInterceptEndpointGroupRequest(
+        request_msg = intercept.DeleteInterceptEndpointGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_intercept_endpoint_group_use_cached_wrapped_rpc():
@@ -3089,9 +3111,15 @@ async def test_delete_intercept_endpoint_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.DeleteInterceptEndpointGroupRequest(),
+        {},
+    ],
+)
 async def test_delete_intercept_endpoint_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.DeleteInterceptEndpointGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3100,7 +3128,7 @@ async def test_delete_intercept_endpoint_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3120,11 +3148,6 @@ async def test_delete_intercept_endpoint_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_intercept_endpoint_group_async_from_dict():
-    await test_delete_intercept_endpoint_group_async(request_type=dict)
 
 
 def test_delete_intercept_endpoint_group_field_headers():
@@ -3281,8 +3304,8 @@ async def test_delete_intercept_endpoint_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.ListInterceptEndpointGroupAssociationsRequest,
-        dict,
+        intercept.ListInterceptEndpointGroupAssociationsRequest(),
+        {},
     ],
 )
 def test_list_intercept_endpoint_group_associations(
@@ -3295,7 +3318,7 @@ def test_list_intercept_endpoint_group_associations(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3346,12 +3369,13 @@ def test_list_intercept_endpoint_group_associations_non_empty_request_with_auto_
         client.list_intercept_endpoint_group_associations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.ListInterceptEndpointGroupAssociationsRequest(
+        request_msg = intercept.ListInterceptEndpointGroupAssociationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_intercept_endpoint_group_associations_use_cached_wrapped_rpc():
@@ -3437,9 +3461,15 @@ async def test_list_intercept_endpoint_group_associations_async_use_cached_wrapp
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.ListInterceptEndpointGroupAssociationsRequest(),
+        {},
+    ],
+)
 async def test_list_intercept_endpoint_group_associations_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.ListInterceptEndpointGroupAssociationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3448,7 +3478,7 @@ async def test_list_intercept_endpoint_group_associations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3471,11 +3501,6 @@ async def test_list_intercept_endpoint_group_associations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInterceptEndpointGroupAssociationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_intercept_endpoint_group_associations_async_from_dict():
-    await test_list_intercept_endpoint_group_associations_async(request_type=dict)
 
 
 def test_list_intercept_endpoint_group_associations_field_headers():
@@ -3682,6 +3707,9 @@ def test_list_intercept_endpoint_group_associations_pager(transport_name: str = 
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -3778,6 +3806,8 @@ async def test_list_intercept_endpoint_group_associations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3830,9 +3860,7 @@ async def test_list_intercept_endpoint_group_associations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_intercept_endpoint_group_associations(request={})
         ).pages:
             pages.append(page_)
@@ -3843,8 +3871,8 @@ async def test_list_intercept_endpoint_group_associations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.GetInterceptEndpointGroupAssociationRequest,
-        dict,
+        intercept.GetInterceptEndpointGroupAssociationRequest(),
+        {},
     ],
 )
 def test_get_intercept_endpoint_group_association(
@@ -3857,7 +3885,7 @@ def test_get_intercept_endpoint_group_association(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3913,9 +3941,10 @@ def test_get_intercept_endpoint_group_association_non_empty_request_with_auto_po
         client.get_intercept_endpoint_group_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.GetInterceptEndpointGroupAssociationRequest(
+        request_msg = intercept.GetInterceptEndpointGroupAssociationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_intercept_endpoint_group_association_use_cached_wrapped_rpc():
@@ -4001,9 +4030,15 @@ async def test_get_intercept_endpoint_group_association_async_use_cached_wrapped
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.GetInterceptEndpointGroupAssociationRequest(),
+        {},
+    ],
+)
 async def test_get_intercept_endpoint_group_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.GetInterceptEndpointGroupAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4012,7 +4047,7 @@ async def test_get_intercept_endpoint_group_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4043,11 +4078,6 @@ async def test_get_intercept_endpoint_group_association_async(
     assert response.network == "network_value"
     assert response.state == intercept.InterceptEndpointGroupAssociation.State.ACTIVE
     assert response.reconciling is True
-
-
-@pytest.mark.asyncio
-async def test_get_intercept_endpoint_group_association_async_from_dict():
-    await test_get_intercept_endpoint_group_association_async(request_type=dict)
 
 
 def test_get_intercept_endpoint_group_association_field_headers():
@@ -4204,8 +4234,8 @@ async def test_get_intercept_endpoint_group_association_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.CreateInterceptEndpointGroupAssociationRequest,
-        dict,
+        intercept.CreateInterceptEndpointGroupAssociationRequest(),
+        {},
     ],
 )
 def test_create_intercept_endpoint_group_association(
@@ -4218,7 +4248,7 @@ def test_create_intercept_endpoint_group_association(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4264,10 +4294,11 @@ def test_create_intercept_endpoint_group_association_non_empty_request_with_auto
         client.create_intercept_endpoint_group_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.CreateInterceptEndpointGroupAssociationRequest(
+        request_msg = intercept.CreateInterceptEndpointGroupAssociationRequest(
             parent="parent_value",
             intercept_endpoint_group_association_id="intercept_endpoint_group_association_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_intercept_endpoint_group_association_use_cached_wrapped_rpc():
@@ -4363,9 +4394,15 @@ async def test_create_intercept_endpoint_group_association_async_use_cached_wrap
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.CreateInterceptEndpointGroupAssociationRequest(),
+        {},
+    ],
+)
 async def test_create_intercept_endpoint_group_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.CreateInterceptEndpointGroupAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4374,7 +4411,7 @@ async def test_create_intercept_endpoint_group_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4394,11 +4431,6 @@ async def test_create_intercept_endpoint_group_association_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_intercept_endpoint_group_association_async_from_dict():
-    await test_create_intercept_endpoint_group_association_async(request_type=dict)
 
 
 def test_create_intercept_endpoint_group_association_field_headers():
@@ -4583,8 +4615,8 @@ async def test_create_intercept_endpoint_group_association_flattened_error_async
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.UpdateInterceptEndpointGroupAssociationRequest,
-        dict,
+        intercept.UpdateInterceptEndpointGroupAssociationRequest(),
+        {},
     ],
 )
 def test_update_intercept_endpoint_group_association(
@@ -4597,7 +4629,7 @@ def test_update_intercept_endpoint_group_association(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4640,7 +4672,8 @@ def test_update_intercept_endpoint_group_association_non_empty_request_with_auto
         client.update_intercept_endpoint_group_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.UpdateInterceptEndpointGroupAssociationRequest()
+        request_msg = intercept.UpdateInterceptEndpointGroupAssociationRequest()
+        assert args[0] == request_msg
 
 
 def test_update_intercept_endpoint_group_association_use_cached_wrapped_rpc():
@@ -4736,9 +4769,15 @@ async def test_update_intercept_endpoint_group_association_async_use_cached_wrap
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.UpdateInterceptEndpointGroupAssociationRequest(),
+        {},
+    ],
+)
 async def test_update_intercept_endpoint_group_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.UpdateInterceptEndpointGroupAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4747,7 +4786,7 @@ async def test_update_intercept_endpoint_group_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4767,11 +4806,6 @@ async def test_update_intercept_endpoint_group_association_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_intercept_endpoint_group_association_async_from_dict():
-    await test_update_intercept_endpoint_group_association_async(request_type=dict)
 
 
 def test_update_intercept_endpoint_group_association_field_headers():
@@ -4946,8 +4980,8 @@ async def test_update_intercept_endpoint_group_association_flattened_error_async
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.DeleteInterceptEndpointGroupAssociationRequest,
-        dict,
+        intercept.DeleteInterceptEndpointGroupAssociationRequest(),
+        {},
     ],
 )
 def test_delete_intercept_endpoint_group_association(
@@ -4960,7 +4994,7 @@ def test_delete_intercept_endpoint_group_association(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5005,9 +5039,10 @@ def test_delete_intercept_endpoint_group_association_non_empty_request_with_auto
         client.delete_intercept_endpoint_group_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.DeleteInterceptEndpointGroupAssociationRequest(
+        request_msg = intercept.DeleteInterceptEndpointGroupAssociationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_intercept_endpoint_group_association_use_cached_wrapped_rpc():
@@ -5103,9 +5138,15 @@ async def test_delete_intercept_endpoint_group_association_async_use_cached_wrap
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.DeleteInterceptEndpointGroupAssociationRequest(),
+        {},
+    ],
+)
 async def test_delete_intercept_endpoint_group_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.DeleteInterceptEndpointGroupAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5114,7 +5155,7 @@ async def test_delete_intercept_endpoint_group_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5134,11 +5175,6 @@ async def test_delete_intercept_endpoint_group_association_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_intercept_endpoint_group_association_async_from_dict():
-    await test_delete_intercept_endpoint_group_association_async(request_type=dict)
 
 
 def test_delete_intercept_endpoint_group_association_field_headers():
@@ -5295,8 +5331,8 @@ async def test_delete_intercept_endpoint_group_association_flattened_error_async
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.ListInterceptDeploymentGroupsRequest,
-        dict,
+        intercept.ListInterceptDeploymentGroupsRequest(),
+        {},
     ],
 )
 def test_list_intercept_deployment_groups(request_type, transport: str = "grpc"):
@@ -5307,7 +5343,7 @@ def test_list_intercept_deployment_groups(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5358,12 +5394,13 @@ def test_list_intercept_deployment_groups_non_empty_request_with_auto_populated_
         client.list_intercept_deployment_groups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.ListInterceptDeploymentGroupsRequest(
+        request_msg = intercept.ListInterceptDeploymentGroupsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_intercept_deployment_groups_use_cached_wrapped_rpc():
@@ -5449,9 +5486,15 @@ async def test_list_intercept_deployment_groups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.ListInterceptDeploymentGroupsRequest(),
+        {},
+    ],
+)
 async def test_list_intercept_deployment_groups_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.ListInterceptDeploymentGroupsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5460,7 +5503,7 @@ async def test_list_intercept_deployment_groups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5483,11 +5526,6 @@ async def test_list_intercept_deployment_groups_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInterceptDeploymentGroupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_intercept_deployment_groups_async_from_dict():
-    await test_list_intercept_deployment_groups_async(request_type=dict)
 
 
 def test_list_intercept_deployment_groups_field_headers():
@@ -5694,6 +5732,9 @@ def test_list_intercept_deployment_groups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, intercept.InterceptDeploymentGroup) for i in results)
@@ -5786,6 +5827,8 @@ async def test_list_intercept_deployment_groups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5835,9 +5878,7 @@ async def test_list_intercept_deployment_groups_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_intercept_deployment_groups(request={})
         ).pages:
             pages.append(page_)
@@ -5848,8 +5889,8 @@ async def test_list_intercept_deployment_groups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.GetInterceptDeploymentGroupRequest,
-        dict,
+        intercept.GetInterceptDeploymentGroupRequest(),
+        {},
     ],
 )
 def test_get_intercept_deployment_group(request_type, transport: str = "grpc"):
@@ -5860,7 +5901,7 @@ def test_get_intercept_deployment_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5916,9 +5957,10 @@ def test_get_intercept_deployment_group_non_empty_request_with_auto_populated_fi
         client.get_intercept_deployment_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.GetInterceptDeploymentGroupRequest(
+        request_msg = intercept.GetInterceptDeploymentGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_intercept_deployment_group_use_cached_wrapped_rpc():
@@ -6004,9 +6046,15 @@ async def test_get_intercept_deployment_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.GetInterceptDeploymentGroupRequest(),
+        {},
+    ],
+)
 async def test_get_intercept_deployment_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.GetInterceptDeploymentGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6015,7 +6063,7 @@ async def test_get_intercept_deployment_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6046,11 +6094,6 @@ async def test_get_intercept_deployment_group_async(
     assert response.state == intercept.InterceptDeploymentGroup.State.ACTIVE
     assert response.reconciling is True
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_intercept_deployment_group_async_from_dict():
-    await test_get_intercept_deployment_group_async(request_type=dict)
 
 
 def test_get_intercept_deployment_group_field_headers():
@@ -6207,8 +6250,8 @@ async def test_get_intercept_deployment_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.CreateInterceptDeploymentGroupRequest,
-        dict,
+        intercept.CreateInterceptDeploymentGroupRequest(),
+        {},
     ],
 )
 def test_create_intercept_deployment_group(request_type, transport: str = "grpc"):
@@ -6219,7 +6262,7 @@ def test_create_intercept_deployment_group(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6265,10 +6308,11 @@ def test_create_intercept_deployment_group_non_empty_request_with_auto_populated
         client.create_intercept_deployment_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.CreateInterceptDeploymentGroupRequest(
+        request_msg = intercept.CreateInterceptDeploymentGroupRequest(
             parent="parent_value",
             intercept_deployment_group_id="intercept_deployment_group_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_intercept_deployment_group_use_cached_wrapped_rpc():
@@ -6364,9 +6408,15 @@ async def test_create_intercept_deployment_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.CreateInterceptDeploymentGroupRequest(),
+        {},
+    ],
+)
 async def test_create_intercept_deployment_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.CreateInterceptDeploymentGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6375,7 +6425,7 @@ async def test_create_intercept_deployment_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6395,11 +6445,6 @@ async def test_create_intercept_deployment_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_intercept_deployment_group_async_from_dict():
-    await test_create_intercept_deployment_group_async(request_type=dict)
 
 
 def test_create_intercept_deployment_group_field_headers():
@@ -6584,8 +6629,8 @@ async def test_create_intercept_deployment_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.UpdateInterceptDeploymentGroupRequest,
-        dict,
+        intercept.UpdateInterceptDeploymentGroupRequest(),
+        {},
     ],
 )
 def test_update_intercept_deployment_group(request_type, transport: str = "grpc"):
@@ -6596,7 +6641,7 @@ def test_update_intercept_deployment_group(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6639,7 +6684,8 @@ def test_update_intercept_deployment_group_non_empty_request_with_auto_populated
         client.update_intercept_deployment_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.UpdateInterceptDeploymentGroupRequest()
+        request_msg = intercept.UpdateInterceptDeploymentGroupRequest()
+        assert args[0] == request_msg
 
 
 def test_update_intercept_deployment_group_use_cached_wrapped_rpc():
@@ -6735,9 +6781,15 @@ async def test_update_intercept_deployment_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.UpdateInterceptDeploymentGroupRequest(),
+        {},
+    ],
+)
 async def test_update_intercept_deployment_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.UpdateInterceptDeploymentGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6746,7 +6798,7 @@ async def test_update_intercept_deployment_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6766,11 +6818,6 @@ async def test_update_intercept_deployment_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_intercept_deployment_group_async_from_dict():
-    await test_update_intercept_deployment_group_async(request_type=dict)
 
 
 def test_update_intercept_deployment_group_field_headers():
@@ -6945,8 +6992,8 @@ async def test_update_intercept_deployment_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.DeleteInterceptDeploymentGroupRequest,
-        dict,
+        intercept.DeleteInterceptDeploymentGroupRequest(),
+        {},
     ],
 )
 def test_delete_intercept_deployment_group(request_type, transport: str = "grpc"):
@@ -6957,7 +7004,7 @@ def test_delete_intercept_deployment_group(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7002,9 +7049,10 @@ def test_delete_intercept_deployment_group_non_empty_request_with_auto_populated
         client.delete_intercept_deployment_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.DeleteInterceptDeploymentGroupRequest(
+        request_msg = intercept.DeleteInterceptDeploymentGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_intercept_deployment_group_use_cached_wrapped_rpc():
@@ -7100,9 +7148,15 @@ async def test_delete_intercept_deployment_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.DeleteInterceptDeploymentGroupRequest(),
+        {},
+    ],
+)
 async def test_delete_intercept_deployment_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.DeleteInterceptDeploymentGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7111,7 +7165,7 @@ async def test_delete_intercept_deployment_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7131,11 +7185,6 @@ async def test_delete_intercept_deployment_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_intercept_deployment_group_async_from_dict():
-    await test_delete_intercept_deployment_group_async(request_type=dict)
 
 
 def test_delete_intercept_deployment_group_field_headers():
@@ -7292,8 +7341,8 @@ async def test_delete_intercept_deployment_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.ListInterceptDeploymentsRequest,
-        dict,
+        intercept.ListInterceptDeploymentsRequest(),
+        {},
     ],
 )
 def test_list_intercept_deployments(request_type, transport: str = "grpc"):
@@ -7304,7 +7353,7 @@ def test_list_intercept_deployments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7357,12 +7406,13 @@ def test_list_intercept_deployments_non_empty_request_with_auto_populated_field(
         client.list_intercept_deployments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.ListInterceptDeploymentsRequest(
+        request_msg = intercept.ListInterceptDeploymentsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_intercept_deployments_use_cached_wrapped_rpc():
@@ -7448,9 +7498,15 @@ async def test_list_intercept_deployments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.ListInterceptDeploymentsRequest(),
+        {},
+    ],
+)
 async def test_list_intercept_deployments_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.ListInterceptDeploymentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7459,7 +7515,7 @@ async def test_list_intercept_deployments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7484,11 +7540,6 @@ async def test_list_intercept_deployments_async(
     assert isinstance(response, pagers.ListInterceptDeploymentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_intercept_deployments_async_from_dict():
-    await test_list_intercept_deployments_async(request_type=dict)
 
 
 def test_list_intercept_deployments_field_headers():
@@ -7695,6 +7746,9 @@ def test_list_intercept_deployments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, intercept.InterceptDeployment) for i in results)
@@ -7787,6 +7841,8 @@ async def test_list_intercept_deployments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7836,11 +7892,7 @@ async def test_list_intercept_deployments_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_intercept_deployments(request={})
-        ).pages:
+        async for page_ in (await client.list_intercept_deployments(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7849,8 +7901,8 @@ async def test_list_intercept_deployments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.GetInterceptDeploymentRequest,
-        dict,
+        intercept.GetInterceptDeploymentRequest(),
+        {},
     ],
 )
 def test_get_intercept_deployment(request_type, transport: str = "grpc"):
@@ -7861,7 +7913,7 @@ def test_get_intercept_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7919,9 +7971,10 @@ def test_get_intercept_deployment_non_empty_request_with_auto_populated_field():
         client.get_intercept_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.GetInterceptDeploymentRequest(
+        request_msg = intercept.GetInterceptDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_intercept_deployment_use_cached_wrapped_rpc():
@@ -8007,9 +8060,15 @@ async def test_get_intercept_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.GetInterceptDeploymentRequest(),
+        {},
+    ],
+)
 async def test_get_intercept_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.GetInterceptDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8018,7 +8077,7 @@ async def test_get_intercept_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8051,11 +8110,6 @@ async def test_get_intercept_deployment_async(
     assert response.state == intercept.InterceptDeployment.State.ACTIVE
     assert response.reconciling is True
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_intercept_deployment_async_from_dict():
-    await test_get_intercept_deployment_async(request_type=dict)
 
 
 def test_get_intercept_deployment_field_headers():
@@ -8212,8 +8266,8 @@ async def test_get_intercept_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.CreateInterceptDeploymentRequest,
-        dict,
+        intercept.CreateInterceptDeploymentRequest(),
+        {},
     ],
 )
 def test_create_intercept_deployment(request_type, transport: str = "grpc"):
@@ -8224,7 +8278,7 @@ def test_create_intercept_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8270,10 +8324,11 @@ def test_create_intercept_deployment_non_empty_request_with_auto_populated_field
         client.create_intercept_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.CreateInterceptDeploymentRequest(
+        request_msg = intercept.CreateInterceptDeploymentRequest(
             parent="parent_value",
             intercept_deployment_id="intercept_deployment_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_intercept_deployment_use_cached_wrapped_rpc():
@@ -8369,9 +8424,15 @@ async def test_create_intercept_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.CreateInterceptDeploymentRequest(),
+        {},
+    ],
+)
 async def test_create_intercept_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.CreateInterceptDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8380,7 +8441,7 @@ async def test_create_intercept_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8400,11 +8461,6 @@ async def test_create_intercept_deployment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_intercept_deployment_async_from_dict():
-    await test_create_intercept_deployment_async(request_type=dict)
 
 
 def test_create_intercept_deployment_field_headers():
@@ -8581,8 +8637,8 @@ async def test_create_intercept_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.UpdateInterceptDeploymentRequest,
-        dict,
+        intercept.UpdateInterceptDeploymentRequest(),
+        {},
     ],
 )
 def test_update_intercept_deployment(request_type, transport: str = "grpc"):
@@ -8593,7 +8649,7 @@ def test_update_intercept_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8636,7 +8692,8 @@ def test_update_intercept_deployment_non_empty_request_with_auto_populated_field
         client.update_intercept_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.UpdateInterceptDeploymentRequest()
+        request_msg = intercept.UpdateInterceptDeploymentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_intercept_deployment_use_cached_wrapped_rpc():
@@ -8732,9 +8789,15 @@ async def test_update_intercept_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.UpdateInterceptDeploymentRequest(),
+        {},
+    ],
+)
 async def test_update_intercept_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.UpdateInterceptDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8743,7 +8806,7 @@ async def test_update_intercept_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8763,11 +8826,6 @@ async def test_update_intercept_deployment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_intercept_deployment_async_from_dict():
-    await test_update_intercept_deployment_async(request_type=dict)
 
 
 def test_update_intercept_deployment_field_headers():
@@ -8934,8 +8992,8 @@ async def test_update_intercept_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        intercept.DeleteInterceptDeploymentRequest,
-        dict,
+        intercept.DeleteInterceptDeploymentRequest(),
+        {},
     ],
 )
 def test_delete_intercept_deployment(request_type, transport: str = "grpc"):
@@ -8946,7 +9004,7 @@ def test_delete_intercept_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8991,9 +9049,10 @@ def test_delete_intercept_deployment_non_empty_request_with_auto_populated_field
         client.delete_intercept_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == intercept.DeleteInterceptDeploymentRequest(
+        request_msg = intercept.DeleteInterceptDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_intercept_deployment_use_cached_wrapped_rpc():
@@ -9089,9 +9148,15 @@ async def test_delete_intercept_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        intercept.DeleteInterceptDeploymentRequest(),
+        {},
+    ],
+)
 async def test_delete_intercept_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=intercept.DeleteInterceptDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InterceptAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9100,7 +9165,7 @@ async def test_delete_intercept_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9120,11 +9185,6 @@ async def test_delete_intercept_deployment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_intercept_deployment_async_from_dict():
-    await test_delete_intercept_deployment_async(request_type=dict)
 
 
 def test_delete_intercept_deployment_field_headers():
@@ -9402,7 +9462,7 @@ def test_list_intercept_endpoint_groups_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_intercept_endpoint_groups_rest_unset_required_fields():
@@ -9538,6 +9598,9 @@ def test_list_intercept_endpoint_groups_rest_pager(transport: str = "rest"):
 
         pager = client.list_intercept_endpoint_groups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, intercept.InterceptEndpointGroup) for i in results)
@@ -9662,7 +9725,7 @@ def test_get_intercept_endpoint_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_intercept_endpoint_group_rest_unset_required_fields():
@@ -9875,7 +9938,7 @@ def test_create_intercept_endpoint_group_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_intercept_endpoint_group_rest_unset_required_fields():
@@ -10084,7 +10147,7 @@ def test_update_intercept_endpoint_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_intercept_endpoint_group_rest_unset_required_fields():
@@ -10288,7 +10351,7 @@ def test_delete_intercept_endpoint_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_intercept_endpoint_group_rest_unset_required_fields():
@@ -10488,7 +10551,7 @@ def test_list_intercept_endpoint_group_associations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_intercept_endpoint_group_associations_rest_unset_required_fields():
@@ -10633,6 +10696,9 @@ def test_list_intercept_endpoint_group_associations_rest_pager(transport: str = 
             request=sample_request
         )
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -10765,7 +10831,7 @@ def test_get_intercept_endpoint_group_association_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_intercept_endpoint_group_association_rest_unset_required_fields():
@@ -10969,7 +11035,7 @@ def test_create_intercept_endpoint_group_association_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_intercept_endpoint_group_association_rest_unset_required_fields():
@@ -11183,7 +11249,7 @@ def test_update_intercept_endpoint_group_association_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_intercept_endpoint_group_association_rest_unset_required_fields():
@@ -11393,7 +11459,7 @@ def test_delete_intercept_endpoint_group_association_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_intercept_endpoint_group_association_rest_unset_required_fields():
@@ -11591,7 +11657,7 @@ def test_list_intercept_deployment_groups_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_intercept_deployment_groups_rest_unset_required_fields():
@@ -11727,6 +11793,9 @@ def test_list_intercept_deployment_groups_rest_pager(transport: str = "rest"):
 
         pager = client.list_intercept_deployment_groups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, intercept.InterceptDeploymentGroup) for i in results)
@@ -11851,7 +11920,7 @@ def test_get_intercept_deployment_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_intercept_deployment_group_rest_unset_required_fields():
@@ -12068,7 +12137,7 @@ def test_create_intercept_deployment_group_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_intercept_deployment_group_rest_unset_required_fields():
@@ -12279,7 +12348,7 @@ def test_update_intercept_deployment_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_intercept_deployment_group_rest_unset_required_fields():
@@ -12485,7 +12554,7 @@ def test_delete_intercept_deployment_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_intercept_deployment_group_rest_unset_required_fields():
@@ -12681,7 +12750,7 @@ def test_list_intercept_deployments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_intercept_deployments_rest_unset_required_fields():
@@ -12815,6 +12884,9 @@ def test_list_intercept_deployments_rest_pager(transport: str = "rest"):
 
         pager = client.list_intercept_deployments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, intercept.InterceptDeployment) for i in results)
@@ -12937,7 +13009,7 @@ def test_get_intercept_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_intercept_deployment_rest_unset_required_fields():
@@ -13147,7 +13219,7 @@ def test_create_intercept_deployment_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_intercept_deployment_rest_unset_required_fields():
@@ -13350,7 +13422,7 @@ def test_update_intercept_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_intercept_deployment_rest_unset_required_fields():
@@ -13548,7 +13620,7 @@ def test_delete_intercept_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_intercept_deployment_rest_unset_required_fields():
@@ -13743,7 +13815,6 @@ def test_list_intercept_endpoint_groups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.ListInterceptEndpointGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13766,7 +13837,6 @@ def test_get_intercept_endpoint_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.GetInterceptEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -13789,7 +13859,6 @@ def test_create_intercept_endpoint_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.CreateInterceptEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -13812,7 +13881,6 @@ def test_update_intercept_endpoint_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.UpdateInterceptEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -13835,7 +13903,6 @@ def test_delete_intercept_endpoint_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.DeleteInterceptEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -13858,7 +13925,6 @@ def test_list_intercept_endpoint_group_associations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.ListInterceptEndpointGroupAssociationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13881,7 +13947,6 @@ def test_get_intercept_endpoint_group_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.GetInterceptEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -13904,7 +13969,6 @@ def test_create_intercept_endpoint_group_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.CreateInterceptEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -13927,7 +13991,6 @@ def test_update_intercept_endpoint_group_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.UpdateInterceptEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -13950,7 +14013,6 @@ def test_delete_intercept_endpoint_group_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.DeleteInterceptEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -13973,7 +14035,6 @@ def test_list_intercept_deployment_groups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.ListInterceptDeploymentGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13996,7 +14057,6 @@ def test_get_intercept_deployment_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.GetInterceptDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14019,7 +14079,6 @@ def test_create_intercept_deployment_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.CreateInterceptDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14042,7 +14101,6 @@ def test_update_intercept_deployment_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.UpdateInterceptDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14065,7 +14123,6 @@ def test_delete_intercept_deployment_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.DeleteInterceptDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14088,7 +14145,6 @@ def test_list_intercept_deployments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.ListInterceptDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14111,7 +14167,6 @@ def test_get_intercept_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.GetInterceptDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14134,7 +14189,6 @@ def test_create_intercept_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.CreateInterceptDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14157,7 +14211,6 @@ def test_update_intercept_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.UpdateInterceptDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14180,7 +14233,6 @@ def test_delete_intercept_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.DeleteInterceptDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14223,7 +14275,6 @@ async def test_list_intercept_endpoint_groups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.ListInterceptEndpointGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14256,7 +14307,6 @@ async def test_get_intercept_endpoint_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.GetInterceptEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14283,7 +14333,6 @@ async def test_create_intercept_endpoint_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.CreateInterceptEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14310,7 +14359,6 @@ async def test_update_intercept_endpoint_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.UpdateInterceptEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14337,7 +14385,6 @@ async def test_delete_intercept_endpoint_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.DeleteInterceptEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14366,7 +14413,6 @@ async def test_list_intercept_endpoint_group_associations_empty_call_grpc_asynci
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.ListInterceptEndpointGroupAssociationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14399,7 +14445,6 @@ async def test_get_intercept_endpoint_group_association_empty_call_grpc_asyncio(
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.GetInterceptEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14426,7 +14471,6 @@ async def test_create_intercept_endpoint_group_association_empty_call_grpc_async
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.CreateInterceptEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14453,7 +14497,6 @@ async def test_update_intercept_endpoint_group_association_empty_call_grpc_async
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.UpdateInterceptEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14480,7 +14523,6 @@ async def test_delete_intercept_endpoint_group_association_empty_call_grpc_async
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.DeleteInterceptEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14509,7 +14551,6 @@ async def test_list_intercept_deployment_groups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.ListInterceptDeploymentGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14542,7 +14583,6 @@ async def test_get_intercept_deployment_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.GetInterceptDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14569,7 +14609,6 @@ async def test_create_intercept_deployment_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.CreateInterceptDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14596,7 +14635,6 @@ async def test_update_intercept_deployment_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.UpdateInterceptDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14623,7 +14661,6 @@ async def test_delete_intercept_deployment_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.DeleteInterceptDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14653,7 +14690,6 @@ async def test_list_intercept_deployments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.ListInterceptDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14687,7 +14723,6 @@ async def test_get_intercept_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.GetInterceptDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14714,7 +14749,6 @@ async def test_create_intercept_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.CreateInterceptDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14741,7 +14775,6 @@ async def test_update_intercept_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.UpdateInterceptDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14768,7 +14801,6 @@ async def test_delete_intercept_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.DeleteInterceptDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18744,7 +18776,6 @@ def test_list_intercept_endpoint_groups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.ListInterceptEndpointGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18766,7 +18797,6 @@ def test_get_intercept_endpoint_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.GetInterceptEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18788,7 +18818,6 @@ def test_create_intercept_endpoint_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.CreateInterceptEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18810,7 +18839,6 @@ def test_update_intercept_endpoint_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.UpdateInterceptEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18832,7 +18860,6 @@ def test_delete_intercept_endpoint_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.DeleteInterceptEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18854,7 +18881,6 @@ def test_list_intercept_endpoint_group_associations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.ListInterceptEndpointGroupAssociationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18876,7 +18902,6 @@ def test_get_intercept_endpoint_group_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.GetInterceptEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18898,7 +18923,6 @@ def test_create_intercept_endpoint_group_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.CreateInterceptEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18920,7 +18944,6 @@ def test_update_intercept_endpoint_group_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.UpdateInterceptEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18942,7 +18965,6 @@ def test_delete_intercept_endpoint_group_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.DeleteInterceptEndpointGroupAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18964,7 +18986,6 @@ def test_list_intercept_deployment_groups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.ListInterceptDeploymentGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18986,7 +19007,6 @@ def test_get_intercept_deployment_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.GetInterceptDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -19008,7 +19028,6 @@ def test_create_intercept_deployment_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.CreateInterceptDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -19030,7 +19049,6 @@ def test_update_intercept_deployment_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.UpdateInterceptDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -19052,7 +19070,6 @@ def test_delete_intercept_deployment_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.DeleteInterceptDeploymentGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -19074,7 +19091,6 @@ def test_list_intercept_deployments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.ListInterceptDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19096,7 +19112,6 @@ def test_get_intercept_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.GetInterceptDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -19118,7 +19133,6 @@ def test_create_intercept_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.CreateInterceptDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -19140,7 +19154,6 @@ def test_update_intercept_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.UpdateInterceptDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -19162,7 +19175,6 @@ def test_delete_intercept_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = intercept.DeleteInterceptDeploymentRequest()
-
         assert args[0] == request_msg
 
 

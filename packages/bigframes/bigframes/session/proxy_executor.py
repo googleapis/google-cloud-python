@@ -14,15 +14,15 @@
 
 from __future__ import annotations
 
-import typing
 import uuid
 import warnings
-from typing import Mapping, Optional
+from typing import Optional
 
 import google.cloud.bigquery as bigquery
 import google.cloud.exceptions
 
 import bigframes.core
+import bigframes.functions._function_session as bff_session
 from bigframes import exceptions as bfe
 from bigframes.session import (
     bq_caching_executor,
@@ -30,7 +30,6 @@ from bigframes.session import (
     execution_spec,
     executor,
     loader,
-    metrics,
     temporary_storage,
 )
 
@@ -52,6 +51,7 @@ class DualCompilerProxyExecutor(executor.Executor):
         metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
         enable_polars_execution: bool = False,
         publisher: bigframes.core.events.Publisher,
+        function_manager: bff_session.FunctionSession,
         labels: tuple[tuple[str, str], ...] = (),
     ):
         self._enable_polars_execution = enable_polars_execution
@@ -67,6 +67,7 @@ class DualCompilerProxyExecutor(executor.Executor):
             labels=labels,
             cache=shared_cache,
             compiler_name="ibis",
+            function_manager=function_manager,
         )
         self._sqlglot_executor = bq_caching_executor.BigQueryCachingExecutor(
             bqclient,
@@ -79,6 +80,7 @@ class DualCompilerProxyExecutor(executor.Executor):
             labels=labels,
             cache=shared_cache,
             compiler_name="sqlglot",
+            function_manager=function_manager,
         )
 
     def to_sql(
@@ -120,14 +122,15 @@ class DualCompilerProxyExecutor(executor.Executor):
             return self._ibis_executor.execute(array_value, execution_spec)
         elif compiler_option == "experimental":
             return self._sqlglot_executor.execute(
-                array_value, execution_spec.add_labels({_COMPILER_LABEL_KEY: "sqlglot"})
+                array_value,
+                execution_spec.with_bq_labels({_COMPILER_LABEL_KEY: "sqlglot"}),
             )
         else:  # stable
             correlation_id = f"{uuid.uuid1().hex[:12]}"
             try:
                 return self._sqlglot_executor.execute(
                     array_value,
-                    execution_spec.add_labels(
+                    execution_spec.with_bq_labels(
                         {_COMPILER_LABEL_KEY: f"sqlglot-{correlation_id}"}
                     ),
                 )
@@ -139,7 +142,7 @@ class DualCompilerProxyExecutor(executor.Executor):
                 warnings.warn(msg, category=UserWarning)
                 return self._ibis_executor.execute(
                     array_value,
-                    execution_spec.add_labels(
+                    execution_spec.with_bq_labels(
                         {_COMPILER_LABEL_KEY: f"ibis-{correlation_id}"}
                     ),
                 )

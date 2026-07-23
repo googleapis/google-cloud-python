@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,19 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-import re
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -119,6 +113,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1301,8 +1310,8 @@ def test_fleet_routing_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        fleet_routing.OptimizeToursRequest,
-        dict,
+        fleet_routing.OptimizeToursRequest(),
+        {},
     ],
 )
 def test_optimize_tours(request_type, transport: str = "grpc"):
@@ -1313,7 +1322,7 @@ def test_optimize_tours(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.optimize_tours), "__call__") as call:
@@ -1360,10 +1369,11 @@ def test_optimize_tours_non_empty_request_with_auto_populated_field():
         client.optimize_tours(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == fleet_routing.OptimizeToursRequest(
+        request_msg = fleet_routing.OptimizeToursRequest(
             parent="parent_value",
             label="label_value",
         )
+        assert args[0] == request_msg
 
 
 def test_optimize_tours_use_cached_wrapped_rpc():
@@ -1444,9 +1454,14 @@ async def test_optimize_tours_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_optimize_tours_async(
-    transport: str = "grpc_asyncio", request_type=fleet_routing.OptimizeToursRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        fleet_routing.OptimizeToursRequest(),
+        {},
+    ],
+)
+async def test_optimize_tours_async(request_type, transport: str = "grpc_asyncio"):
     client = FleetRoutingAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1454,7 +1469,7 @@ async def test_optimize_tours_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.optimize_tours), "__call__") as call:
@@ -1477,11 +1492,6 @@ async def test_optimize_tours_async(
     assert isinstance(response, fleet_routing.OptimizeToursResponse)
     assert response.request_label == "request_label_value"
     assert math.isclose(response.total_cost, 0.10840000000000001, rel_tol=1e-6)
-
-
-@pytest.mark.asyncio
-async def test_optimize_tours_async_from_dict():
-    await test_optimize_tours_async(request_type=dict)
 
 
 def test_optimize_tours_field_headers():
@@ -1548,8 +1558,8 @@ async def test_optimize_tours_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        fleet_routing.BatchOptimizeToursRequest,
-        dict,
+        fleet_routing.BatchOptimizeToursRequest(),
+        {},
     ],
 )
 def test_batch_optimize_tours(request_type, transport: str = "grpc"):
@@ -1560,7 +1570,7 @@ def test_batch_optimize_tours(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1605,9 +1615,10 @@ def test_batch_optimize_tours_non_empty_request_with_auto_populated_field():
         client.batch_optimize_tours(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == fleet_routing.BatchOptimizeToursRequest(
+        request_msg = fleet_routing.BatchOptimizeToursRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_optimize_tours_use_cached_wrapped_rpc():
@@ -1702,9 +1713,15 @@ async def test_batch_optimize_tours_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        fleet_routing.BatchOptimizeToursRequest(),
+        {},
+    ],
+)
 async def test_batch_optimize_tours_async(
-    transport: str = "grpc_asyncio",
-    request_type=fleet_routing.BatchOptimizeToursRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FleetRoutingAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1713,7 +1730,7 @@ async def test_batch_optimize_tours_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1733,11 +1750,6 @@ async def test_batch_optimize_tours_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_batch_optimize_tours_async_from_dict():
-    await test_batch_optimize_tours_async(request_type=dict)
 
 
 def test_batch_optimize_tours_field_headers():
@@ -1914,7 +1926,7 @@ def test_optimize_tours_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_optimize_tours_rest_unset_required_fields():
@@ -2040,7 +2052,7 @@ def test_batch_optimize_tours_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_optimize_tours_rest_unset_required_fields():
@@ -2183,7 +2195,6 @@ def test_optimize_tours_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = fleet_routing.OptimizeToursRequest()
-
         assert args[0] == request_msg
 
 
@@ -2206,7 +2217,6 @@ def test_batch_optimize_tours_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = fleet_routing.BatchOptimizeToursRequest()
-
         assert args[0] == request_msg
 
 
@@ -2248,7 +2258,6 @@ async def test_optimize_tours_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = fleet_routing.OptimizeToursRequest()
-
         assert args[0] == request_msg
 
 
@@ -2275,7 +2284,6 @@ async def test_batch_optimize_tours_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = fleet_routing.BatchOptimizeToursRequest()
-
         assert args[0] == request_msg
 
 
@@ -2635,7 +2643,6 @@ def test_optimize_tours_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = fleet_routing.OptimizeToursRequest()
-
         assert args[0] == request_msg
 
 
@@ -2657,7 +2664,6 @@ def test_batch_optimize_tours_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = fleet_routing.BatchOptimizeToursRequest()
-
         assert args[0] == request_msg
 
 

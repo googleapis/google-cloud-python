@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -147,6 +147,11 @@ class RolloutsTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.advance: gapic_v1.method.wrap_method(
+                self.advance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.cancel: gapic_v1.method.wrap_method(
                 self.cancel,
                 default_timeout=600.0,
@@ -187,6 +192,16 @@ class RolloutsTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.pause: gapic_v1.method.wrap_method(
+                self.pause,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.resume: gapic_v1.method.wrap_method(
+                self.resume,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -196,6 +211,15 @@ class RolloutsTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def advance(
+        self,
+    ) -> Callable[
+        [compute.AdvanceRolloutRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
@@ -230,6 +254,24 @@ class RolloutsTransport(abc.ABC):
     ) -> Callable[
         [compute.ListRolloutsRequest],
         Union[compute.RolloutsListResponse, Awaitable[compute.RolloutsListResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def pause(
+        self,
+    ) -> Callable[
+        [compute.PauseRolloutRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def resume(
+        self,
+    ) -> Callable[
+        [compute.ResumeRolloutRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 

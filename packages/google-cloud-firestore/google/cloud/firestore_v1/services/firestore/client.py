@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -2201,6 +2201,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
                 For example:
                 ``projects/my-project/databases/my-database/documents/chatrooms/my-chatroom``
+
+                Use
+                ``projects/{project_id}/databases/{database_id}/documents``
+                to list top-level collections.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

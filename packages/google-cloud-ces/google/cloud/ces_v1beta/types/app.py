@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,13 @@ import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.ces_v1beta.types import bigquery_export, common, fakes, golden_run
+from google.cloud.ces_v1beta.types import (
+    bigquery_export,
+    common,
+    evaluation_metrics_config,
+    fakes,
+    golden_run,
+)
 from google.cloud.ces_v1beta.types import schema as gcc_schema
 
 __protobuf__ = proto.module(
@@ -40,6 +46,7 @@ __protobuf__ = proto.module(
         "EvaluationMetricsThresholds",
         "EvaluationSettings",
         "ClientCertificateSettings",
+        "VpcScSettings",
         "ConversationLoggingSettings",
         "CloudLoggingSettings",
         "AudioRecordingConfig",
@@ -135,6 +142,8 @@ class App(proto.Message):
         client_certificate_settings (google.cloud.ces_v1beta.types.ClientCertificateSettings):
             Optional. The default client certificate
             settings for the app.
+        vpc_sc_settings (google.cloud.ces_v1beta.types.VpcScSettings):
+            Optional. VPC-SC settings for the app.
         locked (bool):
             Optional. Indicates whether the app is locked
             for changes. If the app is locked, modifications
@@ -147,6 +156,9 @@ class App(proto.Message):
         evaluation_settings (google.cloud.ces_v1beta.types.EvaluationSettings):
             Optional. The evaluation settings for the
             app.
+        validation_errors (MutableSequence[str]):
+            Output only. Misconfigurations or warnings in
+            the app.
     """
 
     class ToolExecutionMode(proto.Enum):
@@ -319,6 +331,11 @@ class App(proto.Message):
         number=25,
         message="ClientCertificateSettings",
     )
+    vpc_sc_settings: "VpcScSettings" = proto.Field(
+        proto.MESSAGE,
+        number=26,
+        message="VpcScSettings",
+    )
     locked: bool = proto.Field(
         proto.BOOL,
         number=29,
@@ -332,6 +349,10 @@ class App(proto.Message):
         proto.MESSAGE,
         number=33,
         message="EvaluationSettings",
+    )
+    validation_errors: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=39,
     )
 
 
@@ -651,13 +672,20 @@ class LoggingSettings(proto.Message):
             Optional. Configuration for how sensitive
             data should be redacted.
         audio_recording_config (google.cloud.ces_v1beta.types.AudioRecordingConfig):
-            Optional. Configuration for how audio
-            interactions should be recorded.
+            Optional. Configuration for how audio interactions should be
+            recorded. The audio is subject to redaction as configured in
+            [RedactionConfig][google.cloud.ces.v1beta.LoggingSettings.redaction_config].
+        unredacted_audio_recording_config (google.cloud.ces_v1beta.types.AudioRecordingConfig):
+            Optional. Configures an additional recording of unredacted
+            audio. This can be used to maintain a raw audio copy when
+            audio redaction is
+            [enabled][google.cloud.ces.v1beta.RedactionConfig.enable_redaction],
+            typically for auditing or monitoring purposes.
         bigquery_export_settings (google.cloud.ces_v1beta.types.BigQueryExportSettings):
-            Optional. Settings to describe the BigQuery
-            export behaviors for the app. The conversation
-            data will be exported to BigQuery tables if it
-            is enabled.
+            Optional. Configures the BigQuery export behaviors for the
+            app. The conversation data is subject to redaction as
+            configured in
+            [RedactionConfig][google.cloud.ces.v1beta.LoggingSettings.redaction_config].
         cloud_logging_settings (google.cloud.ces_v1beta.types.CloudLoggingSettings):
             Optional. Settings to describe the Cloud
             Logging behaviors for the app.
@@ -683,6 +711,11 @@ class LoggingSettings(proto.Message):
     audio_recording_config: "AudioRecordingConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
+        message="AudioRecordingConfig",
+    )
+    unredacted_audio_recording_config: "AudioRecordingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=8,
         message="AudioRecordingConfig",
     )
     bigquery_export_settings: bigquery_export.BigQueryExportSettings = proto.Field(
@@ -1041,6 +1074,12 @@ class EvaluationSettings(proto.Message):
         scenario_evaluation_tool_call_behaviour (google.cloud.ces_v1beta.types.EvaluationToolCallBehaviour):
             Optional. Configures the default tool call
             behaviour for scenario evaluations.
+        metrics_config (google.cloud.ces_v1beta.types.EvaluationMetricsConfig):
+            Optional. Configures the default metrics for
+            evaluations.
+        scenario_execution_mode (google.cloud.ces_v1beta.types.EvaluationSettings.ScenarioExecutionMode):
+            Optional. The execution mode for scenario evaluations. If
+            not provided, will default to QUALITY_OPTIMIZED.
     """
 
     class ScenarioConversationInitiator(proto.Enum):
@@ -1059,6 +1098,22 @@ class EvaluationSettings(proto.Message):
         SCENARIO_CONVERSATION_INITIATOR_UNSPECIFIED = 0
         USER = 1
         AGENT = 2
+
+    class ScenarioExecutionMode(proto.Enum):
+        r"""The execution mode for scenario evaluations.
+
+        Values:
+            SCENARIO_EXECUTION_MODE_UNSPECIFIED (0):
+                Unspecified execution mode. Defaults to QUALITY_OPTIMIZED.
+            QUALITY_OPTIMIZED (1):
+                Quality optimized mode.
+            SPEED_OPTIMIZED (2):
+                Speed optimized mode.
+        """
+
+        SCENARIO_EXECUTION_MODE_UNSPECIFIED = 0
+        QUALITY_OPTIMIZED = 1
+        SPEED_OPTIMIZED = 2
 
     scenario_conversation_initiator: ScenarioConversationInitiator = proto.Field(
         proto.ENUM,
@@ -1083,6 +1138,16 @@ class EvaluationSettings(proto.Message):
             number=3,
             enum=fakes.EvaluationToolCallBehaviour,
         )
+    )
+    metrics_config: evaluation_metrics_config.EvaluationMetricsConfig = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=evaluation_metrics_config.EvaluationMetricsConfig,
+    )
+    scenario_execution_mode: ScenarioExecutionMode = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=ScenarioExecutionMode,
     )
 
 
@@ -1118,6 +1183,28 @@ class ClientCertificateSettings(proto.Message):
     passphrase: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class VpcScSettings(proto.Message):
+    r"""VPC-SC settings for the app.
+
+    Attributes:
+        allowed_origins (MutableSequence[str]):
+            Optional. The allowed HTTP(s) origins that
+            OpenAPI tools in the App are able to directly
+            call when VPC Service Controls are enabled.
+            These strings must match the origin exactly,
+            including the port if specified. For example,
+            "https://example.com" or
+            "https://example.com:443". This list does not
+            yet apply to Python tools that may make direct
+            HTTP calls.
+    """
+
+    allowed_origins: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 
