@@ -58,8 +58,20 @@ class PluginHandler(WebAuthnHandler):
 
         # Call plugin
         process_result = subprocess.run(
-            [cmd], input=request, capture_output=True, check=True
+            [cmd], input=request, capture_output=True
         )
+
+        if process_result.returncode != 0:
+            stdout_bytes = process_result.stdout[4:] if len(process_result.stdout) >= 4 else process_result.stdout
+            
+            error_msg = "Command '{}' returned non-zero exit status {}.\nStdout: {}\nStderr: {}".format(
+                cmd, 
+                process_result.returncode, 
+                stdout_bytes.decode(errors="replace").strip(),
+                process_result.stderr.decode(errors="replace").strip()
+            )
+            
+            raise exceptions.GoogleAuthError(error_msg)
 
         # Check length of response
         response_len_le = process_result.stdout[:4]

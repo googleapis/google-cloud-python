@@ -146,3 +146,20 @@ def test_success_get_assertion(os_get_stub, subprocess_run_stub):
     assert (
         got_response.response.user_handle == success_response["response"]["userHandle"]
     )
+
+def test_plugin_nonzero_exit(os_get_stub, subprocess_run_stub):
+    response_json = b'detailed_gnubby_internal_crash_log'
+    response_len = struct.pack("<I", len(response_json))
+
+    mock_response = mock.Mock()
+    mock_response.returncode = 1
+    mock_response.stdout = response_len + response_json
+    mock_response.stderr = b"stderr dump"
+    subprocess_run_stub.return_value = mock_response
+
+    test_handler = webauthn_handler.PluginHandler()
+    with pytest.raises(exceptions.GoogleAuthError) as excinfo:
+        test_handler.get(GET_ASSERTION_REQUEST)
+        
+    assert "returned non-zero exit status 1" in str(excinfo.value)
+    assert "detailed_gnubby_internal_crash_log" in str(excinfo.value)
