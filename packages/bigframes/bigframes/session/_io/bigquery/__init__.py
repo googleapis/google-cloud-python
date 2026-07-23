@@ -68,8 +68,14 @@ def create_job_configs_labels(
         job_configs_labels = dict(job_configs_labels)
 
     if api_methods and "bigframes-api" not in job_configs_labels:
-        job_configs_labels["bigframes-api"] = api_methods[0]
-        del api_methods[0]
+        colab_idx = next(
+            (i for i, m in enumerate(api_methods) if "read_gbq_colab" in m), None
+        )
+        if colab_idx is not None:
+            job_configs_labels["bigframes-api"] = api_methods.pop(colab_idx)
+        else:
+            job_configs_labels["bigframes-api"] = api_methods[0]
+            del api_methods[0]
 
     # Make sure we always populate bigframes-api with _something_, even if we
     # have a code path which doesn't populate the list of api_methods. See
