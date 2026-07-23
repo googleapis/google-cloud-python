@@ -1,323 +1,388 @@
-# Copyright 2018 Google LLC
+# Copyright 2017, Google LLC
 #
-# Licensed under the Apache License,0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
-# limitations operate under the License.
+# limitations under the License.
 
+# Helpful notes for local usage:
+#   unset PYENV_VERSION
+#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12 3.9.17
+#   PIP_INDEX_URL=https://pypi.org/simple nox
+
+from __future__ import absolute_import
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 import os
-import shutil
+import sys
+import tempfile
+import typing
+import nox  # type: ignore
+
 from contextlib import contextmanager
+from os import path
+import shutil
 
-import nox
 
-DEFAULT_PYTHON_VERSION = "3.14"
-UNIT_TEST_PYTHON_VERSIONS = [
+nox.options.error_on_missing_interpreters = True
+
+
+showcase_version = os.environ.get("SHOWCASE_VERSION", "0.35.0")
+ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
+CURRENT_DIRECTORY = Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
+RUFF_VERSION = "ruff==0.14.14"
+LINT_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
+# Ruff uses globs for excludes (different from Black's regex)
+# .*golden.* -> *golden*
+# .*pb2.py -> *pb2.py
+RUFF_EXCLUDES = "*golden*,*pb2.py,*pb2.pyi"
+
+ALL_PYTHON = (
     "3.10",
     "3.11",
     "3.12",
     "3.13",
     "3.14",
     "3.15",
-]
+)
 
-# Set error on warnings flag for pytest
-ERR_ON_WARNINGS = "-Werror"
-
-# 'showcase_unit' sessions will run with 'google' scope by default.
-# Users can override it by setting environment variable.
-LOGGING_SCOPE = os.getenv("GOOGLE_SDK_PYTHON_LOGGING_SCOPE", "google")
-
-nox.options.sessions = [
-    "unit",
-    "docs",
-    "lint",
-    "mypy",
-]
+NEWEST_PYTHON = ALL_PYTHON[-2]
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 def unit(session):
-    """Run unit tests."""
-    session.install("-e", ".")
+    """Run the unit test suite."""
+
     session.install(
-        "pytest",
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2478):
+        # Temporarily pin coverage to 7.11.0
+        # See https://github.com/nedbat/coveragepy/issues/2077
+        "coverage<=7.11.0",
         "pytest-cov",
-        "pytest-xdist",
-    )
-    # Run the tests.
-    session.run(
         "pytest",
-        ERR_ON_WARNINGS,
-        "-n",
-        "auto",
-        "--cov=gapic",
-        "--cov-config=.coveragerc",
-        "--cov-report=term-missing",
-        "tests/unit",
-        *session.posargs,
+        "pytest-xdist",
+        "pyfakefs",
+        "grpcio-status",
+        "proto-plus",
     )
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def docs(session):
-    """Build the documentation."""
     session.install("-e", ".")
-    session.install("sphinx", "sphinx_rtd_theme")
-
-    # Build documentation.
-    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
-        "sphinx-build",
-        "-W",
-        "-b",
-        "html",
-        "-d",
-        os.path.join("docs", "_build", "doctrees"),
-        "docs",
-        os.path.join("docs", "_build", "html"),
+        "py.test",
+        *(
+            session.posargs
+            or [
+                "-vv",
+                "-n=auto",
+                "--cov=gapic",
+                "--cov-append",
+                "--cov-config=.coveragerc",
+                "--cov-report=term",
+                "--cov-fail-under=0",
+                path.join("tests", "unit"),
+            ]
+        ),
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def lint(session):
-    """Run the linter."""
-    session.install("flake8")
-    session.run(
-        "flake8",
-        "gapic",
-        "tests",
-    )
+FRAG_DIR = Path("tests") / "fragments"
+FRAGMENT_FILES = tuple(
+    Path(dirname).relative_to(FRAG_DIR) / f
+    for dirname, _, files in os.walk(FRAG_DIR)
+    for f in files
+    if os.path.splitext(f)[1] == ".proto" and f.startswith("test_")
+)
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def mypy(session):
-    """Run mypy type checking."""
-    session.install("-e", ".")
-    session.install("mypy", "types-protobuf", "types-setuptools", "types-requests")
-    session.run(
-        "mypy",
-        "gapic",
-        "tests/unit",
-    )
-
-
+# Note: this class lives outside 'fragment'
+# so that, if necessary, it can be pickled for a ProcessPoolExecutor
+# A callable class is necessary so that the session can be closed over
+# instead of passed in, which simplifies the invocation via map.
 class FragTester:
-
-    def __init__(self, session, tmp_dir):
+    def __init__(self, session, use_ads_templates):
         self.session = session
-        self.tmp_dir = tmp_dir
+        self.use_ads_templates = use_ads_templates
 
-    def run_tests(self):
-        # We need to run python -m protoc (not protoc directly) to get the gapic plugin.
-        # This requires the cwd to be python package root directory gapic-generator-python.
-        self.session.run(
-            "python",
-            "-m",
-            "grpc_tools.protoc",
-            "--proto_path=gapic/cli/common_protos",
-            "--proto_path=gapic/cli/sample_protos",
-            f"--python_gapic_out={self.tmp_dir}",
-            "--python_gapic_opt=transport=grpc+rest",
-            "gapic/cli/sample_protos/planet.proto",
-        )
+    def __call__(self, frag):
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            # Generate the fragment GAPIC.
+            outputs = []
+            templates = (
+                path.join(path.dirname(__file__), "gapic", "ads-templates")
+                if self.use_ads_templates
+                else "DEFAULT"
+            )
+            maybe_old_naming = ",old-naming" if self.use_ads_templates else ""
 
-        for template in ["_alternative_templates", "_mixins"]:
-            self.session.run(
+            session_args = [
                 "python",
                 "-m",
                 "grpc_tools.protoc",
-                "--proto_path=gapic/cli/common_protos",
-                "--proto_path=gapic/cli/sample_protos",
-                f"--python_gapic_out={self.tmp_dir}",
-                "--python_gapic_opt=transport=grpc+rest",
-                f"--python_gapic_opt=templates={template}",
-                "gapic/cli/sample_protos/planet.proto",
-            )
+                f"--proto_path={str(FRAG_DIR)}",
+                f"--python_gapic_out={tmp_dir}",
+                f"--python_gapic_opt=transport=grpc+rest,python-gapic-templates={templates}{maybe_old_naming}",
+            ]
 
-        # Make sure that the fragment output can compile.
-        with self.session.chdir(self.tmp_dir):
-            constraints_path = str(
-                f"{self.tmp_dir}/testing/constraints-{self.session.python}.txt"
-            )
-
-            # Generate constraints file for current python version
-            self.session.run(
-                "python",
-                "-m",
-                "pip",
-                "install",
-                "pip-tools",
-            )
-
-            self.session.run(
-                "pip-compile",
-                "--output-file",
-                constraints_path,
-                "pyproject.toml",
-            )
-
-            # Constraint file does not apply to Python 3.10 and 3.14+
-            if self.session.python in ["3.10", "3.14", "3.15"]:
-                self.session.install(self.tmp_dir, "-e", ".", "-qqq")
-            else:
-                constraints_path = str(
-                    f"{self.tmp_dir}/testing/constraints-{self.session.python}.txt"
+            outputs.append(
+                self.session.run(
+                    *session_args,
+                    str(frag),
+                    external=True,
+                    silent=True,
                 )
-                self.session.install(self.tmp_dir, "-e", ".", "-qqq", "-r", constraints_path)
+            )
 
-            self.session.install("-e", "../google-api-core", "-qqq")
+            # Install the generated fragment library.
+            if self.use_ads_templates:
+                self.session.install(tmp_dir, "-e", ".", "-qqq")
+            else:
+                # Use the constraints file for the specific python runtime version.
+                # We do this to make sure that we're testing against the lowest
+                # supported version of a dependency.
+                # This is needed to recreate the issue reported in
+                # https://github.com/googleapis/gapic-generator-python/issues/1748
+                # The ads templates do not have constraints files.
+                constraints_path = str(
+                    f"{tmp_dir}/testing/constraints-{self.session.python}.txt"
+                )
+                self.session.install(tmp_dir, "-e", ".", "-qqq", "-r", constraints_path)
 
             # Run the fragment's generated unit tests.
             # Don't bother parallelizing them: we already parallelize
-            # at the matrix level in GitHub Actions.
-            self.session.run(
-                "pytest",
-                ERR_ON_WARNINGS,
-                f"--logging-scope={LOGGING_SCOPE}",
-                "tests/unit",
+            # the fragments, and there usually aren't too many tests per fragment.
+            outputs.append(
+                self.session.run(
+                    "py.test",
+                    "--quiet",
+                    f"--cov-config={str(Path(tmp_dir) / '.coveragerc')}",
+                    "--cov-report=term",
+                    "--cov-fail-under=100",
+                    str(Path(tmp_dir) / "tests" / "unit"),
+                    silent=True,
+                )
             )
 
+            return "".join(outputs)
 
-@nox.session(python=["3.10", "3.14", "3.15"])
+
+@nox.session(python=ALL_PYTHON)
 def fragment(session, use_ads_templates=False):
-    """Run generated code tests for a small fragment."""
-    tmp_dir = session.create_tmp()
-
     session.install(
+        "coverage",
         "pytest",
+        "pytest-cov",
+        "pytest-xdist",
         "pytest-asyncio",
         "grpcio-tools",
     )
     session.install("-e", ".")
-    session.install("-e", "../google-api-core")
 
     # The specific failure is `Plugin output is unparseable`
     if session.python == "3.10":
-        shutil.rmtree(tmp_dir)
-        os.mkdir(tmp_dir)
-        FragTester(session, tmp_dir).run_tests()
+        session.install("google-api-core<2.28")
+
+    frag_files = (
+        [Path(f) for f in session.posargs] if session.posargs else FRAGMENT_FILES
+    )
+
+    if os.environ.get("PARALLEL_FRAGMENT_TESTS", "false").lower() == "true":
+        with ThreadPoolExecutor() as p:
+            all_outs = p.map(FragTester(session, use_ads_templates), frag_files)
+
+        output = "".join(all_outs)
+        session.log(output)
     else:
-        FragTester(session, tmp_dir).run_tests()
+        tester = FragTester(session, use_ads_templates)
+        for frag in frag_files:
+            session.log(tester(frag))
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def snippetgen(session):
-    """Run snippetgen tests."""
-    session.install(
-        "pytest",
-        "pytest-asyncio",
-        "grpcio-tools",
-    )
-    session.install("-e", ".")
-
-    session.run(
-        "pytest",
-        "tests/snippetgen",
-    )
+@nox.session(python=ALL_PYTHON)
+def fragment_alternative_templates(session):
+    fragment(session, use_ads_templates=True)
 
 
-def showcase_version() -> str:
-    """Read showcase version from environment or default to 0.35.0."""
-    return os.environ.get("SHOWCASE_VERSION", "0.35.0")
+# `_add_python_settings` consumes a path to a temporary directory (str; i.e. tmp_dir) and
+# python settings (Dict; i.e. python settings) and modifies the service yaml within
+# tmp_dir to include python settings. The primary purpose of this function is to modify
+# the service yaml and include `rest_async_io_enabled=True` to test the async rest
+# optional feature.
+def _add_python_settings(tmp_dir, python_settings):
+    return f"""
+import yaml
+from pathlib import Path
+temp_file_path = Path(f"{tmp_dir}/showcase_v1beta1.yaml")
+with temp_file_path.open('r') as file:
+    data = yaml.safe_load(file)
+    data['publishing']['library_settings'] = {python_settings}
+
+with temp_file_path.open('w') as file:
+    yaml.safe_dump(data, file, default_flow_style=False, sort_keys=False)
+"""
 
 
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): `rest_async_io_enabled` must be removed once async rest is GA.
 @contextmanager
 def showcase_library(
     session,
-    version: str,
-    templates: str = "default",
-    mixins: str = "",
-    rest_numeric_enums: bool = False,
-    is_async: bool = False,
-    use_ads_templates: bool = False,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+    include_service_yaml=True,
+    retry_config=True,
+    rest_async_io_enabled=False,
 ):
-    """Context manager to generate and install showcase library."""
-    opts = []
-    if templates != "default":
-        opts.append(f"templates={templates}")
-    if mixins != "":
-        opts.append(f"mixins={mixins}")
-    if rest_numeric_enums:
-        opts.append("rest-numeric-enums")
-    if is_async:
-        opts.append("transport=grpc+rest")
+    """Install the generated library into the session for showcase tests."""
 
-    opt_str = f"--python_gapic_opt={','.join(opts)}" if opts else ""
+    session.log("-" * 70)
+    session.log("Note: Showcase must be running for these tests to work.")
+    session.log("See https://github.com/googleapis/gapic-showcase")
+    session.log("-" * 70)
 
-    # Download showcase proto
-    showcase_proto = session.create_tmp()
-    session.run(
-        "curl",
-        "--location",
-        f"https://github.com/googleapis/gapic-showcase/archive/v{version}.tar.gz",
-        "--output",
-        f"{showcase_proto}/showcase.tar.gz",
-        external=True,
-    )
-    session.run(
-        "tar",
-        "-xzf",
-        f"{showcase_proto}/showcase.tar.gz",
-        "-C",
-        showcase_proto,
-        external=True,
-    )
+    # Install gapic-generator-python
+    session.install("-e", ".")
 
-    # Generate showcase code
-    tmp_dir = session.create_tmp()
-    session.run(
-        "python",
-        "-m",
-        "grpc_tools.protoc",
-        f"--proto_path={showcase_proto}/gapic-showcase-{version}/schema",
-        "--proto_path=gapic/cli/common_protos",
-        f"--python_gapic_out={tmp_dir}",
-        opt_str,
-        f"{showcase_proto}/gapic-showcase-{version}/schema/google/showcase/v1beta1/echo.proto",
-        f"{showcase_proto}/gapic-showcase-{version}/schema/google/showcase/v1beta1/identity.proto",
-        f"{showcase_proto}/gapic-showcase-{version}/schema/google/showcase/v1beta1/messaging.proto",
-        f"{showcase_proto}/gapic-showcase-{version}/schema/google/showcase/v1beta1/testing.proto",
-    )
+    # Install grpcio-tools for protoc
+    session.install("grpcio-tools")
 
-    # Install showcase library
-    with session.chdir(tmp_dir):
-        constraints_path = str(
-            f"{tmp_dir}/testing/constraints-{session.python}.txt"
-        )
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2473):
+    # Warnings emitted from google-api-core starting in 2.28
+    # appear to cause issues when running protoc.
+    # The specific failure is `Plugin output is unparseable`
+    if session.python == "3.10":
+        session.install("google-api-core<2.28")
 
-        # Generate constraints file for current python version
+    # Install a client library for Showcase.
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        # Download the Showcase descriptor.
         session.run(
+            "curl",
+            "https://github.com/googleapis/gapic-showcase/releases/"
+            f"download/v{showcase_version}/"
+            f"gapic-showcase-{showcase_version}.desc",
+            "-L",
+            "--output",
+            path.join(tmp_dir, "showcase.desc"),
+            external=True,
+            silent=True,
+        )
+        if include_service_yaml:
+            session.run(
+                "curl",
+                "https://github.com/googleapis/gapic-showcase/releases/"
+                f"download/v{showcase_version}/"
+                f"showcase_v1beta1.yaml",
+                "-L",
+                "--output",
+                path.join(tmp_dir, "showcase_v1beta1.yaml"),
+                external=True,
+                silent=True,
+            )
+            # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): The section below updates the showcase service yaml
+            # to test experimental async rest transport. It must be removed once support for async rest is GA.
+            if rest_async_io_enabled:
+                # Install pyYAML for yaml.
+                session.install("pyYAML")
+
+                python_settings = [
+                    {
+                        "version": "google.showcase.v1beta1",
+                        "python_settings": {
+                            "experimental_features": {"rest_async_io_enabled": True}
+                        },
+                    }
+                ]
+                update_service_yaml = _add_python_settings(tmp_dir, python_settings)
+                session.run("python", "-c", f"{update_service_yaml}")
+            # END TODO section to remove.
+        if retry_config:
+            session.run(
+                "curl",
+                "https://github.com/googleapis/gapic-showcase/releases/"
+                f"download/v{showcase_version}/"
+                f"showcase_grpc_service_config.json",
+                "-L",
+                "--output",
+                path.join(tmp_dir, "showcase_grpc_service_config.json"),
+                external=True,
+                silent=True,
+            )
+        # Write out a client library for Showcase.
+        template_opt = f"python-gapic-templates={templates}"
+        opts = "--python_gapic_opt="
+        if include_service_yaml and retry_config:
+            opts += ",".join(
+                other_opts
+                + (
+                    f"{template_opt}",
+                    "transport=grpc+rest",
+                    f"service-yaml={tmp_dir}/showcase_v1beta1.yaml",
+                    f"retry-config={tmp_dir}/showcase_grpc_service_config.json",
+                )
+            )
+        else:
+            opts += ",".join(
+                other_opts
+                + (
+                    f"{template_opt}",
+                    "transport=grpc+rest",
+                )
+            )
+        cmd_tup = (
             "python",
             "-m",
-            "pip",
-            "install",
-            "pip-tools",
+            "grpc_tools.protoc",
+            f"--experimental_allow_proto3_optional",
+            f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
+            opts,
+            f"--python_gapic_out={tmp_dir}",
+            f"google/showcase/v1beta1/echo.proto",
+            f"google/showcase/v1beta1/identity.proto",
+            f"google/showcase/v1beta1/messaging.proto",
         )
-
         session.run(
-            "pip-compile",
-            "--output-file",
-            constraints_path,
-            "pyproject.toml",
+            *cmd_tup,
+            external=True,
         )
 
-        # Constraint file does not apply to Python 3.10 and 3.14+
-        if session.python in ["3.10", "3.14", "3.15"]:
+        # Install the generated showcase library.
+        if templates == "DEFAULT":
+            # Use the constraints file for the specific python runtime version.
+            # We do this to make sure that we're testing against the lowest
+            # supported version of a dependency.
+            # This is needed to recreate the issue reported in
+            # https://github.com/googleapis/google-cloud-python/issues/12254
+            constraints_path = str(
+                f"{tmp_dir}/testing/constraints-{session.python}.txt"
+            )
             extras = ""
-            if is_async:
-                extras = "[async_rest]"
-            session.install("-e", f"{tmp_dir}{extras}")
-        elif not use_ads_templates:
-            extras = ""
-            if is_async:
+            if rest_async_io_enabled:
+                async_rest_constraints_path = str(
+                    f"{tmp_dir}/testing/constraints-{session.python}-async-rest.txt"
+                )
+                if os.path.exists(async_rest_constraints_path):
+                    # use async-rest constraints if available
+                    constraints_path = async_rest_constraints_path
+                else:
+                    session.log(
+                        f"{async_rest_constraints_path} not found. Using base constraints file"
+                    )
                 extras = "[async_rest]"
 
             session.install("-e", f"{tmp_dir}{extras}", "-r", constraints_path)
@@ -327,97 +392,495 @@ def showcase_library(
             # Install the library without a constraints file.
             session.install("-e", tmp_dir)
 
-        session.install("-e", "../google-api-core")
+        session.install("-e", "../google-api-core", "--no-deps")
 
         yield tmp_dir
 
 
-def _run_showcase_unit(
+@nox.session(python=ALL_PYTHON)
+def showcase(
     session,
-    templates: str = "default",
-    mixins: str = "",
-    rest_numeric_enums: bool = False,
-    is_async: bool = False,
-    use_ads_templates: bool = False,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+    env: typing.Optional[typing.Dict[str, str]] = {},
 ):
-    """Run showcase unit tests."""
-    session.install(
-        "pytest",
-        "pytest-asyncio",
-        "grpcio-tools",
-    )
-    session.install("-e", ".")
+    """Run the Showcase test suite."""
 
-    ver = showcase_version()
+    with showcase_library(session, templates=templates, other_opts=other_opts):
+        # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
+        # https://github.com/googleapis/gapic-generator-python/issues/2399
+        session.install("pytest", "pytest-asyncio<1.0.0")
+        test_directory = Path("tests", "system")
+        ignore_file = env.get("IGNORE_FILE")
+        pytest_command = [
+            "py.test",
+            "--quiet",
+            *(session.posargs or [str(test_directory)]),
+        ]
+        if ignore_file:
+            ignore_path = test_directory / ignore_file
+            pytest_command.extend(["--ignore", str(ignore_path)])
+
+        session.run(
+            *pytest_command,
+            env=env,
+        )
+
+
+@nox.session(python=ALL_PYTHON)
+def showcase_w_rest_async(
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+    env: typing.Optional[typing.Dict[str, str]] = {},
+):
+    """Run the Showcase test suite."""
+
+    with showcase_library(
+        session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True
+    ):
+        # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
+        # https://github.com/googleapis/gapic-generator-python/issues/2399
+        session.install("pytest", "pytest-asyncio<1.0.0")
+        test_directory = Path("tests", "system")
+        ignore_file = env.get("IGNORE_FILE")
+        pytest_command = [
+            "py.test",
+            "--quiet",
+            *(session.posargs or [str(test_directory)]),
+        ]
+        if ignore_file:
+            ignore_path = test_directory / ignore_file
+            pytest_command.extend(["--ignore", str(ignore_path)])
+
+        session.run(
+            *pytest_command,
+            env=env,
+        )
+
+
+@nox.session(python=NEWEST_PYTHON)
+def showcase_mtls(
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+    env: typing.Optional[typing.Dict[str, str]] = {},
+):
+    """Run the Showcase mtls test suite."""
+
+    with showcase_library(session, templates=templates, other_opts=other_opts):
+        session.install("pytest", "pytest-asyncio")
+        test_directory = Path("tests", "system")
+        ignore_file = env.get("IGNORE_FILE")
+        pytest_command = [
+            "py.test",
+            "--quiet",
+            "--mtls",
+            *(session.posargs or [str(test_directory)]),
+        ]
+        if ignore_file:
+            ignore_path = test_directory / ignore_file
+            pytest_command.extend(["--ignore", str(ignore_path)])
+
+        session.run(
+            *pytest_command,
+            env=env,
+        )
+
+
+# TODO(https://github.com/googleapis/google-cloud-python/issues/17752):
+# Remove showcase_pqc once grpcio >= 1.83.0 is enforced by default.
+@nox.session(python=NEWEST_PYTHON)
+def showcase_pqc(
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+    env: typing.Optional[typing.Dict[str, str]] = {},
+):
+    """Run the Showcase PQC verification test suite against grpcio 1.83+ over standard TLS."""
+    with showcase_library(session, templates=templates, other_opts=other_opts):
+        session.install("pytest", "pytest-asyncio")
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/17751):
+        # Update the version below to `1.83.0` once released, and remove `--pre`.
+        session.install("--pre", "--upgrade", "grpcio>=1.83.0rc0", "grpcio-status>=1.83.0rc0")
+        session.run("py.test", "--quiet", "--tls", *(session.posargs or ["tests/system/test_pqc.py"]), env=env)
+
+
+def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):
+    session.install(
+        "coverage",
+        "pytest",
+        "pytest-cov",
+        "pytest-xdist",
+        "pytest-asyncio",
+    )
+    # Freeze and print python environment package versions
+    session.run("python", "-m", "pip", "freeze")
+
+    # Run the tests.
+    session.run(
+        "py.test",
+        *(
+            session.posargs
+            or [
+                "-n=auto",
+                "--quiet",
+                "--cov=google",
+                "--cov-append",
+                f"--cov-fail-under={str(fail_under)}",
+                path.join("tests", "unit"),
+            ]
+        ),
+    )
+
+
+@nox.session(python=ALL_PYTHON)
+def showcase_unit(
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+):
+    """Run the generated unit tests against the Showcase library."""
+    with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
+        session.chdir(lib)
+        run_showcase_unit_tests(session)
+
+
+# TODO: `showcase_unit_w_rest_async` nox session runs showcase unit tests with the
+# experimental async rest transport and must be removed once support for async rest is GA.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2121.
+@nox.session(python=ALL_PYTHON)
+def showcase_unit_w_rest_async(
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+):
+    """Run the generated unit tests with async rest transport against the Showcase library."""
+    with showcase_library(
+        session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True
+    ) as lib:
+        session.chdir(lib)
+        run_showcase_unit_tests(session, rest_async_io_enabled=True)
+
+
+@nox.session(python=ALL_PYTHON)
+def showcase_unit_alternative_templates(session):
+    with showcase_library(
+        session, templates=ADS_TEMPLATES, other_opts=("old-naming",)
+    ) as lib:
+        session.chdir(lib)
+        run_showcase_unit_tests(session)
+
+
+@nox.session(python=NEWEST_PYTHON)
+def showcase_unit_add_iam_methods(session):
+    with showcase_library(session, other_opts=("add-iam-methods",)) as lib:
+        session.chdir(lib)
+        run_showcase_unit_tests(session, fail_under=100)
+
+
+@nox.session(python=ALL_PYTHON)
+def showcase_unit_mixins(session):
+    with showcase_library(session, include_service_yaml=True) as lib:
+        session.chdir(lib)
+        run_showcase_unit_tests(session)
+
+
+@nox.session(python=ALL_PYTHON)
+def showcase_unit_alternative_templates_mixins(session):
     with showcase_library(
         session,
-        ver,
-        templates,
-        mixins,
-        rest_numeric_enums,
-        is_async,
-        use_ads_templates,
-    ) as showcase_dir:
-        # Run showcase unit tests
-        session.run(
-            "pytest",
-            ERR_ON_WARNINGS,
-            f"--logging-scope={LOGGING_SCOPE}",
-            os.path.join(showcase_dir, "tests", "unit"),
-            *session.posargs,
-        )
+        templates=ADS_TEMPLATES,
+        other_opts=("old-naming",),
+        include_service_yaml=True,
+    ) as lib:
+        session.chdir(lib)
+        run_showcase_unit_tests(session)
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
-def showcase_unit(session):
-    """Run showcase unit tests with default templates."""
-    _run_showcase_unit(session)
+@nox.session(python=NEWEST_PYTHON)
+def showcase_mypy(
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+):
+    """Perform typecheck analysis on the generated Showcase library."""
 
-
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
-def showcase_unit_alternative_templates(session):
-    """Run showcase unit tests with alternative templates."""
-    _run_showcase_unit(session, templates="_alternative_templates")
-
-
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
-def showcase_unit_mixins(session):
-    """Run showcase unit tests with mixins."""
-    _run_showcase_unit(session, mixins="google.cloud.location.Locations")
-
-
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
-def showcase_unit_alternative_templates_mixins(session):
-    """Run showcase unit tests with alternative templates and mixins."""
-    _run_showcase_unit(
-        session,
-        templates="_alternative_templates",
-        mixins="google.cloud.location.Locations",
-    )
-
-
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
-def showcase_unit_w_rest_async(session):
-    """Run showcase unit tests with rest async transport."""
-    _run_showcase_unit(session, is_async=True)
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def showcase_mypy(session):
-    """Run showcase mypy type checking."""
     session.install(
         "mypy",
-        "types-protobuf",
         "types-setuptools",
+        "types-protobuf",
         "types-requests",
-        "grpcio-tools",
+        "types-dataclasses",
     )
+
+    with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
+        session.chdir(lib)
+
+        # Run the tests.
+        session.run("mypy", "-p", "google", "--check-untyped-defs")
+
+
+@nox.session(python=NEWEST_PYTHON)
+def showcase_mypy_alternative_templates(session):
+    showcase_mypy(session, templates=ADS_TEMPLATES, other_opts=("old-naming",))
+
+
+@nox.session(python=NEWEST_PYTHON)
+def snippetgen(session):
+    # Clone googleapis/api-common-protos which are referenced by the snippet
+    # protos
+    api_common_protos = "api-common-protos"
+    try:
+        session.run("git", "-C", api_common_protos, "pull", external=True)
+    except nox.command.CommandFailed:
+        session.run(
+            "git",
+            "clone",
+            "--single-branch",
+            f"https://github.com/googleapis/{api_common_protos}",
+            external=True,
+        )
+
+    # Install gapic-generator-python
     session.install("-e", ".")
 
-    ver = showcase_version()
-    with showcase_library(session, ver) as showcase_dir:
-        session.run(
-            "mypy",
-            os.path.join(showcase_dir, "google"),
-            os.path.join(showcase_dir, "tests"),
-        )
+    session.install("grpcio-tools", "pytest", "pytest-asyncio")
+
+    session.run("py.test", "-vv", "tests/snippetgen")
+
+
+@nox.session(python="3.10")
+def docs(session):
+    """Build the docs for this generator."""
+
+    session.install("-e", ".")
+
+    session.install(
+        # We need to pin to specific versions of the `sphinxcontrib-*` packages
+        # which still support sphinx 4.x.
+        # See https://github.com/googleapis/sphinx-docfx-yaml/issues/344
+        # and https://github.com/googleapis/sphinx-docfx-yaml/issues/345.
+        "sphinxcontrib-applehelp==1.0.4",
+        "sphinxcontrib-devhelp==1.0.2",
+        "sphinxcontrib-htmlhelp==2.0.1",
+        "sphinxcontrib-qthelp==1.0.3",
+        "sphinxcontrib-serializinghtml==1.1.5",
+        "sphinx==4.5.0",
+        "sphinx-rtd-theme",
+    )
+
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    session.run(
+        "sphinx-build",
+        "-W",  # warnings as errors
+        "-T",  # show full traceback on exception
+        "-N",  # no colors
+        "-b",
+        "html",  # builder
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),  # cache directory
+        # paths to build:
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
+    )
+
+
+@nox.session(python="3.10")
+def docfx(session):
+    """Build the docfx yaml files for this library."""
+
+    session.install("-e", ".")
+    session.install(
+        # We need to pin to specific versions of the `sphinxcontrib-*` packages
+        # which still support sphinx 4.x.
+        # See https://github.com/googleapis/sphinx-docfx-yaml/issues/344
+        # and https://github.com/googleapis/sphinx-docfx-yaml/issues/345.
+        "sphinxcontrib-applehelp==1.0.4",
+        "sphinxcontrib-devhelp==1.0.2",
+        "sphinxcontrib-htmlhelp==2.0.1",
+        "sphinxcontrib-qthelp==1.0.3",
+        "sphinxcontrib-serializinghtml==1.1.5",
+        "gcp-sphinx-docfx-yaml",
+        "sphinx-rtd-theme",
+    )
+
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    session.run(
+        "sphinx-build",
+        "-T",  # show full traceback on exception
+        "-N",  # no colors
+        "-D",  # Override configuration values set in the conf.py file
+        (
+            "extensions=sphinx.ext.autodoc,"
+            "sphinx.ext.autosummary,"
+            "docfx_yaml.extension,"
+            "sphinx.ext.intersphinx,"
+            "sphinx.ext.coverage,"
+            "sphinx.ext.napoleon,"
+            "sphinx.ext.todo,"
+            "sphinx.ext.viewcode,"
+            "recommonmark"
+        ),
+        "-b",
+        "html",  # builder
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),  # cache directory
+        # paths to build:
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
+    )
+
+
+@nox.session(python=ALL_PYTHON)
+def mypy(session):
+    """Perform typecheck analysis."""
+    # Pin to click==8.1.3 to workaround https://github.com/pallets/click/issues/2558
+    session.install(
+        "mypy",
+        "types-protobuf<=3.19.7",
+        "types-PyYAML",
+        "types-dataclasses",
+        "click==8.1.3",
+    )
+    session.install(".")
+    session.run("mypy", f"--config-file={MYPY_CONFIG_FILE}", "-p", "gapic")
+
+
+@nox.session(python=NEWEST_PYTHON)
+def lint(session):
+    """Run linters.
+
+    Returns a failure if the linters find linting errors or sufficiently
+    serious code quality issues.
+    """
+
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16186):
+    # SKIP: This session was not enforced in the standalone (split) repo
+    # and is disabled here to ensure a "move-only" migration.
+    session.skip(
+        "Linting was not enforced in the split repo. "
+        "Skipping now to avoid changing code during migration. See Issue #16186"
+    )
+
+    session.install("flake8", RUFF_VERSION)
+
+    # 2. Check formatting
+    session.run(
+        "ruff",
+        "format",
+        "--check",
+        *LINT_PATHS,
+        "--exclude",
+        RUFF_EXCLUDES,
+    )
+
+    # 3. Run Flake8
+    session.run(
+        "flake8",
+        "gapic",
+        "tests",
+    )
+
+
+@nox.session(python=NEWEST_PYTHON)
+def lint_setup_py(session):
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16186):
+    # SKIP: This session was not enforced in the standalone (split) repo
+    # and is disabled here to ensure a "move-only" migration.
+    session.skip(
+        "Skipping now to avoid changing code during migration. See Issue #16186"
+    )
+
+
+@nox.session(python="3.10")
+def blacken(session):
+    """Run ruff format.
+
+    DEPRECATED: This session now uses Ruff instead of Black.
+    It formats code style only (indentation, quotes, etc).
+    """
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in the next release. Please use 'nox -s format' in the future."
+    )
+
+    session.install(RUFF_VERSION)
+
+    # 1. Format Code (Replaces black)
+    # We do NOT run 'ruff check --select I' here, preserving strict parity.
+    session.run(
+        "ruff",
+        "format",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+        "--exclude",
+        RUFF_EXCLUDES,
+    )
+
+
+@nox.session(python=NEWEST_PYTHON)
+def format(session):
+    """
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    # check --select I: Enables strict import sorting
+    # --fix: Applies the changes automatically
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+
+@nox.session(python=ALL_PYTHON)
+def system(session):
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16190):
+    # Implement system test session.
+    """Run the system test suite (skipped for migration)."""
+    session.skip(f"system session is not yet implemented for gapic-generator-python.")
+
+
+@nox.session(python=NEWEST_PYTHON)
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def prerelease_deps(session, protobuf_implementation):
+    """
+    Run all tests with pre-release versions of dependencies installed.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16184):
+    # Implement pre-release dependency logic to test against upcoming runtime changes.
+    session.skip(
+        "prerelease_deps session is not yet implemented for gapic-generator-python."
+    )
+
+
+@nox.session(python=NEWEST_PYTHON)
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def core_deps_from_source(session, protobuf_implementation):
+    """Run all tests with core dependencies installed from source."""
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16185):
+    # Implement logic to install core packages directly from the mono-repo directories.
+    session.skip(
+        "core_deps_from_source session is not yet implemented for gapic-generator-python."
+    )
