@@ -85,27 +85,27 @@ def resolve_feature_flags(
 
     - **Experimental Path** (env_var contains "EXPERIMENTAL"):
       Strict control. Requires the environment variable to be explicitly 'true'.
-      If a programmatic provider is passed but the environment variable is not 'true',
-      raises ValueError (Fail Fast).
+      If a programmatic feature key is passed but the environment variable is not 'true',
+      raises FeatureGatingError (Fail Fast).
 
     - **GA Path** (env_var does not contain "EXPERIMENTAL"):
-      Standard precedence. Enabled if a programmatic provider is passed,
+      Standard precedence. Enabled if a programmatic feature key is passed,
       otherwise falls back to the environment variable value.
 
     Args:
         env_var: The name of the environment variable controlling this feature.
-        feature_key: The key in configuration/attributes for the programmatic provider.
+        feature_key: The key in configuration/attributes for the programmatic configuration.
         configuration: Optional. A dictionary or object containing client configuration.
 
     Returns:
         bool: True if the feature is resolved to enabled, False otherwise.
 
     Raises:
-        ValueError: If a provider is provided for an experimental feature without enabling the experimental environment variable.
+        FeatureGatingError: If a feature key is provided for an experimental feature without enabling the experimental environment variable.
     """
 
     # Check for programmatic feature configuration
-    has_feature = _has_feature_key(
+    has_feature_key = _has_feature_key(
         configuration=configuration, feature_key=feature_key
     )
 
@@ -115,12 +115,12 @@ def resolve_feature_flags(
     # EXPERIMENTAL PATH:
     # Resolution Hierarchy:
     #   1. EXPERIMENTAL Environment Variable
-    #   2. Fail Fast if Provider present but EXPERIMENTAL Environment Variable is not enabled
+    #   2. Fail Fast if Feature Key present but EXPERIMENTAL Environment Variable is not enabled
     if "EXPERIMENTAL" in env_var:
         # Fail Fast if feature key present but experimental environment variable is not enabled
-        if env_var_setting is not True and has_feature:
+        if env_var_setting is not True and has_feature_key:
             raise FeatureGatingError(
-                f"Experimental feature requires {env_var} to be set to 'true' to use programmatic providers."
+                f"Experimental feature requires {env_var} to be set to 'true' to use programmatic configuration."
             )
 
         return bool(env_var_setting)
@@ -131,7 +131,7 @@ def resolve_feature_flags(
     #   2. Environment Variable
 
     # Check Programmatic Configuration
-    if has_feature:
+    if has_feature_key:
         return True
 
     # Check Environment Variable
