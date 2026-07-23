@@ -749,7 +749,3 @@ def test_resource_messages_raises_on_malformed_typeless_resource():
     # 2. Trigger the property and expect it to fail fast with the AIP-123 URL
     with pytest.raises(ValueError, match="https://google.aip.dev/123"):
         _ = service.resource_messages
-
-
-
-
