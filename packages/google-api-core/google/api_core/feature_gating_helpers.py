@@ -50,24 +50,25 @@ def _get_env_bool(name: str) -> Optional[bool]:
 
 
 def _has_provider(
-    client_options: Optional[Union[Dict[str, Any], Any]], provider_key: str
+    *, configuration: Optional[Union[Dict[str, Any], Any]], feature_key: str
 ) -> bool:
-    """Checks if a specific provider key is present and not None in client_options."""
-    if client_options is None:
+    """Checks if a specific feature key is present and not None in configuration."""
+    if configuration is None:
         return False
 
-    if isinstance(client_options, dict):
-        return client_options.get(provider_key) is not None
+    if isinstance(configuration, dict):
+        return configuration.get(feature_key) is not None
 
-    return getattr(client_options, provider_key, None) is not None
+    return getattr(configuration, feature_key, None) is not None
 
 
 def resolve_feature_flags(
+    *,
     env_var: str,
-    provider_key: str,
-    client_options: Optional[Union[Dict[str, Any], Any]] = None,
+    feature_key: str,
+    configuration: Optional[Union[Dict[str, Any], Any]] = None,
 ) -> bool:
-    """Determines if a feature is enabled based on environment variables and client options.
+    """Determines if a feature is enabled based on environment variables and configuration.
 
     Behavior depends on whether the `env_var` name contains "EXPERIMENTAL":
 
@@ -82,8 +83,8 @@ def resolve_feature_flags(
 
     Args:
         env_var: The name of the environment variable controlling this feature.
-        provider_key: The key in client_options/attributes for the programmatic provider.
-        client_options: Optional. A dictionary or object containing client configuration.
+        feature_key: The key in configuration/attributes for the programmatic provider.
+        configuration: Optional. A dictionary or object containing client configuration.
 
     Returns:
         bool: True if the feature is resolved to enabled, False otherwise.
@@ -93,7 +94,9 @@ def resolve_feature_flags(
     """
 
     # Check for programmatic feature provider
-    has_provider = _has_provider(client_options, provider_key)
+    has_provider = _has_provider(
+        configuration=configuration, feature_key=feature_key
+    )
 
     # Read environment variable
     env_var_setting = _get_env_bool(env_var)

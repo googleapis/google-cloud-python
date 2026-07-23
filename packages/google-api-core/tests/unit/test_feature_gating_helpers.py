@@ -74,8 +74,8 @@ def test_resolve_feature_flags_ga_enabled_via_env(monkeypatch):
     # Action
     result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
-        provider_key="tracer_provider",
-        client_options=None,
+        feature_key="tracer_provider",
+        configuration=None,
     )
 
     # Assertion
@@ -96,26 +96,26 @@ def test_resolve_feature_flags_exp_blocked_with_provider_fails_fast(
         monkeypatch.delenv(
             "GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", raising=False
         )
-    client_options = {"tracer_provider": object()}
+    configuration = {"tracer_provider": object()}
 
     # Action & Assertion
     with pytest.raises(ValueError, match="Experimental feature"):
         feature_gating_helpers.resolve_feature_flags(
             env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
-            provider_key="tracer_provider",
-            client_options=client_options,
+            feature_key="tracer_provider",
+            configuration=configuration,
         )
 
 
 def test_resolve_feature_flags_exp_enabled_with_provider(monkeypatch):
     """Verify that experimental feature is enabled if the experimental environment variable is enabled and a provider is provided."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
-    client_options = {"tracer_provider": object()}
+    configuration = {"tracer_provider": object()}
 
     result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
-        provider_key="tracer_provider",
-        client_options=client_options,
+        feature_key="tracer_provider",
+        configuration=configuration,
     )
     assert result is True
 
@@ -126,8 +126,8 @@ def test_resolve_feature_flags_exp_enabled_without_provider(monkeypatch):
 
     result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
-        provider_key="tracer_provider",
-        client_options=None,
+        feature_key="tracer_provider",
+        configuration=None,
     )
     assert result is True
 
@@ -138,8 +138,8 @@ def test_resolve_feature_flags_exp_disabled_without_provider(monkeypatch):
 
     result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
-        provider_key="tracer_provider",
-        client_options=None,
+        feature_key="tracer_provider",
+        configuration=None,
     )
     assert result is False
 
@@ -148,12 +148,12 @@ def test_resolve_feature_flags_ga_enabled_via_provider(monkeypatch):
     """Verify that a GA feature is enabled if a provider is provided, ignoring the environment variable."""
     # Env var is False, but provider is present
     monkeypatch.setenv("GOOGLE_SDK_PYTHON_TRACING_ENABLED", "false")
-    client_options = {"tracer_provider": object()}
+    configuration = {"tracer_provider": object()}
 
     result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
-        provider_key="tracer_provider",
-        client_options=client_options,
+        feature_key="tracer_provider",
+        configuration=configuration,
     )
     assert result is True
 
@@ -169,8 +169,8 @@ def test_resolve_feature_flags_ga_fallback_to_false(monkeypatch, env_val):
         monkeypatch.delenv("GOOGLE_SDK_PYTHON_TRACING_ENABLED", raising=False)
     result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
-        provider_key="tracer_provider",
-        client_options=None,
+        feature_key="tracer_provider",
+        configuration=None,
     )
     assert result is False
 
@@ -181,19 +181,19 @@ class _MockOptions:
 
 
 @pytest.mark.parametrize(
-    "client_options",
+    "configuration",
     [
         {"other_option": "value"},
         _MockOptions(),
     ],
     ids=["dict_without_key", "object_without_key"],
 )
-def test_resolve_feature_flags_options_without_key(client_options):
-    """Verify behavior when client_options is present but missing the provider key."""
+def test_resolve_feature_flags_options_without_key(configuration):
+    """Verify behavior when configuration is present but missing the provider key."""
     # GA Path: should fall through to env var / fallback
     result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
-        provider_key="tracer_provider",
-        client_options=client_options,
+        feature_key="tracer_provider",
+        configuration=configuration,
     )
     assert result is False
