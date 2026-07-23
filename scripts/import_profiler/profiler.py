@@ -40,7 +40,7 @@ def get_rss_mb():
     except Exception:
         return 0.0
 
-def run_worker(target_module):
+def run_worker(target_module, skip_line_count=False):
     """Performs ONE import and returns metrics."""
     tracemalloc.start()
     importlib.invalidate_caches()
@@ -66,33 +66,36 @@ def run_worker(target_module):
     new_modules = modules_after - modules_before
     
     loaded_lines = 0
-    for m in new_modules:
-        try:
-            file_path = sys.modules[m].__file__
-            if not file_path:
-                continue
+    if not skip_line_count:
+        for m in new_modules:
+            try:
+                file_path = sys.modules[m].__file__
+                if not file_path:
+                    continue
 
-            if file_path.endswith('.pyc'):
-                try:
-                    file_path = importlib.util.source_from_cache(file_path)
-                except ValueError:
-                    # Raised if the .pyc path does not follow standard PEP 3147/488 conventions.
-                    # We pass silently because the unresolved file_path will still end in '.pyc', 
-                    # meaning the subsequent '.endswith('.py')' check will fail and safely skip 
-                    # trying to count lines in a binary file.
-                    pass
-            if file_path.endswith('.py'):
-                try:
-                    with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
-                        loaded_lines += sum(1 for _ in f)
-                except OSError as e:
-                    print(f"WARNING: Failed to read lines from {file_path}: {e}", file=sys.stderr)
-        except KeyError:
-            # Module disappeared from sys.modules during execution
-            pass
-        except AttributeError:
-            # Module has no __file__ attribute (likely a C-extension or built-in)
-            pass
+                if file_path.endswith('.pyc'):
+                    try:
+                        file_path = importlib.util.source_from_cache(file_path)
+                    except ValueError:
+                        # Raised if the .pyc path does not follow standard PEP 3147/488 conventions.
+                        # We pass silently because the unresolved file_path will still end in '.pyc', 
+                        # meaning the subsequent '.endswith('.py')' check will fail and safely skip 
+                        # trying to count lines in a binary file.
+                        pass
+                if file_path.endswith('.py'):
+                    try:
+                        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                            loaded_lines += sum(1 for _ in f)
+                    except OSError as e:
+                        print(f"WARNING: Failed to read lines from {file_path}: {e}", file=sys.stderr)
+            except KeyError:
+                # Module disappeared from sys.modules during execution
+                pass
+            except AttributeError:
+                # Module has no __file__ attribute (likely a C-extension or built-in)
+                pass
+    else:
+        loaded_lines = -1
     
     # Output to stdout for the Master to capture
     metrics = {
@@ -106,6 +109,8 @@ def run_worker(target_module):
 
 def _run_worker_and_parse(cmd):
     result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    if result.stderr.strip():
+        print(result.stderr.strip(), file=sys.stderr)
     try:
         lines = result.stdout.strip().splitlines()
         data = None
@@ -186,6 +191,8 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
             cmd += ["taskset", "-c", str(cpu)]
         
         cmd += python_exe + [__file__, "--worker", f"--module={target_module}"]
+        if i > 0:
+            cmd += ["--skip-line-count"]
         
         try:
             data = _run_worker_and_parse(cmd)
@@ -195,11 +202,12 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
             print(f"Iteration {i+1}/{iterations} completed in {data['time_ms']:.2f} ms")
             if i > 0 and loaded_modules_val != data["loaded_modules"]:
                 print(f"WARNING: Non-deterministic import behavior! Iteration {i+1} loaded {data['loaded_modules']} modules (expected {loaded_modules_val}).", file=sys.stderr)
-            if i > 0 and loaded_lines_val != data["loaded_lines"]:
-                print(f"WARNING: Non-deterministic import behavior! Iteration {i+1} loaded {data['loaded_lines']} lines (expected {loaded_lines_val}).", file=sys.stderr)
             
             loaded_modules_val = data["loaded_modules"]
-            loaded_lines_val = data["loaded_lines"]
+            if data["loaded_lines"] == -1:
+                data["loaded_lines"] = loaded_lines_val
+            else:
+                loaded_lines_val = data["loaded_lines"]
         except FileNotFoundError as e:
             if cpu != NO_CPU_PINNING and cmd and cmd[0] == "taskset":
                 print("ERROR: 'taskset' command not found. CPU pinning is enabled but taskset is not installed. "
@@ -362,63 +370,64 @@ def run_mprofile(target_module):
     if p.exitcode != 0:
         print(f"Error generating memory snapshot, process exited with code {p.exitcode}", file=sys.stderr)
 
-if __name__ == "__main__":
+def validate_module_name(module_name):
+    """Validates that the input is a structurally valid Python module identifier to prevent arbitrary code execution."""
     import argparse
+    if not all(part.isidentifier() for part in module_name.split('.')):
+        raise argparse.ArgumentTypeError(f"'{module_name}' is not a valid Python module identifier.")
+    return module_name
 
-    def validate_module_name(module_name):
-        """Validates that the input is a structurally valid Python module identifier to prevent arbitrary code execution."""
-        if not all(part.isidentifier() for part in module_name.split('.')):
-            raise argparse.ArgumentTypeError(f"'{module_name}' is not a valid Python module identifier.")
-        return module_name
+def find_module_from_package(pkg):
+    import importlib.metadata
+    import importlib.util
 
-    def find_module_from_package(pkg):
-        import importlib.metadata
-        import importlib.util
-
-        # 1. Try to use importlib.metadata.files (works for standard installations from PyPI/wheels)
-        try:
-            files = importlib.metadata.files(pkg)
-            if files:
-                init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not str(f).startswith('tests/')]
-                if init_files:
-                    from pathlib import Path
-                    shortest_init = min(init_files, key=lambda p: len(Path(p).parts))
-                    parts = Path(shortest_init).parent.parts
-                    mod = '.'.join(parts)
-                    if importlib.util.find_spec(mod):
-                        return mod
-        except Exception:
-            pass
-
-        # 2. Try setuptools.find_namespace_packages() in current directory (works for editable installs in source trees)
-        try:
-            import setuptools
-            import os
-            if os.path.exists('setup.py') or os.path.exists('pyproject.toml'):
-                pkgs = setuptools.find_namespace_packages(where='.')
-                for p in sorted(pkgs, key=len):
-                    if p in ("google", "google.cloud") or p.startswith("tests"):
-                        continue
-                    path = p.replace('.', os.sep)
-                    if os.path.isfile(os.path.join(path, '__init__.py')):
-                        if importlib.util.find_spec(p):
-                            return p
-        except Exception:
-            pass
-
-        # 3. Fallback to basic string manipulation heuristics
-        candidates = [
-            pkg.replace('-', '.'),
-            '.'.join(pkg.split('-')[:-1]) + '_' + pkg.split('-')[-1] if '-' in pkg else pkg,
-            pkg.replace('-', '_')
-        ]
-        for mod in candidates:
-            try:
+    # 1. Try to use importlib.metadata.files (works for standard installations from PyPI/wheels)
+    try:
+        files = importlib.metadata.files(pkg)
+        if files:
+            init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not str(f).startswith('tests/')]
+            if init_files:
+                from pathlib import Path
+                shortest_init = min(init_files, key=lambda p: len(Path(p).parts))
+                parts = Path(shortest_init).parent.parts
+                mod = '.'.join(parts)
                 if importlib.util.find_spec(mod):
                     return mod
-            except Exception:
-                pass
-        return candidates[0]
+    except Exception:
+        pass
+
+    # 2. Try setuptools.find_namespace_packages() in current directory (works for editable installs in source trees)
+    try:
+        import setuptools
+        import os
+        if os.path.exists('setup.py') or os.path.exists('pyproject.toml'):
+            pkgs = setuptools.find_namespace_packages(where='.')
+            for p in sorted(pkgs, key=len):
+                if p in ("google", "google.cloud") or p.startswith("tests"):
+                    continue
+                path = p.replace('.', os.sep)
+                if os.path.isfile(os.path.join(path, '__init__.py')):
+                    if importlib.util.find_spec(p):
+                        return p
+    except Exception:
+        pass
+
+    # 3. Fallback to basic string manipulation heuristics
+    candidates = [
+        pkg.replace('-', '.'),
+        '.'.join(pkg.split('-')[:-1]) + '_' + pkg.split('-')[-1] if '-' in pkg else pkg,
+        pkg.replace('-', '_')
+    ]
+    for mod in candidates:
+        try:
+            if importlib.util.find_spec(mod):
+                return mod
+        except Exception:
+            pass
+    return candidates[0]
+
+if __name__ == "__main__":
+    import argparse
 
     parser = argparse.ArgumentParser(description="Python SDK Import Profiler")
     group = parser.add_mutually_exclusive_group(required=True)
@@ -436,6 +445,7 @@ if __name__ == "__main__":
     parser.add_argument("--diff-baseline", help="Path to a baseline CSV file to compare against.")
     parser.add_argument("--diff-threshold", type=float, default=100.0, help="Fail if Median time exceeds baseline Median by this many ms.")
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--skip-line-count", action="store_true", help=argparse.SUPPRESS)
     
     args = parser.parse_args()
     
@@ -444,7 +454,7 @@ if __name__ == "__main__":
         target_module = find_module_from_package(args.package)
     
     if args.worker:
-        run_worker(target_module)
+        run_worker(target_module, skip_line_count=args.skip_line_count)
     elif args.trace:
         if not args.keep_pycache: clean_bytecode()
         run_trace(target_module)
