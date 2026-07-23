@@ -19,7 +19,8 @@ import uuid
 try:
     from google.api_core.gapic_v1.requests import setup_request_id  # type: ignore
 except ImportError:
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/17813): Remove this fallback when google-api-core >= 2.26.0 is the minimum required version.
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17813): Request ID setup helper was introduced in google-api-core 2.26.0.
+    # Remove this fallback definition when google-api-core >= 2.26.0 becomes the minimum required version in generated client setup dependencies.
     def setup_request_id(request, field_name: str, is_proto3_optional: bool):
         """Populate a UUID4 field in the request if it is not already set.
 
