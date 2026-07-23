@@ -12,12 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import os
 
 import pytest
 
 from google.cloud.bigtable.data._accelerator import _daemon
-from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon
+from google.cloud.bigtable.data._accelerator._daemon import (
+    _IDENTITY_FILENAME,
+    AcceleratorDaemon,
+)
 
 
 def _make_daemon(tmp_path, **kwargs):
@@ -62,6 +66,35 @@ class TestExtraEnv:
         assert env["GOOGLE_APPLICATION_CREDENTIALS"] == "/path/to/key.json"
         # Parent env is preserved (merged, not replaced).
         assert env["EXISTING"] == "keep"
+
+
+class TestReadIdentity:
+    def test_reads_and_unlinks(self, tmp_path):
+        daemon = _make_daemon(tmp_path)
+        d = tmp_path / "accel-tmp"
+        d.mkdir()
+        daemon._tempdir = str(d)
+        identity_path = d / _IDENTITY_FILENAME
+        identity_path.write_text(
+            json.dumps({"principal": "svc@proj.iam.gserviceaccount.com"})
+        )
+        result = daemon.read_identity()
+        assert result["principal"] == "svc@proj.iam.gserviceaccount.com"
+        # The identity is verified once, then consumed.
+        assert not identity_path.exists()
+
+    def test_not_started_raises(self, tmp_path):
+        daemon = _make_daemon(tmp_path)
+        with pytest.raises(RuntimeError, match="has not been started"):
+            daemon.read_identity()
+
+    def test_missing_file_raises(self, tmp_path):
+        daemon = _make_daemon(tmp_path)
+        d = tmp_path / "accel-tmp"
+        d.mkdir()
+        daemon._tempdir = str(d)
+        with pytest.raises(RuntimeError, match="did not write"):
+            daemon.read_identity()
 
 
 class _StopStart(Exception):

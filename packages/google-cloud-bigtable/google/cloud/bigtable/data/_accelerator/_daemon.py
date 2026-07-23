@@ -23,16 +23,22 @@ tearing the process down. It does NOT speak gRPC; that's the
 
 from __future__ import annotations
 
+import json
 import os
 import shutil
 import socket
 import subprocess
 import tempfile
 import time
-from typing import Mapping, Sequence
+from typing import Any, Mapping, Sequence
 
 # Wheels ship the binary at this path relative to the `_accelerator/` package.
 _DEFAULT_BIN_RELATIVE_PATH = "bin/accelerator"
+
+# The daemon writes the principal it resolved to this file in its tempdir
+# (alongside the socket) before binding, so the client can verify it matches
+# its own locally-resolved identity before routing any RPC.
+_IDENTITY_FILENAME = "identity.json"
 
 # How long to wait for the daemon to start listening on its UDS before giving
 # up at startup.
@@ -229,6 +235,36 @@ class AcceleratorDaemon:
         finally:
             self._proc = None
             self._cleanup_tempdir()
+
+    def read_identity(self) -> dict[str, Any]:
+        """Read and consume the daemon's ``identity.json``.
+
+        The daemon writes the principal it resolved to this file (in the same
+        0700 tempdir as the socket) before it binds, so it is guaranteed present
+        once ``start()`` returns. Read it once, then unlink it — the identity is
+        verified a single time at connect and never needs re-reading.
+
+        Raises:
+            RuntimeError: if the daemon was never started, or if it did not
+                write an ``identity.json`` (e.g. an older binary), so the caller
+                can fall back to the native client rather than route blindly.
+        """
+        if self._tempdir is None:
+            raise RuntimeError("AcceleratorDaemon has not been started")
+        path = os.path.join(self._tempdir, _IDENTITY_FILENAME)
+        try:
+            with open(path, "rb") as f:
+                return json.load(f)
+        except FileNotFoundError as exc:
+            raise RuntimeError(
+                f"Accelerator daemon did not write {_IDENTITY_FILENAME}; "
+                "cannot verify its identity"
+            ) from exc
+        finally:
+            try:
+                os.unlink(path)
+            except OSError:
+                pass
 
     def _wait_until_ready(self, timeout: float) -> None:
         """Poll until the UDS accepts a connection, the child dies, or timeout.

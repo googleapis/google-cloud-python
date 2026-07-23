@@ -45,6 +45,8 @@ from google.api_core.exceptions import (
     DeadlineExceeded,
     ServiceUnavailable,
 )
+from google.auth import compute_engine
+from google.auth.transport import requests as google_auth_requests
 from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import BIGTABLE_EMULATOR  # type: ignore
 from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
@@ -182,6 +184,34 @@ if TYPE_CHECKING:
 __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen.client"
 
 _LOGGER = logging.getLogger(__name__)
+
+
+# Sentinel distinguishing "principal not yet resolved" from a resolved value of
+# None (the unverifiable case), so resolution is attempted at most once.
+_UNSET: Any = object()
+
+
+class _AcceleratorUnverified(Exception):
+    """Raised internally when the daemon's identity cannot be verified against
+    the client's locally resolved principal or effective scopes (either side
+    unknown), signalling that the caller should fall back to the native client
+    rather than route."""
+
+
+def _normalize_scopes(scopes: Any) -> frozenset[str]:
+    """Normalize a scope value to a comparable, order-insensitive set.
+
+    The daemon writes ``scopes`` to ``identity.json`` as a JSON array of
+    strings; accept a single comma/space-separated string too, so a contract
+    drift on either side degrades to a mismatch rather than a crash. Returns a
+    ``frozenset`` so ordering and duplicates never cause a false mismatch (the
+    daemon does not sort or dedup what it writes).
+    """
+    if not scopes:
+        return frozenset()
+    if isinstance(scopes, str):
+        scopes = scopes.replace(",", " ").split()
+    return frozenset(s for s in scopes if s)
 
 
 @CrossSync.convert_class(
@@ -395,6 +425,9 @@ class BigtableDataClientAsync(ClientWithProject):
         # matches the native client (whose default is TransportType.AUTH_SCOPES),
         # rather than the daemon's single hardcoded data scope.
         effective_scopes = list(scopes) if scopes else list(TransportType.AUTH_SCOPES)
+        # Remember the scopes we forwarded so the identity handshake can confirm
+        # the daemon actually resolved a token for the same effective scope.
+        self._accelerator_scopes: list[str] = effective_scopes
         if effective_scopes:
             self._accelerator_flags += ["--scopes", ",".join(effective_scopes)]
 
@@ -420,6 +453,41 @@ class BigtableDataClientAsync(ClientWithProject):
                 self._accelerator_env["GOOGLE_APPLICATION_CREDENTIALS"] = (
                     credentials_file
                 )
+
+    def _resolve_principal(self) -> str | None:
+        """Resolve this client's identity to a principal, using only local
+        signals — never a token-introspection or other external network call.
+
+        Returns the service-account email for the credential types that carry
+        one (SA key, impersonated, workload identity, and Compute Engine after a
+        metadata-server refresh). Returns ``None`` for identities that expose no
+        stable local principal (e.g. plain gcloud user ADC), which the caller
+        treats as unverifiable and routes to the native client.
+
+        Cached: resolution runs at most once per client.
+        """
+        cached = getattr(self, "_cached_principal", _UNSET)
+        if cached is not _UNSET:
+            return cast("str | None", cached)
+
+        creds = self._credentials
+        email = getattr(creds, "service_account_email", None)
+        if (not email or email == "default") and isinstance(
+            creds, compute_engine.Credentials
+        ):
+            # Compute Engine credentials only populate the email after a refresh
+            # against the (link-local, non-egress) metadata server.
+            try:
+                creds.refresh(google_auth_requests.Request())
+            except Exception:
+                pass
+            email = getattr(creds, "service_account_email", None)
+
+        principal: str | None = email or None
+        if principal == "default":
+            principal = None
+        self._cached_principal = principal
+        return principal
 
     def _build_grpc_channel(self, *args, **kwargs) -> SwappableChannelType:
         """
@@ -1352,7 +1420,21 @@ class _DataApiTargetAsync(abc.ABC):
         )
         try:
             server.start()
+            # Backstop against an identity flip: even under config we forwarded,
+            # the daemon's independent ADC resolution could land on a different
+            # principal. Verify before routing any RPC through it.
+            self._verify_daemon_identity(server)
             self._accelerator_client = AcceleratorClientType(server.uds_path)
+        except _AcceleratorUnverified:
+            server.close()
+            warnings.warn(
+                "Accelerator disabled: could not verify that the daemon "
+                "resolves the same identity as this client; using the native "
+                "client instead.",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+            return
         except BaseException:
             server.close()
             raise
@@ -1369,6 +1451,43 @@ class _DataApiTargetAsync(abc.ABC):
             and is_supported(method_name)
             and not self._accelerator_breaker.bypass()
         )
+
+    def _verify_daemon_identity(self, server: AcceleratorDaemon) -> None:
+        """Confirm the daemon resolved the same identity this client did.
+
+        Compares the principal *and* the effective auth scopes the daemon wrote
+        to ``identity.json`` against the client's own — the daemon mints tokens
+        for its effective scope, so a scope drift is as much an identity flip as
+        a principal drift. If either side of either check is unknown, raise
+        ``_AcceleratorUnverified`` (caller falls back to native). If both are
+        known but differ, raise ``RuntimeError`` and refuse to route — this is
+        the identity flip we are guarding against.
+        """
+        identity = server.read_identity()
+
+        daemon_principal = identity.get("principal") or None
+        own_principal = self.client._resolve_principal()
+        if own_principal is None or daemon_principal is None:
+            raise _AcceleratorUnverified()
+        if own_principal != daemon_principal:
+            raise RuntimeError(
+                "Accelerator identity mismatch: this client resolved "
+                f"{own_principal!r} but the daemon resolved "
+                f"{daemon_principal!r}; refusing to route RPCs through the "
+                "accelerator."
+            )
+
+        daemon_scopes = _normalize_scopes(identity.get("scopes"))
+        own_scopes = _normalize_scopes(self.client._accelerator_scopes)
+        if not own_scopes or not daemon_scopes:
+            raise _AcceleratorUnverified()
+        if own_scopes != daemon_scopes:
+            raise RuntimeError(
+                "Accelerator scope mismatch: this client forwarded "
+                f"{sorted(own_scopes)!r} but the daemon resolved "
+                f"{sorted(daemon_scopes)!r}; refusing to route RPCs through the "
+                "accelerator."
+            )
 
     def _create_operation(
         self, op_type: OperationType, **kwargs
