@@ -15,6 +15,7 @@
 import pytest
 from google.api_core import _feature_gating_helpers
 from google.api_core._feature_gating_helpers import (
+    FeatureGatingError,
     _get_env_bool,
     _strtobool,
 )
@@ -99,8 +100,8 @@ def test_resolve_feature_flags_exp_blocked_with_provider_fails_fast(
     configuration = {"tracer_provider": object()}
 
     # Action & Assertion
-    with pytest.raises(ValueError, match="Experimental feature"):
-        feature_gating_helpers.resolve_feature_flags(
+    with pytest.raises(FeatureGatingError, match="Experimental feature"):
+        _feature_gating_helpers.resolve_feature_flags(
             env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
             feature_key="tracer_provider",
             configuration=configuration,

@@ -28,6 +28,11 @@ _TRUTHY_VALUES = ("y", "yes", "t", "true", "on", "1")
 _FALSY_VALUES = ("n", "no", "f", "false", "off", "0")
 
 
+class FeatureGatingError(ValueError):
+    """Raised when feature gating resolution fails or is misconfigured."""
+    pass
+
+
 def _strtobool(val: str) -> bool | None:
     """Convert a string representation of truth to a boolean."""
     clean_val = val.lower().strip()
@@ -114,7 +119,7 @@ def resolve_feature_flags(
     if "EXPERIMENTAL" in env_var:
         # Fail Fast if provider present but experimental environment variable is not enabled
         if env_var_setting is not True and has_provider:
-            raise ValueError(
+            raise FeatureGatingError(
                 f"Experimental feature requires {env_var} to be set to 'true' to use programmatic providers."
             )
 
