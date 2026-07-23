@@ -27,7 +27,14 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import extended_operation
 {% endif %}
 from google.api_core import gapic_v1
-{% if service.has_auto_populated_fields %}
+{% set has_auto_populated_fields = namespace(value=false) %}
+{% for method in service.methods.values() %}
+  {% set method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+  {% if method_settings and method_settings.auto_populated_fields %}
+    {% set has_auto_populated_fields.value = true %}
+  {% endif %}
+{% endfor %}
+{% if has_auto_populated_fields.value %}
 from {{package_path}}._compat import setup_request_id
 {% endif %}
 from google.api_core import retry as retries

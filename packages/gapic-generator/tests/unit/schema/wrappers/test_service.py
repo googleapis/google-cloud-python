@@ -751,7 +751,5 @@ def test_resource_messages_raises_on_malformed_typeless_resource():
         _ = service.resource_messages
 
 
-def test_service_has_auto_populated_fields():
-    service = make_service(name="ThingDoer")
-    assert not service.has_auto_populated_fields
+
 
