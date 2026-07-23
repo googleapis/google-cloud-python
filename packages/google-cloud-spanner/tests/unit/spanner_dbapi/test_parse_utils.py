@@ -403,6 +403,13 @@ class TestParseUtils(unittest.TestCase):
             ("with space", "`with space`"),
             ("name", "name"),
             ("", ""),
+            ("col`; DROP TABLE t; -- x", "`col``; DROP TABLE t; -- x`"),
+            ("table`name", "`table``name`"),
+            ("`", "````"),
+            ("col/*comment*/name", "`col/*comment*/name`"),
+            ("123column", "`123column`"),
+            ("col;select", "`col;select`"),
+            ("col\nname", "`col\nname`"),
         )
         for name, want in cases:
             with self.subTest(name=name):
