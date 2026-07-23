@@ -1,0 +1,115 @@
+# # Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+import pytest
+import os
+from google.auth.exceptions import MutualTLSChannelError
+
+
+from google.cloud.asset_v1 import _compat
+
+
+def test_get_default_mtls_endpoint():
+    assert _compat.get_default_mtls_endpoint(None) is None
+    assert _compat.get_default_mtls_endpoint("foo.googleapis.com") == "foo.mtls.googleapis.com"
+    assert _compat.get_default_mtls_endpoint("foo.sandbox.googleapis.com") == "foo.mtls.sandbox.googleapis.com"
+    assert _compat.get_default_mtls_endpoint("foo.mtls.googleapis.com") == "foo.mtls.googleapis.com"
+    assert _compat.get_default_mtls_endpoint("invalid") == "invalid"
+
+
+def test_get_api_endpoint():
+    assert _compat.get_api_endpoint("https://override.com", None, "googleapis.com", "auto", "googleapis.com", "mtls.com", "https://{UNIVERSE_DOMAIN}") == "https://override.com"
+    assert _compat.get_api_endpoint(None, lambda: (b"", b""), "googleapis.com", "always", "googleapis.com", "mtls.com", "https://{UNIVERSE_DOMAIN}") == "mtls.com"
+    with pytest.raises(MutualTLSChannelError):
+        _compat.get_api_endpoint(None, None, "otheruniverse.com", "always", "googleapis.com", "mtls.com", "https://{UNIVERSE_DOMAIN}")
+    assert _compat.get_api_endpoint(None, None, "googleapis.com", "never", "googleapis.com", "mtls.com", "https://{UNIVERSE_DOMAIN}") == "https://googleapis.com"
+
+
+def test_get_universe_domain():
+    assert _compat.get_universe_domain("custom.com", None, "googleapis.com") == "custom.com"
+    assert _compat.get_universe_domain(None, "env.com", "googleapis.com") == "env.com"
+    assert _compat.get_universe_domain(None, None, "googleapis.com") == "googleapis.com"
+    with pytest.raises(ValueError):
+        _compat.get_universe_domain("   ", None, "googleapis.com")
+
+
+def test_use_client_cert_effective(monkeypatch):
+    monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "true")
+    assert _compat.use_client_cert_effective() is True
+    monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+    assert _compat.use_client_cert_effective() is False
+    monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "invalid")
+    with pytest.raises(ValueError):
+        _compat.use_client_cert_effective()
+
+
+def test_get_client_cert_source():
+    cert_fn = lambda: (b"cert", b"key")
+    assert _compat.get_client_cert_source(cert_fn, True) == cert_fn
+    assert _compat.get_client_cert_source(None, False) is None
+    with pytest.raises(ValueError):
+        _compat.get_client_cert_source(None, True)
+
+
+def test_read_environment_variables(monkeypatch):
+    monkeypatch.setenv("GOOGLE_API_USE_MTLS_ENDPOINT", "always")
+    monkeypatch.setenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN", "myuniverse.com")
+    use_cert, use_mtls, universe = _compat.read_environment_variables()
+    assert use_mtls == "always"
+    assert universe == "myuniverse.com"
+
+    monkeypatch.setenv("GOOGLE_API_USE_MTLS_ENDPOINT", "invalid")
+    with pytest.raises(MutualTLSChannelError):
+        _compat.read_environment_variables()
+
+
+def test_setup_request_id():
+    # Test with None request
+    _compat.setup_request_id(None, "request_id", False)
+
+    # Test with dict request (proto3 optional and non-optional)
+    d1 = {}
+    _compat.setup_request_id(d1, "request_id", is_proto3_optional=True)
+    assert "request_id" in d1
+
+    d2 = {}
+    _compat.setup_request_id(d2, "request_id", is_proto3_optional=False)
+    assert "request_id" in d2
+
+    # Test when field already present
+    d3 = {"request_id": "existing"}
+    _compat.setup_request_id(d3, "request_id", is_proto3_optional=False)
+    assert d3["request_id"] == "existing"
+
+    # Test with object
+    class Dummy:
+        request_id = None
+    obj = Dummy()
+    _compat.setup_request_id(obj, "request_id", is_proto3_optional=False)
+    assert obj.request_id is not None
+
+
+def test_flatten_query_params():
+    assert _compat.flatten_query_params(None) == []
+    res = _compat.flatten_query_params({"a": "val1", "b": [1, 2]})
+    assert ("a", "val1") in res
+    assert ("b", 1) in res
+    assert ("b", 2) in res
+
+    with pytest.raises(TypeError):
+        _compat.flatten_query_params("invalid")
+
+    with pytest.raises(ValueError):
+        _compat.flatten_query_params({"a": [{"nested": "dict"}]})

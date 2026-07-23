@@ -32,7 +32,7 @@ try:
         get_api_endpoint,
         get_universe_domain,
     )
-except ImportError:  # pragma: NO COVER
+except ImportError:
     # TODO(https://github.com/googleapis/google-cloud-python/issues/17813): Universe domain support was introduced in google-api-core 2.18.0.
     # Remove these fallback definitions when google-api-core >= 2.18.0 becomes the minimum required version in generated client setup dependencies.
     def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
@@ -104,7 +104,7 @@ try:
         get_client_cert_source,
         read_environment_variables,
     )
-except ImportError:  # pragma: NO COVER
+except ImportError:
     from google.auth.transport import mtls  # type: ignore
 
     # TODO(https://github.com/googleapis/google-cloud-python/issues/17813): Remove these fallbacks when google-api-core >= 2.18.0 is the minimum required version.
@@ -157,7 +157,7 @@ except ImportError:  # pragma: NO COVER
 
 try:
     from google.api_core.gapic_v1.request import setup_request_id  # type: ignore
-except ImportError:  # pragma: NO COVER
+except ImportError:
     # TODO(https://github.com/googleapis/google-cloud-python/issues/17813): Request ID setup helper was introduced in google-api-core 2.26.0.
     # Remove this fallback definition when google-api-core >= 2.26.0 becomes the minimum required version in generated client setup dependencies.
     def setup_request_id(request, field_name: str, is_proto3_optional: bool):
@@ -207,17 +207,17 @@ try:
         flatten_query_params,
         transcode_request,
     )
-except ImportError:  # pragma: NO COVER
+except ImportError:
     # TODO: Remove these fallbacks when google-api-core >= 2.18.0 is the minimum required version.
     from google.protobuf import json_format  # type: ignore
     from google.api_core import path_template  # type: ignore
 
-    def flatten_query_params(obj, strict=False):  # pragma: NO COVER
+    def flatten_query_params(obj, strict=False):
         if obj is not None and not isinstance(obj, dict):
             raise TypeError("flatten_query_params must be called with dict object")
         return _flatten(obj, key_path=[], strict=strict)
 
-    def _flatten(obj, key_path, strict=False):  # pragma: NO COVER
+    def _flatten(obj, key_path, strict=False):
         if obj is None:
             return []
         if isinstance(obj, dict):
@@ -226,24 +226,24 @@ except ImportError:  # pragma: NO COVER
             return _flatten_list(obj, key_path=key_path, strict=strict)
         return _flatten_value(obj, key_path=key_path, strict=strict)
 
-    def _is_primitive_value(obj):  # pragma: NO COVER
+    def _is_primitive_value(obj):
         if obj is None:
             return False
         if isinstance(obj, (list, dict)):
             raise ValueError("query params may not contain repeated dicts or lists")
         return True
 
-    def _flatten_value(obj, key_path, strict=False):  # pragma: NO COVER
+    def _flatten_value(obj, key_path, strict=False):
         return [(".".join(key_path), _canonicalize(obj, strict=strict))]
 
-    def _flatten_dict(obj, key_path, strict=False):  # pragma: NO COVER
+    def _flatten_dict(obj, key_path, strict=False):
         items = (
             _flatten(value, key_path=key_path + [key], strict=strict)
             for key, value in obj.items()
         )
         return functools.reduce(operator.concat, items, [])
 
-    def _flatten_list(elems, key_path, strict=False):  # pragma: NO COVER
+    def _flatten_list(elems, key_path, strict=False):
         items = (
             _flatten_value(elem, key_path=key_path, strict=strict)
             for elem in elems
@@ -251,7 +251,7 @@ except ImportError:  # pragma: NO COVER
         )
         return functools.reduce(operator.concat, items, [])
 
-    def _canonicalize(obj, strict=False):  # pragma: NO COVER
+    def _canonicalize(obj, strict=False):
         if strict:
             value = str(obj)
             if isinstance(obj, bool):
@@ -259,7 +259,7 @@ except ImportError:  # pragma: NO COVER
             return value
         return obj
 
-    def transcode_request(  # pragma: NO COVER
+    def transcode_request(
         http_options: List[Dict[str, str]],
         request: Any,
         required_fields_default_values: Optional[Dict[str, Any]] = None,
