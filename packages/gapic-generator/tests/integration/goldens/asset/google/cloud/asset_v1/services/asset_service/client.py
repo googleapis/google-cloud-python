@@ -611,12 +611,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client_options = client_options
-        if isinstance(self._client_options, dict):
-            self._client_options = client_options_lib.from_dict(self._client_options)
-        if self._client_options is None:
-            self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
+        if isinstance(client_options, dict):
+            client_options = client_options_lib.from_dict(client_options)
+        if client_options is None:
+            client_options = client_options_lib.ClientOptions()
+        self._client_options: client_options_lib.ClientOptions = cast(
+            client_options_lib.ClientOptions, client_options
+        )
 
         universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 
