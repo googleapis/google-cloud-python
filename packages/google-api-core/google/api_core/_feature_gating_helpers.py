@@ -18,14 +18,17 @@
 
 import os
 import warnings
-from typing import Any, Dict, Optional, Union
+from typing import Any
+
+# We import ClientOptions for type hinting
+from google.api_core.client_options import ClientOptions
 
 # Allowed truthy and falsy patterns for environment variables
 _TRUTHY_VALUES = ("y", "yes", "t", "true", "on", "1")
 _FALSY_VALUES = ("n", "no", "f", "false", "off", "0")
 
 
-def _strtobool(val: str) -> Optional[bool]:
+def _strtobool(val: str) -> bool | None:
     """Convert a string representation of truth to a boolean."""
     clean_val = val.lower().strip()
     if not clean_val:
@@ -37,7 +40,7 @@ def _strtobool(val: str) -> Optional[bool]:
     raise ValueError(f"Invalid truth value: {val!r}")
 
 
-def _get_env_bool(name: str) -> Optional[bool]:
+def _get_env_bool(name: str) -> bool | None:
     """Retrieve the boolean value of an environment variable."""
     val = os.getenv(name)
     if val is None:
@@ -50,7 +53,7 @@ def _get_env_bool(name: str) -> Optional[bool]:
 
 
 def _has_provider(
-    *, configuration: Optional[Union[Dict[str, Any], Any]], feature_key: str
+    *, configuration: ClientOptions | dict[str, Any] | None, feature_key: str
 ) -> bool:
     """Checks if a specific feature key is present and not None in configuration."""
     if configuration is None:
@@ -69,7 +72,7 @@ def resolve_feature_flags(
     *,
     env_var: str,
     feature_key: str,
-    configuration: Optional[Union[Dict[str, Any], Any]] = None,
+    configuration: ClientOptions | dict[str, Any] | None = None,
 ) -> bool:
     """Determines if a feature is enabled based on environment variables and configuration.
 
