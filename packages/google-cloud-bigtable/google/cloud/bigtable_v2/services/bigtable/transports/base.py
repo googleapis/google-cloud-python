@@ -31,7 +31,9 @@ from google.cloud.bigtable_v2.types import bigtable
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class BigtableTransport(abc.ABC):

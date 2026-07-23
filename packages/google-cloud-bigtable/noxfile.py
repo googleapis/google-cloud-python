@@ -78,6 +78,7 @@ MYPY_CONFIG_FILE = next(
     str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
 )
 
+
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
     "unit-3.10",
@@ -187,10 +188,7 @@ def mypy(session):
     )
     session.install("google-cloud-testutils")
     session.run(
-        "mypy",
-        f"--config-file={MYPY_CONFIG_FILE}",
-        "-p",
-        "google.cloud.bigtable.data",
+        "mypy", f"--config-file={MYPY_CONFIG_FILE}", "-p", "google.cloud.bigtable.data"
     )
 
 
