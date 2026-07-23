@@ -392,6 +392,8 @@ def showcase_library(
             # Install the library without a constraints file.
             session.install("-e", tmp_dir)
 
+        session.install("-e", "../google-api-core", "--no-deps")
+
         yield tmp_dir
 
 
@@ -614,7 +616,13 @@ def showcase_mypy(
         session.chdir(lib)
 
         # Run the tests.
-        session.run("mypy", "-p", "google", "--check-untyped-defs")
+        session.run(
+            "mypy",
+            f"--config-file={MYPY_CONFIG_FILE}",
+            "-p",
+            "google",
+            "--check-untyped-defs",
+        )
 
 
 @nox.session(python=NEWEST_PYTHON)
