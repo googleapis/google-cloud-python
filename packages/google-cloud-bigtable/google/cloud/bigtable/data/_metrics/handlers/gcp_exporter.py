@@ -153,9 +153,7 @@ class BigtableMetricsExporter(MetricExporter):
         for resource_metric in metrics_data.resource_metrics:
             for scope_metric in resource_metric.scope_metrics:
                 for metric in scope_metric.metrics:
-                    for data_point in [
-                        pt for pt in metric.data.data_points if pt.attributes
-                    ]:
+                    for data_point in metric.data.data_points:
                         if data_point.attributes:
                             monitored_resource = MonitoredResource(
                                 type="bigtable_client_raw",
