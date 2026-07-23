@@ -30,6 +30,7 @@ _FALSY_VALUES = ("n", "no", "f", "false", "off", "0")
 
 class FeatureGatingError(ValueError):
     """Raised when feature gating resolution fails or is misconfigured."""
+
     pass
 
 
