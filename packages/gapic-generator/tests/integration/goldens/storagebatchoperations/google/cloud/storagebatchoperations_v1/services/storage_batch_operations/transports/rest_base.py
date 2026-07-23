@@ -99,7 +99,6 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -109,31 +108,6 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = storage_batch_operations.CancelJobRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseStorageBatchOperationsRestTransport._BaseCancelJob._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseCreateJob:
         def __hash__(self):  # pragma: NO COVER
@@ -145,7 +119,6 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -155,31 +128,6 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = storage_batch_operations.CreateJobRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseStorageBatchOperationsRestTransport._BaseCreateJob._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseDeleteJob:
         def __hash__(self):  # pragma: NO COVER
@@ -191,7 +139,6 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -200,22 +147,6 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = storage_batch_operations.DeleteJobRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseStorageBatchOperationsRestTransport._BaseDeleteJob._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseGetBucketOperation:
         def __hash__(self):  # pragma: NO COVER
@@ -227,7 +158,6 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -236,22 +166,6 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = storage_batch_operations.GetBucketOperationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseStorageBatchOperationsRestTransport._BaseGetBucketOperation._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseGetJob:
         def __hash__(self):  # pragma: NO COVER
@@ -263,7 +177,6 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -272,22 +185,6 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = storage_batch_operations.GetJobRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseStorageBatchOperationsRestTransport._BaseGetJob._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseListBucketOperations:
         def __hash__(self):  # pragma: NO COVER
@@ -299,7 +196,6 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -308,22 +204,6 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = storage_batch_operations.ListBucketOperationsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseStorageBatchOperationsRestTransport._BaseListBucketOperations._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseListJobs:
         def __hash__(self):  # pragma: NO COVER
@@ -335,7 +215,6 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -345,23 +224,8 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = storage_batch_operations.ListJobsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseStorageBatchOperationsRestTransport._BaseListJobs._get_unset_required_fields(query_params))
-
-            return query_params
-
     class _BaseGetLocation:
+        """Base class for GetLocation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -374,19 +238,8 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseListLocations:
+        """Base class for ListLocations REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -399,19 +252,8 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseCancelOperation:
+        """Base class for CancelOperation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -425,23 +267,8 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            body = json.dumps(transcoded_request['body'])
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseDeleteOperation:
+        """Base class for DeleteOperation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -454,19 +281,8 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseGetOperation:
+        """Base class for GetOperation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -479,19 +295,8 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseListOperations:
+        """Base class for ListOperations REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -503,18 +308,6 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
 
 
 __all__=(

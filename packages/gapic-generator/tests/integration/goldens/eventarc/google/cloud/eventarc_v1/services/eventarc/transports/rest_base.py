@@ -109,7 +109,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -119,31 +118,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.CreateChannelRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseCreateChannel._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseCreateChannelConnection:
         def __hash__(self):  # pragma: NO COVER
@@ -155,7 +129,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -165,31 +138,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.CreateChannelConnectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseCreateChannelConnection._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseCreateEnrollment:
         def __hash__(self):  # pragma: NO COVER
@@ -201,7 +149,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -211,31 +158,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.CreateEnrollmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseCreateEnrollment._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseCreateGoogleApiSource:
         def __hash__(self):  # pragma: NO COVER
@@ -247,7 +169,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -257,31 +178,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.CreateGoogleApiSourceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseCreateMessageBus:
         def __hash__(self):  # pragma: NO COVER
@@ -293,7 +189,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -303,31 +198,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.CreateMessageBusRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseCreateMessageBus._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseCreatePipeline:
         def __hash__(self):  # pragma: NO COVER
@@ -339,7 +209,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -349,31 +218,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.CreatePipelineRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseCreatePipeline._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseCreateTrigger:
         def __hash__(self):  # pragma: NO COVER
@@ -385,7 +229,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -395,31 +238,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.CreateTriggerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseCreateTrigger._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseDeleteChannel:
         def __hash__(self):  # pragma: NO COVER
@@ -431,7 +249,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -440,22 +257,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.DeleteChannelRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseDeleteChannel._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseDeleteChannelConnection:
         def __hash__(self):  # pragma: NO COVER
@@ -467,7 +268,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -476,22 +276,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.DeleteChannelConnectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseDeleteChannelConnection._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseDeleteEnrollment:
         def __hash__(self):  # pragma: NO COVER
@@ -503,7 +287,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -512,22 +295,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.DeleteEnrollmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseDeleteEnrollment._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseDeleteGoogleApiSource:
         def __hash__(self):  # pragma: NO COVER
@@ -539,7 +306,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -548,22 +314,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.DeleteGoogleApiSourceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseDeleteMessageBus:
         def __hash__(self):  # pragma: NO COVER
@@ -575,7 +325,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -584,22 +333,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.DeleteMessageBusRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseDeleteMessageBus._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseDeletePipeline:
         def __hash__(self):  # pragma: NO COVER
@@ -611,7 +344,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -620,22 +352,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.DeletePipelineRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseDeletePipeline._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseDeleteTrigger:
         def __hash__(self):  # pragma: NO COVER
@@ -647,7 +363,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -656,22 +371,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.DeleteTriggerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseDeleteTrigger._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseGetChannel:
         def __hash__(self):  # pragma: NO COVER
@@ -683,7 +382,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -692,22 +390,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.GetChannelRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseGetChannel._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseGetChannelConnection:
         def __hash__(self):  # pragma: NO COVER
@@ -719,7 +401,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -728,22 +409,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.GetChannelConnectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseGetChannelConnection._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseGetEnrollment:
         def __hash__(self):  # pragma: NO COVER
@@ -755,7 +420,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -764,22 +428,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.GetEnrollmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseGetEnrollment._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseGetGoogleApiSource:
         def __hash__(self):  # pragma: NO COVER
@@ -791,7 +439,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -800,22 +447,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.GetGoogleApiSourceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseGetGoogleApiSource._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseGetGoogleChannelConfig:
         def __hash__(self):  # pragma: NO COVER
@@ -827,7 +458,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -836,22 +466,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.GetGoogleChannelConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseGetMessageBus:
         def __hash__(self):  # pragma: NO COVER
@@ -863,7 +477,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -872,22 +485,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.GetMessageBusRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseGetMessageBus._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseGetPipeline:
         def __hash__(self):  # pragma: NO COVER
@@ -899,7 +496,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -908,22 +504,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.GetPipelineRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseGetPipeline._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseGetProvider:
         def __hash__(self):  # pragma: NO COVER
@@ -935,7 +515,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -944,22 +523,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.GetProviderRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseGetProvider._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseGetTrigger:
         def __hash__(self):  # pragma: NO COVER
@@ -971,7 +534,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -980,22 +542,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.GetTriggerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseGetTrigger._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseListChannelConnections:
         def __hash__(self):  # pragma: NO COVER
@@ -1007,7 +553,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -1016,22 +561,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.ListChannelConnectionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseListChannelConnections._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseListChannels:
         def __hash__(self):  # pragma: NO COVER
@@ -1043,7 +572,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -1052,22 +580,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.ListChannelsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseListChannels._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseListEnrollments:
         def __hash__(self):  # pragma: NO COVER
@@ -1079,7 +591,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -1088,22 +599,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.ListEnrollmentsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseListEnrollments._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseListGoogleApiSources:
         def __hash__(self):  # pragma: NO COVER
@@ -1115,7 +610,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -1124,22 +618,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.ListGoogleApiSourcesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseListGoogleApiSources._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseListMessageBusEnrollments:
         def __hash__(self):  # pragma: NO COVER
@@ -1151,7 +629,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -1160,22 +637,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.ListMessageBusEnrollmentsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseListMessageBuses:
         def __hash__(self):  # pragma: NO COVER
@@ -1187,7 +648,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -1196,22 +656,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.ListMessageBusesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseListMessageBuses._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseListPipelines:
         def __hash__(self):  # pragma: NO COVER
@@ -1223,7 +667,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -1232,22 +675,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.ListPipelinesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseListPipelines._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseListProviders:
         def __hash__(self):  # pragma: NO COVER
@@ -1259,7 +686,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -1268,22 +694,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.ListProvidersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseListProviders._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseListTriggers:
         def __hash__(self):  # pragma: NO COVER
@@ -1295,7 +705,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -1304,22 +713,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.ListTriggersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseListTriggers._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseUpdateChannel:
         def __hash__(self):  # pragma: NO COVER
@@ -1335,30 +728,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.UpdateChannelRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-
-            return query_params
-
     class _BaseUpdateEnrollment:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -1369,7 +738,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -1379,31 +747,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.UpdateEnrollmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseUpdateEnrollment._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseUpdateGoogleApiSource:
         def __hash__(self):  # pragma: NO COVER
@@ -1415,7 +758,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -1425,31 +767,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.UpdateGoogleApiSourceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseUpdateGoogleChannelConfig:
         def __hash__(self):  # pragma: NO COVER
@@ -1461,7 +778,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -1471,31 +787,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.UpdateGoogleChannelConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseUpdateMessageBus:
         def __hash__(self):  # pragma: NO COVER
@@ -1507,7 +798,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -1517,31 +807,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.UpdateMessageBusRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseUpdateMessageBus._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseUpdatePipeline:
         def __hash__(self):  # pragma: NO COVER
@@ -1553,7 +818,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -1563,31 +827,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.UpdatePipelineRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseEventarcRestTransport._BaseUpdatePipeline._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseUpdateTrigger:
         def __hash__(self):  # pragma: NO COVER
@@ -1603,31 +842,8 @@ class _BaseEventarcRestTransport(EventarcTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = eventarc.UpdateTriggerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-
-            return query_params
-
     class _BaseGetLocation:
+        """Base class for GetLocation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -1640,19 +856,8 @@ class _BaseEventarcRestTransport(EventarcTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseListLocations:
+        """Base class for ListLocations REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -1665,19 +870,8 @@ class _BaseEventarcRestTransport(EventarcTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseGetIamPolicy:
+        """Base class for GetIamPolicy REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -1698,19 +892,8 @@ class _BaseEventarcRestTransport(EventarcTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseSetIamPolicy:
+        """Base class for SetIamPolicy REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -1734,23 +917,8 @@ class _BaseEventarcRestTransport(EventarcTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            body = json.dumps(transcoded_request['body'])
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseTestIamPermissions:
+        """Base class for TestIamPermissions REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -1774,23 +942,8 @@ class _BaseEventarcRestTransport(EventarcTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            body = json.dumps(transcoded_request['body'])
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseCancelOperation:
+        """Base class for CancelOperation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -1804,23 +957,8 @@ class _BaseEventarcRestTransport(EventarcTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            body = json.dumps(transcoded_request['body'])
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseDeleteOperation:
+        """Base class for DeleteOperation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -1833,19 +971,8 @@ class _BaseEventarcRestTransport(EventarcTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseGetOperation:
+        """Base class for GetOperation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -1858,19 +985,8 @@ class _BaseEventarcRestTransport(EventarcTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseListOperations:
+        """Base class for ListOperations REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -1882,18 +998,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
 
 
 __all__=(

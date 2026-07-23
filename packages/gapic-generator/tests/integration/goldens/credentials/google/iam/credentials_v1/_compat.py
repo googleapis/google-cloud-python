@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 """A compatibility module for older versions of google-api-core."""
 
 import functools
@@ -93,7 +92,7 @@ except ImportError:
         elif universe_domain_env is not None:
             universe_domain = universe_domain_env
         if len(universe_domain.strip()) == 0:
-            raise ValueError("Universe Domain cannot be an empty string.") 
+            raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
 

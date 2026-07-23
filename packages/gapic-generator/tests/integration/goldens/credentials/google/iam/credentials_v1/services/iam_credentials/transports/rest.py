@@ -20,7 +20,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-from google.api_core import rest_helpers
+from google.iam.credentials_v1 import _compat as rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
 import google.protobuf
@@ -414,14 +414,17 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             """
 
             http_options = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_http_options()
-
             request, metadata = self._interceptor.pre_generate_access_token(request, metadata)
-            transcoded_request = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_transcoded_request(http_options, request)
-
-            body = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = rest_helpers.transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken,
+                    "_BaseGenerateAccessToken__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -536,14 +539,17 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             """
 
             http_options = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_http_options()
-
             request, metadata = self._interceptor.pre_generate_id_token(request, metadata)
-            transcoded_request = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_transcoded_request(http_options, request)
-
-            body = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = rest_helpers.transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIAMCredentialsRestTransport._BaseGenerateIdToken,
+                    "_BaseGenerateIdToken__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -658,14 +664,17 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             """
 
             http_options = _BaseIAMCredentialsRestTransport._BaseSignBlob._get_http_options()
-
             request, metadata = self._interceptor.pre_sign_blob(request, metadata)
-            transcoded_request = _BaseIAMCredentialsRestTransport._BaseSignBlob._get_transcoded_request(http_options, request)
-
-            body = _BaseIAMCredentialsRestTransport._BaseSignBlob._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseIAMCredentialsRestTransport._BaseSignBlob._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = rest_helpers.transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIAMCredentialsRestTransport._BaseSignBlob,
+                    "_BaseSignBlob__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -780,14 +789,17 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             """
 
             http_options = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_http_options()
-
             request, metadata = self._interceptor.pre_sign_jwt(request, metadata)
-            transcoded_request = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_transcoded_request(http_options, request)
-
-            body = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = rest_helpers.transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIAMCredentialsRestTransport._BaseSignJwt,
+                    "_BaseSignJwt__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
