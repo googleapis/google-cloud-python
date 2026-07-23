@@ -113,9 +113,10 @@ def test_intercept_with_tracer(interceptor, mock_tracer_ctx):
         ],
     )
 
+    replaced_call_details = call_details._replace.return_value
     response = interceptor.intercept(mock_invoked_method, "request", call_details)
     assert response == invoked_response
     mock_tracer_ctx.record_attempt_start.assert_called()
     mock_tracer_ctx.record_attempt_completion.assert_called_once()
     mock_tracer_ctx.record_front_end_metrics.assert_called_once()
-    mock_invoked_method.assert_called_once_with("request", call_details)
+    mock_invoked_method.assert_called_once_with("request", replaced_call_details)

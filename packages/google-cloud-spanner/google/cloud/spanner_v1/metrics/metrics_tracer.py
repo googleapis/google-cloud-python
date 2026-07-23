@@ -19,6 +19,7 @@ The MetricTracer class is responsible for collecting and tracing metrics,
 while the helper classes provide additional functionality and context for the metrics being traced.
 """
 
+import os
 import re
 from datetime import datetime
 from typing import Any, Dict, Optional
@@ -425,7 +426,7 @@ class MetricsTracer:
         ):
             return
         self._instrument_gfe_latency.record(
-            amount=latency, attributes=self.client_attributes
+            amount=latency, attributes=self._create_attempt_otel_attributes()
         )
 
     def record_gfe_connectivity_error_count(self) -> None:
@@ -439,7 +440,7 @@ class MetricsTracer:
         ):
             return
         self._instrument_gfe_connectivity_error_count.add(
-            amount=1, attributes=self.client_attributes
+            amount=1, attributes=self._create_attempt_otel_attributes()
         )
 
     def record_afe_latency(self, latency: int) -> None:
@@ -453,10 +454,11 @@ class MetricsTracer:
             not self.enabled
             or not HAS_OPENTELEMETRY_INSTALLED
             or not getattr(self, "_instrument_afe_latency", None)
+            or os.environ.get("SPANNER_DISABLE_AFE_SERVER_TIMING", "").lower() == "true"
         ):
             return
         self._instrument_afe_latency.record(
-            amount=latency, attributes=self.client_attributes
+            amount=latency, attributes=self._create_attempt_otel_attributes()
         )
 
     def record_afe_connectivity_error_count(self) -> None:
@@ -467,10 +469,11 @@ class MetricsTracer:
             not self.enabled
             or not HAS_OPENTELEMETRY_INSTALLED
             or not getattr(self, "_instrument_afe_connectivity_error_count", None)
+            or os.environ.get("SPANNER_DISABLE_AFE_SERVER_TIMING", "").lower() == "true"
         ):
             return
         self._instrument_afe_connectivity_error_count.add(
-            amount=1, attributes=self.client_attributes
+            amount=1, attributes=self._create_attempt_otel_attributes()
         )
 
     @staticmethod

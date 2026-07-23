@@ -202,16 +202,20 @@ class TestFrontendMetricsIntegration(MockServerTestBase):
             }
 
             self.assertIn(
-                "gfe_missing_header_count", metrics, f"Metrics: {list(metrics.keys())}"
+                "gfe_connectivity_error_count",
+                metrics,
+                f"Metrics: {list(metrics.keys())}",
             )
-            missing_metric = metrics["gfe_missing_header_count"]
+            missing_metric = metrics["gfe_connectivity_error_count"]
             point = next(iter(missing_metric.data.data_points))
             self.assertGreaterEqual(point.value, 1)
 
             self.assertIn(
-                "afe_missing_header_count", metrics, f"Metrics: {list(metrics.keys())}"
+                "afe_connectivity_error_count",
+                metrics,
+                f"Metrics: {list(metrics.keys())}",
             )
-            afe_missing_metric = metrics["afe_missing_header_count"]
+            afe_missing_metric = metrics["afe_connectivity_error_count"]
             afe_point = next(iter(afe_missing_metric.data.data_points))
             self.assertGreaterEqual(afe_point.value, 1)
         finally:
