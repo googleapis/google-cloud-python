@@ -210,10 +210,10 @@ replacements:
       packages/google-cloud-automl/testing/constraints-3.10.txt,
     ]
     before: |
-      google-api-core==2.24.2
+      google-api-core==2.25.0
       google-auth==2.14.1
     after: |
-      google-api-core==2.24.2
+      google-api-core==2.25.0
       google-cloud-storage==2.14.0
       libcst==0.2.5
       pandas==1.3.4
@@ -424,10 +424,10 @@ replacements:
       "packages/google-cloud-monitoring/testing/constraints-3.10.txt",
     ]
     before: |
-      google-api-core==2.24.2
+      google-api-core==2.25.0
       google-auth==2.14.1
     after: |
-      google-api-core==2.24.2
+      google-api-core==2.25.0
       pandas==1.3.4
       numpy==1.21.3
       google-auth==2.14.1
