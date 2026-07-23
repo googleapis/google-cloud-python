@@ -60,11 +60,12 @@ class PluginHandler(WebAuthnHandler):
         process_result = subprocess.run([cmd], input=request, capture_output=True)
 
         if process_result.returncode != 0:
-            stdout_bytes = (
-                process_result.stdout[4:]
-                if len(process_result.stdout) >= 4
-                else process_result.stdout
-            )
+            stdout_bytes = process_result.stdout
+            if (
+                len(stdout_bytes) >= 4
+                and struct.unpack("<I", stdout_bytes[:4])[0] == len(stdout_bytes) - 4
+            ):
+                stdout_bytes = stdout_bytes[4:]
 
             error_msg = "Command '{}' returned non-zero exit status {}.\nStdout: {}\nStderr: {}".format(
                 cmd,
