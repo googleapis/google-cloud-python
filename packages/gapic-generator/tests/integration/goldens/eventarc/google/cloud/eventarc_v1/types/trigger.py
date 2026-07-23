@@ -25,17 +25,17 @@ import google.rpc.code_pb2 as code_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.eventarc.v1",
+    package='google.cloud.eventarc.v1',
     manifest={
-        "Trigger",
-        "EventFilter",
-        "StateCondition",
-        "Destination",
-        "Transport",
-        "CloudRun",
-        "GKE",
-        "Pubsub",
-        "HttpEndpoint",
+        'Trigger',
+        'EventFilter',
+        'StateCondition',
+        'Destination',
+        'Transport',
+        'CloudRun',
+        'GKE',
+        'Pubsub',
+        'HttpEndpoint',
     },
 )
 
@@ -153,24 +153,24 @@ class Trigger(proto.Message):
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    event_filters: MutableSequence["EventFilter"] = proto.RepeatedField(
+    event_filters: MutableSequence['EventFilter'] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
-        message="EventFilter",
+        message='EventFilter',
     )
     service_account: str = proto.Field(
         proto.STRING,
         number=9,
     )
-    destination: "Destination" = proto.Field(
+    destination: 'Destination' = proto.Field(
         proto.MESSAGE,
         number=10,
-        message="Destination",
+        message='Destination',
     )
-    transport: "Transport" = proto.Field(
+    transport: 'Transport' = proto.Field(
         proto.MESSAGE,
         number=11,
-        message="Transport",
+        message='Transport',
     )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -181,11 +181,11 @@ class Trigger(proto.Message):
         proto.STRING,
         number=13,
     )
-    conditions: MutableMapping[str, "StateCondition"] = proto.MapField(
+    conditions: MutableMapping[str, 'StateCondition'] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=15,
-        message="StateCondition",
+        message='StateCondition',
     )
     event_data_content_type: str = proto.Field(
         proto.STRING,
@@ -316,33 +316,33 @@ class Destination(proto.Message):
             HttpEndpoint destination type.
     """
 
-    cloud_run: "CloudRun" = proto.Field(
+    cloud_run: 'CloudRun' = proto.Field(
         proto.MESSAGE,
         number=1,
-        oneof="descriptor",
-        message="CloudRun",
+        oneof='descriptor',
+        message='CloudRun',
     )
     cloud_function: str = proto.Field(
         proto.STRING,
         number=2,
-        oneof="descriptor",
+        oneof='descriptor',
     )
-    gke: "GKE" = proto.Field(
+    gke: 'GKE' = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof="descriptor",
-        message="GKE",
+        oneof='descriptor',
+        message='GKE',
     )
     workflow: str = proto.Field(
         proto.STRING,
         number=4,
-        oneof="descriptor",
+        oneof='descriptor',
     )
-    http_endpoint: "HttpEndpoint" = proto.Field(
+    http_endpoint: 'HttpEndpoint' = proto.Field(
         proto.MESSAGE,
         number=5,
-        oneof="descriptor",
-        message="HttpEndpoint",
+        oneof='descriptor',
+        message='HttpEndpoint',
     )
     network_config: gce_network_config.NetworkConfig = proto.Field(
         proto.MESSAGE,
@@ -366,11 +366,11 @@ class Transport(proto.Message):
             This field is a member of `oneof`_ ``intermediary``.
     """
 
-    pubsub: "Pubsub" = proto.Field(
+    pubsub: 'Pubsub' = proto.Field(
         proto.MESSAGE,
         number=1,
-        oneof="intermediary",
-        message="Pubsub",
+        oneof='intermediary',
+        message='Pubsub',
     )
 
 

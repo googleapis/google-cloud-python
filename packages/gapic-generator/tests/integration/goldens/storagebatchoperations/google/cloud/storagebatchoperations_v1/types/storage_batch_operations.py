@@ -24,19 +24,19 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.storagebatchoperations.v1",
+    package='google.cloud.storagebatchoperations.v1',
     manifest={
-        "ListJobsRequest",
-        "ListJobsResponse",
-        "GetJobRequest",
-        "CreateJobRequest",
-        "CancelJobRequest",
-        "DeleteJobRequest",
-        "CancelJobResponse",
-        "ListBucketOperationsRequest",
-        "ListBucketOperationsResponse",
-        "GetBucketOperationRequest",
-        "OperationMetadata",
+        'ListJobsRequest',
+        'ListJobsResponse',
+        'GetJobRequest',
+        'CreateJobRequest',
+        'CancelJobRequest',
+        'DeleteJobRequest',
+        'CancelJobResponse',
+        'ListBucketOperationsRequest',
+        'ListBucketOperationsResponse',
+        'GetBucketOperationRequest',
+        'OperationMetadata',
     },
 )
 
@@ -234,7 +234,8 @@ class DeleteJobRequest(proto.Message):
 
 
 class CancelJobResponse(proto.Message):
-    r"""Message for response to cancel Job."""
+    r"""Message for response to cancel Job.
+    """
 
 
 class ListBucketOperationsRequest(proto.Message):
@@ -295,9 +296,7 @@ class ListBucketOperationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    bucket_operations: MutableSequence[
-        storage_batch_operations_types.BucketOperation
-    ] = proto.RepeatedField(
+    bucket_operations: MutableSequence[storage_batch_operations_types.BucketOperation] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=storage_batch_operations_types.BucketOperation,

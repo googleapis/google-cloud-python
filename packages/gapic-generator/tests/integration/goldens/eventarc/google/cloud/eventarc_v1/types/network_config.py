@@ -21,9 +21,9 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.eventarc.v1",
+    package='google.cloud.eventarc.v1',
     manifest={
-        "NetworkConfig",
+        'NetworkConfig',
     },
 )
 

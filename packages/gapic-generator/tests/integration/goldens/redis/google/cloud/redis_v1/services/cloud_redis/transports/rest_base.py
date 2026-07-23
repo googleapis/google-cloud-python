@@ -18,7 +18,7 @@ from google.api_core import path_template
 from google.api_core import gapic_v1
 
 from google.protobuf import json_format
-from google.cloud.location import locations_pb2  # type: ignore
+from google.cloud.location import locations_pb2 # type: ignore
 from .base import CloudRedisTransport, DEFAULT_CLIENT_INFO
 
 import re
@@ -42,16 +42,14 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(
-        self,
-        *,
-        host: str = "redis.googleapis.com",
-        credentials: Optional[Any] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        url_scheme: str = "https",
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'redis.googleapis.com',
+            credentials: Optional[Any] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
         Args:
             host (Optional[str]):
@@ -75,9 +73,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
@@ -88,33 +84,27 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            api_audience=api_audience
         )
 
     class _BaseCreateInstance:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "instanceId": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+            "instanceId" : "",        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/instances",
-                    "body": "instance",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{parent=projects/*/locations/*}/instances',
+                'body': 'instance',
+            },
             ]
             return http_options
 
@@ -129,23 +119,17 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request['body'],
+                use_integers_for_enums=False
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseCreateInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=False,
+            ))
+            query_params.update(_BaseCloudRedisRestTransport._BaseCreateInstance._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -153,23 +137,19 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/instances/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'delete',
+                'uri': '/v1/{name=projects/*/locations/*/instances/*}',
+            },
             ]
             return http_options
 
@@ -181,17 +161,11 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseDeleteInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=False,
+            ))
+            query_params.update(_BaseCloudRedisRestTransport._BaseDeleteInstance._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -199,24 +173,20 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/instances/*}:export",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{name=projects/*/locations/*/instances/*}:export',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -231,23 +201,17 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request['body'],
+                use_integers_for_enums=False
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseExportInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=False,
+            ))
+            query_params.update(_BaseCloudRedisRestTransport._BaseExportInstance._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -255,24 +219,20 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/instances/*}:failover",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{name=projects/*/locations/*/instances/*}:failover',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -287,23 +247,17 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request['body'],
+                use_integers_for_enums=False
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseFailoverInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=False,
+            ))
+            query_params.update(_BaseCloudRedisRestTransport._BaseFailoverInstance._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -311,23 +265,19 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/instances/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*/locations/*/instances/*}',
+            },
             ]
             return http_options
 
@@ -339,17 +289,11 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseGetInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=False,
+            ))
+            query_params.update(_BaseCloudRedisRestTransport._BaseGetInstance._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -357,23 +301,19 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/instances/*}/authString",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*/locations/*/instances/*}/authString',
+            },
             ]
             return http_options
 
@@ -385,17 +325,11 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=False,
+            ))
+            query_params.update(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -403,24 +337,20 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/instances/*}:import",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{name=projects/*/locations/*/instances/*}:import',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -435,23 +365,17 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request['body'],
+                use_integers_for_enums=False
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseImportInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=False,
+            ))
+            query_params.update(_BaseCloudRedisRestTransport._BaseImportInstance._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -459,23 +383,19 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/instances",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{parent=projects/*/locations/*}/instances',
+            },
             ]
             return http_options
 
@@ -487,17 +407,11 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseListInstances._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=False,
+            ))
+            query_params.update(_BaseCloudRedisRestTransport._BaseListInstances._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -505,24 +419,20 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/instances/*}:rescheduleMaintenance",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{name=projects/*/locations/*/instances/*}:rescheduleMaintenance',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -537,23 +447,17 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request['body'],
+                use_integers_for_enums=False
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=False,
+            ))
+            query_params.update(_BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -561,26 +465,20 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+            "updateMask" : {},        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{instance.name=projects/*/locations/*/instances/*}",
-                    "body": "instance",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'patch',
+                'uri': '/v1/{instance.name=projects/*/locations/*/instances/*}',
+                'body': 'instance',
+            },
             ]
             return http_options
 
@@ -595,23 +493,17 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request['body'],
+                use_integers_for_enums=False
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseUpdateInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=False,
+            ))
+            query_params.update(_BaseCloudRedisRestTransport._BaseUpdateInstance._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -619,24 +511,20 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/instances/*}:upgrade",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{name=projects/*/locations/*/instances/*}:upgrade',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -651,23 +539,17 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request['body'],
+                use_integers_for_enums=False
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
-            )
-            query_params.update(
-                _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=False,
+            ))
+            query_params.update(_BaseCloudRedisRestTransport._BaseUpgradeInstance._get_unset_required_fields(query_params))
 
             return query_params
 
@@ -677,23 +559,23 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*/locations/*}',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
             return query_params
 
     class _BaseListLocations:
@@ -702,23 +584,23 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*}/locations",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*}/locations',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
             return query_params
 
     class _BaseCancelOperation:
@@ -727,23 +609,23 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{name=projects/*/locations/*/operations/*}:cancel',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
             return query_params
 
     class _BaseDeleteOperation:
@@ -752,23 +634,23 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'delete',
+                'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
             return query_params
 
     class _BaseGetOperation:
@@ -777,23 +659,23 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
             return query_params
 
     class _BaseListOperations:
@@ -802,23 +684,23 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}/operations",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*/locations/*}/operations',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
             return query_params
 
     class _BaseWaitOperation:
@@ -827,30 +709,31 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/operations/*}:wait",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v2/{name=projects/*/locations/*/operations/*}:wait',
+                'body': '*',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_request_body_json(transcoded_request):
-            body = json.dumps(transcoded_request["body"])
+            body = json.dumps(transcoded_request['body'])
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
             return query_params
 
 
-__all__ = ("_BaseCloudRedisRestTransport",)
+__all__=(
+    '_BaseCloudRedisRestTransport',
+)

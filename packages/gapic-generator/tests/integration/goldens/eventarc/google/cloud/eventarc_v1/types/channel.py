@@ -23,9 +23,9 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.eventarc.v1",
+    package='google.cloud.eventarc.v1',
     manifest={
-        "Channel",
+        'Channel',
     },
 )
 
@@ -85,7 +85,6 @@ class Channel(proto.Message):
         labels (MutableMapping[str, str]):
             Optional. Resource labels.
     """
-
     class State(proto.Enum):
         r"""State lists all the possible states of a Channel
 
@@ -117,7 +116,6 @@ class Channel(proto.Message):
                 the subscriber should create a new Channel and
                 give it to the provider.
         """
-
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ACTIVE = 2
@@ -148,7 +146,7 @@ class Channel(proto.Message):
     pubsub_topic: str = proto.Field(
         proto.STRING,
         number=8,
-        oneof="transport",
+        oneof='transport',
     )
     state: State = proto.Field(
         proto.ENUM,

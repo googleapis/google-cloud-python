@@ -24,37 +24,36 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.oauth2 import service_account # type: ignore
 import google.protobuf
 
 from google.iam.credentials_v1.types import common
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class IAMCredentialsTransport(abc.ABC):
     """Abstract transport class for IAMCredentials."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+    )
 
-    DEFAULT_HOST: str = "iamcredentials.googleapis.com"
+    DEFAULT_HOST: str = 'iamcredentials.googleapis.com'
 
     def __init__(
-        self,
-        *,
-        host: str = DEFAULT_HOST,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        api_audience: Optional[str] = None,
-        **kwargs,
-    ) -> None:
+            self, *,
+            host: str = DEFAULT_HOST,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            api_audience: Optional[str] = None,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -93,43 +92,31 @@ class IAMCredentialsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
             credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file,
-                scopes=scopes,
-                quota_project_id=quota_project_id,
-                default_scopes=self.AUTH_SCOPES,
-            )
+                                credentials_file,
+                                scopes=scopes,
+                                quota_project_id=quota_project_id,
+                                default_scopes=self.AUTH_SCOPES,
+                            )
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                scopes=scopes,
-                quota_project_id=quota_project_id,
-                default_scopes=self.AUTH_SCOPES,
-            )
+            credentials, _ = google.auth.default(scopes=scopes, quota_project_id=quota_project_id, default_scopes=self.AUTH_SCOPES)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
-        if (
-            always_use_jwt_access
-            and isinstance(credentials, service_account.Credentials)
-            and hasattr(service_account.Credentials, "with_always_use_jwt_access")
-        ):
+        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
         self._credentials = credentials
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
+        if ':' not in host:
+            host += ':443'
         self._host = host
 
         self._wrapped_methods: Dict[Callable, Callable] = {}
@@ -201,56 +188,51 @@ class IAMCredentialsTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-        }
+         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-        .. warning::
-             Only call this method if the transport is NOT shared
-             with other clients - this may cause errors in other clients!
+       .. warning::
+            Only call this method if the transport is NOT shared
+            with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
     @property
-    def generate_access_token(
-        self,
-    ) -> Callable[
-        [common.GenerateAccessTokenRequest],
-        Union[
-            common.GenerateAccessTokenResponse,
-            Awaitable[common.GenerateAccessTokenResponse],
-        ],
-    ]:
+    def generate_access_token(self) -> Callable[
+            [common.GenerateAccessTokenRequest],
+            Union[
+                common.GenerateAccessTokenResponse,
+                Awaitable[common.GenerateAccessTokenResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def generate_id_token(
-        self,
-    ) -> Callable[
-        [common.GenerateIdTokenRequest],
-        Union[
-            common.GenerateIdTokenResponse, Awaitable[common.GenerateIdTokenResponse]
-        ],
-    ]:
+    def generate_id_token(self) -> Callable[
+            [common.GenerateIdTokenRequest],
+            Union[
+                common.GenerateIdTokenResponse,
+                Awaitable[common.GenerateIdTokenResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def sign_blob(
-        self,
-    ) -> Callable[
-        [common.SignBlobRequest],
-        Union[common.SignBlobResponse, Awaitable[common.SignBlobResponse]],
-    ]:
+    def sign_blob(self) -> Callable[
+            [common.SignBlobRequest],
+            Union[
+                common.SignBlobResponse,
+                Awaitable[common.SignBlobResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def sign_jwt(
-        self,
-    ) -> Callable[
-        [common.SignJwtRequest],
-        Union[common.SignJwtResponse, Awaitable[common.SignJwtResponse]],
-    ]:
+    def sign_jwt(self) -> Callable[
+            [common.SignJwtRequest],
+            Union[
+                common.SignJwtResponse,
+                Awaitable[common.SignJwtResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
@@ -258,4 +240,6 @@ class IAMCredentialsTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("IAMCredentialsTransport",)
+__all__ = (
+    'IAMCredentialsTransport',
+)

@@ -24,16 +24,16 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.iam.credentials.v1",
+    package='google.iam.credentials.v1',
     manifest={
-        "GenerateAccessTokenRequest",
-        "GenerateAccessTokenResponse",
-        "SignBlobRequest",
-        "SignBlobResponse",
-        "SignJwtRequest",
-        "SignJwtResponse",
-        "GenerateIdTokenRequest",
-        "GenerateIdTokenResponse",
+        'GenerateAccessTokenRequest',
+        'GenerateAccessTokenResponse',
+        'SignBlobRequest',
+        'SignBlobResponse',
+        'SignJwtRequest',
+        'SignJwtResponse',
+        'GenerateIdTokenRequest',
+        'GenerateIdTokenResponse',
     },
 )
 

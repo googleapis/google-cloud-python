@@ -28,12 +28,12 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.logging.v2",
+    package='google.logging.v2',
     manifest={
-        "LogEntry",
-        "LogEntryOperation",
-        "LogEntrySourceLocation",
-        "LogSplit",
+        'LogEntry',
+        'LogEntryOperation',
+        'LogEntrySourceLocation',
+        'LogSplit',
     },
 )
 
@@ -249,18 +249,18 @@ class LogEntry(proto.Message):
     proto_payload: any_pb2.Any = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof="payload",
+        oneof='payload',
         message=any_pb2.Any,
     )
     text_payload: str = proto.Field(
         proto.STRING,
         number=3,
-        oneof="payload",
+        oneof='payload',
     )
     json_payload: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=6,
-        oneof="payload",
+        oneof='payload',
         message=struct_pb2.Struct,
     )
     timestamp: timestamp_pb2.Timestamp = proto.Field(
@@ -292,10 +292,10 @@ class LogEntry(proto.Message):
         proto.STRING,
         number=11,
     )
-    operation: "LogEntryOperation" = proto.Field(
+    operation: 'LogEntryOperation' = proto.Field(
         proto.MESSAGE,
         number=15,
-        message="LogEntryOperation",
+        message='LogEntryOperation',
     )
     trace: str = proto.Field(
         proto.STRING,
@@ -309,15 +309,15 @@ class LogEntry(proto.Message):
         proto.BOOL,
         number=30,
     )
-    source_location: "LogEntrySourceLocation" = proto.Field(
+    source_location: 'LogEntrySourceLocation' = proto.Field(
         proto.MESSAGE,
         number=23,
-        message="LogEntrySourceLocation",
+        message='LogEntrySourceLocation',
     )
-    split: "LogSplit" = proto.Field(
+    split: 'LogSplit' = proto.Field(
         proto.MESSAGE,
         number=35,
-        message="LogSplit",
+        message='LogSplit',
     )
 
 

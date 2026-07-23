@@ -16,23 +16,10 @@
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core import retry_async as retries_async
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Sequence,
-    Tuple,
-    Optional,
-    Iterator,
-    Union,
-)
-
+from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator, Union
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -58,17 +45,14 @@ class ListAssetsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., asset_service.ListAssetsResponse],
-        request: asset_service.ListAssetsRequest,
-        response: asset_service.ListAssetsResponse,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ):
+    def __init__(self,
+            method: Callable[..., asset_service.ListAssetsResponse],
+            request: asset_service.ListAssetsRequest,
+            response: asset_service.ListAssetsResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -101,12 +85,7 @@ class ListAssetsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[assets.Asset]:
@@ -114,7 +93,7 @@ class ListAssetsPager:
             yield from page.assets
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListAssetsAsyncPager:
@@ -134,17 +113,14 @@ class ListAssetsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[asset_service.ListAssetsResponse]],
-        request: asset_service.ListAssetsRequest,
-        response: asset_service.ListAssetsResponse,
-        *,
-        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[asset_service.ListAssetsResponse]],
+            request: asset_service.ListAssetsRequest,
+            response: asset_service.ListAssetsResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -177,14 +153,8 @@ class ListAssetsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-
     def __aiter__(self) -> AsyncIterator[assets.Asset]:
         async def async_generator():
             async for page in self.pages:
@@ -194,7 +164,7 @@ class ListAssetsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class SearchAllResourcesPager:
@@ -214,17 +184,14 @@ class SearchAllResourcesPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., asset_service.SearchAllResourcesResponse],
-        request: asset_service.SearchAllResourcesRequest,
-        response: asset_service.SearchAllResourcesResponse,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ):
+    def __init__(self,
+            method: Callable[..., asset_service.SearchAllResourcesResponse],
+            request: asset_service.SearchAllResourcesRequest,
+            response: asset_service.SearchAllResourcesResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -257,12 +224,7 @@ class SearchAllResourcesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[assets.ResourceSearchResult]:
@@ -270,7 +232,7 @@ class SearchAllResourcesPager:
             yield from page.results
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class SearchAllResourcesAsyncPager:
@@ -290,17 +252,14 @@ class SearchAllResourcesAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[asset_service.SearchAllResourcesResponse]],
-        request: asset_service.SearchAllResourcesRequest,
-        response: asset_service.SearchAllResourcesResponse,
-        *,
-        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[asset_service.SearchAllResourcesResponse]],
+            request: asset_service.SearchAllResourcesRequest,
+            response: asset_service.SearchAllResourcesResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -333,14 +292,8 @@ class SearchAllResourcesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-
     def __aiter__(self) -> AsyncIterator[assets.ResourceSearchResult]:
         async def async_generator():
             async for page in self.pages:
@@ -350,7 +303,7 @@ class SearchAllResourcesAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class SearchAllIamPoliciesPager:
@@ -370,17 +323,14 @@ class SearchAllIamPoliciesPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., asset_service.SearchAllIamPoliciesResponse],
-        request: asset_service.SearchAllIamPoliciesRequest,
-        response: asset_service.SearchAllIamPoliciesResponse,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ):
+    def __init__(self,
+            method: Callable[..., asset_service.SearchAllIamPoliciesResponse],
+            request: asset_service.SearchAllIamPoliciesRequest,
+            response: asset_service.SearchAllIamPoliciesResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -413,12 +363,7 @@ class SearchAllIamPoliciesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[assets.IamPolicySearchResult]:
@@ -426,7 +371,7 @@ class SearchAllIamPoliciesPager:
             yield from page.results
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class SearchAllIamPoliciesAsyncPager:
@@ -446,17 +391,14 @@ class SearchAllIamPoliciesAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[asset_service.SearchAllIamPoliciesResponse]],
-        request: asset_service.SearchAllIamPoliciesRequest,
-        response: asset_service.SearchAllIamPoliciesResponse,
-        *,
-        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[asset_service.SearchAllIamPoliciesResponse]],
+            request: asset_service.SearchAllIamPoliciesRequest,
+            response: asset_service.SearchAllIamPoliciesResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -489,14 +431,8 @@ class SearchAllIamPoliciesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-
     def __aiter__(self) -> AsyncIterator[assets.IamPolicySearchResult]:
         async def async_generator():
             async for page in self.pages:
@@ -506,7 +442,7 @@ class SearchAllIamPoliciesAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListSavedQueriesPager:
@@ -526,17 +462,14 @@ class ListSavedQueriesPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., asset_service.ListSavedQueriesResponse],
-        request: asset_service.ListSavedQueriesRequest,
-        response: asset_service.ListSavedQueriesResponse,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ):
+    def __init__(self,
+            method: Callable[..., asset_service.ListSavedQueriesResponse],
+            request: asset_service.ListSavedQueriesRequest,
+            response: asset_service.ListSavedQueriesResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -569,12 +502,7 @@ class ListSavedQueriesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[asset_service.SavedQuery]:
@@ -582,7 +510,7 @@ class ListSavedQueriesPager:
             yield from page.saved_queries
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListSavedQueriesAsyncPager:
@@ -602,17 +530,14 @@ class ListSavedQueriesAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[asset_service.ListSavedQueriesResponse]],
-        request: asset_service.ListSavedQueriesRequest,
-        response: asset_service.ListSavedQueriesResponse,
-        *,
-        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[asset_service.ListSavedQueriesResponse]],
+            request: asset_service.ListSavedQueriesRequest,
+            response: asset_service.ListSavedQueriesResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -645,14 +570,8 @@ class ListSavedQueriesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-
     def __aiter__(self) -> AsyncIterator[asset_service.SavedQuery]:
         async def async_generator():
             async for page in self.pages:
@@ -662,7 +581,7 @@ class ListSavedQueriesAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class AnalyzeOrgPoliciesPager:
@@ -682,17 +601,14 @@ class AnalyzeOrgPoliciesPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., asset_service.AnalyzeOrgPoliciesResponse],
-        request: asset_service.AnalyzeOrgPoliciesRequest,
-        response: asset_service.AnalyzeOrgPoliciesResponse,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ):
+    def __init__(self,
+            method: Callable[..., asset_service.AnalyzeOrgPoliciesResponse],
+            request: asset_service.AnalyzeOrgPoliciesRequest,
+            response: asset_service.AnalyzeOrgPoliciesResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -725,22 +641,15 @@ class AnalyzeOrgPoliciesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult]:
+    def __iter__(self) -> Iterator[asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult]:
         for page in self.pages:
             yield from page.org_policy_results
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class AnalyzeOrgPoliciesAsyncPager:
@@ -760,17 +669,14 @@ class AnalyzeOrgPoliciesAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[asset_service.AnalyzeOrgPoliciesResponse]],
-        request: asset_service.AnalyzeOrgPoliciesRequest,
-        response: asset_service.AnalyzeOrgPoliciesResponse,
-        *,
-        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[asset_service.AnalyzeOrgPoliciesResponse]],
+            request: asset_service.AnalyzeOrgPoliciesRequest,
+            response: asset_service.AnalyzeOrgPoliciesResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -803,17 +709,9 @@ class AnalyzeOrgPoliciesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult]:
+    def __aiter__(self) -> AsyncIterator[asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.org_policy_results:
@@ -822,7 +720,7 @@ class AnalyzeOrgPoliciesAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class AnalyzeOrgPolicyGovernedContainersPager:
@@ -842,17 +740,14 @@ class AnalyzeOrgPolicyGovernedContainersPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., asset_service.AnalyzeOrgPolicyGovernedContainersResponse],
-        request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
-        response: asset_service.AnalyzeOrgPolicyGovernedContainersResponse,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ):
+    def __init__(self,
+            method: Callable[..., asset_service.AnalyzeOrgPolicyGovernedContainersResponse],
+            request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
+            response: asset_service.AnalyzeOrgPolicyGovernedContainersResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -881,30 +776,19 @@ class AnalyzeOrgPolicyGovernedContainersPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[asset_service.AnalyzeOrgPolicyGovernedContainersResponse]:
+    def pages(self) -> Iterator[asset_service.AnalyzeOrgPolicyGovernedContainersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[
-        asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer
-    ]:
+    def __iter__(self) -> Iterator[asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer]:
         for page in self.pages:
             yield from page.governed_containers
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class AnalyzeOrgPolicyGovernedContainersAsyncPager:
@@ -924,19 +808,14 @@ class AnalyzeOrgPolicyGovernedContainersAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[
-            ..., Awaitable[asset_service.AnalyzeOrgPolicyGovernedContainersResponse]
-        ],
-        request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
-        response: asset_service.AnalyzeOrgPolicyGovernedContainersResponse,
-        *,
-        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[asset_service.AnalyzeOrgPolicyGovernedContainersResponse]],
+            request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
+            response: asset_service.AnalyzeOrgPolicyGovernedContainersResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -965,25 +844,13 @@ class AnalyzeOrgPolicyGovernedContainersAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[asset_service.AnalyzeOrgPolicyGovernedContainersResponse]:
+    async def pages(self) -> AsyncIterator[asset_service.AnalyzeOrgPolicyGovernedContainersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[
-        asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer
-    ]:
+    def __aiter__(self) -> AsyncIterator[asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.governed_containers:
@@ -992,7 +859,7 @@ class AnalyzeOrgPolicyGovernedContainersAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class AnalyzeOrgPolicyGovernedAssetsPager:
@@ -1012,17 +879,14 @@ class AnalyzeOrgPolicyGovernedAssetsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., asset_service.AnalyzeOrgPolicyGovernedAssetsResponse],
-        request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
-        response: asset_service.AnalyzeOrgPolicyGovernedAssetsResponse,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ):
+    def __init__(self,
+            method: Callable[..., asset_service.AnalyzeOrgPolicyGovernedAssetsResponse],
+            request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
+            response: asset_service.AnalyzeOrgPolicyGovernedAssetsResponse,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -1055,22 +919,15 @@ class AnalyzeOrgPolicyGovernedAssetsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset]:
+    def __iter__(self) -> Iterator[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset]:
         for page in self.pages:
             yield from page.governed_assets
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class AnalyzeOrgPolicyGovernedAssetsAsyncPager:
@@ -1090,19 +947,14 @@ class AnalyzeOrgPolicyGovernedAssetsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[
-            ..., Awaitable[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse]
-        ],
-        request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
-        response: asset_service.AnalyzeOrgPolicyGovernedAssetsResponse,
-        *,
-        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse]],
+            request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
+            response: asset_service.AnalyzeOrgPolicyGovernedAssetsResponse,
+            *,
+            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -1131,25 +983,13 @@ class AnalyzeOrgPolicyGovernedAssetsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse]:
+    async def pages(self) -> AsyncIterator[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[
-        asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset
-    ]:
+    def __aiter__(self) -> AsyncIterator[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.governed_assets:
@@ -1158,4 +998,4 @@ class AnalyzeOrgPolicyGovernedAssetsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)

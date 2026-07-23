@@ -19,9 +19,7 @@ __version__ = package_version.__version__
 
 
 from google.cloud.redis_v1.services.cloud_redis.client import CloudRedisClient
-from google.cloud.redis_v1.services.cloud_redis.async_client import (
-    CloudRedisAsyncClient,
-)
+from google.cloud.redis_v1.services.cloud_redis.async_client import CloudRedisAsyncClient
 
 from google.cloud.redis_v1.types.cloud_redis import CreateInstanceRequest
 from google.cloud.redis_v1.types.cloud_redis import DeleteInstanceRequest
@@ -44,27 +42,26 @@ from google.cloud.redis_v1.types.cloud_redis import UpdateInstanceRequest
 from google.cloud.redis_v1.types.cloud_redis import WeeklyMaintenanceWindow
 from google.cloud.redis_v1.types.cloud_redis import ZoneMetadata
 
-__all__ = (
-    "CloudRedisClient",
-    "CloudRedisAsyncClient",
-    "CreateInstanceRequest",
-    "DeleteInstanceRequest",
-    "GcsDestination",
-    "GcsSource",
-    "GetInstanceRequest",
-    "InputConfig",
-    "Instance",
-    "ListInstancesRequest",
-    "ListInstancesResponse",
-    "LocationMetadata",
-    "MaintenancePolicy",
-    "MaintenanceSchedule",
-    "NodeInfo",
-    "OperationMetadata",
-    "OutputConfig",
-    "PersistenceConfig",
-    "TlsCertificate",
-    "UpdateInstanceRequest",
-    "WeeklyMaintenanceWindow",
-    "ZoneMetadata",
+__all__ = ('CloudRedisClient',
+    'CloudRedisAsyncClient',
+    'CreateInstanceRequest',
+    'DeleteInstanceRequest',
+    'GcsDestination',
+    'GcsSource',
+    'GetInstanceRequest',
+    'InputConfig',
+    'Instance',
+    'ListInstancesRequest',
+    'ListInstancesResponse',
+    'LocationMetadata',
+    'MaintenancePolicy',
+    'MaintenanceSchedule',
+    'NodeInfo',
+    'OperationMetadata',
+    'OutputConfig',
+    'PersistenceConfig',
+    'TlsCertificate',
+    'UpdateInstanceRequest',
+    'WeeklyMaintenanceWindow',
+    'ZoneMetadata',
 )

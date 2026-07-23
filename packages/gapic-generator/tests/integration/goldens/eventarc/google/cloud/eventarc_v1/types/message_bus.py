@@ -24,9 +24,9 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.eventarc.v1",
+    package='google.cloud.eventarc.v1',
     manifest={
-        "MessageBus",
+        'MessageBus',
     },
 )
 

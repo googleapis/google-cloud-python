@@ -21,9 +21,9 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.eventarc.v1",
+    package='google.cloud.eventarc.v1',
     manifest={
-        "LoggingConfig",
+        'LoggingConfig',
     },
 )
 
@@ -39,7 +39,6 @@ class LoggingConfig(proto.Message):
             Logs at severitiy ≥ this value will be sent,
             unless it is NONE.
     """
-
     class LogSeverity(proto.Enum):
         r"""The different severities for logging supported by Eventarc
         Advanced resources.
@@ -75,7 +74,6 @@ class LoggingConfig(proto.Message):
             EMERGENCY (9):
                 One or more systems are unusable.
         """
-
         LOG_SEVERITY_UNSPECIFIED = 0
         NONE = 1
         DEBUG = 2

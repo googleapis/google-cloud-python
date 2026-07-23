@@ -19,46 +19,28 @@ __version__ = package_version.__version__
 
 
 from google.cloud.asset_v1.services.asset_service.client import AssetServiceClient
-from google.cloud.asset_v1.services.asset_service.async_client import (
-    AssetServiceAsyncClient,
-)
+from google.cloud.asset_v1.services.asset_service.async_client import AssetServiceAsyncClient
 
 from google.cloud.asset_v1.types.asset_enrichment_resourceowners import ResourceOwners
-from google.cloud.asset_v1.types.asset_service import (
-    AnalyzeIamPolicyLongrunningMetadata,
-)
+from google.cloud.asset_v1.types.asset_service import AnalyzeIamPolicyLongrunningMetadata
 from google.cloud.asset_v1.types.asset_service import AnalyzeIamPolicyLongrunningRequest
-from google.cloud.asset_v1.types.asset_service import (
-    AnalyzeIamPolicyLongrunningResponse,
-)
+from google.cloud.asset_v1.types.asset_service import AnalyzeIamPolicyLongrunningResponse
 from google.cloud.asset_v1.types.asset_service import AnalyzeIamPolicyRequest
 from google.cloud.asset_v1.types.asset_service import AnalyzeIamPolicyResponse
 from google.cloud.asset_v1.types.asset_service import AnalyzeMoveRequest
 from google.cloud.asset_v1.types.asset_service import AnalyzeMoveResponse
 from google.cloud.asset_v1.types.asset_service import AnalyzeOrgPoliciesRequest
 from google.cloud.asset_v1.types.asset_service import AnalyzeOrgPoliciesResponse
-from google.cloud.asset_v1.types.asset_service import (
-    AnalyzeOrgPolicyGovernedAssetsRequest,
-)
-from google.cloud.asset_v1.types.asset_service import (
-    AnalyzeOrgPolicyGovernedAssetsResponse,
-)
-from google.cloud.asset_v1.types.asset_service import (
-    AnalyzeOrgPolicyGovernedContainersRequest,
-)
-from google.cloud.asset_v1.types.asset_service import (
-    AnalyzeOrgPolicyGovernedContainersResponse,
-)
+from google.cloud.asset_v1.types.asset_service import AnalyzeOrgPolicyGovernedAssetsRequest
+from google.cloud.asset_v1.types.asset_service import AnalyzeOrgPolicyGovernedAssetsResponse
+from google.cloud.asset_v1.types.asset_service import AnalyzeOrgPolicyGovernedContainersRequest
+from google.cloud.asset_v1.types.asset_service import AnalyzeOrgPolicyGovernedContainersResponse
 from google.cloud.asset_v1.types.asset_service import AnalyzerOrgPolicy
 from google.cloud.asset_v1.types.asset_service import AnalyzerOrgPolicyConstraint
 from google.cloud.asset_v1.types.asset_service import BatchGetAssetsHistoryRequest
 from google.cloud.asset_v1.types.asset_service import BatchGetAssetsHistoryResponse
-from google.cloud.asset_v1.types.asset_service import (
-    BatchGetEffectiveIamPoliciesRequest,
-)
-from google.cloud.asset_v1.types.asset_service import (
-    BatchGetEffectiveIamPoliciesResponse,
-)
+from google.cloud.asset_v1.types.asset_service import BatchGetEffectiveIamPoliciesRequest
+from google.cloud.asset_v1.types.asset_service import BatchGetEffectiveIamPoliciesResponse
 from google.cloud.asset_v1.types.asset_service import BigQueryDestination
 from google.cloud.asset_v1.types.asset_service import CreateFeedRequest
 from google.cloud.asset_v1.types.asset_service import CreateSavedQueryRequest
@@ -121,88 +103,87 @@ from google.cloud.asset_v1.types.assets import TemporalAsset
 from google.cloud.asset_v1.types.assets import TimeWindow
 from google.cloud.asset_v1.types.assets import VersionedResource
 
-__all__ = (
-    "AssetServiceClient",
-    "AssetServiceAsyncClient",
-    "ResourceOwners",
-    "AnalyzeIamPolicyLongrunningMetadata",
-    "AnalyzeIamPolicyLongrunningRequest",
-    "AnalyzeIamPolicyLongrunningResponse",
-    "AnalyzeIamPolicyRequest",
-    "AnalyzeIamPolicyResponse",
-    "AnalyzeMoveRequest",
-    "AnalyzeMoveResponse",
-    "AnalyzeOrgPoliciesRequest",
-    "AnalyzeOrgPoliciesResponse",
-    "AnalyzeOrgPolicyGovernedAssetsRequest",
-    "AnalyzeOrgPolicyGovernedAssetsResponse",
-    "AnalyzeOrgPolicyGovernedContainersRequest",
-    "AnalyzeOrgPolicyGovernedContainersResponse",
-    "AnalyzerOrgPolicy",
-    "AnalyzerOrgPolicyConstraint",
-    "BatchGetAssetsHistoryRequest",
-    "BatchGetAssetsHistoryResponse",
-    "BatchGetEffectiveIamPoliciesRequest",
-    "BatchGetEffectiveIamPoliciesResponse",
-    "BigQueryDestination",
-    "CreateFeedRequest",
-    "CreateSavedQueryRequest",
-    "DeleteFeedRequest",
-    "DeleteSavedQueryRequest",
-    "ExportAssetsRequest",
-    "ExportAssetsResponse",
-    "Feed",
-    "FeedOutputConfig",
-    "GcsDestination",
-    "GcsOutputResult",
-    "GetFeedRequest",
-    "GetSavedQueryRequest",
-    "IamPolicyAnalysisOutputConfig",
-    "IamPolicyAnalysisQuery",
-    "ListAssetsRequest",
-    "ListAssetsResponse",
-    "ListFeedsRequest",
-    "ListFeedsResponse",
-    "ListSavedQueriesRequest",
-    "ListSavedQueriesResponse",
-    "MoveAnalysis",
-    "MoveAnalysisResult",
-    "MoveImpact",
-    "OutputConfig",
-    "OutputResult",
-    "PartitionSpec",
-    "PubsubDestination",
-    "QueryAssetsOutputConfig",
-    "QueryAssetsRequest",
-    "QueryAssetsResponse",
-    "QueryResult",
-    "SavedQuery",
-    "SearchAllIamPoliciesRequest",
-    "SearchAllIamPoliciesResponse",
-    "SearchAllResourcesRequest",
-    "SearchAllResourcesResponse",
-    "TableFieldSchema",
-    "TableSchema",
-    "UpdateFeedRequest",
-    "UpdateSavedQueryRequest",
-    "ContentType",
-    "Asset",
-    "AssetEnrichment",
-    "AttachedResource",
-    "ConditionEvaluation",
-    "EffectiveTagDetails",
-    "IamPolicyAnalysisResult",
-    "IamPolicyAnalysisState",
-    "IamPolicySearchResult",
-    "RelatedAsset",
-    "RelatedAssets",
-    "RelatedResource",
-    "RelatedResources",
-    "RelationshipAttributes",
-    "Resource",
-    "ResourceSearchResult",
-    "Tag",
-    "TemporalAsset",
-    "TimeWindow",
-    "VersionedResource",
+__all__ = ('AssetServiceClient',
+    'AssetServiceAsyncClient',
+    'ResourceOwners',
+    'AnalyzeIamPolicyLongrunningMetadata',
+    'AnalyzeIamPolicyLongrunningRequest',
+    'AnalyzeIamPolicyLongrunningResponse',
+    'AnalyzeIamPolicyRequest',
+    'AnalyzeIamPolicyResponse',
+    'AnalyzeMoveRequest',
+    'AnalyzeMoveResponse',
+    'AnalyzeOrgPoliciesRequest',
+    'AnalyzeOrgPoliciesResponse',
+    'AnalyzeOrgPolicyGovernedAssetsRequest',
+    'AnalyzeOrgPolicyGovernedAssetsResponse',
+    'AnalyzeOrgPolicyGovernedContainersRequest',
+    'AnalyzeOrgPolicyGovernedContainersResponse',
+    'AnalyzerOrgPolicy',
+    'AnalyzerOrgPolicyConstraint',
+    'BatchGetAssetsHistoryRequest',
+    'BatchGetAssetsHistoryResponse',
+    'BatchGetEffectiveIamPoliciesRequest',
+    'BatchGetEffectiveIamPoliciesResponse',
+    'BigQueryDestination',
+    'CreateFeedRequest',
+    'CreateSavedQueryRequest',
+    'DeleteFeedRequest',
+    'DeleteSavedQueryRequest',
+    'ExportAssetsRequest',
+    'ExportAssetsResponse',
+    'Feed',
+    'FeedOutputConfig',
+    'GcsDestination',
+    'GcsOutputResult',
+    'GetFeedRequest',
+    'GetSavedQueryRequest',
+    'IamPolicyAnalysisOutputConfig',
+    'IamPolicyAnalysisQuery',
+    'ListAssetsRequest',
+    'ListAssetsResponse',
+    'ListFeedsRequest',
+    'ListFeedsResponse',
+    'ListSavedQueriesRequest',
+    'ListSavedQueriesResponse',
+    'MoveAnalysis',
+    'MoveAnalysisResult',
+    'MoveImpact',
+    'OutputConfig',
+    'OutputResult',
+    'PartitionSpec',
+    'PubsubDestination',
+    'QueryAssetsOutputConfig',
+    'QueryAssetsRequest',
+    'QueryAssetsResponse',
+    'QueryResult',
+    'SavedQuery',
+    'SearchAllIamPoliciesRequest',
+    'SearchAllIamPoliciesResponse',
+    'SearchAllResourcesRequest',
+    'SearchAllResourcesResponse',
+    'TableFieldSchema',
+    'TableSchema',
+    'UpdateFeedRequest',
+    'UpdateSavedQueryRequest',
+    'ContentType',
+    'Asset',
+    'AssetEnrichment',
+    'AttachedResource',
+    'ConditionEvaluation',
+    'EffectiveTagDetails',
+    'IamPolicyAnalysisResult',
+    'IamPolicyAnalysisState',
+    'IamPolicySearchResult',
+    'RelatedAsset',
+    'RelatedAssets',
+    'RelatedResource',
+    'RelatedResources',
+    'RelationshipAttributes',
+    'Resource',
+    'ResourceSearchResult',
+    'Tag',
+    'TemporalAsset',
+    'TimeWindow',
+    'VersionedResource',
 )
