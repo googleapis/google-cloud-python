@@ -46,8 +46,6 @@ def test_pqc_grpc(intercepted_echo_grpc):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/17752):
     # Remove this check once grpcio >= 1.83.0 is enforced across all client libraries.
     if Version(grpc.__version__) < Version("1.83.0"):
-        # TODO(https://github.com/googleapis/google-cloud-python/issues/17751): 
-        # Update the version in the check above to `1.83.0` once released.
         pytest.skip(f"gRPC PQC negotiation requires grpcio >= 1.83.0 (current: {grpc.__version__})")
 
     client, interceptor = intercepted_echo_grpc
@@ -70,8 +68,6 @@ async def test_pqc_grpc_async(intercepted_echo_grpc_async):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/17752):
     # Remove this check once grpcio >= 1.83.0 is enforced across all client libraries.
     if Version(grpc.__version__) < Version("1.83.0"):
-        # TODO(https://github.com/googleapis/google-cloud-python/issues/17751):
-        # Update the version in the check above to `1.83.0` once released.
         pytest.skip(
             f"gRPC PQC negotiation requires grpcio >= 1.83.0 (current: {grpc.__version__})"
         )
