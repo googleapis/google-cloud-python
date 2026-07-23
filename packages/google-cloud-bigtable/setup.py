@@ -57,7 +57,7 @@ dependencies = [
     "opentelemetry-api >= 1.0.0, <2.0.0dev",
     "opentelemetry-sdk >= 1.0.0, <2.0.0dev",
 ]
-extras = 
+extras = {
     "libcst": "libcst >= 0.2.5",
 }
 
