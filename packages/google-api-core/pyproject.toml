@@ -94,6 +94,4 @@ filterwarnings = [
   "ignore:.*custom tp_new.*in Python 3.14:DeprecationWarning",
   # Remove once https://github.com/grpc/grpc/issues/35086 is fixed (and version newer than 1.60.0 is published)
   "ignore:There is no current event loop:DeprecationWarning",
-  # Ignore external OpenTelemetry/importlib.metadata SelectableGroups warning
-  "ignore:.*SelectableGroups dict interface is deprecated:DeprecationWarning",
 ]
