@@ -56,6 +56,9 @@ def _has_provider(
     if configuration is None:
         return False
 
+    if feature_key.startswith("__"):
+        return False
+
     if isinstance(configuration, dict):
         return configuration.get(feature_key) is not None
 

@@ -197,3 +197,27 @@ def test_resolve_feature_flags_options_without_key(configuration):
         configuration=configuration,
     )
     assert result is False
+
+
+def test_resolve_feature_flags_rejects_dunder_keys(monkeypatch):
+    """Verify that dunder keys are rejected early in _has_provider."""
+    # We use a dunder key that exists on all objects (__class__)
+    # If the guardrail is missing, getattr might return it and return True
+    configuration = {"__class__": "some_value"}
+
+    result = feature_gating_helpers.resolve_feature_flags(
+        env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
+        feature_key="__class__",
+        configuration=configuration,
+    )
+    assert result is False
+
+    class MockWithClass:
+        __class__ = "some_value"
+
+    result = feature_gating_helpers.resolve_feature_flags(
+        env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
+        feature_key="__class__",
+        configuration=MockWithClass(),
+    )
+    assert result is False
