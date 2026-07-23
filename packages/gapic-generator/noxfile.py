@@ -193,7 +193,6 @@ def fragment(session, use_ads_templates=False):
         "grpcio-tools",
     )
     session.install("-e", ".")
-    session.install("-e", "../google-api-core")
 
     # The specific failure is `Plugin output is unparseable`
     if session.python == "3.10":
@@ -258,7 +257,6 @@ def showcase_library(
 
     # Install gapic-generator-python
     session.install("-e", ".")
-    session.install("-e", "../google-api-core")
 
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
@@ -393,9 +391,6 @@ def showcase_library(
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
             # Install the library without a constraints file.
             session.install("-e", tmp_dir)
-
-        # Re-install local google-api-core so development version is tested
-        session.install("-e", "../google-api-core")
 
         yield tmp_dir
 
