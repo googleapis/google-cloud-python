@@ -3,6 +3,7 @@ permissions:
 
 name: Gapic Generator Specialized Tests
 
+# trigger ci
 on:
   pull_request:
   push:
