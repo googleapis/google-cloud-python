@@ -16,6 +16,7 @@
 
 import inspect
 import logging
+import os
 import re
 from typing import Any, Dict
 
@@ -133,6 +134,12 @@ class MetricsInterceptor(ClientInterceptor):
 
         tracer.set_method(method_name)
         tracer.record_attempt_start()
+
+        if os.environ.get("SPANNER_DISABLE_AFE_SERVER_TIMING", "").lower() != "true":
+            metadata = list(call_details.metadata or [])
+            metadata.append(("x-goog-spanner-enable-afe-server-timing", "true"))
+            call_details = call_details._replace(metadata=metadata)
+
         response = invoked_method(request_or_iterator, call_details)
 
         return _wrap_response(response, tracer)
@@ -215,8 +222,13 @@ class AsyncMetricsInterceptor(
 
         tracer.set_method(method_name)
         tracer.record_attempt_start()
-        response = await continuation(call_details, request_or_iterator)
 
+        if os.environ.get("SPANNER_DISABLE_AFE_SERVER_TIMING", "").lower() != "true":
+            metadata = list(call_details.metadata or [])
+            metadata.append(("x-goog-spanner-enable-afe-server-timing", "true"))
+            call_details = call_details._replace(metadata=metadata)
+
+        response = await continuation(call_details, request_or_iterator)
         if hasattr(response, "__anext__"):
             return _AsyncStreamingResponseWrapper(response, tracer)
         else:
