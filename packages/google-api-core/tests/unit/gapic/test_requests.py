@@ -113,18 +113,15 @@ def test_setup_request_id(request_obj, is_proto3_optional, expected):
         assert value == expected
 
 
-from unittest import mock
-
-
-def test_setup_request_id_assertion_strictness():
+def test_setup_request_id_assertion_strictness(mocker):
     # Mock uuid.uuid4 to return a UUID with trailing characters
-    with mock.patch("uuid.uuid4") as mock_uuid:
-        mock_uuid.return_value.__str__.return_value = (
-            "12345678-1234-4123-8123-123456789012-extra"
-        )
+    mock_uuid = mocker.patch("uuid.uuid4")
+    mock_uuid.return_value.__str__.return_value = (
+        "12345678-1234-4123-8123-123456789012-extra"
+    )
 
-        # We expect test_setup_request_id to fail (raise AssertionError) because the UUID is invalid.
-        # If test_setup_request_id uses re.fullmatch, it will fail (raise AssertionError), so pytest.raises passes.
-        # If test_setup_request_id uses re.match, it will NOT fail, so pytest.raises fails!
-        with pytest.raises(AssertionError):
-            test_setup_request_id(MockRequest(), is_proto3_optional=True, expected="uuid")
+    # We expect test_setup_request_id to fail (raise AssertionError) because the UUID is invalid.
+    # If test_setup_request_id uses re.fullmatch, it will fail (raise AssertionError), so pytest.raises passes.
+    # If test_setup_request_id uses re.match, it will NOT fail, so pytest.raises fails!
+    with pytest.raises(AssertionError):
+        test_setup_request_id(MockRequest(), is_proto3_optional=True, expected="uuid")

@@ -65,13 +65,6 @@ def setup_request_id(
                 setattr(request, field_name, str(uuid.uuid4()))
         except (AttributeError, ValueError):
             # Proto-plus messages or other objects
-            if hasattr(request, "_pb"):
-                try:
-                    if not request._pb.HasField(field_name):
-                        setattr(request, field_name, str(uuid.uuid4()))
-                    return
-                except (AttributeError, ValueError):
-                    pass
             if getattr(request, field_name, None) is None:
                 setattr(request, field_name, str(uuid.uuid4()))
     else:
