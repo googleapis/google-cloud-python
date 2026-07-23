@@ -234,3 +234,18 @@ class TestUtils(SpannerSimpleTestClass):
             + "name_prefix FROM tests_author",
         )
         self.assertEqual(params, (1, 5))
+
+    def test_chr(self):
+        from django.db.models.functions import Chr
+        q1 = Author.objects.values("num").annotate(chr_val=Chr("num"))
+        compiler = SQLCompiler(q1.query, self.connection, "default")
+        sql_query, params = compiler.query.as_sql(compiler, self.connection)
+        self.assertIn("CODE_POINTS_TO_STRING", sql_query)
+
+    def test_json_array(self):
+        from django.db.models.functions import JSONObject
+        from django_spanner.functions import JSONArray
+        q1 = Author.objects.values("num").annotate(json_arr=JSONArray("num"))
+        compiler = SQLCompiler(q1.query, self.connection, "default")
+        sql_query, params = compiler.query.as_sql(compiler, self.connection)
+        self.assertIn("TO_JSON_STRING", sql_query)

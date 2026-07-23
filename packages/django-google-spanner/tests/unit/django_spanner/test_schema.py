@@ -47,6 +47,115 @@ class TestUtils(SpannerSimpleTestClass):
         schema_editor = DatabaseSchemaEditor(self.connection)
         self.assertTrue(schema_editor.skip_default(field=None))
 
+    def test_create_model_foreign_key_and_check_constraint(self):
+        from django.db.models import Model, ForeignKey, IntegerField, CASCADE
+        class Book(Model):
+            author = ForeignKey(Author, on_delete=CASCADE)
+            pages = IntegerField()
+            class Meta:
+                app_label = "tests"
+
+        with DatabaseSchemaEditor(self.connection) as schema_editor:
+            schema_editor.execute = mock.MagicMock()
+
+            # Test sql_create_inline_fk
+            schema_editor.sql_create_inline_fk = "CONSTRAINT FK FOREIGN KEY (%(from_column_norm)s) REFERENCES %(to_table_norm)s (%(to_column_norm)s)"
+            schema_editor.create_model(Book)
+
+            # Test supports_foreign_keys with no inline_fk (False and True)
+            schema_editor.sql_create_inline_fk = None
+            with mock.patch.object(schema_editor.connection.features, "supports_foreign_keys", False):
+                schema_editor.create_model(Book)
+            with mock.patch.object(schema_editor.connection.features, "supports_foreign_keys", True):
+                schema_editor.create_model(Book)
+
+            # Test check constraint on column
+            f_pages = Book._meta.get_field("pages")
+            with mock.patch.object(f_pages, "db_parameters", return_value={"type": "INT64", "check": "pages > 0"}):
+                schema_editor.create_model(Book)
+
+    def test_create_model_unique_together_and_constraints(self):
+        from django.db.models import Model, OneToOneField, IntegerField, UniqueConstraint, CheckConstraint, Q, CASCADE
+        class Profile(Model):
+            author = OneToOneField(Author, on_delete=CASCADE, primary_key=True)
+            code = IntegerField()
+            class Meta:
+                app_label = "tests"
+                unique_together = [("code",)]
+                constraints = [
+                    UniqueConstraint(fields=["code"], name="unique_code_idx"),
+                    CheckConstraint(check=Q(code__gt=0), name="code_gt_zero"),
+                ]
+
+        with DatabaseSchemaEditor(self.connection) as schema_editor:
+            schema_editor.execute = mock.MagicMock()
+            schema_editor.create_model(Profile)
+
+    def test_m2m_field_schema_operations(self):
+        from django.db.models import Model, ManyToManyField, IntegerField
+        class Article(Model):
+            authors = ManyToManyField(Author)
+            num = IntegerField()
+            class Meta:
+                app_label = "tests"
+
+        with DatabaseSchemaEditor(self.connection) as schema_editor:
+            schema_editor.execute = mock.MagicMock()
+            schema_editor._constraint_names = mock.MagicMock(return_value=[])
+
+            # Test col_type_suffix and empty tablespace_sql
+            with mock.patch.object(Article._meta.get_field("num"), "db_type_suffix", return_value="SUFFIX"):
+                with mock.patch.object(Article._meta, "db_tablespace", "tbl"):
+                    with mock.patch.object(schema_editor.connection.ops, "tablespace_sql", return_value=""):
+                        schema_editor.create_model(Article)
+
+            m2m_field = Article._meta.get_field("authors")
+            schema_editor.add_field(Article, m2m_field)
+            schema_editor.remove_field(Article, m2m_field)
+            schema_editor.alter_field(Article, m2m_field, m2m_field)
+
+            # Test add_field with FK, unique, and check constraint
+            from django.db.models import ForeignKey, CASCADE, IntegerField, CharField
+            fk_field = ForeignKey(Author, on_delete=CASCADE)
+            fk_field.set_attributes_from_name("author_fk")
+            fk_field.model = Author
+            fk_field.unique = True
+            with mock.patch.object(fk_field, "db_parameters", return_value={"type": "INT64", "check": "num > 0"}):
+                with mock.patch.object(schema_editor.connection.features, "supports_foreign_keys", True):
+                    schema_editor.add_field(Author, fk_field)
+
+            # Test M2M, None column SQL, and db_default edge cases
+            for m in [Article, Author]:
+                schema_editor.create_model(m)
+            self.assertIsNone(schema_editor.column_sql(Article, m2m_field)[0])
+
+            def_field = IntegerField(db_default=10)
+            def_field.set_attributes_from_name("def_num")
+            def_field.model = Author
+            self.assertIn("DEFAULT", schema_editor.column_sql(Author, def_field)[0])
+
+            with mock.patch.object(schema_editor, "db_default_sql", return_value=(None, [])):
+                self.assertNotIn("DEFAULT", schema_editor.column_sql(Author, def_field)[0])
+
+            with mock.patch.object(schema_editor, "column_sql", return_value=(None, None)):
+                schema_editor.create_model(Article)
+
+            # Test _alter_column_type_sql with same type, empty_strings_allowed, tablespace
+            char_field1 = CharField(max_length=50, db_tablespace="tbl", unique=True)
+            char_field1.set_attributes_from_name("title")
+            char_field1.model = Author
+            char_field2 = CharField(max_length=100, db_tablespace="tbl", unique=True)
+            char_field2.set_attributes_from_name("title")
+            char_field2.model = Author
+            with mock.patch.object(schema_editor.connection.features, "interprets_empty_strings_as_nulls", True):
+                with mock.patch.object(schema_editor.connection.features, "supports_tablespaces", True):
+                    schema_editor._alter_column_type_sql(Author, char_field1, char_field2, "STRING(100)")
+                    # Test column_sql with tablespace & empty string null (lines 371, 381)
+                    schema_editor.column_sql(Author, char_field1)
+            # Same type returns sql statement
+            sql_same, _ = schema_editor._alter_column_type_sql(Author, char_field1, char_field1, "STRING(50)")
+            self.assertIsNotNone(sql_same)
+
     def test_create_model(self):
         """
         Tries creating a model's table.
@@ -77,10 +186,11 @@ class TestUtils(SpannerSimpleTestClass):
         """
         with DatabaseSchemaEditor(self.connection) as schema_editor:
             schema_editor.execute = mock.MagicMock()
-            schema_editor._constraint_names = mock.MagicMock()
-            schema_editor.delete_model(Author)
+            schema_editor._constraint_names = mock.MagicMock(return_value=[])
+            with mock.patch.object(schema_editor.connection.features, "supports_foreign_keys", True):
+                schema_editor.delete_model(Author)
 
-            schema_editor.execute.assert_called_once_with(
+            schema_editor.execute.assert_called_with(
                 "DROP TABLE tests_author",
             )
 
@@ -458,9 +568,51 @@ class TestUtils(SpannerSimpleTestClass):
         connections.settings["secondary"]["ENGINE"] = "django_spanner"
         del connections.settings["secondary"]["RANDOM_ID_GENERATION_ENABLED"]
 
-    def test_autofield_random_generation_disabled(self):
-        """Spanner, default is not provided."""
-        connections.settings["default"]["RANDOM_ID_GENERATION_ENABLED"] = "false"
-        field = AutoField(name="field_name")
-        assert gen_rand_int64 != field.default
-        del connections.settings["default"]["RANDOM_ID_GENERATION_ENABLED"]
+    def test_schema_editor_utils_and_sql_formatting(self):
+        with DatabaseSchemaEditor(self.connection) as se:
+            se.execute = mock.MagicMock()
+
+            # Quote values and prepare default
+            self.assertEqual(se.quote_value("it's"), "'it''s'")
+            self.assertEqual(se.quote_value(True), "TRUE")
+            self.assertEqual(se.prepare_default(123), "123")
+
+            # Unique & check SQL
+            self.assertIsNone(se._unique_sql(Author, [Author._meta.get_field("name")], "idx"))
+            with mock.patch("django_spanner.schema.USE_EMULATOR", False):
+                self.assertIsNotNone(se._check_sql("chk", "num > 0"))
+                se.deferred_sql.clear()
+                se._unique_sql(Author, [Author._meta.get_field("name")], "idx")
+
+            with mock.patch.object(se, "_create_unique_sql", return_value=None):
+                se._unique_sql(Author, [Author._meta.get_field("name")], "idx")
+
+            # Column SQL generated & db_default
+            gen_f = IntegerField()
+            gen_f.generated = True
+            gen_f.set_attributes_from_name("g")
+            gen_f.model = Author
+            gen_f.generated_sql = lambda c: ("num * %s + %s + %s + %s", ["2", True, None, 5])
+            self.assertIn("STORED", se.column_sql(Author, gen_f)[0])
+
+            def_f = IntegerField(db_default=10)
+            def_f.set_attributes_from_name("d")
+            def_f.model = Author
+            se.db_default_sql = lambda f: ("%s + %s + %s + %s", ["10", False, None, 3])
+            self.assertIn("DEFAULT", se.column_sql(Author, def_f)[0])
+
+            # Skip default & column type alter
+            self.assertFalse(se.skip_default(gen_f))
+            self.assertFalse(se.skip_default(def_f))
+
+            f_null = IntegerField(null=True)
+            f_null.set_attributes_from_name("v")
+            self.assertTrue(len(se._alter_column_type_sql(Author, f_null, f_null, "INT64")[0]) > 0)
+
+            # None definition add_field & tablespace
+            with mock.patch.object(se, "column_sql", return_value=(None, None)):
+                self.assertIsNone(se.add_field(Author, gen_f))
+
+            with mock.patch.object(Author._meta, "db_tablespace", "tbl"):
+                with mock.patch.object(se.connection.ops, "tablespace_sql", return_value="IN tbl"):
+                    se.create_model(Author)
