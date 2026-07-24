@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.46.1](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.46.0...bigframes-v2.46.1) (2026-07-24)
+
+
+### Bug Fixes
+
+* bump brace-expansion from 5.0.6 to 5.0.7 in /packages/bigframes/bigframes/display/table_widget_angular ([#17794](https://github.com/googleapis/google-cloud-python/issues/17794)) ([2df1bb5](https://github.com/googleapis/google-cloud-python/commit/2df1bb5cb53906bfc41de92c10fdb5a8920ce36f))
+* bump fast-uri from 3.1.1 to 3.1.4 in /packages/bigframes/bigframes/display/table_widget_angular ([#17828](https://github.com/googleapis/google-cloud-python/issues/17828)) ([8ce495a](https://github.com/googleapis/google-cloud-python/commit/8ce495ab51d35cc56332f27589ce33b035215abf))
+* bump hono from 4.12.16 to 4.12.31 in /packages/bigframes/bigframes/display/table_widget_angular ([#17829](https://github.com/googleapis/google-cloud-python/issues/17829)) ([6d6fa39](https://github.com/googleapis/google-cloud-python/commit/6d6fa399b1578dd6c0ed7b2284b35f6bb0922da8))
+* bump immutable from 5.1.7 to 5.1.9 in /packages/bigframes/bigframes/display/table_widget_angular ([#17830](https://github.com/googleapis/google-cloud-python/issues/17830)) ([6abb1da](https://github.com/googleapis/google-cloud-python/commit/6abb1da519e7d4acdbdd531982530047fdafe854))
+* bump tar from 7.5.16 to 7.5.20 in /packages/bigframes/bigframes/display/table_widget_angular ([#17793](https://github.com/googleapis/google-cloud-python/issues/17793)) ([3502d41](https://github.com/googleapis/google-cloud-python/commit/3502d4183d9864e4310b3daf063ec90be9969e25))
+
 ## [2.46.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.45.0...bigframes-v2.46.0) (2026-07-16)
 
 
