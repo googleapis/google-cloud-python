@@ -1004,25 +1004,13 @@ def test_spanner_client_get_mtls_endpoint_and_cert_source(client_class):
                         assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
-    with mock.patch.dict(
-        os.environ,
-        {
-            "GOOGLE_API_USE_MTLS_ENDPOINT": "never",
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
-        },
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
         assert api_endpoint == client_class.DEFAULT_ENDPOINT
         assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
-    with mock.patch.dict(
-        os.environ,
-        {
-            "GOOGLE_API_USE_MTLS_ENDPOINT": "always",
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
-        },
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
         assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
         assert cert_source is None
