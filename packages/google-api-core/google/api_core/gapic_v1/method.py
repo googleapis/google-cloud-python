@@ -58,6 +58,25 @@ def _apply_decorators(func, decorators):
     return func
 
 
+def _deduplicate_metadata_tokens(*headers: str) -> str:
+    """
+    Given one or more metadata payload strings, create a combined
+    string with deduplicated tokens, while preserving token order.
+
+    Inputs are expected contain a set of metadata tokens separated by spaces
+    Example: `gl-python/3.14.0 grpc/1.76.0 gax/2.29.0 gapic/3.8.0 pb/6.33.4`
+
+    Args:
+      *headers: one or more metadata payload strings
+
+    Returns:
+        a single combined payload string
+    """
+    # Split all non-empty headers into individual tokens
+    token_list = " ".join(filter(None, headers)).split()
+    # Deduplicate while preserving order
+    return " ".join(dict.fromkeys(token_list))
+
 def _extract_metrics_header(metadata) -> Tuple[str, List[Tuple[str, str]]]:
     """Extract x-google-api-client header from metadata list.
 
@@ -74,8 +93,9 @@ def _extract_metrics_header(metadata) -> Tuple[str, List[Tuple[str, str]]]:
 
     key_to_find = client_info.METRICS_METADATA_KEY
 
-    metric_str = " ".join([v for k, v in metadata if k == key_to_find])
-
+    metric_str = _deduplicate_metadata_tokens(
+        " ".join([v for k, v in metadata if k == key_to_find])
+    )
     if not metric_str:
         return "", list(metadata)
 
@@ -147,14 +167,15 @@ class _GapicCallable(object):
         # Apply all applicable decorators.
         wrapped_func = _apply_decorators(self._target, [retry, timeout])
 
-        # Add the user agent metadata to the call.
         if user_metadata := kwargs.get("metadata"):
+            # Add the user agent metadata to the call.
             final_metadata = list(self._static_metadata)
             user_x_goog, remaining = _extract_metrics_header(user_metadata)
-            api_client_tokens = [t for t in [user_x_goog, self._x_goog_api_client] if t]
-            if api_client_tokens:
+
+            merged_header = _deduplicate_metadata_tokens(self._x_goog_api_client, user_x_goog)
+            if merged_header:
                 final_metadata.append(
-                    (client_info.METRICS_METADATA_KEY, " ".join(api_client_tokens))
+                    (client_info.METRICS_METADATA_KEY, merged_header)
                 )
             final_metadata.extend(remaining)
             kwargs["metadata"] = final_metadata
