@@ -758,7 +758,7 @@ libraries:
       metadata_name_override: procurement
       default_version: v1
   - name: google-cloud-commerceproducer
-    version: 0.1.0
+    version: 0.1.1
     apis:
       - path: google/cloud/commerceproducer/v1beta
     copyright_year: "2026"

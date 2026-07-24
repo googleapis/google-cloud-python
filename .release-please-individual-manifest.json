@@ -1,6 +1,6 @@
 {
   "packages/bigframes": "2.46.0",
-  "packages/google-cloud-commerceproducer": "0.1.0",
+  "packages/google-cloud-commerceproducer": "0.1.1",
   "packages/google-cloud-productregistry": "0.1.0",
   "packages/google-crc32c": "1.8.0",
   "packages/google-maps-isochrones": "0.1.0",
