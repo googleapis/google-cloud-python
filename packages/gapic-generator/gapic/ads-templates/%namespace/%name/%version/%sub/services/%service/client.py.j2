@@ -1,3 +1,10 @@
+{% set has_auto_populated_fields = namespace(value=false) %}
+{% for method in service.methods.values() %}
+  {% set method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+  {% if method_settings and method_settings.auto_populated_fields %}
+    {% set has_auto_populated_fields.value = true %}
+  {% endif %}
+{% endfor %}
 {% extends '_base.py.j2' %}
 
 {% block content %}
@@ -7,7 +14,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union, cast
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+{% if has_auto_populated_fields.value %}
 import uuid
 {% endif %}
 {% if service.any_deprecated %}
