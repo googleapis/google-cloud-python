@@ -49,6 +49,9 @@ def test_read_gbq_colab_includes_label():
 
 def test_read_gbq_colab_includes_label_in_anywidget_mode():
     """Make sure read_gbq_colab label is preserved as the primary bigframes-api label in anywidget mode."""
+    pytest.importorskip("anywidget")
+    pytest.importorskip("traitlets")
+
     import bigframes
     import bigframes.display.html as bf_html
 
