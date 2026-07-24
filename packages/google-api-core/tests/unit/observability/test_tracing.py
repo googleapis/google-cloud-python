@@ -157,8 +157,41 @@ def test_interceptor_non_recording_span(mock_tracer, monkeypatch):
     mock_span_obj.set_attribute.assert_not_called()
 
 
-def test_interceptor_extracts_destination_id(mock_tracer, monkeypatch):
-    """F1.7 (Partial): Verifies that the interceptor extracts gcp.resource.destination.id from metadata."""
+@pytest.mark.parametrize(
+    "metadata,expected_destination_id",
+    [
+        # Case A: Success with 'name'
+        (
+            [
+                (
+                    "x-goog-request-params",
+                    "name=projects/my-project/secrets/my-secret/versions/1&other=val",
+                )
+            ],
+            "projects/my-project/secrets/my-secret/versions/1",
+        ),
+        # Case B: Success with 'parent'
+        (
+            [
+                (
+                    "x-goog-request-params",
+                    "parent=projects/my-project/locations/us-central1&other=val",
+                )
+            ],
+            "projects/my-project/locations/us-central1",
+        ),
+        # Case C: Other metadata keys (Loop continues, no destination id)
+        ([("some-other-header", "value")], None),
+        # Case D: x-goog-request-params exists but no name/parent
+        ([("x-goog-request-params", "other=val")], None),
+        # Case E: Malformed x-goog-request-params (Exception caught, fails open)
+        ([("x-goog-request-params", "name=foo=bar")], None),
+    ],
+)
+def test_interceptor_metadata_parsing(
+    mock_tracer, monkeypatch, metadata, expected_destination_id
+):
+    """F1.7 (Partial): Verifies metadata parsing scenarios, including success, missing keys, and malformed data."""
     from google.api_core.observability.tracing import OtelUnaryClientInterceptor
 
     monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "true")
@@ -170,19 +203,18 @@ def test_interceptor_extracts_destination_id(mock_tracer, monkeypatch):
 
     continuation = Mock(return_value="response")
     details = MockClientCallDetails()
-    # Simulate standard routing metadata
-    details.metadata = [
-        (
-            "x-goog-request-params",
-            "name=projects/my-project/secrets/my-secret/versions/1&other=val",
-        )
-    ]
+    details.metadata = metadata
     request = "request_payload"
 
     interceptor.intercept_unary_unary(continuation, details, request)
 
-    # Verify attribute was extracted and set
-    mock_span_obj.set_attribute.assert_any_call(
-        "gcp.resource.destination.id",
-        "projects/my-project/secrets/my-secret/versions/1",
-    )
+    if expected_destination_id:
+        mock_span_obj.set_attribute.assert_any_call(
+            "gcp.resource.destination.id", expected_destination_id
+        )
+    else:
+        # Verify gcp.resource.destination.id was NOT called
+        called_keys = [
+            call[0][0] for call in mock_span_obj.set_attribute.call_args_list
+        ]
+        assert "gcp.resource.destination.id" not in called_keys
