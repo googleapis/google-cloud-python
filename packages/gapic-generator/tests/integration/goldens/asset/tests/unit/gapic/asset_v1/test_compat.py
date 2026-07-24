@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 """Tests for the compatibility module for older versions of google-api-core."""
+<<<<<<< HEAD
 
 
 import re
@@ -100,3 +101,5 @@ def test_setup_request_id(request_obj, is_proto3_optional, expected):
         assert re.match(UUID_REGEX, value)
     else:
         assert value == expected
+=======
+>>>>>>> main

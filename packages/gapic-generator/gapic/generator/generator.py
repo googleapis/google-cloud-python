@@ -419,7 +419,7 @@ class Generator:
 
         # Quick check: Do not render empty files.
         if utils.empty(cgr_file.content) and not fn.endswith(
-            ("py.typed", "__init__.py")
+            ("py.typed", "__init__.py", "_compat.py")
         ):
             return {}
 

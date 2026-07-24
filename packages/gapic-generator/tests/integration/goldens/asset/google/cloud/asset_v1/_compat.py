@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 """A compatibility module for older versions of google-api-core."""
+<<<<<<< HEAD
 
 from typing import Union
 import uuid
@@ -64,3 +65,5 @@ def setup_request_id(
     else:
         if not getattr(request, field_name, None):
             setattr(request, field_name, str(uuid.uuid4()))
+=======
+>>>>>>> main
