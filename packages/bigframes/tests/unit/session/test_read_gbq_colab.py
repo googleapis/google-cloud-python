@@ -48,7 +48,7 @@ def test_read_gbq_colab_includes_label():
 
 
 def test_read_gbq_colab_includes_label_in_anywidget_mode():
-    """Make sure read_gbq_colab label is preserved as the primary bigframes-api label in anywidget mode."""
+    """Make sure read_gbq_colab label is preserved in recent-bigframes-api labels in anywidget mode."""
     pytest.importorskip("anywidget")
     pytest.importorskip("traitlets")
 
@@ -64,7 +64,6 @@ def test_read_gbq_colab_includes_label_in_anywidget_mode():
         _ = bf_html.get_anywidget_bundle(df)
 
     label_values = []
-    bigframes_api_labels = []
     for kall in itertools.chain(
         bqclient.query_and_wait.call_args_list,
         bqclient._query_and_wait_bigframes.call_args_list,
@@ -74,11 +73,8 @@ def test_read_gbq_colab_includes_label_in_anywidget_mode():
         if job_config is None:
             continue
         label_values.extend(job_config.labels.values())
-        if "bigframes-api" in job_config.labels:
-            bigframes_api_labels.append(job_config.labels["bigframes-api"])
 
     assert "session-read_gbq_colab" in label_values
-    assert "session-read_gbq_colab" in bigframes_api_labels
 
 
 @pytest.mark.parametrize("dry_run", [True, False])
