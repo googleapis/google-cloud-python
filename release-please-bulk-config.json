@@ -267,9 +267,15 @@
       "extra-files": [
         "google/cloud/agentidentitycredentials/gapic_version.py",
         "google/cloud/agentidentitycredentials_v1/gapic_version.py",
+        "google/cloud/agentidentitycredentials_v1beta/gapic_version.py",
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.agentidentitycredentials.v1.json",
+          "type": "json"
+        },
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.agentidentitycredentials.v1beta.json",
           "type": "json"
         }
       ]
