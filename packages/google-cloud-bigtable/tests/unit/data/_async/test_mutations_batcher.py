@@ -1201,12 +1201,16 @@ class TestMutationsBatcherAsync:
         Test that retryable functions support user-configurable arguments, and that the configured retryables are passed
         down to the gapic layer.
         """
-        from google.cloud.bigtable.data._metrics import ActiveOperationMetric
+        from google.cloud.bigtable.data._metrics import (
+            ActiveOperationMetric,
+            BigtableClientSideMetricsController,
+        )
         from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
             BigtableMetricsExporter,
         )
 
         mock_client = mock.Mock()
+        mock_client._metrics = BigtableClientSideMetricsController(handlers=[])
         mock_client._gcp_metrics_exporter = BigtableMetricsExporter("project")
 
         with mock.patch.object(

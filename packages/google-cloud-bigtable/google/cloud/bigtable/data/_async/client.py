@@ -72,6 +72,9 @@ from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
     BigtableMetricsExporter,
     GoogleCloudMetricsHandler,
 )
+from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
+    OpenTelemetryMetricsHandler,
+)
 from google.cloud.bigtable.data.exceptions import (
     FailedQueryShardError,
     ShardedReadRowsExceptionGroup,
@@ -268,8 +271,12 @@ class BigtableDataClientAsync(ClientWithProject):
         self._is_closed = CrossSync.Event()
         if os.getenv("BIGTABLE_EMULATOR_HOST"):
             self._gcp_metrics_exporter = None
-            self._metrics_handler = None
-            self._metrics = BigtableClientSideMetricsController(handlers=[])
+            self._metrics_handler = OpenTelemetryMetricsHandler(
+                client_version=self._client_version(),
+            )
+            self._metrics = BigtableClientSideMetricsController(
+                handlers=[self._metrics_handler]
+            )
         else:
             # create a metrics exporter using the same client configuration
             self._gcp_metrics_exporter = BigtableMetricsExporter(
@@ -1148,11 +1155,14 @@ class _DataApiTargetAsync(abc.ABC):
     def _create_operation(
         self, op_type: OperationType, **kwargs
     ) -> ActiveOperationMetric:
+        table_id = getattr(self, "table_id", None) or getattr(
+            self, "materialized_view_id", None
+        )
         return self.client._metrics.create_operation(
             op_type,
             project_id=self.client.project,
             instance_id=self.instance_id,
-            table_id=self.table_id,
+            table_id=table_id,
             app_profile_id=self.app_profile_id,
             **kwargs,
         )

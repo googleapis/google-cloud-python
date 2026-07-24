@@ -270,7 +270,7 @@ class TestBigtableMetricsExporter:
         instance.client = mock.Mock()
         series = [TimeSeries() for _ in range(10)]
         # test with deadline
-        deadline = time.time() + 10
+        deadline = time.monotonic() + 10
         instance._batch_write(series, deadline=deadline)
         (
             call_args,
@@ -296,6 +296,7 @@ class TestBigtableMetricsExporter:
         # create mock metrics data
         expected_value = 123
         attributes = {
+            "resource_project": project_id,
             "resource_instance": "instance1",
             "resource_cluster": "cluster1",
             "resource_table": "table1",

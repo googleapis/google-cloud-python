@@ -189,6 +189,7 @@ class TestOpentelemetryMetricsHandler:
             "status": op.final_status.name,
             "resource_zone": op.zone,
             "resource_cluster": op.cluster_id,
+            "app_profile": "default",
             **handler.shared_labels,
         }
         mock_instruments.operation_latencies.record.assert_called_once_with(
@@ -257,6 +258,7 @@ class TestOpentelemetryMetricsHandler:
                 "status": op.final_status.name,
                 "resource_zone": op.zone,
                 "resource_cluster": op.cluster_id,
+                "app_profile": "default",
                 **handler.shared_labels,
             }
             mock_instruments.first_response_latencies.record.assert_called_once_with(
@@ -286,6 +288,7 @@ class TestOpentelemetryMetricsHandler:
                 "status": op.final_status.name,
                 "resource_zone": op.zone,
                 "resource_cluster": op.cluster_id,
+                "app_profile": "default",
                 **handler.shared_labels,
             }
             mock_instruments.retry_count.add.assert_called_once_with(
@@ -309,6 +312,7 @@ class TestOpentelemetryMetricsHandler:
             "method": op.op_type.value,
             "resource_zone": op.zone,
             "resource_cluster": op.cluster_id,
+            "app_profile": "default",
             **handler.shared_labels,
         }
         mock_instruments.attempt_latencies.record.assert_called_once_with(
