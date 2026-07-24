@@ -249,6 +249,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 options=[
                     ("grpc.max_send_message_length", -1),
                     ("grpc.max_receive_message_length", -1),
+                    ("grpc.max_metadata_size", 32768),
                 ],
             )
 
