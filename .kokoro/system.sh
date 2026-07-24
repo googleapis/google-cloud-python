@@ -35,16 +35,38 @@ RETVAL=0
 
 pwd
 
+echo "=== KOKORO VM STATUS ==="
+echo "CPU Count:"
+nproc
+echo "--------------------------"
+echo "Detailed CPU Info:"
+lscpu | grep -E "^(Model name|CPU\(s\)|Thread\(s\) per core|Core\(s\) per socket)"
+echo "--------------------------"
+echo "Memory Status:"
+free -h
+echo "--------------------------"
+echo "Disk Usage:"
+df -h /
+echo "=========================="
+
 run_package_test() {
   local package_name=$1
   local package_path="packages/${package_name}"
-  
+
   # Declare local overrides to prevent bleeding into the next loop iteration
   local PROJECT_ID
   local GOOGLE_APPLICATION_CREDENTIALS
   local NOX_FILE
   # Inherit NOX_SESSION from environment to allow configs (like prerelease.cfg) to pass it in
   local NOX_SESSION="${NOX_SESSION}"
+
+  # ISOLATION: Create a unique gcloud config dir for this run
+  local gcloud_config_dir=$(mktemp -d -t "gcloud-config-${package_name}-XXXXXX")
+  local CLOUDSDK_CONFIG="${gcloud_config_dir}"
+
+  # 🪤 TRAP: Ensure cleanup of THIS specific temp dir on exit of this subshell.
+  trap 'rm -rf "$gcloud_config_dir"' EXIT
+
 
   echo "------------------------------------------------------------"
   echo "Configuring environment for: ${package_name}"
@@ -80,11 +102,13 @@ run_package_test() {
   esac
 
   # Export variables for the duration of this function's sub-processes
-  export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION
+  export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION CLOUDSDK_CONFIG
   export GOOGLE_CLOUD_PROJECT="${PROJECT_ID}"
 
-  gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
-  gcloud config set project "$PROJECT_ID"
+  # 🛡️ Explicit check: Fail early if auth fails
+  gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS" || return 1
+  export CLOUDSDK_CORE_PROJECT="${PROJECT_ID}"
+
 
   # Run the actual test
   pushd "${package_path}" > /dev/null
@@ -93,12 +117,80 @@ run_package_test() {
   local res=$?
   set -e
   popd > /dev/null
-  
+
   return $res
 }
 
+# Analyzes results of parallel test runs, prints summary, and dumps failed logs
+reap_parallel_results() {
+  local retval=0
+  local failed_count=0
+  local passed_count=0
+
+  if [ -z "$LOG_DIR" ]; then
+    echo "Error: LOG_DIR is not set."
+    return 1
+  fi
+
+  # Count failed packages by checking for .failed marker files
+  for failed in "$LOG_DIR"/*.failed; do
+    if [ -f "$failed" ]; then
+      failed_count=$((failed_count + 1))
+    fi
+  done
+
+  local total_tested=${#PACKAGES_TO_TEST[@]}
+  passed_count=$((total_tested - failed_count))
+
+  echo ""
+  echo "=================================================="
+  echo "               TEST RUN SUMMARY                   "
+  echo "=================================================="
+  echo "Total tested: $total_tested"
+  echo "Passed:       $passed_count"
+  echo "Failed:       $failed_count"
+  echo "=================================================="
+
+  local passed_packages=()
+  for pkg in "${PACKAGES_TO_TEST[@]}"; do
+    if [ ! -f "$LOG_DIR/$pkg.failed" ]; then
+      passed_packages+=("$pkg")
+    fi
+  done
+
+  if [ ${#passed_packages[@]} -gt 0 ]; then
+    echo ""
+    echo "PASSED PACKAGES:"
+    printf "%s\n" "${passed_packages[@]}" | sort | sed 's/^/- /'
+  fi
+
+  if [ "$failed_count" -gt 0 ]; then
+    echo ""
+    echo "!!! DETAILED LOGS FOR FAILED PACKAGES !!!"
+    for failed in "$LOG_DIR"/*.failed; do
+      if [ -f "$failed" ]; then
+        local pkg=$(basename "$failed" .failed)
+        echo "--------------------------------------------------"
+        echo "LOGS FOR: $pkg"
+        echo "--------------------------------------------------"
+        if [ -n "$KOKORO_ARTIFACTS_DIR" ] && [ -f "$KOKORO_ARTIFACTS_DIR/$pkg/sponge_log.log" ]; then
+          cat "$KOKORO_ARTIFACTS_DIR/$pkg/sponge_log.log"
+        else
+          cat "$LOG_DIR/$pkg.log"
+        fi
+        echo ""
+      fi
+    done
+    retval=1
+  fi
+  return $retval
+}
+
+
 # A file for running system tests
 system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
+
+PACKAGES_TO_TEST=()
 
 # Run system tests for each package with directory packages/*/tests/system
 for path in `find 'packages' \
@@ -112,6 +204,7 @@ for path in `find 'packages' \
   package_name=${path#packages/}
   package_name=${package_name%%/*}
   package_path="packages/${package_name}"
+
 
   # Determine if we should skip based on git diff
   # We always check for changes in these specific versioning/config files
@@ -147,10 +240,54 @@ for path in `find 'packages' \
   set -e
 
   if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
-      # Call the function - its internal exports won't affect the next loop
-      run_package_test "$package_name" || RETVAL=$?
+      PACKAGES_TO_TEST+=("$package_name")
   else
       echo "No changes in ${package_name} and not a continuous build, skipping."
   fi
 done
+
+# Parallel Execution Logic
+MAX_JOBS=${MAX_JOBS:-4}
+
+# Temporary directory for clean log segregation
+LOG_DIR=$(mktemp -d -t test-logs-XXXXXX)
+# Clean up logs on exit
+trap 'rm -rf "$LOG_DIR"' EXIT
+
+if [ ${#PACKAGES_TO_TEST[@]} -eq 0 ]; then
+  echo "No packages to test."
+  exit 0
+fi
+
+echo "=================================================="
+echo "Starting parallel test execution for ${#PACKAGES_TO_TEST[@]} packages"
+echo "Concurrency limit: ${MAX_JOBS}"
+echo "=================================================="
+
+export LOG_DIR
+export -f run_package_test
+export system_test_script PROJECT_ROOT KOKORO_GFILE_DIR
+
+# Stream package names to xargs for parallel execution
+# -P "$MAX_JOBS" controls concurrency
+# -I {} replaces {} with the package name
+printf '%s\n' "${PACKAGES_TO_TEST[@]}" \
+  | xargs -P "$MAX_JOBS" -I {} \
+    bash -c '
+      pkg="$1"
+      # Determine log location: prefer Sponge artifacts directory if available
+      if [ -n "$KOKORO_ARTIFACTS_DIR" ]; then
+        pkg_log_dir="$KOKORO_ARTIFACTS_DIR/$pkg"
+        mkdir -p "$pkg_log_dir" || { touch "$LOG_DIR/$pkg.failed"; exit 1; }
+        log_file="$pkg_log_dir/sponge_log.log"
+      else
+        log_file="$LOG_DIR/$pkg.log"
+      fi
+
+      # Run test; if it fails, create a .failed file to signal failure to the reaper
+      run_package_test "$pkg" > "$log_file" 2>&1 || touch "$LOG_DIR/$pkg.failed"
+    ' _ "{}"
+
+reap_parallel_results || RETVAL=1
+
 exit ${RETVAL}
