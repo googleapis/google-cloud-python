@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 """A compatibility module for older versions of google-api-core."""
-<<<<<<< HEAD
 
 from typing import Union
 import uuid
@@ -27,7 +26,7 @@ def setup_request_id(
     field_name: str,
     is_proto3_optional: bool,
 ) -> None:
-    """Populate a UUID4 field in the request if it is not already set.Expand commentComment on line R35Resolved
+    """Populate a UUID4 field in the request if it is not already set.
 
     This helper is used to ensure request idempotency by automatically
     generating a unique identifier (such as `request_id`) for requests
@@ -48,7 +47,7 @@ def setup_request_id(
     if isinstance(request, dict):
         if is_proto3_optional:
             if field_name not in request or request[field_name] is None:
-                request[field_name] = str(uuid.uuid4())Expand commentComment on lines R54 to R56Resolved
+                request[field_name] = str(uuid.uuid4())
         elif not request.get(field_name):
             request[field_name] = str(uuid.uuid4())
         return
@@ -65,5 +64,3 @@ def setup_request_id(
     else:
         if not getattr(request, field_name, None):
             setattr(request, field_name, str(uuid.uuid4()))
-=======
->>>>>>> main
