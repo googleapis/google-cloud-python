@@ -132,12 +132,15 @@ def verify_token(
     Returns:
         Mapping[str, Any]: The decoded token.
     """
+    if isinstance(id_token, bytes):
+        id_token = id_token.decode("utf-8")
+
     certs = _fetch_certs(request, certs_url)
 
     if "keys" in certs:
         try:
-            import jwt as jwt_lib  # type: ignore
-            from jwt.api_jwk import PyJWKSet  # type: ignore
+            import jwt as jwt_lib
+            from jwt.api_jwk import PyJWKSet
         except ImportError as caught_exc:  # pragma: NO COVER
             raise ImportError(
                 "The pyjwt library is not installed, please install the pyjwt package to use the jwk certs format."
