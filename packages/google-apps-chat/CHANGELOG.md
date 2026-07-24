@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-apps-chat/#history
 
+## [0.10.4](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.10.3...google-apps-chat-v0.10.4) (2026-07-24)
+
+
+### Features
+
+* update googleapis and regenerate ([#17893](https://github.com/googleapis/google-cloud-python/issues/17893)) ([e70ab6f](https://github.com/googleapis/google-cloud-python/commit/e70ab6fd45edfec5ca0c865e01876f0ea4f09cae))
+
 ## [0.10.3](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.10.2...google-apps-chat-v0.10.3) (2026-07-16)
 
 

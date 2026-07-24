@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.56.3](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.2...google-auth-v2.56.3) (2026-07-24)
+
+
+### Bug Fixes
+
+* **auth:** avoid creating mTLS SSL context for custom async transports ([#17825](https://github.com/googleapis/google-cloud-python/issues/17825)) ([fbe33f9](https://github.com/googleapis/google-cloud-python/commit/fbe33f9653d61353c0263ac2d0bff71eb76131f8)), refs [#17622](https://github.com/googleapis/google-cloud-python/issues/17622)
+
 ## [2.56.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.1...google-auth-v2.56.2) (2026-07-21)
 
 
