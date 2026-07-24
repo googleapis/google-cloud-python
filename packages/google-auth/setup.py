@@ -72,6 +72,8 @@ testing_extra_require = [
     "pytest-asyncio",
 ]
 
+pqc_extra_require = ["cryptography >= 44.0.0", "pyjwt >= 2.9.0", "grpcio >= 1.76.0"]
+
 extras = {
     # Note: cryptography was made into a required dependency. Extra is kept for backwards compatibility
     "cryptography": cryptography_base_require,
@@ -82,6 +84,7 @@ extras = {
     "pyjwt": pyjwt_extra_require,
     "reauth": reauth_extra_require,
     "requests": requests_extra_require,
+    "pqc": pqc_extra_require,
     "testing": testing_extra_require,
     "urllib3": urllib3_extra_require,
     "rsa": rsa_extra_require,
