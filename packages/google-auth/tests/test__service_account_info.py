@@ -63,6 +63,14 @@ def test_from_dict_es384_signer():
     assert signer.algorithm == "ES384"
 
 
+def test_from_dict_ec_auto_detect():
+    # Pass an EC key without use_rsa_signer=False (default use_rsa_signer=True).
+    # It should automatically detect the EC key and return an EsSigner without error.
+    signer = _service_account_info.from_dict(GDCH_SERVICE_ACCOUNT_ES256_INFO)
+    assert isinstance(signer, crypt.EsSigner)
+    assert signer.key_id == GDCH_SERVICE_ACCOUNT_ES256_INFO["private_key_id"]
+
+
 def test_from_dict_bad_private_key():
     info = SERVICE_ACCOUNT_INFO.copy()
     info["private_key"] = "garbage"
