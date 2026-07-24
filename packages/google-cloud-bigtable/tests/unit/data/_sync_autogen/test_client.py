@@ -1152,6 +1152,15 @@ class TestTable:
             table._register_instance_future.cancel()
         client.close()
 
+    def test_create_operation_table_id(self):
+        from google.cloud.bigtable.data._metrics.data_model import OperationType
+
+        client = self._make_client()
+        table = self._make_one(client, table_id="my-table")
+        op = table._create_operation(OperationType.READ_ROWS)
+        assert op.table_id == "my-table"
+        client.close()
+
     def test_ctor_defaults(self):
         """should provide default timeout values and app_profile_id"""
         client = self._make_client()
@@ -1461,6 +1470,17 @@ class TestAuthorizedView(CrossSync._Sync_Impl.TestTable):
             view._register_instance_future.cancel()
         client.close()
 
+    def test_create_operation_table_id(self):
+        from google.cloud.bigtable.data._metrics.data_model import OperationType
+
+        client = self._make_client()
+        view = self._make_one(
+            client, table_id="underlying-table", view_id="my-view"
+        )
+        op = view._create_operation(OperationType.READ_ROWS)
+        assert op.table_id == "underlying-table"
+        client.close()
+
 
 @CrossSync._Sync_Impl.add_mapping_decorator("TestMaterializedView")
 class TestMaterializedView(CrossSync._Sync_Impl.TestTable):
@@ -1571,6 +1591,15 @@ class TestMaterializedView(CrossSync._Sync_Impl.TestTable):
             assert view._register_instance_future.exception() is None
         elif view._register_instance_future:
             view._register_instance_future.cancel()
+        client.close()
+
+    def test_create_operation_table_id(self):
+        from google.cloud.bigtable.data._metrics.data_model import OperationType
+
+        client = self._make_client()
+        view = self._make_one(client, view_id="my-materialized-view")
+        op = view._create_operation(OperationType.READ_ROWS)
+        assert op.table_id == "my-materialized-view"
         client.close()
 
     @pytest.mark.parametrize(

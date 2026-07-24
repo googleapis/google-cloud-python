@@ -1191,3 +1191,7 @@ class TestSystem(SystemTestRunner):
                 )
             )
             assert len(results) > 0, f"No data found for {metric} {m}"
+            for series in results:
+                assert series.resource.labels.get("table") == table_id
+                if "table_id" in series.metric.labels:
+                    assert series.metric.labels["table_id"] == table_id

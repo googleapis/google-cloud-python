@@ -1371,6 +1371,16 @@ class TestTableAsync:
         await client.close()
 
     @CrossSync.pytest
+    async def test_create_operation_table_id(self):
+        from google.cloud.bigtable.data._metrics.data_model import OperationType
+
+        client = self._make_client()
+        table = self._make_one(client, table_id="my-table")
+        op = table._create_operation(OperationType.READ_ROWS)
+        assert op.table_id == "my-table"
+        await client.close()
+
+    @CrossSync.pytest
     async def test_ctor_defaults(self):
         """
         should provide default timeout values and app_profile_id
@@ -1754,6 +1764,18 @@ class TestAuthorizedViewsAsync(CrossSync.TestTable):
             view._register_instance_future.cancel()
         await client.close()
 
+    @CrossSync.pytest
+    async def test_create_operation_table_id(self):
+        from google.cloud.bigtable.data._metrics.data_model import OperationType
+
+        client = self._make_client()
+        view = self._make_one(
+            client, table_id="underlying-table", view_id="my-view"
+        )
+        op = view._create_operation(OperationType.READ_ROWS)
+        assert op.table_id == "underlying-table"
+        await client.close()
+
 
 @CrossSync.convert_class(
     "TestMaterializedView", add_mapping_for_name="TestMaterializedView"
@@ -1869,6 +1891,16 @@ class TestMaterializedViewsAsync(CrossSync.TestTable):
             assert view._register_instance_future.exception() is None
         elif view._register_instance_future:
             view._register_instance_future.cancel()
+        await client.close()
+
+    @CrossSync.pytest
+    async def test_create_operation_table_id(self):
+        from google.cloud.bigtable.data._metrics.data_model import OperationType
+
+        client = self._make_client()
+        view = self._make_one(client, view_id="my-materialized-view")
+        op = view._create_operation(OperationType.READ_ROWS)
+        assert op.table_id == "my-materialized-view"
         await client.close()
 
     @pytest.mark.parametrize(

@@ -249,6 +249,9 @@ class TestMetricsAsync(SystemTestRunner):
         assert operation.op_type.value == "ReadRows"
         assert len(operation.completed_attempts) == 1
         assert operation.completed_attempts[0] == handler.completed_attempts[0]
+        assert operation.project_id == table.client.project
+        assert operation.instance_id == table.instance_id
+        assert operation.table_id == table.table_id
         assert operation.cluster_id == next(iter(cluster_config.keys()))
         assert (
             operation.zone
