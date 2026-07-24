@@ -99,6 +99,7 @@ def read_avro(
     *,
     engine: str = "auto",
 ) -> bigframes.dataframe.DataFrame:
+    _set_default_session_location_if_possible_gcs(path)
     return global_session.with_default_session(
         bigframes.session.Session.read_avro,
         path,
@@ -145,6 +146,7 @@ def read_csv(
     write_engine: constants.WriteEngineType = "default",
     **kwargs,
 ) -> bigframes.dataframe.DataFrame:
+    _set_default_session_location_if_possible_gcs(filepath_or_buffer)
     return global_session.with_default_session(
         bigframes.session.Session.read_csv,
         filepath_or_buffer=filepath_or_buffer,
@@ -177,6 +179,7 @@ def read_json(
     write_engine: constants.WriteEngineType = "default",
     **kwargs,
 ) -> bigframes.dataframe.DataFrame:
+    _set_default_session_location_if_possible_gcs(path_or_buf)
     return global_session.with_default_session(
         bigframes.session.Session.read_json,
         path_or_buf=path_or_buf,
@@ -526,6 +529,7 @@ def read_orc(
     engine: str = "auto",
     write_engine: constants.WriteEngineType = "default",
 ) -> bigframes.dataframe.DataFrame:
+    _set_default_session_location_if_possible_gcs(path)
     return global_session.with_default_session(
         bigframes.session.Session.read_orc,
         path,
@@ -601,6 +605,7 @@ def read_parquet(
     engine: str = "auto",
     write_engine: constants.WriteEngineType = "default",
 ) -> bigframes.dataframe.DataFrame:
+    _set_default_session_location_if_possible_gcs(path)
     return global_session.with_default_session(
         bigframes.session.Session.read_parquet,
         path,
@@ -629,6 +634,7 @@ read_gbq_function.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_fu
 def _from_glob_path(
     path: str, *, connection: Optional[str] = None, name: Optional[str] = None
 ) -> bigframes.dataframe.DataFrame:
+    _set_default_session_location_if_possible_gcs(path)
     return global_session.with_default_session(
         bigframes.session.Session._from_glob_path,
         path=path,
@@ -725,3 +731,46 @@ def _set_default_session_location_if_possible_deferred_query(create_query):
         else:
             table = bqclient.get_table(query)
             config.options.bigquery.location = table.location
+
+
+def _get_storage_client():
+    from bigframes.session import clients
+
+    try:
+        clients_provider = clients.ClientsProvider(
+            project=config.options.bigquery.project,
+            location=config.options.bigquery.location,
+            use_regional_endpoints=config.options.bigquery.use_regional_endpoints,
+            credentials=config.options.bigquery.credentials,
+            application_name=config.options.bigquery.application_name,
+            bq_kms_key_name=config.options.bigquery.kms_key_name,
+            client_endpoints_override=config.options.bigquery.client_endpoints_override,
+            requests_transport_adapters=config.options.bigquery.requests_transport_adapters,
+        )
+        return clients_provider.storageclient
+    except Exception:
+        return None
+
+
+def _set_default_session_location_if_possible_gcs(path: Any):
+    if isinstance(path, str) and path.startswith("gs://"):
+        global _default_location_lock
+
+        with _default_location_lock:
+            if (
+                config.options.bigquery._session_started
+                or config.options.bigquery.location
+                or config.options.bigquery.use_regional_endpoints
+            ):
+                return
+
+            bucket_name = path[5:].split("/", 1)[0]
+            storage_client = _get_storage_client()
+            if storage_client:
+                try:
+                    bucket = storage_client.get_bucket(bucket_name)
+                    if bucket.location:
+                        config.options.bigquery.location = bucket.location
+                except Exception:
+                    pass
+
