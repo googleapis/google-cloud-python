@@ -93,6 +93,15 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
+@pytest.fixture(autouse=True)
+def mock_metrics_batch_write():
+    """mock out the metrics batch write to avoid sending metrics to GCP during tests."""
+    with mock.patch(
+        "google.cloud.bigtable.data._metrics.handlers.gcp_exporter.BigtableMetricsExporter._batch_write"
+    ):
+        yield
+
+
 @CrossSync.convert_class(
     sync_name="TestBigtableDataClient",
     add_mapping_for_name="TestBigtableDataClient",
