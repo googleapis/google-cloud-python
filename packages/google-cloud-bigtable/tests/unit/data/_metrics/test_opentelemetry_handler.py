@@ -323,31 +323,35 @@ class TestOpentelemetryMetricsHandler:
         )
 
     @pytest.mark.parametrize(
-        "is_first_attempt,flow_throttling_ns",
-        [(True, 54321), (False, 0), (True, 0)],
+        "op_type,flow_throttling_ns,should_record",
+        [
+            (OperationType.BULK_MUTATE_ROWS, 54321, True),
+            (OperationType.BULK_MUTATE_ROWS, 0, False),
+            (OperationType.READ_ROWS, 54321, False),
+        ],
     )
-    def test_on_attempt_complete_throttling_latencies(
-        self, is_first_attempt, flow_throttling_ns
+    def test_on_operation_complete_throttling_latencies(
+        self, op_type, flow_throttling_ns, should_record
     ):
         mock_instruments = mock.Mock(throttling_latencies=mock.Mock())
         handler = self._make_one(instruments=mock_instruments)
-        attempt = CompletedAttemptMetric(
+        op = CompletedOperationMetric(
+            op_type=op_type,
             duration_ns=1234567,
-            end_status=StatusCode.OK,
-        )
-        op = ActiveOperationMetric(
-            op_type=OperationType.READ_ROWS,
+            completed_attempts=[],
+            final_status=StatusCode.OK,
+            cluster_id="cluster",
+            zone="zone",
+            is_streaming=False,
             flow_throttling_time_ns=flow_throttling_ns,
         )
-        if not is_first_attempt:
-            op.completed_attempts.append(mock.Mock())
-        handler.on_attempt_complete(attempt, op)
-        expected_throttling = 0
-        if is_first_attempt:
-            expected_throttling += flow_throttling_ns / 1e6
-        mock_instruments.throttling_latencies.record.assert_called_once_with(
-            pytest.approx(expected_throttling), mock.ANY
-        )
+        handler.on_operation_complete(op)
+        if should_record:
+            mock_instruments.throttling_latencies.record.assert_called_once_with(
+                pytest.approx(flow_throttling_ns / 1e6), mock.ANY
+            )
+        else:
+            mock_instruments.throttling_latencies.record.assert_not_called()
 
     def test_on_attempt_complete_application_latencies(self):
         mock_instruments = mock.Mock(application_latencies=mock.Mock())
