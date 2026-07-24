@@ -22,7 +22,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: googleapis/librarian@main # zizmor: ignore[unpinned-uses]
+      - uses: googleapis/librarian@bb2ee61752bd0f5387195b54c509e4d01a52b41d
         with:
           protoc-version: "25.3"
           protoc-checksum: "5ec3474ca09df0511bb2ca66b5ca091fa8943c30aa26285f225d0b1ba60b5665b3419be4cd2322decbb55464039ca0a0405a47e86bcc11491589405d615d280e"
@@ -59,7 +59,7 @@ jobs:
 
       - name: Create issue if previous step fails
         if: ${{ failure() }}
-        uses: googleapis/librarian/.github/actions/create-issue-on-failure@main # zizmor: ignore[unpinned-uses]
+        uses: googleapis/librarian/.github/actions/create-issue-on-failure@bb2ee61752bd0f5387195b54c509e4d01a52b41d
         with:
           title: "Regeneration failed"
           body: |

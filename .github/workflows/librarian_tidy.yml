@@ -21,7 +21,7 @@ jobs:
             librarian:
               - 'librarian.yaml'
 
-      -  uses: googleapis/librarian@main # zizmor: ignore[unpinned-uses]
+      -  uses: googleapis/librarian@bb2ee61752bd0f5387195b54c509e4d01a52b41d
 
       - name: Run librarian tidy
         if: steps.changes.outputs.librarian == 'true'
