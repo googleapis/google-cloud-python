@@ -1,10 +1,12 @@
 {% extends "_base.py.j2" %}
-
 {% block content %}
+{% set has_auto_populated_fields = api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+
+
 {% import "%namespace/%name/%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 import os
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+{% if has_auto_populated_fields %}
 import re
 {% endif %}
 from unittest import mock
@@ -70,7 +72,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% endfilter %}
 {{ shared_macros.add_google_api_core_version_header_import(service.version) }}
 
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+{% if has_auto_populated_fields %}
 _UUID4_RE = re.compile(r"{{ uuid4_re }}")
 {% endif %}
 
