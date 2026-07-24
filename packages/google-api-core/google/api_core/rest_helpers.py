@@ -15,7 +15,14 @@
 """Helpers for rest transports."""
 
 import functools
+import json
 import operator
+from typing import Any, Dict, List, Optional, Tuple
+
+from google.api_core import path_template
+from google.protobuf import json_format
+
+__all__ = ["flatten_query_params", "transcode", "transcode_request"]
 
 
 def flatten_query_params(obj, strict=False):
@@ -107,3 +114,64 @@ def _canonicalize(obj, strict=False):
             value = value.lower()
         return value
     return obj
+
+
+def transcode_request(
+    http_options: List[Dict[str, str]],
+    request: Any,
+    required_fields_default_values: Optional[Dict[str, Any]] = None,
+    rest_numeric_enums: bool = False,
+) -> Tuple[Dict[str, Any], Optional[str], Dict[str, Any]]:
+    """Transcodes a request into HTTP method, URI, body, and query parameters.
+
+    Args:
+        http_options (List[Dict[str, str]]): List of HTTP transcoding rules.
+        request (Any): The protobuf or proto-plus request message.
+        required_fields_default_values (Optional[Dict[str, Any]]): Dictionary
+            of required fields default values to merge into query parameters if missing.
+        rest_numeric_enums (bool): Whether to encode enums as integers.
+
+    Returns:
+        Tuple[Dict[str, Any], Optional[str], Dict[str, Any]]: A tuple containing:
+            - The raw transcoded request dictionary (containing keys like 'uri', 'method').
+            - The serialized request body JSON string, or None if no body.
+            - The query parameters dictionary.
+    """
+    if request is None:
+        raise TypeError("request cannot be None")
+
+    # Convert proto-plus message to its underlying protobuf message if needed
+    pb_request = getattr(request, "_pb", request)
+
+    transcoded_request = path_template.transcode(http_options, pb_request)
+
+    body_json = None
+    if transcoded_request.get("body") is not None:
+        body_json = json_format.MessageToJson(
+            transcoded_request["body"],
+            use_integers_for_enums=rest_numeric_enums,
+        )
+
+    query_params_json = {}
+    if transcoded_request.get("query_params") is not None:
+        query_params_json = json.loads(
+            json_format.MessageToJson(
+                transcoded_request["query_params"],
+                use_integers_for_enums=rest_numeric_enums,
+            )
+        )
+
+    # If required_fields_default_values is provided, we merge default values for missing
+    # required fields into the query parameters.
+    if required_fields_default_values:
+        for k, v in required_fields_default_values.items():
+            if k not in query_params_json:
+                query_params_json[k] = v
+
+    if rest_numeric_enums:
+        query_params_json["$alt"] = "json;enum-encoding=int"
+
+    return transcoded_request, body_json, query_params_json
+
+
+transcode = transcode_request
