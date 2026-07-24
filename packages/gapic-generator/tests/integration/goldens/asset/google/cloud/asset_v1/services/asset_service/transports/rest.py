@@ -40,8 +40,6 @@ from google.longrunning import operations_pb2  # type: ignore
 
 
 from .rest_base import _BaseAssetServiceRestTransport
-from google.cloud.asset_v1.asset_service._compat import transcode_request
-from google.cloud.asset_v1._compat import transcode_request
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
@@ -1239,12 +1237,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_analyze_iam_policy(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1366,12 +1362,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_http_options()
 
             request, metadata = self._interceptor.pre_analyze_iam_policy_longrunning(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_transcoded_request(http_options, request)
+
+            body = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_request_body_json(transcoded_request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1488,12 +1484,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_http_options()
 
             request, metadata = self._interceptor.pre_analyze_move(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseAnalyzeMove._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1612,12 +1606,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_analyze_org_policies(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1737,12 +1729,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_analyze_org_policy_governed_assets(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1862,12 +1852,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_http_options()
 
             request, metadata = self._interceptor.pre_analyze_org_policy_governed_containers(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1983,12 +1971,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_get_assets_history(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2108,12 +2094,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_get_effective_iam_policies(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2238,12 +2222,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseCreateFeed._get_http_options()
 
             request, metadata = self._interceptor.pre_create_feed(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseCreateFeed._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseCreateFeed._get_transcoded_request(http_options, request)
+
+            body = _BaseAssetServiceRestTransport._BaseCreateFeed._get_request_body_json(transcoded_request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseCreateFeed._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2362,12 +2346,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_http_options()
 
             request, metadata = self._interceptor.pre_create_saved_query(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseCreateSavedQuery._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_transcoded_request(http_options, request)
+
+            body = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_request_body_json(transcoded_request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2479,12 +2463,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_feed(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseDeleteFeed._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2566,12 +2548,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_saved_query(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2661,12 +2641,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseExportAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_export_assets(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseExportAssets._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseExportAssets._get_transcoded_request(http_options, request)
+
+            body = _BaseAssetServiceRestTransport._BaseExportAssets._get_request_body_json(transcoded_request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseExportAssets._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2788,12 +2768,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseGetFeed._get_http_options()
 
             request, metadata = self._interceptor.pre_get_feed(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseGetFeed._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseGetFeed._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseGetFeed._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2911,12 +2889,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_http_options()
 
             request, metadata = self._interceptor.pre_get_saved_query(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseGetSavedQuery._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3032,12 +3008,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseListAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseListAssets._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseListAssets._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseListAssets._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3153,12 +3127,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseListFeeds._get_http_options()
 
             request, metadata = self._interceptor.pre_list_feeds(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseListFeeds._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseListFeeds._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseListFeeds._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3274,12 +3246,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_http_options()
 
             request, metadata = self._interceptor.pre_list_saved_queries(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseListSavedQueries._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3396,12 +3366,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseQueryAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_query_assets(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseQueryAssets._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseQueryAssets._get_transcoded_request(http_options, request)
+
+            body = _BaseAssetServiceRestTransport._BaseQueryAssets._get_request_body_json(transcoded_request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseQueryAssets._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3517,12 +3487,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_search_all_iam_policies(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3638,12 +3606,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_http_options()
 
             request, metadata = self._interceptor.pre_search_all_resources(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseSearchAllResources._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3768,12 +3734,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_http_options()
 
             request, metadata = self._interceptor.pre_update_feed(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseUpdateFeed._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_transcoded_request(http_options, request)
+
+            body = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_request_body_json(transcoded_request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3892,12 +3858,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_http_options()
 
             request, metadata = self._interceptor.pre_update_saved_query(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._REQUIRED_FIELDS_DEFAULT_VALUES,
-                False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_transcoded_request(http_options, request)
+
+            body = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_request_body_json(transcoded_request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -4201,11 +4167,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             http_options = _BaseAssetServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request, body, query_params = transcode_request(
-                http_options,
-                request,
-                rest_numeric_enums=False,
-            )
+            transcoded_request = _BaseAssetServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
+
+            # Jsonify the query params
+            query_params = _BaseAssetServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])

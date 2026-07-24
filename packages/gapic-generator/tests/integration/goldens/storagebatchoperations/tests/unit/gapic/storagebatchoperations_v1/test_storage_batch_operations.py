@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 import os
 import asyncio
 import re
@@ -350,82 +351,6 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
 
     client._add_cred_info_for_auth_errors(error)
     assert error.details == []
-
-def test__setup_request_id():
-    class MockRequest:
-        def __init__(self, **kwargs):
-            for k, v in kwargs.items():
-                setattr(self, k, v)
-        def __contains__(self, key):
-            return hasattr(self, key)
-
-    class MockProtoRequest:
-        def __init__(self, **kwargs):
-            for k, v in kwargs.items():
-                setattr(self, k, v)
-        def HasField(self, key):
-            return hasattr(self, key)
-
-    # Test with proto3 optional field not in request
-    request = MockRequest()
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
-    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request.request_id)
-
-    # Test with proto3 optional field already in request
-    request = MockRequest(request_id="already_set")
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
-    assert request.request_id == "already_set"
-
-    # Test with non-proto3 optional field empty
-    request = MockRequest(request_id="")
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", False)
-    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request.request_id)
-
-    # Test with non-proto3 optional field already set
-    request = MockRequest(request_id="already_set")
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", False)
-    assert request.request_id == "already_set"
-
-    # Test with proto3 optional field not in request (MockProtoRequest)
-    request = MockProtoRequest()
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
-    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request.request_id)
-
-    # Test with proto3 optional field already in request (MockProtoRequest)
-    request = MockProtoRequest(request_id="already_set")
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
-    assert request.request_id == "already_set"
-
-    # Test with ValueError
-    class MockValueErrorRequest:
-        def HasField(self, key):
-            raise ValueError("Mismatched field")
-        def __contains__(self, key):
-            return hasattr(self, key)
-
-    request = MockValueErrorRequest()
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
-    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request.request_id)
-
-    # Test with dict and proto3 optional field not in request
-    request = {}
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
-    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request["request_id"])
-
-    # Test with dict and proto3 optional field already in request
-    request = {"request_id": "already_set"}
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
-    assert request["request_id"] == "already_set"
-
-    # Test with dict and non-proto3 optional field empty
-    request = {"request_id": ""}
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", False)
-    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request["request_id"])
-
-    # Test with dict and non-proto3 optional field already set
-    request = {"request_id": "already_set"}
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", False)
-    assert request["request_id"] == "already_set"
 
 @pytest.mark.parametrize("client_class,transport_name", [
     (StorageBatchOperationsClient, "grpc"),
