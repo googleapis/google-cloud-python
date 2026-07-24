@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.33.0...google-api-core-v2.34.0) (2026-07-24)
+
+
+### Features
+
+* Add Feature Gating configuration helpers. ([#17524](https://github.com/googleapis/google-cloud-python/issues/17524)) ([eceea95](https://github.com/googleapis/google-cloud-python/commit/eceea95be8f528afac4fe352ae6dbac913b6a202))
+
 ## [2.33.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.32.0...google-api-core-v2.33.0) (2026-07-22)
 
 
