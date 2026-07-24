@@ -1217,9 +1217,7 @@ class _DataApiTargetAsync(abc.ABC):
             self,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
-            metric=self._create_operation(
-                OperationType.READ_ROWS, is_streaming=True
-            ),
+            metric=self._create_operation(OperationType.READ_ROWS, is_streaming=True),
             retryable_exceptions=retryable_excs,
         )
         return row_merger.start_operation()
@@ -1323,9 +1321,7 @@ class _DataApiTargetAsync(abc.ABC):
             self,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
-            metric=self._create_operation(
-                OperationType.READ_ROWS, is_streaming=False
-            ),
+            metric=self._create_operation(OperationType.READ_ROWS, is_streaming=False),
             retryable_exceptions=retryable_excs,
         )
         results_generator = row_merger.start_operation()
@@ -1540,9 +1536,7 @@ class _DataApiTargetAsync(abc.ABC):
         retryable_excs = _get_retryable_errors(retryable_errors, self)
         predicate = retries.if_exception_type(*retryable_excs)
 
-        with self._create_operation(
-            OperationType.SAMPLE_ROW_KEYS
-        ) as operation_metric:
+        with self._create_operation(OperationType.SAMPLE_ROW_KEYS) as operation_metric:
 
             @CrossSync.convert
             async def execute_rpc():
@@ -1674,9 +1668,7 @@ class _DataApiTargetAsync(abc.ABC):
             # mutations should not be retried
             predicate = retries.if_exception_type()
 
-        with self._create_operation(
-            OperationType.MUTATE_ROW
-        ) as operation_metric:
+        with self._create_operation(OperationType.MUTATE_ROW) as operation_metric:
             target = partial(
                 self.client._gapic_client.mutate_row,
                 request=MutateRowRequest(

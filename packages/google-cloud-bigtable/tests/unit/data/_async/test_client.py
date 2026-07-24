@@ -240,7 +240,9 @@ class TestBigtableDataClientAsync:
 
     @CrossSync.pytest
     @mock.patch("google.cloud.bigtable.data._async.client.BigtableMetricsExporter")
-    @mock.patch("google.cloud.bigtable.data._sync_autogen.client.BigtableMetricsExporter")
+    @mock.patch(
+        "google.cloud.bigtable.data._sync_autogen.client.BigtableMetricsExporter"
+    )
     async def test_veneer_grpc_headers(self, exporter_mock, exporter_mock_sync):
         client_component = "data-async" if CrossSync.is_async else "data"
         VENEER_HEADER_REGEX = re.compile(

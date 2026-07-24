@@ -168,7 +168,7 @@ class BigtableMetricsExporter(MetricExporter):
                                 labels={
                                     "project_id": data_point.attributes.get(
                                         "resource_project", ""
-                                    )
+                                    ),
                                     "instance": data_point.attributes.get(
                                         "resource_instance", ""
                                     ),
