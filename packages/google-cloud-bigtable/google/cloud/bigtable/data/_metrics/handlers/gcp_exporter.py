@@ -112,6 +112,7 @@ class GoogleCloudMetricsHandler(OpenTelemetryMetricsHandler):
     """
 
     def __init__(self, exporter, *args, export_interval=60, **kwargs):
+        self._exporter = exporter
         # periodically executes exporter
         gcp_reader = PeriodicExportingMetricReader(
             exporter, export_interval_millis=export_interval * 1000

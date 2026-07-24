@@ -201,26 +201,22 @@ class BigtableDataClient(ClientWithProject):
             )
         self._is_closed = CrossSync._Sync_Impl.Event()
         if os.getenv("BIGTABLE_EMULATOR_HOST"):
-            self._gcp_metrics_exporter = None
             self._metrics_handler = OpenTelemetryMetricsHandler(
                 client_version=self._client_version()
             )
-            self._metrics = BigtableClientSideMetricsController(
-                handlers=[self._metrics_handler]
-            )
         else:
-            self._gcp_metrics_exporter = BigtableMetricsExporter(
+            exporter = BigtableMetricsExporter(
                 project_id=self.project,
                 credentials=credentials,
                 client_options=client_options,
             )
             self._metrics_handler = GoogleCloudMetricsHandler(
-                exporter=self._gcp_metrics_exporter,
+                exporter=exporter,
                 client_version=self._client_version(),
             )
-            self._metrics = BigtableClientSideMetricsController(
-                handlers=[self._metrics_handler]
-            )
+        self._metrics = BigtableClientSideMetricsController(
+            handlers=[self._metrics_handler]
+        )
         self.transport = cast(TransportType, self._gapic_client.transport)
         self._active_instances: Set[_WarmedInstanceKey] = set()
         self._instance_owners: dict[_WarmedInstanceKey, Set[int]] = {}

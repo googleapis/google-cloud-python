@@ -1153,7 +1153,7 @@ class TestSystem(SystemTestRunner):
 
     @pytest.fixture(scope="session")
     def metrics_client(self, client):
-        yield client._gcp_metrics_exporter.client
+        yield client._metrics.handlers[0]._exporter.client
 
     @pytest.mark.order("last")
     @pytest.mark.parametrize(

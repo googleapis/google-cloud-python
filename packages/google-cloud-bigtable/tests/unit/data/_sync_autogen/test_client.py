@@ -128,8 +128,10 @@ class TestBigtableDataClient:
         assert isinstance(
             client._metrics_interceptor, CrossSync._Sync_Impl.MetricsInterceptor
         )
-        assert client._gcp_metrics_exporter is not None
-        assert isinstance(client._gcp_metrics_exporter, BigtableMetricsExporter)
+        assert getattr(client._metrics.handlers[0], "_exporter", None) is not None
+        assert isinstance(
+            client._metrics.handlers[0]._exporter, BigtableMetricsExporter
+        )
         client.close()
 
     def test_ctor_super_inits(self):
@@ -223,7 +225,9 @@ class TestBigtableDataClient:
 
     def test_metrics_exporter_init_implicit_project(self):
         with self._make_client(use_emulator=False) as client:
-            assert client._gcp_metrics_exporter.project_id == client.project
+            assert (
+                client._metrics.handlers[0]._exporter.project_id == client.project
+            )
 
     @mock.patch("google.cloud.bigtable.data._async.client.BigtableMetricsExporter")
     @mock.patch(
@@ -1115,10 +1119,12 @@ class TestTable:
         assert len(client._metrics.handlers) == 1
         if use_emulator:
             assert isinstance(client._metrics.handlers[0], OpenTelemetryMetricsHandler)
-            assert client._gcp_metrics_exporter is None
+            assert getattr(client._metrics.handlers[0], "_exporter", None) is None
         else:
             assert isinstance(client._metrics.handlers[0], GoogleCloudMetricsHandler)
-            assert isinstance(client._gcp_metrics_exporter, BigtableMetricsExporter)
+            assert isinstance(
+                client._metrics.handlers[0]._exporter, BigtableMetricsExporter
+            )
         assert table.default_operation_timeout == expected_operation_timeout
         assert table.default_attempt_timeout == expected_attempt_timeout
         assert (
@@ -1423,10 +1429,12 @@ class TestAuthorizedView(CrossSync._Sync_Impl.TestTable):
         assert len(client._metrics.handlers) == 1
         if use_emulator:
             assert isinstance(client._metrics.handlers[0], OpenTelemetryMetricsHandler)
-            assert client._gcp_metrics_exporter is None
+            assert getattr(client._metrics.handlers[0], "_exporter", None) is None
         else:
             assert isinstance(client._metrics.handlers[0], GoogleCloudMetricsHandler)
-            assert isinstance(client._gcp_metrics_exporter, BigtableMetricsExporter)
+            assert isinstance(
+                client._metrics.handlers[0]._exporter, BigtableMetricsExporter
+            )
         assert view.default_operation_timeout == expected_operation_timeout
         assert view.default_attempt_timeout == expected_attempt_timeout
         assert (
@@ -1533,10 +1541,12 @@ class TestMaterializedView(CrossSync._Sync_Impl.TestTable):
         assert len(client._metrics.handlers) == 1
         if use_emulator:
             assert isinstance(client._metrics.handlers[0], OpenTelemetryMetricsHandler)
-            assert client._gcp_metrics_exporter is None
+            assert getattr(client._metrics.handlers[0], "_exporter", None) is None
         else:
             assert isinstance(client._metrics.handlers[0], GoogleCloudMetricsHandler)
-            assert isinstance(client._gcp_metrics_exporter, BigtableMetricsExporter)
+            assert isinstance(
+                client._metrics.handlers[0]._exporter, BigtableMetricsExporter
+            )
         assert view.default_operation_timeout == expected_operation_timeout
         assert view.default_attempt_timeout == expected_attempt_timeout
         assert (
@@ -1676,7 +1686,6 @@ class TestReadRows:
         )
         client_mock._gapic_client.table_path.return_value = kwargs["table_id"]
         client_mock._gapic_client.instance_path.return_value = kwargs["instance_id"]
-        client_mock._gcp_metrics_exporter = BigtableMetricsExporter("project")
         return CrossSync._Sync_Impl.TestTable._get_target_class()(
             client_mock, *args, **kwargs
         )

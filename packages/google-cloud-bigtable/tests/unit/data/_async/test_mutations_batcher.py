@@ -1211,7 +1211,6 @@ class TestMutationsBatcherAsync:
 
         mock_client = mock.Mock()
         mock_client._metrics = BigtableClientSideMetricsController(handlers=[])
-        mock_client._gcp_metrics_exporter = BigtableMetricsExporter("project")
 
         with mock.patch.object(
             google.api_core.retry, "if_exception_type"
