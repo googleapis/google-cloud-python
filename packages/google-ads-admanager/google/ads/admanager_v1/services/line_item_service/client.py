@@ -61,17 +61,37 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.money_pb2 as money_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.ads.admanager_v1.services.line_item_service import pagers
 from google.ads.admanager_v1.types import (
+    applied_label,
+    child_content_eligibility_enum,
+    creative_placeholder,
+    creative_targeting,
     custom_field_value,
+    custom_pacing_curve,
+    delivery_enums,
+    delivery_indicator,
+    environment_type_enum,
+    exclusion_scope_enum,
+    frequency_cap,
     goal,
+    grp_settings,
+    line_item_allowed_format_enum,
+    line_item_deal_info,
+    line_item_delivery_forecast_source_enum,
+    line_item_discount,
     line_item_enums,
     line_item_messages,
     line_item_service,
+    line_item_stats,
+    skippable_ad_type_enum,
+    targeting,
+    third_party_measurement_settings,
 )
 
 from .transports.base import DEFAULT_CLIENT_INFO, LineItemServiceTransport
@@ -233,6 +253,197 @@ class LineItemServiceClient(metaclass=LineItemServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def ad_unit_path(
+        network_code: str,
+        ad_unit: str,
+    ) -> str:
+        """Returns a fully-qualified ad_unit string."""
+        return "networks/{network_code}/adUnits/{ad_unit}".format(
+            network_code=network_code,
+            ad_unit=ad_unit,
+        )
+
+    @staticmethod
+    def parse_ad_unit_path(path: str) -> Dict[str, str]:
+        """Parses a ad_unit path into its component segments."""
+        m = re.match(r"^networks/(?P<network_code>.+?)/adUnits/(?P<ad_unit>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def application_path(
+        network_code: str,
+        application: str,
+    ) -> str:
+        """Returns a fully-qualified application string."""
+        return "networks/{network_code}/applications/{application}".format(
+            network_code=network_code,
+            application=application,
+        )
+
+    @staticmethod
+    def parse_application_path(path: str) -> Dict[str, str]:
+        """Parses a application path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/applications/(?P<application>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def audience_segment_path(
+        network_code: str,
+        audience_segment: str,
+    ) -> str:
+        """Returns a fully-qualified audience_segment string."""
+        return "networks/{network_code}/audienceSegments/{audience_segment}".format(
+            network_code=network_code,
+            audience_segment=audience_segment,
+        )
+
+    @staticmethod
+    def parse_audience_segment_path(path: str) -> Dict[str, str]:
+        """Parses a audience_segment path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/audienceSegments/(?P<audience_segment>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def bandwidth_group_path(
+        network_code: str,
+        bandwidth_group: str,
+    ) -> str:
+        """Returns a fully-qualified bandwidth_group string."""
+        return "networks/{network_code}/bandwidthGroups/{bandwidth_group}".format(
+            network_code=network_code,
+            bandwidth_group=bandwidth_group,
+        )
+
+    @staticmethod
+    def parse_bandwidth_group_path(path: str) -> Dict[str, str]:
+        """Parses a bandwidth_group path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/bandwidthGroups/(?P<bandwidth_group>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def browser_path(
+        network_code: str,
+        browser: str,
+    ) -> str:
+        """Returns a fully-qualified browser string."""
+        return "networks/{network_code}/browsers/{browser}".format(
+            network_code=network_code,
+            browser=browser,
+        )
+
+    @staticmethod
+    def parse_browser_path(path: str) -> Dict[str, str]:
+        """Parses a browser path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/browsers/(?P<browser>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def browser_language_path(
+        network_code: str,
+        browser_language: str,
+    ) -> str:
+        """Returns a fully-qualified browser_language string."""
+        return "networks/{network_code}/browserLanguages/{browser_language}".format(
+            network_code=network_code,
+            browser_language=browser_language,
+        )
+
+    @staticmethod
+    def parse_browser_language_path(path: str) -> Dict[str, str]:
+        """Parses a browser_language path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/browserLanguages/(?P<browser_language>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def cms_metadata_value_path(
+        network_code: str,
+        cms_metadata_value: str,
+    ) -> str:
+        """Returns a fully-qualified cms_metadata_value string."""
+        return "networks/{network_code}/cmsMetadataValues/{cms_metadata_value}".format(
+            network_code=network_code,
+            cms_metadata_value=cms_metadata_value,
+        )
+
+    @staticmethod
+    def parse_cms_metadata_value_path(path: str) -> Dict[str, str]:
+        """Parses a cms_metadata_value path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/cmsMetadataValues/(?P<cms_metadata_value>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def company_path(
+        network_code: str,
+        company: str,
+    ) -> str:
+        """Returns a fully-qualified company string."""
+        return "networks/{network_code}/companies/{company}".format(
+            network_code=network_code,
+            company=company,
+        )
+
+    @staticmethod
+    def parse_company_path(path: str) -> Dict[str, str]:
+        """Parses a company path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/companies/(?P<company>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def content_path(
+        network_code: str,
+        content: str,
+    ) -> str:
+        """Returns a fully-qualified content string."""
+        return "networks/{network_code}/content/{content}".format(
+            network_code=network_code,
+            content=content,
+        )
+
+    @staticmethod
+    def parse_content_path(path: str) -> Dict[str, str]:
+        """Parses a content path into its component segments."""
+        m = re.match(r"^networks/(?P<network_code>.+?)/content/(?P<content>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def content_bundle_path(
+        network_code: str,
+        content_bundle: str,
+    ) -> str:
+        """Returns a fully-qualified content_bundle string."""
+        return "networks/{network_code}/contentBundles/{content_bundle}".format(
+            network_code=network_code,
+            content_bundle=content_bundle,
+        )
+
+    @staticmethod
+    def parse_content_bundle_path(path: str) -> Dict[str, str]:
+        """Parses a content_bundle path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/contentBundles/(?P<content_bundle>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def custom_field_path(
         network_code: str,
         custom_field: str,
@@ -249,6 +460,146 @@ class LineItemServiceClient(metaclass=LineItemServiceClientMeta):
         m = re.match(
             r"^networks/(?P<network_code>.+?)/customFields/(?P<custom_field>.+?)$", path
         )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def custom_targeting_key_path(
+        network_code: str,
+        custom_targeting_key: str,
+    ) -> str:
+        """Returns a fully-qualified custom_targeting_key string."""
+        return (
+            "networks/{network_code}/customTargetingKeys/{custom_targeting_key}".format(
+                network_code=network_code,
+                custom_targeting_key=custom_targeting_key,
+            )
+        )
+
+    @staticmethod
+    def parse_custom_targeting_key_path(path: str) -> Dict[str, str]:
+        """Parses a custom_targeting_key path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/customTargetingKeys/(?P<custom_targeting_key>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def custom_targeting_value_path(
+        network_code: str,
+        custom_targeting_value: str,
+    ) -> str:
+        """Returns a fully-qualified custom_targeting_value string."""
+        return "networks/{network_code}/customTargetingValues/{custom_targeting_value}".format(
+            network_code=network_code,
+            custom_targeting_value=custom_targeting_value,
+        )
+
+    @staticmethod
+    def parse_custom_targeting_value_path(path: str) -> Dict[str, str]:
+        """Parses a custom_targeting_value path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/customTargetingValues/(?P<custom_targeting_value>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def device_capability_path(
+        network_code: str,
+        device_capability: str,
+    ) -> str:
+        """Returns a fully-qualified device_capability string."""
+        return "networks/{network_code}/deviceCapabilities/{device_capability}".format(
+            network_code=network_code,
+            device_capability=device_capability,
+        )
+
+    @staticmethod
+    def parse_device_capability_path(path: str) -> Dict[str, str]:
+        """Parses a device_capability path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/deviceCapabilities/(?P<device_capability>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def device_category_path(
+        network_code: str,
+        device_category: str,
+    ) -> str:
+        """Returns a fully-qualified device_category string."""
+        return "networks/{network_code}/deviceCategories/{device_category}".format(
+            network_code=network_code,
+            device_category=device_category,
+        )
+
+    @staticmethod
+    def parse_device_category_path(path: str) -> Dict[str, str]:
+        """Parses a device_category path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/deviceCategories/(?P<device_category>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def device_manufacturer_path(
+        network_code: str,
+        device_manufacturer: str,
+    ) -> str:
+        """Returns a fully-qualified device_manufacturer string."""
+        return (
+            "networks/{network_code}/deviceManufacturers/{device_manufacturer}".format(
+                network_code=network_code,
+                device_manufacturer=device_manufacturer,
+            )
+        )
+
+    @staticmethod
+    def parse_device_manufacturer_path(path: str) -> Dict[str, str]:
+        """Parses a device_manufacturer path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/deviceManufacturers/(?P<device_manufacturer>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def geo_target_path(
+        network_code: str,
+        geo_target: str,
+    ) -> str:
+        """Returns a fully-qualified geo_target string."""
+        return "networks/{network_code}/geoTargets/{geo_target}".format(
+            network_code=network_code,
+            geo_target=geo_target,
+        )
+
+    @staticmethod
+    def parse_geo_target_path(path: str) -> Dict[str, str]:
+        """Parses a geo_target path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/geoTargets/(?P<geo_target>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def label_path(
+        network_code: str,
+        label: str,
+    ) -> str:
+        """Returns a fully-qualified label string."""
+        return "networks/{network_code}/labels/{label}".format(
+            network_code=network_code,
+            label=label,
+        )
+
+    @staticmethod
+    def parse_label_path(path: str) -> Dict[str, str]:
+        """Parses a label path into its component segments."""
+        m = re.match(r"^networks/(?P<network_code>.+?)/labels/(?P<label>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -271,6 +622,66 @@ class LineItemServiceClient(metaclass=LineItemServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def mobile_carrier_path(
+        network_code: str,
+        mobile_carrier: str,
+    ) -> str:
+        """Returns a fully-qualified mobile_carrier string."""
+        return "networks/{network_code}/mobileCarriers/{mobile_carrier}".format(
+            network_code=network_code,
+            mobile_carrier=mobile_carrier,
+        )
+
+    @staticmethod
+    def parse_mobile_carrier_path(path: str) -> Dict[str, str]:
+        """Parses a mobile_carrier path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/mobileCarriers/(?P<mobile_carrier>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def mobile_device_path(
+        network_code: str,
+        mobile_device: str,
+    ) -> str:
+        """Returns a fully-qualified mobile_device string."""
+        return "networks/{network_code}/mobileDevices/{mobile_device}".format(
+            network_code=network_code,
+            mobile_device=mobile_device,
+        )
+
+    @staticmethod
+    def parse_mobile_device_path(path: str) -> Dict[str, str]:
+        """Parses a mobile_device path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/mobileDevices/(?P<mobile_device>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def mobile_device_submodel_path(
+        network_code: str,
+        mobile_device_submodel: str,
+    ) -> str:
+        """Returns a fully-qualified mobile_device_submodel string."""
+        return "networks/{network_code}/mobileDeviceSubmodels/{mobile_device_submodel}".format(
+            network_code=network_code,
+            mobile_device_submodel=mobile_device_submodel,
+        )
+
+    @staticmethod
+    def parse_mobile_device_submodel_path(path: str) -> Dict[str, str]:
+        """Parses a mobile_device_submodel path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/mobileDeviceSubmodels/(?P<mobile_device_submodel>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def network_path(
         network_code: str,
     ) -> str:
@@ -283,6 +694,46 @@ class LineItemServiceClient(metaclass=LineItemServiceClientMeta):
     def parse_network_path(path: str) -> Dict[str, str]:
         """Parses a network path into its component segments."""
         m = re.match(r"^networks/(?P<network_code>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def operating_system_path(
+        network_code: str,
+        operating_system: str,
+    ) -> str:
+        """Returns a fully-qualified operating_system string."""
+        return "networks/{network_code}/operatingSystems/{operating_system}".format(
+            network_code=network_code,
+            operating_system=operating_system,
+        )
+
+    @staticmethod
+    def parse_operating_system_path(path: str) -> Dict[str, str]:
+        """Parses a operating_system path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/operatingSystems/(?P<operating_system>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def operating_system_version_path(
+        network_code: str,
+        operating_system_version: str,
+    ) -> str:
+        """Returns a fully-qualified operating_system_version string."""
+        return "networks/{network_code}/operatingSystemVersions/{operating_system_version}".format(
+            network_code=network_code,
+            operating_system_version=operating_system_version,
+        )
+
+    @staticmethod
+    def parse_operating_system_version_path(path: str) -> Dict[str, str]:
+        """Parses a operating_system_version path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/operatingSystemVersions/(?P<operating_system_version>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -300,6 +751,25 @@ class LineItemServiceClient(metaclass=LineItemServiceClientMeta):
     def parse_order_path(path: str) -> Dict[str, str]:
         """Parses a order path into its component segments."""
         m = re.match(r"^networks/(?P<network_code>.+?)/orders/(?P<order>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def placement_path(
+        network_code: str,
+        placement: str,
+    ) -> str:
+        """Returns a fully-qualified placement string."""
+        return "networks/{network_code}/placements/{placement}".format(
+            network_code=network_code,
+            placement=placement,
+        )
+
+    @staticmethod
+    def parse_placement_path(path: str) -> Dict[str, str]:
+        """Parses a placement path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/placements/(?P<placement>.+?)$", path
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -792,7 +1262,7 @@ class LineItemServiceClient(metaclass=LineItemServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> line_item_messages.LineItem:
-        r"""API to retrieve a ``LineItem`` object.
+        r"""Retrieves a ``LineItem`` object.
 
         .. code-block:: python
 
@@ -901,7 +1371,7 @@ class LineItemServiceClient(metaclass=LineItemServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListLineItemsPager:
-        r"""API to retrieve a list of ``LineItem`` objects.
+        r"""Lists ``LineItem`` objects.
 
         .. code-block:: python
 

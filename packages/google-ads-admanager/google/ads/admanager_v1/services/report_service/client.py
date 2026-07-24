@@ -70,6 +70,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.ads.admanager_v1.services.report_service import pagers
 from google.ads.admanager_v1.types import (
     report_definition,
+    report_delivery,
     report_messages,
     report_service,
 )
@@ -752,7 +753,7 @@ class ReportServiceClient(metaclass=ReportServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> report_messages.Report:
-        r"""API to retrieve a ``Report`` object.
+        r"""Retrieves a ``Report`` object.
 
         .. code-block:: python
 
@@ -857,7 +858,7 @@ class ReportServiceClient(metaclass=ReportServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListReportsPager:
-        r"""API to retrieve a list of ``Report`` objects.
+        r"""Lists ``Report`` objects.
 
         .. code-block:: python
 
@@ -980,7 +981,7 @@ class ReportServiceClient(metaclass=ReportServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> report_messages.Report:
-        r"""API to create a ``Report`` object.
+        r"""Creates a ``Report`` object.
 
         .. code-block:: python
 
@@ -1099,7 +1100,7 @@ class ReportServiceClient(metaclass=ReportServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> report_messages.Report:
-        r"""API to update a ``Report`` object.
+        r"""Updates a ``Report`` object.
 
         .. code-block:: python
 

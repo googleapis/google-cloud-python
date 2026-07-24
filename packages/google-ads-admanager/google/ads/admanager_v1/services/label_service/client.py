@@ -742,7 +742,7 @@ class LabelServiceClient(metaclass=LabelServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> label_messages.Label:
-        r"""API to retrieve a ``Label`` object.
+        r"""Retrieves a ``Label`` object.
 
         .. code-block:: python
 
@@ -849,7 +849,7 @@ class LabelServiceClient(metaclass=LabelServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListLabelsPager:
-        r"""API to retrieve a list of ``Label`` objects.
+        r"""Lists ``Label`` objects.
 
         .. code-block:: python
 
@@ -972,7 +972,7 @@ class LabelServiceClient(metaclass=LabelServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> label_messages.Label:
-        r"""API to create a ``Label`` object.
+        r"""Creates a ``Label`` object.
 
         .. code-block:: python
 
@@ -1091,7 +1091,7 @@ class LabelServiceClient(metaclass=LabelServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> label_service.BatchCreateLabelsResponse:
-        r"""API to batch create ``Label`` objects.
+        r"""Creates ``Label`` objects.
 
         .. code-block:: python
 
@@ -1212,7 +1212,7 @@ class LabelServiceClient(metaclass=LabelServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> label_messages.Label:
-        r"""API to update a ``Label`` object.
+        r"""Updates a ``Label`` object.
 
         .. code-block:: python
 
@@ -1336,7 +1336,7 @@ class LabelServiceClient(metaclass=LabelServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> label_service.BatchUpdateLabelsResponse:
-        r"""API to batch update ``Label`` objects.
+        r"""Batch updates ``Label`` objects.
 
         .. code-block:: python
 
@@ -1456,7 +1456,7 @@ class LabelServiceClient(metaclass=LabelServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> label_service.BatchActivateLabelsResponse:
-        r"""API to activate ``Label`` objects.
+        r"""Activates ``Label`` objects.
 
         .. code-block:: python
 
@@ -1572,7 +1572,7 @@ class LabelServiceClient(metaclass=LabelServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> label_service.BatchDeactivateLabelsResponse:
-        r"""API to deactivate ``Label`` objects.
+        r"""Deactivates ``Label`` objects.
 
         .. code-block:: python
 

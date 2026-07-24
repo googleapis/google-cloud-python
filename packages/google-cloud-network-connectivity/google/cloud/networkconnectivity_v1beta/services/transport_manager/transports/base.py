@@ -156,6 +156,11 @@ class TransportManagerTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.parse_from_activation_key: gapic_v1.method.wrap_method(
+                self.parse_from_activation_key,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_transports: gapic_v1.method.wrap_method(
                 self.list_transports,
                 default_timeout=None,
@@ -267,6 +272,18 @@ class TransportManagerTransport(abc.ABC):
         Union[
             transport_manager.RemoteTransportProfile,
             Awaitable[transport_manager.RemoteTransportProfile],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def parse_from_activation_key(
+        self,
+    ) -> Callable[
+        [transport_manager.ParseFromActivationKeyRequest],
+        Union[
+            transport_manager.ParseFromActivationKeyResponse,
+            Awaitable[transport_manager.ParseFromActivationKeyResponse],
         ],
     ]:
         raise NotImplementedError()

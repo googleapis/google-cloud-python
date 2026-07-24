@@ -1043,6 +1043,84 @@ class DeveloperKnowledgeClient(metaclass=DeveloperKnowledgeClientMeta):
         # Done; return the response.
         return response
 
+    def answer_query(
+        self,
+        request: Optional[Union[developerknowledge.AnswerQueryRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> developerknowledge.AnswerQueryResponse:
+        r"""Answers a query using grounded generation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import developer_knowledge_v1
+
+            def sample_answer_query():
+                # Create a client
+                client = developer_knowledge_v1.DeveloperKnowledgeClient()
+
+                # Initialize request argument(s)
+                request = developer_knowledge_v1.AnswerQueryRequest(
+                    query="query_value",
+                )
+
+                # Make the request
+                response = client.answer_query(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.developer_knowledge_v1.types.AnswerQueryRequest, dict]):
+                The request object. Request message for
+                [DeveloperKnowledge.AnswerQuery][google.developers.knowledge.v1.DeveloperKnowledge.AnswerQuery].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.developer_knowledge_v1.types.AnswerQueryResponse:
+                Response message for
+                   [DeveloperKnowledge.AnswerQuery][google.developers.knowledge.v1.DeveloperKnowledge.AnswerQuery].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, developerknowledge.AnswerQueryRequest):
+            request = developerknowledge.AnswerQueryRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.answer_query]
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "DeveloperKnowledgeClient":
         return self
 

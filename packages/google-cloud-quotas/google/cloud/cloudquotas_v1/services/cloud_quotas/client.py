@@ -805,9 +805,9 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
                 The request object. Message for requesting list of
                 QuotaInfos
             parent (str):
-                Required. Parent value of QuotaInfo resources. Listing
-                across different resource containers (such as
-                'projects/-') is not allowed.
+                Required. Identifier. Parent value of QuotaInfo
+                resources. Listing across different resource containers
+                (such as 'projects/-') is not allowed.
 
                 Example names:
                 ``projects/123/locations/global/services/compute.googleapis.com``
@@ -933,7 +933,8 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
             request (Union[google.cloud.cloudquotas_v1.types.GetQuotaInfoRequest, dict]):
                 The request object. Message for getting a QuotaInfo
             name (str):
-                Required. The resource name of the quota info.
+                Required. Identifier. The resource name of the quota
+                info.
 
                 An example name:
                 ``projects/123/locations/global/services/compute.googleapis.com/quotaInfos/CpusPerProjectPerRegion``
@@ -1046,9 +1047,9 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
                 The request object. Message for requesting list of
                 QuotaPreferences
             parent (str):
-                Required. Parent value of QuotaPreference resources.
-                Listing across different resource containers (such as
-                'projects/-') is not allowed.
+                Required. Identifier. Parent value of QuotaPreference
+                resources. Listing across different resource containers
+                (such as 'projects/-') is not allowed.
 
                 When the value starts with 'folders' or 'organizations',
                 it lists the QuotaPreferences for org quotas in the
@@ -1175,7 +1176,7 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
             request (Union[google.cloud.cloudquotas_v1.types.GetQuotaPreferenceRequest, dict]):
                 The request object. Message for getting a QuotaPreference
             name (str):
-                Required. Name of the resource
+                Required. Identifier. Name of the resource
 
                 Example name:
                 ``projects/123/locations/global/quota_preferences/my-config-for-us-east1``
@@ -1298,7 +1299,7 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
                 The request object. Message for creating a
                 QuotaPreference
             parent (str):
-                Required. Value for parent.
+                Required. Identifier. Value for parent.
 
                 Example: ``projects/123/locations/global``
 

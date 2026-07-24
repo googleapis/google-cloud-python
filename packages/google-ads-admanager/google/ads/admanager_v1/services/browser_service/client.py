@@ -746,7 +746,7 @@ class BrowserServiceClient(metaclass=BrowserServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> browser_messages.Browser:
-        r"""API to retrieve a ``Browser`` object.
+        r"""Retrieves a ``Browser`` object.
 
         .. code-block:: python
 
@@ -853,7 +853,7 @@ class BrowserServiceClient(metaclass=BrowserServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListBrowsersPager:
-        r"""API to retrieve a list of ``Browser`` objects.
+        r"""Lists ``Browser`` objects.
 
         .. code-block:: python
 

@@ -763,7 +763,7 @@ class DeviceManufacturerServiceClient(metaclass=DeviceManufacturerServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> device_manufacturer_messages.DeviceManufacturer:
-        r"""API to retrieve a ``DeviceManufacturer`` object.
+        r"""Retrieves a ``DeviceManufacturer`` object.
 
         .. code-block:: python
 
@@ -873,7 +873,7 @@ class DeviceManufacturerServiceClient(metaclass=DeviceManufacturerServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListDeviceManufacturersPager:
-        r"""API to retrieve a list of ``DeviceManufacturer`` objects.
+        r"""Lists ``DeviceManufacturer`` objects.
 
         .. code-block:: python
 

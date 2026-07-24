@@ -452,6 +452,38 @@ class CommerceTransactionGrpcTransport(CommerceTransactionTransport):
         return self._stubs["get_private_offer"]
 
     @property
+    def resolve_amendment_target(
+        self,
+    ) -> Callable[
+        [commerce_transaction.ResolveAmendmentTargetRequest],
+        commerce_transaction.ResolveAmendmentTargetResponse,
+    ]:
+        r"""Return a callable for the resolve amendment target method over gRPC.
+
+        Resolves the existing offer that must be amended when
+        creating a new PrivateOffer. Use this method to
+        determine the correct amendment target before creating
+        or publishing an offer.
+
+        Returns:
+            Callable[[~.ResolveAmendmentTargetRequest],
+                    ~.ResolveAmendmentTargetResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "resolve_amendment_target" not in self._stubs:
+            self._stubs["resolve_amendment_target"] = self._logged_channel.unary_unary(
+                "/google.cloud.commerceproducer.v1beta.CommerceTransaction/ResolveAmendmentTarget",
+                request_serializer=commerce_transaction.ResolveAmendmentTargetRequest.serialize,
+                response_deserializer=commerce_transaction.ResolveAmendmentTargetResponse.deserialize,
+            )
+        return self._stubs["resolve_amendment_target"]
+
+    @property
     def create_private_offer(
         self,
     ) -> Callable[

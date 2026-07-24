@@ -744,7 +744,7 @@ class NetworkServiceClient(metaclass=NetworkServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> network_messages.Network:
-        r"""API to retrieve a Network object.
+        r"""Retrieves a ``Network`` object.
 
         .. code-block:: python
 
@@ -848,7 +848,7 @@ class NetworkServiceClient(metaclass=NetworkServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListNetworksPager:
-        r"""API to retrieve all the networks the current user has
+        r"""Retrieves all the networks the current user has
         access to.
 
         .. code-block:: python

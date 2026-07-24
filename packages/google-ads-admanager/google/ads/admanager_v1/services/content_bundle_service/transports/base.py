@@ -157,6 +157,16 @@ class ContentBundleServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.batch_activate_content_bundles: gapic_v1.method.wrap_method(
+                self.batch_activate_content_bundles,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_deactivate_content_bundles: gapic_v1.method.wrap_method(
+                self.batch_deactivate_content_bundles,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.cancel_operation: gapic_v1.method.wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
@@ -198,6 +208,30 @@ class ContentBundleServiceTransport(abc.ABC):
         Union[
             content_bundle_service.ListContentBundlesResponse,
             Awaitable[content_bundle_service.ListContentBundlesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_activate_content_bundles(
+        self,
+    ) -> Callable[
+        [content_bundle_service.BatchActivateContentBundlesRequest],
+        Union[
+            content_bundle_service.BatchActivateContentBundlesResponse,
+            Awaitable[content_bundle_service.BatchActivateContentBundlesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_deactivate_content_bundles(
+        self,
+    ) -> Callable[
+        [content_bundle_service.BatchDeactivateContentBundlesRequest],
+        Union[
+            content_bundle_service.BatchDeactivateContentBundlesResponse,
+            Awaitable[content_bundle_service.BatchDeactivateContentBundlesResponse],
         ],
     ]:
         raise NotImplementedError()

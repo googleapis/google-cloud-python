@@ -209,6 +209,11 @@ class CommerceTransactionTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.resolve_amendment_target: gapic_v1.method.wrap_method(
+                self.resolve_amendment_target,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.create_private_offer: gapic_v1.method.wrap_method(
                 self.create_private_offer,
                 default_timeout=60.0,
@@ -441,6 +446,18 @@ class CommerceTransactionTransport(abc.ABC):
     ) -> Callable[
         [commerce_transaction.GetPrivateOfferRequest],
         Union[private_offer.PrivateOffer, Awaitable[private_offer.PrivateOffer]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def resolve_amendment_target(
+        self,
+    ) -> Callable[
+        [commerce_transaction.ResolveAmendmentTargetRequest],
+        Union[
+            commerce_transaction.ResolveAmendmentTargetResponse,
+            Awaitable[commerce_transaction.ResolveAmendmentTargetResponse],
+        ],
     ]:
         raise NotImplementedError()
 

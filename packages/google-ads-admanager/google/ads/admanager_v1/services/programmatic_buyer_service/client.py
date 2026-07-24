@@ -761,7 +761,7 @@ class ProgrammaticBuyerServiceClient(metaclass=ProgrammaticBuyerServiceClientMet
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> programmatic_buyer_messages.ProgrammaticBuyer:
-        r"""API to retrieve a ``ProgrammaticBuyer`` object.
+        r"""Retrieves a ``ProgrammaticBuyer`` object.
 
         .. code-block:: python
 
@@ -871,7 +871,7 @@ class ProgrammaticBuyerServiceClient(metaclass=ProgrammaticBuyerServiceClientMet
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListProgrammaticBuyersPager:
-        r"""API to retrieve a list of ``ProgrammaticBuyer`` objects.
+        r"""Lists ``ProgrammaticBuyer`` objects.
 
         .. code-block:: python
 

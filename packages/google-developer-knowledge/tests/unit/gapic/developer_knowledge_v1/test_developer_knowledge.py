@@ -1806,6 +1806,7 @@ def test_get_document(request_type, transport: str = "grpc"):
             data_source="data_source_value",
             title="title_value",
             view=developerknowledge.DocumentView.DOCUMENT_VIEW_BASIC,
+            content_length_bytes=2146,
         )
         response = client.get_document(request)
 
@@ -1824,6 +1825,7 @@ def test_get_document(request_type, transport: str = "grpc"):
     assert response.data_source == "data_source_value"
     assert response.title == "title_value"
     assert response.view == developerknowledge.DocumentView.DOCUMENT_VIEW_BASIC
+    assert response.content_length_bytes == 2146
 
 
 def test_get_document_non_empty_request_with_auto_populated_field():
@@ -1962,6 +1964,7 @@ async def test_get_document_async(request_type, transport: str = "grpc_asyncio")
                 data_source="data_source_value",
                 title="title_value",
                 view=developerknowledge.DocumentView.DOCUMENT_VIEW_BASIC,
+                content_length_bytes=2146,
             )
         )
         response = await client.get_document(request)
@@ -1981,6 +1984,7 @@ async def test_get_document_async(request_type, transport: str = "grpc_asyncio")
     assert response.data_source == "data_source_value"
     assert response.title == "title_value"
     assert response.view == developerknowledge.DocumentView.DOCUMENT_VIEW_BASIC
+    assert response.content_length_bytes == 2146
 
 
 def test_get_document_field_headers():
@@ -2305,6 +2309,181 @@ async def test_batch_get_documents_async(request_type, transport: str = "grpc_as
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, developerknowledge.BatchGetDocumentsResponse)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developerknowledge.AnswerQueryRequest(),
+        {},
+    ],
+)
+def test_answer_query(request_type, transport: str = "grpc"):
+    client = DeveloperKnowledgeClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.answer_query), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = developerknowledge.AnswerQueryResponse()
+        response = client.answer_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = developerknowledge.AnswerQueryRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, developerknowledge.AnswerQueryResponse)
+
+
+def test_answer_query_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DeveloperKnowledgeClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = developerknowledge.AnswerQueryRequest(
+        query="query_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.answer_query), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.answer_query(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = developerknowledge.AnswerQueryRequest(
+            query="query_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_answer_query_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DeveloperKnowledgeClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.answer_query in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.answer_query] = mock_rpc
+        request = {}
+        client.answer_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.answer_query(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_answer_query_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DeveloperKnowledgeAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.answer_query
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.answer_query
+        ] = mock_rpc
+
+        request = {}
+        await client.answer_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.answer_query(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developerknowledge.AnswerQueryRequest(),
+        {},
+    ],
+)
+async def test_answer_query_async(request_type, transport: str = "grpc_asyncio"):
+    client = DeveloperKnowledgeAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.answer_query), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            developerknowledge.AnswerQueryResponse()
+        )
+        response = await client.answer_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = developerknowledge.AnswerQueryRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, developerknowledge.AnswerQueryResponse)
 
 
 def test_search_document_chunks_rest_use_cached_wrapped_rpc():
@@ -2854,6 +3033,127 @@ def test_batch_get_documents_rest_unset_required_fields():
     )
 
 
+def test_answer_query_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DeveloperKnowledgeClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.answer_query in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.answer_query] = mock_rpc
+
+        request = {}
+        client.answer_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.answer_query(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_answer_query_rest_required_fields(
+    request_type=developerknowledge.AnswerQueryRequest,
+):
+    transport_class = transports.DeveloperKnowledgeRestTransport
+
+    request_init = {}
+    request_init["query"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).answer_query._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["query"] = "query_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).answer_query._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "query" in jsonified_request
+    assert jsonified_request["query"] == "query_value"
+
+    client = DeveloperKnowledgeClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = developerknowledge.AnswerQueryResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = developerknowledge.AnswerQueryResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.answer_query(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_answer_query_rest_unset_required_fields():
+    transport = transports.DeveloperKnowledgeRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.answer_query._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("query",)))
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DeveloperKnowledgeGrpcTransport(
@@ -3024,6 +3324,26 @@ def test_batch_get_documents_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_answer_query_empty_call_grpc():
+    client = DeveloperKnowledgeClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.answer_query), "__call__") as call:
+        call.return_value = developerknowledge.AnswerQueryResponse()
+        client.answer_query(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = developerknowledge.AnswerQueryRequest()
+        assert args[0] == request_msg
+
+
 def test_transport_kind_grpc_asyncio():
     transport = DeveloperKnowledgeAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -3087,6 +3407,7 @@ async def test_get_document_empty_call_grpc_asyncio():
                 data_source="data_source_value",
                 title="title_value",
                 view=developerknowledge.DocumentView.DOCUMENT_VIEW_BASIC,
+                content_length_bytes=2146,
             )
         )
         await client.get_document(request=None)
@@ -3121,6 +3442,30 @@ async def test_batch_get_documents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developerknowledge.BatchGetDocumentsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_answer_query_empty_call_grpc_asyncio():
+    client = DeveloperKnowledgeAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.answer_query), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            developerknowledge.AnswerQueryResponse()
+        )
+        await client.answer_query(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = developerknowledge.AnswerQueryRequest()
         assert args[0] == request_msg
 
 
@@ -3320,6 +3665,7 @@ def test_get_document_rest_call_success(request_type):
             data_source="data_source_value",
             title="title_value",
             view=developerknowledge.DocumentView.DOCUMENT_VIEW_BASIC,
+            content_length_bytes=2146,
         )
 
         # Wrap the value into a proper Response obj
@@ -3343,6 +3689,7 @@ def test_get_document_rest_call_success(request_type):
     assert response.data_source == "data_source_value"
     assert response.title == "title_value"
     assert response.view == developerknowledge.DocumentView.DOCUMENT_VIEW_BASIC
+    assert response.content_length_bytes == 2146
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -3545,6 +3892,139 @@ def test_batch_get_documents_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_answer_query_rest_bad_request(
+    request_type=developerknowledge.AnswerQueryRequest,
+):
+    client = DeveloperKnowledgeClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.answer_query(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developerknowledge.AnswerQueryRequest,
+        dict,
+    ],
+)
+def test_answer_query_rest_call_success(request_type):
+    client = DeveloperKnowledgeClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = developerknowledge.AnswerQueryResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = developerknowledge.AnswerQueryResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.answer_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, developerknowledge.AnswerQueryResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_answer_query_rest_interceptors(null_interceptor):
+    transport = transports.DeveloperKnowledgeRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DeveloperKnowledgeRestInterceptor(),
+    )
+    client = DeveloperKnowledgeClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeveloperKnowledgeRestInterceptor, "post_answer_query"
+        ) as post,
+        mock.patch.object(
+            transports.DeveloperKnowledgeRestInterceptor,
+            "post_answer_query_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DeveloperKnowledgeRestInterceptor, "pre_answer_query"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = developerknowledge.AnswerQueryRequest.pb(
+            developerknowledge.AnswerQueryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = developerknowledge.AnswerQueryResponse.to_json(
+            developerknowledge.AnswerQueryResponse()
+        )
+        req.return_value.content = return_value
+
+        request = developerknowledge.AnswerQueryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = developerknowledge.AnswerQueryResponse()
+        post_with_metadata.return_value = (
+            developerknowledge.AnswerQueryResponse(),
+            metadata,
+        )
+
+        client.answer_query(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_initialize_client_w_rest():
     client = DeveloperKnowledgeClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -3613,6 +4093,25 @@ def test_batch_get_documents_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_answer_query_empty_call_rest():
+    client = DeveloperKnowledgeClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.answer_query), "__call__") as call:
+        client.answer_query(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = developerknowledge.AnswerQueryRequest()
+        assert args[0] == request_msg
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = DeveloperKnowledgeClient(
@@ -3649,6 +4148,7 @@ def test_developer_knowledge_base_transport():
         "search_document_chunks",
         "get_document",
         "batch_get_documents",
+        "answer_query",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -3924,6 +4424,9 @@ def test_developer_knowledge_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.batch_get_documents._session
     session2 = client2.transport.batch_get_documents._session
+    assert session1 != session2
+    session1 = client1.transport.answer_query._session
+    session2 = client2.transport.answer_query._session
     assert session1 != session2
 
 

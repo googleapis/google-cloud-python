@@ -238,7 +238,7 @@ class ReportDefinition(proto.Message):
             ADVERTISER_DOMAIN_NAME (242):
                 The domain name of the advertiser.
 
-                Corresponds to "Advertiser domain" in the Ad Manager UI.
+                Corresponds to "Landing page domain" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``
 
@@ -1840,7 +1840,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Creative or creative set value" in the Ad
                 Manager UI (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``ENUM``
             CREATIVE_OR_CREATIVE_SET_NAME (683):
@@ -1850,7 +1851,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Creative or creative set" in the Ad Manager
                 UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             CREATIVE_POLICIES_FILTERING (711):
@@ -2166,6 +2168,15 @@ class ReportDefinition(proto.Message):
                 ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
+            DECLARED_ADVERTISER_DOMAIN (796):
+                The declared domain of the advertiser.
+
+                Corresponds to "Declared advertiser domain" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
             DELIVERED_SECURE_SIGNAL_ID (309):
                 The ID of the secure signals that were sent to the bidder
                 who won the impression.
@@ -2193,7 +2204,8 @@ class ReportDefinition(proto.Message):
                 (when showing API fields).
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``REVENUE_VERIFICATION``, ``AD_SPEED``
+                ``REACH``, ``REVENUE_VERIFICATION``, ``AD_SPEED``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``ENUM``
             DEMAND_CHANNEL_NAME (10):
@@ -2202,7 +2214,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Demand channel" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``REVENUE_VERIFICATION``, ``AD_SPEED``
+                ``REACH``, ``REVENUE_VERIFICATION``, ``AD_SPEED``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``STRING``
             DEMAND_SOURCE (592):
@@ -2759,7 +2772,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Key-values ID" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``IDENTIFIER``
             KEY_VALUES_NAME (215):
@@ -2768,7 +2782,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Key-values" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``STRING``
             KEY_VALUES_SET (713):
@@ -2777,7 +2792,6 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Key-values" in the Ad Manager UI.
 
                 Compatible with the following report types:
-                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``STRING_LIST``
             LINE_ITEM_AGENCY (663):
@@ -4998,8 +5012,8 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``STRING``
             VIDEO_LIVE_STREAM_EVENT_AD_BREAK_DURATION (547):
-                The duration of the ad break in seconds for a live stream
-                event.
+                The expected duration of the ad break in seconds for a live
+                stream event.
 
                 Corresponds to "Ad break duration (seconds)" in the Ad
                 Manager UI.
@@ -6674,6 +6688,7 @@ class ReportDefinition(proto.Message):
         DEAL_ID = 436
         DEAL_ID_ALL = 781
         DEAL_NAME = 437
+        DECLARED_ADVERTISER_DOMAIN = 796
         DELIVERED_SECURE_SIGNAL_ID = 309
         DELIVERED_SECURE_SIGNAL_NAME = 310
         DEMAND_CHANNEL = 9

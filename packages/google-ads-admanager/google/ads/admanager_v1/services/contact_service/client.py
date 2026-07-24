@@ -770,7 +770,7 @@ class ContactServiceClient(metaclass=ContactServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> contact_messages.Contact:
-        r"""API to retrieve a ``Contact`` object.
+        r"""Retrieves a ``Contact`` object.
 
         .. code-block:: python
 
@@ -881,7 +881,7 @@ class ContactServiceClient(metaclass=ContactServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListContactsPager:
-        r"""API to retrieve a list of ``Contact`` objects.
+        r"""Lists ``Contact`` objects.
 
         .. code-block:: python
 
@@ -1004,7 +1004,7 @@ class ContactServiceClient(metaclass=ContactServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> contact_messages.Contact:
-        r"""API to create a ``Contact`` object.
+        r"""Creates a ``Contact`` object.
 
         .. code-block:: python
 
@@ -1127,7 +1127,7 @@ class ContactServiceClient(metaclass=ContactServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> contact_service.BatchCreateContactsResponse:
-        r"""API to batch create ``Contact`` objects.
+        r"""Creates ``Contact`` objects.
 
         .. code-block:: python
 
@@ -1247,7 +1247,7 @@ class ContactServiceClient(metaclass=ContactServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> contact_messages.Contact:
-        r"""API to update a ``Contact`` object.
+        r"""Updates a ``Contact`` object.
 
         .. code-block:: python
 
@@ -1375,7 +1375,7 @@ class ContactServiceClient(metaclass=ContactServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> contact_service.BatchUpdateContactsResponse:
-        r"""API to batch update ``Contact`` objects.
+        r"""Batch updates ``Contact`` objects.
 
         .. code-block:: python
 

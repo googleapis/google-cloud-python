@@ -22,9 +22,105 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
     manifest={
+        "LineItemCostTypeEnum",
         "LineItemTypeEnum",
+        "LineItemReservationStatusEnum",
+        "LineItemComputedStatusEnum",
     },
 )
+
+
+class LineItemCostTypeEnum(proto.Message):
+    r"""Wrapper message for
+    [LineItemCostType][google.ads.admanager.v1.LineItemCostTypeEnum.LineItemCostType].
+
+    """
+
+    class LineItemCostType(proto.Enum):
+        r"""Describes the LineItem actions that are billable.
+
+        Values:
+            LINE_ITEM_COST_TYPE_UNSPECIFIED (0):
+                Not specified value.
+            CPA (1):
+                Starting February 22, 2024 the CPA LineItemCostType will
+                only be read as part of Spotlight deprecation, learn more
+                at:
+                https://support.google.com/admanager/answer/7519021#spotlight
+
+                Cost per action. The line item
+                [type][google.ads.admanager.v1.LineItem.line_item_type] must
+                be one of:
+
+                - [LineItemTypeEnum.LineItemType.SPONSORSHIP][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.SPONSORSHIP]
+                - [LineItemTypeEnum.LineItemType.STANDARD][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.STANDARD]
+                - [LineItemTypeEnum.LineItemType.BULK][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.BULK]
+                - [LineItemTypeEnum.LineItemType.NETWORK][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.NETWORK]
+            CPC (2):
+                Cost per click. The line item
+                [type][google.ads.admanager.v1.LineItem.line_item_type] must
+                be one of:
+
+                - [LineItemTypeEnum.LineItemType.SPONSORSHIP][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.SPONSORSHIP]
+                - [LineItemTypeEnum.LineItemType.STANDARD][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.STANDARD]
+                - [LineItemTypeEnum.LineItemType.BULK][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.BULK]
+                - [LineItemTypeEnum.LineItemType.NETWORK][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.NETWORK]
+                - [LineItemTypeEnum.LineItemType.PRICE_PRIORITY][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.PRICE_PRIORITY]
+                - [LineItemTypeEnum.LineItemType.HOUSE][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.HOUSE]
+            CPD (3):
+                Cost per day. The line item
+                [type][google.ads.admanager.v1.LineItem.line_item_type] must
+                be one of:
+
+                - [LineItemTypeEnum.LineItemType.SPONSORSHIP][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.SPONSORSHIP]
+                - [LineItemTypeEnum.LineItemType.NETWORK][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.NETWORK]
+            CPM (4):
+                Cost per mille (thousand) impressions. The line item
+                [type][google.ads.admanager.v1.LineItem.line_item_type] must
+                be one of:
+
+                - [LineItemTypeEnum.LineItemType.SPONSORSHIP][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.SPONSORSHIP]
+                - [LineItemTypeEnum.LineItemType.STANDARD][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.STANDARD]
+                - [LineItemTypeEnum.LineItemType.BULK][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.BULK]
+                - [LineItemTypeEnum.LineItemType.NETWORK][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.NETWORK]
+                - [LineItemTypeEnum.LineItemType.PRICE_PRIORITY][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.PRICE_PRIORITY]
+                - [LineItemTypeEnum.LineItemType.HOUSE][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.HOUSE]
+            VCPM (5):
+                Cost per mille (thousand) Active View viewable impressions.
+                The line item
+                [type][google.ads.admanager.v1.LineItem.line_item_type] must
+                be one of:
+
+                - [LineItemTypeEnum.LineItemType.STANDARD][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.STANDARD]
+            CPM_IN_TARGET (6):
+                Cost per millie (thousand) in-target impressions. The line
+                item [type][google.ads.admanager.v1.LineItem.line_item_type]
+                must be one of:
+
+                - [LineItemTypeEnum.LineItemType.STANDARD][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.STANDARD]
+            CPF (7):
+                Cost for the entire flight of the deal. The line item
+                [type][google.ads.admanager.v1.LineItem.line_item_type] must
+                be must be one of:
+
+                - [LineItemTypeEnum.LineItemType.SPONSORSHIP][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.SPONSORSHIP]
+            CPCV (8):
+                Cost per completed view. The line item
+                [type][google.ads.admanager.v1.LineItem.line_item_type] must
+                be one of:
+
+                - [LineItemTypeEnum.LineItemType.STANDARD][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.STANDARD].
+        """
+
+        LINE_ITEM_COST_TYPE_UNSPECIFIED = 0
+        CPA = 1
+        CPC = 2
+        CPD = 3
+        CPM = 4
+        VCPM = 5
+        CPM_IN_TARGET = 6
+        CPF = 7
+        CPCV = 8
 
 
 class LineItemTypeEnum(proto.Message):
@@ -105,6 +201,91 @@ class LineItemTypeEnum(proto.Message):
         BUMPER = 5
         PREFERRED_DEAL = 10
         AUDIENCE_EXTENSION = 14
+
+
+class LineItemReservationStatusEnum(proto.Message):
+    r"""Wrapper message for
+    [LineItemReservationStatus][google.ads.admanager.v1.LineItemReservationStatusEnum.LineItemReservationStatus].
+
+    """
+
+    class LineItemReservationStatus(proto.Enum):
+        r"""Defines the different reservation statuses of a line item.
+
+        Values:
+            LINE_ITEM_RESERVATION_STATUS_UNSPECIFIED (0):
+                No value specified
+            RESERVED (1):
+                Indicates that inventory has been reserved
+                for the line item.
+            UNRESERVED (2):
+                Indicates that inventory has not been
+                reserved for the line item.
+        """
+
+        LINE_ITEM_RESERVATION_STATUS_UNSPECIFIED = 0
+        RESERVED = 1
+        UNRESERVED = 2
+
+
+class LineItemComputedStatusEnum(proto.Message):
+    r"""Wrapper message for
+    [LineItemComputedStatus][google.ads.admanager.v1.LineItemComputedStatusEnum.LineItemComputedStatus].
+
+    """
+
+    class LineItemComputedStatus(proto.Enum):
+        r"""Describes the computed LineItem status that is derived from
+        the current state of the LineItem.
+
+        Values:
+            LINE_ITEM_COMPUTED_STATUS_UNSPECIFIED (0):
+                No value specified.
+            CANCELED (1):
+                The LineItem has been canceled and is no
+                longer eligible to serve. This is a legacy
+                status.
+            COMPLETED (2):
+                The LineItem has completed its run.
+            DELIVERING (3):
+                The LineItem has begun serving.
+            DELIVERY_EXTENDED (4):
+                The LineItem has past its endDateTime with an
+                auto extension, but hasn't met its goal.
+            DISAPPROVED (5):
+                The LineItem has been disapproved and is not
+                eligible to serve.
+            DRAFT (6):
+                The LineItem is still being drafted.
+            INACTIVE (7):
+                The LineItem is inactive. It is either caused
+                by missing creatives or the network disabling
+                auto-activation.
+            PAUSED (8):
+                The LineItem has been paused from serving.
+            PAUSED_INVENTORY_RELEASED (9):
+                The LineItem has been paused and its reserved
+                inventory has been released. The LineItem will
+                not serve.
+            PENDING_APPROVAL (10):
+                The LineItem has been submitted for approval.
+            READY (11):
+                The LineItem has been activated and is ready
+                to serve.
+        """
+
+        LINE_ITEM_COMPUTED_STATUS_UNSPECIFIED = 0
+        CANCELED = 1
+        COMPLETED = 2
+        DELIVERING = 3
+        DELIVERY_EXTENDED = 4
+        DISAPPROVED = 5
+        DRAFT = 6
+        INACTIVE = 7
+        PAUSED = 8
+        PAUSED_INVENTORY_RELEASED = 9
+        PENDING_APPROVAL = 10
+        READY = 11
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

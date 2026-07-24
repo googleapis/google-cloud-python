@@ -785,7 +785,7 @@ class MobileDeviceSubmodelServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> mobile_device_submodel_messages.MobileDeviceSubmodel:
-        r"""API to retrieve a ``MobileDeviceSubmodel`` object.
+        r"""Retrieves a ``MobileDeviceSubmodel`` object.
 
         .. code-block:: python
 
@@ -899,7 +899,7 @@ class MobileDeviceSubmodelServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListMobileDeviceSubmodelsPager:
-        r"""API to retrieve a list of ``MobileDeviceSubmodel`` objects.
+        r"""Lists ``MobileDeviceSubmodel`` objects.
 
         .. code-block:: python
 

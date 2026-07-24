@@ -762,7 +762,7 @@ class RichMediaAdsCompanyServiceClient(metaclass=RichMediaAdsCompanyServiceClien
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> rich_media_ads_company_messages.RichMediaAdsCompany:
-        r"""API to retrieve a ``RichMediaAdsCompany`` object.
+        r"""Retrieves a ``RichMediaAdsCompany`` object.
 
         .. code-block:: python
 
@@ -878,7 +878,7 @@ class RichMediaAdsCompanyServiceClient(metaclass=RichMediaAdsCompanyServiceClien
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListRichMediaAdsCompaniesPager:
-        r"""API to retrieve a list of ``RichMediaAdsCompany`` objects.
+        r"""Lists ``RichMediaAdsCompany`` objects.
 
         .. code-block:: python
 

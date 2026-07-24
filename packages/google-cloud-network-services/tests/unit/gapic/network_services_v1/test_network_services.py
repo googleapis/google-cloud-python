@@ -52417,7 +52417,10 @@ def test_create_agent_gateway_rest_call_success(request_type):
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["agent_gateway"] = {
         "google_managed": {"governed_access_path": 1},
-        "self_managed": {"resource_uri": "resource_uri_value"},
+        "self_managed": {
+            "resource_uri": "resource_uri_value",
+            "resource_uris": ["resource_uris_value1", "resource_uris_value2"],
+        },
         "name": "name_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
@@ -52656,7 +52659,10 @@ def test_update_agent_gateway_rest_call_success(request_type):
     }
     request_init["agent_gateway"] = {
         "google_managed": {"governed_access_path": 1},
-        "self_managed": {"resource_uri": "resource_uri_value"},
+        "self_managed": {
+            "resource_uri": "resource_uri_value",
+            "resource_uris": ["resource_uris_value1", "resource_uris_value2"],
+        },
         "name": "projects/sample1/locations/sample2/agentGateways/sample3",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},

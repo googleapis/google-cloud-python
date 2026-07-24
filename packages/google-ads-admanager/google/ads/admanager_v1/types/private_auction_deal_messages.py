@@ -23,6 +23,7 @@ import proto  # type: ignore
 
 from google.ads.admanager_v1.types import (
     deal_buyer_permission_type_enum,
+    non_guaranteed_deal_priority,
     private_marketplace_enums,
     size,
 )
@@ -109,6 +110,11 @@ class PrivateAuctionDeal(proto.Message):
             Marketplace API.
 
             This field is a member of `oneof`_ ``_buyer_data``.
+        deal_priority (google.ads.admanager_v1.types.NonGuaranteedDealPriority):
+            Optional. The priority of the deal across all
+            non-guaranteed deals.
+
+            This field is a member of `oneof`_ ``_deal_priority``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The instant at which the ``PrivateAuctionDeal``
             was created.
@@ -215,6 +221,12 @@ class PrivateAuctionDeal(proto.Message):
         number=14,
         optional=True,
         message=BuyerData,
+    )
+    deal_priority: non_guaranteed_deal_priority.NonGuaranteedDealPriority = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        optional=True,
+        message=non_guaranteed_deal_priority.NonGuaranteedDealPriority,
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

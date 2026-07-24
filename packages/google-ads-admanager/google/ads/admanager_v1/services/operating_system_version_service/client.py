@@ -775,7 +775,7 @@ class OperatingSystemVersionServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operating_system_version_messages.OperatingSystemVersion:
-        r"""API to retrieve a ``OperatingSystemVersion`` object.
+        r"""Retrieves a ``OperatingSystemVersion`` object.
 
         .. code-block:: python
 
@@ -894,7 +894,7 @@ class OperatingSystemVersionServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListOperatingSystemVersionsPager:
-        r"""API to retrieve a list of ``OperatingSystemVersion`` objects.
+        r"""Lists ``OperatingSystemVersion`` objects.
 
         .. code-block:: python
 

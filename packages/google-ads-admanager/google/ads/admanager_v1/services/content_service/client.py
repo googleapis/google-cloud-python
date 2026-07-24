@@ -61,10 +61,16 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.ads.admanager_v1.services.content_service import pagers
-from google.ads.admanager_v1.types import content_messages, content_service
+from google.ads.admanager_v1.types import (
+    content_enums,
+    content_messages,
+    content_service,
+)
 
 from .transports.base import DEFAULT_CLIENT_INFO, ContentServiceTransport
 from .transports.rest import ContentServiceRestTransport
@@ -225,6 +231,26 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def cms_metadata_value_path(
+        network_code: str,
+        cms_metadata_value: str,
+    ) -> str:
+        """Returns a fully-qualified cms_metadata_value string."""
+        return "networks/{network_code}/cmsMetadataValues/{cms_metadata_value}".format(
+            network_code=network_code,
+            cms_metadata_value=cms_metadata_value,
+        )
+
+    @staticmethod
+    def parse_cms_metadata_value_path(path: str) -> Dict[str, str]:
+        """Parses a cms_metadata_value path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/cmsMetadataValues/(?P<cms_metadata_value>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def content_path(
         network_code: str,
         content: str,
@@ -239,6 +265,46 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
     def parse_content_path(path: str) -> Dict[str, str]:
         """Parses a content path into its component segments."""
         m = re.match(r"^networks/(?P<network_code>.+?)/content/(?P<content>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def content_bundle_path(
+        network_code: str,
+        content_bundle: str,
+    ) -> str:
+        """Returns a fully-qualified content_bundle string."""
+        return "networks/{network_code}/contentBundles/{content_bundle}".format(
+            network_code=network_code,
+            content_bundle=content_bundle,
+        )
+
+    @staticmethod
+    def parse_content_bundle_path(path: str) -> Dict[str, str]:
+        """Parses a content_bundle path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/contentBundles/(?P<content_bundle>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def content_source_path(
+        network_code: str,
+        content_source: str,
+    ) -> str:
+        """Returns a fully-qualified content_source string."""
+        return "networks/{network_code}/contentSources/{content_source}".format(
+            network_code=network_code,
+            content_source=content_source,
+        )
+
+    @staticmethod
+    def parse_content_source_path(path: str) -> Dict[str, str]:
+        """Parses a content_source path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/contentSources/(?P<content_source>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -744,7 +810,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> content_messages.Content:
-        r"""API to retrieve a ``Content`` object.
+        r"""Retrieves a ``Content`` object.
 
         .. code-block:: python
 
@@ -849,7 +915,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListContentPager:
-        r"""API to retrieve a list of ``Content`` objects.
+        r"""Lists ``Content`` objects.
 
         .. code-block:: python
 

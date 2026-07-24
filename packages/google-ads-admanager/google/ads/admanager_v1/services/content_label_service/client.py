@@ -754,7 +754,7 @@ class ContentLabelServiceClient(metaclass=ContentLabelServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> content_label_messages.ContentLabel:
-        r"""API to retrieve a ``ContentLabel`` object.
+        r"""Retrieves a ``ContentLabel`` object.
 
         .. code-block:: python
 
@@ -861,7 +861,7 @@ class ContentLabelServiceClient(metaclass=ContentLabelServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListContentLabelsPager:
-        r"""API to retrieve a list of ``ContentLabel`` objects.
+        r"""Lists ``ContentLabel`` objects.
 
         .. code-block:: python
 

@@ -758,7 +758,7 @@ class CustomFieldServiceClient(metaclass=CustomFieldServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> custom_field_messages.CustomField:
-        r"""API to retrieve a ``CustomField`` object.
+        r"""Retrieves a ``CustomField`` object.
 
         .. code-block:: python
 
@@ -867,7 +867,7 @@ class CustomFieldServiceClient(metaclass=CustomFieldServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListCustomFieldsPager:
-        r"""API to retrieve a list of ``CustomField`` objects.
+        r"""Lists ``CustomField`` objects.
 
         .. code-block:: python
 
@@ -992,7 +992,7 @@ class CustomFieldServiceClient(metaclass=CustomFieldServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> custom_field_messages.CustomField:
-        r"""API to create a ``CustomField`` object.
+        r"""Creates a ``CustomField`` object.
 
         .. code-block:: python
 
@@ -1111,7 +1111,7 @@ class CustomFieldServiceClient(metaclass=CustomFieldServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> custom_field_service.BatchCreateCustomFieldsResponse:
-        r"""API to batch create ``CustomField`` objects.
+        r"""Creates ``CustomField`` objects.
 
         .. code-block:: python
 
@@ -1236,7 +1236,7 @@ class CustomFieldServiceClient(metaclass=CustomFieldServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> custom_field_messages.CustomField:
-        r"""API to update a ``CustomField`` object.
+        r"""Updates a ``CustomField`` object.
 
         .. code-block:: python
 
@@ -1360,7 +1360,7 @@ class CustomFieldServiceClient(metaclass=CustomFieldServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> custom_field_service.BatchUpdateCustomFieldsResponse:
-        r"""API to batch update ``CustomField`` objects.
+        r"""Batch updates ``CustomField`` objects.
 
         .. code-block:: python
 

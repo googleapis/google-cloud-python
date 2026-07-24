@@ -782,7 +782,7 @@ class CmsMetadataValueServiceClient(metaclass=CmsMetadataValueServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cms_metadata_value_messages.CmsMetadataValue:
-        r"""API to retrieve a ``CmsMetadataValue`` object.
+        r"""Retrieves a ``CmsMetadataValue`` object.
 
         .. code-block:: python
 
@@ -894,7 +894,7 @@ class CmsMetadataValueServiceClient(metaclass=CmsMetadataValueServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListCmsMetadataValuesPager:
-        r"""API to retrieve a list of ``CmsMetadataValue`` objects.
+        r"""Lists ``CmsMetadataValue`` objects.
 
         .. code-block:: python
 
@@ -1023,7 +1023,7 @@ class CmsMetadataValueServiceClient(metaclass=CmsMetadataValueServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cms_metadata_value_service.BatchActivateCmsMetadataValuesResponse:
-        r"""API to activate a list of ``CmsMetadataValue`` objects.
+        r"""Activates a list of ``CmsMetadataValue`` objects.
 
         .. code-block:: python
 
@@ -1154,7 +1154,7 @@ class CmsMetadataValueServiceClient(metaclass=CmsMetadataValueServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cms_metadata_value_service.BatchDeactivateCmsMetadataValuesResponse:
-        r"""API to deactivate a list of ``CmsMetadataValue`` objects.
+        r"""Deactivates a list of ``CmsMetadataValue`` objects.
 
         .. code-block:: python
 

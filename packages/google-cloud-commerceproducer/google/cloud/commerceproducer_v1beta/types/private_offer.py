@@ -472,6 +472,34 @@ class PrivateOffer(proto.Message):
             end_policy (google.cloud.commerceproducer_v1beta.types.PrivateOffer.Term.EndPolicy):
                 Optional. Defines when an offer should end.
                 Must be set when publishing the offer.
+            effective_term_end_time (google.type.datetime_pb2.DateTime):
+                Output only. The expected end time of the current offer
+                term.
+
+                At the end of each offer term, an offer associated with an
+                active order will either renew or end. When an offer renews,
+                a new term begins and this value changes to reflect the end
+                time of the new term. When an offer ends this value is no
+                longer set and instead ``end_time`` is set.
+
+                When the term of an offer ends and the offer does not renew,
+                the associated order also ends if the base standard offer
+                has a subscription price model. Otherwise, the associated
+                order does not end and remains active.
+
+                Not included for PRIVATE_OFFER_VIEW_BASIC. Included for
+                PRIVATE_OFFER_VIEW_FULL when the offer has not ended and
+                either the offer has started or the value can be derived
+                from other fields.
+
+                For offers that have not started, this field is set when one
+                of the following conditions is true.
+
+                - The offer sets ``term.scheduled_end_time``.
+                - The offer sets ``term.scheduled_start_time`` and
+                  ``term.duration_months``, the offer's ``term.end_policy``
+                  is not ``MATCH_AMENDED_OFFER``, and the offer does not
+                  have standard_interval set to ``MONTHLY_POSTPAY``.
         """
 
         class StartPolicy(proto.Enum):
@@ -590,6 +618,11 @@ class PrivateOffer(proto.Message):
             proto.ENUM,
             number=3,
             enum="PrivateOffer.Term.EndPolicy",
+        )
+        effective_term_end_time: datetime_pb2.DateTime = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message=datetime_pb2.DateTime,
         )
 
     class SingleProductOffer(proto.Message):

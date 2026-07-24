@@ -39,6 +39,7 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
 import google.auth
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -59,6 +60,7 @@ from google.ads.admanager_v1.services.content_bundle_service import (
     transports,
 )
 from google.ads.admanager_v1.types import (
+    content_bundle_enums,
     content_bundle_messages,
     content_bundle_service,
 )
@@ -1672,6 +1674,418 @@ def test_list_content_bundles_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
+def test_batch_activate_content_bundles_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContentBundleServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.batch_activate_content_bundles
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.batch_activate_content_bundles
+        ] = mock_rpc
+
+        request = {}
+        client.batch_activate_content_bundles(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.batch_activate_content_bundles(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_batch_activate_content_bundles_rest_required_fields(
+    request_type=content_bundle_service.BatchActivateContentBundlesRequest,
+):
+    transport_class = transports.ContentBundleServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["names"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_activate_content_bundles._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["names"] = "names_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_activate_content_bundles._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "names" in jsonified_request
+    assert jsonified_request["names"] == "names_value"
+
+    client = ContentBundleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = content_bundle_service.BatchActivateContentBundlesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = (
+                content_bundle_service.BatchActivateContentBundlesResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.batch_activate_content_bundles(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_batch_activate_content_bundles_rest_unset_required_fields():
+    transport = transports.ContentBundleServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.batch_activate_content_bundles._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "names",
+            )
+        )
+    )
+
+
+def test_batch_activate_content_bundles_rest_flattened():
+    client = ContentBundleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = content_bundle_service.BatchActivateContentBundlesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "networks/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            names=["names_value"],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = content_bundle_service.BatchActivateContentBundlesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.batch_activate_content_bundles(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=networks/*}/contentBundles:batchActivate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_batch_activate_content_bundles_rest_flattened_error(transport: str = "rest"):
+    client = ContentBundleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_activate_content_bundles(
+            content_bundle_service.BatchActivateContentBundlesRequest(),
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+
+def test_batch_deactivate_content_bundles_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContentBundleServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.batch_deactivate_content_bundles
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.batch_deactivate_content_bundles
+        ] = mock_rpc
+
+        request = {}
+        client.batch_deactivate_content_bundles(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.batch_deactivate_content_bundles(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_batch_deactivate_content_bundles_rest_required_fields(
+    request_type=content_bundle_service.BatchDeactivateContentBundlesRequest,
+):
+    transport_class = transports.ContentBundleServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["names"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_deactivate_content_bundles._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["names"] = "names_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_deactivate_content_bundles._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "names" in jsonified_request
+    assert jsonified_request["names"] == "names_value"
+
+    client = ContentBundleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = content_bundle_service.BatchDeactivateContentBundlesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = (
+                content_bundle_service.BatchDeactivateContentBundlesResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.batch_deactivate_content_bundles(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_batch_deactivate_content_bundles_rest_unset_required_fields():
+    transport = transports.ContentBundleServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.batch_deactivate_content_bundles._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "names",
+            )
+        )
+    )
+
+
+def test_batch_deactivate_content_bundles_rest_flattened():
+    client = ContentBundleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = content_bundle_service.BatchDeactivateContentBundlesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "networks/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            names=["names_value"],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = content_bundle_service.BatchDeactivateContentBundlesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.batch_deactivate_content_bundles(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=networks/*}/contentBundles:batchDeactivate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_batch_deactivate_content_bundles_rest_flattened_error(transport: str = "rest"):
+    client = ContentBundleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_deactivate_content_bundles(
+            content_bundle_service.BatchDeactivateContentBundlesRequest(),
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ContentBundleServiceRestTransport(
@@ -1802,6 +2216,7 @@ def test_get_content_bundle_rest_call_success(request_type):
         return_value = content_bundle_messages.ContentBundle(
             name="name_value",
             display_name="display_name_value",
+            status=content_bundle_enums.ContentBundleStatusEnum.ContentBundleStatus.ACTIVE,
         )
 
         # Wrap the value into a proper Response obj
@@ -1820,6 +2235,10 @@ def test_get_content_bundle_rest_call_success(request_type):
     assert isinstance(response, content_bundle_messages.ContentBundle)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert (
+        response.status
+        == content_bundle_enums.ContentBundleStatusEnum.ContentBundleStatus.ACTIVE
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -2032,6 +2451,290 @@ def test_list_content_bundles_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_batch_activate_content_bundles_rest_bad_request(
+    request_type=content_bundle_service.BatchActivateContentBundlesRequest,
+):
+    client = ContentBundleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.batch_activate_content_bundles(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        content_bundle_service.BatchActivateContentBundlesRequest,
+        dict,
+    ],
+)
+def test_batch_activate_content_bundles_rest_call_success(request_type):
+    client = ContentBundleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = content_bundle_service.BatchActivateContentBundlesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = content_bundle_service.BatchActivateContentBundlesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.batch_activate_content_bundles(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, content_bundle_service.BatchActivateContentBundlesResponse
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_activate_content_bundles_rest_interceptors(null_interceptor):
+    transport = transports.ContentBundleServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContentBundleServiceRestInterceptor(),
+    )
+    client = ContentBundleServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ContentBundleServiceRestInterceptor,
+            "post_batch_activate_content_bundles",
+        ) as post,
+        mock.patch.object(
+            transports.ContentBundleServiceRestInterceptor,
+            "post_batch_activate_content_bundles_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ContentBundleServiceRestInterceptor,
+            "pre_batch_activate_content_bundles",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = content_bundle_service.BatchActivateContentBundlesRequest.pb(
+            content_bundle_service.BatchActivateContentBundlesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = (
+            content_bundle_service.BatchActivateContentBundlesResponse.to_json(
+                content_bundle_service.BatchActivateContentBundlesResponse()
+            )
+        )
+        req.return_value.content = return_value
+
+        request = content_bundle_service.BatchActivateContentBundlesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = content_bundle_service.BatchActivateContentBundlesResponse()
+        post_with_metadata.return_value = (
+            content_bundle_service.BatchActivateContentBundlesResponse(),
+            metadata,
+        )
+
+        client.batch_activate_content_bundles(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_batch_deactivate_content_bundles_rest_bad_request(
+    request_type=content_bundle_service.BatchDeactivateContentBundlesRequest,
+):
+    client = ContentBundleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.batch_deactivate_content_bundles(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        content_bundle_service.BatchDeactivateContentBundlesRequest,
+        dict,
+    ],
+)
+def test_batch_deactivate_content_bundles_rest_call_success(request_type):
+    client = ContentBundleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = content_bundle_service.BatchDeactivateContentBundlesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = content_bundle_service.BatchDeactivateContentBundlesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.batch_deactivate_content_bundles(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, content_bundle_service.BatchDeactivateContentBundlesResponse
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_deactivate_content_bundles_rest_interceptors(null_interceptor):
+    transport = transports.ContentBundleServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContentBundleServiceRestInterceptor(),
+    )
+    client = ContentBundleServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ContentBundleServiceRestInterceptor,
+            "post_batch_deactivate_content_bundles",
+        ) as post,
+        mock.patch.object(
+            transports.ContentBundleServiceRestInterceptor,
+            "post_batch_deactivate_content_bundles_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ContentBundleServiceRestInterceptor,
+            "pre_batch_deactivate_content_bundles",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = content_bundle_service.BatchDeactivateContentBundlesRequest.pb(
+            content_bundle_service.BatchDeactivateContentBundlesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = (
+            content_bundle_service.BatchDeactivateContentBundlesResponse.to_json(
+                content_bundle_service.BatchDeactivateContentBundlesResponse()
+            )
+        )
+        req.return_value.content = return_value
+
+        request = content_bundle_service.BatchDeactivateContentBundlesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            content_bundle_service.BatchDeactivateContentBundlesResponse()
+        )
+        post_with_metadata.return_value = (
+            content_bundle_service.BatchDeactivateContentBundlesResponse(),
+            metadata,
+        )
+
+        client.batch_deactivate_content_bundles(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_cancel_operation_rest_bad_request(
     request_type=operations_pb2.CancelOperationRequest,
 ):
@@ -2207,6 +2910,48 @@ def test_list_content_bundles_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_activate_content_bundles_empty_call_rest():
+    client = ContentBundleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_activate_content_bundles), "__call__"
+    ) as call:
+        client.batch_activate_content_bundles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = content_bundle_service.BatchActivateContentBundlesRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_deactivate_content_bundles_empty_call_rest():
+    client = ContentBundleServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_deactivate_content_bundles), "__call__"
+    ) as call:
+        client.batch_deactivate_content_bundles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = content_bundle_service.BatchDeactivateContentBundlesRequest()
+        assert args[0] == request_msg
+
+
 def test_content_bundle_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
@@ -2231,6 +2976,8 @@ def test_content_bundle_service_base_transport():
     methods = (
         "get_content_bundle",
         "list_content_bundles",
+        "batch_activate_content_bundles",
+        "batch_deactivate_content_bundles",
         "get_operation",
         "cancel_operation",
     )
@@ -2381,6 +3128,12 @@ def test_content_bundle_service_client_transport_session_collision(transport_nam
     assert session1 != session2
     session1 = client1.transport.list_content_bundles._session
     session2 = client2.transport.list_content_bundles._session
+    assert session1 != session2
+    session1 = client1.transport.batch_activate_content_bundles._session
+    session2 = client2.transport.batch_activate_content_bundles._session
+    assert session1 != session2
+    session1 = client1.transport.batch_deactivate_content_bundles._session
+    session2 = client2.transport.batch_deactivate_content_bundles._session
     assert session1 != session2
 
 

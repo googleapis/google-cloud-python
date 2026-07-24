@@ -742,7 +742,7 @@ class TeamServiceClient(metaclass=TeamServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> team_messages.Team:
-        r"""API to retrieve a ``Team`` object.
+        r"""Retrieves a ``Team`` object.
 
         .. code-block:: python
 
@@ -849,7 +849,7 @@ class TeamServiceClient(metaclass=TeamServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListTeamsPager:
-        r"""API to retrieve a list of ``Team`` objects.
+        r"""Lists ``Team`` objects.
 
         .. code-block:: python
 
@@ -972,7 +972,7 @@ class TeamServiceClient(metaclass=TeamServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> team_messages.Team:
-        r"""API to create a ``Team`` object.
+        r"""Creates a ``Team`` object.
 
         .. code-block:: python
 
@@ -1087,7 +1087,7 @@ class TeamServiceClient(metaclass=TeamServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> team_service.BatchCreateTeamsResponse:
-        r"""API to batch create ``Team`` objects.
+        r"""Creates ``Team`` objects.
 
         .. code-block:: python
 
@@ -1207,7 +1207,7 @@ class TeamServiceClient(metaclass=TeamServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> team_messages.Team:
-        r"""API to update a ``Team`` object.
+        r"""Updates a ``Team`` object.
 
         .. code-block:: python
 
@@ -1327,7 +1327,7 @@ class TeamServiceClient(metaclass=TeamServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> team_service.BatchUpdateTeamsResponse:
-        r"""API to batch update ``Team`` objects.
+        r"""Batch updates ``Team`` objects.
 
         .. code-block:: python
 
@@ -1443,7 +1443,7 @@ class TeamServiceClient(metaclass=TeamServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> team_service.BatchActivateTeamsResponse:
-        r"""API to batch activate ``Team`` objects.
+        r"""Batch activates ``Team`` objects.
 
         .. code-block:: python
 
@@ -1558,7 +1558,7 @@ class TeamServiceClient(metaclass=TeamServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> team_service.BatchDeactivateTeamsResponse:
-        r"""API to batch deactivate ``Team`` objects.
+        r"""Batch deactivates ``Team`` objects.
 
         .. code-block:: python
 

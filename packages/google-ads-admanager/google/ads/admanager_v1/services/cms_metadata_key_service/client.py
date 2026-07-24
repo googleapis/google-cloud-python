@@ -760,7 +760,7 @@ class CmsMetadataKeyServiceClient(metaclass=CmsMetadataKeyServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cms_metadata_key_messages.CmsMetadataKey:
-        r"""API to retrieve a ``CmsMetadataKey`` object.
+        r"""Retrieves a ``CmsMetadataKey`` object.
 
         .. code-block:: python
 
@@ -870,7 +870,7 @@ class CmsMetadataKeyServiceClient(metaclass=CmsMetadataKeyServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListCmsMetadataKeysPager:
-        r"""API to retrieve a list of ``CmsMetadataKey`` objects.
+        r"""Lists ``CmsMetadataKey`` objects.
 
         .. code-block:: python
 
@@ -995,7 +995,7 @@ class CmsMetadataKeyServiceClient(metaclass=CmsMetadataKeyServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cms_metadata_key_service.BatchActivateCmsMetadataKeysResponse:
-        r"""API to activate a list of ``CmsMetadataKey`` objects.
+        r"""Activates a list of ``CmsMetadataKey`` objects.
 
         .. code-block:: python
 
@@ -1121,7 +1121,7 @@ class CmsMetadataKeyServiceClient(metaclass=CmsMetadataKeyServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cms_metadata_key_service.BatchDeactivateCmsMetadataKeysResponse:
-        r"""API to deactivate a list of ``CmsMetadataKey`` objects.
+        r"""Deactivates a list of ``CmsMetadataKey`` objects.
 
         .. code-block:: python
 

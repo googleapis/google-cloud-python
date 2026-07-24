@@ -805,7 +805,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> company_messages.Company:
-        r"""API to retrieve a ``Company`` object.
+        r"""Retrieves a ``Company`` object.
 
         .. code-block:: python
 
@@ -910,7 +910,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListCompaniesPager:
-        r"""API to retrieve a list of ``Company`` objects.
+        r"""Lists ``Company`` objects.
 
         .. code-block:: python
 

@@ -765,7 +765,7 @@ class CustomTargetingKeyServiceClient(metaclass=CustomTargetingKeyServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> custom_targeting_key_messages.CustomTargetingKey:
-        r"""API to retrieve a ``CustomTargetingKey`` object.
+        r"""Retrieves a ``CustomTargetingKey`` object.
 
         .. code-block:: python
 
@@ -875,7 +875,7 @@ class CustomTargetingKeyServiceClient(metaclass=CustomTargetingKeyServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListCustomTargetingKeysPager:
-        r"""API to retrieve a list of ``CustomTargetingKey`` objects.
+        r"""Lists ``CustomTargetingKey`` objects.
 
         .. code-block:: python
 
@@ -1008,7 +1008,7 @@ class CustomTargetingKeyServiceClient(metaclass=CustomTargetingKeyServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> custom_targeting_key_messages.CustomTargetingKey:
-        r"""API to create a ``CustomTargetingKey`` object.
+        r"""Creates a ``CustomTargetingKey`` object.
 
         .. code-block:: python
 
@@ -1136,7 +1136,7 @@ class CustomTargetingKeyServiceClient(metaclass=CustomTargetingKeyServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> custom_targeting_key_service.BatchCreateCustomTargetingKeysResponse:
-        r"""API to batch create ``CustomTargetingKey`` objects.
+        r"""Creates ``CustomTargetingKey`` objects.
 
         .. code-block:: python
 
@@ -1272,7 +1272,7 @@ class CustomTargetingKeyServiceClient(metaclass=CustomTargetingKeyServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> custom_targeting_key_messages.CustomTargetingKey:
-        r"""API to update a ``CustomTargetingKey`` object.
+        r"""Updates a ``CustomTargetingKey`` object.
 
         .. code-block:: python
 
@@ -1404,7 +1404,7 @@ class CustomTargetingKeyServiceClient(metaclass=CustomTargetingKeyServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> custom_targeting_key_service.BatchUpdateCustomTargetingKeysResponse:
-        r"""API to batch update ``CustomTargetingKey`` objects.
+        r"""Batch updates ``CustomTargetingKey`` objects.
 
         .. code-block:: python
 
@@ -1537,7 +1537,7 @@ class CustomTargetingKeyServiceClient(metaclass=CustomTargetingKeyServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> custom_targeting_key_service.BatchActivateCustomTargetingKeysResponse:
-        r"""API to batch activate ``CustomTargetingKey`` objects.
+        r"""Batch activates ``CustomTargetingKey`` objects.
 
         .. code-block:: python
 

@@ -87,6 +87,8 @@ class TransportManagerAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = TransportManagerClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = TransportManagerClient._DEFAULT_UNIVERSE
 
+    hub_path = staticmethod(TransportManagerClient.hub_path)
+    parse_hub_path = staticmethod(TransportManagerClient.parse_hub_path)
     network_path = staticmethod(TransportManagerClient.network_path)
     parse_network_path = staticmethod(TransportManagerClient.parse_network_path)
     remote_transport_profile_path = staticmethod(
@@ -543,6 +545,133 @@ class TransportManagerAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def parse_from_activation_key(
+        self,
+        request: Optional[
+            Union[transport_manager.ParseFromActivationKeyRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        activation_key: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> transport_manager.ParseFromActivationKeyResponse:
+        r"""Gets details of a single RemoteTransportProfile given
+        an activation key.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1beta
+
+            async def sample_parse_from_activation_key():
+                # Create a client
+                client = networkconnectivity_v1beta.TransportManagerAsyncClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1beta.ParseFromActivationKeyRequest(
+                    parent="parent_value",
+                    activation_key="activation_key_value",
+                )
+
+                # Make the request
+                response = await client.parse_from_activation_key(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.networkconnectivity_v1beta.types.ParseFromActivationKeyRequest, dict]]):
+                The request object. Message for getting a
+                RemoteTransportProfile from an
+                activation key.
+            parent (:class:`str`):
+                Required. Parent value for
+                ParseFromActivationKeyRequest.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            activation_key (:class:`str`):
+                Required. The activation key to get
+                the RemoteTransportProfile for.
+
+                This corresponds to the ``activation_key`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.networkconnectivity_v1beta.types.ParseFromActivationKeyResponse:
+                Message for response to getting a
+                RemoteTransportProfile from an
+                activation key.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, activation_key]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, transport_manager.ParseFromActivationKeyRequest):
+            request = transport_manager.ParseFromActivationKeyRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if activation_key is not None:
+            request.activation_key = activation_key
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.parse_from_activation_key
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.

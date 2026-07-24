@@ -239,6 +239,11 @@ class HiveMetastoreServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.failover_hive_catalog: gapic_v1.method.wrap_method(
+                self.failover_hive_catalog,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -435,6 +440,18 @@ class HiveMetastoreServiceTransport(abc.ABC):
         Union[
             hive_metastore.ListPartitionsResponse,
             Awaitable[hive_metastore.ListPartitionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def failover_hive_catalog(
+        self,
+    ) -> Callable[
+        [hive_metastore.FailoverHiveCatalogRequest],
+        Union[
+            hive_metastore.FailoverHiveCatalogResponse,
+            Awaitable[hive_metastore.FailoverHiveCatalogResponse],
         ],
     ]:
         raise NotImplementedError()

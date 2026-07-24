@@ -754,7 +754,7 @@ class McmEarningsServiceClient(metaclass=McmEarningsServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.FetchMcmEarningsPager:
-        r"""API to retrieve a list of ``McmEarnings`` objects.
+        r"""Lists ``McmEarnings`` objects.
 
         .. code-block:: python
 

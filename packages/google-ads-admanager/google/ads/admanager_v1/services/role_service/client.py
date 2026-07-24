@@ -741,7 +741,7 @@ class RoleServiceClient(metaclass=RoleServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> role_messages.Role:
-        r"""API to retrieve a ``Role`` object.
+        r"""Retrieves a ``Role`` object.
 
         .. code-block:: python
 
@@ -846,7 +846,7 @@ class RoleServiceClient(metaclass=RoleServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListRolesPager:
-        r"""API to retrieve a list of ``Role`` objects.
+        r"""Lists ``Role`` objects.
 
         .. code-block:: python
 
