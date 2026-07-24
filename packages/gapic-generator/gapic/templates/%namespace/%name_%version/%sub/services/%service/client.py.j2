@@ -1,8 +1,8 @@
+{% extends '_base.py.j2' %}
+{% block content %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
 {% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
-{% extends '_base.py.j2' %}
-
-{% block content %}
+{% set has_auto_populated_fields = api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 {% import "%namespace/%name_%version/%sub/services/%service/_client_macros.j2" as macros %}
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
@@ -16,7 +16,7 @@ import logging as std_logging
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union, cast
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+{% if has_auto_populated_fields %}
 import uuid
 {% endif %}
 import warnings
@@ -453,7 +453,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # NOTE (b/349488459): universe validation is disabled until further notice.
         return True
 
-    {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+    {% if has_auto_populated_fields %}
+
     @staticmethod
     def _setup_request_id(request, field_name: str, is_proto3_optional: bool):
         """Populate a UUID4 field in the request if it is not already set.

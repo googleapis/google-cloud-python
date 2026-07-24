@@ -23,6 +23,25 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.analytics.admin_v1alpha.services.analytics_admin_service",
+    "google.analytics.admin_v1alpha.types.access_report",
+    "google.analytics.admin_v1alpha.types.analytics_admin",
+    "google.analytics.admin_v1alpha.types.audience",
+    "google.analytics.admin_v1alpha.types.channel_group",
+    "google.analytics.admin_v1alpha.types.event_create_and_edit",
+    "google.analytics.admin_v1alpha.types.expanded_data_set",
+    "google.analytics.admin_v1alpha.types.resources",
+    "google.analytics.admin_v1alpha.types.subproperty_event_filter",
+}
+
+
 from .services.analytics_admin_service import (
     AnalyticsAdminServiceAsyncClient,
     AnalyticsAdminServiceClient,
