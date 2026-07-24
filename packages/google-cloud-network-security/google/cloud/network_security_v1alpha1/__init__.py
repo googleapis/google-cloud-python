@@ -23,6 +23,48 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.network_security_v1alpha1.services.dns_threat_detector_service",
+    "google.cloud.network_security_v1alpha1.services.firewall_activation",
+    "google.cloud.network_security_v1alpha1.services.intercept",
+    "google.cloud.network_security_v1alpha1.services.mirroring",
+    "google.cloud.network_security_v1alpha1.services.network_security",
+    "google.cloud.network_security_v1alpha1.services.organization_security_profile_group_service",
+    "google.cloud.network_security_v1alpha1.services.sse_gateway_service",
+    "google.cloud.network_security_v1alpha1.services.sse_realm_service",
+    "google.cloud.network_security_v1alpha1.types.authorization_policy",
+    "google.cloud.network_security_v1alpha1.types.authz_policy",
+    "google.cloud.network_security_v1alpha1.types.backend_authentication_config",
+    "google.cloud.network_security_v1alpha1.types.client_tls_policy",
+    "google.cloud.network_security_v1alpha1.types.common",
+    "google.cloud.network_security_v1alpha1.types.dns_threat_detector",
+    "google.cloud.network_security_v1alpha1.types.firewall_activation",
+    "google.cloud.network_security_v1alpha1.types.gateway_security_policy",
+    "google.cloud.network_security_v1alpha1.types.gateway_security_policy_rule",
+    "google.cloud.network_security_v1alpha1.types.intercept",
+    "google.cloud.network_security_v1alpha1.types.mirroring",
+    "google.cloud.network_security_v1alpha1.types.network_security",
+    "google.cloud.network_security_v1alpha1.types.security_profile_group",
+    "google.cloud.network_security_v1alpha1.types.security_profile_group_intercept",
+    "google.cloud.network_security_v1alpha1.types.security_profile_group_mirroring",
+    "google.cloud.network_security_v1alpha1.types.security_profile_group_service",
+    "google.cloud.network_security_v1alpha1.types.security_profile_group_threatprevention",
+    "google.cloud.network_security_v1alpha1.types.security_profile_group_urlfiltering",
+    "google.cloud.network_security_v1alpha1.types.server_tls_policy",
+    "google.cloud.network_security_v1alpha1.types.sse_gateway",
+    "google.cloud.network_security_v1alpha1.types.sse_realm",
+    "google.cloud.network_security_v1alpha1.types.tls",
+    "google.cloud.network_security_v1alpha1.types.tls_inspection_policy",
+    "google.cloud.network_security_v1alpha1.types.url_list",
+}
+
+
 from .services.dns_threat_detector_service import (
     DnsThreatDetectorServiceAsyncClient,
     DnsThreatDetectorServiceClient,

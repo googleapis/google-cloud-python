@@ -4,3 +4,4 @@ Services for Google Cloud Cloudquotas v1 API
     :maxdepth: 2
 
     cloud_quotas
+    quota_adjuster_settings_manager

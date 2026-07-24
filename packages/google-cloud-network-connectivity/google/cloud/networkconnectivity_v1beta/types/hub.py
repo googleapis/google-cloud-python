@@ -117,12 +117,17 @@ class RouteType(proto.Enum):
             route. Dynamic routes are derived from Border
             Gateway Protocol (BGP) advertisements received
             from an NCC hybrid spoke.
+        PSC_GLOBAL_GAPI (4):
+            The route leads to a destination within the
+            Private Service Connect Global Google API range
+            of the VPC network.
     """
 
     ROUTE_TYPE_UNSPECIFIED = 0
     VPC_PRIMARY_SUBNET = 1
     VPC_SECONDARY_SUBNET = 2
     DYNAMIC_ROUTE = 3
+    PSC_GLOBAL_GAPI = 4
 
 
 class State(proto.Enum):
@@ -264,12 +269,15 @@ class LocationFeature(proto.Enum):
         GATEWAY_SPOKES (3):
             Gateway spokes are supported in this
             location.
+        TRANSPORTS (4):
+            Supports transports in this location.
     """
 
     LOCATION_FEATURE_UNSPECIFIED = 0
     SITE_TO_CLOUD_SPOKES = 1
     SITE_TO_SITE_SPOKES = 2
     GATEWAY_SPOKES = 3
+    TRANSPORTS = 4
 
 
 class Hub(proto.Message):
@@ -349,7 +357,46 @@ class Hub(proto.Message):
             hub. The default value is false.
 
             This field is a member of `oneof`_ ``_export_psc``.
+        export_psc_config (google.cloud.networkconnectivity_v1beta.types.Hub.ExportPscConfig):
+            Optional. Config for more granular control of
+            Private Service Connect transitivity.
     """
+
+    class ExportPscConfig(proto.Message):
+        r"""Configuration for more granular control of Private Service
+        Connect connection propagation.
+        This allows enabling or disabling connection propagation for
+        specific types of Private Service Connect endpoints.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            published_services_and_regional_google_apis (bool):
+                Optional. Controls whether Private Service Connect endpoints
+                for regional ILBs and regional Google APIs should be
+                propagated. Default value is true if export_psc is true.
+                Otherwise, the default value is false.
+
+                This field is a member of `oneof`_ ``_published_services_and_regional_google_apis``.
+            global_google_apis (bool):
+                Optional. Controls whether Private Service
+                Connect endpoints for global Google APIs should
+                be propagated. The default value is false.
+
+                This field is a member of `oneof`_ ``_global_google_apis``.
+        """
+
+        published_services_and_regional_google_apis: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+            optional=True,
+        )
+        global_google_apis: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+            optional=True,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -411,6 +458,11 @@ class Hub(proto.Message):
         proto.BOOL,
         number=15,
         optional=True,
+    )
+    export_psc_config: ExportPscConfig = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message=ExportPscConfig,
     )
 
 
@@ -2395,6 +2447,18 @@ class LinkedVpnTunnels(proto.Message):
             Optional. Hub routes fully encompassed by
             include import ranges are included during import
             from hub.
+        exclude_import_ranges (MutableSequence[str]):
+            Optional. Hub routes overlapped/encompassed
+            by exclude import ranges are excluded during
+            import from hub.
+        include_export_ranges (MutableSequence[str]):
+            Optional. Dynamic routes fully encompassed by
+            include export ranges are included during export
+            to hub.
+        exclude_export_ranges (MutableSequence[str]):
+            Optional. Dynamic routes
+            overlapped/encompassed by exclude export ranges
+            are excluded during export to hub.
     """
 
     uris: MutableSequence[str] = proto.RepeatedField(
@@ -2412,6 +2476,18 @@ class LinkedVpnTunnels(proto.Message):
     include_import_ranges: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
+    )
+    exclude_import_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    include_export_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    exclude_export_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=8,
     )
 
 
@@ -2438,6 +2514,18 @@ class LinkedInterconnectAttachments(proto.Message):
             Optional. Hub routes fully encompassed by
             include import ranges are included during import
             from hub.
+        exclude_import_ranges (MutableSequence[str]):
+            Optional. Hub routes overlapped/encompassed
+            by exclude import ranges are excluded during
+            import from hub.
+        include_export_ranges (MutableSequence[str]):
+            Optional. Dynamic routes fully encompassed by
+            include export ranges are included during export
+            to hub.
+        exclude_export_ranges (MutableSequence[str]):
+            Optional. Dynamic routes
+            overlapped/encompassed by exclude export ranges
+            are excluded during export to hub.
     """
 
     uris: MutableSequence[str] = proto.RepeatedField(
@@ -2455,6 +2543,18 @@ class LinkedInterconnectAttachments(proto.Message):
     include_import_ranges: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
+    )
+    exclude_import_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    include_export_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    exclude_export_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=8,
     )
 
 
@@ -2479,6 +2579,18 @@ class LinkedRouterApplianceInstances(proto.Message):
             Optional. Hub routes fully encompassed by
             include import ranges are included during import
             from hub.
+        exclude_import_ranges (MutableSequence[str]):
+            Optional. Hub routes overlapped/encompassed
+            by exclude import ranges are excluded during
+            import from hub.
+        include_export_ranges (MutableSequence[str]):
+            Optional. Dynamic routes fully encompassed by
+            include export ranges are included during export
+            to hub.
+        exclude_export_ranges (MutableSequence[str]):
+            Optional. Dynamic routes
+            overlapped/encompassed by exclude export ranges
+            are excluded during export to hub.
     """
 
     instances: MutableSequence["RouterApplianceInstance"] = proto.RepeatedField(
@@ -2497,6 +2609,18 @@ class LinkedRouterApplianceInstances(proto.Message):
     include_import_ranges: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
+    )
+    exclude_import_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    include_export_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    exclude_export_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=8,
     )
 
 

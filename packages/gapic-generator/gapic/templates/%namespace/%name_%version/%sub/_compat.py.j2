@@ -1,0 +1,15 @@
+{% extends "_base.py.j2" %}
+
+{% block content %}
+
+"""A compatibility module for older versions of google-api-core."""
+{# TODO(https://github.com/googleapis/google-cloud-python/issues/17813):
+Clean up this file/functions when the minimum supported version of 
+google-api-core has the functions in `_compat.py.j2`. #}
+{# TODO(https://github.com/googleapis/google-cloud-python/issues/17884): 
+Add conditional logic to check if static code exists in google-api-core and use it from there, 
+falling back to the local implementation if not present. #}
+{# TODO(https://github.com/googleapis/google-cloud-python/issues/17883): 
+Backfill compatibility functions being removed from the client layer. #}
+
+{% endblock %}
