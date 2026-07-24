@@ -49,6 +49,7 @@ def test_malformated_get_assertion_response(os_get_stub, subprocess_run_stub):
     response_len = struct.pack("<I", 5)
     response = "1234567890"
     mock_response = mock.Mock()
+    mock_response.returncode = 0
     mock_response.stdout = response_len + response.encode()
     subprocess_run_stub.return_value = mock_response
 
@@ -68,6 +69,7 @@ def test_failure_get_assertion(os_get_stub, subprocess_run_stub):
 
     # process returns get response in json
     mock_response = mock.Mock()
+    mock_response.returncode = 0
     mock_response.stdout = response_len + response_json
     subprocess_run_stub.return_value = mock_response
 
@@ -96,6 +98,7 @@ def test_success_get_assertion(os_get_stub, subprocess_run_stub):
 
     # process returns get response in json
     mock_response = mock.Mock()
+    mock_response.returncode = 0
     mock_response.stdout = valid_plugin_response_len + valid_plugin_response_json
     subprocess_run_stub.return_value = mock_response
 
