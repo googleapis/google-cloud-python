@@ -83,6 +83,18 @@ run_package_test() {
   export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION
   export GOOGLE_CLOUD_PROJECT="${PROJECT_ID}"
 
+  # Isolate PIP cache to prevent concurrent pip file lock deadlocks
+  export PIP_CACHE_DIR="/tmpfs/.pip_cache_$(basename ${package_name})"
+  mkdir -p "$PIP_CACHE_DIR"
+
+  # Isolate gcloud state to prevent SQLite lock deadlocks and project race conditions
+  export CLOUDSDK_CONFIG="/tmpfs/.gcloud_config_$(basename ${package_name})"
+  mkdir -p "$CLOUDSDK_CONFIG"
+  
+  # Isolate boto config (used by storage/bigquery) to prevent lock contention
+  export BOTO_CONFIG="/tmpfs/.boto_$(basename ${package_name})"
+  touch "$BOTO_CONFIG"
+
   gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
   gcloud config set project "$PROJECT_ID"
 
@@ -147,10 +159,66 @@ for path in `find 'packages' \
   set -e
 
   if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
-      # Call the function - its internal exports won't affect the next loop
-      run_package_test "$package_name" || RETVAL=$?
+      PACKAGES_TO_TEST="${PACKAGES_TO_TEST} ${package_name}"
   else
       echo "No changes in ${package_name} and not a continuous build, skipping."
   fi
 done
+
+if [ -n "$PACKAGES_TO_TEST" ]; then
+  export -f run_package_test
+  export system_test_script PROJECT_ROOT KOKORO_GFILE_DIR
+
+  # 1. DYNAMIC ROUTING: Automatically detect which packages are CPU hogs by checking if they install pytest-xdist or hardcode workers
+  LIGHT_TO_TEST=""
+  HEAVY_TO_TEST=""
+  for pkg in $PACKAGES_TO_TEST; do
+    if grep -qE "pytest-xdist|-n=auto|-n=[0-9]+" "packages/$pkg/noxfile.py" "packages/$pkg/setup.py" 2>/dev/null; then
+      HEAVY_TO_TEST="$HEAVY_TO_TEST $pkg"
+    else
+      LIGHT_TO_TEST="$LIGHT_TO_TEST $pkg"
+    fi
+  done
+
+  # 2. PARALLEL LANE (Live Streaming): Run light packages with a parallel job queue. 
+  # We prefix every line with the package name so output streams LIVE and remains readable.
+  if [ -n "$LIGHT_TO_TEST" ]; then
+    echo "============================================================"
+    echo "Running Lightweight Packages in Parallel (4 workers max)"
+    echo "============================================================"
+    for pkg in $LIGHT_TO_TEST; do
+      (
+        timeout 15m bash -c "run_package_test \"$pkg\" < /dev/null" 2>&1 | awk -v prefix="[$pkg]" '{print prefix, $0}'
+        if [ ${PIPESTATUS[0]} -ne 0 ]; then touch ".failed_$pkg"; fi
+      ) &
+      # Limit parallel background jobs to 4
+      while [ $(jobs -r | wc -l) -ge 4 ]; do sleep 1; done
+    done
+    wait # Wait for all parallel jobs to finish
+  fi
+
+  # 3. SEQUENTIAL VIP LANE: Run heavy packages one-by-one so they have 100% of the VM resources.
+  if [ -n "$HEAVY_TO_TEST" ]; then
+    echo "============================================================"
+    echo "Running CPU-Intensive Packages Sequentially"
+    echo "============================================================"
+    for pkg in $HEAVY_TO_TEST; do
+      if [ -n "$pkg" ]; then
+        echo "[$pkg] Starting sequential execution..."
+        timeout 25m bash -c "run_package_test \"$pkg\" < /dev/null" 2>&1 | awk -v prefix="[$pkg]" '{print prefix, $0}'
+        if [ ${PIPESTATUS[0]} -ne 0 ]; then touch ".failed_$pkg"; fi
+      fi
+    done
+  fi
+
+  # 4. FAIL STATE EVALUATION
+  for failed_marker in .failed_*; do
+    if [ -f "$failed_marker" ]; then
+      failed_pkg="${failed_marker#.failed_}"
+      echo "--- FAILED: $failed_pkg ---"
+      RETVAL=1
+    fi
+  done
+fi
+
 exit ${RETVAL}

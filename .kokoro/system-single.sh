@@ -32,4 +32,8 @@ NOX_FILE_ARG=""
 
 [[ -z "${NOX_FILE}" ]] || NOX_FILE_ARG="-f ${NOX_FILE}"
 
-python3 -m nox ${NOX_SESSION_ARG} $NOX_FILE_ARG
+# Install uv to completely eliminate the 1.5 hour disk I/O bottleneck
+python3 -m pip install -U "nox[uv]" > /dev/null 2>&1
+
+# Run nox using uv as the backend for 100x faster package installation
+python3 -m nox --force-venv-backend uv ${NOX_SESSION_ARG} $NOX_FILE_ARG
