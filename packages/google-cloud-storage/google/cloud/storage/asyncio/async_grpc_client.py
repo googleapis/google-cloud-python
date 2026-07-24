@@ -26,6 +26,22 @@ from google.cloud.storage import __version__
 _DEFAULT_HOST = "storage.googleapis.com"
 
 
+def _validate_metadata(metadata):
+    """Validates that metadata is a sequence of (key, value) pairs."""
+    if metadata is None:
+        return
+    if not isinstance(metadata, (list, tuple)):
+        raise TypeError("metadata must be a list or tuple of (key, value) pairs.")
+    for item in metadata:
+        if not isinstance(item, (list, tuple)) or len(item) != 2:
+            raise ValueError(
+                "Each element in metadata must be a list or tuple of exactly 2 strings (key, value)."
+            )
+        key, value = item
+        if not isinstance(key, str) or not isinstance(value, str):
+            raise TypeError("Both key and value in metadata pairs must be strings.")
+
+
 class AsyncGrpcClient:
     """An asynchronous client for interacting with Google Cloud Storage using the gRPC API.
 
@@ -154,6 +170,9 @@ class AsyncGrpcClient:
         if_generation_not_match=None,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
+        metadata=(),
+        timeout=None,
+        retry=None,
         **kwargs,
     ):
         """Deletes an object and its metadata.
@@ -181,8 +200,18 @@ class AsyncGrpcClient:
         :type if_metageneration_not_match: int
         :param if_metageneration_not_match: (Optional)
 
+        :type metadata: Sequence[Tuple[str, str]]
+        :param metadata: (Optional) Additional metadata that is provided to the method.
 
+        :type timeout: float or None
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait for the request to
+            complete.
+
+        :type retry: :class:`~google.api_core.retry_async.AsyncRetry` or None
+        :param retry: (Optional) Designation of what errors, if any, should be retried.
         """
+        _validate_metadata(metadata)
         # The gRPC API requires the bucket name to be in the format "projects/_/buckets/bucket_name"
         bucket_path = f"projects/_/buckets/{bucket_name}"
         request = storage_v2.DeleteObjectRequest(
@@ -195,7 +224,12 @@ class AsyncGrpcClient:
             if_metageneration_not_match=if_metageneration_not_match,
             **kwargs,
         )
-        await self._grpc_client.delete_object(request=request)
+        await self._grpc_client.delete_object(
+            request=request,
+            metadata=metadata,
+            timeout=timeout,
+            retry=retry,
+        )
 
     async def get_object(
         self,
@@ -207,6 +241,9 @@ class AsyncGrpcClient:
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         soft_deleted=None,
+        metadata=(),
+        timeout=None,
+        retry=None,
         **kwargs,
     ):
         """Retrieves an object's metadata.
@@ -240,9 +277,21 @@ class AsyncGrpcClient:
         :param soft_deleted:
             (Optional) If True, return the soft-deleted version of this object.
 
+        :type metadata: Sequence[Tuple[str, str]]
+        :param metadata: (Optional) Additional metadata that is provided to the method.
+
+        :type timeout: float or None
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait for the request to
+            complete.
+
+        :type retry: :class:`~google.api_core.retry_async.AsyncRetry` or None
+        :param retry: (Optional) Designation of what errors, if any, should be retried.
+
         :rtype: :class:`google.cloud._storage_v2.types.Object`
         :returns: The object metadata resource.
         """
+        _validate_metadata(metadata)
         bucket_path = f"projects/_/buckets/{bucket_name}"
 
         request = storage_v2.GetObjectRequest(
@@ -258,4 +307,9 @@ class AsyncGrpcClient:
         )
 
         # Calls the underlying GAPIC StorageAsyncClient.get_object method
-        return await self._grpc_client.get_object(request=request)
+        return await self._grpc_client.get_object(
+            request=request,
+            metadata=metadata,
+            timeout=timeout,
+            retry=retry,
+        )

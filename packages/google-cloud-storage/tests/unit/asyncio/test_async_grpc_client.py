@@ -285,6 +285,11 @@ class TestAsyncGrpcClient:
         if_metageneration_match = 111
         if_metageneration_not_match = 222
 
+        # New parameters
+        metadata = (("x-goog-api-client", "test-ua"),)
+        timeout = 10.0
+        retry = mock.Mock()
+
         # Act
         await client.delete_object(
             bucket_name,
@@ -294,6 +299,9 @@ class TestAsyncGrpcClient:
             if_generation_not_match=if_generation_not_match,
             if_metageneration_match=if_metageneration_match,
             if_metageneration_not_match=if_metageneration_not_match,
+            metadata=metadata,
+            timeout=timeout,
+            retry=retry,
         )
 
         # Assert
@@ -306,6 +314,9 @@ class TestAsyncGrpcClient:
         assert request.if_generation_not_match == if_generation_not_match
         assert request.if_metageneration_match == if_metageneration_match
         assert request.if_metageneration_not_match == if_metageneration_not_match
+        assert call_kwargs["metadata"] == metadata
+        assert call_kwargs["timeout"] == timeout
+        assert call_kwargs["retry"] == retry
 
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
     @pytest.mark.asyncio
@@ -354,6 +365,11 @@ class TestAsyncGrpcClient:
         if_metageneration_not_match = 222
         soft_deleted = True
 
+        # New parameters
+        metadata = (("x-goog-api-client", "test-ua"),)
+        timeout = 10.0
+        retry = mock.Mock()
+
         # Act
         await client.get_object(
             bucket_name,
@@ -364,6 +380,9 @@ class TestAsyncGrpcClient:
             if_metageneration_match=if_metageneration_match,
             if_metageneration_not_match=if_metageneration_not_match,
             soft_deleted=soft_deleted,
+            metadata=metadata,
+            timeout=timeout,
+            retry=retry,
         )
 
         # Assert
@@ -377,3 +396,38 @@ class TestAsyncGrpcClient:
         assert request.if_metageneration_match == if_metageneration_match
         assert request.if_metageneration_not_match == if_metageneration_not_match
         assert request.soft_deleted is True
+        assert call_kwargs["metadata"] == metadata
+        assert call_kwargs["timeout"] == timeout
+        assert call_kwargs["retry"] == retry
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "invalid_metadata, expected_exc",
+        [
+            ("not-a-sequence", TypeError),
+            ([("key_only",)], ValueError),
+            ([("too", "many", "items")], ValueError),
+            ([(123, "val")], TypeError),
+            ([("key", 456)], TypeError),
+        ],
+    )
+    async def test_delete_object_invalid_metadata(self, invalid_metadata, expected_exc):
+        client = async_grpc_client.AsyncGrpcClient(credentials=_make_credentials())
+        with pytest.raises(expected_exc):
+            await client.delete_object("bucket", "object", metadata=invalid_metadata)
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "invalid_metadata, expected_exc",
+        [
+            ("not-a-sequence", TypeError),
+            ([("key_only",)], ValueError),
+            ([("too", "many", "items")], ValueError),
+            ([(123, "val")], TypeError),
+            ([("key", 456)], TypeError),
+        ],
+    )
+    async def test_get_object_invalid_metadata(self, invalid_metadata, expected_exc):
+        client = async_grpc_client.AsyncGrpcClient(credentials=_make_credentials())
+        with pytest.raises(expected_exc):
+            await client.get_object("bucket", "object", metadata=invalid_metadata)
