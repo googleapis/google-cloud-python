@@ -130,10 +130,10 @@ class OpenTelemetryMetricsHandler(MetricsHandler):
         app_profile_id: str | None = None,
         client_uid: str | None = None,
         client_version: str | None = None,
-        instruments: _OpenTelemetryInstruments = _OpenTelemetryInstruments(),
+        instruments: _OpenTelemetryInstruments | None = None,
     ):
         super().__init__()
-        self.otel = instruments
+        self.otel = instruments or _OpenTelemetryInstruments()
         client_version = client_version or bigtable_version
         # fixed labels sent with each metric update
         self.shared_labels = {
