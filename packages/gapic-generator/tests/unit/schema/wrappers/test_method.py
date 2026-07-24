@@ -711,6 +711,138 @@ def test_method_stream_stream():
     assert method.grpc_stub_type == "stream_stream"
 
 
+def test_method_is_resumable_upload():
+    # Correct positive
+    method = make_method(
+        name="CreateYouTubeVideoUpload",
+        package="google.ads.googleads.v25",
+    )
+    # override parent
+    method = dataclasses.replace(
+        method,
+        meta=dataclasses.replace(
+            method.meta,
+            address=dataclasses.replace(
+                method.meta.address,
+                parent=("YouTubeVideoUploadService",),
+            )
+        )
+    )
+    assert method.is_resumable_upload
+
+    # Normal method
+    method = make_method(
+        name="DeleteYouTubeVideoUpload",
+        package="google.ads.googleads.v25",
+    )
+    method = dataclasses.replace(
+        method,
+        meta=dataclasses.replace(
+            method.meta,
+            address=dataclasses.replace(
+                method.meta.address,
+                parent=("YouTubeVideoUploadService",),
+            )
+        )
+    )
+    assert not method.is_resumable_upload
+
+    # Method with same name but different package
+    method = make_method(
+        name="CreateYouTubeVideoUpload",
+        package="foo.bar.v1",
+    )
+    method = dataclasses.replace(
+        method,
+        meta=dataclasses.replace(
+            method.meta,
+            address=dataclasses.replace(
+                method.meta.address,
+                parent=("YouTubeVideoUploadService",),
+            )
+        )
+    )
+    assert not method.is_resumable_upload
+
+
+def test_method_is_resumable_upload_exclusive():
+    # Resumable + LRO
+    method = make_method(
+        name="CreateYouTubeVideoUpload",
+        package="google.ads.googleads.v25",
+    )
+    method = dataclasses.replace(
+        method,
+        meta=dataclasses.replace(
+            method.meta,
+            address=dataclasses.replace(
+                method.meta.address,
+                parent=("YouTubeVideoUploadService",),
+            ),
+        ),
+        lro=wrappers.OperationInfo(
+            response_type=make_message("Res"), metadata_type=make_message("Meta")
+        ),
+    )
+    with pytest.raises(ValueError, match="mutually exclusive"):
+        method.is_resumable_upload
+
+    # Resumable + Client Streaming
+    method = make_method(
+        name="CreateYouTubeVideoUpload",
+        package="google.ads.googleads.v25",
+        client_streaming=True,
+    )
+    method = dataclasses.replace(
+        method,
+        meta=dataclasses.replace(
+            method.meta,
+            address=dataclasses.replace(
+                method.meta.address,
+                parent=("YouTubeVideoUploadService",),
+            ),
+        ),
+    )
+    with pytest.raises(ValueError, match="mutually exclusive"):
+        method.is_resumable_upload
+
+    # Resumable + Pagination
+    paged = make_field(name="foos", message=make_message("Foo"), repeated=True)
+    input_msg = make_message(
+        name="CreateYouTubeVideoUploadRequest",
+        fields=(
+            make_field(name="page_size", type=5),
+            make_field(name="page_token", type=9),
+        ),
+    )
+    output_msg = make_message(
+        name="CreateYouTubeVideoUploadResponse",
+        fields=(
+            paged,
+            make_field(name="next_page_token", type=9),
+        ),
+    )
+    method = make_method(
+        name="CreateYouTubeVideoUpload",
+        package="google.ads.googleads.v25",
+        input_message=input_msg,
+        output_message=output_msg,
+    )
+    method = dataclasses.replace(
+        method,
+        meta=dataclasses.replace(
+            method.meta,
+            address=dataclasses.replace(
+                method.meta.address,
+                parent=("YouTubeVideoUploadService",),
+            ),
+        ),
+    )
+    assert method.paged_result_field is not None
+    with pytest.raises(ValueError, match="mutually exclusive"):
+        method.is_resumable_upload
+
+
 def test_method_flattened_fields():
     a = make_field("a", type=5)  # int
     b = make_field("b", type=5)

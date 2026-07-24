@@ -388,7 +388,12 @@ class Generator:
 
     def _is_desired_transport(self, template_name: str, opts: Options) -> bool:
         """Returns true if template name contains a desired transport"""
-        desired_transports = ["__init__", "base", "README"] + opts.transport
+        desired_transports = [
+            "__init__",
+            "base",
+            "README",
+            "resumable",
+        ] + opts.transport
         return any(transport in template_name for transport in desired_transports)
 
     def _get_file(

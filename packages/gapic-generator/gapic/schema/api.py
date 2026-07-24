@@ -997,6 +997,11 @@ class API:
             raise ClientLibrarySettingsError(yaml.dump(all_errors))
 
     @cached_property
+    def has_resumable_upload(self) -> bool:
+        """Return True if any service in the API has resumable upload enabled."""
+        return any(s.has_resumable_upload for s in self.services.values())
+
+    @cached_property
     def all_method_settings(self) -> Mapping[str, Sequence[client_pb2.MethodSettings]]:
         """Return a map of all `google.api.client.MethodSettings` to be used
         when generating methods.
