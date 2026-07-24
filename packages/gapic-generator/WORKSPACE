@@ -98,7 +98,6 @@ python_register_multi_toolchains(
     name = "python",
     ignore_root_user_error = True,
     python_versions = [
-        "3.10",
         "3.11",
         "3.12",
         "3.13",
