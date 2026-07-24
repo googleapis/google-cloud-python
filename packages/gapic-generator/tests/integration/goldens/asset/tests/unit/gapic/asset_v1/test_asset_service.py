@@ -77,6 +77,7 @@ CRED_INFO_JSON = {
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]

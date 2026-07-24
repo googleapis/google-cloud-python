@@ -3,6 +3,7 @@
 {% block content %}
 
 """A compatibility module for older versions of google-api-core."""
+{% set has_auto_populated_fields = api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 {# TODO(https://github.com/googleapis/google-cloud-python/issues/17813):
 Clean up this file/functions when the minimum supported version of 
 google-api-core has the functions in `_compat.py.j2`. #}
@@ -12,6 +13,7 @@ falling back to the local implementation if not present. #}
 {# TODO(https://github.com/googleapis/google-cloud-python/issues/17883): 
 Backfill compatibility functions being removed from the client layer. #}
 
+{% if has_auto_populated_fields %}
 from typing import Union
 import uuid
 
@@ -61,4 +63,5 @@ def setup_request_id(
     else:
         if not getattr(request, field_name, None):
             setattr(request, field_name, str(uuid.uuid4()))
+{% endif %}
 {% endblock %}

@@ -2,6 +2,7 @@
 
 {% block content %}
 
+{% set has_auto_populated_fields = api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 """Tests for the compatibility module for older versions of google-api-core."""
 {# TODO(https://github.com/googleapis/google-cloud-python/issues/17813):
 Clean up this file/tests when the minimum supported version of 
@@ -10,6 +11,7 @@ google-api-core has the functions in `_compat.py.j2`. #}
 Backfill compatibility functions tests being removed from the client layer. #}
 
 
+{% if has_auto_populated_fields %}
 import re
 import pytest
 
@@ -96,4 +98,5 @@ def test_setup_request_id(request_obj, is_proto3_optional, expected):
     else:
         assert value == expected
 
+{% endif %}
 {% endblock %}
