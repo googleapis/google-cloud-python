@@ -759,7 +759,7 @@ class BandwidthGroupServiceClient(metaclass=BandwidthGroupServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> bandwidth_group_messages.BandwidthGroup:
-        r"""API to retrieve a ``BandwidthGroup`` object.
+        r"""Retrieves a ``BandwidthGroup`` object.
 
         .. code-block:: python
 
@@ -871,7 +871,7 @@ class BandwidthGroupServiceClient(metaclass=BandwidthGroupServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListBandwidthGroupsPager:
-        r"""API to retrieve a list of ``BandwidthGroup`` objects.
+        r"""Lists ``BandwidthGroup`` objects.
 
         .. code-block:: python
 

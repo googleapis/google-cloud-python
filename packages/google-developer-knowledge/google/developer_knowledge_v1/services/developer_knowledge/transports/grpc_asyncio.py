@@ -448,6 +448,35 @@ class DeveloperKnowledgeGrpcAsyncIOTransport(DeveloperKnowledgeTransport):
             )
         return self._stubs["batch_get_documents"]
 
+    @property
+    def answer_query(
+        self,
+    ) -> Callable[
+        [developerknowledge.AnswerQueryRequest],
+        Awaitable[developerknowledge.AnswerQueryResponse],
+    ]:
+        r"""Return a callable for the answer query method over gRPC.
+
+        Answers a query using grounded generation.
+
+        Returns:
+            Callable[[~.AnswerQueryRequest],
+                    Awaitable[~.AnswerQueryResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "answer_query" not in self._stubs:
+            self._stubs["answer_query"] = self._logged_channel.unary_unary(
+                "/google.developers.knowledge.v1.DeveloperKnowledge/AnswerQuery",
+                request_serializer=developerknowledge.AnswerQueryRequest.serialize,
+                response_deserializer=developerknowledge.AnswerQueryResponse.deserialize,
+            )
+        return self._stubs["answer_query"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -482,6 +511,11 @@ class DeveloperKnowledgeGrpcAsyncIOTransport(DeveloperKnowledgeTransport):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.answer_query: self._wrap_method(
+                self.answer_query,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }

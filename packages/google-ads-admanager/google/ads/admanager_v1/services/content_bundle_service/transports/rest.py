@@ -75,6 +75,22 @@ class ContentBundleServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomContentBundleServiceInterceptor(ContentBundleServiceRestInterceptor):
+            def pre_batch_activate_content_bundles(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_activate_content_bundles(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_deactivate_content_bundles(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_deactivate_content_bundles(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_content_bundle(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -96,6 +112,110 @@ class ContentBundleServiceRestInterceptor:
 
 
     """
+
+    def pre_batch_activate_content_bundles(
+        self,
+        request: content_bundle_service.BatchActivateContentBundlesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        content_bundle_service.BatchActivateContentBundlesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_activate_content_bundles
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContentBundleService server.
+        """
+        return request, metadata
+
+    def post_batch_activate_content_bundles(
+        self, response: content_bundle_service.BatchActivateContentBundlesResponse
+    ) -> content_bundle_service.BatchActivateContentBundlesResponse:
+        """Post-rpc interceptor for batch_activate_content_bundles
+
+        DEPRECATED. Please use the `post_batch_activate_content_bundles_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ContentBundleService server but before
+        it is returned to user code. This `post_batch_activate_content_bundles` interceptor runs
+        before the `post_batch_activate_content_bundles_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_activate_content_bundles_with_metadata(
+        self,
+        response: content_bundle_service.BatchActivateContentBundlesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        content_bundle_service.BatchActivateContentBundlesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_activate_content_bundles
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContentBundleService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_activate_content_bundles_with_metadata`
+        interceptor in new development instead of the `post_batch_activate_content_bundles` interceptor.
+        When both interceptors are used, this `post_batch_activate_content_bundles_with_metadata` interceptor runs after the
+        `post_batch_activate_content_bundles` interceptor. The (possibly modified) response returned by
+        `post_batch_activate_content_bundles` will be passed to
+        `post_batch_activate_content_bundles_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_deactivate_content_bundles(
+        self,
+        request: content_bundle_service.BatchDeactivateContentBundlesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        content_bundle_service.BatchDeactivateContentBundlesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_deactivate_content_bundles
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContentBundleService server.
+        """
+        return request, metadata
+
+    def post_batch_deactivate_content_bundles(
+        self, response: content_bundle_service.BatchDeactivateContentBundlesResponse
+    ) -> content_bundle_service.BatchDeactivateContentBundlesResponse:
+        """Post-rpc interceptor for batch_deactivate_content_bundles
+
+        DEPRECATED. Please use the `post_batch_deactivate_content_bundles_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ContentBundleService server but before
+        it is returned to user code. This `post_batch_deactivate_content_bundles` interceptor runs
+        before the `post_batch_deactivate_content_bundles_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_deactivate_content_bundles_with_metadata(
+        self,
+        response: content_bundle_service.BatchDeactivateContentBundlesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        content_bundle_service.BatchDeactivateContentBundlesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_deactivate_content_bundles
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContentBundleService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_deactivate_content_bundles_with_metadata`
+        interceptor in new development instead of the `post_batch_deactivate_content_bundles` interceptor.
+        When both interceptors are used, this `post_batch_deactivate_content_bundles_with_metadata` interceptor runs after the
+        `post_batch_deactivate_content_bundles` interceptor. The (possibly modified) response returned by
+        `post_batch_deactivate_content_bundles` will be passed to
+        `post_batch_deactivate_content_bundles_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_content_bundle(
         self,
@@ -341,6 +461,330 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ContentBundleServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _BatchActivateContentBundles(
+        _BaseContentBundleServiceRestTransport._BaseBatchActivateContentBundles,
+        ContentBundleServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContentBundleServiceRestTransport.BatchActivateContentBundles")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: content_bundle_service.BatchActivateContentBundlesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> content_bundle_service.BatchActivateContentBundlesResponse:
+            r"""Call the batch activate content
+            bundles method over HTTP.
+
+                Args:
+                    request (~.content_bundle_service.BatchActivateContentBundlesRequest):
+                        The request object. Request message for ``BatchActivateContentBundles``
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.content_bundle_service.BatchActivateContentBundlesResponse:
+                        Response object for ``BatchActivateContentBundles``
+                    method.
+
+            """
+
+            http_options = _BaseContentBundleServiceRestTransport._BaseBatchActivateContentBundles._get_http_options()
+
+            request, metadata = self._interceptor.pre_batch_activate_content_bundles(
+                request, metadata
+            )
+            transcoded_request = _BaseContentBundleServiceRestTransport._BaseBatchActivateContentBundles._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContentBundleServiceRestTransport._BaseBatchActivateContentBundles._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContentBundleServiceRestTransport._BaseBatchActivateContentBundles._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.ContentBundleServiceClient.BatchActivateContentBundles",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ContentBundleService",
+                        "rpcName": "BatchActivateContentBundles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ContentBundleServiceRestTransport._BatchActivateContentBundles._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = content_bundle_service.BatchActivateContentBundlesResponse()
+            pb_resp = content_bundle_service.BatchActivateContentBundlesResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_activate_content_bundles(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_batch_activate_content_bundles_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = content_bundle_service.BatchActivateContentBundlesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.ContentBundleServiceClient.batch_activate_content_bundles",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ContentBundleService",
+                        "rpcName": "BatchActivateContentBundles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchDeactivateContentBundles(
+        _BaseContentBundleServiceRestTransport._BaseBatchDeactivateContentBundles,
+        ContentBundleServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "ContentBundleServiceRestTransport.BatchDeactivateContentBundles"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: content_bundle_service.BatchDeactivateContentBundlesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> content_bundle_service.BatchDeactivateContentBundlesResponse:
+            r"""Call the batch deactivate content
+            bundles method over HTTP.
+
+                Args:
+                    request (~.content_bundle_service.BatchDeactivateContentBundlesRequest):
+                        The request object. Request message for ``BatchDeactivateContentBundles``
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.content_bundle_service.BatchDeactivateContentBundlesResponse:
+                        Response object for ``BatchDeactivateContentBundles``
+                    method.
+
+            """
+
+            http_options = _BaseContentBundleServiceRestTransport._BaseBatchDeactivateContentBundles._get_http_options()
+
+            request, metadata = self._interceptor.pre_batch_deactivate_content_bundles(
+                request, metadata
+            )
+            transcoded_request = _BaseContentBundleServiceRestTransport._BaseBatchDeactivateContentBundles._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContentBundleServiceRestTransport._BaseBatchDeactivateContentBundles._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContentBundleServiceRestTransport._BaseBatchDeactivateContentBundles._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.ContentBundleServiceClient.BatchDeactivateContentBundles",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ContentBundleService",
+                        "rpcName": "BatchDeactivateContentBundles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ContentBundleServiceRestTransport._BatchDeactivateContentBundles._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = content_bundle_service.BatchDeactivateContentBundlesResponse()
+            pb_resp = content_bundle_service.BatchDeactivateContentBundlesResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_deactivate_content_bundles(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_batch_deactivate_content_bundles_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = content_bundle_service.BatchDeactivateContentBundlesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.ContentBundleServiceClient.batch_deactivate_content_bundles",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.ContentBundleService",
+                        "rpcName": "BatchDeactivateContentBundles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _GetContentBundle(
         _BaseContentBundleServiceRestTransport._BaseGetContentBundle,
@@ -651,6 +1095,32 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
                     },
                 )
             return resp
+
+    @property
+    def batch_activate_content_bundles(
+        self,
+    ) -> Callable[
+        [content_bundle_service.BatchActivateContentBundlesRequest],
+        content_bundle_service.BatchActivateContentBundlesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchActivateContentBundles(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def batch_deactivate_content_bundles(
+        self,
+    ) -> Callable[
+        [content_bundle_service.BatchDeactivateContentBundlesRequest],
+        content_bundle_service.BatchDeactivateContentBundlesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchDeactivateContentBundles(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_content_bundle(

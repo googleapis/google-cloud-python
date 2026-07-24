@@ -1947,6 +1947,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             deletion_protection_enabled=True,
             backup_collection="backup_collection_value",
             kms_key="kms_key_value",
+            async_cluster_endpoints_deletion_enabled=True,
             server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
             server_ca_pool="server_ca_pool_value",
             rotate_server_certificate=True,
@@ -1980,6 +1981,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert response.deletion_protection_enabled is True
     assert response.backup_collection == "backup_collection_value"
     assert response.kms_key == "kms_key_value"
+    assert response.async_cluster_endpoints_deletion_enabled is True
     assert (
         response.server_ca_mode
         == cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA
@@ -2130,6 +2132,7 @@ async def test_get_cluster_async(request_type, transport: str = "grpc_asyncio"):
                 deletion_protection_enabled=True,
                 backup_collection="backup_collection_value",
                 kms_key="kms_key_value",
+                async_cluster_endpoints_deletion_enabled=True,
                 server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
                 server_ca_pool="server_ca_pool_value",
                 rotate_server_certificate=True,
@@ -2164,6 +2167,7 @@ async def test_get_cluster_async(request_type, transport: str = "grpc_asyncio"):
     assert response.deletion_protection_enabled is True
     assert response.backup_collection == "backup_collection_value"
     assert response.kms_key == "kms_key_value"
+    assert response.async_cluster_endpoints_deletion_enabled is True
     assert (
         response.server_ca_mode
         == cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA
@@ -10638,6 +10642,7 @@ async def test_get_cluster_empty_call_grpc_asyncio():
                 deletion_protection_enabled=True,
                 backup_collection="backup_collection_value",
                 kms_key="kms_key_value",
+                async_cluster_endpoints_deletion_enabled=True,
                 server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
                 server_ca_pool="server_ca_pool_value",
                 rotate_server_certificate=True,
@@ -11206,6 +11211,7 @@ def test_get_cluster_rest_call_success(request_type):
             deletion_protection_enabled=True,
             backup_collection="backup_collection_value",
             kms_key="kms_key_value",
+            async_cluster_endpoints_deletion_enabled=True,
             server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
             server_ca_pool="server_ca_pool_value",
             rotate_server_certificate=True,
@@ -11244,6 +11250,7 @@ def test_get_cluster_rest_call_success(request_type):
     assert response.deletion_protection_enabled is True
     assert response.backup_collection == "backup_collection_value"
     assert response.kms_key == "kms_key_value"
+    assert response.async_cluster_endpoints_deletion_enabled is True
     assert (
         response.server_ca_mode
         == cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA
@@ -11462,6 +11469,7 @@ def test_update_cluster_rest_call_success(request_type):
             "kms_key_primary_state": 1,
             "last_update_time": {},
         },
+        "async_cluster_endpoints_deletion_enabled": True,
         "server_ca_mode": 1,
         "server_ca_pool": "server_ca_pool_value",
         "rotate_server_certificate": True,
@@ -11884,6 +11892,7 @@ def test_create_cluster_rest_call_success(request_type):
             "kms_key_primary_state": 1,
             "last_update_time": {},
         },
+        "async_cluster_endpoints_deletion_enabled": True,
         "server_ca_mode": 1,
         "server_ca_pool": "server_ca_pool_value",
         "rotate_server_certificate": True,

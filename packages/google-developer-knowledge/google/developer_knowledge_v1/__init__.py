@@ -40,6 +40,9 @@ from .services.developer_knowledge import (
     DeveloperKnowledgeClient,
 )
 from .types.developerknowledge import (
+    Answer,
+    AnswerQueryRequest,
+    AnswerQueryResponse,
     BatchGetDocumentsRequest,
     BatchGetDocumentsResponse,
     Document,
@@ -135,6 +138,9 @@ else:  # pragma: NO COVER
 
 __all__ = (
     "DeveloperKnowledgeAsyncClient",
+    "Answer",
+    "AnswerQueryRequest",
+    "AnswerQueryResponse",
     "BatchGetDocumentsRequest",
     "BatchGetDocumentsResponse",
     "DeveloperKnowledgeClient",

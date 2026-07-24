@@ -772,7 +772,7 @@ class PlacementServiceClient(metaclass=PlacementServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> placement_messages.Placement:
-        r"""API to retrieve a ``Placement`` object.
+        r"""Retrieves a ``Placement`` object.
 
         .. code-block:: python
 
@@ -877,7 +877,7 @@ class PlacementServiceClient(metaclass=PlacementServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListPlacementsPager:
-        r"""API to retrieve a list of ``Placement`` objects.
+        r"""Lists ``Placement`` objects.
 
         .. code-block:: python
 
@@ -1000,7 +1000,7 @@ class PlacementServiceClient(metaclass=PlacementServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> placement_messages.Placement:
-        r"""API to create an ``Placement`` object.
+        r"""Creates an ``Placement`` object.
 
         .. code-block:: python
 
@@ -1113,7 +1113,7 @@ class PlacementServiceClient(metaclass=PlacementServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> placement_messages.Placement:
-        r"""API to update an ``Placement`` object.
+        r"""Updates an ``Placement`` object.
 
         .. code-block:: python
 
@@ -1236,7 +1236,7 @@ class PlacementServiceClient(metaclass=PlacementServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> placement_service.BatchCreatePlacementsResponse:
-        r"""API to batch create ``Placement`` objects.
+        r"""Creates ``Placement`` objects.
 
         .. code-block:: python
 
@@ -1361,7 +1361,7 @@ class PlacementServiceClient(metaclass=PlacementServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> placement_service.BatchUpdatePlacementsResponse:
-        r"""API to batch update ``Placement`` objects.
+        r"""Batch updates ``Placement`` objects.
 
         .. code-block:: python
 

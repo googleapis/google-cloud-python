@@ -758,7 +758,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> application_messages.Application:
-        r"""API to retrieve a ``Application`` object.
+        r"""Retrieves a ``Application`` object.
 
         .. code-block:: python
 
@@ -869,7 +869,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListApplicationsPager:
-        r"""API to retrieve a list of ``Application`` objects.
+        r"""Lists ``Application`` objects.
 
         .. code-block:: python
 
@@ -994,7 +994,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> application_messages.Application:
-        r"""API to create a ``Application`` object.
+        r"""Creates a ``Application`` object.
 
         .. code-block:: python
 
@@ -1115,7 +1115,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> application_service.BatchCreateApplicationsResponse:
-        r"""API to batch create ``Application`` objects.
+        r"""Creates ``Application`` objects.
 
         .. code-block:: python
 
@@ -1238,7 +1238,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> application_messages.Application:
-        r"""API to update a ``Application`` object.
+        r"""Updates a ``Application`` object.
 
         .. code-block:: python
 
@@ -1364,7 +1364,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> application_service.BatchUpdateApplicationsResponse:
-        r"""API to batch update ``Application`` objects.
+        r"""Batch updates ``Application`` objects.
 
         .. code-block:: python
 
@@ -1483,7 +1483,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> application_service.BatchArchiveApplicationsResponse:
-        r"""/ API to batch archive ``Application`` objects.
+        r"""Batch archives ``Application`` objects.
 
         .. code-block:: python
 
@@ -1602,7 +1602,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> application_service.BatchUnarchiveApplicationsResponse:
-        r"""/ API to batch unarchive ``Application`` objects.
+        r"""Batch unarchives ``Application`` objects.
 
         .. code-block:: python
 

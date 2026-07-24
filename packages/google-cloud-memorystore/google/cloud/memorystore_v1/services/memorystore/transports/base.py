@@ -258,6 +258,46 @@ class MemorystoreTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_token_auth_users: gapic_v1.method.wrap_method(
+                self.list_token_auth_users,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_token_auth_user: gapic_v1.method.wrap_method(
+                self.get_token_auth_user,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_auth_tokens: gapic_v1.method.wrap_method(
+                self.list_auth_tokens,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_auth_token: gapic_v1.method.wrap_method(
+                self.get_auth_token,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.add_token_auth_user: gapic_v1.method.wrap_method(
+                self.add_token_auth_user,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_token_auth_user: gapic_v1.method.wrap_method(
+                self.delete_token_auth_user,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.add_auth_token: gapic_v1.method.wrap_method(
+                self.add_auth_token,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_auth_token: gapic_v1.method.wrap_method(
+                self.delete_auth_token,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -467,6 +507,84 @@ class MemorystoreTransport(abc.ABC):
         self,
     ) -> Callable[
         [memorystore.FinishMigrationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_token_auth_users(
+        self,
+    ) -> Callable[
+        [memorystore.ListTokenAuthUsersRequest],
+        Union[
+            memorystore.ListTokenAuthUsersResponse,
+            Awaitable[memorystore.ListTokenAuthUsersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_token_auth_user(
+        self,
+    ) -> Callable[
+        [memorystore.GetTokenAuthUserRequest],
+        Union[memorystore.TokenAuthUser, Awaitable[memorystore.TokenAuthUser]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_auth_tokens(
+        self,
+    ) -> Callable[
+        [memorystore.ListAuthTokensRequest],
+        Union[
+            memorystore.ListAuthTokensResponse,
+            Awaitable[memorystore.ListAuthTokensResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_auth_token(
+        self,
+    ) -> Callable[
+        [memorystore.GetAuthTokenRequest],
+        Union[memorystore.AuthToken, Awaitable[memorystore.AuthToken]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def add_token_auth_user(
+        self,
+    ) -> Callable[
+        [memorystore.AddTokenAuthUserRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_token_auth_user(
+        self,
+    ) -> Callable[
+        [memorystore.DeleteTokenAuthUserRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def add_auth_token(
+        self,
+    ) -> Callable[
+        [memorystore.AddAuthTokenRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_auth_token(
+        self,
+    ) -> Callable[
+        [memorystore.DeleteAuthTokenRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

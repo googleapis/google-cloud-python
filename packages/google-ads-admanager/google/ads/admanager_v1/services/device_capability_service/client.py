@@ -761,7 +761,7 @@ class DeviceCapabilityServiceClient(metaclass=DeviceCapabilityServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> device_capability_messages.DeviceCapability:
-        r"""API to retrieve a ``DeviceCapability`` object.
+        r"""Retrieves a ``DeviceCapability`` object.
 
         .. code-block:: python
 
@@ -871,7 +871,7 @@ class DeviceCapabilityServiceClient(metaclass=DeviceCapabilityServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListDeviceCapabilitiesPager:
-        r"""API to retrieve a list of ``DeviceCapability`` objects.
+        r"""Lists ``DeviceCapability`` objects.
 
         .. code-block:: python
 

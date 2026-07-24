@@ -812,6 +812,147 @@ class CommerceTransactionAsyncClient:
         # Done; return the response.
         return response
 
+    async def resolve_amendment_target(
+        self,
+        request: Optional[
+            Union[commerce_transaction.ResolveAmendmentTargetRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        target_billing_account: Optional[str] = None,
+        base_standard_offer: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> commerce_transaction.ResolveAmendmentTargetResponse:
+        r"""Resolves the existing offer that must be amended when
+        creating a new PrivateOffer. Use this method to
+        determine the correct amendment target before creating
+        or publishing an offer.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import commerceproducer_v1beta
+
+            async def sample_resolve_amendment_target():
+                # Create a client
+                client = commerceproducer_v1beta.CommerceTransactionAsyncClient()
+
+                # Initialize request argument(s)
+                request = commerceproducer_v1beta.ResolveAmendmentTargetRequest(
+                    parent="parent_value",
+                    target_billing_account="target_billing_account_value",
+                    base_standard_offer="base_standard_offer_value",
+                )
+
+                # Make the request
+                response = await client.resolve_amendment_target(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.commerceproducer_v1beta.types.ResolveAmendmentTargetRequest, dict]]):
+                The request object. Message for resolving an amended
+                offer.
+            parent (:class:`str`):
+                Required. Parent value for
+                ResolveAmendmentTargetRequest
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_billing_account (:class:`str`):
+                Required. The customer's billing account targeted by the
+                offer. This is the billing account for which the new
+                private offer will be created on. Format:
+                billingAccounts/{billing_account}.
+
+                This corresponds to the ``target_billing_account`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            base_standard_offer (:class:`str`):
+                Required. The base standard offer that the private offer
+                will be based on. Format:
+                projects/{project}/locations/{location}/services/{service}/standardOffers/{standard_offer}.
+
+                This corresponds to the ``base_standard_offer`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.commerceproducer_v1beta.types.ResolveAmendmentTargetResponse:
+                Message in response to
+                ResolveAmendmentTarget.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, target_billing_account, base_standard_offer]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, commerce_transaction.ResolveAmendmentTargetRequest):
+            request = commerce_transaction.ResolveAmendmentTargetRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if target_billing_account is not None:
+            request.target_billing_account = target_billing_account
+        if base_standard_offer is not None:
+            request.base_standard_offer = base_standard_offer
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.resolve_amendment_target
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def create_private_offer(
         self,
         request: Optional[

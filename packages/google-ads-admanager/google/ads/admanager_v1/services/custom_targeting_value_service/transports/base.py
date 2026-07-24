@@ -157,6 +157,36 @@ class CustomTargetingValueServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_custom_targeting_value: gapic_v1.method.wrap_method(
+                self.create_custom_targeting_value,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_create_custom_targeting_values: gapic_v1.method.wrap_method(
+                self.batch_create_custom_targeting_values,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_custom_targeting_value: gapic_v1.method.wrap_method(
+                self.update_custom_targeting_value,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_update_custom_targeting_values: gapic_v1.method.wrap_method(
+                self.batch_update_custom_targeting_values,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_activate_custom_targeting_values: gapic_v1.method.wrap_method(
+                self.batch_activate_custom_targeting_values,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_deactivate_custom_targeting_values: gapic_v1.method.wrap_method(
+                self.batch_deactivate_custom_targeting_values,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.cancel_operation: gapic_v1.method.wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
@@ -198,6 +228,86 @@ class CustomTargetingValueServiceTransport(abc.ABC):
         Union[
             custom_targeting_value_service.ListCustomTargetingValuesResponse,
             Awaitable[custom_targeting_value_service.ListCustomTargetingValuesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_custom_targeting_value(
+        self,
+    ) -> Callable[
+        [custom_targeting_value_service.CreateCustomTargetingValueRequest],
+        Union[
+            custom_targeting_value_messages.CustomTargetingValue,
+            Awaitable[custom_targeting_value_messages.CustomTargetingValue],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_create_custom_targeting_values(
+        self,
+    ) -> Callable[
+        [custom_targeting_value_service.BatchCreateCustomTargetingValuesRequest],
+        Union[
+            custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse,
+            Awaitable[
+                custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_custom_targeting_value(
+        self,
+    ) -> Callable[
+        [custom_targeting_value_service.UpdateCustomTargetingValueRequest],
+        Union[
+            custom_targeting_value_messages.CustomTargetingValue,
+            Awaitable[custom_targeting_value_messages.CustomTargetingValue],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_update_custom_targeting_values(
+        self,
+    ) -> Callable[
+        [custom_targeting_value_service.BatchUpdateCustomTargetingValuesRequest],
+        Union[
+            custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse,
+            Awaitable[
+                custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_activate_custom_targeting_values(
+        self,
+    ) -> Callable[
+        [custom_targeting_value_service.BatchActivateCustomTargetingValuesRequest],
+        Union[
+            custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse,
+            Awaitable[
+                custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_deactivate_custom_targeting_values(
+        self,
+    ) -> Callable[
+        [custom_targeting_value_service.BatchDeactivateCustomTargetingValuesRequest],
+        Union[
+            custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse,
+            Awaitable[
+                custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse
+            ],
         ],
     ]:
         raise NotImplementedError()

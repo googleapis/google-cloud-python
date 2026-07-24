@@ -839,6 +839,226 @@ class MemorystoreGrpcTransport(MemorystoreTransport):
             )
         return self._stubs["finish_migration"]
 
+    @property
+    def list_token_auth_users(
+        self,
+    ) -> Callable[
+        [memorystore.ListTokenAuthUsersRequest], memorystore.ListTokenAuthUsersResponse
+    ]:
+        r"""Return a callable for the list token auth users method over gRPC.
+
+        Lists all the token auth users for a token based auth
+        enabled instance.
+
+        Returns:
+            Callable[[~.ListTokenAuthUsersRequest],
+                    ~.ListTokenAuthUsersResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_token_auth_users" not in self._stubs:
+            self._stubs["list_token_auth_users"] = self._logged_channel.unary_unary(
+                "/google.cloud.memorystore.v1.Memorystore/ListTokenAuthUsers",
+                request_serializer=memorystore.ListTokenAuthUsersRequest.serialize,
+                response_deserializer=memorystore.ListTokenAuthUsersResponse.deserialize,
+            )
+        return self._stubs["list_token_auth_users"]
+
+    @property
+    def get_token_auth_user(
+        self,
+    ) -> Callable[[memorystore.GetTokenAuthUserRequest], memorystore.TokenAuthUser]:
+        r"""Return a callable for the get token auth user method over gRPC.
+
+        Gets a specific token auth user for a token based
+        auth enabled instance.
+
+        Returns:
+            Callable[[~.GetTokenAuthUserRequest],
+                    ~.TokenAuthUser]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_token_auth_user" not in self._stubs:
+            self._stubs["get_token_auth_user"] = self._logged_channel.unary_unary(
+                "/google.cloud.memorystore.v1.Memorystore/GetTokenAuthUser",
+                request_serializer=memorystore.GetTokenAuthUserRequest.serialize,
+                response_deserializer=memorystore.TokenAuthUser.deserialize,
+            )
+        return self._stubs["get_token_auth_user"]
+
+    @property
+    def list_auth_tokens(
+        self,
+    ) -> Callable[
+        [memorystore.ListAuthTokensRequest], memorystore.ListAuthTokensResponse
+    ]:
+        r"""Return a callable for the list auth tokens method over gRPC.
+
+        Lists all the auth tokens for a specific token auth
+        user.
+
+        Returns:
+            Callable[[~.ListAuthTokensRequest],
+                    ~.ListAuthTokensResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_auth_tokens" not in self._stubs:
+            self._stubs["list_auth_tokens"] = self._logged_channel.unary_unary(
+                "/google.cloud.memorystore.v1.Memorystore/ListAuthTokens",
+                request_serializer=memorystore.ListAuthTokensRequest.serialize,
+                response_deserializer=memorystore.ListAuthTokensResponse.deserialize,
+            )
+        return self._stubs["list_auth_tokens"]
+
+    @property
+    def get_auth_token(
+        self,
+    ) -> Callable[[memorystore.GetAuthTokenRequest], memorystore.AuthToken]:
+        r"""Return a callable for the get auth token method over gRPC.
+
+        Gets a token based auth enabled instance's auth token
+        for a given user.
+
+        Returns:
+            Callable[[~.GetAuthTokenRequest],
+                    ~.AuthToken]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_auth_token" not in self._stubs:
+            self._stubs["get_auth_token"] = self._logged_channel.unary_unary(
+                "/google.cloud.memorystore.v1.Memorystore/GetAuthToken",
+                request_serializer=memorystore.GetAuthTokenRequest.serialize,
+                response_deserializer=memorystore.AuthToken.deserialize,
+            )
+        return self._stubs["get_auth_token"]
+
+    @property
+    def add_token_auth_user(
+        self,
+    ) -> Callable[[memorystore.AddTokenAuthUserRequest], operations_pb2.Operation]:
+        r"""Return a callable for the add token auth user method over gRPC.
+
+        Adds a token auth user for a token based auth enabled
+        instance.
+
+        Returns:
+            Callable[[~.AddTokenAuthUserRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "add_token_auth_user" not in self._stubs:
+            self._stubs["add_token_auth_user"] = self._logged_channel.unary_unary(
+                "/google.cloud.memorystore.v1.Memorystore/AddTokenAuthUser",
+                request_serializer=memorystore.AddTokenAuthUserRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["add_token_auth_user"]
+
+    @property
+    def delete_token_auth_user(
+        self,
+    ) -> Callable[[memorystore.DeleteTokenAuthUserRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete token auth user method over gRPC.
+
+        Deletes a token auth user for a token based auth
+        enabled instance.
+
+        Returns:
+            Callable[[~.DeleteTokenAuthUserRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_token_auth_user" not in self._stubs:
+            self._stubs["delete_token_auth_user"] = self._logged_channel.unary_unary(
+                "/google.cloud.memorystore.v1.Memorystore/DeleteTokenAuthUser",
+                request_serializer=memorystore.DeleteTokenAuthUserRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_token_auth_user"]
+
+    @property
+    def add_auth_token(
+        self,
+    ) -> Callable[[memorystore.AddAuthTokenRequest], operations_pb2.Operation]:
+        r"""Return a callable for the add auth token method over gRPC.
+
+        Adds a token for a user of a token based auth enabled
+        instance.
+
+        Returns:
+            Callable[[~.AddAuthTokenRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "add_auth_token" not in self._stubs:
+            self._stubs["add_auth_token"] = self._logged_channel.unary_unary(
+                "/google.cloud.memorystore.v1.Memorystore/AddAuthToken",
+                request_serializer=memorystore.AddAuthTokenRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["add_auth_token"]
+
+    @property
+    def delete_auth_token(
+        self,
+    ) -> Callable[[memorystore.DeleteAuthTokenRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete auth token method over gRPC.
+
+        Deletes a token for a user of a token based auth
+        enabled instance.
+
+        Returns:
+            Callable[[~.DeleteAuthTokenRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_auth_token" not in self._stubs:
+            self._stubs["delete_auth_token"] = self._logged_channel.unary_unary(
+                "/google.cloud.memorystore.v1.Memorystore/DeleteAuthToken",
+                request_serializer=memorystore.DeleteAuthTokenRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_auth_token"]
+
     def close(self):
         self._logged_channel.close()
 

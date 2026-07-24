@@ -761,7 +761,7 @@ class AdBreakServiceClient(metaclass=AdBreakServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> ad_break_messages.AdBreak:
-        r"""API to retrieve an ``AdBreak`` object.
+        r"""Retrieves an ``AdBreak`` object.
 
         Query an ad break by its resource name or custom asset key.
         Check the resource's ``breakState`` field to determine its
@@ -874,7 +874,7 @@ class AdBreakServiceClient(metaclass=AdBreakServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAdBreaksPager:
-        r"""API to retrieve a list of ``AdBreak`` objects.
+        r"""Lists ``AdBreak`` objects.
 
         By default, when no ``orderBy`` query parameter is specified, ad
         breaks are ordered reverse chronologically. However, ad breaks
@@ -1006,7 +1006,7 @@ class AdBreakServiceClient(metaclass=AdBreakServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> ad_break_messages.AdBreak:
-        r"""API to create an ``AdBreak`` object.
+        r"""Creates an ``AdBreak`` object.
 
         Informs DAI of an upcoming ad break for a live stream event,
         with an optional expected start time. DAI will begin decisioning
@@ -1149,7 +1149,7 @@ class AdBreakServiceClient(metaclass=AdBreakServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> ad_break_messages.AdBreak:
-        r"""API to update an ``AdBreak`` object.
+        r"""Updates an ``AdBreak`` object.
 
         Modify an ad break when its state is
         [``SCHEDULED``][google.ads.admanager.v1.AdBreakStateEnum.AdBreakState.SCHEDULED].
@@ -1269,7 +1269,7 @@ class AdBreakServiceClient(metaclass=AdBreakServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""API to delete an ``AdBreak`` object.
+        r"""Deletes an ``AdBreak`` object.
 
         Deletes and cancels an incomplete ad break, mitigating the need
         to wait for the current break to serve before recreating an ad

@@ -1849,6 +1849,7 @@ def test_list_iceberg_catalogs_non_empty_request_with_auto_populated_field():
     request = iceberg_rest_catalog.ListIcebergCatalogsRequest(
         parent="parent_value",
         page_token="page_token_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1864,6 +1865,7 @@ def test_list_iceberg_catalogs_non_empty_request_with_auto_populated_field():
         request_msg = iceberg_rest_catalog.ListIcebergCatalogsRequest(
             parent="parent_value",
             page_token="page_token_value",
+            filter="filter_value",
         )
         assert args[0] == request_msg
 
@@ -3777,6 +3779,7 @@ def test_list_iceberg_catalogs_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "filter",
             "page_size",
             "page_token",
             "view",
@@ -3841,6 +3844,7 @@ def test_list_iceberg_catalogs_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "filter",
                 "pageSize",
                 "pageToken",
                 "view",
@@ -5350,6 +5354,11 @@ def test_update_iceberg_catalog_rest_call_success(request_type):
                 "aws_region": "aws_region_value",
                 "aws_role_arn": "aws_role_arn_value",
             },
+            "snowflake_catalog_info": {
+                "account_identifier": "account_identifier_value",
+                "warehouse": "warehouse_value",
+                "snowflake_role": "snowflake_role_value",
+            },
             "secret_name": "secret_name_value",
             "service_directory_name": "service_directory_name_value",
             "refresh_options": {
@@ -5637,6 +5646,11 @@ def test_create_iceberg_catalog_rest_call_success(request_type):
                 "warehouse": "warehouse_value",
                 "aws_region": "aws_region_value",
                 "aws_role_arn": "aws_role_arn_value",
+            },
+            "snowflake_catalog_info": {
+                "account_identifier": "account_identifier_value",
+                "warehouse": "warehouse_value",
+                "snowflake_role": "snowflake_role_value",
             },
             "secret_name": "secret_name_value",
             "service_directory_name": "service_directory_name_value",

@@ -2637,6 +2637,134 @@ class HiveMetastoreServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def failover_hive_catalog(
+        self,
+        request: Optional[
+            Union[hive_metastore.FailoverHiveCatalogRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        primary_replica: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> hive_metastore.FailoverHiveCatalogResponse:
+        r"""Failover the catalog to a new primary replica region.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import biglake_hive_v1beta
+
+            async def sample_failover_hive_catalog():
+                # Create a client
+                client = biglake_hive_v1beta.HiveMetastoreServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = biglake_hive_v1beta.FailoverHiveCatalogRequest(
+                    name="name_value",
+                    primary_replica="primary_replica_value",
+                )
+
+                # Make the request
+                response = await client.failover_hive_catalog(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.biglake_hive_v1beta.types.FailoverHiveCatalogRequest, dict]]):
+                The request object. Request message for
+                FailoverHiveCatalog.
+            name (:class:`str`):
+                Required. The name of the catalog in the form
+                "projects/{project_id}/catalogs/{catalog_id}"
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            primary_replica (:class:`str`):
+                Required. The region being assigned
+                as the new primary replica region. For
+                example "us-east1". This must be one of
+                the replica regions in the catalog's
+                list of replicas marked as a
+                "secondary".
+
+                This corresponds to the ``primary_replica`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.biglake_hive_v1beta.types.FailoverHiveCatalogResponse:
+                Response message for
+                FailoverHiveCatalog.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, primary_replica]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, hive_metastore.FailoverHiveCatalogRequest):
+            request = hive_metastore.FailoverHiveCatalogRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if primary_replica is not None:
+            request.primary_replica = primary_replica
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.failover_hive_catalog
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def __aenter__(self) -> "HiveMetastoreServiceAsyncClient":
         return self
 

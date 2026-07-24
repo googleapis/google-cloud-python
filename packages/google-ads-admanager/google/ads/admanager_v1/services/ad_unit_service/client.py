@@ -786,7 +786,7 @@ class AdUnitServiceClient(metaclass=AdUnitServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> ad_unit_messages.AdUnit:
-        r"""API to retrieve an AdUnit object.
+        r"""Retrieves an ``AdUnit`` object.
 
         .. code-block:: python
 
@@ -891,7 +891,7 @@ class AdUnitServiceClient(metaclass=AdUnitServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAdUnitsPager:
-        r"""API to retrieve a list of AdUnit objects.
+        r"""Lists ``AdUnit`` objects.
 
         .. code-block:: python
 
@@ -1014,7 +1014,7 @@ class AdUnitServiceClient(metaclass=AdUnitServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAdUnitSizesPager:
-        r"""API to retrieve a list of AdUnitSize objects.
+        r"""Lists ``AdUnitSize`` objects.
 
         .. code-block:: python
 
@@ -1138,7 +1138,7 @@ class AdUnitServiceClient(metaclass=AdUnitServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> ad_unit_messages.AdUnit:
-        r"""API to create an ``AdUnit`` object.
+        r"""Creates an ``AdUnit`` object.
 
         .. code-block:: python
 
@@ -1251,7 +1251,7 @@ class AdUnitServiceClient(metaclass=AdUnitServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> ad_unit_messages.AdUnit:
-        r"""API to update an ``AdUnit`` object.
+        r"""Updates an ``AdUnit`` object.
 
         .. code-block:: python
 
@@ -1372,7 +1372,7 @@ class AdUnitServiceClient(metaclass=AdUnitServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> ad_unit_service.BatchCreateAdUnitsResponse:
-        r"""API to batch create ``AdUnit`` objects.
+        r"""Creates ``AdUnit`` objects.
 
         .. code-block:: python
 
@@ -1494,7 +1494,7 @@ class AdUnitServiceClient(metaclass=AdUnitServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> ad_unit_service.BatchUpdateAdUnitsResponse:
-        r"""API to batch update ``AdUnit`` objects.
+        r"""Batch updates ``AdUnit`` objects.
 
         .. code-block:: python
 
@@ -1612,7 +1612,7 @@ class AdUnitServiceClient(metaclass=AdUnitServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> ad_unit_service.BatchActivateAdUnitsResponse:
-        r"""API to batch activate ``AdUnit`` objects.
+        r"""Batch activates ``AdUnit`` objects.
 
         .. code-block:: python
 

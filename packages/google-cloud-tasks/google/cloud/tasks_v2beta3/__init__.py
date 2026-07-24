@@ -32,6 +32,7 @@ from importlib import metadata
 __lazy_modules__ = {
     "google.cloud.tasks_v2beta3.services.cloud_tasks",
     "google.cloud.tasks_v2beta3.types.cloudtasks",
+    "google.cloud.tasks_v2beta3.types.cmek_config",
     "google.cloud.tasks_v2beta3.types.queue",
     "google.cloud.tasks_v2beta3.types.target",
     "google.cloud.tasks_v2beta3.types.task",
@@ -40,10 +41,16 @@ __lazy_modules__ = {
 
 from .services.cloud_tasks import CloudTasksAsyncClient, CloudTasksClient
 from .types.cloudtasks import (
+    BatchCreateTasksMetadata,
+    BatchCreateTasksRequest,
+    BatchCreateTasksResponse,
+    BatchDeleteTasksMetadata,
+    BatchDeleteTasksRequest,
     CreateQueueRequest,
     CreateTaskRequest,
     DeleteQueueRequest,
     DeleteTaskRequest,
+    GetCmekConfigRequest,
     GetQueueRequest,
     GetTaskRequest,
     ListQueuesRequest,
@@ -54,8 +61,10 @@ from .types.cloudtasks import (
     PurgeQueueRequest,
     ResumeQueueRequest,
     RunTaskRequest,
+    UpdateCmekConfigRequest,
     UpdateQueueRequest,
 )
+from .types.cmek_config import CmekConfig
 from .types.queue import (
     Queue,
     QueueStats,
@@ -168,11 +177,18 @@ __all__ = (
     "AppEngineHttpRequest",
     "AppEngineRouting",
     "Attempt",
+    "BatchCreateTasksMetadata",
+    "BatchCreateTasksRequest",
+    "BatchCreateTasksResponse",
+    "BatchDeleteTasksMetadata",
+    "BatchDeleteTasksRequest",
     "CloudTasksClient",
+    "CmekConfig",
     "CreateQueueRequest",
     "CreateTaskRequest",
     "DeleteQueueRequest",
     "DeleteTaskRequest",
+    "GetCmekConfigRequest",
     "GetQueueRequest",
     "GetTaskRequest",
     "HttpMethod",
@@ -197,6 +213,7 @@ __all__ = (
     "RunTaskRequest",
     "StackdriverLoggingConfig",
     "Task",
+    "UpdateCmekConfigRequest",
     "UpdateQueueRequest",
     "UriOverride",
 )

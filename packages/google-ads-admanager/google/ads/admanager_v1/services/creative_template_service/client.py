@@ -762,7 +762,7 @@ class CreativeTemplateServiceClient(metaclass=CreativeTemplateServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> creative_template_messages.CreativeTemplate:
-        r"""API to retrieve a ``CreativeTemplate`` object.
+        r"""Retrieves a ``CreativeTemplate`` object.
 
         .. code-block:: python
 
@@ -874,7 +874,7 @@ class CreativeTemplateServiceClient(metaclass=CreativeTemplateServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListCreativeTemplatesPager:
-        r"""API to retrieve a list of ``CreativeTemplate`` objects.
+        r"""Lists ``CreativeTemplate`` objects.
 
         .. code-block:: python
 

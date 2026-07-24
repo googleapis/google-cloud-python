@@ -204,7 +204,8 @@ class ServiceControllerRestStub:
 class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
     """REST backend synchronous transport for ServiceController.
 
-    `Google Service Control API </service-control/overview>`__
+    `Google Service Control
+    API <https://cloud.google.com/service-control/overview>`__
 
     Lets clients check and report operations against a `managed
     service <https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService>`__.

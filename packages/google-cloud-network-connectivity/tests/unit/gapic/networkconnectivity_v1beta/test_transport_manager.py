@@ -1946,6 +1946,7 @@ def test_get_remote_transport_profile(request_type, transport: str = "grpc"):
             flow=transport_manager.RemoteTransportProfile.KeyProvisioningFlow.INPUT_ONLY,
             order_state=transport_manager.RemoteTransportProfile.State.CLOSED,
             display_name="display_name_value",
+            provider_type=transport_manager.RemoteTransportProfile.ProviderType.CLOUD,
         )
         response = client.get_remote_transport_profile(request)
 
@@ -1974,6 +1975,10 @@ def test_get_remote_transport_profile(request_type, transport: str = "grpc"):
     )
     assert response.order_state == transport_manager.RemoteTransportProfile.State.CLOSED
     assert response.display_name == "display_name_value"
+    assert (
+        response.provider_type
+        == transport_manager.RemoteTransportProfile.ProviderType.CLOUD
+    )
 
 
 def test_get_remote_transport_profile_non_empty_request_with_auto_populated_field():
@@ -2127,6 +2132,7 @@ async def test_get_remote_transport_profile_async(
                 flow=transport_manager.RemoteTransportProfile.KeyProvisioningFlow.INPUT_ONLY,
                 order_state=transport_manager.RemoteTransportProfile.State.CLOSED,
                 display_name="display_name_value",
+                provider_type=transport_manager.RemoteTransportProfile.ProviderType.CLOUD,
             )
         )
         response = await client.get_remote_transport_profile(request)
@@ -2156,6 +2162,10 @@ async def test_get_remote_transport_profile_async(
     )
     assert response.order_state == transport_manager.RemoteTransportProfile.State.CLOSED
     assert response.display_name == "display_name_value"
+    assert (
+        response.provider_type
+        == transport_manager.RemoteTransportProfile.ProviderType.CLOUD
+    )
 
 
 def test_get_remote_transport_profile_field_headers():
@@ -2306,6 +2316,357 @@ async def test_get_remote_transport_profile_flattened_error_async():
         await client.get_remote_transport_profile(
             transport_manager.GetRemoteTransportProfileRequest(),
             name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transport_manager.ParseFromActivationKeyRequest(),
+        {},
+    ],
+)
+def test_parse_from_activation_key(request_type, transport: str = "grpc"):
+    client = TransportManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transport_manager.ParseFromActivationKeyResponse()
+        response = client.parse_from_activation_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = transport_manager.ParseFromActivationKeyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, transport_manager.ParseFromActivationKeyResponse)
+
+
+def test_parse_from_activation_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TransportManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = transport_manager.ParseFromActivationKeyRequest(
+        parent="parent_value",
+        activation_key="activation_key_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.parse_from_activation_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = transport_manager.ParseFromActivationKeyRequest(
+            parent="parent_value",
+            activation_key="activation_key_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_parse_from_activation_key_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = TransportManagerClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.parse_from_activation_key
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.parse_from_activation_key
+        ] = mock_rpc
+        request = {}
+        client.parse_from_activation_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.parse_from_activation_key(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_parse_from_activation_key_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = TransportManagerAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.parse_from_activation_key
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.parse_from_activation_key
+        ] = mock_rpc
+
+        request = {}
+        await client.parse_from_activation_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.parse_from_activation_key(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transport_manager.ParseFromActivationKeyRequest(),
+        {},
+    ],
+)
+async def test_parse_from_activation_key_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = TransportManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transport_manager.ParseFromActivationKeyResponse()
+        )
+        response = await client.parse_from_activation_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = transport_manager.ParseFromActivationKeyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, transport_manager.ParseFromActivationKeyResponse)
+
+
+def test_parse_from_activation_key_field_headers():
+    client = TransportManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transport_manager.ParseFromActivationKeyRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        call.return_value = transport_manager.ParseFromActivationKeyResponse()
+        client.parse_from_activation_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_parse_from_activation_key_field_headers_async():
+    client = TransportManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transport_manager.ParseFromActivationKeyRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transport_manager.ParseFromActivationKeyResponse()
+        )
+        await client.parse_from_activation_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_parse_from_activation_key_flattened():
+    client = TransportManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transport_manager.ParseFromActivationKeyResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.parse_from_activation_key(
+            parent="parent_value",
+            activation_key="activation_key_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].activation_key
+        mock_val = "activation_key_value"
+        assert arg == mock_val
+
+
+def test_parse_from_activation_key_flattened_error():
+    client = TransportManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.parse_from_activation_key(
+            transport_manager.ParseFromActivationKeyRequest(),
+            parent="parent_value",
+            activation_key="activation_key_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_parse_from_activation_key_flattened_async():
+    client = TransportManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transport_manager.ParseFromActivationKeyResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transport_manager.ParseFromActivationKeyResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.parse_from_activation_key(
+            parent="parent_value",
+            activation_key="activation_key_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].activation_key
+        mock_val = "activation_key_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_parse_from_activation_key_flattened_error_async():
+    client = TransportManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.parse_from_activation_key(
+            transport_manager.ParseFromActivationKeyRequest(),
+            parent="parent_value",
+            activation_key="activation_key_value",
         )
 
 
@@ -2873,6 +3234,9 @@ def test_get_transport(request_type, transport: str = "grpc"):
             advertised_routes=["advertised_routes_value"],
             remote_account_id="remote_account_id_value",
             peering_network="peering_network_value",
+            hub="hub_value",
+            psc_routing_enabled=True,
+            auto_accept=True,
         )
         response = client.get_transport(request)
 
@@ -2898,6 +3262,9 @@ def test_get_transport(request_type, transport: str = "grpc"):
     assert response.advertised_routes == ["advertised_routes_value"]
     assert response.remote_account_id == "remote_account_id_value"
     assert response.peering_network == "peering_network_value"
+    assert response.hub == "hub_value"
+    assert response.psc_routing_enabled is True
+    assert response.auto_accept is True
 
 
 def test_get_transport_non_empty_request_with_auto_populated_field():
@@ -3043,6 +3410,9 @@ async def test_get_transport_async(request_type, transport: str = "grpc_asyncio"
                 advertised_routes=["advertised_routes_value"],
                 remote_account_id="remote_account_id_value",
                 peering_network="peering_network_value",
+                hub="hub_value",
+                psc_routing_enabled=True,
+                auto_accept=True,
             )
         )
         response = await client.get_transport(request)
@@ -3069,6 +3439,9 @@ async def test_get_transport_async(request_type, transport: str = "grpc_asyncio"
     assert response.advertised_routes == ["advertised_routes_value"]
     assert response.remote_account_id == "remote_account_id_value"
     assert response.peering_network == "peering_network_value"
+    assert response.hub == "hub_value"
+    assert response.psc_routing_enabled is True
+    assert response.auto_accept is True
 
 
 def test_get_transport_field_headers():
@@ -4741,6 +5114,28 @@ def test_get_remote_transport_profile_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_parse_from_activation_key_empty_call_grpc():
+    client = TransportManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        call.return_value = transport_manager.ParseFromActivationKeyResponse()
+        client.parse_from_activation_key(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = transport_manager.ParseFromActivationKeyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_list_transports_empty_call_grpc():
     client = TransportManagerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4929,6 +5324,7 @@ async def test_get_remote_transport_profile_empty_call_grpc_asyncio():
                 flow=transport_manager.RemoteTransportProfile.KeyProvisioningFlow.INPUT_ONLY,
                 order_state=transport_manager.RemoteTransportProfile.State.CLOSED,
                 display_name="display_name_value",
+                provider_type=transport_manager.RemoteTransportProfile.ProviderType.CLOUD,
             )
         )
         await client.get_remote_transport_profile(request=None)
@@ -4937,6 +5333,32 @@ async def test_get_remote_transport_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.GetRemoteTransportProfileRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_parse_from_activation_key_empty_call_grpc_asyncio():
+    client = TransportManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transport_manager.ParseFromActivationKeyResponse()
+        )
+        await client.parse_from_activation_key(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = transport_manager.ParseFromActivationKeyRequest()
         assert args[0] == request_msg
 
 
@@ -4995,6 +5417,9 @@ async def test_get_transport_empty_call_grpc_asyncio():
                 advertised_routes=["advertised_routes_value"],
                 remote_account_id="remote_account_id_value",
                 peering_network="peering_network_value",
+                hub="hub_value",
+                psc_routing_enabled=True,
+                auto_accept=True,
             )
         )
         await client.get_transport(request=None)
@@ -5142,6 +5567,7 @@ def test_transport_manager_base_transport():
     methods = (
         "list_remote_transport_profiles",
         "get_remote_transport_profile",
+        "parse_from_activation_key",
         "list_transports",
         "get_transport",
         "get_status",
@@ -5549,9 +5975,32 @@ def test_transport_manager_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_network_path():
+def test_hub_path():
     project = "squid"
-    resource_id = "clam"
+    hub = "clam"
+    expected = "projects/{project}/locations/global/hubs/{hub}".format(
+        project=project,
+        hub=hub,
+    )
+    actual = TransportManagerClient.hub_path(project, hub)
+    assert expected == actual
+
+
+def test_parse_hub_path():
+    expected = {
+        "project": "whelk",
+        "hub": "octopus",
+    }
+    path = TransportManagerClient.hub_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TransportManagerClient.parse_hub_path(path)
+    assert expected == actual
+
+
+def test_network_path():
+    project = "oyster"
+    resource_id = "nudibranch"
     expected = "projects/{project}/global/networks/{resource_id}".format(
         project=project,
         resource_id=resource_id,
@@ -5562,8 +6011,8 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "project": "whelk",
-        "resource_id": "octopus",
+        "project": "cuttlefish",
+        "resource_id": "mussel",
     }
     path = TransportManagerClient.network_path(**expected)
 
@@ -5573,9 +6022,9 @@ def test_parse_network_path():
 
 
 def test_remote_transport_profile_path():
-    project = "oyster"
-    location = "nudibranch"
-    remote_transport_profile = "cuttlefish"
+    project = "winkle"
+    location = "nautilus"
+    remote_transport_profile = "scallop"
     expected = "projects/{project}/locations/{location}/remoteTransportProfiles/{remote_transport_profile}".format(
         project=project,
         location=location,
@@ -5589,9 +6038,9 @@ def test_remote_transport_profile_path():
 
 def test_parse_remote_transport_profile_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "remote_transport_profile": "nautilus",
+        "project": "abalone",
+        "location": "squid",
+        "remote_transport_profile": "clam",
     }
     path = TransportManagerClient.remote_transport_profile_path(**expected)
 
@@ -5601,9 +6050,9 @@ def test_parse_remote_transport_profile_path():
 
 
 def test_transport_path():
-    project = "scallop"
-    location = "abalone"
-    transport = "squid"
+    project = "whelk"
+    location = "octopus"
+    transport = "oyster"
     expected = "projects/{project}/locations/{location}/transports/{transport}".format(
         project=project,
         location=location,
@@ -5615,9 +6064,9 @@ def test_transport_path():
 
 def test_parse_transport_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "transport": "octopus",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "transport": "mussel",
     }
     path = TransportManagerClient.transport_path(**expected)
 
@@ -5627,7 +6076,7 @@ def test_parse_transport_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5637,7 +6086,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "nautilus",
     }
     path = TransportManagerClient.common_billing_account_path(**expected)
 
@@ -5647,7 +6096,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5657,7 +6106,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "abalone",
     }
     path = TransportManagerClient.common_folder_path(**expected)
 
@@ -5667,7 +6116,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5677,7 +6126,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "clam",
     }
     path = TransportManagerClient.common_organization_path(**expected)
 
@@ -5687,7 +6136,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5697,7 +6146,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "octopus",
     }
     path = TransportManagerClient.common_project_path(**expected)
 
@@ -5707,8 +6156,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5719,8 +6168,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = TransportManagerClient.common_location_path(**expected)
 

@@ -63,6 +63,8 @@ from google.ads.admanager_v1.services.private_auction_deal_service import (
 )
 from google.ads.admanager_v1.types import (
     deal_buyer_permission_type_enum,
+    deal_priority_tier_enum,
+    non_guaranteed_deal_priority,
     private_auction_deal_messages,
     private_auction_deal_service,
     private_marketplace_enums,
@@ -2716,6 +2718,17 @@ def test_create_private_auction_deal_rest_call_success(request_type):
                 ]
             },
             "data_segment_targeting": {"has_data_segment_targeting": True},
+            "request_format_targeting": {
+                "app_open_enabled": True,
+                "rewarded_enabled": True,
+                "rewarded_interstitial_enabled": True,
+                "interstitial_enabled": True,
+                "anchor_enabled": True,
+                "banner_enabled": True,
+                "instream_video_enabled": True,
+                "instream_audio_enabled": True,
+                "native_advanced_enabled": True,
+            },
             "content_targeting": {
                 "targeted_content": [
                     "targeted_content_value1",
@@ -2759,6 +2772,7 @@ def test_create_private_auction_deal_rest_call_success(request_type):
         "block_override_enabled": True,
         "buyer_permission_type": 1,
         "buyer_data": {"buyer_emails": ["buyer_emails_value1", "buyer_emails_value2"]},
+        "deal_priority": {"priority_tier": 1},
         "create_time": {},
         "update_time": {},
     }
@@ -3186,6 +3200,17 @@ def test_update_private_auction_deal_rest_call_success(request_type):
                 ]
             },
             "data_segment_targeting": {"has_data_segment_targeting": True},
+            "request_format_targeting": {
+                "app_open_enabled": True,
+                "rewarded_enabled": True,
+                "rewarded_interstitial_enabled": True,
+                "interstitial_enabled": True,
+                "anchor_enabled": True,
+                "banner_enabled": True,
+                "instream_video_enabled": True,
+                "instream_audio_enabled": True,
+                "native_advanced_enabled": True,
+            },
             "content_targeting": {
                 "targeted_content": [
                     "targeted_content_value1",
@@ -3229,6 +3254,7 @@ def test_update_private_auction_deal_rest_call_success(request_type):
         "block_override_enabled": True,
         "buyer_permission_type": 1,
         "buyer_data": {"buyer_emails": ["buyer_emails_value1", "buyer_emails_value2"]},
+        "deal_priority": {"priority_tier": 1},
         "create_time": {},
         "update_time": {},
     }

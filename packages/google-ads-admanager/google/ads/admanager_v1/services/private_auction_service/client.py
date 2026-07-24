@@ -778,7 +778,7 @@ class PrivateAuctionServiceClient(metaclass=PrivateAuctionServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> private_auction_messages.PrivateAuction:
-        r"""API to retrieve a ``PrivateAuction`` object.
+        r"""Retrieves a ``PrivateAuction`` object.
 
         .. code-block:: python
 
@@ -886,7 +886,7 @@ class PrivateAuctionServiceClient(metaclass=PrivateAuctionServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListPrivateAuctionsPager:
-        r"""API to retrieve a list of ``PrivateAuction`` objects.
+        r"""Lists ``PrivateAuction`` objects.
 
         .. code-block:: python
 
@@ -1011,7 +1011,7 @@ class PrivateAuctionServiceClient(metaclass=PrivateAuctionServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> private_auction_messages.PrivateAuction:
-        r"""API to create a ``PrivateAuction`` object.
+        r"""Creates a ``PrivateAuction`` object.
 
         .. code-block:: python
 
@@ -1127,7 +1127,7 @@ class PrivateAuctionServiceClient(metaclass=PrivateAuctionServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> private_auction_messages.PrivateAuction:
-        r"""API to update a ``PrivateAuction`` object.
+        r"""Updates a ``PrivateAuction`` object.
 
         .. code-block:: python
 

@@ -759,7 +759,7 @@ class BrowserLanguageServiceClient(metaclass=BrowserLanguageServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> browser_language_messages.BrowserLanguage:
-        r"""API to retrieve a ``BrowserLanguage`` object.
+        r"""Retrieves a ``BrowserLanguage`` object.
 
         .. code-block:: python
 
@@ -867,7 +867,7 @@ class BrowserLanguageServiceClient(metaclass=BrowserLanguageServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListBrowserLanguagesPager:
-        r"""API to retrieve a list of ``BrowserLanguage`` objects.
+        r"""Lists ``BrowserLanguage`` objects.
 
         .. code-block:: python
 

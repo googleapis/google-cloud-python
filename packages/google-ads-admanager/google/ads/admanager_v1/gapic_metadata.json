@@ -63,6 +63,99 @@
         }
       }
     },
+    "AdRuleService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "AdRuleServiceClient",
+          "rpcs": {
+            "BatchActivateAdRules": {
+              "methods": [
+                "batch_activate_ad_rules"
+              ]
+            },
+            "BatchCreateAdRules": {
+              "methods": [
+                "batch_create_ad_rules"
+              ]
+            },
+            "BatchDeactivateAdRules": {
+              "methods": [
+                "batch_deactivate_ad_rules"
+              ]
+            },
+            "BatchDeleteAdRules": {
+              "methods": [
+                "batch_delete_ad_rules"
+              ]
+            },
+            "BatchUpdateAdRules": {
+              "methods": [
+                "batch_update_ad_rules"
+              ]
+            },
+            "CreateAdRule": {
+              "methods": [
+                "create_ad_rule"
+              ]
+            },
+            "GetAdRule": {
+              "methods": [
+                "get_ad_rule"
+              ]
+            },
+            "ListAdRules": {
+              "methods": [
+                "list_ad_rules"
+              ]
+            },
+            "UpdateAdRule": {
+              "methods": [
+                "update_ad_rule"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "AdSpotService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "AdSpotServiceClient",
+          "rpcs": {
+            "BatchCreateAdSpots": {
+              "methods": [
+                "batch_create_ad_spots"
+              ]
+            },
+            "BatchUpdateAdSpots": {
+              "methods": [
+                "batch_update_ad_spots"
+              ]
+            },
+            "CreateAdSpot": {
+              "methods": [
+                "create_ad_spot"
+              ]
+            },
+            "GetAdSpot": {
+              "methods": [
+                "get_ad_spot"
+              ]
+            },
+            "ListAdSpots": {
+              "methods": [
+                "list_ad_spots"
+              ]
+            },
+            "UpdateAdSpot": {
+              "methods": [
+                "update_ad_spot"
+              ]
+            }
+          }
+        }
+      }
+    },
     "AdUnitService": {
       "clients": {
         "rest": {
@@ -247,6 +340,55 @@
         }
       }
     },
+    "CdnConfigService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CdnConfigServiceClient",
+          "rpcs": {
+            "BatchActivateCdnConfigs": {
+              "methods": [
+                "batch_activate_cdn_configs"
+              ]
+            },
+            "BatchArchiveCdnConfigs": {
+              "methods": [
+                "batch_archive_cdn_configs"
+              ]
+            },
+            "BatchCreateCdnConfigs": {
+              "methods": [
+                "batch_create_cdn_configs"
+              ]
+            },
+            "BatchUpdateCdnConfigs": {
+              "methods": [
+                "batch_update_cdn_configs"
+              ]
+            },
+            "CreateCdnConfig": {
+              "methods": [
+                "create_cdn_config"
+              ]
+            },
+            "GetCdnConfig": {
+              "methods": [
+                "get_cdn_config"
+              ]
+            },
+            "ListCdnConfigs": {
+              "methods": [
+                "list_cdn_configs"
+              ]
+            },
+            "UpdateCdnConfig": {
+              "methods": [
+                "update_cdn_config"
+              ]
+            }
+          }
+        }
+      }
+    },
     "CmsMetadataKeyService": {
       "clients": {
         "rest": {
@@ -368,6 +510,16 @@
         "rest": {
           "libraryClient": "ContentBundleServiceClient",
           "rpcs": {
+            "BatchActivateContentBundles": {
+              "methods": [
+                "batch_activate_content_bundles"
+              ]
+            },
+            "BatchDeactivateContentBundles": {
+              "methods": [
+                "batch_deactivate_content_bundles"
+              ]
+            },
             "GetContentBundle": {
               "methods": [
                 "get_content_bundle"
@@ -414,6 +566,35 @@
             "ListContent": {
               "methods": [
                 "list_content"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CreativeSetService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CreativeSetServiceClient",
+          "rpcs": {
+            "CreateCreativeSet": {
+              "methods": [
+                "create_creative_set"
+              ]
+            },
+            "GetCreativeSet": {
+              "methods": [
+                "get_creative_set"
+              ]
+            },
+            "ListCreativeSets": {
+              "methods": [
+                "list_creative_sets"
+              ]
+            },
+            "UpdateCreativeSet": {
+              "methods": [
+                "update_creative_set"
               ]
             }
           }
@@ -542,6 +723,31 @@
         "rest": {
           "libraryClient": "CustomTargetingValueServiceClient",
           "rpcs": {
+            "BatchActivateCustomTargetingValues": {
+              "methods": [
+                "batch_activate_custom_targeting_values"
+              ]
+            },
+            "BatchCreateCustomTargetingValues": {
+              "methods": [
+                "batch_create_custom_targeting_values"
+              ]
+            },
+            "BatchDeactivateCustomTargetingValues": {
+              "methods": [
+                "batch_deactivate_custom_targeting_values"
+              ]
+            },
+            "BatchUpdateCustomTargetingValues": {
+              "methods": [
+                "batch_update_custom_targeting_values"
+              ]
+            },
+            "CreateCustomTargetingValue": {
+              "methods": [
+                "create_custom_targeting_value"
+              ]
+            },
             "GetCustomTargetingValue": {
               "methods": [
                 "get_custom_targeting_value"
@@ -550,6 +756,11 @@
             "ListCustomTargetingValues": {
               "methods": [
                 "list_custom_targeting_values"
+              ]
+            },
+            "UpdateCustomTargetingValue": {
+              "methods": [
+                "update_custom_targeting_value"
               ]
             }
           }
@@ -758,6 +969,70 @@
         }
       }
     },
+    "LiveStreamService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "LiveStreamServiceClient",
+          "rpcs": {
+            "BatchActivateLiveStreams": {
+              "methods": [
+                "batch_activate_live_streams"
+              ]
+            },
+            "BatchArchiveLiveStreams": {
+              "methods": [
+                "batch_archive_live_streams"
+              ]
+            },
+            "BatchCreateLiveStreams": {
+              "methods": [
+                "batch_create_live_streams"
+              ]
+            },
+            "BatchPauseAdsLiveStreams": {
+              "methods": [
+                "batch_pause_ads_live_streams"
+              ]
+            },
+            "BatchPauseLiveStreams": {
+              "methods": [
+                "batch_pause_live_streams"
+              ]
+            },
+            "BatchRefreshMasterPlaylists": {
+              "methods": [
+                "batch_refresh_master_playlists"
+              ]
+            },
+            "BatchUpdateLiveStreams": {
+              "methods": [
+                "batch_update_live_streams"
+              ]
+            },
+            "CreateLiveStream": {
+              "methods": [
+                "create_live_stream"
+              ]
+            },
+            "GetLiveStream": {
+              "methods": [
+                "get_live_stream"
+              ]
+            },
+            "ListLiveStreams": {
+              "methods": [
+                "list_live_streams"
+              ]
+            },
+            "UpdateLiveStream": {
+              "methods": [
+                "update_live_stream"
+              ]
+            }
+          }
+        }
+      }
+    },
     "McmEarningsService": {
       "clients": {
         "rest": {
@@ -891,6 +1166,96 @@
         "rest": {
           "libraryClient": "OrderServiceClient",
           "rpcs": {
+            "BatchApproveAndOverbookOrders": {
+              "methods": [
+                "batch_approve_and_overbook_orders"
+              ]
+            },
+            "BatchApproveOrders": {
+              "methods": [
+                "batch_approve_orders"
+              ]
+            },
+            "BatchApproveOrdersWithoutReservation": {
+              "methods": [
+                "batch_approve_orders_without_reservation"
+              ]
+            },
+            "BatchArchiveOrders": {
+              "methods": [
+                "batch_archive_orders"
+              ]
+            },
+            "BatchCreateOrders": {
+              "methods": [
+                "batch_create_orders"
+              ]
+            },
+            "BatchDeleteOrders": {
+              "methods": [
+                "batch_delete_orders"
+              ]
+            },
+            "BatchDisapproveOrders": {
+              "methods": [
+                "batch_disapprove_orders"
+              ]
+            },
+            "BatchDisapproveOrdersWithoutReservationChanges": {
+              "methods": [
+                "batch_disapprove_orders_without_reservation_changes"
+              ]
+            },
+            "BatchPauseOrders": {
+              "methods": [
+                "batch_pause_orders"
+              ]
+            },
+            "BatchResumeAndOverbookOrders": {
+              "methods": [
+                "batch_resume_and_overbook_orders"
+              ]
+            },
+            "BatchResumeOrders": {
+              "methods": [
+                "batch_resume_orders"
+              ]
+            },
+            "BatchRetractOrders": {
+              "methods": [
+                "batch_retract_orders"
+              ]
+            },
+            "BatchRetractOrdersWithoutReservationChanges": {
+              "methods": [
+                "batch_retract_orders_without_reservation_changes"
+              ]
+            },
+            "BatchSubmitOrdersForApproval": {
+              "methods": [
+                "batch_submit_orders_for_approval"
+              ]
+            },
+            "BatchSubmitOrdersForApprovalAndOverbook": {
+              "methods": [
+                "batch_submit_orders_for_approval_and_overbook"
+              ]
+            },
+            "BatchSubmitOrdersForApprovalWithoutReservationChanges": {
+              "methods": [
+                "batch_submit_orders_for_approval_without_reservation_changes"
+              ]
+            },
+            "BatchUnarchiveOrders": {
+              "methods": [
+                "batch_unarchive_orders"
+              ]
+            },
+            "BatchUpdateOrders": {
+              "methods": [
+                "batch_update_orders"
+              ]
+            },
             "GetOrder": {
               "methods": [
                 "get_order"
@@ -1162,6 +1527,123 @@
         }
       }
     },
+    "SlateService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "SlateServiceClient",
+          "rpcs": {
+            "BatchArchiveSlates": {
+              "methods": [
+                "batch_archive_slates"
+              ]
+            },
+            "BatchCreateSlates": {
+              "methods": [
+                "batch_create_slates"
+              ]
+            },
+            "BatchUnarchiveSlates": {
+              "methods": [
+                "batch_unarchive_slates"
+              ]
+            },
+            "BatchUpdateSlates": {
+              "methods": [
+                "batch_update_slates"
+              ]
+            },
+            "CreateSlate": {
+              "methods": [
+                "create_slate"
+              ]
+            },
+            "GetSlate": {
+              "methods": [
+                "get_slate"
+              ]
+            },
+            "ListSlates": {
+              "methods": [
+                "list_slates"
+              ]
+            },
+            "UpdateSlate": {
+              "methods": [
+                "update_slate"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "SuggestedAdUnitService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "SuggestedAdUnitServiceClient",
+          "rpcs": {
+            "BatchApproveSuggestedAdUnits": {
+              "methods": [
+                "batch_approve_suggested_ad_units"
+              ]
+            },
+            "GetSuggestedAdUnit": {
+              "methods": [
+                "get_suggested_ad_unit"
+              ]
+            },
+            "ListSuggestedAdUnits": {
+              "methods": [
+                "list_suggested_ad_units"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "TargetingPresetService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "TargetingPresetServiceClient",
+          "rpcs": {
+            "BatchCreateTargetingPresets": {
+              "methods": [
+                "batch_create_targeting_presets"
+              ]
+            },
+            "BatchDeactivateTargetingPresets": {
+              "methods": [
+                "batch_deactivate_targeting_presets"
+              ]
+            },
+            "BatchUpdateTargetingPresets": {
+              "methods": [
+                "batch_update_targeting_presets"
+              ]
+            },
+            "CreateTargetingPreset": {
+              "methods": [
+                "create_targeting_preset"
+              ]
+            },
+            "GetTargetingPreset": {
+              "methods": [
+                "get_targeting_preset"
+              ]
+            },
+            "ListTargetingPresets": {
+              "methods": [
+                "list_targeting_presets"
+              ]
+            },
+            "UpdateTargetingPreset": {
+              "methods": [
+                "update_targeting_preset"
+              ]
+            }
+          }
+        }
+      }
+    },
     "TaxonomyCategoryService": {
       "clients": {
         "rest": {
@@ -1224,6 +1706,25 @@
             "UpdateTeam": {
               "methods": [
                 "update_team"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ThirdPartyCompanyService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ThirdPartyCompanyServiceClient",
+          "rpcs": {
+            "GetThirdPartyCompany": {
+              "methods": [
+                "get_third_party_company"
+              ]
+            },
+            "ListThirdPartyCompanies": {
+              "methods": [
+                "list_third_party_companies"
               ]
             }
           }

@@ -742,7 +742,7 @@ class UserServiceClient(metaclass=UserServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> user_messages.User:
-        r"""API to retrieve a User object.
+        r"""Retrieves a ``User`` object.
 
         To get the current user, the resource name
         ``networks/{networkCode}/users/me`` can be used.

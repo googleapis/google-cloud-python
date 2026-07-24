@@ -776,7 +776,7 @@ class MobileDeviceServiceClient(metaclass=MobileDeviceServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> mobile_device_messages.MobileDevice:
-        r"""API to retrieve a ``MobileDevice`` object.
+        r"""Retrieves a ``MobileDevice`` object.
 
         .. code-block:: python
 
@@ -883,7 +883,7 @@ class MobileDeviceServiceClient(metaclass=MobileDeviceServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListMobileDevicesPager:
-        r"""API to retrieve a list of ``MobileDevice`` objects.
+        r"""Lists ``MobileDevice`` objects.
 
         .. code-block:: python
 

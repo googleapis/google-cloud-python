@@ -75,6 +75,46 @@ class CustomTargetingValueServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomCustomTargetingValueServiceInterceptor(CustomTargetingValueServiceRestInterceptor):
+            def pre_batch_activate_custom_targeting_values(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_activate_custom_targeting_values(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_create_custom_targeting_values(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_create_custom_targeting_values(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_deactivate_custom_targeting_values(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_deactivate_custom_targeting_values(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_update_custom_targeting_values(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_update_custom_targeting_values(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_custom_targeting_value(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_custom_targeting_value(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_custom_targeting_value(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -91,11 +131,283 @@ class CustomTargetingValueServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_custom_targeting_value(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_custom_targeting_value(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = CustomTargetingValueServiceRestTransport(interceptor=MyCustomCustomTargetingValueServiceInterceptor())
         client = CustomTargetingValueServiceClient(transport=transport)
 
 
     """
+
+    def pre_batch_activate_custom_targeting_values(
+        self,
+        request: custom_targeting_value_service.BatchActivateCustomTargetingValuesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_value_service.BatchActivateCustomTargetingValuesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_activate_custom_targeting_values
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CustomTargetingValueService server.
+        """
+        return request, metadata
+
+    def post_batch_activate_custom_targeting_values(
+        self,
+        response: custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse,
+    ) -> custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse:
+        """Post-rpc interceptor for batch_activate_custom_targeting_values
+
+        DEPRECATED. Please use the `post_batch_activate_custom_targeting_values_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CustomTargetingValueService server but before
+        it is returned to user code. This `post_batch_activate_custom_targeting_values` interceptor runs
+        before the `post_batch_activate_custom_targeting_values_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_activate_custom_targeting_values_with_metadata(
+        self,
+        response: custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_activate_custom_targeting_values
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomTargetingValueService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_activate_custom_targeting_values_with_metadata`
+        interceptor in new development instead of the `post_batch_activate_custom_targeting_values` interceptor.
+        When both interceptors are used, this `post_batch_activate_custom_targeting_values_with_metadata` interceptor runs after the
+        `post_batch_activate_custom_targeting_values` interceptor. The (possibly modified) response returned by
+        `post_batch_activate_custom_targeting_values` will be passed to
+        `post_batch_activate_custom_targeting_values_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_create_custom_targeting_values(
+        self,
+        request: custom_targeting_value_service.BatchCreateCustomTargetingValuesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_value_service.BatchCreateCustomTargetingValuesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_create_custom_targeting_values
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CustomTargetingValueService server.
+        """
+        return request, metadata
+
+    def post_batch_create_custom_targeting_values(
+        self,
+        response: custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse,
+    ) -> custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse:
+        """Post-rpc interceptor for batch_create_custom_targeting_values
+
+        DEPRECATED. Please use the `post_batch_create_custom_targeting_values_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CustomTargetingValueService server but before
+        it is returned to user code. This `post_batch_create_custom_targeting_values` interceptor runs
+        before the `post_batch_create_custom_targeting_values_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_create_custom_targeting_values_with_metadata(
+        self,
+        response: custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_create_custom_targeting_values
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomTargetingValueService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_create_custom_targeting_values_with_metadata`
+        interceptor in new development instead of the `post_batch_create_custom_targeting_values` interceptor.
+        When both interceptors are used, this `post_batch_create_custom_targeting_values_with_metadata` interceptor runs after the
+        `post_batch_create_custom_targeting_values` interceptor. The (possibly modified) response returned by
+        `post_batch_create_custom_targeting_values` will be passed to
+        `post_batch_create_custom_targeting_values_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_deactivate_custom_targeting_values(
+        self,
+        request: custom_targeting_value_service.BatchDeactivateCustomTargetingValuesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_value_service.BatchDeactivateCustomTargetingValuesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_deactivate_custom_targeting_values
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CustomTargetingValueService server.
+        """
+        return request, metadata
+
+    def post_batch_deactivate_custom_targeting_values(
+        self,
+        response: custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse,
+    ) -> custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse:
+        """Post-rpc interceptor for batch_deactivate_custom_targeting_values
+
+        DEPRECATED. Please use the `post_batch_deactivate_custom_targeting_values_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CustomTargetingValueService server but before
+        it is returned to user code. This `post_batch_deactivate_custom_targeting_values` interceptor runs
+        before the `post_batch_deactivate_custom_targeting_values_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_deactivate_custom_targeting_values_with_metadata(
+        self,
+        response: custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_deactivate_custom_targeting_values
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomTargetingValueService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_deactivate_custom_targeting_values_with_metadata`
+        interceptor in new development instead of the `post_batch_deactivate_custom_targeting_values` interceptor.
+        When both interceptors are used, this `post_batch_deactivate_custom_targeting_values_with_metadata` interceptor runs after the
+        `post_batch_deactivate_custom_targeting_values` interceptor. The (possibly modified) response returned by
+        `post_batch_deactivate_custom_targeting_values` will be passed to
+        `post_batch_deactivate_custom_targeting_values_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_update_custom_targeting_values(
+        self,
+        request: custom_targeting_value_service.BatchUpdateCustomTargetingValuesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_value_service.BatchUpdateCustomTargetingValuesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_update_custom_targeting_values
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CustomTargetingValueService server.
+        """
+        return request, metadata
+
+    def post_batch_update_custom_targeting_values(
+        self,
+        response: custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse,
+    ) -> custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse:
+        """Post-rpc interceptor for batch_update_custom_targeting_values
+
+        DEPRECATED. Please use the `post_batch_update_custom_targeting_values_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CustomTargetingValueService server but before
+        it is returned to user code. This `post_batch_update_custom_targeting_values` interceptor runs
+        before the `post_batch_update_custom_targeting_values_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_update_custom_targeting_values_with_metadata(
+        self,
+        response: custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_update_custom_targeting_values
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomTargetingValueService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_update_custom_targeting_values_with_metadata`
+        interceptor in new development instead of the `post_batch_update_custom_targeting_values` interceptor.
+        When both interceptors are used, this `post_batch_update_custom_targeting_values_with_metadata` interceptor runs after the
+        `post_batch_update_custom_targeting_values` interceptor. The (possibly modified) response returned by
+        `post_batch_update_custom_targeting_values` will be passed to
+        `post_batch_update_custom_targeting_values_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_custom_targeting_value(
+        self,
+        request: custom_targeting_value_service.CreateCustomTargetingValueRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_value_service.CreateCustomTargetingValueRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_custom_targeting_value
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CustomTargetingValueService server.
+        """
+        return request, metadata
+
+    def post_create_custom_targeting_value(
+        self, response: custom_targeting_value_messages.CustomTargetingValue
+    ) -> custom_targeting_value_messages.CustomTargetingValue:
+        """Post-rpc interceptor for create_custom_targeting_value
+
+        DEPRECATED. Please use the `post_create_custom_targeting_value_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CustomTargetingValueService server but before
+        it is returned to user code. This `post_create_custom_targeting_value` interceptor runs
+        before the `post_create_custom_targeting_value_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_custom_targeting_value_with_metadata(
+        self,
+        response: custom_targeting_value_messages.CustomTargetingValue,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_value_messages.CustomTargetingValue,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for create_custom_targeting_value
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomTargetingValueService server but before it is returned to user code.
+
+        We recommend only using this `post_create_custom_targeting_value_with_metadata`
+        interceptor in new development instead of the `post_create_custom_targeting_value` interceptor.
+        When both interceptors are used, this `post_create_custom_targeting_value_with_metadata` interceptor runs after the
+        `post_create_custom_targeting_value` interceptor. The (possibly modified) response returned by
+        `post_create_custom_targeting_value` will be passed to
+        `post_create_custom_targeting_value_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_custom_targeting_value(
         self,
@@ -198,6 +510,58 @@ class CustomTargetingValueServiceRestInterceptor:
         `post_list_custom_targeting_values` interceptor. The (possibly modified) response returned by
         `post_list_custom_targeting_values` will be passed to
         `post_list_custom_targeting_values_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_custom_targeting_value(
+        self,
+        request: custom_targeting_value_service.UpdateCustomTargetingValueRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_value_service.UpdateCustomTargetingValueRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_custom_targeting_value
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CustomTargetingValueService server.
+        """
+        return request, metadata
+
+    def post_update_custom_targeting_value(
+        self, response: custom_targeting_value_messages.CustomTargetingValue
+    ) -> custom_targeting_value_messages.CustomTargetingValue:
+        """Post-rpc interceptor for update_custom_targeting_value
+
+        DEPRECATED. Please use the `post_update_custom_targeting_value_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CustomTargetingValueService server but before
+        it is returned to user code. This `post_update_custom_targeting_value` interceptor runs
+        before the `post_update_custom_targeting_value_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_custom_targeting_value_with_metadata(
+        self,
+        response: custom_targeting_value_messages.CustomTargetingValue,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_value_messages.CustomTargetingValue,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for update_custom_targeting_value
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomTargetingValueService server but before it is returned to user code.
+
+        We recommend only using this `post_update_custom_targeting_value_with_metadata`
+        interceptor in new development instead of the `post_update_custom_targeting_value` interceptor.
+        When both interceptors are used, this `post_update_custom_targeting_value_with_metadata` interceptor runs after the
+        `post_update_custom_targeting_value` interceptor. The (possibly modified) response returned by
+        `post_update_custom_targeting_value` will be passed to
+        `post_update_custom_targeting_value_with_metadata`.
         """
         return response, metadata
 
@@ -344,6 +708,829 @@ class CustomTargetingValueServiceRestTransport(
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CustomTargetingValueServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _BatchActivateCustomTargetingValues(
+        _BaseCustomTargetingValueServiceRestTransport._BaseBatchActivateCustomTargetingValues,
+        CustomTargetingValueServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "CustomTargetingValueServiceRestTransport.BatchActivateCustomTargetingValues"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: custom_targeting_value_service.BatchActivateCustomTargetingValuesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse:
+            r"""Call the batch activate custom
+            targeting values method over HTTP.
+
+                Args:
+                    request (~.custom_targeting_value_service.BatchActivateCustomTargetingValuesRequest):
+                        The request object. Request object for
+                    ``BatchActivateCustomTargetingValues`` method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse:
+                        Response object for
+                    ``BatchActivateCustomTargetingValues`` method.
+
+            """
+
+            http_options = _BaseCustomTargetingValueServiceRestTransport._BaseBatchActivateCustomTargetingValues._get_http_options()
+
+            request, metadata = (
+                self._interceptor.pre_batch_activate_custom_targeting_values(
+                    request, metadata
+                )
+            )
+            transcoded_request = _BaseCustomTargetingValueServiceRestTransport._BaseBatchActivateCustomTargetingValues._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCustomTargetingValueServiceRestTransport._BaseBatchActivateCustomTargetingValues._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCustomTargetingValueServiceRestTransport._BaseBatchActivateCustomTargetingValues._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomTargetingValueServiceClient.BatchActivateCustomTargetingValues",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingValueService",
+                        "rpcName": "BatchActivateCustomTargetingValues",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CustomTargetingValueServiceRestTransport._BatchActivateCustomTargetingValues._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse()
+            pb_resp = custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_activate_custom_targeting_values(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_batch_activate_custom_targeting_values_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomTargetingValueServiceClient.batch_activate_custom_targeting_values",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingValueService",
+                        "rpcName": "BatchActivateCustomTargetingValues",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchCreateCustomTargetingValues(
+        _BaseCustomTargetingValueServiceRestTransport._BaseBatchCreateCustomTargetingValues,
+        CustomTargetingValueServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "CustomTargetingValueServiceRestTransport.BatchCreateCustomTargetingValues"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: custom_targeting_value_service.BatchCreateCustomTargetingValuesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse:
+            r"""Call the batch create custom
+            targeting values method over HTTP.
+
+                Args:
+                    request (~.custom_targeting_value_service.BatchCreateCustomTargetingValuesRequest):
+                        The request object. Request object for ``BatchCreateCustomTargetingValues``
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse:
+                        Response object for ``BatchCreateCustomTargetingValues``
+                    method.
+
+            """
+
+            http_options = _BaseCustomTargetingValueServiceRestTransport._BaseBatchCreateCustomTargetingValues._get_http_options()
+
+            request, metadata = (
+                self._interceptor.pre_batch_create_custom_targeting_values(
+                    request, metadata
+                )
+            )
+            transcoded_request = _BaseCustomTargetingValueServiceRestTransport._BaseBatchCreateCustomTargetingValues._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCustomTargetingValueServiceRestTransport._BaseBatchCreateCustomTargetingValues._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCustomTargetingValueServiceRestTransport._BaseBatchCreateCustomTargetingValues._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomTargetingValueServiceClient.BatchCreateCustomTargetingValues",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingValueService",
+                        "rpcName": "BatchCreateCustomTargetingValues",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CustomTargetingValueServiceRestTransport._BatchCreateCustomTargetingValues._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse()
+            pb_resp = custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_create_custom_targeting_values(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_batch_create_custom_targeting_values_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomTargetingValueServiceClient.batch_create_custom_targeting_values",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingValueService",
+                        "rpcName": "BatchCreateCustomTargetingValues",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchDeactivateCustomTargetingValues(
+        _BaseCustomTargetingValueServiceRestTransport._BaseBatchDeactivateCustomTargetingValues,
+        CustomTargetingValueServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "CustomTargetingValueServiceRestTransport.BatchDeactivateCustomTargetingValues"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: custom_targeting_value_service.BatchDeactivateCustomTargetingValuesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> (
+            custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse
+        ):
+            r"""Call the batch deactivate custom
+            targeting values method over HTTP.
+
+                Args:
+                    request (~.custom_targeting_value_service.BatchDeactivateCustomTargetingValuesRequest):
+                        The request object. Request message for
+                    ``BatchDeactivateCustomTargetingValues`` method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse:
+                        Response object for
+                    ``BatchDeactivateCustomTargetingValues`` method.
+
+            """
+
+            http_options = _BaseCustomTargetingValueServiceRestTransport._BaseBatchDeactivateCustomTargetingValues._get_http_options()
+
+            request, metadata = (
+                self._interceptor.pre_batch_deactivate_custom_targeting_values(
+                    request, metadata
+                )
+            )
+            transcoded_request = _BaseCustomTargetingValueServiceRestTransport._BaseBatchDeactivateCustomTargetingValues._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCustomTargetingValueServiceRestTransport._BaseBatchDeactivateCustomTargetingValues._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCustomTargetingValueServiceRestTransport._BaseBatchDeactivateCustomTargetingValues._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomTargetingValueServiceClient.BatchDeactivateCustomTargetingValues",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingValueService",
+                        "rpcName": "BatchDeactivateCustomTargetingValues",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CustomTargetingValueServiceRestTransport._BatchDeactivateCustomTargetingValues._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse()
+            pb_resp = custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_deactivate_custom_targeting_values(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_batch_deactivate_custom_targeting_values_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomTargetingValueServiceClient.batch_deactivate_custom_targeting_values",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingValueService",
+                        "rpcName": "BatchDeactivateCustomTargetingValues",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchUpdateCustomTargetingValues(
+        _BaseCustomTargetingValueServiceRestTransport._BaseBatchUpdateCustomTargetingValues,
+        CustomTargetingValueServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "CustomTargetingValueServiceRestTransport.BatchUpdateCustomTargetingValues"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: custom_targeting_value_service.BatchUpdateCustomTargetingValuesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse:
+            r"""Call the batch update custom
+            targeting values method over HTTP.
+
+                Args:
+                    request (~.custom_targeting_value_service.BatchUpdateCustomTargetingValuesRequest):
+                        The request object. Request object for ``BatchUpdateCustomTargetingValues``
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse:
+                        Response object for ``BatchUpdateCustomTargetingValues``
+                    method.
+
+            """
+
+            http_options = _BaseCustomTargetingValueServiceRestTransport._BaseBatchUpdateCustomTargetingValues._get_http_options()
+
+            request, metadata = (
+                self._interceptor.pre_batch_update_custom_targeting_values(
+                    request, metadata
+                )
+            )
+            transcoded_request = _BaseCustomTargetingValueServiceRestTransport._BaseBatchUpdateCustomTargetingValues._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCustomTargetingValueServiceRestTransport._BaseBatchUpdateCustomTargetingValues._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCustomTargetingValueServiceRestTransport._BaseBatchUpdateCustomTargetingValues._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomTargetingValueServiceClient.BatchUpdateCustomTargetingValues",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingValueService",
+                        "rpcName": "BatchUpdateCustomTargetingValues",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CustomTargetingValueServiceRestTransport._BatchUpdateCustomTargetingValues._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse()
+            pb_resp = custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_update_custom_targeting_values(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_batch_update_custom_targeting_values_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomTargetingValueServiceClient.batch_update_custom_targeting_values",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingValueService",
+                        "rpcName": "BatchUpdateCustomTargetingValues",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreateCustomTargetingValue(
+        _BaseCustomTargetingValueServiceRestTransport._BaseCreateCustomTargetingValue,
+        CustomTargetingValueServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "CustomTargetingValueServiceRestTransport.CreateCustomTargetingValue"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: custom_targeting_value_service.CreateCustomTargetingValueRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> custom_targeting_value_messages.CustomTargetingValue:
+            r"""Call the create custom targeting
+            value method over HTTP.
+
+                Args:
+                    request (~.custom_targeting_value_service.CreateCustomTargetingValueRequest):
+                        The request object. Request object for ``CreateCustomTargetingValue``
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.custom_targeting_value_messages.CustomTargetingValue:
+                        The ``CustomTargetingValue`` resource.
+            """
+
+            http_options = _BaseCustomTargetingValueServiceRestTransport._BaseCreateCustomTargetingValue._get_http_options()
+
+            request, metadata = self._interceptor.pre_create_custom_targeting_value(
+                request, metadata
+            )
+            transcoded_request = _BaseCustomTargetingValueServiceRestTransport._BaseCreateCustomTargetingValue._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCustomTargetingValueServiceRestTransport._BaseCreateCustomTargetingValue._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCustomTargetingValueServiceRestTransport._BaseCreateCustomTargetingValue._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomTargetingValueServiceClient.CreateCustomTargetingValue",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingValueService",
+                        "rpcName": "CreateCustomTargetingValue",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CustomTargetingValueServiceRestTransport._CreateCustomTargetingValue._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = custom_targeting_value_messages.CustomTargetingValue()
+            pb_resp = custom_targeting_value_messages.CustomTargetingValue.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_custom_targeting_value(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_create_custom_targeting_value_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        custom_targeting_value_messages.CustomTargetingValue.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomTargetingValueServiceClient.create_custom_targeting_value",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingValueService",
+                        "rpcName": "CreateCustomTargetingValue",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _GetCustomTargetingValue(
         _BaseCustomTargetingValueServiceRestTransport._BaseGetCustomTargetingValue,
@@ -653,6 +1840,232 @@ class CustomTargetingValueServiceRestTransport(
                 )
             return resp
 
+    class _UpdateCustomTargetingValue(
+        _BaseCustomTargetingValueServiceRestTransport._BaseUpdateCustomTargetingValue,
+        CustomTargetingValueServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "CustomTargetingValueServiceRestTransport.UpdateCustomTargetingValue"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: custom_targeting_value_service.UpdateCustomTargetingValueRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> custom_targeting_value_messages.CustomTargetingValue:
+            r"""Call the update custom targeting
+            value method over HTTP.
+
+                Args:
+                    request (~.custom_targeting_value_service.UpdateCustomTargetingValueRequest):
+                        The request object. Request object for ``UpdateCustomTargetingValue``
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.custom_targeting_value_messages.CustomTargetingValue:
+                        The ``CustomTargetingValue`` resource.
+            """
+
+            http_options = _BaseCustomTargetingValueServiceRestTransport._BaseUpdateCustomTargetingValue._get_http_options()
+
+            request, metadata = self._interceptor.pre_update_custom_targeting_value(
+                request, metadata
+            )
+            transcoded_request = _BaseCustomTargetingValueServiceRestTransport._BaseUpdateCustomTargetingValue._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCustomTargetingValueServiceRestTransport._BaseUpdateCustomTargetingValue._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCustomTargetingValueServiceRestTransport._BaseUpdateCustomTargetingValue._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomTargetingValueServiceClient.UpdateCustomTargetingValue",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingValueService",
+                        "rpcName": "UpdateCustomTargetingValue",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CustomTargetingValueServiceRestTransport._UpdateCustomTargetingValue._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = custom_targeting_value_messages.CustomTargetingValue()
+            pb_resp = custom_targeting_value_messages.CustomTargetingValue.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_custom_targeting_value(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_update_custom_targeting_value_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        custom_targeting_value_messages.CustomTargetingValue.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomTargetingValueServiceClient.update_custom_targeting_value",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingValueService",
+                        "rpcName": "UpdateCustomTargetingValue",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    @property
+    def batch_activate_custom_targeting_values(
+        self,
+    ) -> Callable[
+        [custom_targeting_value_service.BatchActivateCustomTargetingValuesRequest],
+        custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchActivateCustomTargetingValues(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def batch_create_custom_targeting_values(
+        self,
+    ) -> Callable[
+        [custom_targeting_value_service.BatchCreateCustomTargetingValuesRequest],
+        custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchCreateCustomTargetingValues(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def batch_deactivate_custom_targeting_values(
+        self,
+    ) -> Callable[
+        [custom_targeting_value_service.BatchDeactivateCustomTargetingValuesRequest],
+        custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchDeactivateCustomTargetingValues(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def batch_update_custom_targeting_values(
+        self,
+    ) -> Callable[
+        [custom_targeting_value_service.BatchUpdateCustomTargetingValuesRequest],
+        custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchUpdateCustomTargetingValues(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def create_custom_targeting_value(
+        self,
+    ) -> Callable[
+        [custom_targeting_value_service.CreateCustomTargetingValueRequest],
+        custom_targeting_value_messages.CustomTargetingValue,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateCustomTargetingValue(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
     @property
     def get_custom_targeting_value(
         self,
@@ -676,6 +2089,19 @@ class CustomTargetingValueServiceRestTransport(
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCustomTargetingValues(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def update_custom_targeting_value(
+        self,
+    ) -> Callable[
+        [custom_targeting_value_service.UpdateCustomTargetingValueRequest],
+        custom_targeting_value_messages.CustomTargetingValue,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateCustomTargetingValue(
             self._session, self._host, self._interceptor
         )  # type: ignore
 

@@ -50,8 +50,11 @@ __protobuf__ = proto.module(
         "DeleteManagedFolderRequest",
         "ListManagedFoldersRequest",
         "ListManagedFoldersResponse",
+        "UpdateManagedFolderRequest",
         "CreateAnywhereCacheMetadata",
+        "CreateRapidCacheMetadata",
         "UpdateAnywhereCacheMetadata",
+        "UpdateRapidCacheMetadata",
         "AnywhereCache",
         "CreateAnywhereCacheRequest",
         "UpdateAnywhereCacheRequest",
@@ -61,6 +64,12 @@ __protobuf__ = proto.module(
         "GetAnywhereCacheRequest",
         "ListAnywhereCachesRequest",
         "ListAnywhereCachesResponse",
+        "RapidCache",
+        "CreateRapidCacheRequest",
+        "UpdateRapidCacheRequest",
+        "GetRapidCacheRequest",
+        "ListRapidCachesRequest",
+        "ListRapidCachesResponse",
         "IntelligenceConfig",
         "UpdateOrganizationIntelligenceConfigRequest",
         "UpdateFolderIntelligenceConfigRequest",
@@ -791,6 +800,8 @@ class GetStorageLayoutRequest(proto.Message):
 class ManagedFolder(proto.Message):
     r"""A managed folder.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Identifier. The name of this managed folder. Format:
@@ -807,7 +818,75 @@ class ManagedFolder(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The modification time of the
             managed folder.
+        rapid_cache_config (google.cloud.storage_control_v2.types.ManagedFolder.RapidCacheConfig):
+            Rapid Cache configuration for a managed
+            prefix.
+
+            This field is a member of `oneof`_ ``_rapid_cache_config``.
     """
+
+    class RapidCacheConfig(proto.Message):
+        r"""Rapid Cache configuration for a managed prefix. This
+        configuration is used to determine how the rapid cache behaves
+        for objects under the managed folder.
+
+        Attributes:
+            policies (MutableMapping[str, google.cloud.storage_control_v2.types.ManagedFolder.RapidCacheConfig.RapidCachePolicy]):
+                Optional. A map of rapid_cache_id to RapidCachePolicy for
+                this prefix. Currently, the key rapid_cache_id is the zone.
+                However, the field is generalized as rapid_cache_id to align
+                the policy lifetime with the cache instance lifetime. This
+                allows for a future transition from zone to a cache id if
+                required.
+        """
+
+        class RapidCachePolicy(proto.Message):
+            r"""Rapid Cache policy for a managed folder.
+
+            Attributes:
+                rapid_cache_id (str):
+                    Required. The identifier for the rapid cache.
+                ingest_on_write (google.cloud.storage_control_v2.types.ManagedFolder.RapidCacheConfig.RapidCachePolicy.IngestOnWrite):
+                    Required. If enabled, objects in the Managed
+                    Folder will be ingested into the cache when they
+                    are written.
+            """
+
+            class IngestOnWrite(proto.Enum):
+                r"""The behavior of the rapid cache when an object is written.
+
+                Values:
+                    INGEST_ON_WRITE_UNSPECIFIED (0):
+                        The behavior is not specified at this
+                        resource level. It should be inherited from the
+                        parent resource's configuration. This is the
+                        default value.
+                    INGEST_ON_WRITE_ENABLED (1):
+                        Ingestion on write is explicitly enabled for
+                        this resource.
+                """
+
+                INGEST_ON_WRITE_UNSPECIFIED = 0
+                INGEST_ON_WRITE_ENABLED = 1
+
+            rapid_cache_id: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            ingest_on_write: "ManagedFolder.RapidCacheConfig.RapidCachePolicy.IngestOnWrite" = proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="ManagedFolder.RapidCacheConfig.RapidCachePolicy.IngestOnWrite",
+            )
+
+        policies: MutableMapping[
+            str, "ManagedFolder.RapidCacheConfig.RapidCachePolicy"
+        ] = proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=1,
+            message="ManagedFolder.RapidCacheConfig.RapidCachePolicy",
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -826,6 +905,12 @@ class ManagedFolder(proto.Message):
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
+    )
+    rapid_cache_config: RapidCacheConfig = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        optional=True,
+        message=RapidCacheConfig,
     )
 
 
@@ -1049,6 +1134,71 @@ class ListManagedFoldersResponse(proto.Message):
     )
 
 
+class UpdateManagedFolderRequest(proto.Message):
+    r"""Request message for UpdateManagedFolder.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        managed_folder (google.cloud.storage_control_v2.types.ManagedFolder):
+            Required. Properties of the managed folder being updated.
+            Currently, this RPC only supports updating the
+            ``rapid_cache_config`` field in ``managed_folder``.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Update mask for managed_folder. Currently, this
+            RPC only supports updating the ``rapid_cache_config`` field
+            in ``managed_folder``. This field also supports update mask
+            for the subfields in the map of ``rapid_cache_config``. The
+            user can specify the update mask for
+            ``rapid_cache_config.policies`` and
+            ``rapid_cache_config.policies.<key>``, but patching is not
+            supported for a field within
+            ``RapidCachePolicy.policies.<key>``, like
+            rapid_cache_config.policies.[key].ingest_on_write.
+        if_metageneration_match (int):
+            Optional. The operation succeeds conditional
+            on the managed folder's current metageneration
+            matching the value here specified.
+
+            This field is a member of `oneof`_ ``_if_metageneration_match``.
+        if_metageneration_not_match (int):
+            Optional. The operation succeeds conditional
+            on the managed folder's current metageneration
+            NOT matching the value here specified.
+
+            This field is a member of `oneof`_ ``_if_metageneration_not_match``.
+        request_id (str):
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
+    """
+
+    managed_folder: "ManagedFolder" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ManagedFolder",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    if_metageneration_match: int = proto.Field(
+        proto.INT64,
+        number=3,
+        optional=True,
+    )
+    if_metageneration_not_match: int = proto.Field(
+        proto.INT64,
+        number=4,
+        optional=True,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
 class CreateAnywhereCacheMetadata(proto.Message):
     r"""Message returned in the metadata field of the Operation
     resource for CreateAnywhereCache operations.
@@ -1084,6 +1234,12 @@ class CreateAnywhereCacheMetadata(proto.Message):
             request.
 
             This field is a member of `oneof`_ ``_admission_policy``.
+        ingest_on_write (bool):
+            Optional. Specifies whether objects are
+            ingested into the cache upon write. Defaults to
+            false.
+
+            This field is a member of `oneof`_ ``_ingest_on_write``.
     """
 
     common_metadata: "CommonLongRunningOperationMetadata" = proto.Field(
@@ -1110,6 +1266,97 @@ class CreateAnywhereCacheMetadata(proto.Message):
     admission_policy: str = proto.Field(
         proto.STRING,
         number=5,
+        optional=True,
+    )
+    ingest_on_write: bool = proto.Field(
+        proto.BOOL,
+        number=7,
+        optional=True,
+    )
+
+
+class CreateRapidCacheMetadata(proto.Message):
+    r"""Message returned in the metadata field of the Operation
+    resource for CreateRapidCache operations.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        common_metadata (google.cloud.storage_control_v2.types.CommonLongRunningOperationMetadata):
+            Generic metadata for the long running
+            operation.
+        rapid_cache_id (str):
+            Rapid Cache ID.
+
+            This field is a member of `oneof`_ ``_rapid_cache_id``.
+        zone (str):
+            The zone in which the cache instance is
+            running. For example, us-central1-a.
+
+            This field is a member of `oneof`_ ``_zone``.
+        ttl (google.protobuf.duration_pb2.Duration):
+            Rapid Cache entry's TTL. A cache-level config
+            that is applied to all new cache entries on
+            admission. Default ttl value (24hrs) is applied
+            if not specified in the create request.
+
+            This field is a member of `oneof`_ ``_ttl``.
+        admission_policy (str):
+            Anywhere Cache entry Admission Policy in
+            kebab-case (e.g., "admit-on-first-miss").
+            Default admission policy (admit-on-first-miss)
+            is applied if not specified in the create
+            request.
+
+            This field is a member of `oneof`_ ``_admission_policy``.
+        ingest_on_write (bool):
+            Optional. Specifies whether objects are
+            ingested into the cache upon write. Defaults to
+            false.
+
+            This field is a member of `oneof`_ ``_ingest_on_write``.
+        cache_type (str):
+            Optional. The type of cache. Either rapid
+            cache or rapid cache ultra.
+
+            This field is a member of `oneof`_ ``_cache_type``.
+    """
+
+    common_metadata: "CommonLongRunningOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CommonLongRunningOperationMetadata",
+    )
+    rapid_cache_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3,
+        optional=True,
+    )
+    ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message=duration_pb2.Duration,
+    )
+    admission_policy: str = proto.Field(
+        proto.STRING,
+        number=5,
+        optional=True,
+    )
+    ingest_on_write: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+        optional=True,
+    )
+    cache_type: str = proto.Field(
+        proto.STRING,
+        number=7,
         optional=True,
     )
 
@@ -1142,12 +1389,18 @@ class UpdateAnywhereCacheMetadata(proto.Message):
 
             This field is a member of `oneof`_ ``_ttl``.
         admission_policy (str):
-            L4 Cache entry Admission Policy in kebab-case (e.g.,
-            "admit-on-first-miss"). If ``admission_policy`` is pending
-            update, this field equals to the new value specified in the
-            Update request.
+            Optional. Anywhere Cache entry Admission Policy in
+            kebab-case (e.g., "admit-on-first-miss"). If
+            ``admission_policy`` is pending update, this field equals to
+            the new value specified in the Update request.
 
             This field is a member of `oneof`_ ``_admission_policy``.
+        ingest_on_write (bool):
+            Specifies whether objects are ingested into
+            the cache upon write. If not set, it defaults to
+            false.
+
+            This field is a member of `oneof`_ ``_ingest_on_write``.
     """
 
     common_metadata: "CommonLongRunningOperationMetadata" = proto.Field(
@@ -1176,10 +1429,102 @@ class UpdateAnywhereCacheMetadata(proto.Message):
         number=4,
         optional=True,
     )
+    ingest_on_write: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+        optional=True,
+    )
+
+
+class UpdateRapidCacheMetadata(proto.Message):
+    r"""Message returned in the metadata field of the Operation
+    resource for UpdateRapidCache operation.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        common_metadata (google.cloud.storage_control_v2.types.CommonLongRunningOperationMetadata):
+            Generic metadata for the long running
+            operation.
+        rapid_cache_id (str):
+            Rapid Cache ID.
+
+            This field is a member of `oneof`_ ``_rapid_cache_id``.
+        zone (str):
+            The zone in which the cache instance is
+            running. For example, us-central1-a.
+
+            This field is a member of `oneof`_ ``_zone``.
+        ttl (google.protobuf.duration_pb2.Duration):
+            Rapid Cache entry's TTL between 1h and 7days. A cache-level
+            config that is applied to all new cache entries on
+            admission. If ``ttl`` is pending update, this field equals
+            to the new value specified in the Update request.
+
+            This field is a member of `oneof`_ ``_ttl``.
+        admission_policy (str):
+            Optional. Rapid Cache entry Admission Policy in kebab-case
+            (e.g., "admit-on-first-miss"). If ``admission_policy`` is
+            pending update, this field equals to the new value specified
+            in the Update request.
+
+            This field is a member of `oneof`_ ``_admission_policy``.
+        ingest_on_write (bool):
+            Specifies whether objects are ingested into
+            the cache upon write. If not set, it defaults to
+            false.
+
+            This field is a member of `oneof`_ ``_ingest_on_write``.
+        cache_type (str):
+            Optional. The type of cache. Either rapid
+            cache or rapid cache ultra.
+
+            This field is a member of `oneof`_ ``_cache_type``.
+    """
+
+    common_metadata: "CommonLongRunningOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CommonLongRunningOperationMetadata",
+    )
+    rapid_cache_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3,
+        optional=True,
+    )
+    ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message=duration_pb2.Duration,
+    )
+    admission_policy: str = proto.Field(
+        proto.STRING,
+        number=5,
+        optional=True,
+    )
+    ingest_on_write: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+        optional=True,
+    )
+    cache_type: str = proto.Field(
+        proto.STRING,
+        number=7,
+        optional=True,
+    )
 
 
 class AnywhereCache(proto.Message):
     r"""An Anywhere Cache Instance.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -1200,8 +1545,8 @@ class AnywhereCache(proto.Message):
             Defaults to ``admit-on-first-miss``. Default value is
             applied if not specified in the create request.
         state (str):
-            Output only. Cache state including RUNNING,
-            CREATING, DISABLED and PAUSED.
+            Output only. Cache state including ``running``,
+            ``creating``, ``disabled`` and ``paused``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when Anywhere cache
             instance is allocated.
@@ -1213,6 +1558,12 @@ class AnywhereCache(proto.Message):
             update operation against this cache instance.
             Subsequential update requests will be rejected
             if this field is true. Output only.
+        ingest_on_write (bool):
+            Optional. Specifies whether objects are
+            ingested into the cache upon write. Defaults to
+            false.
+
+            This field is a member of `oneof`_ ``_ingest_on_write``.
     """
 
     name: str = proto.Field(
@@ -1249,6 +1600,11 @@ class AnywhereCache(proto.Message):
     pending_update: bool = proto.Field(
         proto.BOOL,
         number=8,
+    )
+    ingest_on_write: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+        optional=True,
     )
 
 
@@ -1486,6 +1842,250 @@ class ListAnywhereCachesResponse(proto.Message):
     )
 
 
+class RapidCache(proto.Message):
+    r"""A Rapid Cache Instance.
+
+    Attributes:
+        name (str):
+            Immutable. The resource name of this RapidCache. Format:
+            projects/{project}/buckets/{bucket}/rapidCaches/{rapid_cache}
+        zone (str):
+            Immutable. The zone in which the cache
+            instance is running. For example, us-central1-a.
+        cache_type (str):
+            Immutable. The type of Rapid Cache this
+            represents. Valid values include: 'rapid-cache'
+            and 'rapid-cache-ultra'.
+        ttl (google.protobuf.duration_pb2.Duration):
+            Cache entry TTL (ranges between 1h to 7d).
+            This is a cache-level config that defines how
+            long a cache entry can live. Default ttl value
+            (24hrs) is applied if not specified in the
+            create request. TTL must be in whole seconds.
+        admission_policy (str):
+            Cache admission policy. Valid policies includes:
+            no_read_admission, admit-on-first-miss and
+            admit-on-second-miss. Defaults to admit-on-first-miss for
+            both AC and RCU. Default value is applied if not specified
+            in the create request.
+        state (str):
+            Output only. Cache state including running,
+            creating, and disabled.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time when Rapid cache instance
+            is allocated.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time when Rapid cache instance
+            is last updated, including creation.
+        pending_update (bool):
+            Output only. True if there is an active
+            update operation against this cache instance.
+            Subsequential update requests will be rejected
+            if this field is true. Output only.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    cache_type: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
+    )
+    admission_policy: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    state: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    pending_update: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
+
+
+class CreateRapidCacheRequest(proto.Message):
+    r"""Request message for CreateRapidCache.
+
+    Attributes:
+        parent (str):
+            Required. The bucket to which this cache belongs. Format:
+            ``projects/{project}/buckets/{bucket}``
+        rapid_cache (google.cloud.storage_control_v2.types.RapidCache):
+            Required. The RapidCache to create. Default values for
+            ingest_on_write, ttl and admission_policy will be applied if
+            not specified in the request.
+        request_id (str):
+            Optional. A unique identifier for this request. UUID is the
+            recommended format, but other formats are still accepted.
+            This request is only idempotent if a ``request_id`` is
+            provided.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    rapid_cache: "RapidCache" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="RapidCache",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class UpdateRapidCacheRequest(proto.Message):
+    r"""Request message for UpdateRapidCache.
+
+    Attributes:
+        rapid_cache (google.cloud.storage_control_v2.types.RapidCache):
+            Required. The RapidCache to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. List of fields to be updated. Mutable fields of
+            RapidCache include ``ttl``, ``admission_policy`` and
+            ``ingest_on_write``.
+
+            To specify ALL fields, specify a single field with the value
+            ``*``. Note: We recommend against doing this. If a new field
+            is introduced at a later time, an older client updating with
+            the ``*`` may accidentally reset the new field's value.
+
+            Not specifying any fields is an error.
+        request_id (str):
+            Optional. A unique identifier for this request. UUID is the
+            recommended format, but other formats are still accepted.
+            This request is only idempotent if a ``request_id`` is
+            provided.
+    """
+
+    rapid_cache: "RapidCache" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="RapidCache",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetRapidCacheRequest(proto.Message):
+    r"""Request message for GetRapidCache.
+
+    Attributes:
+        name (str):
+            Required. The name field in the request should be:
+            ``projects/{project}/buckets/{bucket}/rapidCaches/{rapid_cache}``
+        request_id (str):
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListRapidCachesRequest(proto.Message):
+    r"""Request message for ListRapidCaches.
+
+    Attributes:
+        parent (str):
+            Required. The bucket to which this cache
+            belongs.
+        page_size (int):
+            Maximum number of caches to return in a
+            single response. The service will use this
+            parameter or 1,000 items, whichever is smaller.
+        page_token (str):
+            A previously-returned page token representing
+            part of the larger set of results to view.
+        request_id (str):
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListRapidCachesResponse(proto.Message):
+    r"""Response message for ListRapidCaches.
+
+    Attributes:
+        rapid_caches (MutableSequence[google.cloud.storage_control_v2.types.RapidCache]):
+            The list of rapid caches.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    rapid_caches: MutableSequence["RapidCache"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="RapidCache",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class IntelligenceConfig(proto.Message):
     r"""The ``IntelligenceConfig`` resource associated with your
     organization, folder, or project.
@@ -1525,7 +2125,7 @@ class IntelligenceConfig(proto.Message):
         This signifies the edition used for configuring the
         ``IntelligenceConfig`` resource and can only take the following
         values: ``EDITION_CONFIG_UNSPECIFIED``, ``INHERIT``, ``DISABLED``,
-        ``STANDARD`` and ``TRIAL``.
+        ``STANDARD`` and ``EVALUATE``.
 
         Values:
             EDITION_CONFIG_UNSPECIFIED (0):
@@ -1548,6 +2148,9 @@ class IntelligenceConfig(proto.Message):
                 filters. At the end of the trial period, the
                 ``IntelligenceConfig`` resource is upgraded to ``STANDARD``
                 edition.
+            ESSENTIALS (6):
+                The ``IntelligenceConfig`` resource is of ESSENTIALS
+                edition.
         """
 
         EDITION_CONFIG_UNSPECIFIED = 0
@@ -1555,6 +2158,7 @@ class IntelligenceConfig(proto.Message):
         DISABLED = 2
         STANDARD = 3
         TRIAL = 5
+        ESSENTIALS = 6
 
     class Filter(proto.Message):
         r"""Filter over location and bucket using include or exclude
@@ -1737,12 +2341,6 @@ class UpdateOrganizationIntelligenceConfigRequest(proto.Message):
     r"""Request message to update the ``IntelligenceConfig`` resource
     associated with your organization.
 
-    **IAM Permissions**:
-
-    Requires ``storage.intelligenceConfigs.update``
-    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-    permission on the organization.
-
     Attributes:
         intelligence_config (google.cloud.storage_control_v2.types.IntelligenceConfig):
             Required. The ``IntelligenceConfig`` resource to be updated.
@@ -1774,12 +2372,6 @@ class UpdateOrganizationIntelligenceConfigRequest(proto.Message):
 class UpdateFolderIntelligenceConfigRequest(proto.Message):
     r"""Request message to update the ``IntelligenceConfig`` resource
     associated with your folder.
-
-    **IAM Permissions**:
-
-    Requires ``storage.intelligenceConfigs.update``
-    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-    permission on the folder.
 
     Attributes:
         intelligence_config (google.cloud.storage_control_v2.types.IntelligenceConfig):
@@ -1813,12 +2405,6 @@ class UpdateProjectIntelligenceConfigRequest(proto.Message):
     r"""Request message to update the ``IntelligenceConfig`` resource
     associated with your project.
 
-    **IAM Permissions**:
-
-    Requires ``storage.intelligenceConfigs.update``
-    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-    permission on the folder.
-
     Attributes:
         intelligence_config (google.cloud.storage_control_v2.types.IntelligenceConfig):
             Required. The ``IntelligenceConfig`` resource to be updated.
@@ -1851,12 +2437,6 @@ class GetOrganizationIntelligenceConfigRequest(proto.Message):
     r"""Request message to get the ``IntelligenceConfig`` resource
     associated with your organization.
 
-    **IAM Permissions**
-
-    Requires ``storage.intelligenceConfigs.get``
-    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-    permission on the organization.
-
     Attributes:
         name (str):
             Required. The name of the ``IntelligenceConfig`` resource
@@ -1876,12 +2456,6 @@ class GetFolderIntelligenceConfigRequest(proto.Message):
     r"""Request message to get the ``IntelligenceConfig`` resource
     associated with your folder.
 
-    **IAM Permissions**
-
-    Requires ``storage.intelligenceConfigs.get``
-    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-    permission on the folder.
-
     Attributes:
         name (str):
             Required. The name of the ``IntelligenceConfig`` resource
@@ -1899,12 +2473,6 @@ class GetFolderIntelligenceConfigRequest(proto.Message):
 class GetProjectIntelligenceConfigRequest(proto.Message):
     r"""Request message to get the ``IntelligenceConfig`` resource
     associated with your project.
-
-    **IAM Permissions**:
-
-    Requires ``storage.intelligenceConfigs.get``
-    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-    permission on the project.
 
     Attributes:
         name (str):
@@ -2553,7 +3121,7 @@ class IntelligenceFindingRevision(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of
+            Output only. The resource name of
             ``IntelligenceFindingRevision``. Format:
             ``projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}/revisions/{revision}``
         snapshot (google.cloud.storage_control_v2.types.IntelligenceFinding):
@@ -2676,7 +3244,7 @@ class ListIntelligenceFindingsResponse(proto.Message):
 
 class SummarizeIntelligenceFindingsRequest(proto.Message):
     r"""Request message to summarize the intelligence findings for
-    the specified scope(org, folder or project).
+    the specified scope (organization, folder or project).
 
     Attributes:
         parent (str):
@@ -2761,7 +3329,7 @@ class SummarizeIntelligenceFindingsRequest(proto.Message):
 
 class SummarizeIntelligenceFindingsResponse(proto.Message):
     r"""Response message to summarize the intelligence findings for a
-    specified scope(org, folder or project).
+    specified scope (organization, folder or project).
 
     Attributes:
         finding_summaries (MutableSequence[google.cloud.storage_control_v2.types.FindingSummary]):

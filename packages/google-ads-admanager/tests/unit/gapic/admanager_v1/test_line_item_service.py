@@ -39,6 +39,7 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
 import google.auth
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.money_pb2 as money_pb2  # type: ignore
 from google.api_core import (
@@ -61,11 +62,30 @@ from google.ads.admanager_v1.services.line_item_service import (
     transports,
 )
 from google.ads.admanager_v1.types import (
+    applied_label,
+    child_content_eligibility_enum,
+    creative_placeholder,
+    creative_targeting,
     custom_field_value,
+    custom_pacing_curve,
+    delivery_enums,
+    delivery_indicator,
+    environment_type_enum,
+    exclusion_scope_enum,
+    frequency_cap,
     goal,
+    grp_settings,
+    line_item_allowed_format_enum,
+    line_item_deal_info,
+    line_item_delivery_forecast_source_enum,
+    line_item_discount,
     line_item_enums,
     line_item_messages,
     line_item_service,
+    line_item_stats,
+    skippable_ad_type_enum,
+    targeting,
+    third_party_measurement_settings,
 )
 
 CRED_INFO_JSON = {
@@ -1765,7 +1785,43 @@ def test_get_line_item_rest_call_success(request_type):
             name="name_value",
             order="order_value",
             display_name="display_name_value",
+            external_line_item_id="external_line_item_id_value",
+            order_display_name="order_display_name_value",
+            auto_extension_days=2053,
+            end_time_unlimited=True,
+            creative_rotation_type=delivery_enums.CreativeRotationTypeEnum.CreativeRotationType.EVENLY,
+            delivery_rate_type=delivery_enums.LineItemDeliveryRateTypeEnum.LineItemDeliveryRateType.AS_FAST_AS_POSSIBLE,
+            delivery_forecast_source=line_item_delivery_forecast_source_enum.LineItemDeliveryForecastSourceEnum.LineItemDeliveryForecastSource.CUSTOM_PACING_CURVE,
+            roadblocking_type=delivery_enums.RoadblockingTypeEnum.RoadblockingType.ALL_ROADBLOCK,
+            skippable_ad_type=skippable_ad_type_enum.SkippableAdTypeEnum.SkippableAdType.ANY,
             line_item_type=line_item_enums.LineItemTypeEnum.LineItemType.SPONSORSHIP,
+            priority=898,
+            cost_type=line_item_enums.LineItemCostTypeEnum.LineItemCostType.CPA,
+            contracted_units_bought=2465,
+            environment_type=environment_type_enum.EnvironmentTypeEnum.EnvironmentType.BROWSER,
+            companion_delivery_option=delivery_enums.CompanionDeliveryOptionEnum.CompanionDeliveryOption.OPTIONAL,
+            allow_overbook=True,
+            skip_inventory_check=True,
+            skip_cross_selling_rule_warning_checks=True,
+            reserve_on_creation=True,
+            status=line_item_enums.LineItemComputedStatusEnum.LineItemComputedStatus.CANCELED,
+            reservation_status=line_item_enums.LineItemReservationStatusEnum.LineItemReservationStatus.RESERVED,
+            archived=True,
+            web_property_code="web_property_code_value",
+            same_advertiser_exception_enabled=True,
+            update_source="update_source_value",
+            notes="notes_value",
+            competitive_constraint_scope=exclusion_scope_enum.ExclusionScopeEnum.ExclusionScope.PAGE,
+            missing_creatives=True,
+            youtube_kids_restricted=True,
+            viewability_provider_companies=["viewability_provider_companies_value"],
+            child_content_eligibility=child_content_eligibility_enum.ChildContentEligibilityEnum.ChildContentEligibility.ALLOWED,
+            custom_vast_extension="custom_vast_extension_value",
+            sponsorship_exclusivity_enabled=True,
+            repeated_creative_serving_enabled=True,
+            allowed_formats=[
+                line_item_allowed_format_enum.LineItemAllowedFormatEnum.LineItemAllowedFormat.AUDIO
+            ],
         )
 
         # Wrap the value into a proper Response obj
@@ -1785,10 +1841,83 @@ def test_get_line_item_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.order == "order_value"
     assert response.display_name == "display_name_value"
+    assert response.external_line_item_id == "external_line_item_id_value"
+    assert response.order_display_name == "order_display_name_value"
+    assert response.auto_extension_days == 2053
+    assert response.end_time_unlimited is True
+    assert (
+        response.creative_rotation_type
+        == delivery_enums.CreativeRotationTypeEnum.CreativeRotationType.EVENLY
+    )
+    assert (
+        response.delivery_rate_type
+        == delivery_enums.LineItemDeliveryRateTypeEnum.LineItemDeliveryRateType.AS_FAST_AS_POSSIBLE
+    )
+    assert (
+        response.delivery_forecast_source
+        == line_item_delivery_forecast_source_enum.LineItemDeliveryForecastSourceEnum.LineItemDeliveryForecastSource.CUSTOM_PACING_CURVE
+    )
+    assert (
+        response.roadblocking_type
+        == delivery_enums.RoadblockingTypeEnum.RoadblockingType.ALL_ROADBLOCK
+    )
+    assert (
+        response.skippable_ad_type
+        == skippable_ad_type_enum.SkippableAdTypeEnum.SkippableAdType.ANY
+    )
     assert (
         response.line_item_type
         == line_item_enums.LineItemTypeEnum.LineItemType.SPONSORSHIP
     )
+    assert response.priority == 898
+    assert (
+        response.cost_type == line_item_enums.LineItemCostTypeEnum.LineItemCostType.CPA
+    )
+    assert response.contracted_units_bought == 2465
+    assert (
+        response.environment_type
+        == environment_type_enum.EnvironmentTypeEnum.EnvironmentType.BROWSER
+    )
+    assert (
+        response.companion_delivery_option
+        == delivery_enums.CompanionDeliveryOptionEnum.CompanionDeliveryOption.OPTIONAL
+    )
+    assert response.allow_overbook is True
+    assert response.skip_inventory_check is True
+    assert response.skip_cross_selling_rule_warning_checks is True
+    assert response.reserve_on_creation is True
+    assert (
+        response.status
+        == line_item_enums.LineItemComputedStatusEnum.LineItemComputedStatus.CANCELED
+    )
+    assert (
+        response.reservation_status
+        == line_item_enums.LineItemReservationStatusEnum.LineItemReservationStatus.RESERVED
+    )
+    assert response.archived is True
+    assert response.web_property_code == "web_property_code_value"
+    assert response.same_advertiser_exception_enabled is True
+    assert response.update_source == "update_source_value"
+    assert response.notes == "notes_value"
+    assert (
+        response.competitive_constraint_scope
+        == exclusion_scope_enum.ExclusionScopeEnum.ExclusionScope.PAGE
+    )
+    assert response.missing_creatives is True
+    assert response.youtube_kids_restricted is True
+    assert response.viewability_provider_companies == [
+        "viewability_provider_companies_value"
+    ]
+    assert (
+        response.child_content_eligibility
+        == child_content_eligibility_enum.ChildContentEligibilityEnum.ChildContentEligibility.ALLOWED
+    )
+    assert response.custom_vast_extension == "custom_vast_extension_value"
+    assert response.sponsorship_exclusivity_enabled is True
+    assert response.repeated_creative_serving_enabled is True
+    assert response.allowed_formats == [
+        line_item_allowed_format_enum.LineItemAllowedFormatEnum.LineItemAllowedFormat.AUDIO
+    ]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -2344,9 +2473,241 @@ def test_line_item_service_client_transport_session_collision(transport_name):
     assert session1 != session2
 
 
-def test_custom_field_path():
+def test_ad_unit_path():
     network_code = "squid"
-    custom_field = "clam"
+    ad_unit = "clam"
+    expected = "networks/{network_code}/adUnits/{ad_unit}".format(
+        network_code=network_code,
+        ad_unit=ad_unit,
+    )
+    actual = LineItemServiceClient.ad_unit_path(network_code, ad_unit)
+    assert expected == actual
+
+
+def test_parse_ad_unit_path():
+    expected = {
+        "network_code": "whelk",
+        "ad_unit": "octopus",
+    }
+    path = LineItemServiceClient.ad_unit_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_ad_unit_path(path)
+    assert expected == actual
+
+
+def test_application_path():
+    network_code = "oyster"
+    application = "nudibranch"
+    expected = "networks/{network_code}/applications/{application}".format(
+        network_code=network_code,
+        application=application,
+    )
+    actual = LineItemServiceClient.application_path(network_code, application)
+    assert expected == actual
+
+
+def test_parse_application_path():
+    expected = {
+        "network_code": "cuttlefish",
+        "application": "mussel",
+    }
+    path = LineItemServiceClient.application_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_application_path(path)
+    assert expected == actual
+
+
+def test_audience_segment_path():
+    network_code = "winkle"
+    audience_segment = "nautilus"
+    expected = "networks/{network_code}/audienceSegments/{audience_segment}".format(
+        network_code=network_code,
+        audience_segment=audience_segment,
+    )
+    actual = LineItemServiceClient.audience_segment_path(network_code, audience_segment)
+    assert expected == actual
+
+
+def test_parse_audience_segment_path():
+    expected = {
+        "network_code": "scallop",
+        "audience_segment": "abalone",
+    }
+    path = LineItemServiceClient.audience_segment_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_audience_segment_path(path)
+    assert expected == actual
+
+
+def test_bandwidth_group_path():
+    network_code = "squid"
+    bandwidth_group = "clam"
+    expected = "networks/{network_code}/bandwidthGroups/{bandwidth_group}".format(
+        network_code=network_code,
+        bandwidth_group=bandwidth_group,
+    )
+    actual = LineItemServiceClient.bandwidth_group_path(network_code, bandwidth_group)
+    assert expected == actual
+
+
+def test_parse_bandwidth_group_path():
+    expected = {
+        "network_code": "whelk",
+        "bandwidth_group": "octopus",
+    }
+    path = LineItemServiceClient.bandwidth_group_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_bandwidth_group_path(path)
+    assert expected == actual
+
+
+def test_browser_path():
+    network_code = "oyster"
+    browser = "nudibranch"
+    expected = "networks/{network_code}/browsers/{browser}".format(
+        network_code=network_code,
+        browser=browser,
+    )
+    actual = LineItemServiceClient.browser_path(network_code, browser)
+    assert expected == actual
+
+
+def test_parse_browser_path():
+    expected = {
+        "network_code": "cuttlefish",
+        "browser": "mussel",
+    }
+    path = LineItemServiceClient.browser_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_browser_path(path)
+    assert expected == actual
+
+
+def test_browser_language_path():
+    network_code = "winkle"
+    browser_language = "nautilus"
+    expected = "networks/{network_code}/browserLanguages/{browser_language}".format(
+        network_code=network_code,
+        browser_language=browser_language,
+    )
+    actual = LineItemServiceClient.browser_language_path(network_code, browser_language)
+    assert expected == actual
+
+
+def test_parse_browser_language_path():
+    expected = {
+        "network_code": "scallop",
+        "browser_language": "abalone",
+    }
+    path = LineItemServiceClient.browser_language_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_browser_language_path(path)
+    assert expected == actual
+
+
+def test_cms_metadata_value_path():
+    network_code = "squid"
+    cms_metadata_value = "clam"
+    expected = "networks/{network_code}/cmsMetadataValues/{cms_metadata_value}".format(
+        network_code=network_code,
+        cms_metadata_value=cms_metadata_value,
+    )
+    actual = LineItemServiceClient.cms_metadata_value_path(
+        network_code, cms_metadata_value
+    )
+    assert expected == actual
+
+
+def test_parse_cms_metadata_value_path():
+    expected = {
+        "network_code": "whelk",
+        "cms_metadata_value": "octopus",
+    }
+    path = LineItemServiceClient.cms_metadata_value_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_cms_metadata_value_path(path)
+    assert expected == actual
+
+
+def test_company_path():
+    network_code = "oyster"
+    company = "nudibranch"
+    expected = "networks/{network_code}/companies/{company}".format(
+        network_code=network_code,
+        company=company,
+    )
+    actual = LineItemServiceClient.company_path(network_code, company)
+    assert expected == actual
+
+
+def test_parse_company_path():
+    expected = {
+        "network_code": "cuttlefish",
+        "company": "mussel",
+    }
+    path = LineItemServiceClient.company_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_company_path(path)
+    assert expected == actual
+
+
+def test_content_path():
+    network_code = "winkle"
+    content = "nautilus"
+    expected = "networks/{network_code}/content/{content}".format(
+        network_code=network_code,
+        content=content,
+    )
+    actual = LineItemServiceClient.content_path(network_code, content)
+    assert expected == actual
+
+
+def test_parse_content_path():
+    expected = {
+        "network_code": "scallop",
+        "content": "abalone",
+    }
+    path = LineItemServiceClient.content_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_content_path(path)
+    assert expected == actual
+
+
+def test_content_bundle_path():
+    network_code = "squid"
+    content_bundle = "clam"
+    expected = "networks/{network_code}/contentBundles/{content_bundle}".format(
+        network_code=network_code,
+        content_bundle=content_bundle,
+    )
+    actual = LineItemServiceClient.content_bundle_path(network_code, content_bundle)
+    assert expected == actual
+
+
+def test_parse_content_bundle_path():
+    expected = {
+        "network_code": "whelk",
+        "content_bundle": "octopus",
+    }
+    path = LineItemServiceClient.content_bundle_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_content_bundle_path(path)
+    assert expected == actual
+
+
+def test_custom_field_path():
+    network_code = "oyster"
+    custom_field = "nudibranch"
     expected = "networks/{network_code}/customFields/{custom_field}".format(
         network_code=network_code,
         custom_field=custom_field,
@@ -2357,8 +2718,8 @@ def test_custom_field_path():
 
 def test_parse_custom_field_path():
     expected = {
-        "network_code": "whelk",
-        "custom_field": "octopus",
+        "network_code": "cuttlefish",
+        "custom_field": "mussel",
     }
     path = LineItemServiceClient.custom_field_path(**expected)
 
@@ -2367,9 +2728,184 @@ def test_parse_custom_field_path():
     assert expected == actual
 
 
-def test_line_item_path():
+def test_custom_targeting_key_path():
+    network_code = "winkle"
+    custom_targeting_key = "nautilus"
+    expected = (
+        "networks/{network_code}/customTargetingKeys/{custom_targeting_key}".format(
+            network_code=network_code,
+            custom_targeting_key=custom_targeting_key,
+        )
+    )
+    actual = LineItemServiceClient.custom_targeting_key_path(
+        network_code, custom_targeting_key
+    )
+    assert expected == actual
+
+
+def test_parse_custom_targeting_key_path():
+    expected = {
+        "network_code": "scallop",
+        "custom_targeting_key": "abalone",
+    }
+    path = LineItemServiceClient.custom_targeting_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_custom_targeting_key_path(path)
+    assert expected == actual
+
+
+def test_custom_targeting_value_path():
+    network_code = "squid"
+    custom_targeting_value = "clam"
+    expected = (
+        "networks/{network_code}/customTargetingValues/{custom_targeting_value}".format(
+            network_code=network_code,
+            custom_targeting_value=custom_targeting_value,
+        )
+    )
+    actual = LineItemServiceClient.custom_targeting_value_path(
+        network_code, custom_targeting_value
+    )
+    assert expected == actual
+
+
+def test_parse_custom_targeting_value_path():
+    expected = {
+        "network_code": "whelk",
+        "custom_targeting_value": "octopus",
+    }
+    path = LineItemServiceClient.custom_targeting_value_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_custom_targeting_value_path(path)
+    assert expected == actual
+
+
+def test_device_capability_path():
     network_code = "oyster"
-    line_item = "nudibranch"
+    device_capability = "nudibranch"
+    expected = "networks/{network_code}/deviceCapabilities/{device_capability}".format(
+        network_code=network_code,
+        device_capability=device_capability,
+    )
+    actual = LineItemServiceClient.device_capability_path(
+        network_code, device_capability
+    )
+    assert expected == actual
+
+
+def test_parse_device_capability_path():
+    expected = {
+        "network_code": "cuttlefish",
+        "device_capability": "mussel",
+    }
+    path = LineItemServiceClient.device_capability_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_device_capability_path(path)
+    assert expected == actual
+
+
+def test_device_category_path():
+    network_code = "winkle"
+    device_category = "nautilus"
+    expected = "networks/{network_code}/deviceCategories/{device_category}".format(
+        network_code=network_code,
+        device_category=device_category,
+    )
+    actual = LineItemServiceClient.device_category_path(network_code, device_category)
+    assert expected == actual
+
+
+def test_parse_device_category_path():
+    expected = {
+        "network_code": "scallop",
+        "device_category": "abalone",
+    }
+    path = LineItemServiceClient.device_category_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_device_category_path(path)
+    assert expected == actual
+
+
+def test_device_manufacturer_path():
+    network_code = "squid"
+    device_manufacturer = "clam"
+    expected = (
+        "networks/{network_code}/deviceManufacturers/{device_manufacturer}".format(
+            network_code=network_code,
+            device_manufacturer=device_manufacturer,
+        )
+    )
+    actual = LineItemServiceClient.device_manufacturer_path(
+        network_code, device_manufacturer
+    )
+    assert expected == actual
+
+
+def test_parse_device_manufacturer_path():
+    expected = {
+        "network_code": "whelk",
+        "device_manufacturer": "octopus",
+    }
+    path = LineItemServiceClient.device_manufacturer_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_device_manufacturer_path(path)
+    assert expected == actual
+
+
+def test_geo_target_path():
+    network_code = "oyster"
+    geo_target = "nudibranch"
+    expected = "networks/{network_code}/geoTargets/{geo_target}".format(
+        network_code=network_code,
+        geo_target=geo_target,
+    )
+    actual = LineItemServiceClient.geo_target_path(network_code, geo_target)
+    assert expected == actual
+
+
+def test_parse_geo_target_path():
+    expected = {
+        "network_code": "cuttlefish",
+        "geo_target": "mussel",
+    }
+    path = LineItemServiceClient.geo_target_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_geo_target_path(path)
+    assert expected == actual
+
+
+def test_label_path():
+    network_code = "winkle"
+    label = "nautilus"
+    expected = "networks/{network_code}/labels/{label}".format(
+        network_code=network_code,
+        label=label,
+    )
+    actual = LineItemServiceClient.label_path(network_code, label)
+    assert expected == actual
+
+
+def test_parse_label_path():
+    expected = {
+        "network_code": "scallop",
+        "label": "abalone",
+    }
+    path = LineItemServiceClient.label_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_label_path(path)
+    assert expected == actual
+
+
+def test_line_item_path():
+    network_code = "squid"
+    line_item = "clam"
     expected = "networks/{network_code}/lineItems/{line_item}".format(
         network_code=network_code,
         line_item=line_item,
@@ -2380,8 +2916,8 @@ def test_line_item_path():
 
 def test_parse_line_item_path():
     expected = {
-        "network_code": "cuttlefish",
-        "line_item": "mussel",
+        "network_code": "whelk",
+        "line_item": "octopus",
     }
     path = LineItemServiceClient.line_item_path(**expected)
 
@@ -2390,8 +2926,81 @@ def test_parse_line_item_path():
     assert expected == actual
 
 
-def test_network_path():
+def test_mobile_carrier_path():
+    network_code = "oyster"
+    mobile_carrier = "nudibranch"
+    expected = "networks/{network_code}/mobileCarriers/{mobile_carrier}".format(
+        network_code=network_code,
+        mobile_carrier=mobile_carrier,
+    )
+    actual = LineItemServiceClient.mobile_carrier_path(network_code, mobile_carrier)
+    assert expected == actual
+
+
+def test_parse_mobile_carrier_path():
+    expected = {
+        "network_code": "cuttlefish",
+        "mobile_carrier": "mussel",
+    }
+    path = LineItemServiceClient.mobile_carrier_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_mobile_carrier_path(path)
+    assert expected == actual
+
+
+def test_mobile_device_path():
     network_code = "winkle"
+    mobile_device = "nautilus"
+    expected = "networks/{network_code}/mobileDevices/{mobile_device}".format(
+        network_code=network_code,
+        mobile_device=mobile_device,
+    )
+    actual = LineItemServiceClient.mobile_device_path(network_code, mobile_device)
+    assert expected == actual
+
+
+def test_parse_mobile_device_path():
+    expected = {
+        "network_code": "scallop",
+        "mobile_device": "abalone",
+    }
+    path = LineItemServiceClient.mobile_device_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_mobile_device_path(path)
+    assert expected == actual
+
+
+def test_mobile_device_submodel_path():
+    network_code = "squid"
+    mobile_device_submodel = "clam"
+    expected = (
+        "networks/{network_code}/mobileDeviceSubmodels/{mobile_device_submodel}".format(
+            network_code=network_code,
+            mobile_device_submodel=mobile_device_submodel,
+        )
+    )
+    actual = LineItemServiceClient.mobile_device_submodel_path(
+        network_code, mobile_device_submodel
+    )
+    assert expected == actual
+
+
+def test_parse_mobile_device_submodel_path():
+    expected = {
+        "network_code": "whelk",
+        "mobile_device_submodel": "octopus",
+    }
+    path = LineItemServiceClient.mobile_device_submodel_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_mobile_device_submodel_path(path)
+    assert expected == actual
+
+
+def test_network_path():
+    network_code = "oyster"
     expected = "networks/{network_code}".format(
         network_code=network_code,
     )
@@ -2401,7 +3010,7 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "network_code": "nautilus",
+        "network_code": "nudibranch",
     }
     path = LineItemServiceClient.network_path(**expected)
 
@@ -2410,9 +3019,57 @@ def test_parse_network_path():
     assert expected == actual
 
 
-def test_order_path():
+def test_operating_system_path():
+    network_code = "cuttlefish"
+    operating_system = "mussel"
+    expected = "networks/{network_code}/operatingSystems/{operating_system}".format(
+        network_code=network_code,
+        operating_system=operating_system,
+    )
+    actual = LineItemServiceClient.operating_system_path(network_code, operating_system)
+    assert expected == actual
+
+
+def test_parse_operating_system_path():
+    expected = {
+        "network_code": "winkle",
+        "operating_system": "nautilus",
+    }
+    path = LineItemServiceClient.operating_system_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_operating_system_path(path)
+    assert expected == actual
+
+
+def test_operating_system_version_path():
     network_code = "scallop"
-    order = "abalone"
+    operating_system_version = "abalone"
+    expected = "networks/{network_code}/operatingSystemVersions/{operating_system_version}".format(
+        network_code=network_code,
+        operating_system_version=operating_system_version,
+    )
+    actual = LineItemServiceClient.operating_system_version_path(
+        network_code, operating_system_version
+    )
+    assert expected == actual
+
+
+def test_parse_operating_system_version_path():
+    expected = {
+        "network_code": "squid",
+        "operating_system_version": "clam",
+    }
+    path = LineItemServiceClient.operating_system_version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_operating_system_version_path(path)
+    assert expected == actual
+
+
+def test_order_path():
+    network_code = "whelk"
+    order = "octopus"
     expected = "networks/{network_code}/orders/{order}".format(
         network_code=network_code,
         order=order,
@@ -2423,8 +3080,8 @@ def test_order_path():
 
 def test_parse_order_path():
     expected = {
-        "network_code": "squid",
-        "order": "clam",
+        "network_code": "oyster",
+        "order": "nudibranch",
     }
     path = LineItemServiceClient.order_path(**expected)
 
@@ -2433,8 +3090,31 @@ def test_parse_order_path():
     assert expected == actual
 
 
+def test_placement_path():
+    network_code = "cuttlefish"
+    placement = "mussel"
+    expected = "networks/{network_code}/placements/{placement}".format(
+        network_code=network_code,
+        placement=placement,
+    )
+    actual = LineItemServiceClient.placement_path(network_code, placement)
+    assert expected == actual
+
+
+def test_parse_placement_path():
+    expected = {
+        "network_code": "winkle",
+        "placement": "nautilus",
+    }
+    path = LineItemServiceClient.placement_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LineItemServiceClient.parse_placement_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2444,7 +3124,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "abalone",
     }
     path = LineItemServiceClient.common_billing_account_path(**expected)
 
@@ -2454,7 +3134,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -2464,7 +3144,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "clam",
     }
     path = LineItemServiceClient.common_folder_path(**expected)
 
@@ -2474,7 +3154,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -2484,7 +3164,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "octopus",
     }
     path = LineItemServiceClient.common_organization_path(**expected)
 
@@ -2494,7 +3174,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -2504,7 +3184,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "nudibranch",
     }
     path = LineItemServiceClient.common_project_path(**expected)
 
@@ -2514,8 +3194,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -2526,8 +3206,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = LineItemServiceClient.common_location_path(**expected)
 

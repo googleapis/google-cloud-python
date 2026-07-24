@@ -3184,6 +3184,371 @@ async def test_get_private_offer_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        commerce_transaction.ResolveAmendmentTargetRequest(),
+        {},
+    ],
+)
+def test_resolve_amendment_target(request_type, transport: str = "grpc"):
+    client = CommerceTransactionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resolve_amendment_target), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = commerce_transaction.ResolveAmendmentTargetResponse(
+            required_private_offer="required_private_offer_value",
+        )
+        response = client.resolve_amendment_target(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = commerce_transaction.ResolveAmendmentTargetRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, commerce_transaction.ResolveAmendmentTargetResponse)
+
+
+def test_resolve_amendment_target_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CommerceTransactionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = commerce_transaction.ResolveAmendmentTargetRequest(
+        parent="parent_value",
+        target_billing_account="target_billing_account_value",
+        base_standard_offer="base_standard_offer_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resolve_amendment_target), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.resolve_amendment_target(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = commerce_transaction.ResolveAmendmentTargetRequest(
+            parent="parent_value",
+            target_billing_account="target_billing_account_value",
+            base_standard_offer="base_standard_offer_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_resolve_amendment_target_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CommerceTransactionClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.resolve_amendment_target
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.resolve_amendment_target
+        ] = mock_rpc
+        request = {}
+        client.resolve_amendment_target(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.resolve_amendment_target(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_resolve_amendment_target_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CommerceTransactionAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.resolve_amendment_target
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.resolve_amendment_target
+        ] = mock_rpc
+
+        request = {}
+        await client.resolve_amendment_target(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.resolve_amendment_target(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        commerce_transaction.ResolveAmendmentTargetRequest(),
+        {},
+    ],
+)
+async def test_resolve_amendment_target_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = CommerceTransactionAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resolve_amendment_target), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            commerce_transaction.ResolveAmendmentTargetResponse()
+        )
+        response = await client.resolve_amendment_target(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = commerce_transaction.ResolveAmendmentTargetRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, commerce_transaction.ResolveAmendmentTargetResponse)
+
+
+def test_resolve_amendment_target_field_headers():
+    client = CommerceTransactionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = commerce_transaction.ResolveAmendmentTargetRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resolve_amendment_target), "__call__"
+    ) as call:
+        call.return_value = commerce_transaction.ResolveAmendmentTargetResponse()
+        client.resolve_amendment_target(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_resolve_amendment_target_field_headers_async():
+    client = CommerceTransactionAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = commerce_transaction.ResolveAmendmentTargetRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resolve_amendment_target), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            commerce_transaction.ResolveAmendmentTargetResponse()
+        )
+        await client.resolve_amendment_target(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_resolve_amendment_target_flattened():
+    client = CommerceTransactionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resolve_amendment_target), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = commerce_transaction.ResolveAmendmentTargetResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.resolve_amendment_target(
+            parent="parent_value",
+            target_billing_account="target_billing_account_value",
+            base_standard_offer="base_standard_offer_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].target_billing_account
+        mock_val = "target_billing_account_value"
+        assert arg == mock_val
+        arg = args[0].base_standard_offer
+        mock_val = "base_standard_offer_value"
+        assert arg == mock_val
+
+
+def test_resolve_amendment_target_flattened_error():
+    client = CommerceTransactionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.resolve_amendment_target(
+            commerce_transaction.ResolveAmendmentTargetRequest(),
+            parent="parent_value",
+            target_billing_account="target_billing_account_value",
+            base_standard_offer="base_standard_offer_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_resolve_amendment_target_flattened_async():
+    client = CommerceTransactionAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resolve_amendment_target), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = commerce_transaction.ResolveAmendmentTargetResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            commerce_transaction.ResolveAmendmentTargetResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.resolve_amendment_target(
+            parent="parent_value",
+            target_billing_account="target_billing_account_value",
+            base_standard_offer="base_standard_offer_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].target_billing_account
+        mock_val = "target_billing_account_value"
+        assert arg == mock_val
+        arg = args[0].base_standard_offer
+        mock_val = "base_standard_offer_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_resolve_amendment_target_flattened_error_async():
+    client = CommerceTransactionAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.resolve_amendment_target(
+            commerce_transaction.ResolveAmendmentTargetRequest(),
+            parent="parent_value",
+            target_billing_account="target_billing_account_value",
+            base_standard_offer="base_standard_offer_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         commerce_transaction.CreatePrivateOfferRequest(),
         {},
     ],
@@ -10341,6 +10706,245 @@ def test_get_private_offer_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_resolve_amendment_target_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CommerceTransactionClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.resolve_amendment_target
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.resolve_amendment_target
+        ] = mock_rpc
+
+        request = {}
+        client.resolve_amendment_target(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.resolve_amendment_target(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_resolve_amendment_target_rest_required_fields(
+    request_type=commerce_transaction.ResolveAmendmentTargetRequest,
+):
+    transport_class = transports.CommerceTransactionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["target_billing_account"] = ""
+    request_init["base_standard_offer"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "targetBillingAccount" not in jsonified_request
+    assert "baseStandardOffer" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).resolve_amendment_target._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "targetBillingAccount" in jsonified_request
+    assert (
+        jsonified_request["targetBillingAccount"]
+        == request_init["target_billing_account"]
+    )
+    assert "baseStandardOffer" in jsonified_request
+    assert jsonified_request["baseStandardOffer"] == request_init["base_standard_offer"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["targetBillingAccount"] = "target_billing_account_value"
+    jsonified_request["baseStandardOffer"] = "base_standard_offer_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).resolve_amendment_target._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "base_standard_offer",
+            "target_billing_account",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "targetBillingAccount" in jsonified_request
+    assert jsonified_request["targetBillingAccount"] == "target_billing_account_value"
+    assert "baseStandardOffer" in jsonified_request
+    assert jsonified_request["baseStandardOffer"] == "base_standard_offer_value"
+
+    client = CommerceTransactionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = commerce_transaction.ResolveAmendmentTargetResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = commerce_transaction.ResolveAmendmentTargetResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.resolve_amendment_target(request)
+
+            expected_params = [
+                (
+                    "targetBillingAccount",
+                    "",
+                ),
+                (
+                    "baseStandardOffer",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_resolve_amendment_target_rest_unset_required_fields():
+    transport = transports.CommerceTransactionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.resolve_amendment_target._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "baseStandardOffer",
+                "targetBillingAccount",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "targetBillingAccount",
+                "baseStandardOffer",
+            )
+        )
+    )
+
+
+def test_resolve_amendment_target_rest_flattened():
+    client = CommerceTransactionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = commerce_transaction.ResolveAmendmentTargetResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            target_billing_account="target_billing_account_value",
+            base_standard_offer="base_standard_offer_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = commerce_transaction.ResolveAmendmentTargetResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.resolve_amendment_target(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{parent=projects/*/locations/*}/privateOffers:resolveAmendmentTarget"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_resolve_amendment_target_rest_flattened_error(transport: str = "rest"):
+    client = CommerceTransactionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.resolve_amendment_target(
+            commerce_transaction.ResolveAmendmentTargetRequest(),
+            parent="parent_value",
+            target_billing_account="target_billing_account_value",
+            base_standard_offer="base_standard_offer_value",
+        )
+
+
 def test_create_private_offer_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -13720,6 +14324,28 @@ def test_get_private_offer_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_resolve_amendment_target_empty_call_grpc():
+    client = CommerceTransactionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resolve_amendment_target), "__call__"
+    ) as call:
+        call.return_value = commerce_transaction.ResolveAmendmentTargetResponse()
+        client.resolve_amendment_target(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = commerce_transaction.ResolveAmendmentTargetRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_create_private_offer_empty_call_grpc():
     client = CommerceTransactionClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14188,6 +14814,32 @@ async def test_get_private_offer_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = commerce_transaction.GetPrivateOfferRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_resolve_amendment_target_empty_call_grpc_asyncio():
+    client = CommerceTransactionAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resolve_amendment_target), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            commerce_transaction.ResolveAmendmentTargetResponse()
+        )
+        await client.resolve_amendment_target(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = commerce_transaction.ResolveAmendmentTargetRequest()
         assert args[0] == request_msg
 
 
@@ -15216,6 +15868,145 @@ def test_get_private_offer_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_resolve_amendment_target_rest_bad_request(
+    request_type=commerce_transaction.ResolveAmendmentTargetRequest,
+):
+    client = CommerceTransactionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.resolve_amendment_target(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        commerce_transaction.ResolveAmendmentTargetRequest,
+        dict,
+    ],
+)
+def test_resolve_amendment_target_rest_call_success(request_type):
+    client = CommerceTransactionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = commerce_transaction.ResolveAmendmentTargetResponse(
+            required_private_offer="required_private_offer_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = commerce_transaction.ResolveAmendmentTargetResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.resolve_amendment_target(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, commerce_transaction.ResolveAmendmentTargetResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_resolve_amendment_target_rest_interceptors(null_interceptor):
+    transport = transports.CommerceTransactionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CommerceTransactionRestInterceptor(),
+    )
+    client = CommerceTransactionClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CommerceTransactionRestInterceptor,
+            "post_resolve_amendment_target",
+        ) as post,
+        mock.patch.object(
+            transports.CommerceTransactionRestInterceptor,
+            "post_resolve_amendment_target_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CommerceTransactionRestInterceptor,
+            "pre_resolve_amendment_target",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = commerce_transaction.ResolveAmendmentTargetRequest.pb(
+            commerce_transaction.ResolveAmendmentTargetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = commerce_transaction.ResolveAmendmentTargetResponse.to_json(
+            commerce_transaction.ResolveAmendmentTargetResponse()
+        )
+        req.return_value.content = return_value
+
+        request = commerce_transaction.ResolveAmendmentTargetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = commerce_transaction.ResolveAmendmentTargetResponse()
+        post_with_metadata.return_value = (
+            commerce_transaction.ResolveAmendmentTargetResponse(),
+            metadata,
+        )
+
+        client.resolve_amendment_target(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_create_private_offer_rest_bad_request(
     request_type=commerce_transaction.CreatePrivateOfferRequest,
 ):
@@ -15353,6 +16144,7 @@ def test_create_private_offer_rest_call_success(request_type):
             "start_policy": 1,
             "scheduled_start_time": {},
             "end_policy": 1,
+            "effective_term_end_time": {},
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -15675,6 +16467,7 @@ def test_update_private_offer_rest_call_success(request_type):
             "start_policy": 1,
             "scheduled_start_time": {},
             "end_policy": 1,
+            "effective_term_end_time": {},
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -18398,6 +19191,27 @@ def test_get_private_offer_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_resolve_amendment_target_empty_call_rest():
+    client = CommerceTransactionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resolve_amendment_target), "__call__"
+    ) as call:
+        client.resolve_amendment_target(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = commerce_transaction.ResolveAmendmentTargetRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_create_private_offer_empty_call_rest():
     client = CommerceTransactionClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18761,6 +19575,7 @@ def test_commerce_transaction_base_transport():
         "get_service",
         "list_private_offers",
         "get_private_offer",
+        "resolve_amendment_target",
         "create_private_offer",
         "update_private_offer",
         "publish_private_offer",
@@ -19061,6 +19876,9 @@ def test_commerce_transaction_client_transport_session_collision(transport_name)
     assert session1 != session2
     session1 = client1.transport.get_private_offer._session
     session2 = client2.transport.get_private_offer._session
+    assert session1 != session2
+    session1 = client1.transport.resolve_amendment_target._session
+    session2 = client2.transport.resolve_amendment_target._session
     assert session1 != session2
     session1 = client1.transport.create_private_offer._session
     session2 = client2.transport.create_private_offer._session

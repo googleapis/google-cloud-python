@@ -2826,6 +2826,7 @@ def test_get_membership(request_type, transport: str = "grpc"):
             name="name_value",
             state=membership.Membership.MembershipState.JOINED,
             role=membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=membership.Membership.Affiliation.INTERNAL,
         )
         response = client.get_membership(request)
 
@@ -2840,6 +2841,7 @@ def test_get_membership(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == membership.Membership.MembershipState.JOINED
     assert response.role == membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == membership.Membership.Affiliation.INTERNAL
 
 
 def test_get_membership_non_empty_request_with_auto_populated_field():
@@ -2974,6 +2976,7 @@ async def test_get_membership_async(request_type, transport: str = "grpc_asyncio
                 name="name_value",
                 state=membership.Membership.MembershipState.JOINED,
                 role=membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=membership.Membership.Affiliation.INTERNAL,
             )
         )
         response = await client.get_membership(request)
@@ -2989,6 +2992,7 @@ async def test_get_membership_async(request_type, transport: str = "grpc_asyncio
     assert response.name == "name_value"
     assert response.state == membership.Membership.MembershipState.JOINED
     assert response.role == membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == membership.Membership.Affiliation.INTERNAL
 
 
 def test_get_membership_field_headers():
@@ -8016,6 +8020,7 @@ def test_create_membership(request_type, transport: str = "grpc"):
             name="name_value",
             state=gc_membership.Membership.MembershipState.JOINED,
             role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=gc_membership.Membership.Affiliation.INTERNAL,
         )
         response = client.create_membership(request)
 
@@ -8030,6 +8035,7 @@ def test_create_membership(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == gc_membership.Membership.MembershipState.JOINED
     assert response.role == gc_membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == gc_membership.Membership.Affiliation.INTERNAL
 
 
 def test_create_membership_non_empty_request_with_auto_populated_field():
@@ -8170,6 +8176,7 @@ async def test_create_membership_async(request_type, transport: str = "grpc_asyn
                 name="name_value",
                 state=gc_membership.Membership.MembershipState.JOINED,
                 role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=gc_membership.Membership.Affiliation.INTERNAL,
             )
         )
         response = await client.create_membership(request)
@@ -8185,6 +8192,7 @@ async def test_create_membership_async(request_type, transport: str = "grpc_asyn
     assert response.name == "name_value"
     assert response.state == gc_membership.Membership.MembershipState.JOINED
     assert response.role == gc_membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == gc_membership.Membership.Affiliation.INTERNAL
 
 
 def test_create_membership_field_headers():
@@ -8374,6 +8382,7 @@ def test_update_membership(request_type, transport: str = "grpc"):
             name="name_value",
             state=gc_membership.Membership.MembershipState.JOINED,
             role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=gc_membership.Membership.Affiliation.INTERNAL,
         )
         response = client.update_membership(request)
 
@@ -8388,6 +8397,7 @@ def test_update_membership(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == gc_membership.Membership.MembershipState.JOINED
     assert response.role == gc_membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == gc_membership.Membership.Affiliation.INTERNAL
 
 
 def test_update_membership_non_empty_request_with_auto_populated_field():
@@ -8524,6 +8534,7 @@ async def test_update_membership_async(request_type, transport: str = "grpc_asyn
                 name="name_value",
                 state=gc_membership.Membership.MembershipState.JOINED,
                 role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=gc_membership.Membership.Affiliation.INTERNAL,
             )
         )
         response = await client.update_membership(request)
@@ -8539,6 +8550,7 @@ async def test_update_membership_async(request_type, transport: str = "grpc_asyn
     assert response.name == "name_value"
     assert response.state == gc_membership.Membership.MembershipState.JOINED
     assert response.role == gc_membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == gc_membership.Membership.Affiliation.INTERNAL
 
 
 def test_update_membership_field_headers():
@@ -8728,6 +8740,7 @@ def test_delete_membership(request_type, transport: str = "grpc"):
             name="name_value",
             state=membership.Membership.MembershipState.JOINED,
             role=membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=membership.Membership.Affiliation.INTERNAL,
         )
         response = client.delete_membership(request)
 
@@ -8742,6 +8755,7 @@ def test_delete_membership(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == membership.Membership.MembershipState.JOINED
     assert response.role == membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == membership.Membership.Affiliation.INTERNAL
 
 
 def test_delete_membership_non_empty_request_with_auto_populated_field():
@@ -8882,6 +8896,7 @@ async def test_delete_membership_async(request_type, transport: str = "grpc_asyn
                 name="name_value",
                 state=membership.Membership.MembershipState.JOINED,
                 role=membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=membership.Membership.Affiliation.INTERNAL,
             )
         )
         response = await client.delete_membership(request)
@@ -8897,6 +8912,7 @@ async def test_delete_membership_async(request_type, transport: str = "grpc_asyn
     assert response.name == "name_value"
     assert response.state == membership.Membership.MembershipState.JOINED
     assert response.role == membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == membership.Membership.Affiliation.INTERNAL
 
 
 def test_delete_membership_field_headers():
@@ -28142,6 +28158,7 @@ async def test_get_membership_empty_call_grpc_asyncio():
                 name="name_value",
                 state=membership.Membership.MembershipState.JOINED,
                 role=membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=membership.Membership.Affiliation.INTERNAL,
             )
         )
         await client.get_membership(request=None)
@@ -28636,6 +28653,7 @@ async def test_create_membership_empty_call_grpc_asyncio():
                 name="name_value",
                 state=gc_membership.Membership.MembershipState.JOINED,
                 role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=gc_membership.Membership.Affiliation.INTERNAL,
             )
         )
         await client.create_membership(request=None)
@@ -28666,6 +28684,7 @@ async def test_update_membership_empty_call_grpc_asyncio():
                 name="name_value",
                 state=gc_membership.Membership.MembershipState.JOINED,
                 role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=gc_membership.Membership.Affiliation.INTERNAL,
             )
         )
         await client.update_membership(request=None)
@@ -28696,6 +28715,7 @@ async def test_delete_membership_empty_call_grpc_asyncio():
                 name="name_value",
                 state=membership.Membership.MembershipState.JOINED,
                 role=membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=membership.Membership.Affiliation.INTERNAL,
             )
         )
         await client.delete_membership(request=None)
@@ -30431,6 +30451,7 @@ def test_get_membership_rest_call_success(request_type):
             name="name_value",
             state=membership.Membership.MembershipState.JOINED,
             role=membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=membership.Membership.Affiliation.INTERNAL,
         )
 
         # Wrap the value into a proper Response obj
@@ -30450,6 +30471,7 @@ def test_get_membership_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.state == membership.Membership.MembershipState.JOINED
     assert response.role == membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == membership.Membership.Affiliation.INTERNAL
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -33414,6 +33436,7 @@ def test_create_membership_rest_call_success(request_type):
         "group_member": {"name": "name_value"},
         "create_time": {"seconds": 751, "nanos": 543},
         "delete_time": {},
+        "affiliation": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -33491,6 +33514,7 @@ def test_create_membership_rest_call_success(request_type):
             name="name_value",
             state=gc_membership.Membership.MembershipState.JOINED,
             role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=gc_membership.Membership.Affiliation.INTERNAL,
         )
 
         # Wrap the value into a proper Response obj
@@ -33510,6 +33534,7 @@ def test_create_membership_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.state == gc_membership.Membership.MembershipState.JOINED
     assert response.role == gc_membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == gc_membership.Membership.Affiliation.INTERNAL
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -33631,6 +33656,7 @@ def test_update_membership_rest_call_success(request_type):
         "group_member": {"name": "name_value"},
         "create_time": {"seconds": 751, "nanos": 543},
         "delete_time": {},
+        "affiliation": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -33708,6 +33734,7 @@ def test_update_membership_rest_call_success(request_type):
             name="name_value",
             state=gc_membership.Membership.MembershipState.JOINED,
             role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=gc_membership.Membership.Affiliation.INTERNAL,
         )
 
         # Wrap the value into a proper Response obj
@@ -33727,6 +33754,7 @@ def test_update_membership_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.state == gc_membership.Membership.MembershipState.JOINED
     assert response.role == gc_membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == gc_membership.Membership.Affiliation.INTERNAL
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -33843,6 +33871,7 @@ def test_delete_membership_rest_call_success(request_type):
             name="name_value",
             state=membership.Membership.MembershipState.JOINED,
             role=membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=membership.Membership.Affiliation.INTERNAL,
         )
 
         # Wrap the value into a proper Response obj
@@ -33862,6 +33891,7 @@ def test_delete_membership_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.state == membership.Membership.MembershipState.JOINED
     assert response.role == membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == membership.Membership.Affiliation.INTERNAL
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

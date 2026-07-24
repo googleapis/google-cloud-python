@@ -2,6 +2,9 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of agentidentitycredentials.googleapis.com.
+By default, you will get version ``agentidentitycredentials_v1``.
+
 
 API Reference
 -------------
@@ -10,6 +13,14 @@ API Reference
 
     agentidentitycredentials_v1/services_
     agentidentitycredentials_v1/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    agentidentitycredentials_v1beta/services_
+    agentidentitycredentials_v1beta/types_
 
 
 Changelog

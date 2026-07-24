@@ -69,6 +69,7 @@ from google.ads.admanager_v1.services.report_service import (
 )
 from google.ads.admanager_v1.types import (
     report_definition,
+    report_delivery,
     report_messages,
     report_service,
     report_value,

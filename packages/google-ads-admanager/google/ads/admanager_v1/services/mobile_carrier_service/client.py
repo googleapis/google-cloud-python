@@ -757,7 +757,7 @@ class MobileCarrierServiceClient(metaclass=MobileCarrierServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> mobile_carrier_messages.MobileCarrier:
-        r"""API to retrieve a ``MobileCarrier`` object.
+        r"""Retrieves a ``MobileCarrier`` object.
 
         .. code-block:: python
 
@@ -865,7 +865,7 @@ class MobileCarrierServiceClient(metaclass=MobileCarrierServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListMobileCarriersPager:
-        r"""API to retrieve a list of ``MobileCarrier`` objects.
+        r"""Lists ``MobileCarrier`` objects.
 
         .. code-block:: python
 

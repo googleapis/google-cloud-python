@@ -39,6 +39,8 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
 import google.auth
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -58,7 +60,11 @@ from google.ads.admanager_v1.services.content_service import (
     pagers,
     transports,
 )
-from google.ads.admanager_v1.types import content_messages, content_service
+from google.ads.admanager_v1.types import (
+    content_enums,
+    content_messages,
+    content_service,
+)
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -1740,6 +1746,12 @@ def test_get_content_rest_call_success(request_type):
         return_value = content_messages.Content(
             name="name_value",
             display_name="display_name_value",
+            status=content_enums.ContentStatusEnum.ContentStatus.ACTIVE,
+            content_status_source=content_enums.ContentStatusSourceEnum.ContentStatusSource.CMS,
+            hls_ingest_status=content_enums.DaiIngestStatusEnum.DaiIngestStatus.SUCCESS,
+            dash_ingest_status=content_enums.DaiIngestStatusEnum.DaiIngestStatus.SUCCESS,
+            content_bundles=["content_bundles_value"],
+            cms_metadata_values=["cms_metadata_values_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -1758,6 +1770,21 @@ def test_get_content_rest_call_success(request_type):
     assert isinstance(response, content_messages.Content)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.status == content_enums.ContentStatusEnum.ContentStatus.ACTIVE
+    assert (
+        response.content_status_source
+        == content_enums.ContentStatusSourceEnum.ContentStatusSource.CMS
+    )
+    assert (
+        response.hls_ingest_status
+        == content_enums.DaiIngestStatusEnum.DaiIngestStatus.SUCCESS
+    )
+    assert (
+        response.dash_ingest_status
+        == content_enums.DaiIngestStatusEnum.DaiIngestStatus.SUCCESS
+    )
+    assert response.content_bundles == ["content_bundles_value"]
+    assert response.cms_metadata_values == ["cms_metadata_values_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -2307,9 +2334,34 @@ def test_content_service_client_transport_session_collision(transport_name):
     assert session1 != session2
 
 
-def test_content_path():
+def test_cms_metadata_value_path():
     network_code = "squid"
-    content = "clam"
+    cms_metadata_value = "clam"
+    expected = "networks/{network_code}/cmsMetadataValues/{cms_metadata_value}".format(
+        network_code=network_code,
+        cms_metadata_value=cms_metadata_value,
+    )
+    actual = ContentServiceClient.cms_metadata_value_path(
+        network_code, cms_metadata_value
+    )
+    assert expected == actual
+
+
+def test_parse_cms_metadata_value_path():
+    expected = {
+        "network_code": "whelk",
+        "cms_metadata_value": "octopus",
+    }
+    path = ContentServiceClient.cms_metadata_value_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ContentServiceClient.parse_cms_metadata_value_path(path)
+    assert expected == actual
+
+
+def test_content_path():
+    network_code = "oyster"
+    content = "nudibranch"
     expected = "networks/{network_code}/content/{content}".format(
         network_code=network_code,
         content=content,
@@ -2320,13 +2372,59 @@ def test_content_path():
 
 def test_parse_content_path():
     expected = {
-        "network_code": "whelk",
-        "content": "octopus",
+        "network_code": "cuttlefish",
+        "content": "mussel",
     }
     path = ContentServiceClient.content_path(**expected)
 
     # Check that the path construction is reversible.
     actual = ContentServiceClient.parse_content_path(path)
+    assert expected == actual
+
+
+def test_content_bundle_path():
+    network_code = "winkle"
+    content_bundle = "nautilus"
+    expected = "networks/{network_code}/contentBundles/{content_bundle}".format(
+        network_code=network_code,
+        content_bundle=content_bundle,
+    )
+    actual = ContentServiceClient.content_bundle_path(network_code, content_bundle)
+    assert expected == actual
+
+
+def test_parse_content_bundle_path():
+    expected = {
+        "network_code": "scallop",
+        "content_bundle": "abalone",
+    }
+    path = ContentServiceClient.content_bundle_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ContentServiceClient.parse_content_bundle_path(path)
+    assert expected == actual
+
+
+def test_content_source_path():
+    network_code = "squid"
+    content_source = "clam"
+    expected = "networks/{network_code}/contentSources/{content_source}".format(
+        network_code=network_code,
+        content_source=content_source,
+    )
+    actual = ContentServiceClient.content_source_path(network_code, content_source)
+    assert expected == actual
+
+
+def test_parse_content_source_path():
+    expected = {
+        "network_code": "whelk",
+        "content_source": "octopus",
+    }
+    path = ContentServiceClient.content_source_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ContentServiceClient.parse_content_source_path(path)
     assert expected == actual
 
 

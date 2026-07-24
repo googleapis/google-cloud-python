@@ -39,6 +39,7 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
 import google.auth
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -1729,6 +1730,1278 @@ def test_list_custom_targeting_values_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
+def test_create_custom_targeting_value_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CustomTargetingValueServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_custom_targeting_value
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_custom_targeting_value
+        ] = mock_rpc
+
+        request = {}
+        client.create_custom_targeting_value(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_custom_targeting_value(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_custom_targeting_value_rest_required_fields(
+    request_type=custom_targeting_value_service.CreateCustomTargetingValueRequest,
+):
+    transport_class = transports.CustomTargetingValueServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_custom_targeting_value._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_custom_targeting_value._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = custom_targeting_value_messages.CustomTargetingValue()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = custom_targeting_value_messages.CustomTargetingValue.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.create_custom_targeting_value(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_create_custom_targeting_value_rest_unset_required_fields():
+    transport = transports.CustomTargetingValueServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_custom_targeting_value._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "customTargetingValue",
+            )
+        )
+    )
+
+
+def test_create_custom_targeting_value_rest_flattened():
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = custom_targeting_value_messages.CustomTargetingValue()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "networks/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            custom_targeting_value=custom_targeting_value_messages.CustomTargetingValue(
+                name="name_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = custom_targeting_value_messages.CustomTargetingValue.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.create_custom_targeting_value(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=networks/*}/customTargetingValues" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_custom_targeting_value_rest_flattened_error(transport: str = "rest"):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_custom_targeting_value(
+            custom_targeting_value_service.CreateCustomTargetingValueRequest(),
+            parent="parent_value",
+            custom_targeting_value=custom_targeting_value_messages.CustomTargetingValue(
+                name="name_value"
+            ),
+        )
+
+
+def test_batch_create_custom_targeting_values_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CustomTargetingValueServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.batch_create_custom_targeting_values
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.batch_create_custom_targeting_values
+        ] = mock_rpc
+
+        request = {}
+        client.batch_create_custom_targeting_values(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.batch_create_custom_targeting_values(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_batch_create_custom_targeting_values_rest_required_fields(
+    request_type=custom_targeting_value_service.BatchCreateCustomTargetingValuesRequest,
+):
+    transport_class = transports.CustomTargetingValueServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_create_custom_targeting_values._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_create_custom_targeting_values._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.batch_create_custom_targeting_values(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_batch_create_custom_targeting_values_rest_unset_required_fields():
+    transport = transports.CustomTargetingValueServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.batch_create_custom_targeting_values._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "requests",
+            )
+        )
+    )
+
+
+def test_batch_create_custom_targeting_values_rest_flattened():
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "networks/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            requests=[
+                custom_targeting_value_service.CreateCustomTargetingValueRequest(
+                    parent="parent_value"
+                )
+            ],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.batch_create_custom_targeting_values(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=networks/*}/customTargetingValues:batchCreate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_batch_create_custom_targeting_values_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_create_custom_targeting_values(
+            custom_targeting_value_service.BatchCreateCustomTargetingValuesRequest(),
+            parent="parent_value",
+            requests=[
+                custom_targeting_value_service.CreateCustomTargetingValueRequest(
+                    parent="parent_value"
+                )
+            ],
+        )
+
+
+def test_update_custom_targeting_value_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CustomTargetingValueServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_custom_targeting_value
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_custom_targeting_value
+        ] = mock_rpc
+
+        request = {}
+        client.update_custom_targeting_value(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_custom_targeting_value(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_custom_targeting_value_rest_required_fields(
+    request_type=custom_targeting_value_service.UpdateCustomTargetingValueRequest,
+):
+    transport_class = transports.CustomTargetingValueServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_custom_targeting_value._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_custom_targeting_value._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = custom_targeting_value_messages.CustomTargetingValue()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = custom_targeting_value_messages.CustomTargetingValue.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_custom_targeting_value(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_update_custom_targeting_value_rest_unset_required_fields():
+    transport = transports.CustomTargetingValueServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_custom_targeting_value._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(("updateMask",)) & set(("customTargetingValue",)))
+
+
+def test_update_custom_targeting_value_rest_flattened():
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = custom_targeting_value_messages.CustomTargetingValue()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "custom_targeting_value": {
+                "name": "networks/sample1/customTargetingValues/sample2"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            custom_targeting_value=custom_targeting_value_messages.CustomTargetingValue(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = custom_targeting_value_messages.CustomTargetingValue.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_custom_targeting_value(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{custom_targeting_value.name=networks/*/customTargetingValues/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_custom_targeting_value_rest_flattened_error(transport: str = "rest"):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_custom_targeting_value(
+            custom_targeting_value_service.UpdateCustomTargetingValueRequest(),
+            custom_targeting_value=custom_targeting_value_messages.CustomTargetingValue(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_batch_update_custom_targeting_values_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CustomTargetingValueServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.batch_update_custom_targeting_values
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.batch_update_custom_targeting_values
+        ] = mock_rpc
+
+        request = {}
+        client.batch_update_custom_targeting_values(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.batch_update_custom_targeting_values(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_batch_update_custom_targeting_values_rest_required_fields(
+    request_type=custom_targeting_value_service.BatchUpdateCustomTargetingValuesRequest,
+):
+    transport_class = transports.CustomTargetingValueServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_update_custom_targeting_values._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_update_custom_targeting_values._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.batch_update_custom_targeting_values(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_batch_update_custom_targeting_values_rest_unset_required_fields():
+    transport = transports.CustomTargetingValueServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.batch_update_custom_targeting_values._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "requests",
+            )
+        )
+    )
+
+
+def test_batch_update_custom_targeting_values_rest_flattened():
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "networks/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            requests=[
+                custom_targeting_value_service.UpdateCustomTargetingValueRequest(
+                    custom_targeting_value=custom_targeting_value_messages.CustomTargetingValue(
+                        name="name_value"
+                    )
+                )
+            ],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.batch_update_custom_targeting_values(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=networks/*}/customTargetingValues:batchUpdate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_batch_update_custom_targeting_values_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_update_custom_targeting_values(
+            custom_targeting_value_service.BatchUpdateCustomTargetingValuesRequest(),
+            parent="parent_value",
+            requests=[
+                custom_targeting_value_service.UpdateCustomTargetingValueRequest(
+                    custom_targeting_value=custom_targeting_value_messages.CustomTargetingValue(
+                        name="name_value"
+                    )
+                )
+            ],
+        )
+
+
+def test_batch_activate_custom_targeting_values_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CustomTargetingValueServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.batch_activate_custom_targeting_values
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.batch_activate_custom_targeting_values
+        ] = mock_rpc
+
+        request = {}
+        client.batch_activate_custom_targeting_values(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.batch_activate_custom_targeting_values(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_batch_activate_custom_targeting_values_rest_required_fields(
+    request_type=custom_targeting_value_service.BatchActivateCustomTargetingValuesRequest,
+):
+    transport_class = transports.CustomTargetingValueServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_activate_custom_targeting_values._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_activate_custom_targeting_values._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.batch_activate_custom_targeting_values(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_batch_activate_custom_targeting_values_rest_unset_required_fields():
+    transport = transports.CustomTargetingValueServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.batch_activate_custom_targeting_values._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "requests",
+            )
+        )
+    )
+
+
+def test_batch_activate_custom_targeting_values_rest_flattened():
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "networks/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            requests=[
+                custom_targeting_value_service.ActivateCustomTargetingValueRequest(
+                    name="name_value"
+                )
+            ],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.batch_activate_custom_targeting_values(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=networks/*}/customTargetingValues:batchActivate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_batch_activate_custom_targeting_values_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_activate_custom_targeting_values(
+            custom_targeting_value_service.BatchActivateCustomTargetingValuesRequest(),
+            parent="parent_value",
+            requests=[
+                custom_targeting_value_service.ActivateCustomTargetingValueRequest(
+                    name="name_value"
+                )
+            ],
+        )
+
+
+def test_batch_deactivate_custom_targeting_values_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CustomTargetingValueServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.batch_deactivate_custom_targeting_values
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.batch_deactivate_custom_targeting_values
+        ] = mock_rpc
+
+        request = {}
+        client.batch_deactivate_custom_targeting_values(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.batch_deactivate_custom_targeting_values(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_batch_deactivate_custom_targeting_values_rest_required_fields(
+    request_type=custom_targeting_value_service.BatchDeactivateCustomTargetingValuesRequest,
+):
+    transport_class = transports.CustomTargetingValueServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_deactivate_custom_targeting_values._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_deactivate_custom_targeting_values._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.batch_deactivate_custom_targeting_values(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_batch_deactivate_custom_targeting_values_rest_unset_required_fields():
+    transport = transports.CustomTargetingValueServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.batch_deactivate_custom_targeting_values._get_unset_required_fields(
+            {}
+        )
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "requests",
+            )
+        )
+    )
+
+
+def test_batch_deactivate_custom_targeting_values_rest_flattened():
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "networks/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            requests=[
+                custom_targeting_value_service.DeactivateCustomTargetingValueRequest(
+                    name="name_value"
+                )
+            ],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.batch_deactivate_custom_targeting_values(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=networks/*}/customTargetingValues:batchDeactivate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_batch_deactivate_custom_targeting_values_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_deactivate_custom_targeting_values(
+            custom_targeting_value_service.BatchDeactivateCustomTargetingValuesRequest(),
+            parent="parent_value",
+            requests=[
+                custom_targeting_value_service.DeactivateCustomTargetingValueRequest(
+                    name="name_value"
+                )
+            ],
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CustomTargetingValueServiceRestTransport(
@@ -2115,6 +3388,1080 @@ def test_list_custom_targeting_values_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_create_custom_targeting_value_rest_bad_request(
+    request_type=custom_targeting_value_service.CreateCustomTargetingValueRequest,
+):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.create_custom_targeting_value(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        custom_targeting_value_service.CreateCustomTargetingValueRequest,
+        dict,
+    ],
+)
+def test_create_custom_targeting_value_rest_call_success(request_type):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request_init["custom_targeting_value"] = {
+        "name": "name_value",
+        "custom_targeting_key": "custom_targeting_key_value",
+        "ad_tag_name": "ad_tag_name_value",
+        "display_name": "display_name_value",
+        "match_type": 1,
+        "status": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = (
+        custom_targeting_value_service.CreateCustomTargetingValueRequest.meta.fields[
+            "custom_targeting_value"
+        ]
+    )
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "custom_targeting_value"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["custom_targeting_value"][field])):
+                    del request_init["custom_targeting_value"][field][i][subfield]
+            else:
+                del request_init["custom_targeting_value"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = custom_targeting_value_messages.CustomTargetingValue(
+            name="name_value",
+            custom_targeting_key="custom_targeting_key_value",
+            ad_tag_name="ad_tag_name_value",
+            display_name="display_name_value",
+            match_type=custom_targeting_value_enums.CustomTargetingValueMatchTypeEnum.CustomTargetingValueMatchType.EXACT,
+            status=custom_targeting_value_enums.CustomTargetingValueStatusEnum.CustomTargetingValueStatus.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = custom_targeting_value_messages.CustomTargetingValue.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.create_custom_targeting_value(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, custom_targeting_value_messages.CustomTargetingValue)
+    assert response.name == "name_value"
+    assert response.custom_targeting_key == "custom_targeting_key_value"
+    assert response.ad_tag_name == "ad_tag_name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.match_type
+        == custom_targeting_value_enums.CustomTargetingValueMatchTypeEnum.CustomTargetingValueMatchType.EXACT
+    )
+    assert (
+        response.status
+        == custom_targeting_value_enums.CustomTargetingValueStatusEnum.CustomTargetingValueStatus.ACTIVE
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_custom_targeting_value_rest_interceptors(null_interceptor):
+    transport = transports.CustomTargetingValueServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CustomTargetingValueServiceRestInterceptor(),
+    )
+    client = CustomTargetingValueServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "post_create_custom_targeting_value",
+        ) as post,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "post_create_custom_targeting_value_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "pre_create_custom_targeting_value",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = (
+            custom_targeting_value_service.CreateCustomTargetingValueRequest.pb(
+                custom_targeting_value_service.CreateCustomTargetingValueRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = custom_targeting_value_messages.CustomTargetingValue.to_json(
+            custom_targeting_value_messages.CustomTargetingValue()
+        )
+        req.return_value.content = return_value
+
+        request = custom_targeting_value_service.CreateCustomTargetingValueRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = custom_targeting_value_messages.CustomTargetingValue()
+        post_with_metadata.return_value = (
+            custom_targeting_value_messages.CustomTargetingValue(),
+            metadata,
+        )
+
+        client.create_custom_targeting_value(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_batch_create_custom_targeting_values_rest_bad_request(
+    request_type=custom_targeting_value_service.BatchCreateCustomTargetingValuesRequest,
+):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.batch_create_custom_targeting_values(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        custom_targeting_value_service.BatchCreateCustomTargetingValuesRequest,
+        dict,
+    ],
+)
+def test_batch_create_custom_targeting_values_rest_call_success(request_type):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse()
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = (
+            custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.batch_create_custom_targeting_values(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse,
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_create_custom_targeting_values_rest_interceptors(null_interceptor):
+    transport = transports.CustomTargetingValueServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CustomTargetingValueServiceRestInterceptor(),
+    )
+    client = CustomTargetingValueServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "post_batch_create_custom_targeting_values",
+        ) as post,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "post_batch_create_custom_targeting_values_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "pre_batch_create_custom_targeting_values",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = (
+            custom_targeting_value_service.BatchCreateCustomTargetingValuesRequest.pb(
+                custom_targeting_value_service.BatchCreateCustomTargetingValuesRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse.to_json(
+            custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = (
+            custom_targeting_value_service.BatchCreateCustomTargetingValuesRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse()
+        )
+        post_with_metadata.return_value = (
+            custom_targeting_value_service.BatchCreateCustomTargetingValuesResponse(),
+            metadata,
+        )
+
+        client.batch_create_custom_targeting_values(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_update_custom_targeting_value_rest_bad_request(
+    request_type=custom_targeting_value_service.UpdateCustomTargetingValueRequest,
+):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "custom_targeting_value": {
+            "name": "networks/sample1/customTargetingValues/sample2"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.update_custom_targeting_value(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        custom_targeting_value_service.UpdateCustomTargetingValueRequest,
+        dict,
+    ],
+)
+def test_update_custom_targeting_value_rest_call_success(request_type):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "custom_targeting_value": {
+            "name": "networks/sample1/customTargetingValues/sample2"
+        }
+    }
+    request_init["custom_targeting_value"] = {
+        "name": "networks/sample1/customTargetingValues/sample2",
+        "custom_targeting_key": "custom_targeting_key_value",
+        "ad_tag_name": "ad_tag_name_value",
+        "display_name": "display_name_value",
+        "match_type": 1,
+        "status": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = (
+        custom_targeting_value_service.UpdateCustomTargetingValueRequest.meta.fields[
+            "custom_targeting_value"
+        ]
+    )
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "custom_targeting_value"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["custom_targeting_value"][field])):
+                    del request_init["custom_targeting_value"][field][i][subfield]
+            else:
+                del request_init["custom_targeting_value"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = custom_targeting_value_messages.CustomTargetingValue(
+            name="name_value",
+            custom_targeting_key="custom_targeting_key_value",
+            ad_tag_name="ad_tag_name_value",
+            display_name="display_name_value",
+            match_type=custom_targeting_value_enums.CustomTargetingValueMatchTypeEnum.CustomTargetingValueMatchType.EXACT,
+            status=custom_targeting_value_enums.CustomTargetingValueStatusEnum.CustomTargetingValueStatus.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = custom_targeting_value_messages.CustomTargetingValue.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.update_custom_targeting_value(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, custom_targeting_value_messages.CustomTargetingValue)
+    assert response.name == "name_value"
+    assert response.custom_targeting_key == "custom_targeting_key_value"
+    assert response.ad_tag_name == "ad_tag_name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.match_type
+        == custom_targeting_value_enums.CustomTargetingValueMatchTypeEnum.CustomTargetingValueMatchType.EXACT
+    )
+    assert (
+        response.status
+        == custom_targeting_value_enums.CustomTargetingValueStatusEnum.CustomTargetingValueStatus.ACTIVE
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_custom_targeting_value_rest_interceptors(null_interceptor):
+    transport = transports.CustomTargetingValueServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CustomTargetingValueServiceRestInterceptor(),
+    )
+    client = CustomTargetingValueServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "post_update_custom_targeting_value",
+        ) as post,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "post_update_custom_targeting_value_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "pre_update_custom_targeting_value",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = (
+            custom_targeting_value_service.UpdateCustomTargetingValueRequest.pb(
+                custom_targeting_value_service.UpdateCustomTargetingValueRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = custom_targeting_value_messages.CustomTargetingValue.to_json(
+            custom_targeting_value_messages.CustomTargetingValue()
+        )
+        req.return_value.content = return_value
+
+        request = custom_targeting_value_service.UpdateCustomTargetingValueRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = custom_targeting_value_messages.CustomTargetingValue()
+        post_with_metadata.return_value = (
+            custom_targeting_value_messages.CustomTargetingValue(),
+            metadata,
+        )
+
+        client.update_custom_targeting_value(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_batch_update_custom_targeting_values_rest_bad_request(
+    request_type=custom_targeting_value_service.BatchUpdateCustomTargetingValuesRequest,
+):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.batch_update_custom_targeting_values(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        custom_targeting_value_service.BatchUpdateCustomTargetingValuesRequest,
+        dict,
+    ],
+)
+def test_batch_update_custom_targeting_values_rest_call_success(request_type):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse()
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = (
+            custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.batch_update_custom_targeting_values(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse,
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_update_custom_targeting_values_rest_interceptors(null_interceptor):
+    transport = transports.CustomTargetingValueServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CustomTargetingValueServiceRestInterceptor(),
+    )
+    client = CustomTargetingValueServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "post_batch_update_custom_targeting_values",
+        ) as post,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "post_batch_update_custom_targeting_values_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "pre_batch_update_custom_targeting_values",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = (
+            custom_targeting_value_service.BatchUpdateCustomTargetingValuesRequest.pb(
+                custom_targeting_value_service.BatchUpdateCustomTargetingValuesRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse.to_json(
+            custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = (
+            custom_targeting_value_service.BatchUpdateCustomTargetingValuesRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse()
+        )
+        post_with_metadata.return_value = (
+            custom_targeting_value_service.BatchUpdateCustomTargetingValuesResponse(),
+            metadata,
+        )
+
+        client.batch_update_custom_targeting_values(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_batch_activate_custom_targeting_values_rest_bad_request(
+    request_type=custom_targeting_value_service.BatchActivateCustomTargetingValuesRequest,
+):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.batch_activate_custom_targeting_values(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        custom_targeting_value_service.BatchActivateCustomTargetingValuesRequest,
+        dict,
+    ],
+)
+def test_batch_activate_custom_targeting_values_rest_call_success(request_type):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse()
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.batch_activate_custom_targeting_values(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse,
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_activate_custom_targeting_values_rest_interceptors(null_interceptor):
+    transport = transports.CustomTargetingValueServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CustomTargetingValueServiceRestInterceptor(),
+    )
+    client = CustomTargetingValueServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "post_batch_activate_custom_targeting_values",
+        ) as post,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "post_batch_activate_custom_targeting_values_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "pre_batch_activate_custom_targeting_values",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = custom_targeting_value_service.BatchActivateCustomTargetingValuesRequest.pb(
+            custom_targeting_value_service.BatchActivateCustomTargetingValuesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse.to_json(
+            custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = (
+            custom_targeting_value_service.BatchActivateCustomTargetingValuesRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse()
+        )
+        post_with_metadata.return_value = (
+            custom_targeting_value_service.BatchActivateCustomTargetingValuesResponse(),
+            metadata,
+        )
+
+        client.batch_activate_custom_targeting_values(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_batch_deactivate_custom_targeting_values_rest_bad_request(
+    request_type=custom_targeting_value_service.BatchDeactivateCustomTargetingValuesRequest,
+):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.batch_deactivate_custom_targeting_values(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        custom_targeting_value_service.BatchDeactivateCustomTargetingValuesRequest,
+        dict,
+    ],
+)
+def test_batch_deactivate_custom_targeting_values_rest_call_success(request_type):
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.batch_deactivate_custom_targeting_values(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse,
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_deactivate_custom_targeting_values_rest_interceptors(null_interceptor):
+    transport = transports.CustomTargetingValueServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CustomTargetingValueServiceRestInterceptor(),
+    )
+    client = CustomTargetingValueServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "post_batch_deactivate_custom_targeting_values",
+        ) as post,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "post_batch_deactivate_custom_targeting_values_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CustomTargetingValueServiceRestInterceptor,
+            "pre_batch_deactivate_custom_targeting_values",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = custom_targeting_value_service.BatchDeactivateCustomTargetingValuesRequest.pb(
+            custom_targeting_value_service.BatchDeactivateCustomTargetingValuesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse.to_json(
+            custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = (
+            custom_targeting_value_service.BatchDeactivateCustomTargetingValuesRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse()
+        post_with_metadata.return_value = (
+            custom_targeting_value_service.BatchDeactivateCustomTargetingValuesResponse(),
+            metadata,
+        )
+
+        client.batch_deactivate_custom_targeting_values(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_cancel_operation_rest_bad_request(
     request_type=operations_pb2.CancelOperationRequest,
 ):
@@ -2290,6 +4637,140 @@ def test_list_custom_targeting_values_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_custom_targeting_value_empty_call_rest():
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_targeting_value), "__call__"
+    ) as call:
+        client.create_custom_targeting_value(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = custom_targeting_value_service.CreateCustomTargetingValueRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_create_custom_targeting_values_empty_call_rest():
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_custom_targeting_values), "__call__"
+    ) as call:
+        client.batch_create_custom_targeting_values(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            custom_targeting_value_service.BatchCreateCustomTargetingValuesRequest()
+        )
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_custom_targeting_value_empty_call_rest():
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_targeting_value), "__call__"
+    ) as call:
+        client.update_custom_targeting_value(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = custom_targeting_value_service.UpdateCustomTargetingValueRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_update_custom_targeting_values_empty_call_rest():
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_custom_targeting_values), "__call__"
+    ) as call:
+        client.batch_update_custom_targeting_values(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            custom_targeting_value_service.BatchUpdateCustomTargetingValuesRequest()
+        )
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_activate_custom_targeting_values_empty_call_rest():
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_activate_custom_targeting_values), "__call__"
+    ) as call:
+        client.batch_activate_custom_targeting_values(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            custom_targeting_value_service.BatchActivateCustomTargetingValuesRequest()
+        )
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_deactivate_custom_targeting_values_empty_call_rest():
+    client = CustomTargetingValueServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_deactivate_custom_targeting_values), "__call__"
+    ) as call:
+        client.batch_deactivate_custom_targeting_values(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            custom_targeting_value_service.BatchDeactivateCustomTargetingValuesRequest()
+        )
+        assert args[0] == request_msg
+
+
 def test_custom_targeting_value_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
@@ -2314,6 +4795,12 @@ def test_custom_targeting_value_service_base_transport():
     methods = (
         "get_custom_targeting_value",
         "list_custom_targeting_values",
+        "create_custom_targeting_value",
+        "batch_create_custom_targeting_values",
+        "update_custom_targeting_value",
+        "batch_update_custom_targeting_values",
+        "batch_activate_custom_targeting_values",
+        "batch_deactivate_custom_targeting_values",
         "get_operation",
         "cancel_operation",
     )
@@ -2466,6 +4953,24 @@ def test_custom_targeting_value_service_client_transport_session_collision(
     assert session1 != session2
     session1 = client1.transport.list_custom_targeting_values._session
     session2 = client2.transport.list_custom_targeting_values._session
+    assert session1 != session2
+    session1 = client1.transport.create_custom_targeting_value._session
+    session2 = client2.transport.create_custom_targeting_value._session
+    assert session1 != session2
+    session1 = client1.transport.batch_create_custom_targeting_values._session
+    session2 = client2.transport.batch_create_custom_targeting_values._session
+    assert session1 != session2
+    session1 = client1.transport.update_custom_targeting_value._session
+    session2 = client2.transport.update_custom_targeting_value._session
+    assert session1 != session2
+    session1 = client1.transport.batch_update_custom_targeting_values._session
+    session2 = client2.transport.batch_update_custom_targeting_values._session
+    assert session1 != session2
+    session1 = client1.transport.batch_activate_custom_targeting_values._session
+    session2 = client2.transport.batch_activate_custom_targeting_values._session
+    assert session1 != session2
+    session1 = client1.transport.batch_deactivate_custom_targeting_values._session
+    session2 = client2.transport.batch_deactivate_custom_targeting_values._session
     assert session1 != session2
 
 

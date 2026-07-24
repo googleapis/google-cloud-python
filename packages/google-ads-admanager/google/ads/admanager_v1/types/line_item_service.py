@@ -73,13 +73,40 @@ class ListLineItemsRequest(proto.Message):
 
             <b>Filterable fields:</b>
             <ul style="list-style-type:none">
+              <li><code>archived</code></li>
+              <li><code>contractedUnitsBought</code></li>
+            <li><code>costType</code></li>
+              <li><code>createTime</code></li>
+            <li><code>creativePlaceholders.size.canonicalName</code></li>
+            <li><code>dealInfo.externalDealId</code></li>
+            <li><code>deliveryRateType</code></li>
               <li><code>displayName</code></li>
               <li><code>endTime</code></li>
+              <li><code>environmentType</code></li>
+              <li><code>externalLineItemId</code></li>
               <li><code>goal.units</code></li>
-              <li><code>lineItemType</code></li>
+            <li><code>grpSettings.growbirdNielsenEnabled</code></li>
+            <li><code>grpSettings.inTargetRatioEstimateMilliPercent</code></li>
+            <li><code>lineItemType</code></li>
+              <li><code>missingCreatives</code></li>
               <li><code>name</code></li>
+              <li><code>notes</code></li>
               <li><code>order</code></li>
+              <li><code>orderDisplayName</code></li>
+              <li><code>priority</code></li>
+              <li><code>roadblockingType</code></li>
               <li><code>startTime</code></li>
+              <li><code>stats.clickThroughRate</code></li>
+            <li><code>stats.clicksDelivered</code></li>
+            <li><code>stats.impressionsDelivered</code></li>
+            <li><code>stats.viewableImpressionsDelivered</code></li>
+            <li><code>status</code></li>
+            <li><code>targeting.inventoryTargeting.targetedAdUnits.adUnit</code></li>
+            <li><code>targeting.inventoryTargeting.targetedPlacements</code></li>
+            <li><code>targeting.mobileApplicationTargeting.firstPartyTargeting.targetedApplications</code></li>
+            <li><code>updateSource</code></li>
+              <li><code>updateTime</code></li>
+              <li><code>webPropertyCode</code></li>
             </ul>
         order_by (str):
             Optional. Expression to specify sorting

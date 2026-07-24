@@ -99,6 +99,14 @@ class StorageControlRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_rapid_cache(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_rapid_cache(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_folder(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -195,6 +203,14 @@ class StorageControlRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_rapid_cache(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_rapid_cache(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_storage_layout(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -240,6 +256,14 @@ class StorageControlRestInterceptor:
                 return request, metadata
 
             def post_list_managed_folders(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_rapid_caches(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_rapid_caches(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -307,6 +331,14 @@ class StorageControlRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_managed_folder(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_managed_folder(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_organization_intelligence_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -323,11 +355,178 @@ class StorageControlRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_rapid_cache(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_rapid_cache(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = StorageControlRestTransport(interceptor=MyCustomStorageControlInterceptor())
         client = StorageControlClient(transport=transport)
 
 
     """
+
+    def pre_create_folder(
+        self,
+        request: storage_control.CreateFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_control.CreateFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_folder
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageControl server.
+        """
+        return request, metadata
+
+    def post_create_folder(
+        self, response: storage_control.Folder
+    ) -> storage_control.Folder:
+        """Post-rpc interceptor for create_folder
+
+        DEPRECATED. Please use the `post_create_folder_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageControl server but before
+        it is returned to user code. This `post_create_folder` interceptor runs
+        before the `post_create_folder_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_folder_with_metadata(
+        self,
+        response: storage_control.Folder,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[storage_control.Folder, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_folder
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageControl server but before it is returned to user code.
+
+        We recommend only using this `post_create_folder_with_metadata`
+        interceptor in new development instead of the `post_create_folder` interceptor.
+        When both interceptors are used, this `post_create_folder_with_metadata` interceptor runs after the
+        `post_create_folder` interceptor. The (possibly modified) response returned by
+        `post_create_folder` will be passed to
+        `post_create_folder_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_folder(
+        self,
+        request: storage_control.DeleteFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_control.DeleteFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_folder
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageControl server.
+        """
+        return request, metadata
+
+    def pre_delete_folder_recursive(
+        self,
+        request: storage_control.DeleteFolderRecursiveRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_control.DeleteFolderRecursiveRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_folder_recursive
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageControl server.
+        """
+        return request, metadata
+
+    def post_delete_folder_recursive(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_folder_recursive
+
+        DEPRECATED. Please use the `post_delete_folder_recursive_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageControl server but before
+        it is returned to user code. This `post_delete_folder_recursive` interceptor runs
+        before the `post_delete_folder_recursive_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_folder_recursive_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_folder_recursive
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageControl server but before it is returned to user code.
+
+        We recommend only using this `post_delete_folder_recursive_with_metadata`
+        interceptor in new development instead of the `post_delete_folder_recursive` interceptor.
+        When both interceptors are used, this `post_delete_folder_recursive_with_metadata` interceptor runs after the
+        `post_delete_folder_recursive` interceptor. The (possibly modified) response returned by
+        `post_delete_folder_recursive` will be passed to
+        `post_delete_folder_recursive_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_folder(
+        self,
+        request: storage_control.GetFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_control.GetFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_folder
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageControl server.
+        """
+        return request, metadata
+
+    def post_get_folder(
+        self, response: storage_control.Folder
+    ) -> storage_control.Folder:
+        """Post-rpc interceptor for get_folder
+
+        DEPRECATED. Please use the `post_get_folder_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageControl server but before
+        it is returned to user code. This `post_get_folder` interceptor runs
+        before the `post_get_folder_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_folder_with_metadata(
+        self,
+        response: storage_control.Folder,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[storage_control.Folder, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_folder
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageControl server but before it is returned to user code.
+
+        We recommend only using this `post_get_folder_with_metadata`
+        interceptor in new development instead of the `post_get_folder` interceptor.
+        When both interceptors are used, this `post_get_folder_with_metadata` interceptor runs after the
+        `post_get_folder` interceptor. The (possibly modified) response returned by
+        `post_get_folder` will be passed to
+        `post_get_folder_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_folder_intelligence_config(
         self,
@@ -585,6 +784,104 @@ class StorageControlRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_storage_layout(
+        self,
+        request: storage_control.GetStorageLayoutRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_control.GetStorageLayoutRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_storage_layout
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageControl server.
+        """
+        return request, metadata
+
+    def post_get_storage_layout(
+        self, response: storage_control.StorageLayout
+    ) -> storage_control.StorageLayout:
+        """Post-rpc interceptor for get_storage_layout
+
+        DEPRECATED. Please use the `post_get_storage_layout_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageControl server but before
+        it is returned to user code. This `post_get_storage_layout` interceptor runs
+        before the `post_get_storage_layout_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_storage_layout_with_metadata(
+        self,
+        response: storage_control.StorageLayout,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[storage_control.StorageLayout, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_storage_layout
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageControl server but before it is returned to user code.
+
+        We recommend only using this `post_get_storage_layout_with_metadata`
+        interceptor in new development instead of the `post_get_storage_layout` interceptor.
+        When both interceptors are used, this `post_get_storage_layout_with_metadata` interceptor runs after the
+        `post_get_storage_layout` interceptor. The (possibly modified) response returned by
+        `post_get_storage_layout` will be passed to
+        `post_get_storage_layout_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_folders(
+        self,
+        request: storage_control.ListFoldersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_control.ListFoldersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_folders
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageControl server.
+        """
+        return request, metadata
+
+    def post_list_folders(
+        self, response: storage_control.ListFoldersResponse
+    ) -> storage_control.ListFoldersResponse:
+        """Post-rpc interceptor for list_folders
+
+        DEPRECATED. Please use the `post_list_folders_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageControl server but before
+        it is returned to user code. This `post_list_folders` interceptor runs
+        before the `post_list_folders_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_folders_with_metadata(
+        self,
+        response: storage_control.ListFoldersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_control.ListFoldersResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_folders
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageControl server but before it is returned to user code.
+
+        We recommend only using this `post_list_folders_with_metadata`
+        interceptor in new development instead of the `post_list_folders` interceptor.
+        When both interceptors are used, this `post_list_folders_with_metadata` interceptor runs after the
+        `post_list_folders` interceptor. The (possibly modified) response returned by
+        `post_list_folders` will be passed to
+        `post_list_folders_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_intelligence_finding_revisions(
         self,
         request: storage_control.ListIntelligenceFindingRevisionsRequest,
@@ -686,6 +983,54 @@ class StorageControlRestInterceptor:
         `post_list_intelligence_findings` interceptor. The (possibly modified) response returned by
         `post_list_intelligence_findings` will be passed to
         `post_list_intelligence_findings_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_rename_folder(
+        self,
+        request: storage_control.RenameFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_control.RenameFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for rename_folder
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageControl server.
+        """
+        return request, metadata
+
+    def post_rename_folder(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for rename_folder
+
+        DEPRECATED. Please use the `post_rename_folder_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageControl server but before
+        it is returned to user code. This `post_rename_folder` interceptor runs
+        before the `post_rename_folder_with_metadata` interceptor.
+        """
+        return response
+
+    def post_rename_folder_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for rename_folder
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageControl server but before it is returned to user code.
+
+        We recommend only using this `post_rename_folder_with_metadata`
+        interceptor in new development instead of the `post_rename_folder` interceptor.
+        When both interceptors are used, this `post_rename_folder_with_metadata` interceptor runs after the
+        `post_rename_folder` interceptor. The (possibly modified) response returned by
+        `post_rename_folder` will be passed to
+        `post_rename_folder_with_metadata`.
         """
         return response, metadata
 
@@ -1042,6 +1387,29 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         def __hash__(self):
             return hash("StorageControlRestTransport.CreateFolder")
 
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: storage_control.CreateFolderRequest,
@@ -1050,9 +1418,123 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.Folder:
-            raise NotImplementedError(
-                "Method CreateFolder is not available over REST transport"
+            r"""Call the create folder method over HTTP.
+
+            Args:
+                request (~.storage_control.CreateFolderRequest):
+                    The request object. Request message for CreateFolder.
+                This operation is only applicable to a
+                hierarchical namespace enabled bucket.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.storage_control.Folder:
+                    A folder resource. This resource can
+                only exist in a hierarchical namespace
+                enabled bucket.
+
+            """
+
+            http_options = (
+                _BaseStorageControlRestTransport._BaseCreateFolder._get_http_options()
             )
+
+            request, metadata = self._interceptor.pre_create_folder(request, metadata)
+            transcoded_request = _BaseStorageControlRestTransport._BaseCreateFolder._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseStorageControlRestTransport._BaseCreateFolder._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageControlRestTransport._BaseCreateFolder._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storage.control_v2.StorageControlClient.CreateFolder",
+                    extra={
+                        "serviceName": "google.storage.control.v2.StorageControl",
+                        "rpcName": "CreateFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = StorageControlRestTransport._CreateFolder._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = storage_control.Folder()
+            pb_resp = storage_control.Folder.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_folder(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_folder_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = storage_control.Folder.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storage.control_v2.StorageControlClient.create_folder",
+                    extra={
+                        "serviceName": "google.storage.control.v2.StorageControl",
+                        "rpcName": "CreateFolder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _CreateManagedFolder(
         _BaseStorageControlRestTransport._BaseCreateManagedFolder,
@@ -1073,11 +1555,51 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                 "Method CreateManagedFolder is not available over REST transport"
             )
 
+    class _CreateRapidCache(
+        _BaseStorageControlRestTransport._BaseCreateRapidCache, StorageControlRestStub
+    ):
+        def __hash__(self):
+            return hash("StorageControlRestTransport.CreateRapidCache")
+
+        def __call__(
+            self,
+            request: storage_control.CreateRapidCacheRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            raise NotImplementedError(
+                "Method CreateRapidCache is not available over REST transport"
+            )
+
     class _DeleteFolder(
         _BaseStorageControlRestTransport._BaseDeleteFolder, StorageControlRestStub
     ):
         def __hash__(self):
             return hash("StorageControlRestTransport.DeleteFolder")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1087,9 +1609,77 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
-            raise NotImplementedError(
-                "Method DeleteFolder is not available over REST transport"
+            r"""Call the delete folder method over HTTP.
+
+            Args:
+                request (~.storage_control.DeleteFolderRequest):
+                    The request object. Request message for DeleteFolder.
+                This operation is only applicable to a
+                hierarchical namespace enabled bucket.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseStorageControlRestTransport._BaseDeleteFolder._get_http_options()
             )
+
+            request, metadata = self._interceptor.pre_delete_folder(request, metadata)
+            transcoded_request = _BaseStorageControlRestTransport._BaseDeleteFolder._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageControlRestTransport._BaseDeleteFolder._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storage.control_v2.StorageControlClient.DeleteFolder",
+                    extra={
+                        "serviceName": "google.storage.control.v2.StorageControl",
+                        "rpcName": "DeleteFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = StorageControlRestTransport._DeleteFolder._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
     class _DeleteFolderRecursive(
         _BaseStorageControlRestTransport._BaseDeleteFolderRecursive,
@@ -1097,6 +1687,29 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
     ):
         def __hash__(self):
             return hash("StorageControlRestTransport.DeleteFolderRecursive")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1106,9 +1719,120 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
-            raise NotImplementedError(
-                "Method DeleteFolderRecursive is not available over REST transport"
+            r"""Call the delete folder recursive method over HTTP.
+
+            Args:
+                request (~.storage_control.DeleteFolderRecursiveRequest):
+                    The request object. Request message for
+                DeleteFolderRecursive.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseStorageControlRestTransport._BaseDeleteFolderRecursive._get_http_options()
+
+            request, metadata = self._interceptor.pre_delete_folder_recursive(
+                request, metadata
             )
+            transcoded_request = _BaseStorageControlRestTransport._BaseDeleteFolderRecursive._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseStorageControlRestTransport._BaseDeleteFolderRecursive._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageControlRestTransport._BaseDeleteFolderRecursive._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storage.control_v2.StorageControlClient.DeleteFolderRecursive",
+                    extra={
+                        "serviceName": "google.storage.control.v2.StorageControl",
+                        "rpcName": "DeleteFolderRecursive",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = StorageControlRestTransport._DeleteFolderRecursive._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_folder_recursive(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_folder_recursive_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storage.control_v2.StorageControlClient.delete_folder_recursive",
+                    extra={
+                        "serviceName": "google.storage.control.v2.StorageControl",
+                        "rpcName": "DeleteFolderRecursive",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _DeleteManagedFolder(
         _BaseStorageControlRestTransport._BaseDeleteManagedFolder,
@@ -1172,6 +1896,28 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         def __hash__(self):
             return hash("StorageControlRestTransport.GetFolder")
 
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: storage_control.GetFolderRequest,
@@ -1180,9 +1926,122 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.Folder:
-            raise NotImplementedError(
-                "Method GetFolder is not available over REST transport"
+            r"""Call the get folder method over HTTP.
+
+            Args:
+                request (~.storage_control.GetFolderRequest):
+                    The request object. Request message for GetFolder. This
+                operation is only applicable to a
+                hierarchical namespace enabled bucket.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.storage_control.Folder:
+                    A folder resource. This resource can
+                only exist in a hierarchical namespace
+                enabled bucket.
+
+            """
+
+            http_options = (
+                _BaseStorageControlRestTransport._BaseGetFolder._get_http_options()
             )
+
+            request, metadata = self._interceptor.pre_get_folder(request, metadata)
+            transcoded_request = (
+                _BaseStorageControlRestTransport._BaseGetFolder._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseStorageControlRestTransport._BaseGetFolder._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storage.control_v2.StorageControlClient.GetFolder",
+                    extra={
+                        "serviceName": "google.storage.control.v2.StorageControl",
+                        "rpcName": "GetFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = StorageControlRestTransport._GetFolder._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = storage_control.Folder()
+            pb_resp = storage_control.Folder.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_folder(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_folder_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = storage_control.Folder.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storage.control_v2.StorageControlClient.get_folder",
+                    extra={
+                        "serviceName": "google.storage.control.v2.StorageControl",
+                        "rpcName": "GetFolder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _GetFolderIntelligenceConfig(
         _BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig,
@@ -1228,12 +2087,6 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                     request (~.storage_control.GetFolderIntelligenceConfigRequest):
                         The request object. Request message to get the ``IntelligenceConfig``
                     resource associated with your folder.
-
-                    **IAM Permissions**
-
-                    Requires ``storage.intelligenceConfigs.get``
-                    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-                    permission on the folder.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1732,12 +2585,6 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                     request (~.storage_control.GetOrganizationIntelligenceConfigRequest):
                         The request object. Request message to get the ``IntelligenceConfig``
                     resource associated with your organization.
-
-                    **IAM Permissions**
-
-                    Requires ``storage.intelligenceConfigs.get``
-                    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-                    permission on the organization.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1893,12 +2740,6 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                     request (~.storage_control.GetProjectIntelligenceConfigRequest):
                         The request object. Request message to get the ``IntelligenceConfig``
                     resource associated with your project.
-
-                    **IAM Permissions**:
-
-                    Requires ``storage.intelligenceConfigs.get``
-                    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-                    permission on the project.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2010,11 +2851,51 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                 )
             return resp
 
+    class _GetRapidCache(
+        _BaseStorageControlRestTransport._BaseGetRapidCache, StorageControlRestStub
+    ):
+        def __hash__(self):
+            return hash("StorageControlRestTransport.GetRapidCache")
+
+        def __call__(
+            self,
+            request: storage_control.GetRapidCacheRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> storage_control.RapidCache:
+            raise NotImplementedError(
+                "Method GetRapidCache is not available over REST transport"
+            )
+
     class _GetStorageLayout(
         _BaseStorageControlRestTransport._BaseGetStorageLayout, StorageControlRestStub
     ):
         def __hash__(self):
             return hash("StorageControlRestTransport.GetStorageLayout")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2024,9 +2905,115 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.StorageLayout:
-            raise NotImplementedError(
-                "Method GetStorageLayout is not available over REST transport"
+            r"""Call the get storage layout method over HTTP.
+
+            Args:
+                request (~.storage_control.GetStorageLayoutRequest):
+                    The request object. Request message for GetStorageLayout.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.storage_control.StorageLayout:
+                    The storage layout configuration of a
+                bucket.
+
+            """
+
+            http_options = _BaseStorageControlRestTransport._BaseGetStorageLayout._get_http_options()
+
+            request, metadata = self._interceptor.pre_get_storage_layout(
+                request, metadata
             )
+            transcoded_request = _BaseStorageControlRestTransport._BaseGetStorageLayout._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageControlRestTransport._BaseGetStorageLayout._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storage.control_v2.StorageControlClient.GetStorageLayout",
+                    extra={
+                        "serviceName": "google.storage.control.v2.StorageControl",
+                        "rpcName": "GetStorageLayout",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = StorageControlRestTransport._GetStorageLayout._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = storage_control.StorageLayout()
+            pb_resp = storage_control.StorageLayout.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_storage_layout(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_storage_layout_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = storage_control.StorageLayout.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storage.control_v2.StorageControlClient.get_storage_layout",
+                    extra={
+                        "serviceName": "google.storage.control.v2.StorageControl",
+                        "rpcName": "GetStorageLayout",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _ListAnywhereCaches(
         _BaseStorageControlRestTransport._BaseListAnywhereCaches, StorageControlRestStub
@@ -2052,6 +3039,28 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         def __hash__(self):
             return hash("StorageControlRestTransport.ListFolders")
 
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: storage_control.ListFoldersRequest,
@@ -2060,9 +3069,117 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_control.ListFoldersResponse:
-            raise NotImplementedError(
-                "Method ListFolders is not available over REST transport"
+            r"""Call the list folders method over HTTP.
+
+            Args:
+                request (~.storage_control.ListFoldersRequest):
+                    The request object. Request message for ListFolders. This
+                operation is only applicable to a
+                hierarchical namespace enabled bucket.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.storage_control.ListFoldersResponse:
+                    Response message for ListFolders.
+            """
+
+            http_options = (
+                _BaseStorageControlRestTransport._BaseListFolders._get_http_options()
             )
+
+            request, metadata = self._interceptor.pre_list_folders(request, metadata)
+            transcoded_request = _BaseStorageControlRestTransport._BaseListFolders._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageControlRestTransport._BaseListFolders._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storage.control_v2.StorageControlClient.ListFolders",
+                    extra={
+                        "serviceName": "google.storage.control.v2.StorageControl",
+                        "rpcName": "ListFolders",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = StorageControlRestTransport._ListFolders._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = storage_control.ListFoldersResponse()
+            pb_resp = storage_control.ListFoldersResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_folders(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_folders_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = storage_control.ListFoldersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storage.control_v2.StorageControlClient.list_folders",
+                    extra={
+                        "serviceName": "google.storage.control.v2.StorageControl",
+                        "rpcName": "ListFolders",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _ListIntelligenceFindingRevisions(
         _BaseStorageControlRestTransport._BaseListIntelligenceFindingRevisions,
@@ -2392,6 +3509,24 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                 "Method ListManagedFolders is not available over REST transport"
             )
 
+    class _ListRapidCaches(
+        _BaseStorageControlRestTransport._BaseListRapidCaches, StorageControlRestStub
+    ):
+        def __hash__(self):
+            return hash("StorageControlRestTransport.ListRapidCaches")
+
+        def __call__(
+            self,
+            request: storage_control.ListRapidCachesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> storage_control.ListRapidCachesResponse:
+            raise NotImplementedError(
+                "Method ListRapidCaches is not available over REST transport"
+            )
+
     class _PauseAnywhereCache(
         _BaseStorageControlRestTransport._BasePauseAnywhereCache, StorageControlRestStub
     ):
@@ -2416,6 +3551,29 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         def __hash__(self):
             return hash("StorageControlRestTransport.RenameFolder")
 
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: storage_control.RenameFolderRequest,
@@ -2424,9 +3582,121 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
-            raise NotImplementedError(
-                "Method RenameFolder is not available over REST transport"
+            r"""Call the rename folder method over HTTP.
+
+            Args:
+                request (~.storage_control.RenameFolderRequest):
+                    The request object. Request message for RenameFolder.
+                This operation is only applicable to a
+                hierarchical namespace enabled bucket.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseStorageControlRestTransport._BaseRenameFolder._get_http_options()
             )
+
+            request, metadata = self._interceptor.pre_rename_folder(request, metadata)
+            transcoded_request = _BaseStorageControlRestTransport._BaseRenameFolder._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseStorageControlRestTransport._BaseRenameFolder._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageControlRestTransport._BaseRenameFolder._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storage.control_v2.StorageControlClient.RenameFolder",
+                    extra={
+                        "serviceName": "google.storage.control.v2.StorageControl",
+                        "rpcName": "RenameFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = StorageControlRestTransport._RenameFolder._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_rename_folder(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_rename_folder_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storage.control_v2.StorageControlClient.rename_folder",
+                    extra={
+                        "serviceName": "google.storage.control.v2.StorageControl",
+                        "rpcName": "RenameFolder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _ResumeAnywhereCache(
         _BaseStorageControlRestTransport._BaseResumeAnywhereCache,
@@ -2509,7 +3779,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                     request (~.storage_control.SummarizeIntelligenceFindingsRequest):
                         The request object. Request message to summarize the
                     intelligence findings for the specified
-                    scope(org, folder or project).
+                    scope (organization, folder or project).
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2522,7 +3792,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                     ~.storage_control.SummarizeIntelligenceFindingsResponse:
                         Response message to summarize the
                     intelligence findings for a specified
-                    scope(org, folder or project).
+                    scope (organization, folder or project).
 
             """
 
@@ -2704,12 +3974,6 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                     request (~.storage_control.UpdateFolderIntelligenceConfigRequest):
                         The request object. Request message to update the ``IntelligenceConfig``
                     resource associated with your folder.
-
-                    **IAM Permissions**:
-
-                    Requires ``storage.intelligenceConfigs.update``
-                    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-                    permission on the folder.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2824,6 +4088,25 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                 )
             return resp
 
+    class _UpdateManagedFolder(
+        _BaseStorageControlRestTransport._BaseUpdateManagedFolder,
+        StorageControlRestStub,
+    ):
+        def __hash__(self):
+            return hash("StorageControlRestTransport.UpdateManagedFolder")
+
+        def __call__(
+            self,
+            request: storage_control.UpdateManagedFolderRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> storage_control.ManagedFolder:
+            raise NotImplementedError(
+                "Method UpdateManagedFolder is not available over REST transport"
+            )
+
     class _UpdateOrganizationIntelligenceConfig(
         _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig,
         StorageControlRestStub,
@@ -2871,12 +4154,6 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                     request (~.storage_control.UpdateOrganizationIntelligenceConfigRequest):
                         The request object. Request message to update the ``IntelligenceConfig``
                     resource associated with your organization.
-
-                    **IAM Permissions**:
-
-                    Requires ``storage.intelligenceConfigs.update``
-                    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-                    permission on the organization.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3038,12 +4315,6 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                     request (~.storage_control.UpdateProjectIntelligenceConfigRequest):
                         The request object. Request message to update the ``IntelligenceConfig``
                     resource associated with your project.
-
-                    **IAM Permissions**:
-
-                    Requires ``storage.intelligenceConfigs.update``
-                    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-                    permission on the folder.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3160,6 +4431,24 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                 )
             return resp
 
+    class _UpdateRapidCache(
+        _BaseStorageControlRestTransport._BaseUpdateRapidCache, StorageControlRestStub
+    ):
+        def __hash__(self):
+            return hash("StorageControlRestTransport.UpdateRapidCache")
+
+        def __call__(
+            self,
+            request: storage_control.UpdateRapidCacheRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            raise NotImplementedError(
+                "Method UpdateRapidCache is not available over REST transport"
+            )
+
     @property
     def create_anywhere_cache(
         self,
@@ -3187,6 +4476,14 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateManagedFolder(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_rapid_cache(
+        self,
+    ) -> Callable[[storage_control.CreateRapidCacheRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateRapidCache(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_folder(
@@ -3326,6 +4623,14 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         )  # type: ignore
 
     @property
+    def get_rapid_cache(
+        self,
+    ) -> Callable[[storage_control.GetRapidCacheRequest], storage_control.RapidCache]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetRapidCache(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_storage_layout(
         self,
     ) -> Callable[
@@ -3392,6 +4697,17 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListManagedFolders(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_rapid_caches(
+        self,
+    ) -> Callable[
+        [storage_control.ListRapidCachesRequest],
+        storage_control.ListRapidCachesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListRapidCaches(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def pause_anywhere_cache(
@@ -3477,6 +4793,16 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         )  # type: ignore
 
     @property
+    def update_managed_folder(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateManagedFolderRequest], storage_control.ManagedFolder
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateManagedFolder(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_organization_intelligence_config(
         self,
     ) -> Callable[
@@ -3501,6 +4827,14 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         return self._UpdateProjectIntelligenceConfig(
             self._session, self._host, self._interceptor
         )  # type: ignore
+
+    @property
+    def update_rapid_cache(
+        self,
+    ) -> Callable[[storage_control.UpdateRapidCacheRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateRapidCache(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:
