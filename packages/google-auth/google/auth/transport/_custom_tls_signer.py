@@ -156,9 +156,10 @@ def get_sign_callback(signer_lib, config_file_path):
         digest = _compute_sha256_digest(tbs, tbs_len)
         digestArray = ctypes.c_char * len(digest)
 
-        # reserve 2000 bytes for the signature, shoud be more then enough.
-        # RSA signature is 256 bytes, EC signature is 70~72.
-        sig_holder_len = 2000
+        # Reserve 65536 bytes (64 KiB) for the signature, which is the maximum signature size
+        # permitted by the TLS 1.3 protocol (RFC 8446). This covers all Post-Quantum Cryptography (PQC)
+        # algorithms including ML-DSA-87 (4627 B), SLH-DSA-128f (17088 B), and SLH-DSA-256f (49856 B).
+        sig_holder_len = 65536
         sig_holder = ctypes.create_string_buffer(sig_holder_len)
 
         signature_len = signer_lib.SignForPython(
@@ -169,8 +170,12 @@ def get_sign_callback(signer_lib, config_file_path):
             sig_holder_len,  # sigHolderLen
         )
 
-        if signature_len == 0:
-            # signing failed, return 0
+        if signature_len <= 0 or signature_len > sig_holder_len:
+            _LOGGER.error(
+                "Invalid signature length %d returned from signer library (max %d)",
+                signature_len,
+                sig_holder_len,
+            )
             return 0
 
         sig_len[0] = signature_len
