@@ -23,6 +23,27 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.networkconnectivity_v1.services.cross_network_automation_service",
+    "google.cloud.networkconnectivity_v1.services.data_transfer_service",
+    "google.cloud.networkconnectivity_v1.services.hub_service",
+    "google.cloud.networkconnectivity_v1.services.internal_range_service",
+    "google.cloud.networkconnectivity_v1.services.policy_based_routing_service",
+    "google.cloud.networkconnectivity_v1.types.common",
+    "google.cloud.networkconnectivity_v1.types.cross_network_automation",
+    "google.cloud.networkconnectivity_v1.types.data_transfer",
+    "google.cloud.networkconnectivity_v1.types.hub",
+    "google.cloud.networkconnectivity_v1.types.internal_range",
+    "google.cloud.networkconnectivity_v1.types.policy_based_routing",
+}
+
+
 from .services.cross_network_automation_service import (
     CrossNetworkAutomationServiceAsyncClient,
     CrossNetworkAutomationServiceClient,

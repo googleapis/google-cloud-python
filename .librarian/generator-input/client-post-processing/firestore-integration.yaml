@@ -473,10 +473,14 @@ replacements:
       "packages/google-cloud-firestore/google/cloud/firestore_bundle/__init__.py",
     ]
     before: |
-      metadata\n
+      __lazy_modules__ = \{
+      \    "google.cloud.firestore_bundle.types.bundle",
+      \}\n\n
       from .types.bundle import \(
     after: |
-      metadata\n
+      __lazy_modules__ = {
+          "google.cloud.firestore_bundle.types.bundle",
+      }\n\n
       from .bundle import FirestoreBundle
       from .types.bundle import (
     count: 1

@@ -25,6 +25,23 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_deployments",
+    "google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_rollouts",
+    "google.cloud.saasplatform_saasservicemgmt_v1beta1.types.common",
+    "google.cloud.saasplatform_saasservicemgmt_v1beta1.types.deployments_resources",
+    "google.cloud.saasplatform_saasservicemgmt_v1beta1.types.deployments_service",
+    "google.cloud.saasplatform_saasservicemgmt_v1beta1.types.rollouts_resources",
+    "google.cloud.saasplatform_saasservicemgmt_v1beta1.types.rollouts_service",
+}
+
+
 from .services.saas_deployments import SaasDeploymentsAsyncClient, SaasDeploymentsClient
 from .services.saas_rollouts import SaasRolloutsAsyncClient, SaasRolloutsClient
 from .types.common import (

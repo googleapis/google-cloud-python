@@ -23,6 +23,35 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.datacatalog_v1.services.data_catalog",
+    "google.cloud.datacatalog_v1.services.policy_tag_manager",
+    "google.cloud.datacatalog_v1.services.policy_tag_manager_serialization",
+    "google.cloud.datacatalog_v1.types.bigquery",
+    "google.cloud.datacatalog_v1.types.common",
+    "google.cloud.datacatalog_v1.types.data_source",
+    "google.cloud.datacatalog_v1.types.datacatalog",
+    "google.cloud.datacatalog_v1.types.dataplex_spec",
+    "google.cloud.datacatalog_v1.types.dump_content",
+    "google.cloud.datacatalog_v1.types.gcs_fileset_spec",
+    "google.cloud.datacatalog_v1.types.physical_schema",
+    "google.cloud.datacatalog_v1.types.policytagmanager",
+    "google.cloud.datacatalog_v1.types.policytagmanagerserialization",
+    "google.cloud.datacatalog_v1.types.schema",
+    "google.cloud.datacatalog_v1.types.search",
+    "google.cloud.datacatalog_v1.types.table_spec",
+    "google.cloud.datacatalog_v1.types.tags",
+    "google.cloud.datacatalog_v1.types.timestamps",
+    "google.cloud.datacatalog_v1.types.usage",
+}
+
+
 from .services.data_catalog import DataCatalogAsyncClient, DataCatalogClient
 from .services.policy_tag_manager import (
     PolicyTagManagerAsyncClient,

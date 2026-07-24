@@ -23,6 +23,63 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.shopping.merchant_accounts_v1beta.services.account_issue_service",
+    "google.shopping.merchant_accounts_v1beta.services.account_tax_service",
+    "google.shopping.merchant_accounts_v1beta.services.accounts_service",
+    "google.shopping.merchant_accounts_v1beta.services.autofeed_settings_service",
+    "google.shopping.merchant_accounts_v1beta.services.automatic_improvements_service",
+    "google.shopping.merchant_accounts_v1beta.services.business_identity_service",
+    "google.shopping.merchant_accounts_v1beta.services.business_info_service",
+    "google.shopping.merchant_accounts_v1beta.services.checkout_settings_service",
+    "google.shopping.merchant_accounts_v1beta.services.email_preferences_service",
+    "google.shopping.merchant_accounts_v1beta.services.gbp_accounts_service",
+    "google.shopping.merchant_accounts_v1beta.services.homepage_service",
+    "google.shopping.merchant_accounts_v1beta.services.lfp_providers_service",
+    "google.shopping.merchant_accounts_v1beta.services.omnichannel_settings_service",
+    "google.shopping.merchant_accounts_v1beta.services.online_return_policy_service",
+    "google.shopping.merchant_accounts_v1beta.services.programs_service",
+    "google.shopping.merchant_accounts_v1beta.services.regions_service",
+    "google.shopping.merchant_accounts_v1beta.services.shipping_settings_service",
+    "google.shopping.merchant_accounts_v1beta.services.terms_of_service_agreement_state_service",
+    "google.shopping.merchant_accounts_v1beta.services.terms_of_service_service",
+    "google.shopping.merchant_accounts_v1beta.services.user_service",
+    "google.shopping.merchant_accounts_v1beta.types.accessright",
+    "google.shopping.merchant_accounts_v1beta.types.account_tax",
+    "google.shopping.merchant_accounts_v1beta.types.accountissue",
+    "google.shopping.merchant_accounts_v1beta.types.accounts",
+    "google.shopping.merchant_accounts_v1beta.types.accountservices",
+    "google.shopping.merchant_accounts_v1beta.types.autofeedsettings",
+    "google.shopping.merchant_accounts_v1beta.types.automaticimprovements",
+    "google.shopping.merchant_accounts_v1beta.types.businessidentity",
+    "google.shopping.merchant_accounts_v1beta.types.businessinfo",
+    "google.shopping.merchant_accounts_v1beta.types.checkoutsettings",
+    "google.shopping.merchant_accounts_v1beta.types.customerservice",
+    "google.shopping.merchant_accounts_v1beta.types.emailpreferences",
+    "google.shopping.merchant_accounts_v1beta.types.gbpaccounts",
+    "google.shopping.merchant_accounts_v1beta.types.homepage",
+    "google.shopping.merchant_accounts_v1beta.types.lfpproviders",
+    "google.shopping.merchant_accounts_v1beta.types.omnichannelsettings",
+    "google.shopping.merchant_accounts_v1beta.types.online_return_policy",
+    "google.shopping.merchant_accounts_v1beta.types.phoneverificationstate",
+    "google.shopping.merchant_accounts_v1beta.types.programs",
+    "google.shopping.merchant_accounts_v1beta.types.regions",
+    "google.shopping.merchant_accounts_v1beta.types.shippingsettings",
+    "google.shopping.merchant_accounts_v1beta.types.tax_rule",
+    "google.shopping.merchant_accounts_v1beta.types.termsofservice",
+    "google.shopping.merchant_accounts_v1beta.types.termsofserviceagreementstate",
+    "google.shopping.merchant_accounts_v1beta.types.termsofservicekind",
+    "google.shopping.merchant_accounts_v1beta.types.user",
+    "google.shopping.merchant_accounts_v1beta.types.verificationmailsettings",
+}
+
+
 from .services.account_issue_service import (
     AccountIssueServiceAsyncClient,
     AccountIssueServiceClient,

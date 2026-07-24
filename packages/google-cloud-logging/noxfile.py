@@ -120,6 +120,21 @@ def mypy(session):
     # Enable mypy once this repo has been updated for mypy evaluation.
     session.skip("Skip mypy since this library is not yet updated for mypy evaluation")
 
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-setuptools",
+        "types-protobuf",
+        "types-requests",
+    )
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "google",
+        *session.posargs,
+    )
+
 
 @nox.session
 def update_lower_bounds(session):

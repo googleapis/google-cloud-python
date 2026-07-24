@@ -23,6 +23,70 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.dialogflow_v2beta1.services.agents",
+    "google.cloud.dialogflow_v2beta1.services.answer_records",
+    "google.cloud.dialogflow_v2beta1.services.contexts",
+    "google.cloud.dialogflow_v2beta1.services.conversation_profiles",
+    "google.cloud.dialogflow_v2beta1.services.conversations",
+    "google.cloud.dialogflow_v2beta1.services.documents",
+    "google.cloud.dialogflow_v2beta1.services.encryption_spec_service",
+    "google.cloud.dialogflow_v2beta1.services.entity_types",
+    "google.cloud.dialogflow_v2beta1.services.environments",
+    "google.cloud.dialogflow_v2beta1.services.fulfillments",
+    "google.cloud.dialogflow_v2beta1.services.generator_evaluations",
+    "google.cloud.dialogflow_v2beta1.services.generators",
+    "google.cloud.dialogflow_v2beta1.services.intents",
+    "google.cloud.dialogflow_v2beta1.services.knowledge_bases",
+    "google.cloud.dialogflow_v2beta1.services.participants",
+    "google.cloud.dialogflow_v2beta1.services.phone_numbers",
+    "google.cloud.dialogflow_v2beta1.services.session_entity_types",
+    "google.cloud.dialogflow_v2beta1.services.sessions",
+    "google.cloud.dialogflow_v2beta1.services.sip_trunks",
+    "google.cloud.dialogflow_v2beta1.services.tools",
+    "google.cloud.dialogflow_v2beta1.services.versions",
+    "google.cloud.dialogflow_v2beta1.types.agent",
+    "google.cloud.dialogflow_v2beta1.types.agent_coaching_instruction",
+    "google.cloud.dialogflow_v2beta1.types.answer_record",
+    "google.cloud.dialogflow_v2beta1.types.audio_config",
+    "google.cloud.dialogflow_v2beta1.types.ces_app",
+    "google.cloud.dialogflow_v2beta1.types.ces_tool",
+    "google.cloud.dialogflow_v2beta1.types.context",
+    "google.cloud.dialogflow_v2beta1.types.conversation",
+    "google.cloud.dialogflow_v2beta1.types.conversation_event",
+    "google.cloud.dialogflow_v2beta1.types.conversation_profile",
+    "google.cloud.dialogflow_v2beta1.types.document",
+    "google.cloud.dialogflow_v2beta1.types.encryption_spec",
+    "google.cloud.dialogflow_v2beta1.types.entity_type",
+    "google.cloud.dialogflow_v2beta1.types.environment",
+    "google.cloud.dialogflow_v2beta1.types.fulfillment",
+    "google.cloud.dialogflow_v2beta1.types.gcs",
+    "google.cloud.dialogflow_v2beta1.types.generator",
+    "google.cloud.dialogflow_v2beta1.types.generator_evaluation",
+    "google.cloud.dialogflow_v2beta1.types.human_agent_assistant_event",
+    "google.cloud.dialogflow_v2beta1.types.intent",
+    "google.cloud.dialogflow_v2beta1.types.knowledge_base",
+    "google.cloud.dialogflow_v2beta1.types.operations",
+    "google.cloud.dialogflow_v2beta1.types.participant",
+    "google.cloud.dialogflow_v2beta1.types.phone_number",
+    "google.cloud.dialogflow_v2beta1.types.session",
+    "google.cloud.dialogflow_v2beta1.types.session_entity_type",
+    "google.cloud.dialogflow_v2beta1.types.sip_trunk",
+    "google.cloud.dialogflow_v2beta1.types.tool",
+    "google.cloud.dialogflow_v2beta1.types.tool_call",
+    "google.cloud.dialogflow_v2beta1.types.toolset",
+    "google.cloud.dialogflow_v2beta1.types.validation_result",
+    "google.cloud.dialogflow_v2beta1.types.version",
+    "google.cloud.dialogflow_v2beta1.types.webhook",
+}
+
+
 from .services.agents import AgentsAsyncClient, AgentsClient
 from .services.answer_records import AnswerRecordsAsyncClient, AnswerRecordsClient
 from .services.contexts import ContextsAsyncClient, ContextsClient

@@ -23,6 +23,27 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.documentai_v1.services.document_processor_service",
+    "google.cloud.documentai_v1.types.barcode",
+    "google.cloud.documentai_v1.types.document",
+    "google.cloud.documentai_v1.types.document_io",
+    "google.cloud.documentai_v1.types.document_processor_service",
+    "google.cloud.documentai_v1.types.document_schema",
+    "google.cloud.documentai_v1.types.evaluation",
+    "google.cloud.documentai_v1.types.geometry",
+    "google.cloud.documentai_v1.types.operation_metadata",
+    "google.cloud.documentai_v1.types.processor",
+    "google.cloud.documentai_v1.types.processor_type",
+}
+
+
 from .services.document_processor_service import (
     DocumentProcessorServiceAsyncClient,
     DocumentProcessorServiceClient,

@@ -23,6 +23,28 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.bare_metal_solution_v2.services.bare_metal_solution",
+    "google.cloud.bare_metal_solution_v2.types.baremetalsolution",
+    "google.cloud.bare_metal_solution_v2.types.common",
+    "google.cloud.bare_metal_solution_v2.types.instance",
+    "google.cloud.bare_metal_solution_v2.types.lun",
+    "google.cloud.bare_metal_solution_v2.types.network",
+    "google.cloud.bare_metal_solution_v2.types.nfs_share",
+    "google.cloud.bare_metal_solution_v2.types.osimage",
+    "google.cloud.bare_metal_solution_v2.types.provisioning",
+    "google.cloud.bare_metal_solution_v2.types.ssh_key",
+    "google.cloud.bare_metal_solution_v2.types.volume",
+    "google.cloud.bare_metal_solution_v2.types.volume_snapshot",
+}
+
+
 from .services.bare_metal_solution import (
     BareMetalSolutionAsyncClient,
     BareMetalSolutionClient,

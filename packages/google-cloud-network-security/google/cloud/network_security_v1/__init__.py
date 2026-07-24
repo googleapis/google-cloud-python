@@ -23,6 +23,50 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.network_security_v1.services.address_group_service",
+    "google.cloud.network_security_v1.services.dns_threat_detector_service",
+    "google.cloud.network_security_v1.services.firewall_activation",
+    "google.cloud.network_security_v1.services.intercept",
+    "google.cloud.network_security_v1.services.mirroring",
+    "google.cloud.network_security_v1.services.network_security",
+    "google.cloud.network_security_v1.services.organization_address_group_service",
+    "google.cloud.network_security_v1.services.organization_security_profile_group_service",
+    "google.cloud.network_security_v1.services.security_profile_group_service",
+    "google.cloud.network_security_v1.services.sse_realm_service",
+    "google.cloud.network_security_v1.types.address_group",
+    "google.cloud.network_security_v1.types.authorization_policy",
+    "google.cloud.network_security_v1.types.authz_policy",
+    "google.cloud.network_security_v1.types.backend_authentication_config",
+    "google.cloud.network_security_v1.types.client_tls_policy",
+    "google.cloud.network_security_v1.types.common",
+    "google.cloud.network_security_v1.types.dns_threat_detector",
+    "google.cloud.network_security_v1.types.firewall_activation",
+    "google.cloud.network_security_v1.types.gateway_security_policy",
+    "google.cloud.network_security_v1.types.gateway_security_policy_rule",
+    "google.cloud.network_security_v1.types.intercept",
+    "google.cloud.network_security_v1.types.mirroring",
+    "google.cloud.network_security_v1.types.network_security",
+    "google.cloud.network_security_v1.types.security_profile_group",
+    "google.cloud.network_security_v1.types.security_profile_group_intercept",
+    "google.cloud.network_security_v1.types.security_profile_group_mirroring",
+    "google.cloud.network_security_v1.types.security_profile_group_service",
+    "google.cloud.network_security_v1.types.security_profile_group_threatprevention",
+    "google.cloud.network_security_v1.types.security_profile_group_urlfiltering",
+    "google.cloud.network_security_v1.types.server_tls_policy",
+    "google.cloud.network_security_v1.types.sse_realm",
+    "google.cloud.network_security_v1.types.tls",
+    "google.cloud.network_security_v1.types.tls_inspection_policy",
+    "google.cloud.network_security_v1.types.url_list",
+}
+
+
 from .services.address_group_service import (
     AddressGroupServiceAsyncClient,
     AddressGroupServiceClient,

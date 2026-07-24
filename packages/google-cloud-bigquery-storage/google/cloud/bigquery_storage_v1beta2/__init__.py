@@ -23,6 +23,24 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.bigquery_storage_v1beta2.services.big_query_read",
+    "google.cloud.bigquery_storage_v1beta2.services.big_query_write",
+    "google.cloud.bigquery_storage_v1beta2.types.arrow",
+    "google.cloud.bigquery_storage_v1beta2.types.avro",
+    "google.cloud.bigquery_storage_v1beta2.types.protobuf",
+    "google.cloud.bigquery_storage_v1beta2.types.storage",
+    "google.cloud.bigquery_storage_v1beta2.types.stream",
+    "google.cloud.bigquery_storage_v1beta2.types.table",
+}
+
+
 from google.cloud.bigquery_storage_v1beta2 import client, types
 
 

@@ -105,7 +105,6 @@ MYPY_CONFIG_FILE = next(
     str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
 )
 
-
 nox.options.sessions = [
     "unit",
     "system",

@@ -23,6 +23,26 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.gke_multicloud_v1.services.attached_clusters",
+    "google.cloud.gke_multicloud_v1.services.aws_clusters",
+    "google.cloud.gke_multicloud_v1.services.azure_clusters",
+    "google.cloud.gke_multicloud_v1.types.attached_resources",
+    "google.cloud.gke_multicloud_v1.types.attached_service",
+    "google.cloud.gke_multicloud_v1.types.aws_resources",
+    "google.cloud.gke_multicloud_v1.types.aws_service",
+    "google.cloud.gke_multicloud_v1.types.azure_resources",
+    "google.cloud.gke_multicloud_v1.types.azure_service",
+    "google.cloud.gke_multicloud_v1.types.common_resources",
+}
+
+
 from .services.attached_clusters import (
     AttachedClustersAsyncClient,
     AttachedClustersClient,
