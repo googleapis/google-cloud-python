@@ -12,12 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.28.0
+version: v0.30.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: fe04226e3d76435acbfd3ffb51f6771740e1fb5b
-    sha256: e99c641a9c5525394de43c762b9db50c3ada1f219d6dbdba594ae992fbe1d838
+    commit: ede8b2e652dc3716b544205ef772b39b86e3d2cb
+    sha256: 8f7c17af87f6215012010dddaffec3aa5df5668bf0def727577bc0bc6b698193
+tools:
+  pip:
+    - name: black
+      version: 23.7.0
+      package: black[jupyter]==23.7.0
+    - name: gapic-generator
+      version: 1.37.1
+    - name: isort
+      version: 5.11.0
+    - name: nox
+      version: 2025.11.12
+    - name: ruff
+      version: 0.14.14
+    - name: synthtool
+      version: e643ce8e20f8fe237a31a1754524ba987de72875
+      package: gcp-synthtool@git+https://github.com/googleapis/synthtool@e643ce8e20f8fe237a31a1754524ba987de72875
 default:
   output: packages
   tag_format: '{name}-v{version}'
@@ -74,7 +90,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.37.0
+    version: 1.37.1
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -134,7 +150,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.32.0
+    version: 2.33.0
     python:
       library_type: CORE
   - name: google-apps-card
@@ -290,6 +306,7 @@ libraries:
     version: 0.1.0
     apis:
       - path: google/cloud/agentidentitycredentials/v1
+      - path: google/cloud/agentidentitycredentials/v1beta
     copyright_year: "2026"
     python:
       default_version: v1
@@ -643,6 +660,7 @@ libraries:
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -2589,11 +2607,11 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: proto-plus
-    version: 1.28.1
+    version: 1.28.2
     python:
       library_type: CORE
   - name: sqlalchemy-bigquery
-    version: 1.17.0
+    version: 1.17.1
     python:
       library_type: INTEGRATION
   - name: sqlalchemy-spanner

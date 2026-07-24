@@ -23,6 +23,18 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.storage_control_v2.services.storage_control",
+    "google.cloud.storage_control_v2.types.storage_control",
+}
+
+
 from .services.storage_control import StorageControlAsyncClient, StorageControlClient
 from .types.storage_control import (
     AnywhereCache,
@@ -31,6 +43,8 @@ from .types.storage_control import (
     CreateAnywhereCacheRequest,
     CreateFolderRequest,
     CreateManagedFolderRequest,
+    CreateRapidCacheMetadata,
+    CreateRapidCacheRequest,
     DeleteFolderRecursiveMetadata,
     DeleteFolderRecursiveRequest,
     DeleteFolderRequest,
@@ -49,6 +63,7 @@ from .types.storage_control import (
     GetManagedFolderRequest,
     GetOrganizationIntelligenceConfigRequest,
     GetProjectIntelligenceConfigRequest,
+    GetRapidCacheRequest,
     GetStorageLayoutRequest,
     IntelligenceConfig,
     IntelligenceFinding,
@@ -63,9 +78,12 @@ from .types.storage_control import (
     ListIntelligenceFindingsResponse,
     ListManagedFoldersRequest,
     ListManagedFoldersResponse,
+    ListRapidCachesRequest,
+    ListRapidCachesResponse,
     ManagedFolder,
     PauseAnywhereCacheRequest,
     PendingRenameInfo,
+    RapidCache,
     RenameFolderMetadata,
     RenameFolderRequest,
     ResumeAnywhereCacheRequest,
@@ -75,8 +93,11 @@ from .types.storage_control import (
     UpdateAnywhereCacheMetadata,
     UpdateAnywhereCacheRequest,
     UpdateFolderIntelligenceConfigRequest,
+    UpdateManagedFolderRequest,
     UpdateOrganizationIntelligenceConfigRequest,
     UpdateProjectIntelligenceConfigRequest,
+    UpdateRapidCacheMetadata,
+    UpdateRapidCacheRequest,
 )
 
 if hasattr(api_core, "check_python_version") and hasattr(
@@ -170,6 +191,8 @@ __all__ = (
     "CreateAnywhereCacheRequest",
     "CreateFolderRequest",
     "CreateManagedFolderRequest",
+    "CreateRapidCacheMetadata",
+    "CreateRapidCacheRequest",
     "DeleteFolderRecursiveMetadata",
     "DeleteFolderRecursiveRequest",
     "DeleteFolderRequest",
@@ -188,6 +211,7 @@ __all__ = (
     "GetManagedFolderRequest",
     "GetOrganizationIntelligenceConfigRequest",
     "GetProjectIntelligenceConfigRequest",
+    "GetRapidCacheRequest",
     "GetStorageLayoutRequest",
     "IntelligenceConfig",
     "IntelligenceFinding",
@@ -202,9 +226,12 @@ __all__ = (
     "ListIntelligenceFindingsResponse",
     "ListManagedFoldersRequest",
     "ListManagedFoldersResponse",
+    "ListRapidCachesRequest",
+    "ListRapidCachesResponse",
     "ManagedFolder",
     "PauseAnywhereCacheRequest",
     "PendingRenameInfo",
+    "RapidCache",
     "RenameFolderMetadata",
     "RenameFolderRequest",
     "ResumeAnywhereCacheRequest",
@@ -215,6 +242,9 @@ __all__ = (
     "UpdateAnywhereCacheMetadata",
     "UpdateAnywhereCacheRequest",
     "UpdateFolderIntelligenceConfigRequest",
+    "UpdateManagedFolderRequest",
     "UpdateOrganizationIntelligenceConfigRequest",
     "UpdateProjectIntelligenceConfigRequest",
+    "UpdateRapidCacheMetadata",
+    "UpdateRapidCacheRequest",
 )

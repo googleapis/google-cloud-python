@@ -22,6 +22,12 @@ from google.cloud.cloudquotas_v1.services.cloud_quotas.async_client import (
     CloudQuotasAsyncClient,
 )
 from google.cloud.cloudquotas_v1.services.cloud_quotas.client import CloudQuotasClient
+from google.cloud.cloudquotas_v1.services.quota_adjuster_settings_manager.async_client import (
+    QuotaAdjusterSettingsManagerAsyncClient,
+)
+from google.cloud.cloudquotas_v1.services.quota_adjuster_settings_manager.client import (
+    QuotaAdjusterSettingsManagerClient,
+)
 from google.cloud.cloudquotas_v1.types.cloudquotas import (
     CreateQuotaPreferenceRequest,
     GetQuotaInfoRequest,
@@ -31,6 +37,11 @@ from google.cloud.cloudquotas_v1.types.cloudquotas import (
     ListQuotaPreferencesRequest,
     ListQuotaPreferencesResponse,
     UpdateQuotaPreferenceRequest,
+)
+from google.cloud.cloudquotas_v1.types.quota_adjuster_settings import (
+    GetQuotaAdjusterSettingsRequest,
+    QuotaAdjusterSettings,
+    UpdateQuotaAdjusterSettingsRequest,
 )
 from google.cloud.cloudquotas_v1.types.resources import (
     DimensionsInfo,
@@ -46,6 +57,8 @@ from google.cloud.cloudquotas_v1.types.resources import (
 __all__ = (
     "CloudQuotasClient",
     "CloudQuotasAsyncClient",
+    "QuotaAdjusterSettingsManagerClient",
+    "QuotaAdjusterSettingsManagerAsyncClient",
     "CreateQuotaPreferenceRequest",
     "GetQuotaInfoRequest",
     "GetQuotaPreferenceRequest",
@@ -54,6 +67,9 @@ __all__ = (
     "ListQuotaPreferencesRequest",
     "ListQuotaPreferencesResponse",
     "UpdateQuotaPreferenceRequest",
+    "GetQuotaAdjusterSettingsRequest",
+    "QuotaAdjusterSettings",
+    "UpdateQuotaAdjusterSettingsRequest",
     "DimensionsInfo",
     "QuotaConfig",
     "QuotaDetails",
