@@ -126,9 +126,11 @@ def test_extract_metrics_header_duplicate_tokens():
         ("other-header", "value"),
         ("x-goog-api-client", "token4 token2"),
     ]
-    
-    metric_str, arbitrary_metadata = google.api_core.gapic_v1.method._extract_metrics_header(metadata)
-    
+
+    metric_str, arbitrary_metadata = (
+        google.api_core.gapic_v1.method._extract_metrics_header(metadata)
+    )
+
     # Should maintain order of first appearance and eliminate duplicates
     assert metric_str == "token1 token2 token3 token4"
     assert arbitrary_metadata == [("other-header", "value")]
@@ -155,7 +157,10 @@ def test_invoke_wrapped_method_with_duplicate_x_goog_api_client_metadata():
         mock.sentinel.request,
         metadata=[
             ("x-goog-api-client", "override-client/2.0"),
-            ("x-goog-api-client", "override-client/2.0 grpc/1.76.0 custom-user-agent/1.0"),
+            (
+                "x-goog-api-client",
+                "override-client/2.0 grpc/1.76.0 custom-user-agent/1.0",
+            ),
             ("other-header", "value"),
         ],
     )

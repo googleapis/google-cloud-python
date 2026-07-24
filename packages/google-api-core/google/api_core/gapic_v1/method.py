@@ -77,6 +77,7 @@ def _deduplicate_metadata_tokens(*headers: str) -> str:
     # Deduplicate while preserving order
     return " ".join(dict.fromkeys(token_list))
 
+
 def _extract_metrics_header(metadata) -> Tuple[str, List[Tuple[str, str]]]:
     """Extract x-google-api-client header from metadata list.
 
@@ -172,11 +173,11 @@ class _GapicCallable(object):
             final_metadata = list(self._static_metadata)
             user_x_goog, remaining = _extract_metrics_header(user_metadata)
 
-            merged_header = _deduplicate_metadata_tokens(self._x_goog_api_client, user_x_goog)
+            merged_header = _deduplicate_metadata_tokens(
+                self._x_goog_api_client, user_x_goog
+            )
             if merged_header:
-                final_metadata.append(
-                    (client_info.METRICS_METADATA_KEY, merged_header)
-                )
+                final_metadata.append((client_info.METRICS_METADATA_KEY, merged_header))
             final_metadata.extend(remaining)
             kwargs["metadata"] = final_metadata
         elif self._default_metadata:
