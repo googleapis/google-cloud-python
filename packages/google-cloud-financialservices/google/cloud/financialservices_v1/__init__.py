@@ -23,6 +23,27 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.financialservices_v1.services.aml",
+    "google.cloud.financialservices_v1.types.backtest_result",
+    "google.cloud.financialservices_v1.types.bigquery_destination",
+    "google.cloud.financialservices_v1.types.dataset",
+    "google.cloud.financialservices_v1.types.engine_config",
+    "google.cloud.financialservices_v1.types.engine_version",
+    "google.cloud.financialservices_v1.types.instance",
+    "google.cloud.financialservices_v1.types.line_of_business",
+    "google.cloud.financialservices_v1.types.model",
+    "google.cloud.financialservices_v1.types.prediction_result",
+    "google.cloud.financialservices_v1.types.service",
+}
+
+
 from .services.aml import AMLAsyncClient, AMLClient
 from .types.backtest_result import (
     BacktestResult,

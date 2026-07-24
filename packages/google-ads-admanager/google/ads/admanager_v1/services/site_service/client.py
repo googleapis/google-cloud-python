@@ -743,7 +743,7 @@ class SiteServiceClient(metaclass=SiteServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> site_messages.Site:
-        r"""API to retrieve a ``Site`` object.
+        r"""Retrieves a ``Site`` object.
 
         .. code-block:: python
 
@@ -854,7 +854,7 @@ class SiteServiceClient(metaclass=SiteServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListSitesPager:
-        r"""API to retrieve a list of ``Site`` objects.
+        r"""Lists ``Site`` objects.
 
         .. code-block:: python
 
@@ -977,7 +977,7 @@ class SiteServiceClient(metaclass=SiteServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> site_messages.Site:
-        r"""API to create a ``Site`` object.
+        r"""Creates a ``Site`` object.
 
         .. code-block:: python
 
@@ -1096,7 +1096,7 @@ class SiteServiceClient(metaclass=SiteServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> site_service.BatchCreateSitesResponse:
-        r"""API to batch create ``Site`` objects.
+        r"""Creates ``Site`` objects.
 
         .. code-block:: python
 
@@ -1216,7 +1216,7 @@ class SiteServiceClient(metaclass=SiteServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> site_messages.Site:
-        r"""API to update a ``Site`` object.
+        r"""Updates a ``Site`` object.
 
         .. code-block:: python
 
@@ -1340,7 +1340,7 @@ class SiteServiceClient(metaclass=SiteServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> site_service.BatchUpdateSitesResponse:
-        r"""API to batch update ``Site`` objects.
+        r"""Batch updates ``Site`` objects.
 
         .. code-block:: python
 
@@ -1818,8 +1818,6 @@ class SiteServiceClient(metaclass=SiteServiceClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("SiteServiceClient",)
