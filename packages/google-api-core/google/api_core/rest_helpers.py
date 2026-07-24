@@ -15,6 +15,7 @@
 """Helpers for rest transports."""
 
 import functools
+import json
 import operator
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -153,9 +154,11 @@ def transcode_request(
 
     query_params_json = {}
     if transcoded_request.get("query_params") is not None:
-        query_params_json = json_format.MessageToDict(
-            transcoded_request["query_params"],
-            use_integers_for_enums=rest_numeric_enums,
+        query_params_json = json.loads(
+            json_format.MessageToJson(
+                transcoded_request["query_params"],
+                use_integers_for_enums=rest_numeric_enums,
+            )
         )
 
     # If required_fields_default_values is provided, we merge default values for missing
