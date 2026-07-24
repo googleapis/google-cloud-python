@@ -237,9 +237,7 @@ class TestBigtableDataClientAsync:
         expected_options = client_options.ClientOptions()
         expected_options.credentials_file = None
         expected_options.quota_project_id = None
-        mock_called = (
-            exporter_mock_async if CrossSync.is_async else exporter_mock_sync
-        )
+        mock_called = exporter_mock_async if CrossSync.is_async else exporter_mock_sync
         async with self._make_client(
             project=expected_project,
             credentials=expected_credentials,
@@ -255,9 +253,7 @@ class TestBigtableDataClientAsync:
     @CrossSync.pytest
     async def test_metrics_exporter_init_implicit_project(self):
         async with self._make_client(use_emulator=False) as client:
-            assert (
-                client._metrics.handlers[0]._exporter.project_id == client.project
-            )
+            assert client._metrics.handlers[0]._exporter.project_id == client.project
 
     @CrossSync.pytest
     @mock.patch("google.cloud.bigtable.data._async.client.BigtableMetricsExporter")
@@ -1769,9 +1765,7 @@ class TestAuthorizedViewsAsync(CrossSync.TestTable):
         from google.cloud.bigtable.data._metrics.data_model import OperationType
 
         client = self._make_client()
-        view = self._make_one(
-            client, table_id="underlying-table", view_id="my-view"
-        )
+        view = self._make_one(client, table_id="underlying-table", view_id="my-view")
         op = view._create_operation(OperationType.READ_ROWS)
         assert op.table_id == "underlying-table"
         await client.close()
@@ -2023,9 +2017,6 @@ class TestReadRowsAsync:
     def _make_table(self, *args, **kwargs):
         from google.cloud.bigtable.data._metrics import (
             BigtableClientSideMetricsController,
-        )
-        from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
-            BigtableMetricsExporter,
         )
 
         client_mock = mock.Mock()

@@ -1050,9 +1050,6 @@ class TestMutationsBatcher:
             ActiveOperationMetric,
             BigtableClientSideMetricsController,
         )
-        from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
-            BigtableMetricsExporter,
-        )
 
         mock_client = mock.Mock()
         mock_client._metrics = BigtableClientSideMetricsController(handlers=[])

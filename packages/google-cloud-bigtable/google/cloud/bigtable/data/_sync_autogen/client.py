@@ -58,6 +58,7 @@ from google.cloud.bigtable.data._helpers import (
     _WarmedInstanceKey,
 )
 from google.cloud.bigtable.data._metrics import (
+    ActiveOperationMetric,
     BigtableClientSideMetricsController,
     OperationType,
     tracked_retry,
