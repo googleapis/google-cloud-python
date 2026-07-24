@@ -154,7 +154,7 @@ class BigtableMetricsExporter(MetricExporter):
         Write a set of metrics to Cloud Monitoring.
         This method is called by the OpenTelemetry SDK
         """
-        deadline = time.time() + (timeout_millis / 1000)
+        deadline = time.monotonic() + (timeout_millis / 1000)
         metric_kind = MetricDescriptor.MetricKind.CUMULATIVE
         all_series: list[TimeSeries] = []
         # process each metric from OTel format into Cloud Monitoring format
@@ -239,7 +239,11 @@ class BigtableMetricsExporter(MetricExporter):
         write_ind = 0
         while write_ind < len(series):
             # find time left for next batch
-            timeout = deadline - time.time() if deadline else gapic_v1.method.DEFAULT
+            timeout = (
+                max(0.0, deadline - time.monotonic())
+                if deadline
+                else gapic_v1.method.DEFAULT
+            )
             # write next batch
             batch = series[write_ind : write_ind + max_batch_size]
             self.client.create_service_time_series(
