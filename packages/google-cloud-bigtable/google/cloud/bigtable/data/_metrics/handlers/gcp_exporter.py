@@ -33,6 +33,7 @@ from google.cloud.monitoring_v3 import (
 from google.protobuf.timestamp_pb2 import Timestamp
 from opentelemetry.sdk.metrics import MeterProvider, view
 from opentelemetry.sdk.metrics.export import (
+    ExponentialHistogramDataPoint,
     HistogramDataPoint,
     MetricExporter,
     MetricExportResult,
@@ -262,7 +263,9 @@ class BigtableMetricsExporter(MetricExporter):
             write_ind += max_batch_size
 
     @staticmethod
-    def _to_point(data_point: NumberDataPoint | HistogramDataPoint) -> Point:
+    def _to_point(
+        data_point: NumberDataPoint | HistogramDataPoint | ExponentialHistogramDataPoint,
+    ) -> Point:
         """
         Adapted from CloudMonitoringMetricsExporter
         https://github.com/GoogleCloudPlatform/opentelemetry-operations-python/blob/3668dfe7ce3b80dd01f42af72428de957b58b316/opentelemetry-exporter-gcp-monitoring/src/opentelemetry/exporter/cloud_monitoring/__init__.py#L82
@@ -281,11 +284,15 @@ class BigtableMetricsExporter(MetricExporter):
                     ),
                 )
             )
-        else:
+        elif isinstance(data_point, NumberDataPoint):
             if isinstance(data_point.value, int):
                 point_value = TypedValue(int64_value=data_point.value)
             else:
                 point_value = TypedValue(double_value=data_point.value)
+        else:
+            raise NotImplementedError(
+                f"Unsupported OTel data point type: {type(data_point)}"
+            )
         start_time = Timestamp()
         start_time.FromNanoseconds(data_point.start_time_unix_nano)
         end_time = Timestamp()
