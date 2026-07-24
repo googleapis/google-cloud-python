@@ -266,19 +266,24 @@ class BigtableDataClientAsync(ClientWithProject):
                 "is the default."
             )
         self._is_closed = CrossSync.Event()
-        # create a metrics exporter using the same client configuration
-        self._gcp_metrics_exporter = BigtableMetricsExporter(
-            project_id=self.project,
-            credentials=credentials,
-            client_options=client_options,
-        )
-        self._metrics_handler = GoogleCloudMetricsHandler(
-            exporter=self._gcp_metrics_exporter,
-            client_version=self._client_version(),
-        )
-        self._metrics = BigtableClientSideMetricsController(
-            handlers=[self._metrics_handler]
-        )
+        if os.getenv("BIGTABLE_EMULATOR_HOST"):
+            self._gcp_metrics_exporter = None
+            self._metrics_handler = None
+            self._metrics = BigtableClientSideMetricsController(handlers=[])
+        else:
+            # create a metrics exporter using the same client configuration
+            self._gcp_metrics_exporter = BigtableMetricsExporter(
+                project_id=self.project,
+                credentials=credentials,
+                client_options=client_options,
+            )
+            self._metrics_handler = GoogleCloudMetricsHandler(
+                exporter=self._gcp_metrics_exporter,
+                client_version=self._client_version(),
+            )
+            self._metrics = BigtableClientSideMetricsController(
+                handlers=[self._metrics_handler]
+            )
         self.transport = cast(TransportType, self._gapic_client.transport)
         # keep track of active instances to for warmup on channel refresh
         self._active_instances: Set[_WarmedInstanceKey] = set()
