@@ -20,6 +20,7 @@ compression, pagination, and long-running operations to gRPC methods.
 
 import enum
 import functools
+from typing import List, Tuple
 
 from google.api_core import grpc_helpers
 from google.api_core.gapic_v1 import client_info
@@ -57,6 +58,31 @@ def _apply_decorators(func, decorators):
     return func
 
 
+def _extract_metrics_header(metadata) -> Tuple[str, List[Tuple[str, str]]]:
+    """Extract x-google-api-client header from metadata list.
+
+    Args:
+        metadata (Sequence[Tuple[str, str]]): The metadata to extract from.
+
+    Returns:
+        A tuple containing:
+            - A sequence of remaining metadata tuples.
+            - a string representing the header value.
+    """
+    if not metadata:
+        return "", []
+
+    key_to_find = client_info.METRICS_METADATA_KEY
+
+    metric_str = " ".join([v for k, v in metadata if k == key_to_find])
+
+    if not metric_str:
+        return "", list(metadata)
+
+    arbitrary_metadata = [item for item in metadata if item[0] != key_to_find]
+    return metric_str, arbitrary_metadata
+
+
 class _GapicCallable(object):
     """Callable that applies retry, timeout, and metadata logic.
 
@@ -90,7 +116,16 @@ class _GapicCallable(object):
         self._retry = retry
         self._timeout = timeout
         self._compression = compression
-        self._metadata = metadata
+        # Pre-extract the x-goog-api-client header from the initialized metadata.
+        self._x_goog_api_client, remaining = _extract_metrics_header(metadata)
+        self._static_metadata = tuple(remaining)
+        if self._x_goog_api_client:
+            self._default_metadata = (
+                (client_info.METRICS_METADATA_KEY, self._x_goog_api_client),
+                *self._static_metadata,
+            )
+        else:
+            self._default_metadata = self._static_metadata
 
     def __call__(
         self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
@@ -113,15 +148,19 @@ class _GapicCallable(object):
         wrapped_func = _apply_decorators(self._target, [retry, timeout])
 
         # Add the user agent metadata to the call.
-        if self._metadata is not None:
-            metadata = kwargs.get("metadata", [])
-            # Due to the nature of invocation, None should be treated the same
-            # as not specified.
-            if metadata is None:
-                metadata = []
-            metadata = list(metadata)
-            metadata.extend(self._metadata)
-            kwargs["metadata"] = metadata
+        if user_metadata := kwargs.get("metadata"):
+            final_metadata = list(self._static_metadata)
+            user_x_goog, remaining = _extract_metrics_header(user_metadata)
+            api_client_tokens = [t for t in [user_x_goog, self._x_goog_api_client] if t]
+            if api_client_tokens:
+                final_metadata.append(
+                    (client_info.METRICS_METADATA_KEY, " ".join(api_client_tokens))
+                )
+            final_metadata.extend(remaining)
+            kwargs["metadata"] = final_metadata
+        elif self._default_metadata:
+            kwargs["metadata"] = self._default_metadata
+
         if self._compression is not None:
             kwargs["compression"] = compression
 
