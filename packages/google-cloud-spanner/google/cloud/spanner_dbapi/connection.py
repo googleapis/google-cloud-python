@@ -112,6 +112,7 @@ class Connection:
         self._read_only = read_only
         self._staleness = None
         self.request_priority = None
+        self._timeout = None
         self._transaction_begin_marked = False
         self._transaction_isolation_level = None
         # whether transaction started at Spanner. This means that we had
@@ -348,6 +349,30 @@ class Connection:
 
         self._staleness = value
 
+    @property
+    def timeout(self):
+        """Timeout in seconds for the next SQL operation on this connection.
+
+        When set, this value is passed as the ``timeout`` argument to
+        ``execute_sql`` calls on the underlying Spanner client, controlling
+        the gRPC deadline for those calls.
+
+        Returns:
+            Optional[float]: The timeout in seconds, or None to use the
+                default gRPC timeout (3600s).
+        """
+        return self._timeout
+
+    @timeout.setter
+    def timeout(self, value):
+        """Set the timeout for subsequent SQL operations.
+
+        Args:
+            value (Optional[float]): Timeout in seconds. Set to None to
+                revert to the default gRPC timeout.
+        """
+        self._timeout = value
+
     def _session_checkout(self):
         """Get a Cloud Spanner session from the pool.
 
@@ -560,11 +585,16 @@ class Connection:
                   checksum of this statement results.
         """
         transaction = self.transaction_checkout()
+        kwargs = dict(
+            param_types=statement.param_types,
+            request_options=request_options or self.request_options,
+        )
+        if self._timeout is not None:
+            kwargs["timeout"] = self._timeout
         return transaction.execute_sql(
             statement.sql,
             statement.params,
-            param_types=statement.param_types,
-            request_options=request_options or self.request_options,
+            **kwargs,
         )
 
     @check_not_closed
