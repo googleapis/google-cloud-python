@@ -234,8 +234,7 @@ class OpenTelemetryMetricsHandler(MetricsHandler):
         )
         self.otel.throttling_latencies.record(flow_throttling, labels)
         self.otel.application_latencies.record(
-            (attempt.application_blocking_time_ns + attempt.backoff_before_attempt_ns)
-            / NS_TO_MS,
+            attempt.application_blocking_time_ns / NS_TO_MS,
             labels,
         )
         if attempt.gfe_latency_ns is not None:
