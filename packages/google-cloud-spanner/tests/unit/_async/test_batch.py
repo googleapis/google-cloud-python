@@ -25,6 +25,7 @@ from google.cloud.spanner_v1 import (
     RequestOptions,
     TransactionOptions,
 )
+from google.cloud.spanner_v1._helpers import _make_value_pb, _make_list_value_pb
 from google.cloud.spanner_v1._async.batch import Batch, MutationGroups, _BatchBase
 from google.cloud.spanner_v1.keyset import KeySet
 
@@ -84,6 +85,28 @@ class Test_BatchBase(unittest.IsolatedAsyncioTestCase):
         base.delete(TABLE_NAME, keyset=keyset)
         self.assertEqual(len(base._mutations), 1)
         self.assertEqual(base._mutations[0].delete.table, TABLE_NAME)
+
+    def test_send(self):
+        queue = "TestQueue"
+        key = [2]
+        payload = "Hello, Queues!"
+        session = mock.Mock()
+        base = self._make_one(session)
+        base.send(queue=queue, key=key, payload=payload)
+        self.assertEqual(len(base._mutations), 1)
+        self.assertEqual(base._mutations[0].send.queue, queue)
+        self.assertEqual(base._mutations[0].send._pb.payload, _make_value_pb(payload))
+        self.assertEqual(base._mutations[0].send._pb.key, _make_list_value_pb(key))
+
+    def test_ack(self):
+        queue = "TestQueue"
+        key = [2]
+        session = mock.Mock()
+        base = self._make_one(session)
+        base.ack(queue=queue, key=key)
+        self.assertEqual(len(base._mutations), 1)
+        self.assertEqual(base._mutations[0].ack.queue, queue)
+        self.assertEqual(base._mutations[0].ack._pb.key, _make_list_value_pb(key))
 
 
 class TestBatch(unittest.IsolatedAsyncioTestCase):
