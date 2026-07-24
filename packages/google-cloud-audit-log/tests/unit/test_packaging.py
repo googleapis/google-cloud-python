@@ -15,6 +15,7 @@
 import os
 import subprocess
 import sys
+from importlib import metadata
 
 
 # See https://docs.pytest.org/en/stable/how-to/tmp_path.html#the-tmp-path-fixture
@@ -37,3 +38,15 @@ def test_namespace_package_compat(tmp_path):
     env = dict(os.environ, PYTHONPATH=str(tmp_path))
     cmd = [sys.executable, "-m", "google.cloud.othermod"]
     subprocess.check_call(cmd, env=env)
+
+
+def test_top_level_package_metadata_excludes_docs():
+    top_level = metadata.distribution("google-cloud-audit-log").read_text(
+        "top_level.txt"
+    )
+
+    assert top_level is not None
+    top_level_packages = set(top_level.splitlines())
+
+    assert "google" in top_level_packages
+    assert "docs" not in top_level_packages
