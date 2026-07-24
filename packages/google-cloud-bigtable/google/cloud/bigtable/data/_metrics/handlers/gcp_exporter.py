@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 
+import logging
 import time
 
 from google.api.distribution_pb2 import Distribution
@@ -44,6 +45,8 @@ from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
     OpenTelemetryMetricsHandler,
     _OpenTelemetryInstruments,
 )
+
+_LOGGER = logging.getLogger(__name__)
 
 # create OpenTelemetry views for Bigtable metrics
 # avoid reformatting into individual lines
@@ -180,7 +183,16 @@ class BigtableMetricsExporter(MetricExporter):
                                     ),
                                 },
                             )
-                            point = self._to_point(data_point)
+                            try:
+                                point = self._to_point(data_point)
+                            except Exception as e:
+                                _LOGGER.warning(
+                                    "Failed to convert data point for metric %s: %s",
+                                    metric.name,
+                                    e,
+                                    exc_info=True,
+                                )
+                                continue
                             series = TimeSeries(
                                 resource=monitored_resource,
                                 metric_kind=metric_kind,
@@ -198,9 +210,17 @@ class BigtableMetricsExporter(MetricExporter):
                             all_series.append(series)
         # send all metrics to Cloud Monitoring
         try:
+            _LOGGER.debug(
+                "Exporting %d time series to Cloud Monitoring for project %s",
+                len(all_series),
+                self.project_id,
+            )
             self._batch_write(all_series, deadline)
             return MetricExportResult.SUCCESS
-        except Exception:
+        except Exception as e:
+            _LOGGER.warning(
+                "Failed to export metrics to Cloud Monitoring: %s", e, exc_info=True
+            )
             return MetricExportResult.FAILURE
 
     def _batch_write(
@@ -221,12 +241,18 @@ class BigtableMetricsExporter(MetricExporter):
             # find time left for next batch
             timeout = deadline - time.time() if deadline else gapic_v1.method.DEFAULT
             # write next batch
+            batch = series[write_ind : write_ind + max_batch_size]
             self.client.create_service_time_series(
                 CreateTimeSeriesRequest(
                     name=f"projects/{self.project_id}",
-                    time_series=series[write_ind : write_ind + max_batch_size],
+                    time_series=batch,
                 ),
                 timeout=timeout,
+            )
+            _LOGGER.debug(
+                "Successfully wrote batch of %d time series to projects/%s",
+                len(batch),
+                self.project_id,
             )
             write_ind += max_batch_size
 
