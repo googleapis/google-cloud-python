@@ -29,6 +29,10 @@ def metrics_tracer():
     mock_attempt_latency = mock.create_autospec(Histogram, instance=True)
     mock_operation_counter = mock.create_autospec(Counter, instance=True)
     mock_operation_latency = mock.create_autospec(Histogram, instance=True)
+    mock_gfe_latency = mock.create_autospec(Histogram, instance=True)
+    mock_gfe_missing = mock.create_autospec(Counter, instance=True)
+    mock_afe_latency = mock.create_autospec(Histogram, instance=True)
+    mock_afe_missing = mock.create_autospec(Counter, instance=True)
     return MetricsTracer(
         enabled=True,
         instrument_attempt_latency=mock_attempt_latency,
@@ -36,6 +40,10 @@ def metrics_tracer():
         instrument_operation_latency=mock_operation_latency,
         instrument_operation_counter=mock_operation_counter,
         client_attributes={"project_id": "test_project"},
+        instrument_gfe_latency=mock_gfe_latency,
+        instrument_gfe_connectivity_error_count=mock_gfe_missing,
+        instrument_afe_latency=mock_afe_latency,
+        instrument_afe_connectivity_error_count=mock_afe_missing,
     )
 
 
@@ -235,7 +243,7 @@ def test_record_gfe_latency(metrics_tracer):
     assert mock_gfe_latency.record.call_args[1]["amount"] == 100
     assert (
         mock_gfe_latency.record.call_args[1]["attributes"]
-        == metrics_tracer.client_attributes
+        == metrics_tracer._create_attempt_otel_attributes()
     )
 
     # Test when tracing is disabled
@@ -245,22 +253,120 @@ def test_record_gfe_latency(metrics_tracer):
     metrics_tracer.enabled = True  # Reset for next test
 
 
-def test_record_gfe_missing_header_count(metrics_tracer):
-    mock_gfe_missing_header_count = mock.create_autospec(Counter, instance=True)
-    metrics_tracer._instrument_gfe_missing_header_count = mock_gfe_missing_header_count
+def test_record_gfe_connectivity_error_count(metrics_tracer):
+    mock_gfe_connectivity_error_count = mock.create_autospec(Counter, instance=True)
+    metrics_tracer._instrument_gfe_connectivity_error_count = (
+        mock_gfe_connectivity_error_count
+    )
     metrics_tracer.gfe_enabled = True  # Ensure GFE is enabled
 
     # Test when tracing is enabled
-    metrics_tracer.record_gfe_missing_header_count()
-    assert mock_gfe_missing_header_count.add.call_count == 1
-    assert mock_gfe_missing_header_count.add.call_args[1]["amount"] == 1
+    metrics_tracer.record_gfe_connectivity_error_count()
+    assert mock_gfe_connectivity_error_count.add.call_count == 1
+    assert mock_gfe_connectivity_error_count.add.call_args[1]["amount"] == 1
     assert (
-        mock_gfe_missing_header_count.add.call_args[1]["attributes"]
-        == metrics_tracer.client_attributes
+        mock_gfe_connectivity_error_count.add.call_args[1]["attributes"]
+        == metrics_tracer._create_attempt_otel_attributes()
     )
 
     # Test when tracing is disabled
     metrics_tracer.enabled = False
-    metrics_tracer.record_gfe_missing_header_count()
-    assert mock_gfe_missing_header_count.add.call_count == 1  # Should not increment
+    metrics_tracer.record_gfe_connectivity_error_count()
+    assert mock_gfe_connectivity_error_count.add.call_count == 1  # Should not increment
     metrics_tracer.enabled = True  # Reset for next test
+
+
+def test_extract_front_end_latencies():
+    # Valid trailing metadata list of tuples
+    metadata_list = [
+        ("server-timing", "gfet4t7; dur=123"),
+        ("server-timing", "afe; dur=100"),
+    ]
+    assert MetricsTracer.extract_front_end_latencies(metadata_list) == (123, 100)
+
+    # Valid metadata dict
+    metadata_dict = {"server-timing": "gfet4t7; dur=456"}
+    assert MetricsTracer.extract_front_end_latencies(metadata_dict) == (456, None)
+
+    # Missing header
+    assert MetricsTracer.extract_front_end_latencies([("other-header", "val")]) == (
+        None,
+        None,
+    )
+    assert MetricsTracer.extract_front_end_latencies(None) == (None, None)
+
+
+def test_record_front_end_metrics(metrics_tracer):
+    mock_gfe_latency = mock.create_autospec(Histogram, instance=True)
+    mock_gfe_missing = mock.create_autospec(Counter, instance=True)
+    mock_afe_latency = mock.create_autospec(Histogram, instance=True)
+    mock_afe_missing = mock.create_autospec(Counter, instance=True)
+    metrics_tracer._instrument_gfe_latency = mock_gfe_latency
+    metrics_tracer._instrument_gfe_connectivity_error_count = mock_gfe_missing
+    metrics_tracer._instrument_afe_latency = mock_afe_latency
+    metrics_tracer._instrument_afe_connectivity_error_count = mock_afe_missing
+    metrics_tracer.gfe_enabled = True
+
+    # With header
+    metrics_tracer.record_front_end_metrics(
+        [("server-timing", "gfet4t7; dur=88"), ("server-timing", "afe; dur=90")]
+    )
+    assert mock_gfe_latency.record.call_count == 1
+    assert mock_gfe_latency.record.call_args[1]["amount"] == 88
+    assert mock_gfe_missing.add.call_count == 0
+    assert mock_afe_latency.record.call_count == 1
+    assert mock_afe_latency.record.call_args[1]["amount"] == 90
+    assert mock_afe_missing.add.call_count == 0
+
+    # Without header
+    metrics_tracer.record_front_end_metrics([("other", "1")])
+    assert mock_gfe_latency.record.call_count == 1
+    assert mock_gfe_missing.add.call_count == 1
+    assert mock_afe_latency.record.call_count == 1
+    assert mock_afe_missing.add.call_count == 1
+
+
+def test_record_afe_latency(metrics_tracer):
+    mock_afe_latency = mock.create_autospec(Histogram, instance=True)
+    metrics_tracer._instrument_afe_latency = mock_afe_latency
+    metrics_tracer.gfe_enabled = True
+
+    metrics_tracer.record_afe_latency(100)
+    assert mock_afe_latency.record.call_count == 1
+    assert mock_afe_latency.record.call_args[1]["amount"] == 100
+    assert (
+        mock_afe_latency.record.call_args[1]["attributes"]
+        == metrics_tracer._create_attempt_otel_attributes()
+    )
+
+    with mock.patch.dict("os.environ", {"SPANNER_DISABLE_AFE_SERVER_TIMING": "true"}):
+        metrics_tracer.record_afe_latency(300)
+    assert mock_afe_latency.record.call_count == 1
+
+    metrics_tracer.enabled = False
+    metrics_tracer.record_afe_latency(200)
+    assert mock_afe_latency.record.call_count == 1
+    metrics_tracer.enabled = True
+
+
+def test_record_afe_connectivity_error_count(metrics_tracer):
+    mock_afe_missing = mock.create_autospec(Counter, instance=True)
+    metrics_tracer._instrument_afe_connectivity_error_count = mock_afe_missing
+    metrics_tracer.gfe_enabled = True
+
+    metrics_tracer.record_afe_connectivity_error_count()
+    assert mock_afe_missing.add.call_count == 1
+    assert mock_afe_missing.add.call_args[1]["amount"] == 1
+    assert (
+        mock_afe_missing.add.call_args[1]["attributes"]
+        == metrics_tracer._create_attempt_otel_attributes()
+    )
+
+    with mock.patch.dict("os.environ", {"SPANNER_DISABLE_AFE_SERVER_TIMING": "true"}):
+        metrics_tracer.record_afe_connectivity_error_count()
+    assert mock_afe_missing.add.call_count == 1
+
+    metrics_tracer.enabled = False
+    metrics_tracer.record_afe_connectivity_error_count()
+    assert mock_afe_missing.add.call_count == 1
+    metrics_tracer.enabled = True

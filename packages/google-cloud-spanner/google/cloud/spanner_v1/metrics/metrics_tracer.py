@@ -19,8 +19,10 @@ The MetricTracer class is responsible for collecting and tracing metrics,
 while the helper classes provide additional functionality and context for the metrics being traced.
 """
 
+import os
+import re
 from datetime import datetime
-from typing import Dict
+from typing import Any, Dict, Optional
 
 from grpc import StatusCode
 
@@ -183,7 +185,9 @@ class MetricsTracer:
     _instrument_operation_counter: "Counter"
     _instrument_operation_latency: "Histogram"
     _instrument_gfe_latency: "Histogram"
-    _instrument_gfe_missing_header_count: "Counter"
+    _instrument_gfe_connectivity_error_count: "Counter"
+    _instrument_afe_latency: "Histogram"
+    _instrument_afe_connectivity_error_count: "Counter"
     current_op: MetricOpTracer
     enabled: bool
     gfe_enabled: bool
@@ -197,6 +201,10 @@ class MetricsTracer:
         instrument_operation_latency: "Histogram",
         instrument_operation_counter: "Counter",
         client_attributes: Dict[str, str],
+        instrument_gfe_latency: "Histogram",
+        instrument_gfe_connectivity_error_count: "Counter",
+        instrument_afe_latency: "Histogram",
+        instrument_afe_connectivity_error_count: "Counter",
         gfe_enabled: bool = False,
     ):
         """
@@ -214,6 +222,10 @@ class MetricsTracer:
             instrument_operation_counter (Counter): Instrument for counting operations.
             client_attributes (Dict[str, str]): Dictionary of client attributes used for metrics tracing.
             gfe_enabled (bool, optional): Indicates if GFE metrics are enabled. Defaults to False.
+            instrument_gfe_latency (Histogram): Instrument for measuring GFE latency.
+            instrument_gfe_connectivity_error_count (Counter): Instrument for counting GFE connectivity errors.
+            instrument_afe_latency (Histogram): Instrument for measuring AFE latency.
+            instrument_afe_connectivity_error_count (Counter): Instrument for counting AFE connectivity errors.
         """
         self.current_op = MetricOpTracer()
         self._client_attributes = client_attributes
@@ -221,8 +233,16 @@ class MetricsTracer:
         self._instrument_attempt_counter = instrument_attempt_counter
         self._instrument_operation_latency = instrument_operation_latency
         self._instrument_operation_counter = instrument_operation_counter
+        self._instrument_gfe_latency = instrument_gfe_latency
+        self._instrument_gfe_connectivity_error_count = (
+            instrument_gfe_connectivity_error_count
+        )
+        self._instrument_afe_latency = instrument_afe_latency
+        self._instrument_afe_connectivity_error_count = (
+            instrument_afe_connectivity_error_count
+        )
         self.enabled = enabled
-        self.gfe_enabled = gfe_enabled
+        self.gfe_enabled = True
 
     @staticmethod
     def _get_ms_time_diff(start: datetime, end: datetime) -> float:
@@ -399,21 +419,142 @@ class MetricsTracer:
         Args:
             latency (int): The latency duration to be recorded.
         """
-        if not self.enabled or not HAS_OPENTELEMETRY_INSTALLED or not self.gfe_enabled:
+        if (
+            not self.enabled
+            or not HAS_OPENTELEMETRY_INSTALLED
+            or not getattr(self, "_instrument_gfe_latency", None)
+        ):
             return
         self._instrument_gfe_latency.record(
-            amount=latency, attributes=self.client_attributes
+            amount=latency, attributes=self._create_attempt_otel_attributes()
         )
 
-    def record_gfe_missing_header_count(self) -> None:
+    def record_gfe_connectivity_error_count(self) -> None:
         """
-        Increments the counter for missing GFE headers.
+        Increments the counter for GFE connectivity errors.
         """
-        if not self.enabled or not HAS_OPENTELEMETRY_INSTALLED or not self.gfe_enabled:
+        if (
+            not self.enabled
+            or not HAS_OPENTELEMETRY_INSTALLED
+            or not getattr(self, "_instrument_gfe_connectivity_error_count", None)
+        ):
             return
-        self._instrument_gfe_missing_header_count.add(
-            amount=1, attributes=self.client_attributes
+        self._instrument_gfe_connectivity_error_count.add(
+            amount=1, attributes=self._create_attempt_otel_attributes()
         )
+
+    def record_afe_latency(self, latency: int) -> None:
+        """
+        Records the AFE latency using the Histogram instrument.
+
+        Args:
+            latency (int): The latency duration to be recorded.
+        """
+        if (
+            not self.enabled
+            or not HAS_OPENTELEMETRY_INSTALLED
+            or not getattr(self, "_instrument_afe_latency", None)
+            or os.environ.get("SPANNER_DISABLE_AFE_SERVER_TIMING", "").lower() == "true"
+        ):
+            return
+        self._instrument_afe_latency.record(
+            amount=latency, attributes=self._create_attempt_otel_attributes()
+        )
+
+    def record_afe_connectivity_error_count(self) -> None:
+        """
+        Increments the counter for AFE connectivity errors.
+        """
+        if (
+            not self.enabled
+            or not HAS_OPENTELEMETRY_INSTALLED
+            or not getattr(self, "_instrument_afe_connectivity_error_count", None)
+            or os.environ.get("SPANNER_DISABLE_AFE_SERVER_TIMING", "").lower() == "true"
+        ):
+            return
+        self._instrument_afe_connectivity_error_count.add(
+            amount=1, attributes=self._create_attempt_otel_attributes()
+        )
+
+    @staticmethod
+    def extract_front_end_latencies(
+        metadata: Any,
+    ) -> tuple[Optional[int], Optional[int]]:
+        """
+        Extracts both GFE and AFE latency values (in milliseconds) from response metadata.
+        """
+        if not metadata:
+            return None, None
+
+        if isinstance(metadata, dict):
+            items = metadata.items()
+        elif isinstance(metadata, (list, tuple)):
+            items = [
+                item
+                for item in metadata
+                if isinstance(item, (list, tuple)) and len(item) == 2
+            ]
+        else:
+            items = []
+
+        header_vals = []
+        for key, val in items:
+            key_str = key.decode("utf-8") if isinstance(key, bytes) else str(key)
+            if key_str and key_str.lower() in ("server-timing", "server_timing"):
+                if isinstance(val, (list, tuple)):
+                    header_vals.extend(val)
+                else:
+                    header_vals.append(val)
+
+        gfe_latency = None
+        afe_latency = None
+
+        for header_val in header_vals:
+            if not header_val:
+                continue
+            if isinstance(header_val, bytes):
+                try:
+                    header_val = header_val.decode("utf-8")
+                except Exception:
+                    header_val = str(header_val)
+            elif not isinstance(header_val, str):
+                header_val = str(header_val)
+
+            if gfe_latency is None:
+                match = re.search(r"gfet4t7;\s*dur=([0-9.]+)", header_val)
+                if match:
+                    try:
+                        gfe_latency = int(float(match.group(1)))
+                    except ValueError:
+                        pass
+
+            if afe_latency is None:
+                match = re.search(r"afe(?:t4t7)?;\s*dur=([0-9.]+)", header_val)
+                if match:
+                    try:
+                        afe_latency = int(float(match.group(1)))
+                    except ValueError:
+                        pass
+
+        return gfe_latency, afe_latency
+
+    def record_front_end_metrics(self, metadata: Any) -> None:
+        """
+        Extracts and records both GFE and AFE metrics from the RPC response metadata.
+        """
+        if not self.enabled or not HAS_OPENTELEMETRY_INSTALLED:
+            return
+        gfe_latency, afe_latency = self.extract_front_end_latencies(metadata)
+
+        if gfe_latency is not None:
+            self.record_gfe_latency(gfe_latency)
+        else:
+            self.record_gfe_connectivity_error_count()
+
+        if afe_latency is not None:
+            self.record_afe_latency(afe_latency)
+        else:
+            self.record_afe_connectivity_error_count()
 
     def _create_operation_otel_attributes(self) -> dict:
         """

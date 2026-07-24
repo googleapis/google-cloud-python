@@ -48,16 +48,14 @@ from google.cloud.spanner_v1.types import (
 try:
     from opentelemetry.propagate import inject
     from opentelemetry.propagators.textmap import Setter
-    from opentelemetry.resourcedetector import gcp_resource_detector
-    from opentelemetry.resourcedetector.gcp_resource_detector import (
-        GoogleCloudResourceDetector,
-    )
+    from opentelemetry.resource.detector.gcp import GoogleCloudResourceDetector
+    from opentelemetry.resource.detector.gcp import _metadata as gcp_metadata
     from opentelemetry.semconv.resource import ResourceAttributes
 
     # Overwrite the requests timeout for the detector.
     # This is necessary as the client will wait the full timeout if the
     # code is not run in a GCP environment, with the location endpoints available.
-    gcp_resource_detector._TIMEOUT_SEC = 0.2
+    gcp_metadata._TIMEOUT = 0.2
 
     HAS_OPENTELEMETRY_INSTALLED = True
 except ImportError:
