@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/pandas-gbq/#history
 
+## [0.35.1](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.35.0...pandas-gbq-v0.35.1) (2026-07-24)
+
+
+### Features
+
+* **pandas-gbq:** add Ruff format session and implement mypy ([#17041](https://github.com/googleapis/google-cloud-python/issues/17041)) ([9065368](https://github.com/googleapis/google-cloud-python/commit/9065368d767d3d16347a109c23fd6d35c4fd3968))
+
+
+### Documentation
+
+* add project ID to pandas-gbq run sample ([#17692](https://github.com/googleapis/google-cloud-python/issues/17692)) ([bd5d1a4](https://github.com/googleapis/google-cloud-python/commit/bd5d1a4b100cd1d22fc19da75d07a0b47396edd3))
+
 ## [0.35.0](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.34.1...pandas-gbq-v0.35.0) (2026-04-09)
 
 
