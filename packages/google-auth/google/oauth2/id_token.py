@@ -151,7 +151,7 @@ def verify_token(
 
         signing_key = None
         for key in jwkset.keys:
-            if key.key_id == kid:
+            if kid and key.key_id == kid and key.public_key_use in ("sig", None):
                 signing_key = key
                 break
 

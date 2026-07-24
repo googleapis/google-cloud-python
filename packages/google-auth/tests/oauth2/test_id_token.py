@@ -95,8 +95,9 @@ def test_verify_token_jwk(decode, get_unverified_header, py_jwk_set, _fetch_cert
     _fetch_certs.return_value = data
     get_unverified_header.return_value = {"kid": "mock-kid"}
 
-    mock_key = mock.Mock()
+    mock_key = mock.MagicMock()
     mock_key.key_id = "mock-kid"
+    mock_key.public_key_use = "sig"
     mock_key.key = mock.sentinel.key
     mock_key.algorithm_name = "mock-alg"
     py_jwk_set.from_dict.return_value.keys = [mock_key]
