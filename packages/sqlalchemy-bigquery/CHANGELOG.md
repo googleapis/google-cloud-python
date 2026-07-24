@@ -8,6 +8,15 @@ Older versions of this project were distributed as [pybigquery][0].
 
 [1]: https://pypi.org/project/sqlalchemy-bigquery/#history
 
+## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-bigquery-v1.17.0...sqlalchemy-bigquery-v1.17.1) (2026-07-22)
+
+
+### Bug Fixes
+
+* sqlalchemy bigquery python 3.15 compat ([#17788](https://github.com/googleapis/google-cloud-python/issues/17788)) ([14447fb](https://github.com/googleapis/google-cloud-python/commit/14447fb9edcd4b7e0680d82399af289b1145d6ed)), closes [#17786](https://github.com/googleapis/google-cloud-python/issues/17786)
+* **sqlalchemy-bigquery:** update literal binds test for SQLAlchemy 2.0 ([#17029](https://github.com/googleapis/google-cloud-python/issues/17029)) ([74f7a41](https://github.com/googleapis/google-cloud-python/commit/74f7a41fc957f4b8e1de91b193c756b6a99637e4))
+* **sqlalchemy-bigquery:** wrap string in WKT in geography system tests ([#17780](https://github.com/googleapis/google-cloud-python/issues/17780)) ([26d43c1](https://github.com/googleapis/google-cloud-python/commit/26d43c1fd820e058dd016084be2bdb459c288aff))
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-bigquery-v1.16.0...sqlalchemy-bigquery-v1.17.0) (2026-05-06)
 
 

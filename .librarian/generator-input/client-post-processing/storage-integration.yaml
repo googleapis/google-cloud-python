@@ -640,7 +640,7 @@ replacements:
       packages/google-cloud-storage/testing/constraints-3.10.txt
     ]
     before: |
-      google-api-core==2.24.2
+      google-api-core==2.25.0
       google-auth==2.14.1
       grpcio==1.59.0
       proto-plus==1.26.1
@@ -804,4 +804,19 @@ replacements:
           # TODO(https://github.com/googleapis/google-cloud-python/issues/13362):
           # Enable mypy once this repo has been updated for mypy evaluation.
           session.skip("Skip mypy since this library is not yet updated for mypy evaluation")
+
+          session.install("-e", ".")
+          session.install(
+              "mypy",
+              "types-setuptools",
+              "types-protobuf",
+              "types-requests",
+          )
+          session.run(
+              "mypy",
+              f"--config-file={MYPY_CONFIG_FILE}",
+              "-p",
+              "google",
+              *session.posargs,
+          )
     count: 1

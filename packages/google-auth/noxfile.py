@@ -20,6 +20,17 @@ import shutil
 import nox
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 CLICK_VERSION = "click"
 BLACK_VERSION = "black==23.7.0"
@@ -155,7 +166,16 @@ def mypy(session):
         "types-mock",
         "pytest<8.0.0",
     )
-    session.run("mypy", "-p", "google", "-p", "tests", "-p", "tests_async")
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "google",
+        "-p",
+        "tests",
+        "-p",
+        "tests_async",
+    )
 
 
 @nox.session(python=ALL_PYTHON)

@@ -97,7 +97,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -107,31 +106,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.CreateInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseCloudRedisRestTransport._BaseCreateInstance._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseDeleteInstance:
         def __hash__(self):  # pragma: NO COVER
@@ -143,7 +117,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -152,22 +125,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.DeleteInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseCloudRedisRestTransport._BaseDeleteInstance._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseExportInstance:
         def __hash__(self):  # pragma: NO COVER
@@ -179,7 +136,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -189,31 +145,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.ExportInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseCloudRedisRestTransport._BaseExportInstance._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseFailoverInstance:
         def __hash__(self):  # pragma: NO COVER
@@ -225,7 +156,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -235,31 +165,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.FailoverInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseCloudRedisRestTransport._BaseFailoverInstance._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseGetInstance:
         def __hash__(self):  # pragma: NO COVER
@@ -271,7 +176,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -280,22 +184,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.GetInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseCloudRedisRestTransport._BaseGetInstance._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseGetInstanceAuthString:
         def __hash__(self):  # pragma: NO COVER
@@ -307,7 +195,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -316,22 +203,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.GetInstanceAuthStringRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseImportInstance:
         def __hash__(self):  # pragma: NO COVER
@@ -343,7 +214,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -353,31 +223,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.ImportInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseCloudRedisRestTransport._BaseImportInstance._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseListInstances:
         def __hash__(self):  # pragma: NO COVER
@@ -389,7 +234,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -398,22 +242,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.ListInstancesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseCloudRedisRestTransport._BaseListInstances._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseRescheduleMaintenance:
         def __hash__(self):  # pragma: NO COVER
@@ -425,7 +253,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -435,31 +262,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.RescheduleMaintenanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseUpdateInstance:
         def __hash__(self):  # pragma: NO COVER
@@ -471,7 +273,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -481,31 +282,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.UpdateInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseCloudRedisRestTransport._BaseUpdateInstance._get_unset_required_fields(query_params))
-
-            return query_params
 
     class _BaseUpgradeInstance:
         def __hash__(self):  # pragma: NO COVER
@@ -517,7 +293,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
-
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -528,32 +303,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.UpgradeInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(_BaseCloudRedisRestTransport._BaseUpgradeInstance._get_unset_required_fields(query_params))
-
-            return query_params
-
     class _BaseGetLocation:
+        """Base class for GetLocation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -566,19 +317,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseListLocations:
+        """Base class for ListLocations REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -591,19 +331,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseCancelOperation:
+        """Base class for CancelOperation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -616,19 +345,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseDeleteOperation:
+        """Base class for DeleteOperation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -641,19 +359,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseGetOperation:
+        """Base class for GetOperation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -666,19 +373,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseListOperations:
+        """Base class for ListOperations REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -691,19 +387,8 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             ]
             return http_options
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
-
     class _BaseWaitOperation:
+        """Base class for WaitOperation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -716,22 +401,6 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
             },
             ]
             return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            body = json.dumps(transcoded_request['body'])
-            return body
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
 
 
 __all__=(
