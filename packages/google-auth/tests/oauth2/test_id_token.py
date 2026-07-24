@@ -86,24 +86,32 @@ def test_verify_token(_fetch_certs, decode):
 
 
 @mock.patch("google.oauth2.id_token._fetch_certs", autospec=True)
-@mock.patch("jwt.PyJWKClient", autospec=True)
+@mock.patch("jwt.api_jwk.PyJWKSet", autospec=True)
+@mock.patch("jwt.get_unverified_header", autospec=True)
 @mock.patch("jwt.decode", autospec=True)
-def test_verify_token_jwk(decode, py_jwk, _fetch_certs):
+def test_verify_token_jwk(decode, get_unverified_header, py_jwk_set, _fetch_certs):
     certs_url = "abc123"
     data = {"keys": [{"alg": "RS256"}]}
     _fetch_certs.return_value = data
+    get_unverified_header.return_value = {"kid": "mock-kid"}
+
+    mock_key = mock.Mock()
+    mock_key.key_id = "mock-kid"
+    mock_key.key = mock.sentinel.key
+    mock_key.algorithm_name = "mock-alg"
+    py_jwk_set.from_dict.return_value.keys = [mock_key]
     result = id_token.verify_token(
         mock.sentinel.token, mock.sentinel.request, certs_url=certs_url
     )
     assert result == decode.return_value
-    py_jwk.assert_called_once_with(certs_url)
-    signing_key = py_jwk.return_value.get_signing_key_from_jwt
+    py_jwk_set.from_dict.assert_called_once_with(data)
+    get_unverified_header.assert_called_once_with(mock.sentinel.token)
+
     _fetch_certs.assert_called_once_with(mock.sentinel.request, certs_url)
-    signing_key.assert_called_once_with(mock.sentinel.token)
     decode.assert_called_once_with(
         mock.sentinel.token,
-        signing_key.return_value.key,
-        algorithms=[signing_key.return_value.algorithm_name],
+        mock.sentinel.key,
+        algorithms=["mock-alg"],
         audience=None,
     )
 

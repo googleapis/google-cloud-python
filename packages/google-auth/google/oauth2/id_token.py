@@ -124,7 +124,7 @@ def verify_token(
             intended for. If None then the audience is not verified.
         certs_url (str): The URL that specifies the certificates to use to
             verify the token. This URL should return JSON in the format of
-            ``{'key id': 'x509 certificate'}`` or a certificate array according to
+            ``{'key id': 'x509 certificate'}`` or a JWK Set according to
             the JWK spec (see https://tools.ietf.org/html/rfc7517).
         clock_skew_in_seconds (int): The clock skew used for `iat` and `exp`
             validation.
@@ -132,17 +132,32 @@ def verify_token(
     Returns:
         Mapping[str, Any]: The decoded token.
     """
+    if isinstance(id_token, bytes):
+        id_token = id_token.decode("utf-8")
+
     certs = _fetch_certs(request, certs_url)
 
     if "keys" in certs:
         try:
-            import jwt as jwt_lib  # type: ignore
+            import jwt as jwt_lib
+            from jwt.api_jwk import PyJWKSet
         except ImportError as caught_exc:  # pragma: NO COVER
             raise ImportError(
                 "The pyjwt library is not installed, please install the pyjwt package to use the jwk certs format."
             ) from caught_exc
-        jwks_client = jwt_lib.PyJWKClient(certs_url)
-        signing_key = jwks_client.get_signing_key_from_jwt(id_token)
+        jwkset = PyJWKSet.from_dict(certs)
+        header = jwt_lib.get_unverified_header(id_token)
+        kid = header.get("kid")
+
+        signing_key = None
+        for key in jwkset.keys:
+            if key.key_id == kid:
+                signing_key = key
+                break
+
+        if signing_key is None:
+            raise ValueError("Token has an invalid kid")
+
         return jwt_lib.decode(
             id_token,
             signing_key.key,
