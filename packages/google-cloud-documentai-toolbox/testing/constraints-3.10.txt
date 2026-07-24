@@ -6,7 +6,7 @@
 # then this file should have google-cloud-foo==1.14.0
 google-api-core==2.15.0
 pandas==2.0.0
-pyarrow==15.0.0
+pyarrow==23.0.1
 tabulate==0.9.0
 proto-plus==1.22.3
 grpc-google-iam-v1==0.12.6
