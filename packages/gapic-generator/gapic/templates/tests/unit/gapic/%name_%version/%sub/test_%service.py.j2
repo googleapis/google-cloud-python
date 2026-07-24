@@ -124,7 +124,6 @@ def disable_mtls_env():
         yield
 
 
-
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
