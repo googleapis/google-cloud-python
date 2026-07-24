@@ -7,7 +7,7 @@
 # Then this file should have foo==1.14.0
 google-cloud-datastore==2.16.0
 google-api-core==2.11.0
-protobuf==4.25.8
+protobuf==6.33.5
 pymemcache==2.1.0
 redis==3.0.0
 pytz==2022.1

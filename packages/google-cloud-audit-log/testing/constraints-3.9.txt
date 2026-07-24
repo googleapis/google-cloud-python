@@ -31,5 +31,5 @@
 # Pin the version to the lower bound.
 # e.g., if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have google-cloud-foo==1.14.0
-protobuf==4.25.8
+protobuf==6.33.5
 googleapis-common-protos==1.63.2

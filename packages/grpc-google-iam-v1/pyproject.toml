@@ -42,7 +42,7 @@ classifiers = [
 dependencies = [
   "grpcio >= 1.44.0, < 2.0.0",
   "googleapis-common-protos[grpc] >= 1.63.2, < 2.0.0",
-  "protobuf >= 4.25.8, < 8.0.0",
+  "protobuf >= 6.33.5, < 8.0.0",
 ]
 
 [project.urls]

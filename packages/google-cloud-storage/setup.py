@@ -67,10 +67,10 @@ extras = {
         "grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
         "proto-plus >= 1.22.3, <2.0.0; python_version < '3.13'",
         "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
-        "protobuf >= 4.25.8, < 8.0.0",
+        "protobuf >= 6.33.5, < 8.0.0",
         "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
     ],
-    "protobuf": ["protobuf >= 3.20.2, < 7.0.0"],
+    "protobuf": ["protobuf >= 6.33.5, < 8.0.0"],
     "tracing": [
         "opentelemetry-api >= 1.1.0, < 2.0.0",
     ],
