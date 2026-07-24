@@ -12,14 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 from unittest import mock
 
 from ..helpers import make_connection
-
-from .helpers import _Base
-from .helpers import _make_client
-
-import datetime
+from .helpers import _Base, _make_client
 
 
 class TestCopyJobConfig(_Base):
@@ -43,9 +40,11 @@ class TestCopyJobConfig(_Base):
         assert config.operation_type == OperationType.OPERATION_TYPE_UNSPECIFIED
 
     def test_ctor_w_properties(self):
-        from google.cloud.bigquery.job import CreateDisposition
-        from google.cloud.bigquery.job import OperationType
-        from google.cloud.bigquery.job import WriteDisposition
+        from google.cloud.bigquery.job import (
+            CreateDisposition,
+            OperationType,
+            WriteDisposition,
+        )
 
         create_disposition = CreateDisposition.CREATE_NEVER
         write_disposition = WriteDisposition.WRITE_TRUNCATE
@@ -382,10 +381,11 @@ class TestCopyJob(_Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
-        from google.cloud.bigquery.job import CopyJobConfig
-
-        from google.cloud.bigquery.job import CreateDisposition
-        from google.cloud.bigquery.job import WriteDisposition
+        from google.cloud.bigquery.job import (
+            CopyJobConfig,
+            CreateDisposition,
+            WriteDisposition,
+        )
 
         PATH = "/projects/%s/jobs" % (self.PROJECT,)
         RESOURCE = self._make_resource(ended=True)

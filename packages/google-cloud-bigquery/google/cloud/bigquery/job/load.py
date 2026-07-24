@@ -15,22 +15,21 @@
 """Classes for load jobs."""
 
 import typing
-from typing import FrozenSet, List, Iterable, Optional, Union
+from typing import FrozenSet, Iterable, List, Optional, Union
 
+from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery.enums import SourceColumnMatch
 from google.cloud.bigquery.external_config import HivePartitioningOptions
 from google.cloud.bigquery.format_options import ParquetOptions
-from google.cloud.bigquery import _helpers
-from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.schema import _to_schema_fields
-from google.cloud.bigquery.table import RangePartitioning
-from google.cloud.bigquery.table import TableReference
-from google.cloud.bigquery.table import TimePartitioning
-from google.cloud.bigquery.job.base import _AsyncJob
-from google.cloud.bigquery.job.base import _JobConfig
-from google.cloud.bigquery.job.base import _JobReference
+from google.cloud.bigquery.job.base import _AsyncJob, _JobConfig, _JobReference
 from google.cloud.bigquery.query import ConnectionProperty
+from google.cloud.bigquery.schema import SchemaField, _to_schema_fields
+from google.cloud.bigquery.table import (
+    RangePartitioning,
+    TableReference,
+    TimePartitioning,
+)
 
 
 class ColumnNameCharacterMap:

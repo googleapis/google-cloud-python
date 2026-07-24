@@ -18,8 +18,8 @@ import freezegun
 import google.api_core.exceptions
 from google.cloud.bigquery import job as bqjob
 from google.cloud.bigquery.retry import DEFAULT_RETRY
-from .helpers import make_connection
 
+from .helpers import make_connection
 
 PROJECT = "test-project"
 

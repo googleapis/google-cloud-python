@@ -14,10 +14,9 @@
 
 from unittest import mock
 
-import pytest
-
 import google.cloud.bigquery.client
 import google.cloud.bigquery.dataset
+import pytest
 
 
 def make_connection(*responses):

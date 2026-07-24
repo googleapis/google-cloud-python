@@ -16,9 +16,7 @@
 from typing import Any
 
 import packaging.version
-
 from google.cloud.bigquery import exceptions
-
 
 _MIN_PYARROW_VERSION = packaging.version.Version("3.0.0")
 _MIN_BQ_STORAGE_VERSION = packaging.version.Version("2.0.0")
@@ -247,3 +245,45 @@ SUPPORTS_RANGE_PYARROW = (
     and PYARROW_VERSIONS.try_import() is not None
     and PYARROW_VERSIONS.installed_version >= _MIN_PYARROW_VERSION_RANGE
 )
+
+
+class PandasGBQVersions:
+    """Version and delegation comparisons for pandas-gbq package."""
+
+    def __init__(self):
+        self._installed_version = None
+        self._delegation_api_version = None
+
+    @property
+    def installed_version(self) -> packaging.version.Version:
+        """Return the parsed version of pandas-gbq"""
+        if self._installed_version is not None:
+            return self._installed_version
+
+        try:
+            import pandas_gbq  # type: ignore
+
+            return packaging.version.parse(getattr(pandas_gbq, "__version__", "0.0.0"))
+        except Exception:
+            return packaging.version.parse("0.0.0")
+
+    @property
+    def delegation_api_version(self) -> int:
+        """Return the delegation API version of pandas-gbq if installed, otherwise 0."""
+        if self._delegation_api_version is not None:
+            return self._delegation_api_version
+
+        try:
+            import pandas_gbq  # type: ignore
+
+            return int(getattr(pandas_gbq, "_internal_delegation_api_version", 0))
+        except Exception:
+            return 0
+
+    @property
+    def is_delegation_supported(self) -> bool:
+        """True if the installed pandas-gbq version supports query delegation API (version >= 1)."""
+        return self.delegation_api_version >= 1
+
+
+PANDAS_GBQ_VERSIONS = PandasGBQVersions()

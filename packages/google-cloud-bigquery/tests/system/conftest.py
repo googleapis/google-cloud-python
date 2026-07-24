@@ -19,11 +19,10 @@ from typing import Tuple
 
 import pytest
 import test_utils.prefixer
-
 from google.cloud import bigquery
 from google.cloud.bigquery import enums
-from . import helpers
 
+from . import helpers
 
 prefixer = test_utils.prefixer.Prefixer("python-bigquery", "tests/system")
 

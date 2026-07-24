@@ -16,18 +16,15 @@ import datetime
 import re
 from unittest import mock
 
-import pytest
-
+import freezegun
 import google.api_core.exceptions
 import google.api_core.retry
-import freezegun
-import requests.exceptions
-
-from google.cloud.bigquery import _job_helpers
 import google.cloud.bigquery.retry
+import pytest
+import requests.exceptions
+from google.cloud.bigquery import _job_helpers
 
 from .helpers import make_client, make_connection
-
 
 _RETRY_NOT_FOUND = {
     "job_retry": google.api_core.retry.Retry(
@@ -635,9 +632,9 @@ def test_query_and_wait_retries_job_for_DDL_queries(global_time_lock):
     ],
 )
 def test_retry_load_job_result(result_retry_param, PROJECT, DS_ID):
+    import google.cloud.bigquery.retry
     from google.cloud.bigquery.dataset import DatasetReference
     from google.cloud.bigquery.job.load import LoadJob
-    import google.cloud.bigquery.retry
 
     client = make_client()
     conn = client._connection = make_connection(

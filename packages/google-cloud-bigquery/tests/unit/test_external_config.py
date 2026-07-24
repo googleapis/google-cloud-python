@@ -14,14 +14,12 @@
 
 import base64
 import copy
-from typing import Any, Dict, Optional
 import unittest
-
-from google.cloud.bigquery import external_config
-from google.cloud.bigquery import schema
-from google.cloud.bigquery.enums import SourceColumnMatch
+from typing import Any, Dict, Optional
 
 import pytest
+from google.cloud.bigquery import external_config, schema
+from google.cloud.bigquery.enums import SourceColumnMatch
 
 
 class TestExternalConfig(unittest.TestCase):

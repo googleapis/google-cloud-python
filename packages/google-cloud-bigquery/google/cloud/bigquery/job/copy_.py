@@ -17,13 +17,10 @@
 import typing
 from typing import Optional
 
-from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery import _helpers
+from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
+from google.cloud.bigquery.job.base import _AsyncJob, _JobConfig, _JobReference
 from google.cloud.bigquery.table import TableReference
-
-from google.cloud.bigquery.job.base import _AsyncJob
-from google.cloud.bigquery.job.base import _JobConfig
-from google.cloud.bigquery.job.base import _JobReference
 
 
 class OperationType:

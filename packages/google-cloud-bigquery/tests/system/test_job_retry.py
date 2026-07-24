@@ -35,7 +35,7 @@ def test_query_retry_539(bigquery_client, dataset_id, job_retry_on_query):
     See: https://github.com/googleapis/python-bigquery/issues/539
     """
     from google.api_core import exceptions
-    from google.api_core.retry import if_exception_type, Retry
+    from google.api_core.retry import Retry, if_exception_type
 
     table_name = f"{dataset_id}.t539"
 

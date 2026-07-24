@@ -20,22 +20,18 @@ https://github.com/googleapis/python-bigquery-pandas/blob/main/pandas_gbq/schema
 """
 
 import concurrent.futures
-from datetime import datetime
 import functools
-from itertools import islice
 import logging
 import queue
 import threading
 import time
 import warnings
-from typing import Any, Union, Optional, Callable, Generator, List
+from datetime import datetime
+from itertools import islice
+from typing import Any, Callable, Generator, List, Optional, Union
 
-
-from google.cloud.bigquery import _pyarrow_helpers
-from google.cloud.bigquery import _versions_helpers
+from google.cloud.bigquery import _pyarrow_helpers, _versions_helpers, schema
 from google.cloud.bigquery import retry as bq_retry
-from google.cloud.bigquery import schema
-
 
 try:
     import pandas  # type: ignore

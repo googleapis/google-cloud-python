@@ -22,7 +22,6 @@ See `PEP-249`_ for details.
 
 import datetime
 
-
 Date = datetime.date
 Time = datetime.time
 Timestamp = datetime.datetime

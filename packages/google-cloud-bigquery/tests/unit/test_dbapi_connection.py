@@ -13,9 +13,10 @@
 #  limitations under the License.
 
 import gc
-import pytest
 import unittest
 from unittest import mock
+
+import pytest
 
 
 class TestConnection(unittest.TestCase):
@@ -77,8 +78,7 @@ class TestConnection(unittest.TestCase):
 
     @mock.patch("google.cloud.bigquery.Client", autospec=True)
     def test_connect_wo_client(self, mock_client):
-        from google.cloud.bigquery.dbapi import connect
-        from google.cloud.bigquery.dbapi import Connection
+        from google.cloud.bigquery.dbapi import Connection, connect
 
         connection = connect()
         self.assertIsInstance(connection, Connection)
@@ -87,8 +87,7 @@ class TestConnection(unittest.TestCase):
 
     def test_connect_w_client(self):
         pytest.importorskip("google.cloud.bigquery_storage")
-        from google.cloud.bigquery.dbapi import connect
-        from google.cloud.bigquery.dbapi import Connection
+        from google.cloud.bigquery.dbapi import Connection, connect
 
         mock_client = self._mock_client()
         mock_bqstorage_client = self._mock_bqstorage_client()
@@ -103,8 +102,7 @@ class TestConnection(unittest.TestCase):
 
     def test_connect_w_both_clients(self):
         pytest.importorskip("google.cloud.bigquery_storage")
-        from google.cloud.bigquery.dbapi import connect
-        from google.cloud.bigquery.dbapi import Connection
+        from google.cloud.bigquery.dbapi import Connection, connect
 
         mock_client = self._mock_client()
         mock_bqstorage_client = self._mock_bqstorage_client()
@@ -124,8 +122,7 @@ class TestConnection(unittest.TestCase):
 
     def test_connect_prefer_bqstorage_client_false(self):
         pytest.importorskip("google.cloud.bigquery_storage")
-        from google.cloud.bigquery.dbapi import connect
-        from google.cloud.bigquery.dbapi import Connection
+        from google.cloud.bigquery.dbapi import Connection, connect
 
         mock_client = self._mock_client()
         mock_bqstorage_client = self._mock_bqstorage_client()

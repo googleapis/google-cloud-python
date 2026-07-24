@@ -15,9 +15,8 @@
 import datetime
 import unittest
 
-import pytest
-
 import google.cloud._helpers
+import pytest
 from google.cloud.bigquery.dbapi import types
 
 

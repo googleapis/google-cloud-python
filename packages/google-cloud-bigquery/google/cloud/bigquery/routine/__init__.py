@@ -16,13 +16,14 @@
 
 
 from google.cloud.bigquery.enums import DeterminismLevel
-from google.cloud.bigquery.routine.routine import Routine
-from google.cloud.bigquery.routine.routine import RoutineArgument
-from google.cloud.bigquery.routine.routine import RoutineReference
-from google.cloud.bigquery.routine.routine import RoutineType
-from google.cloud.bigquery.routine.routine import RemoteFunctionOptions
-from google.cloud.bigquery.routine.routine import ExternalRuntimeOptions
-
+from google.cloud.bigquery.routine.routine import (
+    ExternalRuntimeOptions,
+    RemoteFunctionOptions,
+    Routine,
+    RoutineArgument,
+    RoutineReference,
+    RoutineType,
+)
 
 __all__ = (
     "DeterminismLevel",

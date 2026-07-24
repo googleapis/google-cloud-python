@@ -17,19 +17,22 @@
 import warnings
 
 from .types.encryption_config import EncryptionConfiguration
-from .types.model import DeleteModelRequest
-from .types.model import GetModelRequest
-from .types.model import ListModelsRequest
-from .types.model import ListModelsResponse
-from .types.model import Model
-from .types.model import PatchModelRequest
+from .types.model import (
+    DeleteModelRequest,
+    GetModelRequest,
+    ListModelsRequest,
+    ListModelsResponse,
+    Model,
+    PatchModelRequest,
+)
 from .types.model_reference import ModelReference
-from .types.standard_sql import StandardSqlDataType
-from .types.standard_sql import StandardSqlField
-from .types.standard_sql import StandardSqlStructType
-from .types.standard_sql import StandardSqlTableType
+from .types.standard_sql import (
+    StandardSqlDataType,
+    StandardSqlField,
+    StandardSqlStructType,
+    StandardSqlTableType,
+)
 from .types.table_reference import TableReference
-
 
 _LEGACY_MSG = (
     "Legacy proto-based types from bigquery_v2 are not maintained anymore, "

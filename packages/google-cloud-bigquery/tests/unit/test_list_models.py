@@ -13,9 +13,9 @@
 # limitations under the License.
 
 import pytest
-
 from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
-from .helpers import make_connection, dataset_polymorphic
+
+from .helpers import dataset_polymorphic, make_connection
 
 
 def test_list_models_empty_w_timeout(client, PROJECT, DS_ID):

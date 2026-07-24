@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from unittest import mock
 import datetime
 import decimal
+from unittest import mock
 
 import pytest
-
 from google.cloud import bigquery
 
 pandas = pytest.importorskip("pandas")

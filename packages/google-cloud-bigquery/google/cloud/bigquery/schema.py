@@ -15,15 +15,13 @@
 """Schemas for BigQuery tables / queries."""
 
 from __future__ import annotations
+
 import enum
 import typing
-from typing import Any, cast, Dict, Iterable, Optional, Union, Sequence
+from typing import Any, Dict, Iterable, Optional, Sequence, Union, cast
 
-from google.cloud.bigquery import _helpers
-from google.cloud.bigquery import standard_sql
-from google.cloud.bigquery import enums
+from google.cloud.bigquery import _helpers, enums, standard_sql
 from google.cloud.bigquery.enums import StandardSqlTypeNames
-
 
 _STRUCT_TYPES = ("RECORD", "STRUCT")
 

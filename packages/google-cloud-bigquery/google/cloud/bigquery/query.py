@@ -14,18 +14,19 @@
 
 """BigQuery query processing."""
 
-from collections import OrderedDict
 import copy
 import datetime
 import decimal
-from typing import Any, cast, Optional, Dict, Union
+from collections import OrderedDict
+from typing import Any, Dict, Optional, Union, cast
 
-from google.cloud.bigquery.table import _parse_schema_resource
 from google.cloud.bigquery import _helpers
-from google.cloud.bigquery._helpers import _rows_from_json
-from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_PARAM
-from google.cloud.bigquery._helpers import _SUPPORTED_RANGE_ELEMENTS
-
+from google.cloud.bigquery._helpers import (
+    _SCALAR_VALUE_TO_JSON_PARAM,
+    _SUPPORTED_RANGE_ELEMENTS,
+    _rows_from_json,
+)
+from google.cloud.bigquery.table import _parse_schema_resource
 
 _SCALAR_VALUE_TYPE = Optional[
     Union[str, int, float, decimal.Decimal, bool, datetime.datetime, datetime.date]

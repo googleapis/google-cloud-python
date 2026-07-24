@@ -21,7 +21,6 @@ from __future__ import annotations
 import re
 from typing import TypedDict, Union
 
-
 ParsedDatasetReference = TypedDict(
     "ParsedDatasetReference",
     {

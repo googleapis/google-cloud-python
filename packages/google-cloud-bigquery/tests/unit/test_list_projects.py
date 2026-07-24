@@ -15,8 +15,8 @@
 from unittest import mock
 
 import pytest
-
 from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
+
 from .helpers import make_connection
 
 

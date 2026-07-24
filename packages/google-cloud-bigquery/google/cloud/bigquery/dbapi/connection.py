@@ -17,8 +17,7 @@
 import weakref
 
 from google.cloud import bigquery
-from google.cloud.bigquery.dbapi import cursor
-from google.cloud.bigquery.dbapi import _helpers
+from google.cloud.bigquery.dbapi import _helpers, cursor
 
 
 @_helpers.raise_on_closed("Operating on a closed connection.")

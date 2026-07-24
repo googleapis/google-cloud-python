@@ -111,8 +111,8 @@ class Test_should_retry(unittest.TestCase):
 
 
 def test_DEFAULT_JOB_RETRY_predicate():
-    from google.cloud.bigquery.retry import DEFAULT_JOB_RETRY
     from google.api_core.exceptions import ClientError
+    from google.cloud.bigquery.retry import DEFAULT_JOB_RETRY
 
     assert not DEFAULT_JOB_RETRY._predicate(TypeError())
     assert not DEFAULT_JOB_RETRY._predicate(ClientError("fail"))
@@ -137,8 +137,8 @@ def test_DEFAULT_JOB_RETRY_deadline():
 
 def test_DEFAULT_JOB_RETRY_job_rate_limit_exceeded_retry_predicate():
     """Tests the retry predicate specifically for jobRateLimitExceeded."""
-    from google.cloud.bigquery.retry import DEFAULT_JOB_RETRY
     from google.api_core.exceptions import ClientError
+    from google.cloud.bigquery.retry import DEFAULT_JOB_RETRY
 
     # Non-ClientError exceptions should never trigger a retry
     assert not DEFAULT_JOB_RETRY._predicate(TypeError())

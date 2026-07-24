@@ -16,9 +16,7 @@ import json
 from unittest import mock
 
 from ..helpers import make_connection
-
-from .helpers import _Base
-from .helpers import _make_client
+from .helpers import _Base, _make_client
 
 
 class TestExtractJobConfig(_Base):
@@ -306,9 +304,11 @@ class TestExtractJob(_Base):
 
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.dataset import DatasetReference
-        from google.cloud.bigquery.job import Compression
-        from google.cloud.bigquery.job import DestinationFormat
-        from google.cloud.bigquery.job import ExtractJobConfig
+        from google.cloud.bigquery.job import (
+            Compression,
+            DestinationFormat,
+            ExtractJobConfig,
+        )
 
         PATH = "/projects/%s/jobs" % (self.PROJECT,)
         RESOURCE = self._make_resource(ended=True)

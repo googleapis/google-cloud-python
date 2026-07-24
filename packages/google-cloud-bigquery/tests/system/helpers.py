@@ -19,7 +19,6 @@ import uuid
 
 import google.api_core.exceptions
 import test_utils.retry
-
 from google.cloud._helpers import UTC
 
 _naive = datetime.datetime(2016, 12, 5, 12, 41, 9)

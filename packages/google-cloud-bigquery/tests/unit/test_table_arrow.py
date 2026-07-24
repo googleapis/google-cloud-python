@@ -12,11 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
-
-from google.cloud import bigquery
 import google.cloud.bigquery.table
-
+import pytest
+from google.cloud import bigquery
 
 pytest.importorskip("numpy")
 pytest.importorskip("pyarrow", minversion="3.0.0")

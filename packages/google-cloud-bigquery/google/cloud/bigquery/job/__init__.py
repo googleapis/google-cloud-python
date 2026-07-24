@@ -14,41 +14,42 @@
 
 """Define API Jobs."""
 
-from google.cloud.bigquery.job.base import _AsyncJob
-from google.cloud.bigquery.job.base import _error_result_to_exception
-from google.cloud.bigquery.job.base import _DONE_STATE
-from google.cloud.bigquery.job.base import _JobConfig
-from google.cloud.bigquery.job.base import _JobReference
-from google.cloud.bigquery.job.base import ReservationUsage
-from google.cloud.bigquery.job.base import ScriptStatistics
-from google.cloud.bigquery.job.base import ScriptStackFrame
-from google.cloud.bigquery.job.base import TransactionInfo
-from google.cloud.bigquery.job.base import UnknownJob
-from google.cloud.bigquery.job.copy_ import CopyJob
-from google.cloud.bigquery.job.copy_ import CopyJobConfig
-from google.cloud.bigquery.job.copy_ import OperationType
-from google.cloud.bigquery.job.extract import ExtractJob
-from google.cloud.bigquery.job.extract import ExtractJobConfig
-from google.cloud.bigquery.job.load import LoadJob
-from google.cloud.bigquery.job.load import LoadJobConfig
-from google.cloud.bigquery.job.query import _contains_order_by
-from google.cloud.bigquery.job.query import DmlStats
-from google.cloud.bigquery.job.query import QueryJob
-from google.cloud.bigquery.job.query import QueryJobConfig
-from google.cloud.bigquery.job.query import QueryPlanEntry
-from google.cloud.bigquery.job.query import QueryPlanEntryStep
-from google.cloud.bigquery.job.query import ScriptOptions
-from google.cloud.bigquery.job.query import TimelineEntry
-from google.cloud.bigquery.job.query import IncrementalResultStats
-from google.cloud.bigquery.enums import Compression
-from google.cloud.bigquery.enums import CreateDisposition
-from google.cloud.bigquery.enums import DestinationFormat
-from google.cloud.bigquery.enums import Encoding
-from google.cloud.bigquery.enums import QueryPriority
-from google.cloud.bigquery.enums import SchemaUpdateOption
-from google.cloud.bigquery.enums import SourceFormat
-from google.cloud.bigquery.enums import WriteDisposition
-
+from google.cloud.bigquery.enums import (
+    Compression,
+    CreateDisposition,
+    DestinationFormat,
+    Encoding,
+    QueryPriority,
+    SchemaUpdateOption,
+    SourceFormat,
+    WriteDisposition,
+)
+from google.cloud.bigquery.job.base import (
+    _DONE_STATE,
+    ReservationUsage,
+    ScriptStackFrame,
+    ScriptStatistics,
+    TransactionInfo,
+    UnknownJob,
+    _AsyncJob,
+    _error_result_to_exception,
+    _JobConfig,
+    _JobReference,
+)
+from google.cloud.bigquery.job.copy_ import CopyJob, CopyJobConfig, OperationType
+from google.cloud.bigquery.job.extract import ExtractJob, ExtractJobConfig
+from google.cloud.bigquery.job.load import LoadJob, LoadJobConfig
+from google.cloud.bigquery.job.query import (
+    DmlStats,
+    IncrementalResultStats,
+    QueryJob,
+    QueryJobConfig,
+    QueryPlanEntry,
+    QueryPlanEntryStep,
+    ScriptOptions,
+    TimelineEntry,
+    _contains_order_by,
+)
 
 # Include classes previously in job.py for backwards compatibility.
 __all__ = [

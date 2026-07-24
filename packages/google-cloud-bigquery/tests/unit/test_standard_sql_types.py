@@ -15,7 +15,6 @@
 from unittest import mock
 
 import pytest
-
 from google.cloud import bigquery as bq
 
 
@@ -77,8 +76,10 @@ class TestStandardSqlDataType:
         assert result == {"typeKind": "STRUCT"}
 
     def test_to_api_repr_struct_type_w_field_types(self):
-        from google.cloud.bigquery.standard_sql import StandardSqlField
-        from google.cloud.bigquery.standard_sql import StandardSqlStructType
+        from google.cloud.bigquery.standard_sql import (
+            StandardSqlField,
+            StandardSqlStructType,
+        )
 
         StandardSqlDataType = self._get_target_class()
         TypeNames = bq.StandardSqlTypeNames
@@ -202,8 +203,10 @@ class TestStandardSqlDataType:
         assert result == expected
 
     def test_from_api_repr_struct_type_nested(self):
-        from google.cloud.bigquery.standard_sql import StandardSqlField
-        from google.cloud.bigquery.standard_sql import StandardSqlStructType
+        from google.cloud.bigquery.standard_sql import (
+            StandardSqlField,
+            StandardSqlStructType,
+        )
 
         klass = self._get_target_class()
         TypeNames = bq.StandardSqlTypeNames
@@ -269,8 +272,10 @@ class TestStandardSqlDataType:
         assert result == expected
 
     def test_from_api_repr_struct_type_incomplete_field_info(self):
-        from google.cloud.bigquery.standard_sql import StandardSqlField
-        from google.cloud.bigquery.standard_sql import StandardSqlStructType
+        from google.cloud.bigquery.standard_sql import (
+            StandardSqlField,
+            StandardSqlStructType,
+        )
 
         klass = self._get_target_class()
         TypeNames = bq.StandardSqlTypeNames
@@ -584,8 +589,10 @@ class TestStandardSqlTableType:
         assert result.columns == []
 
     def test_from_api_repr_with_incomplete_columns(self):
-        from google.cloud.bigquery.standard_sql import StandardSqlDataType
-        from google.cloud.bigquery.standard_sql import StandardSqlField
+        from google.cloud.bigquery.standard_sql import (
+            StandardSqlDataType,
+            StandardSqlField,
+        )
 
         resource = {
             "columns": [

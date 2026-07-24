@@ -15,11 +15,10 @@
 import copy
 from unittest import mock
 
-from ..helpers import make_connection
-
-from .helpers import _Base
-from .helpers import _make_client
 from google.cloud.bigquery.enums import SourceColumnMatch
+
+from ..helpers import make_connection
+from .helpers import _Base, _make_client
 
 
 class TestLoadJob(_Base):
@@ -251,8 +250,8 @@ class TestLoadJob(_Base):
         self.assertIsNone(job.timestamp_format)
 
     def test_ctor_w_config(self):
-        from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.job import LoadJobConfig
+        from google.cloud.bigquery.schema import SchemaField
 
         client = _make_client(project=self.PROJECT)
         full_name = SchemaField("full_name", "STRING", mode="REQUIRED")
@@ -342,8 +341,8 @@ class TestLoadJob(_Base):
 
     def test_props_set_by_server(self):
         import datetime
-        from google.cloud._helpers import UTC
-        from google.cloud._helpers import _millis
+
+        from google.cloud._helpers import UTC, _millis
 
         CREATED = datetime.datetime(2015, 8, 11, 12, 13, 22, tzinfo=UTC)
         STARTED = datetime.datetime(2015, 8, 11, 13, 47, 15, tzinfo=UTC)
@@ -600,10 +599,12 @@ class TestLoadJob(_Base):
         self._verifyResourceProperties(job, resource)
 
     def test_begin_w_alternate_client(self):
-        from google.cloud.bigquery.job import CreateDisposition
-        from google.cloud.bigquery.job import LoadJobConfig
-        from google.cloud.bigquery.job import SchemaUpdateOption
-        from google.cloud.bigquery.job import WriteDisposition
+        from google.cloud.bigquery.job import (
+            CreateDisposition,
+            LoadJobConfig,
+            SchemaUpdateOption,
+            WriteDisposition,
+        )
         from google.cloud.bigquery.schema import SchemaField
 
         PATH = "/projects/%s/jobs" % (self.PROJECT,)
