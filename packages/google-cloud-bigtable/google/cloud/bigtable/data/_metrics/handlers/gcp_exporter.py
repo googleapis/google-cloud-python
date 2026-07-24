@@ -179,7 +179,7 @@ class BigtableMetricsExporter(MetricExporter):
                                 metric=GMetric(
                                     type=f"{self.prefix}/{metric.name}",
                                     labels={
-                                        k: v
+                                        k: str(v)
                                         for k, v in data_point.attributes.items()
                                         if not k.startswith("resource_")
                                     },
