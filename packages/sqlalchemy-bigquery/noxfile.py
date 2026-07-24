@@ -683,12 +683,22 @@ def prerelease_deps(session, protobuf_implementation):
             )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Run the type checker."""
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add mypy tests
-    session.skip("mypy tests are not yet supported")
+    session.install(
+        "mypy<1.16.0",
+        "types-requests",
+        "types-protobuf",
+    )
+    session.install(".")
+    session.run(
+        "mypy",
+        "-p",
+        "sqlalchemy_bigquery",
+        "--check-untyped-defs",
+        *session.posargs,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

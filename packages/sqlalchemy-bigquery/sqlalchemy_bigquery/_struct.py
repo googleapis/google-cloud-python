@@ -88,7 +88,9 @@ class STRUCT(sqlalchemy.sql.sqltypes.Indexable, sqlalchemy.types.UserDefinedType
                     f"STRUCT fields can only be accessed with strings field names,"
                     f" not {repr(name)}."
                 )
-            subtype = self.expr.type._STRUCT_byname.get(name.lower())
+            struct_type = self.expr.type
+            assert isinstance(struct_type, STRUCT)
+            subtype = struct_type._STRUCT_byname.get(name.lower())
             if subtype is None:
                 raise KeyError(name)
             operator = operators.json_getitem_op
@@ -96,7 +98,9 @@ class STRUCT(sqlalchemy.sql.sqltypes.Indexable, sqlalchemy.types.UserDefinedType
             return operator, index, subtype
 
         def __getattr__(self, name):
-            if name.lower() in self.expr.type._STRUCT_byname:
+            struct_type = self.expr.type
+            assert isinstance(struct_type, STRUCT)
+            if name.lower() in struct_type._STRUCT_byname:
                 return self[name]
             else:
                 raise AttributeError(name)
