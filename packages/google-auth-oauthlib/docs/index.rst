@@ -39,12 +39,3 @@ For more details, see `LICENSE`_
 
 .. _LICENSE:
     https://github.com/googleapis/google-cloud-python/tree/main/packages/google-auth-oauthlib/LICENSE
-
-Contributing
-------------
-
-We happily welcome contributions, please see our `contributing`_ documentation
-for details.
-
-.. _contributing:
-    https://github.com/GoogleCloudPlatform/google-auth-library-python/CONTRIBUTING.rst
