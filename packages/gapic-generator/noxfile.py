@@ -500,9 +500,7 @@ def showcase_pqc(
     """Run the Showcase PQC verification test suite against grpcio 1.83+ over standard TLS."""
     with showcase_library(session, templates=templates, other_opts=other_opts):
         session.install("pytest", "pytest-asyncio")
-        # TODO(https://github.com/googleapis/google-cloud-python/issues/17751):
-        # Update the version below to `1.83.0` once released, and remove `--pre`.
-        session.install("--pre", "--upgrade", "grpcio>=1.83.0rc0", "grpcio-status>=1.83.0rc0")
+        session.install("--upgrade", "grpcio>=1.83.0", "grpcio-status>=1.83.0")
         session.run("py.test", "--quiet", "--tls", *(session.posargs or ["tests/system/test_pqc.py"]), env=env)
 
 

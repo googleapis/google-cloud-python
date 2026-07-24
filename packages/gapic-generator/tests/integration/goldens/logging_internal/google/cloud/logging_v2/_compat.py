@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 # # Copyright 2026 Google LLC
+=======
+# -*- coding: utf-8 -*-
+# Copyright 2026 Google LLC
+>>>>>>> main
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+<<<<<<< HEAD
 
 """A compatibility module for older versions of google-api-core."""
 
@@ -308,3 +314,6 @@ except ImportError:  # pragma: NO COVER
             query_params_json["$alt"] = "json;enum-encoding=int"
 
         return transcoded_request, body_json, query_params_json
+=======
+"""A compatibility module for older versions of google-api-core."""
+>>>>>>> main

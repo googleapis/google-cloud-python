@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 # # Copyright 2026 Google LLC
+=======
+# -*- coding: utf-8 -*-
+# Copyright 2026 Google LLC
+>>>>>>> main
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+<<<<<<< HEAD
 
 import builtins
 import importlib
@@ -362,3 +368,6 @@ def test_compat_fallback_implementations():
         assert "$alt" not in query2
 
     importlib.reload(_compat)
+=======
+"""Tests for the compatibility module for older versions of google-api-core."""
+>>>>>>> main
