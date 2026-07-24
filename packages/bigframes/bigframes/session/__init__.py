@@ -371,6 +371,9 @@ class Session(
             labels=tuple(labels.items()),
             function_manager=self._function_session,
         )
+        from bigframes.session.peek_cache_executor import PeekCacheExecutor
+
+        self._executor = PeekCacheExecutor(self._executor, publisher=self._publisher)
 
     def __del__(self):
         """Automatic cleanup of internal resources."""

@@ -168,6 +168,19 @@ class ComputeOptions:
         int | None: Number of rows, if set.
     """
 
+    enable_peek_cache: bool = False
+    """
+    If enabled, peeking at a relation will pull a larger local sample (e.g. 10k rows)
+    and cache it locally. Subsequent compatible operations on the relation will run
+    locally on the cached sample, enabling fast interactive iteration.
+    """
+
+    peek_cache_size: int = 10000
+    """
+    The size of the local sample to pull and cache when peeking at a relation.
+    Defaults to 10000.
+    """
+
     semantic_ops_confirmation_threshold: Optional[int] = 0
     """
     Deprecated.
