@@ -117,6 +117,16 @@ class DualCompilerProxyExecutor(executor.Executor):
         array_value: bigframes.core.ArrayValue,
         execution_spec: execution_spec.ExecutionSpec,
     ) -> executor.ExecuteResult:
+        from bigframes.session.productionize import (
+            _state as prod_state,
+        )
+        from bigframes.session.productionize import (
+            intercept_execution,
+        )
+
+        if prod_state.active:
+            return intercept_execution(array_value, execution_spec, prod_state.pipeline)
+
         compiler_option = bigframes.options.experiments.sql_compiler
         if compiler_option == "legacy":
             return self._ibis_executor.execute(array_value, execution_spec)

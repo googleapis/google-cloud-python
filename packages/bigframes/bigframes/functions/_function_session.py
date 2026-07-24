@@ -168,6 +168,19 @@ class FunctionSession:
         temp: bool,
         dataset: Optional[bigquery.DatasetReference] = None,
     ) -> udf_def.BigqueryUdf:
+        from bigframes.session.productionize import _state as prod_state
+
+        if prod_state.active:
+            routine_ref = self._resolve_routine_reference(name, dataset=dataset)
+            ddl = self._function_client.generate_bq_managed_function_ddl(
+                routine_ref, config
+            )
+            prod_state.pipeline.recorded_udfs[str(routine_ref)] = ddl
+            return udf_def.BigqueryUdf(
+                routine_ref=routine_ref,
+                signature=config.signature,
+            )
+
         routine_ref = self._resolve_routine_reference(name, dataset=dataset)
         if temp:
             self._add_temp_remote_function(routine_ref)
@@ -183,6 +196,28 @@ class FunctionSession:
         self,
         bq_udf: udf_def.PythonUdf,
     ) -> udf_def.BigqueryUdf:
+        """Deploys a UDF to BigQuery if not already deployed."""
+        from bigframes.session.productionize import _state as prod_state
+
+        if prod_state.active:
+            config = bq_udf.to_managed_function_config()
+            bq_function_name = get_managed_function_name(config, self.session_id)
+            routine_ref = self._resolve_routine_reference(bq_function_name)
+
+            ddl = self._function_client.generate_bq_managed_function_ddl(
+                routine_ref, config
+            )
+            prod_state.pipeline.recorded_udfs[str(routine_ref)] = ddl
+
+            udf_hash = bq_udf.stable_hash()
+            with self._artifacts_lock:
+                self._deployed_routines.add(udf_hash)
+
+            return udf_def.BigqueryUdf(
+                routine_ref=routine_ref,
+                signature=bq_udf.signature,
+            )
+
         """Deploys a UDF to BigQuery if not already deployed."""
         udf_hash = bq_udf.stable_hash()
 
@@ -261,6 +296,18 @@ class FunctionSession:
         ] = "internal-only",
         cloud_build_service_account: Optional[str] = None,
     ):
+        from bigframes.session.productionize import (
+            ProductionizeBlockedError,
+        )
+        from bigframes.session.productionize import (
+            _state as prod_state,
+        )
+
+        if prod_state.active:
+            raise ProductionizeBlockedError(
+                "Creating remote functions is not supported in productionize mode."
+            )
+
         """Decorator to turn a user defined function into a BigQuery remote function.
 
         .. deprecated:: 0.0.1

@@ -84,6 +84,10 @@ class ExpressionCompiler:
         return sql.literal(expr.value, expr.dtype)
 
     @compile_expression.register
+    def _(self, expr: ex.ParameterExpression) -> sge.Expression:
+        return sge.Parameter(this=sge.to_identifier(expr.name))
+
+    @compile_expression.register
     def _(self, expr: agg_exprs.WindowExpression) -> sge.Expression:
         import bigframes.core.compile.sqlglot.aggregate_compiler as agg_compile
 
