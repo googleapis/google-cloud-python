@@ -47,13 +47,49 @@ git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleap
 # A script file for running the test in a sub project.
 test_script="${PROJECT_ROOT}/ci/run_single_test.sh"
 
+# Global exit code tracker
+RETVAL=0
+
+# Shared test execution logic
+run_test_in_dir() {
+    local d=$1
+    echo "running test in ${d}"
+    pushd ${d} > /dev/null
+
+    # Temporarily allow failure.
+    set +e
+
+    # Ensure unique coverage file per package to avoid DataError
+    # when combining statement and branch coverage.
+    # Strip trailing slash from directory name for the filename.
+    local pkg_name_clean=$(echo ${d} | sed 's|/$||' | sed 's|/|_|g')
+    export COVERAGE_FILE="${PROJECT_ROOT}/.coverage.${PY_VERSION}.${pkg_name_clean}"
+
+    ${test_script}
+    local ret=$?
+    set -e
+
+    if [ ${ret} -ne 0 ]; then
+        RETVAL=${ret}
+    fi
+    popd > /dev/null
+}
+
+if [ -n "${PACKAGE_LIST}" ]; then
+    echo "Using provided PACKAGE_LIST"
+    for d in ${PACKAGE_LIST}; do
+        run_test_in_dir "${d}"
+    done
+    exit ${RETVAL}
+fi
+
 if [[ ${BUILD_TYPE} == "presubmit" ]]; then
     # For presubmit build, we want to know the difference from the
     # common commit in the target branch.
     GIT_DIFF_ARG="origin/$TARGET_BRANCH..."
 
     # Then fetch enough history for finding the common commit.
-    git fetch origin "$TARGET_BRANCH" --deepen=200
+    git fetch origin "$TARGET_BRANCH" --deepen=200 || true
 
 elif [[ ${BUILD_TYPE} == "continuous" ]]; then
     # For continuous build, we want to know the difference in the last
@@ -61,14 +97,15 @@ elif [[ ${BUILD_TYPE} == "continuous" ]]; then
     GIT_DIFF_ARG="HEAD~.."
 
     # Then fetch one last commit for getting the diff.
-    git fetch origin "$TARGET_BRANCH" --deepen=1
+    git fetch origin "$TARGET_BRANCH" --deepen=1 || true
 
 else
     # Run everything.
     GIT_DIFF_ARG=""
 fi
 
-# Then detect changes in the test scripts.
+# Fallback for when no package list is provided
+# Detect changes in test scripts
 
 set +e
 git diff --quiet ${GIT_DIFF_ARG} ci
@@ -81,8 +118,6 @@ set -e
 subdirs=(
     packages
 )
-
-RETVAL=0
 
 for subdir in ${subdirs[@]}; do
     for d in `ls -d ${subdir}/*/`; do
@@ -104,17 +139,7 @@ for subdir in ${subdirs[@]}; do
             should_test=true
         fi
         if [ "${should_test}" = true ]; then
-            echo "running test in ${d}"
-            pushd ${d}
-            # Temporarily allow failure.
-            set +e
-            ${test_script}
-            ret=$?
-            set -e
-            if [ ${ret} -ne 0 ]; then
-                RETVAL=${ret}
-            fi
-            popd
+            run_test_in_dir "${d}"
         fi
     done
 done
