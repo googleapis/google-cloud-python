@@ -969,9 +969,8 @@ def test_instance_admin_client_get_mtls_endpoint_and_cert_source(client_class):
                     mock.patch("builtins.open", m),
                     mock.patch(
                         "os.path.exists",
-                        side_effect=lambda path: (
-                            os.path.basename(path) == config_filename
-                        ),
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
                     ),
                 ):
                     with mock.patch.dict(
@@ -1025,9 +1024,8 @@ def test_instance_admin_client_get_mtls_endpoint_and_cert_source(client_class):
                     mock.patch("builtins.open", m),
                     mock.patch(
                         "os.path.exists",
-                        side_effect=lambda path: (
-                            os.path.basename(path) == config_filename
-                        ),
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
                     ),
                 ):
                     with mock.patch.dict(

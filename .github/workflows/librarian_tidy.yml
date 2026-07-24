@@ -11,17 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
-      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4
+      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
         id: changes
         with:
           filters: |
             librarian:
               - 'librarian.yaml'
 
-      -  uses: googleapis/librarian@main # zizmor: ignore[unpinned-uses]
+      -  uses: googleapis/librarian@bb2ee61752bd0f5387195b54c509e4d01a52b41d
 
       - name: Run librarian tidy
         if: steps.changes.outputs.librarian == 'true'

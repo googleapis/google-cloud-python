@@ -23,6 +23,29 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.recommendationengine_v1beta1.services.catalog_service",
+    "google.cloud.recommendationengine_v1beta1.services.prediction_api_key_registry",
+    "google.cloud.recommendationengine_v1beta1.services.prediction_service",
+    "google.cloud.recommendationengine_v1beta1.services.user_event_service",
+    "google.cloud.recommendationengine_v1beta1.types.catalog",
+    "google.cloud.recommendationengine_v1beta1.types.catalog_service",
+    "google.cloud.recommendationengine_v1beta1.types.common",
+    "google.cloud.recommendationengine_v1beta1.types.import_",
+    "google.cloud.recommendationengine_v1beta1.types.prediction_apikey_registry_service",
+    "google.cloud.recommendationengine_v1beta1.types.prediction_service",
+    "google.cloud.recommendationengine_v1beta1.types.recommendationengine_resources",
+    "google.cloud.recommendationengine_v1beta1.types.user_event",
+    "google.cloud.recommendationengine_v1beta1.types.user_event_service",
+}
+
+
 from .services.catalog_service import CatalogServiceAsyncClient, CatalogServiceClient
 from .services.prediction_api_key_registry import (
     PredictionApiKeyRegistryAsyncClient,
