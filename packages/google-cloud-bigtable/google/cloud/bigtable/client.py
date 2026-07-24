@@ -27,39 +27,23 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.bigtable.table.Table` owns a
   :class:`~google.cloud.bigtable.row.Row` (and all the cells in the row)
 """
-<<<<<<< HEAD
 
-=======
 import copy
->>>>>>> 914006db8dc (feat: initializing the new data client (#1238))
 import os
 import warnings
 
 import grpc  # type: ignore
 from google.api_core.gapic_v1 import client_info as client_info_lib
 from google.auth.credentials import AnonymousCredentials  # type: ignore
-<<<<<<< HEAD
-=======
-
-from google.cloud.bigtable import admin
-from google.cloud.bigtable.admin.services.bigtable_instance_admin.transports import (
-    BigtableInstanceAdminGrpcTransport,
-)
-from google.cloud.bigtable.admin.services.bigtable_table_admin.transports import (
-    BigtableTableAdminGrpcTransport,
-)
-
-from google.cloud import bigtable
-from google.cloud.bigtable.instance import Instance
-from google.cloud.bigtable.cluster import Cluster
-
->>>>>>> 914006db8dc (feat: initializing the new data client (#1238))
 from google.cloud.client import ClientWithProject  # type: ignore
 from google.cloud.environment_vars import BIGTABLE_EMULATOR  # type: ignore
 
-<<<<<<< HEAD
-from google.cloud import bigtable, bigtable_admin_v2, bigtable_v2
+from google.cloud import bigtable, bigtable_admin_v2
 from google.cloud.bigtable.cluster import _CLUSTER_NAME_RE, Cluster
+from google.cloud.bigtable.data import BigtableDataClient
+from google.cloud.bigtable.data._helpers import (
+    _DEFAULT_BIGTABLE_EMULATOR_CLIENT,
+)
 from google.cloud.bigtable.instance import Instance
 from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin.transports import (
     BigtableInstanceAdminGrpcTransport,
@@ -68,14 +52,6 @@ from google.cloud.bigtable_admin_v2.services.bigtable_table_admin.transports imp
     BigtableTableAdminGrpcTransport,
 )
 from google.cloud.bigtable_admin_v2.types import instance
-from google.cloud.bigtable_v2.services.bigtable.transports import BigtableGrpcTransport
-=======
-from google.cloud.bigtable.data import BigtableDataClient
-from google.cloud.bigtable.data._helpers import (
-    _DEFAULT_BIGTABLE_EMULATOR_CLIENT,
-)
-
->>>>>>> 914006db8dc (feat: initializing the new data client (#1238))
 
 INSTANCE_TYPE_PRODUCTION = instance.Instance.Type.PRODUCTION
 INSTANCE_TYPE_DEVELOPMENT = instance.Instance.Type.DEVELOPMENT

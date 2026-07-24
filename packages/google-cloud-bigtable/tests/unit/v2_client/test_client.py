@@ -171,20 +171,10 @@ def test_client_constructor_w_both_admin_and_read_only():
 
 
 def test_client_constructor_w_emulator_host():
-<<<<<<< HEAD
-=======
-    from google.cloud.environment_vars import BIGTABLE_EMULATOR
-    from google.cloud.bigtable.data._sync_autogen.client import (
-        _DEFAULT_BIGTABLE_EMULATOR_CLIENT,
-    )
->>>>>>> 914006db8dc (feat: initializing the new data client (#1238))
     import grpc
     from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
-    from google.cloud.bigtable.client import (
-        _DEFAULT_BIGTABLE_EMULATOR_CLIENT,
-        _GRPC_CHANNEL_OPTIONS,
-    )
+    from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
 
     emulator_host = "localhost:8081"
     with mock.patch("os.environ", {BIGTABLE_EMULATOR: emulator_host}):
@@ -209,14 +199,8 @@ def test_client_constructor_w_emulator_host():
 
 
 def test_client_constructor_w_emulator_host_w_project():
-<<<<<<< HEAD
-=======
-    from google.cloud.environment_vars import BIGTABLE_EMULATOR
->>>>>>> 914006db8dc (feat: initializing the new data client (#1238))
     import grpc
     from google.cloud.environment_vars import BIGTABLE_EMULATOR
-
-    from google.cloud.bigtable.client import _GRPC_CHANNEL_OPTIONS
 
     emulator_host = "localhost:8081"
     with mock.patch("os.environ", {BIGTABLE_EMULATOR: emulator_host}):
@@ -239,20 +223,10 @@ def test_client_constructor_w_emulator_host_w_project():
 
 
 def test_client_constructor_w_emulator_host_w_credentials():
-<<<<<<< HEAD
-=======
-    from google.cloud.environment_vars import BIGTABLE_EMULATOR
-    from google.cloud.bigtable.data._sync_autogen.client import (
-        _DEFAULT_BIGTABLE_EMULATOR_CLIENT,
-    )
->>>>>>> 914006db8dc (feat: initializing the new data client (#1238))
     import grpc
     from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
-    from google.cloud.bigtable.client import (
-        _DEFAULT_BIGTABLE_EMULATOR_CLIENT,
-        _GRPC_CHANNEL_OPTIONS,
-    )
+    from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
 
     emulator_host = "localhost:8081"
     credentials = _make_credentials()
@@ -416,8 +390,8 @@ def test_client_project_path():
 
 
 def test_client_veneer_data_client_not_initialized():
-    from google.cloud.bigtable.data import BigtableDataClient
     from google.cloud.bigtable import __version__
+    from google.cloud.bigtable.data import BigtableDataClient
 
     credentials = _make_credentials()
     client = _make_client(project=PROJECT, credentials=credentials)
@@ -438,6 +412,7 @@ def test_client_veneer_data_client_not_initialized():
 
 def test_client_veneer_data_client_not_initialized_w_client_info():
     from google.api_core.gapic_v1.client_info import ClientInfo
+
     from google.cloud.bigtable import __version__
 
     credentials = _make_credentials()
@@ -529,6 +504,7 @@ def test_client_data_gapic_client_not_initialized_w_client_info():
 
 def test_client_data_gapic_client_not_initialized_w_client_options():
     from google.api_core.client_options import ClientOptions
+
     from google.cloud.bigtable_v2 import BigtableClient
 
     credentials = _make_credentials()

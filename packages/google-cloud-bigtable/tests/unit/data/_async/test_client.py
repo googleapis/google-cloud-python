@@ -143,19 +143,15 @@ class TestBigtableDataClientAsync:
 
     @CrossSync.pytest
     async def test_ctor_super_inits(self):
-<<<<<<< HEAD
+        import copy
+
         from google.api_core import client_options as client_options_lib
         from google.cloud.client import ClientWithProject
-=======
-        from google.cloud.client import ClientWithProject
+
         from google.cloud.bigtable import __version__ as bigtable_version
-        from google.api_core import client_options as client_options_lib
         from google.cloud.bigtable_v2.services.bigtable.transports.base import (
             DEFAULT_CLIENT_INFO,
         )
-
-        import copy
->>>>>>> 914006db8dc (feat: initializing the new data client (#1238))
 
         project = "project-id"
         credentials = AnonymousCredentials()

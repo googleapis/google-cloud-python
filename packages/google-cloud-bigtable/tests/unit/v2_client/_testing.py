@@ -26,8 +26,9 @@ class _FakeStub(object):
 
 
 def _make_credentials():
-    from google.cloud.bigtable_v2 import BigtableClient
     import google.auth.credentials
+
+    from google.cloud.bigtable_v2 import BigtableClient
 
     class _CredentialsWithScopesAndQuotaProject(
         google.auth.credentials.Scoped,

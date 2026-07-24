@@ -1402,8 +1402,8 @@ def test_table_test_iam_permissions():
 
 def test_table_backup_factory_defaults():
     from google.cloud.bigtable.backup import Backup
-    from google.cloud.bigtable.instance import Instance
     from google.cloud.bigtable.client import Client
+    from google.cloud.bigtable.instance import Instance
 
     instance = Instance(INSTANCE_ID, mock.create_autospec(Client))
     table = _make_table(TABLE_ID, instance)
@@ -1428,8 +1428,8 @@ def test_table_backup_factory_non_defaults():
     import datetime
 
     from google.cloud.bigtable.backup import Backup
-    from google.cloud.bigtable.instance import Instance
     from google.cloud.bigtable.client import Client
+    from google.cloud.bigtable.instance import Instance
 
     instance = Instance(INSTANCE_ID, mock.create_autospec(Client))
     table = _make_table(TABLE_ID, instance)

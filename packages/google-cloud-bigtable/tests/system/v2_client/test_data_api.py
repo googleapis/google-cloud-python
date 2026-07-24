@@ -12,18 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datetime import datetime, timedelta, timezone
 import operator
 import struct
+from datetime import datetime, timedelta, timezone
 
 import pytest
+from grpc import RpcError, StatusCode, UnaryStreamClientInterceptor, intercept_channel
 
 from google.cloud.bigtable import row_filters
-
-from grpc import UnaryStreamClientInterceptor
-from grpc import RpcError
-from grpc import StatusCode
-from grpc import intercept_channel
 
 COLUMN_FAMILY_ID1 = "col-fam-id1"
 COLUMN_FAMILY_ID2 = "col-fam-id2"
@@ -256,7 +252,7 @@ def _add_test_error_handler(retry):
 
     # Assert that the retry handler works properly.
     def test_error_handler(exc):
-        nonlocal curr_time, times_triggered, retry
+        nonlocal curr_time, times_triggered
         next_time = time.monotonic()
         if times_triggered >= 1:
             gap = next_time - curr_time
@@ -274,14 +270,16 @@ def _add_test_error_handler(retry):
 
 
 def test_table_mutate_rows_retries_timeout(data_table, rows_to_delete):
-    import mock
     import copy
+
+    import mock
     from google.api_core import retry as retries
     from google.api_core.exceptions import InvalidArgument
-    from google.cloud.bigtable_v2 import MutateRowsResponse
-    from google.cloud.bigtable.table import DEFAULT_RETRY, _BigtableRetryableError
     from google.rpc.code_pb2 import Code
     from google.rpc.status_pb2 import Status
+
+    from google.cloud.bigtable.table import DEFAULT_RETRY, _BigtableRetryableError
+    from google.cloud.bigtable_v2 import MutateRowsResponse
 
     # Simulate a server error on row 2, and a normal response on row 1, followed by a bunch of error
     # responses on row 2
@@ -466,7 +464,8 @@ def test_table_mutate_rows_integers(data_table, rows_to_delete):
 
 def test_table_mutate_rows_input_errors(data_table, rows_to_delete):
     from google.api_core.exceptions import InvalidArgument
-    from google.cloud.bigtable.table import TooManyMutationsError, _MAX_BULK_MUTATIONS
+
+    from google.cloud.bigtable.table import _MAX_BULK_MUTATIONS, TooManyMutationsError
 
     row = data_table.direct_row(ROW_KEY)
     rows_to_delete.append(row)
@@ -888,6 +887,7 @@ def test_table_read_rows_retry_timeout_mid_stream(
     # Simulate a read timeout mid stream.
 
     from google.api_core import exceptions
+
     from google.cloud.bigtable.row_data import (
         DEFAULT_RETRY_READ_ROWS,
         RETRYABLE_INTERNAL_ERROR_MESSAGES,
@@ -924,6 +924,7 @@ def test_table_read_rows_retry_timeout_establishing_stream(
     # Simulate a read timeout when creating the stream.
 
     from google.api_core import exceptions
+
     from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
 
     error_injector = data_table_read_rows_retry_tests.error_injector
@@ -1031,6 +1032,7 @@ def test_table_sample_row_keys(data_table, skip_on_emulator):
 
 def test_table_direct_row_input_errors(data_table, rows_to_delete):
     from google.api_core.exceptions import InvalidArgument
+
     from google.cloud.bigtable.row import MAX_MUTATIONS
 
     row = data_table.direct_row(ROW_KEY)
