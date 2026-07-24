@@ -361,8 +361,7 @@ class TestOpentelemetryMetricsHandler:
         op = ActiveOperationMetric(op_type=OperationType.READ_ROWS)
         handler.on_attempt_complete(attempt, op)
         mock_instruments.application_latencies.record.assert_called_once_with(
-            (attempt.application_blocking_time_ns + attempt.backoff_before_attempt_ns)
-            / 1e6,
+            attempt.application_blocking_time_ns / 1e6,
             mock.ANY,
         )
 
