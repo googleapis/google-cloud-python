@@ -1046,8 +1046,16 @@ class TestMutationsBatcher:
     def test_customizable_retryable_errors(self, input_retryables, expected_retryables):
         """Test that retryable functions support user-configurable arguments, and that the configured retryables are passed
         down to the gapic layer."""
-        from google.cloud.bigtable.data._metrics import ActiveOperationMetric
+        from google.cloud.bigtable.data._metrics import (
+            ActiveOperationMetric,
+            BigtableClientSideMetricsController,
+        )
+        from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+            BigtableMetricsExporter,
+        )
 
+        mock_client = mock.Mock()
+        mock_client._metrics = BigtableClientSideMetricsController(handlers=[])
         with mock.patch.object(
             google.api_core.retry, "if_exception_type"
         ) as predicate_builder_mock:
@@ -1056,7 +1064,7 @@ class TestMutationsBatcher:
             ) as retry_fn_mock:
                 table = None
                 with mock.patch("asyncio.create_task"):
-                    table = CrossSync._Sync_Impl.Table(mock.Mock(), "instance", "table")
+                    table = CrossSync._Sync_Impl.Table(mock_client, "instance", "table")
                 with self._make_one(
                     table, batch_retryable_errors=input_retryables
                 ) as instance:

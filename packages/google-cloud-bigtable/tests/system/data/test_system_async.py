@@ -18,11 +18,12 @@ import uuid
 
 import pytest
 from google.api_core import retry
-from google.api_core.exceptions import ClientError, PermissionDenied
+from google.api_core.exceptions import ClientError, PermissionDenied, ServerError
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from google.type import date_pb2
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._metrics import OperationType
 from google.cloud.bigtable.data.execute_query.metadata import SqlType
 from google.cloud.bigtable.data.read_modify_write_rules import _MAX_INCREMENT_VALUE
 
@@ -1416,3 +1417,46 @@ class TestSystemAsync(SystemTestRunner):
         assert md[TEST_AGGREGATE_FAMILY].column_type == SqlType.Map(
             SqlType.Bytes(), SqlType.Int64()
         )
+
+    @pytest.fixture(scope="session")
+    def metrics_client(self, client):
+        yield client._metrics.handlers[0]._exporter.client
+
+    @pytest.mark.order("last")
+    @pytest.mark.parametrize(
+        "metric,methods",
+        [
+            ("attempt_latencies", [m.value for m in OperationType]),
+            ("operation_latencies", [m.value for m in OperationType]),
+            ("retry_count", [m.value for m in OperationType]),
+            ("first_response_latencies", [OperationType.READ_ROWS]),
+            ("server_latencies", [m.value for m in OperationType]),
+            ("connectivity_error_count", [m.value for m in OperationType]),
+            ("application_blocking_latencies", [OperationType.READ_ROWS]),
+        ],
+    )
+    @retry.Retry(predicate=retry.if_exception_type(AssertionError, ServerError))
+    def test_metric_existence(
+        self, client, table_id, metrics_client, start_timestamp, metric, methods
+    ):
+        """
+        Checks to make sure metrics were exported by tests
+
+        Runs at the end of test suite, to let other tests write metrics
+        """
+        end_timestamp = datetime.datetime.now(datetime.timezone.utc)
+        for m in methods:
+            metric_filter = (
+                f'metric.type = "bigtable.googleapis.com/client/{metric}" '
+                + f'AND metric.labels.client_name = "python-bigtable/{client._client_version()}" '
+                + f'AND resource.labels.table = "{table_id}" '
+            )
+            results = list(
+                metrics_client.list_time_series(
+                    name=f"projects/{client.project}",
+                    filter=metric_filter,
+                    interval={"start_time": start_timestamp, "end_time": end_timestamp},
+                    view=0,
+                )
+            )
+            assert len(results) > 0, f"No data found for {metric} {m}"

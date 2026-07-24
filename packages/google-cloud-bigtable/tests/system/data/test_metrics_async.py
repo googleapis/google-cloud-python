@@ -216,7 +216,8 @@ class TestMetricsAsync(SystemTestRunner):
     @CrossSync.pytest_fixture(scope="session")
     async def table(self, client, table_id, instance_id, handler):
         async with client.get_table(instance_id, table_id) as table:
-            table._metrics.add_handler(handler)
+            # override handlers with custom test object
+            table._metrics.handlers = [handler]
             yield table
 
     @CrossSync.convert

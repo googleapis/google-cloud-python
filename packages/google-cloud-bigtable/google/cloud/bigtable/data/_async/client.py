@@ -68,6 +68,13 @@ from google.cloud.bigtable.data._metrics import (
     OperationType,
     tracked_retry,
 )
+from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+    BigtableMetricsExporter,
+    GoogleCloudMetricsHandler,
+)
+from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
+    OpenTelemetryMetricsHandler,
+)
 from google.cloud.bigtable.data.exceptions import (
     FailedQueryShardError,
     ShardedReadRowsExceptionGroup,
@@ -262,6 +269,24 @@ class BigtableDataClientAsync(ClientWithProject):
                 "is the default."
             )
         self._is_closed = CrossSync.Event()
+        if os.getenv("BIGTABLE_EMULATOR_HOST"):
+            self._metrics_handler = OpenTelemetryMetricsHandler(
+                client_version=self._client_version(),
+            )
+        else:
+            # create a metrics exporter using the same client configuration
+            exporter = BigtableMetricsExporter(
+                project_id=self.project,
+                credentials=credentials,
+                client_options=client_options,
+            )
+            self._metrics_handler = GoogleCloudMetricsHandler(
+                exporter=exporter,
+                client_version=self._client_version(),
+            )
+        self._metrics = BigtableClientSideMetricsController(
+            handlers=[self._metrics_handler]
+        )
         self.transport = cast(TransportType, self._gapic_client.transport)
         # keep track of active instances to for warmup on channel refresh
         self._active_instances: Set[_WarmedInstanceKey] = set()
@@ -394,6 +419,7 @@ class BigtableDataClientAsync(ClientWithProject):
         if self._executor:
             self._executor.shutdown(wait=False)
         self._channel_refresh_task = None
+        self._metrics.close()
 
     @CrossSync.convert
     async def _ping_and_warm_instances(
@@ -1109,8 +1135,6 @@ class _DataApiTargetAsync(abc.ABC):
             default_retryable_errors or ()
         )
 
-        self._metrics = BigtableClientSideMetricsController()
-
         try:
             self._register_instance_future = CrossSync.create_task(
                 self.client._register_instance,
@@ -1123,6 +1147,21 @@ class _DataApiTargetAsync(abc.ABC):
             raise RuntimeError(
                 f"{self.__class__.__name__} must be created within an async event loop context."
             ) from e
+
+    def _create_operation(
+        self, op_type: OperationType, **kwargs
+    ) -> ActiveOperationMetric:
+        table_id = getattr(self, "table_id", None) or getattr(
+            self, "materialized_view_id", None
+        )
+        return self.client._metrics.create_operation(
+            op_type,
+            project_id=self.client.project,
+            instance_id=self.instance_id,
+            table_id=table_id,
+            app_profile_id=self.app_profile_id,
+            **kwargs,
+        )
 
     @property
     @abc.abstractmethod
@@ -1189,9 +1228,7 @@ class _DataApiTargetAsync(abc.ABC):
             self,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
-            metric=self._metrics.create_operation(
-                OperationType.READ_ROWS, is_streaming=True
-            ),
+            metric=self._create_operation(OperationType.READ_ROWS, is_streaming=True),
             retryable_exceptions=retryable_excs,
         )
         return row_merger.start_operation()
@@ -1295,9 +1332,7 @@ class _DataApiTargetAsync(abc.ABC):
             self,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
-            metric=self._metrics.create_operation(
-                OperationType.READ_ROWS, is_streaming=False
-            ),
+            metric=self._create_operation(OperationType.READ_ROWS, is_streaming=False),
             retryable_exceptions=retryable_excs,
         )
         results_generator = row_merger.start_operation()
@@ -1512,9 +1547,7 @@ class _DataApiTargetAsync(abc.ABC):
         retryable_excs = _get_retryable_errors(retryable_errors, self)
         predicate = retries.if_exception_type(*retryable_excs)
 
-        with self._metrics.create_operation(
-            OperationType.SAMPLE_ROW_KEYS
-        ) as operation_metric:
+        with self._create_operation(OperationType.SAMPLE_ROW_KEYS) as operation_metric:
 
             @CrossSync.convert
             async def execute_rpc():
@@ -1646,9 +1679,7 @@ class _DataApiTargetAsync(abc.ABC):
             # mutations should not be retried
             predicate = retries.if_exception_type()
 
-        with self._metrics.create_operation(
-            OperationType.MUTATE_ROW
-        ) as operation_metric:
+        with self._create_operation(OperationType.MUTATE_ROW) as operation_metric:
             target = partial(
                 self.client._gapic_client.mutate_row,
                 request=MutateRowRequest(
@@ -1722,7 +1753,7 @@ class _DataApiTargetAsync(abc.ABC):
             mutation_entries,
             operation_timeout,
             attempt_timeout,
-            metric=self._metrics.create_operation(OperationType.BULK_MUTATE_ROWS),
+            metric=self._create_operation(OperationType.BULK_MUTATE_ROWS),
             retryable_exceptions=retryable_excs,
         )
         await operation.start()
@@ -1781,7 +1812,7 @@ class _DataApiTargetAsync(abc.ABC):
             false_case_mutations = [false_case_mutations]
         false_case_list = [m._to_pb() for m in false_case_mutations or []]
 
-        with self._metrics.create_operation(OperationType.CHECK_AND_MUTATE):
+        with self._create_operation(OperationType.CHECK_AND_MUTATE):
             result = await self.client._gapic_client.check_and_mutate_row(
                 request=CheckAndMutateRowRequest(
                     true_mutations=true_case_list,
@@ -1839,7 +1870,7 @@ class _DataApiTargetAsync(abc.ABC):
         if not rules:
             raise ValueError("rules must contain at least one item")
 
-        with self._metrics.create_operation(OperationType.READ_MODIFY_WRITE):
+        with self._create_operation(OperationType.READ_MODIFY_WRITE):
             result = await self.client._gapic_client.read_modify_write_row(
                 request=ReadModifyWriteRowRequest(
                     rules=[rule._to_pb() for rule in rules],
@@ -1860,7 +1891,6 @@ class _DataApiTargetAsync(abc.ABC):
         """
         Called to close the Table instance and release any resources held by it.
         """
-        self._metrics.close()
         if self._register_instance_future:
             self._register_instance_future.cancel()
         self.client._remove_instance_registration(
