@@ -2215,10 +2215,6 @@ def test_initialize_client_w_{{transport_name}}():
 {% endfor %}{# method in service.methods.values() #}
 {% endmacro %}{# empty_call_test #}
 
-{% macro get_uuid4_re() -%}
-{{ uuid4_re }}
-{%- endmacro %}{# uuid_re #}
-
 {% macro routing_parameter_test(service, api, transport, is_async) %}
 {% for method in service.methods.values() %}{# method #}
 {# See existing proposal b/330610501 to add support for explicit routing in BIDI/client side streaming #}

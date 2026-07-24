@@ -16,9 +16,6 @@ import logging as std_logging
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union, cast
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
-import uuid
-{% endif %}
 import warnings
 
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
@@ -30,6 +27,16 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import extended_operation
 {% endif %}
 from google.api_core import gapic_v1
+{% set has_auto_populated_fields = namespace(value=false) %}
+{% for method in service.methods.values() %}
+  {% set method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+  {% if method_settings and method_settings.auto_populated_fields %}
+    {% set has_auto_populated_fields.value = true %}
+  {% endif %}
+{% endfor %}
+{% if has_auto_populated_fields.value %}
+from {{package_path}}._compat import setup_request_id
+{% endif %}
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
@@ -453,37 +460,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # NOTE (b/349488459): universe validation is disabled until further notice.
         return True
 
-    {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
-    @staticmethod
-    def _setup_request_id(request, field_name: str, is_proto3_optional: bool):
-        """Populate a UUID4 field in the request if it is not already set.
 
-        Args:
-            request (Union[google.protobuf.message.Message, dict]): The request object.
-            field_name (str): The name of the field to populate.
-            is_proto3_optional (bool): Whether the field is proto3 optional.
-        """
-        if isinstance(request, dict):
-            if is_proto3_optional:
-                if field_name not in request:
-                    request[field_name] = str(uuid.uuid4())
-            elif not request.get(field_name):
-                request[field_name] = str(uuid.uuid4())
-            return
-
-        if is_proto3_optional:
-            try:
-                # Pure protobuf messages
-                if not request.HasField(field_name):
-                    setattr(request, field_name, str(uuid.uuid4()))
-            except (AttributeError, ValueError):
-                # Proto-plus messages or other objects
-                if field_name not in request:
-                    setattr(request, field_name, str(uuid.uuid4()))
-        else:
-            if not getattr(request, field_name):
-                setattr(request, field_name, str(uuid.uuid4()))
-    {% endif %}
 
     def _add_cred_info_for_auth_errors(
         self,
@@ -588,12 +565,13 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client_options = client_options
-        if isinstance(self._client_options, dict):
-            self._client_options = client_options_lib.from_dict(self._client_options)
-        if self._client_options is None:
-            self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
+        if isinstance(client_options, dict):
+            client_options = client_options_lib.from_dict(client_options)
+        if client_options is None:
+            client_options = client_options_lib.ClientOptions()
+        self._client_options: client_options_lib.ClientOptions = cast(
+            client_options_lib.ClientOptions, client_options
+        )
 
         universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 

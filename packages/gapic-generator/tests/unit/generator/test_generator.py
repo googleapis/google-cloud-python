@@ -136,6 +136,30 @@ def test_get_response_ignores_private_files():
             assert cgr.file[0].content == "I am a template result.\n"
 
 
+def test_get_response_renders_allowed_private_templates():
+    generator_obj = make_generator()
+    with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as list_templates:
+        list_templates.return_value = [
+            "foo/bar/__init__.py.j2",
+            "foo/bar/_compat.py.j2",
+            "foo/bar/_ignored.py.j2",
+        ]
+        with mock.patch.object(jinja2.Environment, "get_template") as get_template:
+            get_template.return_value = jinja2.Template("I am a template result.")
+            cgr = generator_obj.get_response(
+                api_schema=make_api(), opts=Options.build("")
+            )
+            list_templates.assert_called_once()
+            get_template.assert_has_calls(
+                [
+                    mock.call("foo/bar/__init__.py.j2"),
+                    mock.call("foo/bar/_compat.py.j2"),
+                ],
+                any_order=True,
+            )
+            assert len(cgr.file) == 2
+
+
 def test_get_response_fails_invalid_file_paths():
     generator_obj = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as list_templates:
