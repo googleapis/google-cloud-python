@@ -64,7 +64,7 @@ run_package_test() {
   local gcloud_config_dir=$(mktemp -d -t "gcloud-config-${package_name}-XXXXXX")
   local CLOUDSDK_CONFIG="${gcloud_config_dir}"
 
-  # 🪤 TRAP: Ensure cleanup of THIS specific temp dir on exit of this subshell
+  # 🪤 TRAP: Ensure cleanup of THIS specific temp dir on exit of this subshell.
   trap 'rm -rf "$gcloud_config_dir"' EXIT
 
 
