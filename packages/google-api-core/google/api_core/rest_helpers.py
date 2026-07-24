@@ -158,7 +158,11 @@ def transcode_request(
             use_integers_for_enums=rest_numeric_enums,
         )
 
+    # If required_fields_default_values is provided, we merge default values for missing
+    # required fields into the query parameters. However, we must exclude any fields
+    # that are already bound to the URI path or the request body for the matched HTTP option.
     if required_fields_default_values:
+        # 1. Identify which HTTP option matched the transcoded request by comparing method and URI.
         matched_option = None
         for option in http_options:
             if (
@@ -171,6 +175,8 @@ def transcode_request(
                     matched_option = option
                     break
 
+        # 2. Determine which fields are bound to the path or body.
+        # If the body is '*', all fields are bound to the body, so bound_fields is None.
         bound_fields: Optional[Set[str]] = set()
         if matched_option:
             body_param = matched_option.get("body")
@@ -179,11 +185,17 @@ def transcode_request(
             else:
                 assert bound_fields is not None
                 uri_template = matched_option.get("uri", "")
+                # Extract the top-level field names for variables in the URI path.
+                # E.g., for URI "/v1/{name}" we extract "name".
+                # For nested path variables like "{options.deprecated}", we split on "."
+                # and extract the top-level field "options", because required_fields_default_values
+                # only maps top-level request field names to their default values.
                 for m in path_template._VARIABLE_RE.finditer(uri_template):
                     bound_fields.add(m.group("name").split(".")[0])
                 if body_param:
                     bound_fields.add(body_param.split(".")[0])
 
+        # 3. Only merge default values for fields that are not bound to the path or body.
         if bound_fields is not None:
             for k, v in required_fields_default_values.items():
                 if k in bound_fields:
