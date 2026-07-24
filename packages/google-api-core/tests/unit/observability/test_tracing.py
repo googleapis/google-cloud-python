@@ -18,14 +18,16 @@ from unittest.mock import MagicMock, Mock
 
 import pytest
 
+has_deps = True
 try:
     import grpc  # noqa: F401
-    from opentelemetry import trace
+    from opentelemetry import trace  # noqa: F401
 except ImportError:
-    # TODO: add variables to highlight which dependency failed.
-    pytest.skip(
-        "Skipping gRPC/OTel tests because dependencies are missing", allow_hide_cpp=True
-    )
+    has_deps = False
+
+pytestmark = pytest.mark.skipif(
+    not has_deps, reason="Skipping gRPC/OTel tests because dependencies are missing"
+)
 
 
 class MockClientCallDetails:
