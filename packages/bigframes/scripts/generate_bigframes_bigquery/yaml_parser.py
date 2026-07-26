@@ -48,11 +48,11 @@ def _parse_func_impl(impl_data: Any) -> data_models.BQFuncImpl:
     )
 
 
-def _parse_bq_func(func_data: Any, module_path: pathlib.Path) -> data_models.BQFunc:
+def _parse_bq_func(
+    func_data: Any, module_name: str, is_global: bool
+) -> data_models.BQFunc:
     op_base_name = _to_snake_case(func_data["name"])
 
-    module_name = module_path.name
-    is_global = "global_namespace" in module_path.parts
     if not is_global and op_base_name.startswith(module_name + "_"):
         op_base_name = op_base_name[len(module_name) + 1 :]
 
@@ -72,13 +72,15 @@ def parse_yaml(yaml_file: pathlib.Path) -> data_models.BQModule:
 
     functions = []
     module_path = yaml_file.relative_to(constants.DATA_DIR).with_suffix("")
+    is_global = "global_namespace" in module_path.parts
     if isinstance(data, dict) and "scalar_functions" in data:
         functions = [
-            _parse_bq_func(func_data, module_path)
+            _parse_bq_func(func_data, module_path.name, is_global)
             for func_data in data["scalar_functions"]
         ]
 
     return data_models.BQModule(
         yaml_file=yaml_file,
         functions=functions,
+        is_global=is_global,
     )

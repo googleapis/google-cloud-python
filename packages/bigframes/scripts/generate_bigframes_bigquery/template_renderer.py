@@ -230,4 +230,18 @@ def render_operation(
 
 def render_tests(bq_module: data_models.BQModule) -> str:
 
-    pass
+    import_path = "bigframes.operations.googlesql." + ".".join(
+        bq_module.module_path.parts
+    )
+    functions = []
+    for bq_func in bq_module.functions:
+        functions.append(_to_bigframes_func(bq_func))
+
+    return constants.TEMPLATES["test_operation"].render(
+        yaml_path=bq_module.yaml_file.relative_to(constants.PACKAGE_ROOT),
+        script_path=constants.SCRIPT_PATH_RELATIVE,
+        import_path=import_path,
+        short_name=bq_module.module_path.name,
+        is_global=bq_module.is_global,
+        functions=functions,
+    )

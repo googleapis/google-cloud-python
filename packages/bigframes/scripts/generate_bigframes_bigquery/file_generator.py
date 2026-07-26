@@ -75,13 +75,20 @@ def _generate_accesor():
 
 
 def _generate_tests(bq_module: data_models.BQModule):
-    pass
+    content = template_renderer.render_tests(bq_module)
+
+    output_file = constants.TEST_OUTPUT_DIR.joinpath(
+        bq_module.module_path.with_name(f"test_{bq_module.module_path.name}")
+    ).with_suffix(".py")
+
+    _write_file(content, output_file, constants.TEST_OUTPUT_DIR.parent)
 
 
 def generate(bq_modules: list[data_models.BQModule]):
 
     for bq_module in bq_modules:
         _generate_op_defs(bq_module)
+        _generate_tests(bq_module)
 
     # Ruff format
     _run_ruff()

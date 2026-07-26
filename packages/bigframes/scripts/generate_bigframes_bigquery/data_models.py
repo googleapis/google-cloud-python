@@ -73,6 +73,7 @@ class BQFunc:
 class BQModule:
     yaml_file: pathlib.Path
     functions: list[BQFunc]
+    is_global: bool
 
     @property
     def module_path(self):
