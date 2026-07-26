@@ -22,11 +22,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pprint
 
 import constants
-import yaml_parser
 import file_generator
+import yaml_parser
 
 
 def main():
@@ -34,6 +33,7 @@ def main():
 
     for yaml_file in sorted(constants.DATA_DIR.glob("**/*.yaml")):
         modules.append(yaml_parser.parse_yaml(yaml_file))
+        break
 
     file_generator.generate(modules)
 

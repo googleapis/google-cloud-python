@@ -12,33 +12,76 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import constants
-import jinja2
-import data_models
-import pprint
+import pathlib
+import sys
+import subprocess
 
+import constants
+import data_models
 import template_renderer
 
 
-def _generate_sql_operator_def():
-    pass
+def _ensure_init_py(directory: pathlib.Path, limit_dir: pathlib.Path):
+    """Ensures __init__.py exists in the directory and its parents up to limit_dir."""
+    curr = directory
+    while curr != limit_dir and curr != curr.parent:
+        init_file = curr / "__init__.py"
+        if not init_file.exists():
+            print(f"  Creating {init_file}")
+            content = constants.TEMPLATES["license"].render()
+            with open(init_file, "w") as f:
+                f.write(content)
+        curr = curr.parent
+
+
+def _write_file(content: str, output_file: pathlib.Path, limit_dir: pathlib.Path):
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+    _ensure_init_py(output_file.parent, limit_dir)
+
+    with open(output_file, "w") as f:
+        f.write(content)
+    print(f"  Generated {output_file}")
+
+
+def _run_ruff():
+    targets = [
+        constants.OUTPUT_DIR,
+        constants.TEST_OUTPUT_DIR,
+    ]
+
+    subprocess.run(
+        [sys.executable, "-m", "ruff"] + constants.RUFF_CHECK_ARGS + targets,
+        check=True,
+    )
+
+    subprocess.run(
+        [sys.executable, "-m", "ruff"] + constants.RUFF_FORMAT_ARGS + targets,
+        check=True,
+    )
+
+
+def _generate_op_defs(bq_module: data_models.BQModule):
+    content = template_renderer.render_operation(bq_module)
+
+    output_file = constants.OUTPUT_DIR.joinpath(bq_module.module_path).with_suffix(
+        ".py"
+    )
+
+    _write_file(content, output_file, constants.OUTPUT_DIR.parent)
 
 
 def _generate_accesor():
     pass
 
 
-def _generate_tests():
+def _generate_tests(bq_module: data_models.BQModule):
     pass
 
 
 def generate(bq_modules: list[data_models.BQModule]):
 
     for bq_module in bq_modules:
-        for bq_func in bq_module.functions:
-            pprint.pp(template_renderer.render_signature_def(bq_func, bq_module))
-
-    # Write to file
+        _generate_op_defs(bq_module)
 
     # Ruff format
-    pass
+    _run_ruff()

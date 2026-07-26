@@ -13,12 +13,13 @@
 # limitations under the License.
 
 import pathlib
+
 import jinja2
 
 SCRIPTS_DIRECTORY = pathlib.Path(__file__).parent.parent.absolute()
 PACKAGE_ROOT = SCRIPTS_DIRECTORY.parent
 CODE_ROOT = PACKAGE_ROOT / "bigframes"
-SCRIPT_PATH_RELATIVE = pathlib.Path(__file__).relative_to(PACKAGE_ROOT)
+SCRIPT_PATH_RELATIVE = pathlib.Path(__file__).relative_to(PACKAGE_ROOT).parent
 
 # Directory containing the YAML files
 DATA_DIR = SCRIPTS_DIRECTORY / "data" / "sql-functions"
@@ -118,6 +119,59 @@ DTYPE_MAP = {
     "decimal<38,9>": "dtypes.NUMERIC_DTYPE",
     "decimal<76,38>": "dtypes.BIGNUMERIC_DTYPE",
 }
+
+YAML_TYPE_TO_COL = {
+    "binary": "bytes_col",
+    "string": "string_col",
+    "int64": "int64_col",
+    "i64": "int64_col",
+    "float64": "float64_col",
+    "fp64": "float64_col",
+    "bool": "bool_col",
+    "boolean": "bool_col",
+    "geography": "geography_col",
+    "date": "date_col",
+    "time": "time_col",
+    "datetime": "datetime_col",
+    "timestamp": "timestamp_col",
+    "decimal<38,9>": "numeric_col",
+    "decimal<76,38>": "bignumeric_col",
+}
+
+PY_TYPE_MAP = {
+    "binary": "bytes",
+    "string": "str",
+    "int64": "int",
+    "i64": "int",
+    "float64": "float",
+    "fp64": "float",
+    "bool": "bool",
+    "boolean": "bool",
+    "geography": "Any",
+    "json": "Any",
+    "date": "datetime.date",
+    "time": "datetime.time",
+    "datetime": "datetime.datetime",
+    "timestamp": "datetime.datetime",
+    "struct": "dict",
+    "decimal<38,9>": "decimal.Decimal",
+    "decimal<76,38>": "decimal.Decimal",
+    "interval_day": "datetime.timedelta",
+}
+
+RUFF_COMMON_ARGS = [
+    "--target-version=py310",
+    "--line-length=88",
+]
+RUFF_CHECK_ARGS = [
+    "check",
+    "--select",
+    "I,F",
+    "--fix",
+] + RUFF_COMMON_ARGS
+RUFF_FORMAT_ARGS = [
+    "format",
+] + RUFF_COMMON_ARGS
 
 
 TEMPLATES: dict[str, jinja2.Template]  # Lazily-loaded global variable

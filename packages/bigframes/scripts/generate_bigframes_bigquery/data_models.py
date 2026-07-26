@@ -15,15 +15,23 @@
 
 import dataclasses
 import pathlib
+from typing import Any
 
 import constants
-from typing import Any
 
 
 @dataclasses.dataclass
 class BQFuncArg:
     name: str
     value: str  # The type of the arg
+    optional: bool
+    keyword_only: bool
+
+
+@dataclasses.dataclass
+class BigFramesFuncArg:
+    name: str
+    types: set[str]
     optional: bool
     keyword_only: bool
 
@@ -56,26 +64,19 @@ class BQFuncImpl:
 @dataclasses.dataclass
 class BQFunc:
     name: str
+    op_base_name: str
     description: str
     impls: list[BQFuncImpl]
 
 
 @dataclasses.dataclass
 class BQModule:
-    module_path: pathlib.Path
+    yaml_file: pathlib.Path
     functions: list[BQFunc]
 
     @property
-    def name(self) -> str:
-        return self.module_path.name
-
-    @property
-    def is_global_namespace(self) -> bool:
-        return "global_namespace" in self.module_path.parts
-
-    @property
-    def output_file(self):
-        return constants.OUTPUT_DIR.joinpath(self.module_path).with_suffix(".py")
+    def module_path(self):
+        return self.yaml_file.relative_to(constants.DATA_DIR).with_suffix("")
 
 
 @dataclasses.dataclass
@@ -84,12 +85,13 @@ class BigFramesOp:
     sql_name: str
     arg_specs: str
     signature: str
-    signature_definition: str
+    signature_definition: str | None
 
 
 @dataclasses.dataclass
 class BigFramesFunc:
     name: str
+    op_name: str
     description: str
     args: list[str]
     series_accessor_arg: list[str]

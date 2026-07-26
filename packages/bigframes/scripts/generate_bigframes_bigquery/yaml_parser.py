@@ -14,11 +14,22 @@
 
 
 import pathlib
+import re
 from typing import Any
 
 import constants
 import data_models
 import yaml
+
+
+def _to_snake_case(name):
+    # Replace dots with underscores
+    name = name.replace(".", "_")
+    # Handle CamelCase to snake_case
+    name = re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
+    # Replace multiple underscores with one
+    name = re.sub(r"_+", "_", name)
+    return name
 
 
 def _parse_func_arg(arg_data: Any) -> data_models.BQFuncArg:
@@ -37,9 +48,17 @@ def _parse_func_impl(impl_data: Any) -> data_models.BQFuncImpl:
     )
 
 
-def _parse_bq_func(func_data: Any) -> data_models.BQFunc:
+def _parse_bq_func(func_data: Any, module_path: pathlib.Path) -> data_models.BQFunc:
+    op_base_name = _to_snake_case(func_data["name"])
+
+    module_name = module_path.name
+    is_global = "global_namespace" in module_path.parts
+    if not is_global and op_base_name.startswith(module_name + "_"):
+        op_base_name = op_base_name[len(module_name) + 1 :]
+
     return data_models.BQFunc(
         name=func_data["name"],
+        op_base_name=op_base_name,
         description=func_data["description"],
         impls=[_parse_func_impl(impl) for impl in func_data["impls"]],
     )
@@ -52,12 +71,14 @@ def parse_yaml(yaml_file: pathlib.Path) -> data_models.BQModule:
         data = yaml.safe_load(f)
 
     functions = []
+    module_path = yaml_file.relative_to(constants.DATA_DIR).with_suffix("")
     if isinstance(data, dict) and "scalar_functions" in data:
         functions = [
-            _parse_bq_func(func_data) for func_data in data["scalar_functions"]
+            _parse_bq_func(func_data, module_path)
+            for func_data in data["scalar_functions"]
         ]
 
     return data_models.BQModule(
-        module_path=yaml_file.relative_to(constants.DATA_DIR).with_suffix(""),
+        yaml_file=yaml_file,
         functions=functions,
     )
