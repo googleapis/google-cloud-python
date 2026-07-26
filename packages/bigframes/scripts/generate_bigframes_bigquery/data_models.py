@@ -27,15 +27,6 @@ class BQFuncArg:
     optional: bool
     keyword_only: bool
 
-
-@dataclasses.dataclass
-class BigFramesFuncArg:
-    name: str
-    types: set[str]
-    optional: bool
-    keyword_only: bool
-
-
 @dataclasses.dataclass
 class BQFuncImpl:
     args: list[BQFuncArg]
@@ -90,9 +81,33 @@ class BigFramesOp:
 
 
 @dataclasses.dataclass
+class BigFramesFuncArg:
+    name: str
+    types: set[str]
+    optional: bool
+    keyword_only: bool
+
+    @property
+    def type_hint(self) -> str:
+        types = [constants.PY_TYPE_MAP.get(t, "Any") for t in sorted(self.types)] + [
+            "Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]"
+        ]
+
+        if len(types) > 1:
+            return "Union[" + ", ".join(sorted(set(types))) + "]"
+
+        return types[0]
+
+    @property
+    def default(self) -> str | None:
+        if self.optional:
+            return "sentinels.Sentinel.ARGUMENT_DEFAULT"
+        return None
+
+
+@dataclasses.dataclass
 class BigFramesFunc:
     name: str
     op_name: str
     description: str
-    args: list[str]
-    series_accessor_arg: list[str]
+    args: list[BigFramesFuncArg]

@@ -171,32 +171,6 @@ def _to_bigframes_op(bq_func: data_models.BQFunc) -> data_models.BigFramesOp:
 
 
 def _to_bigframes_func(bq_func: data_models.BQFunc) -> data_models.BigFramesFunc:
-    func_args = []
-    for arg in _get_bigframes_func_args(bq_func):
-        types = [constants.PY_TYPE_MAP.get(t, "Any") for t in sorted(arg.types)] + [
-            "Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]"
-        ]
-        type_hint = (
-            "Union[" + ", ".join(sorted(set(types))) + "]"
-            if len(types) > 1
-            else types[0]
-        )
-        func_args.append(
-            {
-                "name": arg.name,
-                "type_hint": type_hint,
-                "default": (
-                    "sentinels.Sentinel.ARGUMENT_DEFAULT" if arg.optional else ""
-                ),
-            }
-        )
-
-    # Clean up default values for mandatory args
-    # In Python, mandatory args come first.
-    for arg in func_args:
-        if not arg.get("default"):
-            arg.pop("default", None)
-
     python_name = bq_func.op_base_name
     if python_name in constants.PYTHON_BUILTINS:
         python_name = python_name + "_"
@@ -205,8 +179,7 @@ def _to_bigframes_func(bq_func: data_models.BQFunc) -> data_models.BigFramesFunc
         name=python_name,
         op_name=f"_{bq_func.op_base_name.upper()}_OP",
         description=bq_func.description,
-        args=func_args,
-        series_accessor_arg=[],
+        args=_get_bigframes_func_args(bq_func),
     )
 
 

@@ -33,7 +33,6 @@ def main():
 
     for yaml_file in sorted(constants.DATA_DIR.glob("**/*.yaml")):
         modules.append(yaml_parser.parse_yaml(yaml_file))
-        break
 
     file_generator.generate(modules)
 
