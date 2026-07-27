@@ -28,6 +28,7 @@ class BQFuncArg:
     optional: bool
     keyword_only: bool
 
+
 @dataclasses.dataclass
 class BQFuncImpl:
     args: list[BQFuncArg]
