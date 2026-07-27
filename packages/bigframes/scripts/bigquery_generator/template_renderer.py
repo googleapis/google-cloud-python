@@ -37,7 +37,7 @@ def _is_concrete_type(yaml_type: str) -> bool:
         return False
 
 
-def _validate_types(impls):
+def _validate_types(impls: list[data_models.BQFuncImpl]) -> None:
     for impl in impls:
         for arg in impl.args:
             val = arg.value
