@@ -123,6 +123,9 @@ _type_map = {
     "TOKENLIST": types.String,
 }
 
+if hasattr(types, "UUID"):
+    _type_map["UUID"] = types.UUID
+
 
 _type_map_inv = {
     types.Boolean: "BOOL",
@@ -140,6 +143,12 @@ _type_map_inv = {
     types.Integer: "INT64",
     types.NullType: "INT64",
 }
+
+if hasattr(types, "UUID"):
+    _type_map_inv[types.UUID] = "UUID"
+
+if hasattr(types, "Uuid"):
+    _type_map_inv[types.Uuid] = "UUID"
 
 _compound_keywords = {
     selectable.CompoundSelect.UNION: "UNION DISTINCT",
@@ -765,6 +774,12 @@ class SpannerTypeCompiler(GenericTypeCompiler):
     Maps SQLAlchemy types to Spanner data types.
     """
 
+    def visit_uuid(self, type_, **kw):
+        if not type_.native_uuid or not self.dialect.supports_native_uuid:
+            return self.visit_CHAR(types.CHAR(36), **kw)
+        else:
+            return "UUID"
+
     def visit_INTEGER(self, type_, **kw):
         return "INT64"
 
@@ -847,6 +862,7 @@ class SpannerDialect(DefaultDialect):
     supports_identity_columns = True
     supports_native_boolean = True
     supports_native_decimal = True
+    supports_native_uuid = True
     supports_statement_cache = True
     # Spanner uses protos for enums. Creating a column like
     # Column("an_enum", Enum("A", "B", "C")) will result in a String
