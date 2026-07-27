@@ -18,7 +18,7 @@ import dataclasses
 import pathlib
 from typing import Any
 
-import constants
+from . import constants
 
 
 @dataclasses.dataclass
