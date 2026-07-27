@@ -15,8 +15,7 @@
 
 
 
-from . import constants
-from . import data_models
+from . import constants, data_models
 
 
 def _get_concrete_type_expr(yaml_type: str) -> str:

@@ -13,9 +13,7 @@
 # limitations under the License.
 
 
-from . import constants
-from . import file_generator
-from . import yaml_parser
+from . import constants, file_generator, yaml_parser
 
 
 def main():

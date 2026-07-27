@@ -17,9 +17,9 @@ import pathlib
 import re
 from typing import Any
 
-from . import constants
-from . import data_models
 import yaml
+
+from . import constants, data_models
 
 
 def _to_snake_case(name: str) -> str:
