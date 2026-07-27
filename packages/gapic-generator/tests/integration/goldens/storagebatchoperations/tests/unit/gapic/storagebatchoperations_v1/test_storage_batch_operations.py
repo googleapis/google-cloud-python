@@ -65,7 +65,6 @@ from google.oauth2 import service_account
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-import google.rpc.code_pb2 as code_pb2  # type: ignore
 
 
 
