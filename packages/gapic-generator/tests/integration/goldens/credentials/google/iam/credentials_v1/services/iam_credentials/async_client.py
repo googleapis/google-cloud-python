@@ -69,7 +69,7 @@ class IAMCredentialsAsyncClient:
     DEFAULT_ENDPOINT = IAMCredentialsClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
     _DEFAULT_ENDPOINT_TEMPLATE = IAMCredentialsClient._DEFAULT_ENDPOINT_TEMPLATE
-    DEFAULT_UNIVERSE = IAMCredentialsClient.DEFAULT_UNIVERSE
+    _DEFAULT_UNIVERSE = IAMCredentialsClient._DEFAULT_UNIVERSE
 
     service_account_path = staticmethod(IAMCredentialsClient.service_account_path)
     parse_service_account_path = staticmethod(IAMCredentialsClient.parse_service_account_path)

@@ -71,7 +71,7 @@ class StorageBatchOperationsAsyncClient:
     DEFAULT_ENDPOINT = StorageBatchOperationsClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = StorageBatchOperationsClient.DEFAULT_MTLS_ENDPOINT
     _DEFAULT_ENDPOINT_TEMPLATE = StorageBatchOperationsClient._DEFAULT_ENDPOINT_TEMPLATE
-    DEFAULT_UNIVERSE = StorageBatchOperationsClient.DEFAULT_UNIVERSE
+    _DEFAULT_UNIVERSE = StorageBatchOperationsClient._DEFAULT_UNIVERSE
 
     bucket_operation_path = staticmethod(StorageBatchOperationsClient.bucket_operation_path)
     parse_bucket_operation_path = staticmethod(StorageBatchOperationsClient.parse_bucket_operation_path)

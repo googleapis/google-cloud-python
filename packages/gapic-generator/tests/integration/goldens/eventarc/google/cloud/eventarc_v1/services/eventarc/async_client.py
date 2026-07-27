@@ -87,7 +87,7 @@ class EventarcAsyncClient:
     DEFAULT_ENDPOINT = EventarcClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = EventarcClient.DEFAULT_MTLS_ENDPOINT
     _DEFAULT_ENDPOINT_TEMPLATE = EventarcClient._DEFAULT_ENDPOINT_TEMPLATE
-    DEFAULT_UNIVERSE = EventarcClient.DEFAULT_UNIVERSE
+    _DEFAULT_UNIVERSE = EventarcClient._DEFAULT_UNIVERSE
 
     channel_path = staticmethod(EventarcClient.channel_path)
     parse_channel_path = staticmethod(EventarcClient.parse_channel_path)

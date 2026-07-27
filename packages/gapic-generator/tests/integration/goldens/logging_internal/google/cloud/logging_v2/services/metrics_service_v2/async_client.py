@@ -62,7 +62,7 @@ class BaseMetricsServiceV2AsyncClient:
     DEFAULT_ENDPOINT = BaseMetricsServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = BaseMetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
     _DEFAULT_ENDPOINT_TEMPLATE = BaseMetricsServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE
-    DEFAULT_UNIVERSE = BaseMetricsServiceV2Client.DEFAULT_UNIVERSE
+    _DEFAULT_UNIVERSE = BaseMetricsServiceV2Client._DEFAULT_UNIVERSE
 
     log_metric_path = staticmethod(BaseMetricsServiceV2Client.log_metric_path)
     parse_log_metric_path = staticmethod(BaseMetricsServiceV2Client.parse_log_metric_path)

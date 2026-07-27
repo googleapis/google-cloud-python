@@ -86,7 +86,7 @@ class CloudRedisAsyncClient:
     DEFAULT_ENDPOINT = CloudRedisClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = CloudRedisClient.DEFAULT_MTLS_ENDPOINT
     _DEFAULT_ENDPOINT_TEMPLATE = CloudRedisClient._DEFAULT_ENDPOINT_TEMPLATE
-    DEFAULT_UNIVERSE = CloudRedisClient.DEFAULT_UNIVERSE
+    _DEFAULT_UNIVERSE = CloudRedisClient._DEFAULT_UNIVERSE
 
     instance_path = staticmethod(CloudRedisClient.instance_path)
     parse_instance_path = staticmethod(CloudRedisClient.parse_instance_path)
