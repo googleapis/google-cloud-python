@@ -68,7 +68,7 @@ def _parse_bq_func(
 def parse_yaml(yaml_file: pathlib.Path) -> data_models.BQModule:
     print(f"Parsing {yaml_file}...")
 
-    with open(yaml_file, "r") as f:
+    with open(yaml_file, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
     functions = []
