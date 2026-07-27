@@ -16,9 +16,9 @@ import pathlib
 import subprocess
 import sys
 
-import constants
-import data_models
-import template_renderer
+from . import constants
+from . import data_models
+from . import template_renderer
 
 
 def _ensure_init_py(directory: pathlib.Path, limit_dir: pathlib.Path):
