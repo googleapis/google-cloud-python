@@ -609,7 +609,10 @@ def get_client_ssl_credentials(
     """
 
     # 1.  Attempt to retrieve X.509 Workload cert and key.
-    cert, key = _get_workload_cert_and_key(certificate_config_path)
+    try:
+        cert, key = _get_workload_cert_and_key(certificate_config_path)
+    except exceptions.ClientCertError:
+        cert, key = None, None
     if cert and key:
         return True, cert, key, None
 
