@@ -16,10 +16,13 @@
 """A compatibility module for older versions of google-api-core."""
 """A compatibility module for older versions of google-api-core."""
 
-from typing import Optional
+import uuid
+
+from typing import Optional, Union
 from urllib.parse import urlparse, urlunparse
 
 from google.auth.exceptions import MutualTLSChannelError
+import google.protobuf.message
 
 
 def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:

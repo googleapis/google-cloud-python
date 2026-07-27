@@ -15,7 +15,12 @@
 #
 """Tests for the compatibility module for older versions of google-api-core."""
 
-<<<<<<< HEAD
+import re
+import pytest
+
+from google.cloud.storagebatchoperations_v1._compat import determine_domain, get_api_endpoint, get_default_mtls_endpoint
+from google.cloud.storagebatchoperations_v1._compat import setup_request_id
+
 from google.auth.exceptions import MutualTLSChannelError
 
 
@@ -213,12 +218,7 @@ def test_get_api_endpoint(
             )
             == expected
         )
-=======
 
-import re
-import pytest
-
-from google.cloud.storagebatchoperations_v1._compat import setup_request_id
 
 class MockRequest:
     def __init__(self, **kwargs):
@@ -299,4 +299,3 @@ def test_setup_request_id(request_obj, is_proto3_optional, expected):
         assert re.match(UUID_REGEX, value)
     else:
         assert value == expected
->>>>>>> main

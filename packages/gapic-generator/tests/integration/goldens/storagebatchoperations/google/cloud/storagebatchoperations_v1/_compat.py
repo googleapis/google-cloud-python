@@ -14,13 +14,15 @@
 # limitations under the License.
 #
 """A compatibility module for older versions of google-api-core."""
-<<<<<<< HEAD
 """A compatibility module for older versions of google-api-core."""
 
-from typing import Optional
+import uuid
+
+from typing import Optional, Union
 from urllib.parse import urlparse, urlunparse
 
 from google.auth.exceptions import MutualTLSChannelError
+import google.protobuf.message
 
 
 def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
@@ -158,12 +160,6 @@ def determine_domain(
         universe_domain_env,
         default_universe=DEFAULT_UNIVERSE,
     )
-=======
-
-from typing import Union
-import uuid
-
-import google.protobuf.message
 
 
 def setup_request_id(
@@ -209,4 +205,3 @@ def setup_request_id(
     else:
         if not getattr(request, field_name, None):
             setattr(request, field_name, str(uuid.uuid4()))
->>>>>>> main

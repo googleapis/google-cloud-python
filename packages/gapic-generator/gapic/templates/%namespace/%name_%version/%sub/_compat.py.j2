@@ -159,9 +159,7 @@ def determine_domain(
         default_universe=DEFAULT_UNIVERSE,
     )
 
-{% endblock %}
 {% if has_auto_populated_fields %}
-
 
 def setup_request_id(
     request: Union[google.protobuf.message.Message, dict, None],
@@ -206,5 +204,6 @@ def setup_request_id(
     else:
         if not getattr(request, field_name, None):
             setattr(request, field_name, str(uuid.uuid4()))
+
 {% endif %}
 {% endblock %}
