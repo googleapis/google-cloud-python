@@ -24,6 +24,7 @@ from google.cloud.storagebatchoperations_v1 import gapic_version as package_vers
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+from google.cloud.storagebatchoperations_v1._compat import setup_request_id
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
@@ -621,7 +622,7 @@ class StorageBatchOperationsAsyncClient:
             )),
         )
 
-        self._client._setup_request_id(request, 'request_id', False)
+        setup_request_id(request, 'request_id', False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -727,7 +728,7 @@ class StorageBatchOperationsAsyncClient:
             )),
         )
 
-        self._client._setup_request_id(request, 'request_id', False)
+        setup_request_id(request, 'request_id', False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -829,7 +830,7 @@ class StorageBatchOperationsAsyncClient:
             )),
         )
 
-        self._client._setup_request_id(request, 'request_id', False)
+        setup_request_id(request, 'request_id', False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
