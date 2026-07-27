@@ -17,8 +17,8 @@ import pathlib
 import re
 from typing import Any
 
-import constants
-import data_models
+from . import constants
+from . import data_models
 import yaml
 
 
