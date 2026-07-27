@@ -38,7 +38,7 @@ def _write_file(content: str, output_file: pathlib.Path, limit_dir: pathlib.Path
     output_file.parent.mkdir(parents=True, exist_ok=True)
     _ensure_init_py(output_file.parent, limit_dir)
 
-    with open(output_file, "w") as f:
+    with open(output_file, "w", encoding="utf-8") as f:
         f.write(content)
     print(f"  Generated {output_file}")
 
