@@ -233,7 +233,7 @@ def _create_accessor_class_name(namespace: tuple[str, ...], prefix: str = "") ->
     return f"{prefix}{''.join(camel_parts)}SeriesAccessor"
 
 
-def render_accessor(bq_modules: data_models.BQModule) -> tuple[str, str, str]:
+def render_accessor(bq_modules: list[data_models.BQModule]) -> tuple[str, str, str]:
     """
     Returns the content for core accessor, pandas accessor and BF accessor
     """
