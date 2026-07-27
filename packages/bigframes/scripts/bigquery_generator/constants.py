@@ -19,7 +19,7 @@ import jinja2
 SCRIPTS_DIRECTORY = pathlib.Path(__file__).parent.parent.absolute()
 PACKAGE_ROOT = SCRIPTS_DIRECTORY.parent
 CODE_ROOT = PACKAGE_ROOT / "bigframes"
-SCRIPT_PATH_RELATIVE = pathlib.Path(__file__).relative_to(PACKAGE_ROOT).parent.parent
+SCRIPT_PATH_RELATIVE = pathlib.Path(__file__).relative_to(PACKAGE_ROOT).parent
 
 
 # Directory containing the YAML files

@@ -14,7 +14,7 @@
 #
 # DO NOT MODIFY THIS FILE DIRECTLY.
 # This file was generated from: scripts/data/sql-functions/global_namespace/array.yaml
-# by the script: scripts
+# by the script: scripts/bigquery_generator
 
 import bigframes.bigquery as bbq
 import bigframes.core.col

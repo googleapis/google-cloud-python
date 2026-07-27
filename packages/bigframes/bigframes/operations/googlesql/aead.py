@@ -14,7 +14,7 @@
 #
 # DO NOT MODIFY THIS FILE DIRECTLY.
 # This file was generated from: scripts/data/sql-functions/aead.yaml
-# by the script: scripts
+# by the script: scripts/bigquery_generator
 
 from __future__ import annotations
 
