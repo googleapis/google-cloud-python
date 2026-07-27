@@ -22,7 +22,7 @@ from . import data_models
 import yaml
 
 
-def _to_snake_case(name):
+def _to_snake_case(name: str) -> str:
     # Replace dots with underscores
     name = name.replace(".", "_")
     # Handle CamelCase to snake_case
