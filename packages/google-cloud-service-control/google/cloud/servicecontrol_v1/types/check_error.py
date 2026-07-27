@@ -57,7 +57,9 @@ class CheckError(proto.Message):
 
         Values:
             ERROR_CODE_UNSPECIFIED (0):
-                This is never used in ``CheckResponse``.
+                This is the default value if error code is
+                not explicitly set. It should not be used
+                directly.
             NOT_FOUND (5):
                 The consumer's project id, network container, or resource
                 container was not found. Same as

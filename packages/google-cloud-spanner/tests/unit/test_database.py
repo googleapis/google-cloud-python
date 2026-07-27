@@ -3658,14 +3658,16 @@ class _Database(object):
         self._sessions_manager = mock.Mock()
         # Configure get_session to return sessions from the pool
         self._sessions_manager.get_session = mock.Mock(
-            side_effect=lambda tx_type: self._pool.get()
-            if hasattr(self, "_pool") and self._pool
-            else None
+            side_effect=lambda tx_type: (
+                self._pool.get() if hasattr(self, "_pool") and self._pool else None
+            )
         )
         self._sessions_manager.put_session = mock.Mock(
-            side_effect=lambda session: self._pool.put(session)
-            if hasattr(self, "_pool") and self._pool
-            else None
+            side_effect=lambda session: (
+                self._pool.put(session)
+                if hasattr(self, "_pool") and self._pool
+                else None
+            )
         )
 
     @property

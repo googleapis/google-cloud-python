@@ -92,7 +92,42 @@ replacements:
     after: |
       \g<1>            metrics_interceptor=mock.ANY,
     count: 1
-  
+    # Temporary patch until gapic-generator 1.38 or newer is released.
+    # From https://github.com/googleapis/google-cloud-python/pull/17838
+  - paths:
+      - packages/google-cloud-spanner/tests/unit/gapic/spanner_admin_database_v1/test_database_admin.py
+      - packages/google-cloud-spanner/tests/unit/gapic/spanner_admin_instance_v1/test_instance_admin.py
+      - packages/google-cloud-spanner/tests/unit/gapic/spanner_v1/test_spanner.py
+    before: |
+      for config_data, expected_cert_source in test_cases:
+      \            env = os.environ.copy\(\)
+      \            env.pop\("GOOGLE_API_USE_CLIENT_CERTIFICATE", None\)
+      \            with mock.patch.dict\(os.environ, env, clear=True\):
+    after: |
+      for config_data, expected_cert_source in test_cases:
+                env = os.environ.copy()
+                env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+                env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
+                with mock.patch.dict(os.environ, env, clear=True):
+    count: 3
+    # Temporary patch until gapic-generator 1.38 or newer is released.
+    # From https://github.com/googleapis/google-cloud-python/pull/17838
+  - paths:
+      - packages/google-cloud-spanner/tests/unit/gapic/spanner_admin_database_v1/test_database_admin.py
+      - packages/google-cloud-spanner/tests/unit/gapic/spanner_admin_instance_v1/test_instance_admin.py
+      - packages/google-cloud-spanner/tests/unit/gapic/spanner_v1/test_spanner.py
+    before: |
+      for config_data, expected_cert_source in test_cases:
+      \            env = os.environ.copy\(\)
+      \            env.pop\("GOOGLE_API_USE_CLIENT_CERTIFICATE", ""\)
+      \            with mock.patch.dict\(os.environ, env, clear=True\):
+    after: |
+      for config_data, expected_cert_source in test_cases:
+                env = os.environ.copy()
+                env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+                env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
+                with mock.patch.dict(os.environ, env, clear=True):
+    count: 3
   - paths: 
       - packages/google-cloud-spanner/tests/unit/gapic/spanner_v1/test_spanner.py
     # Group 1: Captures ONLY the spaces/tabs before the text
@@ -125,7 +160,7 @@ replacements:
     before: '(?s)dependencies = \[.*?\]\nextras = \{\s*\}'
     after: |
       dependencies = [
-          "google-api-core[grpc] >= 2.24.2, <3.0.0",
+          "google-api-core[grpc] >= 2.25.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
@@ -649,6 +684,7 @@ replacements:
           "3.12",
           "3.13",
           "3.14",
+          "3.15",
       ]
       UNIT_TEST_STANDARD_DEPENDENCIES = [
           "mock",
@@ -827,29 +863,15 @@ replacements:
       @nox.session(python=ALL_PYTHON)
       @nox.parametrize(
           "protobuf_implementation",
-          ["python", "upb", "cpp"],
+          ["python", "upb"],
       )
       def unit(session, protobuf_implementation):
           # Install all test dependencies, then install this package in-place.
-
-          if protobuf_implementation == "cpp" and session.python in (
-              "3.11",
-              "3.12",
-              "3.13",
-              "3.14",
-          ):
-              session.skip("cpp implementation is not supported in python 3.11+")
 
           constraints_path = str(
               CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
           )
           install_unittest_dependencies(session, "-c", constraints_path)
-
-          # TODO(https://github.com/googleapis/synthtool/issues/1976):
-          # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-          # The 'cpp' implementation requires Protobuf<4.
-          if protobuf_implementation == "cpp":
-              session.install("protobuf<4")
 
           # Run py.test against the unit tests.
           args = [
@@ -946,8 +968,6 @@ replacements:
               ("python", "POSTGRESQL"),
               ("upb", "GOOGLE_STANDARD_SQL"),
               ("upb", "POSTGRESQL"),
-              ("cpp", "GOOGLE_STANDARD_SQL"),
-              ("cpp", "POSTGRESQL"),
           ],
       )
       def system(session, protobuf_implementation, database_dialect):
@@ -975,14 +995,6 @@ replacements:
                   "Only run system tests on real Spanner with one protobuf implementation to speed up the build"
               )
 
-          if protobuf_implementation == "cpp" and session.python in (
-              "3.11",
-              "3.12",
-              "3.13",
-              "3.14",
-          ):
-              session.skip("cpp implementation is not supported in python 3.11+")
-
           # Install pyopenssl for mTLS testing.
           if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
               session.install("pyopenssl")
@@ -994,12 +1006,6 @@ replacements:
               session.skip("System tests were not found")
 
           install_systemtest_dependencies(session, "-c", constraints_path)
-
-          # TODO(https://github.com/googleapis/synthtool/issues/1976):
-          # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-          # The 'cpp' implementation requires Protobuf<4.
-          if protobuf_implementation == "cpp":
-              session.install("protobuf<4")
 
           # Run py.test against the system tests.
           if system_test_exists:
@@ -1174,20 +1180,10 @@ replacements:
               ("python", "POSTGRESQL"),
               ("upb", "GOOGLE_STANDARD_SQL"),
               ("upb", "POSTGRESQL"),
-              ("cpp", "GOOGLE_STANDARD_SQL"),
-              ("cpp", "POSTGRESQL"),
           ],
       )
       def prerelease_deps(session, protobuf_implementation, database_dialect):
           """Run all tests with prerelease versions of dependencies installed."""
-
-          if protobuf_implementation == "cpp" and session.python in (
-              "3.11",
-              "3.12",
-              "3.13",
-              "3.14",
-          ):
-              session.skip("cpp implementation is not supported in python 3.11+")
 
           # Install all dependencies
           session.install("-e", ".[all, tests, tracing]")

@@ -26,6 +26,7 @@ import tempfile
 from typing import cast, Generator, List, Optional, Tuple, Union
 
 from google.auth import _agent_identity_utils
+from google.auth import _cloud_sdk
 from google.auth import environment_vars
 from google.auth import exceptions
 
@@ -51,28 +52,8 @@ _KEY_REGEX = re.compile(
 _LOGGER = logging.getLogger(__name__)
 
 
-# A flag to track if we have already logged a warning about mTLS auto-enablement failures.
-# This prevents log spam when client libraries create transports or session instances
-# frequently within a single process.
-_has_logged_mtls_warning = False
-
-
 _PASSPHRASE_REGEX = re.compile(
     b"-----BEGIN PASSPHRASE-----(.+)-----END PASSPHRASE-----", re.DOTALL
-)
-
-# Temporary patch to accomodate incorrect cert config in Cloud Run prod environment.
-_WELL_KNOWN_CLOUD_RUN_CERT_PATH = (
-    "/var/run/secrets/workload-spiffe-credentials/certificates.pem"
-)
-_WELL_KNOWN_CLOUD_RUN_KEY_PATH = (
-    "/var/run/secrets/workload-spiffe-credentials/private_key.pem"
-)
-_INCORRECT_CLOUD_RUN_CERT_PATH = (
-    "/var/lib/volumes/certificate/workload-certificates/certificates.pem"
-)
-_INCORRECT_CLOUD_RUN_KEY_PATH = (
-    "/var/lib/volumes/certificate/workload-certificates/private_key.pem"
 )
 
 
@@ -436,10 +417,15 @@ def _get_cert_config_path(certificate_config_path=None, include_context_aware=Tr
         The absolute path of the certificate config file, and None if the file does not exist.
     """
 
+    source = "function argument"
+    is_explicit = True
     if certificate_config_path is None:
         env_path = environ.get(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, None)
         if env_path is not None and env_path != "":
             certificate_config_path = env_path
+            source = (
+                f"environment variable {environment_vars.GOOGLE_API_CERTIFICATE_CONFIG}"
+            )
         else:
             env_path = environ.get(
                 environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
@@ -447,11 +433,21 @@ def _get_cert_config_path(certificate_config_path=None, include_context_aware=Tr
             )
             if include_context_aware and env_path is not None and env_path != "":
                 certificate_config_path = env_path
+                source = f"environment variable {environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH}"
             else:
-                certificate_config_path = CERTIFICATE_CONFIGURATION_DEFAULT_PATH
+                certificate_config_path = os.path.join(
+                    _cloud_sdk.get_config_path(), "certificate_config.json"
+                )
+                is_explicit = False
 
     certificate_config_path = path.expanduser(certificate_config_path)
     if not path.exists(certificate_config_path):
+        if is_explicit:
+            _LOGGER.debug(
+                "Certificate configuration file explicitly specified via %s at %s does not exist",
+                source,
+                certificate_config_path,
+            )
         return None
     return certificate_config_path
 
@@ -488,25 +484,6 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
         )
     cert_path = workload["cert_path"]
     key_path = workload["key_path"]
-
-    # == BEGIN Temporary Cloud Run PATCH ==
-    # See https://github.com/googleapis/google-auth-library-python/issues/1881
-    if (cert_path == _INCORRECT_CLOUD_RUN_CERT_PATH) and (
-        key_path == _INCORRECT_CLOUD_RUN_KEY_PATH
-    ):
-        if not path.exists(cert_path) and not path.exists(key_path):
-            _LOGGER.debug(
-                "Applying Cloud Run certificate path patch. "
-                "Configured paths not found: %s, %s. "
-                "Using well-known paths: %s, %s",
-                cert_path,
-                key_path,
-                _WELL_KNOWN_CLOUD_RUN_CERT_PATH,
-                _WELL_KNOWN_CLOUD_RUN_KEY_PATH,
-            )
-            cert_path = _WELL_KNOWN_CLOUD_RUN_CERT_PATH
-            key_path = _WELL_KNOWN_CLOUD_RUN_KEY_PATH
-    # == END Temporary Cloud Run PATCH ==
 
     return cert_path, key_path
 
@@ -755,36 +732,33 @@ def check_use_client_cert():
     will default to False.
     If GOOGLE_API_USE_CLIENT_CERTIFICATE is unset, the value will be inferred
     as True (auto-enabled) if a workload config file exists (pointed at by
-    GOOGLE_API_CERTIFICATE_CONFIG) containing a "workload" section.
+    GOOGLE_API_CERTIFICATE_CONFIG or CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
+    or the default path like ~/.config/gcloud/certificate_config.json)
+    containing a "workload" section.
     Otherwise, it returns False.
 
     Returns:
         bool: Whether the client certificate should be used for mTLS connection.
     """
-    global _has_logged_mtls_warning
     env_override = _check_use_client_cert_env()
     if env_override is not None:
         return env_override
 
     # Auto-enablement checks (when GOOGLE_API_USE_CLIENT_CERTIFICATE is not set)
 
-    # Check if the value of GOOGLE_API_CERTIFICATE_CONFIG is set.
-    cert_path = getenv(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG) or getenv(
-        environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH
-    )
+    # Check if a workload config file exists.
+    cert_path = _get_cert_config_path(include_context_aware=True)
 
     if cert_path:
         try:
             with open(cert_path, "r") as f:
                 content = json.load(f)
         except (FileNotFoundError, OSError, json.JSONDecodeError) as e:
-            if not _has_logged_mtls_warning:
-                _LOGGER.warning(
-                    "mTLS auto-enablement failed: Could not read/parse certificate file at %s. Error: %s",
-                    cert_path,
-                    e,
-                )
-                _has_logged_mtls_warning = True
+            _LOGGER.debug(
+                "mTLS auto-enablement failed: Could not read/parse certificate file at %s. Error: %s",
+                cert_path,
+                e,
+            )
             return False
 
         # Structural validation
@@ -794,12 +768,10 @@ def check_use_client_cert():
                 return True
 
         # If we got here, the file exists but the expected structure is missing
-        if not _has_logged_mtls_warning:
-            _LOGGER.warning(
-                "mTLS auto-enablement failed: Certificate configuration file at %s is missing the required ['cert_configs']['workload'] section.",
-                cert_path,
-            )
-            _has_logged_mtls_warning = True
+        _LOGGER.debug(
+            "mTLS auto-enablement failed: Certificate configuration file at %s is missing the required ['cert_configs']['workload'] section.",
+            cert_path,
+        )
     return False
 
 

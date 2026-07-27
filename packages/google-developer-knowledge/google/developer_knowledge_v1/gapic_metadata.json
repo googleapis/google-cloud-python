@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "DeveloperKnowledgeClient",
           "rpcs": {
+            "AnswerQuery": {
+              "methods": [
+                "answer_query"
+              ]
+            },
             "BatchGetDocuments": {
               "methods": [
                 "batch_get_documents"
@@ -30,6 +35,11 @@
         "grpc-async": {
           "libraryClient": "DeveloperKnowledgeAsyncClient",
           "rpcs": {
+            "AnswerQuery": {
+              "methods": [
+                "answer_query"
+              ]
+            },
             "BatchGetDocuments": {
               "methods": [
                 "batch_get_documents"
@@ -50,6 +60,11 @@
         "rest": {
           "libraryClient": "DeveloperKnowledgeClient",
           "rpcs": {
+            "AnswerQuery": {
+              "methods": [
+                "answer_query"
+              ]
+            },
             "BatchGetDocuments": {
               "methods": [
                 "batch_get_documents"

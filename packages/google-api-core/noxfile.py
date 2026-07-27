@@ -36,6 +36,16 @@ SUPPORTED_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
 
 
 # Error if a python version is missing
@@ -378,7 +388,7 @@ def mypy(session):
         "types-requests",
         "types-protobuf",
     )
-    session.run("mypy", "google", "tests")
+    session.run("mypy", f"--config-file={MYPY_CONFIG_FILE}", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
