@@ -106,7 +106,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "iamcredentials.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = client_utils.get_default_mtls_endpoint(
+    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(
         DEFAULT_ENDPOINT
     )
 
