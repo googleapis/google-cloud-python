@@ -117,6 +117,32 @@ def test_verify_token_jwk(decode, get_unverified_header, py_jwk_set, _fetch_cert
     )
 
 
+@mock.patch("google.oauth2.id_token._fetch_certs", autospec=True)
+@mock.patch("jwt.api_jwk.PyJWKSet", autospec=True)
+@mock.patch("jwt.get_unverified_header", autospec=True)
+@mock.patch("jwt.decode", autospec=True)
+def test_verify_token_jwk_missing_kid(decode, get_unverified_header, py_jwk_set, _fetch_certs):
+    from jwt.exceptions import PyJWKClientError
+
+    certs_url = "abc123"
+    data = {"keys": [{"alg": "RS256"}]}
+    _fetch_certs.return_value = data
+    get_unverified_header.return_value = {"kid": "mock-kid"}
+
+    mock_key = mock.MagicMock()
+    mock_key.key_id = "different-kid"
+    mock_key.public_key_use = "sig"
+    mock_key.key = mock.sentinel.key
+    mock_key.algorithm_name = "mock-alg"
+    py_jwk_set.from_dict.return_value.keys = [mock_key]
+
+    with pytest.raises(PyJWKClientError, match='Unable to find a signing key that matches: "mock-kid"'):
+        id_token.verify_token(
+            mock.sentinel.token, mock.sentinel.request, certs_url=certs_url
+        )
+
+
+
 @mock.patch("google.auth.jwt.decode", autospec=True)
 @mock.patch("google.oauth2.id_token._fetch_certs", autospec=True)
 def test_verify_token_args(_fetch_certs, decode):

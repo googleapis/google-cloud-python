@@ -141,6 +141,7 @@ def verify_token(
         try:
             import jwt as jwt_lib
             from jwt.api_jwk import PyJWKSet
+            from jwt.exceptions import PyJWKClientError
         except ImportError as caught_exc:  # pragma: NO COVER
             raise ImportError(
                 "The pyjwt library is not installed, please install the pyjwt package to use the jwk certs format."
@@ -156,7 +157,7 @@ def verify_token(
                 break
 
         if signing_key is None:
-            raise ValueError("Token has an invalid kid")
+            raise PyJWKClientError(f'Unable to find a signing key that matches: "{kid}"')
 
         return jwt_lib.decode(
             id_token,
