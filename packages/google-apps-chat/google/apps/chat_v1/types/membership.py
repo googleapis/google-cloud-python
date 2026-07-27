@@ -92,6 +92,11 @@ class Membership(proto.Message):
             removed from a space. This field is output only,
             except when used to import historical
             memberships in import mode spaces.
+        affiliation (google.apps.chat_v1.types.Membership.Affiliation):
+            Output only. A user's relationship to the Workspace
+            organization that owns the space. In spaces owned by
+            consumer accounts, the affiliation of all members is
+            ``EXTERNAL``.
     """
 
     class MembershipState(proto.Enum):
@@ -200,6 +205,36 @@ class Membership(proto.Message):
         ROLE_MANAGER = 2
         ROLE_ASSISTANT_MANAGER = 4
 
+    class Affiliation(proto.Enum):
+        r"""Represents the affiliation of a user to the Google Workspace
+        organization that owns the space. This enum may have more values
+        added in the future.
+
+        Values:
+            AFFILIATION_UNSPECIFIED (0):
+                Default value. This value is unused.
+            INTERNAL (1):
+                An account managed by the same Google
+                Workspace organization that owns the space.
+            EXTERNAL (2):
+                An account external to the Google Workspace
+                organization that owns the space (e.g., a
+                consumer account, or an account managed by a
+                different Workspace organization).
+            MANAGED_EXTERNAL (3):
+                An account managed by the Workspace
+                organization that owns the space, but
+                provisioned for a user who is external to the
+                organization (e.g., a Guest user). To learn more
+                about guests, see
+                https://support.google.com/chat/answer/16997417.
+        """
+
+        AFFILIATION_UNSPECIFIED = 0
+        INTERNAL = 1
+        EXTERNAL = 2
+        MANAGED_EXTERNAL = 3
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -235,6 +270,11 @@ class Membership(proto.Message):
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
+    )
+    affiliation: Affiliation = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=Affiliation,
     )
 
 

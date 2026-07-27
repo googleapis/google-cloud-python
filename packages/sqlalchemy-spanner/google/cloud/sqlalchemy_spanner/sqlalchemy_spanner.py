@@ -120,6 +120,7 @@ _type_map = {
     "TIMESTAMP": types.TIMESTAMP,
     "ARRAY": types.ARRAY,
     "JSON": types.JSON,
+    "TOKENLIST": types.String,
 }
 
 
@@ -426,8 +427,10 @@ class SpannerSQLCompiler(SQLCompiler):
             )
             for c in expression._select_iterables(
                 filter(
-                    lambda col: not col.dialect_options.get("spanner", {}).get(
-                        "exclude_from_returning", False
+                    lambda col: (
+                        not col.dialect_options.get("spanner", {}).get(
+                            "exclude_from_returning", False
+                        )
                     ),
                     returning_cols,
                 )
@@ -1300,6 +1303,7 @@ class SpannerDialect(DefaultDialect):
                 {table_type_query}
                 {schema_filter_query}
                 i.index_type != 'PRIMARY_KEY'
+                AND i.index_type != 'SEARCH'
                 AND i.spanner_is_managed = FALSE
             GROUP BY i.table_catalog, i.table_schema, i.table_name,
                      i.index_name, i.is_unique
@@ -1324,7 +1328,9 @@ class SpannerDialect(DefaultDialect):
                     "column_names": row[3],
                     "unique": row[4],
                     "column_sorting": {
-                        col: order.lower() for col, order in zip(row[3], row[5])
+                        col: order.lower()
+                        for col, order in zip(row[3], row[5] or [])
+                        if order
                     },
                     "include_columns": include_columns if include_columns else [],
                     "dialect_options": dialect_options,
