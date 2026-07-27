@@ -113,6 +113,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
     )
 
     _DEFAULT_ENDPOINT_TEMPLATE = "storagebatchoperations.{UNIVERSE_DOMAIN}"
+    _DEFAULT_UNIVERSE = "googleapis.com"
 
     @staticmethod
     def _use_client_cert_effective():

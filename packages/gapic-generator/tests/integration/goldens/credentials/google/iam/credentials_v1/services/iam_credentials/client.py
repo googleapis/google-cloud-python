@@ -111,6 +111,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
     )
 
     _DEFAULT_ENDPOINT_TEMPLATE = "iamcredentials.{UNIVERSE_DOMAIN}"
+    _DEFAULT_UNIVERSE = "googleapis.com"
 
     @staticmethod
     def _use_client_cert_effective():

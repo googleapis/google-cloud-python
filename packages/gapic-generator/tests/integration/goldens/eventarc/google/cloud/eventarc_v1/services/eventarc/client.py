@@ -129,6 +129,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
     )
 
     _DEFAULT_ENDPOINT_TEMPLATE = "eventarc.{UNIVERSE_DOMAIN}"
+    _DEFAULT_UNIVERSE = "googleapis.com"
 
     @staticmethod
     def _use_client_cert_effective():
