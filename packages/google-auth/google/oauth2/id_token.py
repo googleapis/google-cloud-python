@@ -157,7 +157,9 @@ def verify_token(
                 break
 
         if signing_key is None:
-            raise PyJWKClientError(f'Unable to find a signing key that matches: "{kid}"')
+            raise PyJWKClientError(
+                f'Unable to find a signing key that matches: "{kid}"'
+            )
 
         return jwt_lib.decode(
             id_token,

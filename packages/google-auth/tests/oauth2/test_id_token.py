@@ -121,7 +121,9 @@ def test_verify_token_jwk(decode, get_unverified_header, py_jwk_set, _fetch_cert
 @mock.patch("jwt.api_jwk.PyJWKSet", autospec=True)
 @mock.patch("jwt.get_unverified_header", autospec=True)
 @mock.patch("jwt.decode", autospec=True)
-def test_verify_token_jwk_missing_kid(decode, get_unverified_header, py_jwk_set, _fetch_certs):
+def test_verify_token_jwk_missing_kid(
+    decode, get_unverified_header, py_jwk_set, _fetch_certs
+):
     from jwt.exceptions import PyJWKClientError
 
     certs_url = "abc123"
@@ -136,11 +138,12 @@ def test_verify_token_jwk_missing_kid(decode, get_unverified_header, py_jwk_set,
     mock_key.algorithm_name = "mock-alg"
     py_jwk_set.from_dict.return_value.keys = [mock_key]
 
-    with pytest.raises(PyJWKClientError, match='Unable to find a signing key that matches: "mock-kid"'):
+    with pytest.raises(
+        PyJWKClientError, match='Unable to find a signing key that matches: "mock-kid"'
+    ):
         id_token.verify_token(
             mock.sentinel.token, mock.sentinel.request, certs_url=certs_url
         )
-
 
 
 @mock.patch("google.auth.jwt.decode", autospec=True)
