@@ -1141,7 +1141,7 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.bidi_run_session]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         if header_params:
             metadata = tuple(metadata) + (
