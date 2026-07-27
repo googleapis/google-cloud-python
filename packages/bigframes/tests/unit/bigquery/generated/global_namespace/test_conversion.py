@@ -14,7 +14,7 @@
 #
 # DO NOT MODIFY THIS FILE DIRECTLY.
 # This file was generated from: scripts/data/sql-functions/global_namespace/conversion.yaml
-# by the script: scripts/generate_bigframes_bigquery.py
+# by the script: scripts
 
 import bigframes.bigquery as bbq
 import bigframes.core.col

@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import pathlib
-import sys
 import subprocess
+import sys
 
 import constants
 import data_models
@@ -47,6 +47,7 @@ def _run_ruff():
     targets = [
         constants.OUTPUT_DIR,
         constants.TEST_OUTPUT_DIR,
+        constants.CODE_ROOT / "extensions",
     ]
 
     subprocess.run(
@@ -62,6 +63,8 @@ def _run_ruff():
 
 def _generate_op_defs(bq_module: data_models.BQModule):
     content = template_renderer.render_operation(bq_module)
+    if not content:
+        return
 
     output_file = constants.OUTPUT_DIR.joinpath(bq_module.module_path).with_suffix(
         ".py"
@@ -70,12 +73,10 @@ def _generate_op_defs(bq_module: data_models.BQModule):
     _write_file(content, output_file, constants.OUTPUT_DIR.parent)
 
 
-def _generate_accesor():
-    pass
-
-
 def _generate_tests(bq_module: data_models.BQModule):
     content = template_renderer.render_tests(bq_module)
+    if not content:
+        return
 
     output_file = constants.TEST_OUTPUT_DIR.joinpath(
         bq_module.module_path.with_name(f"test_{bq_module.module_path.name}")
@@ -84,11 +85,34 @@ def _generate_tests(bq_module: data_models.BQModule):
     _write_file(content, output_file, constants.TEST_OUTPUT_DIR.parent)
 
 
+def _generate_accesor(bq_modules: list[data_models.BQModule]):
+    (core_content, pd_content, bf_content) = template_renderer.render_accessor(
+        bq_modules
+    )
+
+    core_output_file = (
+        constants.CODE_ROOT / "extensions" / "core" / "series_accessor.py"
+    )
+    _write_file(core_content, core_output_file, constants.CODE_ROOT)
+
+    pd_output_file = (
+        constants.CODE_ROOT / "extensions" / "pandas" / "series_accessor.py"
+    )
+    _write_file(pd_content, pd_output_file, constants.CODE_ROOT)
+
+    bf_output_file = (
+        constants.CODE_ROOT / "extensions" / "bigframes" / "series_accessor.py"
+    )
+    _write_file(bf_content, bf_output_file, constants.CODE_ROOT)
+
+
 def generate(bq_modules: list[data_models.BQModule]):
 
     for bq_module in bq_modules:
         _generate_op_defs(bq_module)
         _generate_tests(bq_module)
+
+    _generate_accesor(bq_modules)
 
     # Ruff format
     _run_ruff()

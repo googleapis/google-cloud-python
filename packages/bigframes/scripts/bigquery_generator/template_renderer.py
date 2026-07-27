@@ -16,6 +16,7 @@
 
 import constants
 import data_models
+import dataclasses
 
 
 def _get_concrete_type_expr(yaml_type: str) -> str:
@@ -83,10 +84,7 @@ def render_signature_def(
 
     _validate_types(bq_func.impls)
 
-    python_name = bq_func.op_base_name
-    if python_name in constants.PYTHON_BUILTINS:
-        python_name = python_name + "_"
-    sig_func_name = f"_{python_name.upper()}_SIG"
+    sig_func_name = f"_{bq_func.op_base_name.upper()}_SIG"
 
     max_args = max(len(impl.args) for impl in bq_func.impls)
 
@@ -180,12 +178,17 @@ def _to_bigframes_func(bq_func: data_models.BQFunc) -> data_models.BigFramesFunc
         op_name=f"_{bq_func.op_base_name.upper()}_OP",
         description=bq_func.description,
         args=_get_bigframes_func_args(bq_func),
+        series_accessor_arg=bq_func.series_accessor_arg,
     )
 
 
 def render_operation(
     bq_module: data_models.BQModule,
 ) -> str:
+    if not bq_module.functions:
+        # If there are no function definitions, do not generate an empty file.
+        return ""
+
     ops = []
     functions = []
 
@@ -202,6 +205,9 @@ def render_operation(
 
 
 def render_tests(bq_module: data_models.BQModule) -> str:
+    if not bq_module.functions:
+        # If there are no function definitions, do not generate an empty test file.
+        return ""
 
     import_path = "bigframes.operations.googlesql." + ".".join(
         bq_module.module_path.parts
@@ -218,3 +224,77 @@ def render_tests(bq_module: data_models.BQModule) -> str:
         is_global=bq_module.is_global,
         functions=functions,
     )
+
+
+def _create_accessor_class_name(namespace: tuple[str, ...], prefix: str = "") -> str:
+    if not namespace:
+        return f"{prefix}BigQuerySeriesAccessor"
+    camel_parts = [part.capitalize() for part in namespace]
+    return f"{prefix}{''.join(camel_parts)}SeriesAccessor"
+
+
+def render_accessor(bq_modules: data_models.BQModule) -> tuple[str, str, str]:
+    """
+    Returns the content for core accessor, pandas accessor and BF accessor
+    """
+
+    namespaces = set()
+    for bq_module in bq_modules:
+        for i in range(len(bq_module.namespace) + 1):
+            namespaces.add(bq_module.namespace[:i])
+
+    sorted_namespaces = sorted(list(namespaces), key=len)
+
+    accessors = []
+    accessor_lookup_table = {}
+    for namespace in sorted_namespaces:
+        accessor = data_models.Accessor(
+            class_name=_create_accessor_class_name(namespace),
+            bigframes_class_name=_create_accessor_class_name(
+                namespace, prefix="Bigframes"
+            ),
+            pandas_class_name=_create_accessor_class_name(namespace, prefix="Pandas"),
+            is_root=len(namespace) == 0,
+            description=(
+                f"Series accessor for BigQuery {'.'.join(namespace)} functions."
+                if namespace
+                else "Series accessor for BigQuery functions."
+            ),
+            children=[],
+            functions=[],
+        )
+        accessors.append(accessor)
+        accessor_lookup_table[namespace] = accessor
+
+        # Establish parent-child relations
+        if len(namespace) > 0:
+            accessor.prop_name = namespace[-1]
+            parent_namespace = namespace[:-1]
+            accessor_lookup_table[parent_namespace].children.append(accessor)
+
+    # Arrange functions by namespaces
+    for bq_module in bq_modules:
+        module_parts = bq_module.module_path.parts
+        for bq_func in bq_module.functions:
+            if bq_func.series_accessor_arg is None:
+                continue
+            bf_func = _to_bigframes_func(bq_func)
+            bf_func.import_module = (
+                f"bigframes.operations.googlesql.{'.'.join(module_parts)}"
+            )
+            accessor_lookup_table[bq_module.namespace].functions.append(bf_func)
+
+    core_content = constants.TEMPLATES["core_series_accessor"].render(
+        script_path=constants.SCRIPT_PATH_RELATIVE,
+        namespaces=accessors,
+    )
+
+    pandas_content = constants.TEMPLATES["pandas_series_accessor"].render(
+        script_path=constants.SCRIPT_PATH_RELATIVE, namespaces=accessors
+    )
+
+    bigframes_content = constants.TEMPLATES["bigframes_series_accessor"].render(
+        script_path=constants.SCRIPT_PATH_RELATIVE, namespaces=accessors
+    )
+
+    return core_content, pandas_content, bigframes_content

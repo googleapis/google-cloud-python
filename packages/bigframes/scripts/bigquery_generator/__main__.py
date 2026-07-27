@@ -1,13 +1,3 @@
-#!/usr/bin/env -S uv run --active --script
-#
-# /// script
-# dependencies = [
-#   "jinja2",
-#   "pyyaml",
-#   "ruff==0.14.14",
-# ]
-# ///
-#
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

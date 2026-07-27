@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
 
 import dataclasses
 import pathlib
@@ -58,17 +59,28 @@ class BQFunc:
     op_base_name: str
     description: str
     impls: list[BQFuncImpl]
+    series_accessor_arg: str | None
 
 
 @dataclasses.dataclass
 class BQModule:
     yaml_file: pathlib.Path
     functions: list[BQFunc]
-    is_global: bool
 
     @property
-    def module_path(self):
+    def module_path(self) -> pathlib.Path:
         return self.yaml_file.relative_to(constants.DATA_DIR).with_suffix("")
+
+    @property
+    def namespace(self) -> tuple[str, ...]:
+        parts = self.module_path.parts
+        if "global_namespace" in parts:
+            return tuple()
+        return parts
+
+    @property
+    def is_global(self) -> bool:
+        return "global_namespace" in self.module_path.parts
 
 
 @dataclasses.dataclass
@@ -111,3 +123,17 @@ class BigFramesFunc:
     op_name: str
     description: str
     args: list[BigFramesFuncArg]
+    series_accessor_arg: str | None
+    import_module: str | None = None
+
+
+@dataclasses.dataclass
+class Accessor:
+    class_name: str
+    bigframes_class_name: str
+    pandas_class_name: str
+    is_root: bool
+    description: str
+    children: list[Accessor]
+    functions: list[BigFramesFunc]
+    prop_name: str | None = None

@@ -61,6 +61,7 @@ def _parse_bq_func(
         op_base_name=op_base_name,
         description=func_data["description"],
         impls=[_parse_func_impl(impl) for impl in func_data["impls"]],
+        series_accessor_arg=func_data.get("series_accessor_arg", None),
     )
 
 
@@ -82,5 +83,4 @@ def parse_yaml(yaml_file: pathlib.Path) -> data_models.BQModule:
     return data_models.BQModule(
         yaml_file=yaml_file,
         functions=functions,
-        is_global=is_global,
     )
