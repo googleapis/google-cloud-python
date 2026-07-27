@@ -243,7 +243,7 @@ def render_accessor(bq_modules: data_models.BQModule) -> tuple[str, str, str]:
         for i in range(len(bq_module.namespace) + 1):
             namespaces.add(bq_module.namespace[:i])
 
-    sorted_namespaces = sorted(list(namespaces), key=len)
+    sorted_namespaces = sorted(list(namespaces), key=lambda ns: (len(ns), ns))
 
     accessors = []
     accessor_lookup_table = {}
