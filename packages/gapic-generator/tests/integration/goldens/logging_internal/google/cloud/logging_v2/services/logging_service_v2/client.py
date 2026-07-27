@@ -101,7 +101,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
     )
 
     _DEFAULT_ENDPOINT_TEMPLATE = "logging.{UNIVERSE_DOMAIN}"
-    _DEFAULT_UNIVERSE = "googleapis.com"
 
     @staticmethod
     def _use_client_cert_effective():

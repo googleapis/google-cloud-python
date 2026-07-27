@@ -108,7 +108,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     )
 
     _DEFAULT_ENDPOINT_TEMPLATE = "cloudasset.{UNIVERSE_DOMAIN}"
-    _DEFAULT_UNIVERSE = "googleapis.com"
 
     @staticmethod
     def _use_client_cert_effective():
