@@ -14,9 +14,9 @@
 # limitations under the License.
 
 
+
 import constants
 import data_models
-import dataclasses
 
 
 def _get_concrete_type_expr(yaml_type: str) -> str:
