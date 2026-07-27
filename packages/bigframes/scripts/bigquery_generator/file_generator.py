@@ -105,7 +105,6 @@ def _generate_accesor(bq_modules: list[data_models.BQModule]):
 
 
 def generate(bq_modules: list[data_models.BQModule]):
-
     for bq_module in bq_modules:
         _generate_op_defs(bq_module)
         _generate_tests(bq_module)
