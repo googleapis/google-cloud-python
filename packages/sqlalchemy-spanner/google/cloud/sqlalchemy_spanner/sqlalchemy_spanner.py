@@ -120,6 +120,7 @@ _type_map = {
     "TIMESTAMP": types.TIMESTAMP,
     "ARRAY": types.ARRAY,
     "JSON": types.JSON,
+    "TOKENLIST": types.String,
 }
 
 
