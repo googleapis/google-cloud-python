@@ -25,9 +25,9 @@
 import pathlib
 import sys
 
-pkg_dir = pathlib.Path(__file__).parent / "bigquery_generator"
-if str(pkg_dir) not in sys.path:
-    sys.path.insert(0, str(pkg_dir))
+scripts_dir = pathlib.Path(__file__).parent
+if str(scripts_dir) not in sys.path:
+    sys.path.insert(0, str(scripts_dir))
 
 from bigquery_generator.__main__ import main
 
