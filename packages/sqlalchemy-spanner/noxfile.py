@@ -362,25 +362,22 @@ def unit(session, test_type):
         return
 
     if test_type == "unit":
-        # Run SQLAlchemy dialect compliance test suite with OpenTelemetry.
+        # Run SQLAlchemy dialect unit tests with pytest-cov if COVERAGE_FILE is set.
         session.install(
             *UNIT_TEST_STANDARD_DEPENDENCIES,
             *UNIT_TEST_EXTERNAL_DEPENDENCIES,
             *UNIT_TEST_DEPENDENCIES,
         )
         session.install(".")
-        session.run(
-            "py.test",
-            "--quiet",
-            "--cov=google.cloud.sqlalchemy_spanner",
-            "--cov=tests/unit",
-            "--cov-append",
-            "--cov-config=.coveragerc",
-            "--cov-report=",
-            "--cov-fail-under=0",
-            os.path.join("tests/unit"),
-            *session.posargs,
-        )
+        pytest_args = ["--quiet", os.path.join("tests/unit")]
+        if "COVERAGE_FILE" in os.environ:
+            pytest_args.extend(
+                [
+                    "--cov=google.cloud.sqlalchemy_spanner",
+                    "--cov-config=.coveragerc",
+                ]
+            )
+        session.run("py.test", *pytest_args, *session.posargs)
         return
 
 
