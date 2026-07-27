@@ -29,7 +29,7 @@ def _ensure_init_py(directory: pathlib.Path, limit_dir: pathlib.Path):
         if not init_file.exists():
             print(f"  Creating {init_file}")
             content = constants.TEMPLATES["license"].render()
-            with open(init_file, "w") as f:
+            with open(init_file, "w", encoding="utf-8") as f:
                 f.write(content)
         curr = curr.parent
 
