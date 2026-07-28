@@ -778,7 +778,7 @@ class SpannerTypeCompiler(GenericTypeCompiler):
         if not type_.native_uuid or not self.dialect.supports_native_uuid:
             return self.visit_CHAR(types.CHAR(36), **kw)
         else:
-            return "UUID"
+            return self.visit_UUID(type_, **kw)
 
     def visit_INTEGER(self, type_, **kw):
         return "INT64"
@@ -862,7 +862,7 @@ class SpannerDialect(DefaultDialect):
     supports_identity_columns = True
     supports_native_boolean = True
     supports_native_decimal = True
-    supports_native_uuid = True
+    supports_native_uuid = False
     supports_statement_cache = True
     # Spanner uses protos for enums. Creating a column like
     # Column("an_enum", Enum("A", "B", "C")) will result in a String

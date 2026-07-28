@@ -35,15 +35,32 @@ class UuidTest(fixtures.TestBase):
     def test_uuid_designate_type(self):
         """Test reflecting UUID type string returns types.UUID."""
         dialect = SpannerDialect()
-        assert dialect.supports_native_uuid is True
+        assert dialect.supports_native_uuid is False
         col_type = dialect._designate_type("UUID")
         eq_(col_type, types.UUID)
 
     def test_uuid_ddl_compilation_default(self):
-        """Test DDL compilation emits UUID type by default when supports_native_uuid
-        is True.
+        """Test DDL compilation: types.Uuid emits STRING(36) by default and
+        types.UUID emits UUID by default.
         """
         dialect = SpannerDialect()
+        metadata = MetaData()
+        table = Table(
+            "test_uuid_table",
+            metadata,
+            Column("legacy_id", types.Uuid, primary_key=True),
+            Column("native_id", types.UUID),
+        )
+        statement = str(CreateTable(table).compile(dialect=dialect)).strip()
+        assert "legacy_id STRING(36) NOT NULL" in statement
+        assert "native_id UUID" in statement
+
+    def test_uuid_ddl_compilation_native_enabled(self):
+        """Test DDL compilation emits UUID type for types.Uuid when supports_native_uuid
+        is set to True on dialect.
+        """
+        dialect = SpannerDialect()
+        dialect.supports_native_uuid = True
         metadata = MetaData()
         table = Table(
             "test_uuid_table",
@@ -52,21 +69,6 @@ class UuidTest(fixtures.TestBase):
         )
         statement = str(CreateTable(table).compile(dialect=dialect)).strip()
         assert "user_id UUID NOT NULL" in statement
-
-    def test_uuid_ddl_compilation_native_disabled(self):
-        """Test DDL compilation falls back to STRING(36) when supports_native_uuid
-        is False.
-        """
-        dialect = SpannerDialect()
-        dialect.supports_native_uuid = False
-        metadata = MetaData()
-        table = Table(
-            "test_uuid_table",
-            metadata,
-            Column("user_id", types.Uuid, primary_key=True),
-        )
-        statement = str(CreateTable(table).compile(dialect=dialect)).strip()
-        assert "user_id STRING(36) NOT NULL" in statement
 
     def test_uuid_python_conversion_legacy(self):
         """Test that types.Uuid automatically converts uuid.UUID to/from str
