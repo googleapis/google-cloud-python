@@ -50,6 +50,7 @@ from sqlalchemy.sql.operators import json_getitem_op
 from google.cloud import spanner_dbapi
 from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
 from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
+from google.cloud.sqlalchemy_spanner.types import TOKENLIST
 
 USING_SQLACLCHEMY_20 = False
 if sqlalchemy.__version__.split(".")[0] == "2":
@@ -120,7 +121,7 @@ _type_map = {
     "TIMESTAMP": types.TIMESTAMP,
     "ARRAY": types.ARRAY,
     "JSON": types.JSON,
-    "TOKENLIST": types.String,
+    "TOKENLIST": TOKENLIST,
 }
 
 
@@ -139,6 +140,7 @@ _type_map_inv = {
     types.TIMESTAMP: "TIMESTAMP",
     types.Integer: "INT64",
     types.NullType: "INT64",
+    TOKENLIST: "TOKENLIST",
 }
 
 _compound_keywords = {
@@ -380,9 +382,19 @@ class SpannerSQLCompiler(SQLCompiler):
             return self.process(elements.Null._instance())
 
         raw = ["\\", "'", '"', "\n", "\t", "\r"]
-        if isinstance(value, str) and any(single in value for single in raw):
-            value = 'r"""{}"""'.format(value)
-            return value
+        if isinstance(value, (list, tuple)):
+            items = [
+                self.render_literal_value(
+                    item,
+                    getattr(type_, "item_type", types.NULLTYPE),
+                )
+                for item in value
+            ]
+            return f"[{', '.join(items)}]"
+        elif isinstance(value, str):
+            if any(single in value for single in raw):
+                return 'r"""{}"""'.format(value)
+            return f"'{value}'"
         else:
             processor = type_._cached_literal_processor(self.dialect)
             if processor:
@@ -600,10 +612,30 @@ class SpannerDDLCompiler(DDLCompiler):
         return default
 
     def visit_computed_column(self, generated, **kw):
-        """Computed column operator."""
-        text = "AS (%s) STORED" % self.sql_compiler.process(
+        """Build Spanner generated column clause: AS (expr) [STORED | HIDDEN].
+
+        STORED and HIDDEN are mutually exclusive in Cloud Spanner DDL syntax.
+        """
+        text = "AS (%s)" % self.sql_compiler.process(
             generated.sqltext, include_table=False, literal_binds=True
         )
+
+        is_hidden = (
+            getattr(generated, "hidden", False)
+            or (
+                generated.column is not None
+                and generated.column.dialect_options.get("spanner", {}).get(
+                    "hidden", False
+                )
+            )
+            or getattr(generated, "spanner_hidden", False)
+        )
+
+        if is_hidden:
+            text += " HIDDEN"
+        elif generated.persisted:
+            text += " STORED"
+
         return text
 
     def visit_drop_table(self, drop_table, **kw):

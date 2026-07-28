@@ -12,7 +12,48 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .ddl import (
+    AddTokenlistColumn,
+    CreatePropertyGraph,
+    CreateSearchIndex,
+    DropColumn,
+    DropPropertyGraph,
+    DropSearchIndex,
+)
+from .functions import (
+    score,
+    score_ngrams,
+    search,
+    search_substring,
+    tokenize_array,
+    tokenize_bool,
+    tokenize_fulltext,
+    tokenize_ngrams,
+    tokenize_number,
+    tokenize_substring,
+)
 from .sqlalchemy_spanner import SpannerDialect
+from .types import TOKENLIST
 from .version import __version__
 
-__all__ = (SpannerDialect, __version__)
+__all__ = (
+    "AddTokenlistColumn",
+    "CreatePropertyGraph",
+    "CreateSearchIndex",
+    "DropColumn",
+    "DropPropertyGraph",
+    "DropSearchIndex",
+    "score",
+    "score_ngrams",
+    "search",
+    "search_substring",
+    "tokenize_array",
+    "tokenize_bool",
+    "tokenize_fulltext",
+    "tokenize_ngrams",
+    "tokenize_number",
+    "tokenize_substring",
+    "SpannerDialect",
+    "TOKENLIST",
+    "__version__",
+)
