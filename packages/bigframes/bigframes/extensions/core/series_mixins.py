@@ -14,11 +14,12 @@
 
 from __future__ import annotations
 
-from typing import List, Mapping, TypeVar
+from typing import Any, List, Literal, Mapping, TypeVar
 
 import pandas as pd
 
-from bigframes import session
+from bigframes import series, session
+from bigframes.bigquery import ai
 from bigframes.extensions.core import abstract_series_accessor
 from bigframes.ml import base as ml_base
 
@@ -26,7 +27,7 @@ T = TypeVar("T")
 S = TypeVar("S")
 
 
-class AITVFMixin(abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]):
+class AIMixin(abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]):
     def generate_embedding(
         self,
         model: ml_base.BaseEstimator | str | pd.Series,
@@ -45,10 +46,9 @@ class AITVFMixin(abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]):
         This is an accessor for :func:`bigframes.bigquery.ai.generate_embedding`. See that
         function's documentation for detailed parameter descriptions and examples.
         """
-        import bigframes.bigquery.ai
 
         bf_series = self._bf_from_series(session)
-        result = bigframes.bigquery.ai.generate_embedding(
+        result = ai.generate_embedding(
             model,
             bf_series,
             output_dimensionality=output_dimensionality,
@@ -79,10 +79,8 @@ class AITVFMixin(abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]):
         This is an accessor for :func:`bigframes.bigquery.ai.generate_text`. See that
         function's documentation for detailed parameter descriptions and examples.
         """
-        import bigframes.bigquery.ai
-
         bf_series = self._bf_from_series(session)
-        result = bigframes.bigquery.ai.generate_text(
+        result = ai.generate_text(
             model,
             bf_series,
             temperature=temperature,
@@ -113,10 +111,8 @@ class AITVFMixin(abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]):
         This is an accessor for :func:`bigframes.bigquery.ai.generate_table`. See that
         function's documentation for detailed parameter descriptions and examples.
         """
-        import bigframes.bigquery.ai
-
         bf_series = self._bf_from_series(session)
-        result = bigframes.bigquery.ai.generate_table(
+        result = ai.generate_table(
             model,
             bf_series,
             output_schema=output_schema,
@@ -127,3 +123,73 @@ class AITVFMixin(abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]):
             request_type=request_type,
         )
         return self._to_dataframe(result)
+
+    def embed(
+        self,
+        *,
+        endpoint: str | None = None,
+        model: str | None = None,
+        task_type: (
+            Literal[
+                "retrieval_query",
+                "retrieval_document",
+                "semantic_similarity",
+                "classification",
+                "clustering",
+                "question_answering",
+                "fact_verification",
+                "code_retrieval_query",
+            ]
+            | None
+        ) = None,
+        title: str | None = None,
+        model_params: Mapping[Any, Any] | None = None,
+        connection_id: str | None = None,
+        session: session.Session | None = None,
+    ) -> S:
+        """
+        Creates embeddings from text or image data in BigQuery.
+
+        This is an accessor for :func:`bigframes.bigquery.ai.embed`. See that
+        function's documentation for detailed parameter descriptions and examples.
+        """
+
+        bf_series = self._bf_from_series(session)
+        result = ai.embed(
+            bf_series,
+            endpoint=endpoint,
+            model=model,
+            task_type=task_type,
+            title=title,
+            model_params=model_params,
+            connection_id=connection_id,
+        )
+        return self._to_series(result)
+
+    def similarity(
+        self,
+        other: str | series.Series | pd.Series,
+        *,
+        endpoint: str | None = None,
+        model: str | None = None,
+        model_params: Mapping[Any, Any] | None = None,
+        connection_id: str | None = None,
+        session: session.Session | None = None,
+    ) -> S:
+        """
+        Returns a FLOAT64 value that represents the cosine similarity between the two inputs.
+
+        This is an accessor for :func:`bigframes.bigquery.ai.similarity`. See that
+        function's documentation for detailed parameter descriptions and examples.
+        """
+
+        bf_series = self._bf_from_series(session)
+        result = ai.similarity(
+            bf_series,
+            other,
+            endpoint=endpoint,
+            model=model,
+            model_params=model_params,
+            connection_id=connection_id,
+        )
+        return self._to_series(result)

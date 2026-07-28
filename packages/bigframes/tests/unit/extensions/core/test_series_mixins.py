@@ -246,3 +246,139 @@ def test_bigframes_ai_generate_table(scalar_types_df: bpd.DataFrame, monkeypatch
     }
     result_df.to_pandas.assert_not_called()
     assert actual_result is result_df
+
+
+def test_ai_embed(monkeypatch):
+    session = mock.create_autospec(bigframes.session.Session)
+    bf_series = mock.create_autospec(bpd.Series)
+    session.read_pandas.return_value = bf_series
+
+    mock_embed = mock.MagicMock()
+    result_series = mock.create_autospec(bpd.Series)
+    mock_embed.return_value = result_series
+    expected_result = mock.create_autospec(pd.Series)
+    result_series.to_pandas.return_value = expected_result
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "embed", mock_embed)
+
+    series = pd.Series(["hello world"], name="content")
+    actual_result = series.bigquery.ai.embed(  # type: ignore
+        endpoint="my_endpoint",
+        model="my_model",
+        task_type="retrieval_query",
+        title="my_title",
+        model_params={"key": "val"},
+        connection_id="my_connection",
+        session=session,
+    )
+
+    session.read_pandas.assert_called_once()
+    mock_embed.assert_called_once_with(
+        bf_series,
+        endpoint="my_endpoint",
+        model="my_model",
+        task_type="retrieval_query",
+        title="my_title",
+        model_params={"key": "val"},
+        connection_id="my_connection",
+    )
+    result_series.to_pandas.assert_called_once()
+    assert actual_result is expected_result
+
+
+def test_bigframes_ai_embed(scalar_types_df: bpd.DataFrame, monkeypatch):
+    session = mock.create_autospec(bigframes.session.Session)
+    result_series = mock.create_autospec(bpd.Series)
+
+    mock_embed = mock.MagicMock()
+    mock_embed.return_value = result_series
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "embed", mock_embed)
+
+    scalar_types_series = scalar_types_df["string_col"]
+    actual_result = scalar_types_series.bigquery.ai.embed(
+        endpoint="my_endpoint",
+        session=session,
+    )
+
+    session.read_pandas.assert_not_called()
+    mock_embed.assert_called_once()
+    args, kwargs = mock_embed.call_args
+    assert args[0] is scalar_types_series
+    assert kwargs == {
+        "endpoint": "my_endpoint",
+        "model": None,
+        "task_type": None,
+        "title": None,
+        "model_params": None,
+        "connection_id": None,
+    }
+    result_series.to_pandas.assert_not_called()
+    assert actual_result is result_series
+
+
+def test_ai_similarity(monkeypatch):
+    session = mock.create_autospec(bigframes.session.Session)
+    bf_series = mock.create_autospec(bpd.Series)
+    session.read_pandas.return_value = bf_series
+
+    mock_similarity = mock.MagicMock()
+    result_series = mock.create_autospec(bpd.Series)
+    mock_similarity.return_value = result_series
+    expected_result = mock.create_autospec(pd.Series)
+    result_series.to_pandas.return_value = expected_result
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "similarity", mock_similarity)
+
+    series = pd.Series(["apple"], name="content")
+    actual_result = series.bigquery.ai.similarity(  # type: ignore
+        "banana",
+        endpoint="my_endpoint",
+        model="my_model",
+        model_params={"key": "val"},
+        connection_id="my_connection",
+        session=session,
+    )
+
+    session.read_pandas.assert_called_once()
+    mock_similarity.assert_called_once_with(
+        bf_series,
+        "banana",
+        endpoint="my_endpoint",
+        model="my_model",
+        model_params={"key": "val"},
+        connection_id="my_connection",
+    )
+    result_series.to_pandas.assert_called_once()
+    assert actual_result is expected_result
+
+
+def test_bigframes_ai_similarity(scalar_types_df: bpd.DataFrame, monkeypatch):
+    session = mock.create_autospec(bigframes.session.Session)
+    result_series = mock.create_autospec(bpd.Series)
+
+    mock_similarity = mock.MagicMock()
+    mock_similarity.return_value = result_series
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "similarity", mock_similarity)
+
+    scalar_types_series = scalar_types_df["string_col"]
+    actual_result = scalar_types_series.bigquery.ai.similarity(
+        "other_text",
+        endpoint="my_endpoint",
+        session=session,
+    )
+
+    session.read_pandas.assert_not_called()
+    mock_similarity.assert_called_once()
+    args, kwargs = mock_similarity.call_args
+    assert args[0] is scalar_types_series
+    assert args[1] == "other_text"
+    assert kwargs == {
+        "endpoint": "my_endpoint",
+        "model": None,
+        "model_params": None,
+        "connection_id": None,
+    }
+    result_series.to_pandas.assert_not_called()
+    assert actual_result is result_series
