@@ -80,7 +80,6 @@ class SpannerMetricsTracerFactory(MetricsTracerFactory):
                 cls._generate_client_hash(client_uid)
             )
             cls._metrics_tracer_factory.set_location(_get_cloud_region())
-            cls._metrics_tracer_factory.gfe_enabled = True
 
             if cls._metrics_tracer_factory.enabled != enabled:
                 cls._metrics_tracer_factory.enabled = enabled

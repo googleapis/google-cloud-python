@@ -52,7 +52,6 @@ class MetricsTracerFactory:
     """Factory class for creating MetricTracer instances. This class facilitates the creation of MetricTracer objects, which are responsible for collecting and tracing metrics."""
 
     enabled: bool
-    gfe_enabled: bool
     _instrument_attempt_latency: "Histogram"
     _instrument_attempt_counter: "Counter"
     _instrument_operation_latency: "Histogram"
@@ -89,7 +88,6 @@ class MetricsTracerFactory:
             project (str): The project ID for the monitored resource.
         """
         self.enabled = enabled
-        self.gfe_enabled = True
         self._create_metric_instruments(service_name)
         self._client_attributes = {}
 
@@ -273,7 +271,6 @@ class MetricsTracerFactory:
             instrument_operation_latency=self._instrument_operation_latency,
             instrument_operation_counter=self._instrument_operation_counter,
             client_attributes=self._client_attributes.copy(),
-            gfe_enabled=True,
             instrument_gfe_latency=self._instrument_gfe_latency,
             instrument_gfe_connectivity_error_count=self._instrument_gfe_connectivity_error_count,
             instrument_afe_latency=self._instrument_afe_latency,

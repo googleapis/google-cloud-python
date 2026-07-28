@@ -190,7 +190,6 @@ class MetricsTracer:
     _instrument_afe_connectivity_error_count: "Counter"
     current_op: MetricOpTracer
     enabled: bool
-    gfe_enabled: bool
     method: str
 
     def __init__(
@@ -205,7 +204,6 @@ class MetricsTracer:
         instrument_gfe_connectivity_error_count: "Counter",
         instrument_afe_latency: "Histogram",
         instrument_afe_connectivity_error_count: "Counter",
-        gfe_enabled: bool = False,
     ):
         """
         Initialize a MetricsTracer instance with the given parameters.
@@ -221,7 +219,6 @@ class MetricsTracer:
             instrument_operation_latency (Histogram): Instrument for measuring operation latency.
             instrument_operation_counter (Counter): Instrument for counting operations.
             client_attributes (Dict[str, str]): Dictionary of client attributes used for metrics tracing.
-            gfe_enabled (bool, optional): Indicates if GFE metrics are enabled. Defaults to False.
             instrument_gfe_latency (Histogram): Instrument for measuring GFE latency.
             instrument_gfe_connectivity_error_count (Counter): Instrument for counting GFE connectivity errors.
             instrument_afe_latency (Histogram): Instrument for measuring AFE latency.
@@ -242,7 +239,9 @@ class MetricsTracer:
             instrument_afe_connectivity_error_count
         )
         self.enabled = enabled
-        self.gfe_enabled = True
+        self.afe_server_timing_enabled = (
+            os.environ.get("SPANNER_DISABLE_AFE_SERVER_TIMING", "").lower() != "true"
+        )
 
     @staticmethod
     def _get_ms_time_diff(start: datetime, end: datetime) -> float:
@@ -454,7 +453,7 @@ class MetricsTracer:
             not self.enabled
             or not HAS_OPENTELEMETRY_INSTALLED
             or not getattr(self, "_instrument_afe_latency", None)
-            or os.environ.get("SPANNER_DISABLE_AFE_SERVER_TIMING", "").lower() == "true"
+            or not getattr(self, "afe_server_timing_enabled", True)
         ):
             return
         self._instrument_afe_latency.record(
@@ -469,7 +468,7 @@ class MetricsTracer:
             not self.enabled
             or not HAS_OPENTELEMETRY_INSTALLED
             or not getattr(self, "_instrument_afe_connectivity_error_count", None)
-            or os.environ.get("SPANNER_DISABLE_AFE_SERVER_TIMING", "").lower() == "true"
+            or not getattr(self, "afe_server_timing_enabled", True)
         ):
             return
         self._instrument_afe_connectivity_error_count.add(
@@ -500,7 +499,7 @@ class MetricsTracer:
         header_vals = []
         for key, val in items:
             key_str = key.decode("utf-8") if isinstance(key, bytes) else str(key)
-            if key_str and key_str.lower() in ("server-timing", "server_timing"):
+            if key_str and key_str.lower() == "server-timing":
                 if isinstance(val, (list, tuple)):
                     header_vals.extend(val)
                 else:
@@ -529,7 +528,7 @@ class MetricsTracer:
                         pass
 
             if afe_latency is None:
-                match = re.search(r"afe(?:t4t7)?;\s*dur=([0-9.]+)", header_val)
+                match = re.search(r"afe;\s*dur=([0-9.]+)", header_val)
                 if match:
                     try:
                         afe_latency = int(float(match.group(1)))

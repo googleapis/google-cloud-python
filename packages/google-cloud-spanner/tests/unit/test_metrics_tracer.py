@@ -235,7 +235,6 @@ def test_set_method(metrics_tracer):
 def test_record_gfe_latency(metrics_tracer):
     mock_gfe_latency = mock.create_autospec(Histogram, instance=True)
     metrics_tracer._instrument_gfe_latency = mock_gfe_latency
-    metrics_tracer.gfe_enabled = True  # Ensure GFE is enabled
 
     # Test when tracing is enabled
     metrics_tracer.record_gfe_latency(100)
@@ -258,7 +257,6 @@ def test_record_gfe_connectivity_error_count(metrics_tracer):
     metrics_tracer._instrument_gfe_connectivity_error_count = (
         mock_gfe_connectivity_error_count
     )
-    metrics_tracer.gfe_enabled = True  # Ensure GFE is enabled
 
     # Test when tracing is enabled
     metrics_tracer.record_gfe_connectivity_error_count()
@@ -305,7 +303,6 @@ def test_record_front_end_metrics(metrics_tracer):
     metrics_tracer._instrument_gfe_connectivity_error_count = mock_gfe_missing
     metrics_tracer._instrument_afe_latency = mock_afe_latency
     metrics_tracer._instrument_afe_connectivity_error_count = mock_afe_missing
-    metrics_tracer.gfe_enabled = True
 
     # With header
     metrics_tracer.record_front_end_metrics(
@@ -329,7 +326,6 @@ def test_record_front_end_metrics(metrics_tracer):
 def test_record_afe_latency(metrics_tracer):
     mock_afe_latency = mock.create_autospec(Histogram, instance=True)
     metrics_tracer._instrument_afe_latency = mock_afe_latency
-    metrics_tracer.gfe_enabled = True
 
     metrics_tracer.record_afe_latency(100)
     assert mock_afe_latency.record.call_count == 1
@@ -339,8 +335,8 @@ def test_record_afe_latency(metrics_tracer):
         == metrics_tracer._create_attempt_otel_attributes()
     )
 
-    with mock.patch.dict("os.environ", {"SPANNER_DISABLE_AFE_SERVER_TIMING": "true"}):
-        metrics_tracer.record_afe_latency(300)
+    metrics_tracer.afe_server_timing_enabled = False
+    metrics_tracer.record_afe_latency(300)
     assert mock_afe_latency.record.call_count == 1
 
     metrics_tracer.enabled = False
@@ -352,7 +348,6 @@ def test_record_afe_latency(metrics_tracer):
 def test_record_afe_connectivity_error_count(metrics_tracer):
     mock_afe_missing = mock.create_autospec(Counter, instance=True)
     metrics_tracer._instrument_afe_connectivity_error_count = mock_afe_missing
-    metrics_tracer.gfe_enabled = True
 
     metrics_tracer.record_afe_connectivity_error_count()
     assert mock_afe_missing.add.call_count == 1
@@ -362,8 +357,8 @@ def test_record_afe_connectivity_error_count(metrics_tracer):
         == metrics_tracer._create_attempt_otel_attributes()
     )
 
-    with mock.patch.dict("os.environ", {"SPANNER_DISABLE_AFE_SERVER_TIMING": "true"}):
-        metrics_tracer.record_afe_connectivity_error_count()
+    metrics_tracer.afe_server_timing_enabled = False
+    metrics_tracer.record_afe_connectivity_error_count()
     assert mock_afe_missing.add.call_count == 1
 
     metrics_tracer.enabled = False

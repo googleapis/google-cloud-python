@@ -16,7 +16,6 @@
 
 import inspect
 import logging
-import os
 import re
 from typing import Any, Dict
 
@@ -128,17 +127,10 @@ class MetricsInterceptor(ClientInterceptor):
 
         ## Format method to be be spanner.<method name>
         method_str = call_details.method
-        if isinstance(method_str, bytes):
-            method_str = method_str.decode("utf-8")
         method_name = method_str.removeprefix(SPANNER_METHOD_PREFIX).replace("/", ".")
 
         tracer.set_method(method_name)
         tracer.record_attempt_start()
-
-        if os.environ.get("SPANNER_DISABLE_AFE_SERVER_TIMING", "").lower() != "true":
-            metadata = list(call_details.metadata or [])
-            metadata.append(("x-goog-spanner-enable-afe-server-timing", "true"))
-            call_details = call_details._replace(metadata=metadata)
 
         response = invoked_method(request_or_iterator, call_details)
 
@@ -222,11 +214,6 @@ class AsyncMetricsInterceptor(
 
         tracer.set_method(method_name)
         tracer.record_attempt_start()
-
-        if os.environ.get("SPANNER_DISABLE_AFE_SERVER_TIMING", "").lower() != "true":
-            metadata = list(call_details.metadata or [])
-            metadata.append(("x-goog-spanner-enable-afe-server-timing", "true"))
-            call_details = call_details._replace(metadata=metadata)
 
         response = await continuation(call_details, request_or_iterator)
         if hasattr(response, "__anext__"):
