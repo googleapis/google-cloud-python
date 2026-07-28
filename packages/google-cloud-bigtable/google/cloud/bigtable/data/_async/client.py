@@ -70,8 +70,6 @@ from google.cloud.bigtable.data._metrics import (
     OperationType,
     tracked_retry,
 )
-
-_LOGGER = logging.getLogger(__name__)
 from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
     BigtableMetricsExporter,
     GoogleCloudMetricsHandler,
@@ -113,6 +111,8 @@ from google.cloud.bigtable_v2.types.bigtable import (
     ReadModifyWriteRowRequest,
     SampleRowKeysRequest,
 )
+
+_LOGGER = logging.getLogger(__name__)
 
 if CrossSync.is_async:
     from grpc.aio import insecure_channel

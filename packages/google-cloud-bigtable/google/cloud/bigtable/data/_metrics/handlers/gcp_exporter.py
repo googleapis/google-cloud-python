@@ -264,7 +264,9 @@ class BigtableMetricsExporter(MetricExporter):
 
     @staticmethod
     def _to_point(
-        data_point: NumberDataPoint | HistogramDataPoint | ExponentialHistogramDataPoint,
+        data_point: NumberDataPoint
+        | HistogramDataPoint
+        | ExponentialHistogramDataPoint,
     ) -> Point:
         """
         Adapted from CloudMonitoringMetricsExporter
