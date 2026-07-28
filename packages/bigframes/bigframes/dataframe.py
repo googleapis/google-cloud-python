@@ -5286,4 +5286,3 @@ class DataFrame:
             raise bigframes.exceptions.NullIndexError(
                 f"DataFrame cannot perform {opname} as it has no index. Set an index using set_index."
             )
-
