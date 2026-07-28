@@ -91,8 +91,9 @@ class Connection(object):
             # which may not propagate the close call to the underlying channel immediately,
             # or Garbage Collection delays might keep sockets open longer than expected,
             # leading to intermittent socket leaks in tests.
-            if hasattr(transport, "_grpc_channel"):
-                transport._grpc_channel.close()
+            channel = getattr(transport, "_grpc_channel", None)
+            if channel is not None:
+                channel.close()
 
         for cursor_ in self._cursors_created:
             if not cursor_._closed:

@@ -41,8 +41,6 @@ class TestConnection(unittest.TestCase):
         from google.cloud import bigquery_storage
 
         mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
-        # Use PropertyMock for transport property
-        type(mock_client).transport = mock.PropertyMock()
         mock_client.transport.close = mock.Mock()
         mock_client.transport._grpc_channel = mock.Mock(spec=["close"])
         return mock_client
