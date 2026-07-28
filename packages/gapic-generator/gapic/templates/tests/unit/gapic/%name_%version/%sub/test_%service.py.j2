@@ -158,13 +158,10 @@ def set_event_loop():
 
 def test__read_environment_variables():
     assert {{ service.client_name }}._read_environment_variables() == (False, "auto", None)
-    
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         assert {{ service.client_name }}._read_environment_variables() == (True, "auto", None)
-    
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         assert {{ service.client_name }}._read_environment_variables() == (False, "auto", None)
-    
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
@@ -181,13 +178,10 @@ def test__read_environment_variables():
             "auto",
             None,
         )
-
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         assert {{ service.client_name }}._read_environment_variables() == (False, "never", None)
-    
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         assert {{ service.client_name }}._read_environment_variables() == (False, "always", None)
-    
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
         assert {{ service.client_name }}._read_environment_variables() == (False, "auto", None)
 
@@ -287,7 +281,6 @@ def test_use_client_cert_effective():
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
-    
     assert {{ service.client_name }}._get_client_cert_source(None, False) is None
     assert {{ service.client_name }}._get_client_cert_source(mock_provided_cert_source, False) is None
     assert {{ service.client_name }}._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
@@ -741,7 +734,7 @@ def test_{{ service.client_name|snake_case }}_get_mtls_endpoint_and_cert_source(
             )
             assert api_endpoint == mock_api_endpoint
             assert cert_source is None
-   
+
     # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
     test_cases = [
         (
@@ -870,7 +863,6 @@ def test_{{ service.client_name|snake_case }}_get_mtls_endpoint_and_cert_source(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
-        
         assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 @pytest.mark.parametrize("client_class", [
