@@ -18,7 +18,8 @@ from typing import Any, List, Literal, Mapping, TypeVar
 
 import pandas as pd
 
-from bigframes import series, session
+from bigframes import series
+from bigframes import session as bf_session
 from bigframes.bigquery import ai
 from bigframes.extensions.core import abstract_series_accessor
 from bigframes.ml import base as ml_base
@@ -38,7 +39,7 @@ class AIMixin(abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]):
         end_second: float | None = None,
         interval_seconds: float | None = None,
         trial_id: int | None = None,
-        session: session.Session | None = None,
+        session: bf_session.Session | None = None,
     ) -> T:
         """
         Creates embeddings that describe an entity — for example, a piece of text or an image.
@@ -71,7 +72,7 @@ class AIMixin(abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]):
         stop_sequences: List[str] | None = None,
         ground_with_google_search: bool | None = None,
         request_type: str | None = None,
-        session: session.Session | None = None,
+        session: bf_session.Session | None = None,
     ) -> T:
         """
         Generates text using a BigQuery ML model.
@@ -103,7 +104,7 @@ class AIMixin(abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]):
         max_output_tokens: int | None = None,
         stop_sequences: List[str] | None = None,
         request_type: str | None = None,
-        session: session.Session | None = None,
+        session: bf_session.Session | None = None,
     ) -> T:
         """
         Generates a table using a BigQuery ML model.
@@ -145,7 +146,7 @@ class AIMixin(abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]):
         title: str | None = None,
         model_params: Mapping[Any, Any] | None = None,
         connection_id: str | None = None,
-        session: session.Session | None = None,
+        session: bf_session.Session | None = None,
     ) -> S:
         """
         Creates embeddings from text or image data in BigQuery.
@@ -174,7 +175,7 @@ class AIMixin(abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]):
         model: str | None = None,
         model_params: Mapping[Any, Any] | None = None,
         connection_id: str | None = None,
-        session: session.Session | None = None,
+        session: bf_session.Session | None = None,
     ) -> S:
         """
         Returns a FLOAT64 value that represents the cosine similarity between the two inputs.
