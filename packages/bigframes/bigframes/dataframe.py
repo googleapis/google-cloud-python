@@ -5287,19 +5287,3 @@ class DataFrame:
                 f"DataFrame cannot perform {opname} as it has no index. Set an index using set_index."
             )
 
-    @property
-    def semantics(self):
-        msg = bfe.format_message(
-            "The 'semantics' property will be removed. Please use 'bigframes.bigquery.ai' instead."
-        )
-        warnings.warn(msg, category=FutureWarning)
-        return bigframes.operations.semantics.Semantics(self)
-
-    @property
-    def ai(self):
-        """Returns the accessor for AI operators."""
-        msg = bfe.format_message(
-            "The 'ai' property will be removed. Please use 'bigframes.bigquery.ai' instead."
-        )
-        warnings.warn(msg, category=FutureWarning)
-        return bigframes.operations.ai.AIAccessor(self)
