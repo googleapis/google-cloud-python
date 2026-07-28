@@ -17,7 +17,6 @@
 Renders jinja template with module data parsed from yaml.
 """
 
-
 from . import constants, data_models
 
 

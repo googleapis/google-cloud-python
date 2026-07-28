@@ -15,7 +15,7 @@
 """Data models for BigQuery code generator.
 
 `BQ*` models the Substrait YAML extension structure of BigQuery SQL functions,
-while `BigFrames*` models the Jinja template inputs.
+while `BigFrames*` models the Jinja template outputs.
 
 BQ* Class Relations:
 ====================
