@@ -14,7 +14,7 @@
 #
 # DO NOT MODIFY THIS FILE DIRECTLY.
 # This file was generated from: scripts/data/sql-functions/global_namespace/aead_encryption.yaml
-# by the script: scripts/bigquery_generator
+# by the script: scripts/generate_bigframes_bigquery.py
 
 from __future__ import annotations
 
