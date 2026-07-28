@@ -15,7 +15,6 @@
 import pytest
 
 import bigframes._config.experiment_options as experiment_options
-import bigframes.exceptions as bfe
 
 
 def test_sql_compiler_default_stable():
