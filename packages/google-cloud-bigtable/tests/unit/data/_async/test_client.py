@@ -256,6 +256,24 @@ class TestBigtableDataClientAsync:
             assert client._metrics.handlers[0]._exporter.project_id == client.project
 
     @CrossSync.pytest
+    @mock.patch(
+        "google.cloud.bigtable.data._async.client.BigtableMetricsExporter",
+        side_effect=Exception("Auth error"),
+    )
+    @mock.patch(
+        "google.cloud.bigtable.data._sync_autogen.client.BigtableMetricsExporter",
+        side_effect=Exception("Auth error"),
+    )
+    async def test_metrics_exporter_init_error_fallback(self, mock_sync, mock_async):
+        from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
+            OpenTelemetryMetricsHandler,
+        )
+
+        async with self._make_client(use_emulator=False) as client:
+            assert isinstance(client._metrics.handlers[0], OpenTelemetryMetricsHandler)
+            assert getattr(client._metrics.handlers[0], "_exporter", None) is None
+
+    @CrossSync.pytest
     @mock.patch("google.cloud.bigtable.data._async.client.BigtableMetricsExporter")
     @mock.patch(
         "google.cloud.bigtable.data._sync_autogen.client.BigtableMetricsExporter"

@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import abc
 import concurrent.futures
+import logging
 import os
 import random
 import time
@@ -63,6 +64,8 @@ from google.cloud.bigtable.data._metrics import (
     OperationType,
     tracked_retry,
 )
+
+_LOGGER = logging.getLogger(__name__)
 from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
     BigtableMetricsExporter,
     GoogleCloudMetricsHandler,
@@ -206,15 +209,25 @@ class BigtableDataClient(ClientWithProject):
                 client_version=self._client_version()
             )
         else:
-            exporter = BigtableMetricsExporter(
-                project_id=self.project,
-                credentials=credentials,
-                client_options=client_options,
-            )
-            self._metrics_handler = GoogleCloudMetricsHandler(
-                exporter=exporter,
-                client_version=self._client_version(),
-            )
+            try:
+                exporter = BigtableMetricsExporter(
+                    project_id=self.project,
+                    credentials=credentials,
+                    client_options=client_options,
+                )
+                self._metrics_handler = GoogleCloudMetricsHandler(
+                    exporter=exporter,
+                    client_version=self._client_version(),
+                )
+            except Exception as e:
+                _LOGGER.warning(
+                    "Failed to initialize Google Cloud Metrics Exporter: %s. "
+                    "Falling back to local OpenTelemetry metrics handler.",
+                    e,
+                )
+                self._metrics_handler = OpenTelemetryMetricsHandler(
+                    client_version=self._client_version(),
+                )
         self._metrics = BigtableClientSideMetricsController(
             handlers=[self._metrics_handler]
         )
