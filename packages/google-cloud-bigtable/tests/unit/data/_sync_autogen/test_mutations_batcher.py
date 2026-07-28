@@ -272,7 +272,7 @@ class TestMutationsBatcher:
                 DeadlineExceeded,
                 ServiceUnavailable,
             )
-            table._metrics = BigtableClientSideMetricsController([])
+            table.client._metrics = BigtableClientSideMetricsController([])
         return self._get_target_class()(table, **kwargs)
 
     @staticmethod

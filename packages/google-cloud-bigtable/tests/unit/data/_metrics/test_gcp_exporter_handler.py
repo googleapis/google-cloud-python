@@ -44,7 +44,8 @@ class TestGoogleCloudMetricsHandler:
     def _make_one(self, *args, **kwargs):
         return GoogleCloudMetricsHandler(*args, **kwargs)
 
-    def test_ctor_defaults(self):
+    @mock.patch("google.auth.default", return_value=(mock.Mock(), "project"))
+    def test_ctor_defaults(self, mock_auth):
         from google.cloud.bigtable import __version__ as CLIENT_VERSION
 
         expected_exporter = BigtableMetricsExporter("project")
@@ -59,7 +60,8 @@ class TestGoogleCloudMetricsHandler:
         )
         assert handler.shared_labels["client_uid"] == uid_mock()
 
-    def test_ctor_explicit(self):
+    @mock.patch("google.auth.default", return_value=(mock.Mock(), "project"))
+    def test_ctor_explicit(self, mock_auth):
         expected_version = "my_version"
         expected_uid = "my_uid"
         expected_exporter = BigtableMetricsExporter("project")
@@ -125,7 +127,8 @@ class TestGoogleCloudMetricsHandler:
 
 class TestBigtableMetricsExporter:
     def _make_one(self, *args, **kwargs):
-        return BigtableMetricsExporter(*args, **kwargs)
+        with mock.patch("google.auth.default", return_value=(mock.Mock(), "project")):
+            return BigtableMetricsExporter(*args, **kwargs)
 
     def test_ctor_defaults(self):
         from google.cloud.monitoring_v3 import MetricServiceClient
