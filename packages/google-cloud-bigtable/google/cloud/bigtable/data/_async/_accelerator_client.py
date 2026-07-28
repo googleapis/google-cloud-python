@@ -49,8 +49,9 @@ class _AsyncAcceleratorClient:
     (``_accelerator/_routing.py``) decides which calls reach this object.
     """
 
-    def __init__(self, uds_path: str):
+    def __init__(self, uds_path: str, auth_secret: str):
         self._uds_path = uds_path
+        self._metadata = (("x-accelerator-token", auth_secret),)
         self._channel = insecure_channel(f"unix://{uds_path}")
         self._mutate_row_stub = self._channel.unary_unary(
             _MUTATE_ROW_METHOD,
@@ -71,7 +72,9 @@ class _AsyncAcceleratorClient:
     async def mutate_row(
         self, request: MutateRowRequest, *, timeout: float | None = None
     ) -> MutateRowResponse:
-        return await self._mutate_row_stub(request, timeout=timeout)
+        return await self._mutate_row_stub(
+            request, timeout=timeout, metadata=self._metadata
+        )
 
     @CrossSync.convert
     async def read_rows(
@@ -84,7 +87,7 @@ class _AsyncAcceleratorClient:
         Shape matches what ``_gapic_client.read_rows`` returns so the existing
         chunk-merging machinery in ``_read_rows.py`` works unchanged.
         """
-        return self._read_rows_stub(request, timeout=timeout)
+        return self._read_rows_stub(request, timeout=timeout, metadata=self._metadata)
 
     @CrossSync.convert
     async def close(self) -> None:

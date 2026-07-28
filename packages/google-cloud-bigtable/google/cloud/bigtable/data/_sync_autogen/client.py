@@ -1141,7 +1141,17 @@ class _DataApiTarget(abc.ABC):
         try:
             server.start()
             self._verify_daemon_identity(server)
-            self._accelerator_client = AcceleratorClientType(server.uds_path)
+            self._accelerator_client = AcceleratorClientType(
+                server.uds_path, server.auth_secret
+            )
+        except _AcceleratorUnverified:
+            server.close()
+            warnings.warn(
+                "Accelerator disabled: could not verify that the daemon resolves the same identity as this client; using the native client instead.",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+            return
         except BaseException:
             server.close()
             raise
