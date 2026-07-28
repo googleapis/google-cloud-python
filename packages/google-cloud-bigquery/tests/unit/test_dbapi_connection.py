@@ -152,10 +152,13 @@ class TestConnection(unittest.TestCase):
             ):
                 getattr(connection, method)()
 
-    def test_close_closes_all_created_bigquery_clients(self):
+    def _verify_close_closes_all_created_bigquery_clients(self, simulate_no_grpc_channel=False):
         pytest.importorskip("google.cloud.bigquery_storage")
         client = self._mock_client()
         bqstorage_client = self._mock_bqstorage_client()
+
+        if simulate_no_grpc_channel:
+            bqstorage_client.transport._grpc_channel = None
 
         client_patcher = mock.patch(
             "google.cloud.bigquery.dbapi.connection.bigquery.Client",
@@ -174,34 +177,15 @@ class TestConnection(unittest.TestCase):
 
         self.assertTrue(client.close.called)
         self.assertTrue(bqstorage_client.transport.close.called)
-        self.assertTrue(bqstorage_client.transport._grpc_channel.close.called)
+
+        if not simulate_no_grpc_channel:
+            self.assertTrue(bqstorage_client.transport._grpc_channel.close.called)
+
+    def test_close_closes_all_created_bigquery_clients(self):
+        self._verify_close_closes_all_created_bigquery_clients(simulate_no_grpc_channel=False)
 
     def test_close_closes_all_created_bigquery_clients_no_grpc_channel(self):
-        pytest.importorskip("google.cloud.bigquery_storage")
-        client = self._mock_client()
-        bqstorage_client = self._mock_bqstorage_client()
-
-        # Simulate transport without _grpc_channel (or it being None)
-        bqstorage_client.transport._grpc_channel = None
-
-        client_patcher = mock.patch(
-            "google.cloud.bigquery.dbapi.connection.bigquery.Client",
-            return_value=client,
-        )
-        bqstorage_client_patcher = mock.patch.object(
-            client,
-            "_ensure_bqstorage_client",
-            return_value=bqstorage_client,
-        )
-
-        with client_patcher, bqstorage_client_patcher:
-            connection = self._make_one(client=None, bqstorage_client=None)
-
-        # Should not raise AttributeError even if _grpc_channel is None
-        connection.close()
-
-        self.assertTrue(client.close.called)
-        self.assertTrue(bqstorage_client.transport.close.called)
+        self._verify_close_closes_all_created_bigquery_clients(simulate_no_grpc_channel=True)
 
     def test_close_does_not_close_bigquery_clients_passed_to_it(self):
         pytest.importorskip("google.cloud.bigquery_storage")
