@@ -1,6 +1,6 @@
-# Copyright 2024 Google LLC
+# Copyright 2024 Google LLC All rights reserved.
 #
-# Licensed under the Apache License, Version 2.0 ( disputes );
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 
 import json
 import unittest
@@ -62,6 +63,65 @@ class Test_JsonObject(unittest.TestCase):
 class Test_JsonObject_dict_protocol(unittest.TestCase):
     """Verify that JsonObject behaves correctly with standard Python
     operations (len, bool, iteration, indexing) for all JSON variants."""
+
+    def test_asymmetric_equality(self):
+        a = JsonObject()
+        b = JsonObject(None)
+        self.assertEqual(a == b, b == a, "Equality symmetry is broken!")
+        self.assertEqual(a, b)
+
+    def test_tuple_vs_list_equality(self):
+        tup = JsonObject((1, 2))
+        lst = JsonObject([1, 2])
+        self.assertEqual(tup, lst)
+        self.assertEqual(tup, [1, 2])
+
+    def test_get_method(self):
+        arr = JsonObject([10, 20])
+        self.assertEqual(arr.get(0), 10)
+        self.assertEqual(arr.get(1), 20)
+        self.assertIsNone(arr.get(2))
+        obj = JsonObject({"a": 1})
+        self.assertEqual(obj.get("a"), 1)
+        self.assertIsNone(obj.get("b"))
+        scalar = JsonObject(42)
+        self.assertIsNone(scalar.get("a"))
+
+    def test_copy_method(self):
+        arr = JsonObject([10, 20])
+        cp_arr = arr.copy()
+        self.assertEqual(cp_arr, arr)
+        self.assertEqual(cp_arr.get(0), 10)
+
+        obj = JsonObject({"a": 1})
+        cp_obj = obj.copy()
+        self.assertEqual(cp_obj, obj)
+
+        scalar = JsonObject(42)
+        cp_scalar = scalar.copy()
+        self.assertEqual(cp_scalar, scalar)
+
+    def test_keys_values_items_pop(self):
+        arr = JsonObject([10, 20])
+        self.assertEqual(list(arr.keys()), [])
+        self.assertEqual(list(arr.values()), [10, 20])
+        self.assertEqual(list(arr.items()), [(0, 10), (1, 20)])
+        val = arr.pop(0)
+        self.assertEqual(val, 10)
+        self.assertEqual(len(arr), 1)
+
+        obj = JsonObject({"a": 1})
+        self.assertEqual(list(obj.keys()), ["a"])
+        self.assertEqual(list(obj.values()), [1])
+        self.assertEqual(list(obj.items()), [("a", 1)])
+
+    def test_null_sentinel_hiding(self):
+        null_obj = JsonObject()
+        self.assertEqual(list(null_obj), [])
+        self.assertNotIn("__json_null__", null_obj)
+        null_obj_none = JsonObject(None)
+        self.assertEqual(list(null_obj_none), [])
+        self.assertNotIn("__json_null__", null_obj_none)
 
     def test_isinstance_dict(self):
         obj = JsonObject({"a": 1})

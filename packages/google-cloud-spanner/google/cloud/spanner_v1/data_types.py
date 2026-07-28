@@ -31,14 +31,20 @@ class JsonObject(dict):
     """
 
     def __init__(self, *args, **kwargs):
-        self._is_null = (args, kwargs) == ((), {}) or args == (None,)
-        self._is_array = len(args) and isinstance(args[0], (list, tuple))
-        self._is_scalar_value = len(args) == 1 and not isinstance(args[0], (list, dict))
+        self._is_null = (args, kwargs) == ((), {}) or (
+            len(args) == 1 and args[0] is None
+        )
+        self._is_array = len(args) == 1 and isinstance(args[0], (list, tuple))
+        self._is_scalar_value = (
+            len(args) == 1
+            and args[0] is not None
+            and not isinstance(args[0], (list, dict))
+        )
 
         # if the JSON object is represented with an array,
         # the value is contained separately
         if self._is_array:
-            self._array_value = args[0]
+            self._array_value = list(args[0])
             return
 
         # If it's a scalar value, set _simple_value and return early
@@ -50,7 +56,7 @@ class JsonObject(dict):
             self._is_array = args[0]._is_array
             self._is_scalar_value = args[0]._is_scalar_value
             if self._is_array:
-                self._array_value = args[0]._array_value
+                self._array_value = list(args[0]._array_value)
             elif self._is_scalar_value:
                 self._simple_value = args[0]._simple_value
 
@@ -58,6 +64,62 @@ class JsonObject(dict):
             super().__init__({"__json_null__": True})
         else:
             super().__init__(*args, **kwargs)
+
+    def get(self, key, default=None):
+        if self._is_array:
+            try:
+                return self._array_value[key]
+            except (IndexError, TypeError):
+                return default
+        if self._is_scalar_value or self._is_null:
+            return default
+        return super().get(key, default)
+
+    def copy(self):
+        if self._is_array:
+            return JsonObject(list(self._array_value))
+        if self._is_scalar_value:
+            return JsonObject(self._simple_value)
+        if self._is_null:
+            return JsonObject()
+        return JsonObject(super().copy())
+
+    def keys(self):
+        if self._is_array or self._is_scalar_value or self._is_null:
+            return {}.keys()
+        return super().keys()
+
+    def values(self):
+        if self._is_array:
+            return dict(enumerate(self._array_value)).values()
+        if self._is_scalar_value:
+            return {0: self._simple_value}.values()
+        if self._is_null:
+            return {}.values()
+        return super().values()
+
+    def items(self):
+        if self._is_array:
+            return dict(enumerate(self._array_value)).items()
+        if self._is_scalar_value:
+            return {0: self._simple_value}.items()
+        if self._is_null:
+            return {}.items()
+        return super().items()
+
+    def pop(self, key, *args):
+        if self._is_array:
+            try:
+                return self._array_value.pop(key)
+            except (IndexError, TypeError):
+                if args:
+                    return args[0]
+                raise KeyError(key) from None
+        if self._is_scalar_value or self._is_null:
+            if args:
+                return args[0]
+            raise KeyError(key)
+        return super().pop(key, *args)
 
     def __len__(self):
         if self._is_null:
@@ -78,6 +140,8 @@ class JsonObject(dict):
         return super().__len__() > 0
 
     def __iter__(self):
+        if self._is_null:
+            return iter([])
         if self._is_array:
             return iter(self._array_value)
         if self._is_scalar_value:
@@ -96,6 +160,8 @@ class JsonObject(dict):
         return super().__getitem__(key)
 
     def __contains__(self, item):
+        if self._is_null:
+            return False
         if self._is_array:
             return item in self._array_value
         if self._is_scalar_value:
