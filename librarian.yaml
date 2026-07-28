@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.30.0
+version: v0.31.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
@@ -736,7 +736,6 @@ libraries:
     apis:
       - path: google/cloud/ces/v1
       - path: google/cloud/ces/v1beta
-    skip_generate: true
     python:
       default_version: v1
   - name: google-cloud-channel
@@ -1711,6 +1710,12 @@ libraries:
     version: 0.4.1
     apis:
       - path: google/cloud/privilegedaccessmanager/v1
+    python:
+      default_version: v1
+  - name: google-cloud-productregistry
+    version: 0.1.0
+    apis:
+      - path: google/cloud/productregistry/v1
     python:
       default_version: v1
   - name: google-cloud-pubsub
