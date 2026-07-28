@@ -15,13 +15,14 @@
 #
 """A compatibility module for older versions of google-api-core."""
 
-import uuid
-
-from typing import Optional, Union
+from typing import Optional
 from urllib.parse import urlparse, urlunparse
 
 from google.auth.exceptions import MutualTLSChannelError
 from google.api_core.universe import EmptyUniverseError
+
+import uuid
+from typing import Union
 import google.protobuf.message
 
 DEFAULT_UNIVERSE = "googleapis.com"
