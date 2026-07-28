@@ -392,8 +392,6 @@ def showcase_library(
             # Install the library without a constraints file.
             session.install("-e", tmp_dir)
 
-        session.install("-e", "../google-api-core", "--no-deps")
-
         yield tmp_dir
 
 
