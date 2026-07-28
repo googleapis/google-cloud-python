@@ -152,7 +152,9 @@ class TestConnection(unittest.TestCase):
             ):
                 getattr(connection, method)()
 
-    def _verify_close_closes_all_created_bigquery_clients(self, simulate_no_grpc_channel=False):
+    def _verify_close_closes_all_created_bigquery_clients(
+        self, simulate_no_grpc_channel=False
+    ):
         pytest.importorskip("google.cloud.bigquery_storage")
         client = self._mock_client()
         bqstorage_client = self._mock_bqstorage_client()
@@ -182,10 +184,14 @@ class TestConnection(unittest.TestCase):
             self.assertTrue(bqstorage_client.transport._grpc_channel.close.called)
 
     def test_close_closes_all_created_bigquery_clients(self):
-        self._verify_close_closes_all_created_bigquery_clients(simulate_no_grpc_channel=False)
+        self._verify_close_closes_all_created_bigquery_clients(
+            simulate_no_grpc_channel=False
+        )
 
     def test_close_closes_all_created_bigquery_clients_no_grpc_channel(self):
-        self._verify_close_closes_all_created_bigquery_clients(simulate_no_grpc_channel=True)
+        self._verify_close_closes_all_created_bigquery_clients(
+            simulate_no_grpc_channel=True
+        )
 
     def test_close_does_not_close_bigquery_clients_passed_to_it(self):
         pytest.importorskip("google.cloud.bigquery_storage")
