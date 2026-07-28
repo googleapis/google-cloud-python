@@ -498,10 +498,15 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         self._api_endpoint = (self._api_endpoint or
             get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint))
+                api_override=self._client_options.api_endpoint,
+                universe_domain=self._universe_domain,
+                default_universe=MetricsServiceV2Client._DEFAULT_UNIVERSE,
+                default_mtls_endpoint=MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT,
+                default_endpoint_template=MetricsServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE,
+                use_mtls=self._use_mtls_endpoint == "always" or (
+                    self._use_mtls_endpoint == "auto" and self._client_cert_source
+                ),
+            ))
 
         if not transport_provided:
             import google.auth._default  # type: ignore

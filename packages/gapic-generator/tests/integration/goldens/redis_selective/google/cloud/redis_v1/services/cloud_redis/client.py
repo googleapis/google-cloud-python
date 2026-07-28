@@ -538,10 +538,15 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         self._api_endpoint = (self._api_endpoint or
             get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint))
+                api_override=self._client_options.api_endpoint,
+                universe_domain=self._universe_domain,
+                default_universe=CloudRedisClient._DEFAULT_UNIVERSE,
+                default_mtls_endpoint=CloudRedisClient.DEFAULT_MTLS_ENDPOINT,
+                default_endpoint_template=CloudRedisClient._DEFAULT_ENDPOINT_TEMPLATE,
+                use_mtls=self._use_mtls_endpoint == "always" or (
+                    self._use_mtls_endpoint == "auto" and self._client_cert_source
+                ),
+            ))
 
         if not transport_provided:
             transport_init: Union[Type[CloudRedisTransport], Callable[..., CloudRedisTransport]] = (

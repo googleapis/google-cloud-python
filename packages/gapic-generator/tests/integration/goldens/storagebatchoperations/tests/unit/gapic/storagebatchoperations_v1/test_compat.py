@@ -18,7 +18,7 @@
 import re
 import pytest
 
-from google.cloud.storagebatchoperations_v1._compat import determine_domain, get_api_endpoint, get_default_mtls_endpoint
+from google.cloud.storagebatchoperations_v1 import _compat as universe
 from google.cloud.storagebatchoperations_v1._compat import setup_request_id
 
 from google.auth.exceptions import MutualTLSChannelError

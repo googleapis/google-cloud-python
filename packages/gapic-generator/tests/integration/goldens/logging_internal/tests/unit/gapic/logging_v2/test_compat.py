@@ -18,7 +18,7 @@
 import re
 import pytest
 
-from google.cloud.logging_v2._compat import determine_domain, get_api_endpoint, get_default_mtls_endpoint
+from google.cloud.logging_v2 import _compat as universe
 
 from google.auth.exceptions import MutualTLSChannelError
 

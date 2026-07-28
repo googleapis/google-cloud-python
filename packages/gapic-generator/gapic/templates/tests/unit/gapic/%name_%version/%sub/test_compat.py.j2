@@ -14,7 +14,7 @@ import re
 import pytest
 
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
-from {{package_path}}._compat import determine_domain, get_api_endpoint, get_default_mtls_endpoint
+from {{package_path}} import _compat as universe
 {% if has_auto_populated_fields %}
 from {{package_path}}._compat import setup_request_id
 {% endif %}
