@@ -160,10 +160,6 @@ RUFF_FORMAT_ARGS = [
 ] + RUFF_COMMON_ARGS
 
 
-TEMPLATES: dict[str, jinja2.Template]  # Lazily-loaded global variable
-_templates = None
-
-
 def _load_templates() -> dict[str, jinja2.Template]:
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(TEMPLATE_DIR),
@@ -181,6 +177,9 @@ def _load_templates() -> dict[str, jinja2.Template]:
         ),
         "pandas_series_accessor": env.get_template("pandas_series_accessor.py.j2"),
     }
+
+
+TEMPLATES: dict[str, jinja2.Template] = _load_templates()
 
 
 def __getattr__(name: str):

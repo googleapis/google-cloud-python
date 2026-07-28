@@ -1,4 +1,3 @@
-# Render jinja template with module data parsed from yaml
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,6 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+
+"""
+Renders jinja template with module data parsed from yaml.
+"""
 
 
 from . import constants, data_models

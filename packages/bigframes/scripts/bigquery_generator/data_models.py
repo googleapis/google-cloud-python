@@ -12,6 +12,60 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Data models for BigQuery code generator.
+
+`BQ*` models the Substrait YAML extension structure of BigQuery SQL functions,
+while `BigFrames*` models the Jinja template inputs.
+
+BQ* Class Relations:
+====================
++-------------------+
+|     BQModule      |
++-------------------+
+          |
+          | functions: list[BQFunc]
+          v
++-------------------+
+|      BQFunc       |
++-------------------+
+          |
+          | impls: list[BQFuncImpl]
+          v
++-------------------+
+|    BQFuncImpl     |
++-------------------+
+          |
+          | args: list[BQFuncArg]
+          v
++-------------------+
+|     BQFuncArg     |
++-------------------+
+
+BigFrames* Class Relations:
+=================================
+    +--------------------------------+
+    |            Accessor            |<---+ children: list[Accessor]
+    +--------------------------------+----+ (nested namespace hierarchy)
+                    |
+                    | functions: list[BigFramesFunc]
+                    v
+    +--------------------------------+
+    |         BigFramesFunc          |
+    +--------------------------------+
+                    |
+                    | args: list[BigFramesFuncArg]
+                    v
+    +--------------------------------+
+    |        BigFramesFuncArg        |
+    +--------------------------------+
+
+    ----------------------------------
+
+    +--------------------------------+
+    |          BigFramesOp           |  (Standalone data model for op defs)
+    +--------------------------------+
+"""
+
 from __future__ import annotations
 
 import dataclasses
