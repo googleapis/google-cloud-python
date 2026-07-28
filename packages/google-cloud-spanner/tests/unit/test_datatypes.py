@@ -132,8 +132,18 @@ class Test_JsonObject_dict_protocol(unittest.TestCase):
         self.assertEqual(len(obj), 1)
 
     def test_scalar_bool(self):
-        obj = JsonObject(42)
-        self.assertTrue(obj)
+        self.assertTrue(JsonObject(42))
+        self.assertFalse(JsonObject(False))
+        self.assertFalse(JsonObject(0))
+        self.assertFalse(JsonObject(0.0))
+        self.assertFalse(JsonObject(""))
+
+    def test_null_eq(self):
+        null_obj = JsonObject(None)
+        self.assertEqual(null_obj, JsonObject(None))
+        self.assertEqual(null_obj, None)
+        self.assertNotEqual(null_obj, {})
+        self.assertNotEqual(null_obj, JsonObject({}))
 
     def test_scalar_not_iterable(self):
         obj = JsonObject(42)

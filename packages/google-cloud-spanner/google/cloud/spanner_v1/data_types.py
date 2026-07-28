@@ -54,7 +54,9 @@ class JsonObject(dict):
             elif self._is_scalar_value:
                 self._simple_value = args[0]._simple_value
 
-        if not self._is_null:
+        if self._is_null:
+            super().__init__({"__json_null__": True})
+        else:
             super().__init__(*args, **kwargs)
 
     def __len__(self):
@@ -72,7 +74,7 @@ class JsonObject(dict):
         if self._is_array:
             return bool(self._array_value)
         if self._is_scalar_value:
-            return True
+            return bool(self._simple_value)
         return super().__len__() > 0
 
     def __iter__(self):
@@ -106,29 +108,26 @@ class JsonObject(dict):
     def __eq__(self, other):
         if isinstance(other, JsonObject):
             if self._is_array:
-                return (
-                    getattr(other, "_is_array", False)
-                    and self._array_value == other._array_value
-                )
+                return other._is_array and self._array_value == other._array_value
             if self._is_scalar_value:
                 return (
-                    getattr(other, "_is_scalar_value", False)
-                    and self._simple_value == other._simple_value
+                    other._is_scalar_value and self._simple_value == other._simple_value
                 )
             if self._is_null:
-                return getattr(other, "_is_null", False)
+                return other._is_null
             return not (
-                getattr(other, "_is_array", False)
-                or getattr(other, "_is_scalar_value", False)
-                or getattr(other, "_is_null", False)
+                other._is_array or other._is_scalar_value or other._is_null
             ) and super().__eq__(other)
         if self._is_array:
             return self._array_value == other
         if self._is_scalar_value:
             return self._simple_value == other
         if self._is_null:
-            return other is None or (isinstance(other, dict) and len(other) == 0)
+            return other is None
         return super().__eq__(other)
+
+    def __ne__(self, other):
+        return not (self == other)
 
     def __repr__(self):
         if self._is_array:
