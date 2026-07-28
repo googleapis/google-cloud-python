@@ -340,6 +340,10 @@ class BigtableDataClient(ClientWithProject):
                 self._accelerator_env["GOOGLE_APPLICATION_CREDENTIALS"] = (
                     credentials_file
                 )
+        self._accelerator_flags += [
+            "--caller-user-agent",
+            f"python-v{google.cloud.bigtable.__version__}",
+        ]
 
     def _resolve_principal(self) -> str | None:
         """Resolve this client's identity to a principal.
