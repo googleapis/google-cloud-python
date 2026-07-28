@@ -2399,11 +2399,37 @@ class GenerateAppResourceRequest(proto.Message):
             evaluation_run (str):
                 Required. The evaluation run used to inform
                 quality report analysis.
+            algorithm (google.cloud.ces_v1beta.types.GenerateAppResourceRequest.QualityReportGenerationConfig.LossAttributionAlgorithm):
+                Optional. The loss attribution algorithm to
+                use.
         """
+
+        class LossAttributionAlgorithm(proto.Enum):
+            r"""The algorithm to use for loss attribution.
+
+            Values:
+                LOSS_ATTRIBUTION_ALGORITHM_UNSPECIFIED (0):
+                    Unspecified.
+                APP_CENTRIC (1):
+                    App-centric loss attribution. Treats the app
+                    as a single unit.
+                AGENT_CENTRIC (2):
+                    Agent-centric loss attribution. Attributes
+                    loss to individual agents.
+            """
+
+            LOSS_ATTRIBUTION_ALGORITHM_UNSPECIFIED = 0
+            APP_CENTRIC = 1
+            AGENT_CENTRIC = 2
 
         evaluation_run: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        algorithm: "GenerateAppResourceRequest.QualityReportGenerationConfig.LossAttributionAlgorithm" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="GenerateAppResourceRequest.QualityReportGenerationConfig.LossAttributionAlgorithm",
         )
 
     class HillClimbingFixConfig(proto.Message):

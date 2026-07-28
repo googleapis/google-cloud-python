@@ -804,7 +804,10 @@ class TestMutationsBatcher:
                 for m in mutations:
                     instance.append(m)
                 assert instance._entries_processed_since_last_raise == 0
-                CrossSync._Sync_Impl.sleep(0.1)
+                for _ in range(50):
+                    if instance._entries_processed_since_last_raise == num_mutations:
+                        break
+                    CrossSync._Sync_Impl.sleep(0.05)
                 assert instance._entries_processed_since_last_raise == num_mutations
 
     def test__execute_mutate_rows(self):
