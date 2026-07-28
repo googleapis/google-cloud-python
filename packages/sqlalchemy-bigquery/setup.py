@@ -131,3 +131,5 @@ setup(
     # obsolete legitimate ones.
     obsoletes=["pybigquery"],
 )
+
+# trigger system test
