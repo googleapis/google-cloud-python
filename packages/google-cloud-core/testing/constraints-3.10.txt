@@ -7,7 +7,7 @@
 # Then this file should have foo==1.14.0
 google-api-core==2.11.0
 google-auth==2.14.1
-grpcio==1.47.0
-grpcio-status==1.47.0
+grpcio==1.59.0
+grpcio-status==1.59.0
 # cryptography is a direct dependency of google-auth
 cryptography==38.0.3

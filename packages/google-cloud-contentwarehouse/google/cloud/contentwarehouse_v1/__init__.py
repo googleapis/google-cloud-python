@@ -23,6 +23,40 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.contentwarehouse_v1.services.document_link_service",
+    "google.cloud.contentwarehouse_v1.services.document_schema_service",
+    "google.cloud.contentwarehouse_v1.services.document_service",
+    "google.cloud.contentwarehouse_v1.services.pipeline_service",
+    "google.cloud.contentwarehouse_v1.services.rule_set_service",
+    "google.cloud.contentwarehouse_v1.services.synonym_set_service",
+    "google.cloud.contentwarehouse_v1.types.async_document_service_request",
+    "google.cloud.contentwarehouse_v1.types.common",
+    "google.cloud.contentwarehouse_v1.types.document",
+    "google.cloud.contentwarehouse_v1.types.document_link_service",
+    "google.cloud.contentwarehouse_v1.types.document_schema",
+    "google.cloud.contentwarehouse_v1.types.document_schema_service",
+    "google.cloud.contentwarehouse_v1.types.document_service",
+    "google.cloud.contentwarehouse_v1.types.document_service_request",
+    "google.cloud.contentwarehouse_v1.types.filters",
+    "google.cloud.contentwarehouse_v1.types.histogram",
+    "google.cloud.contentwarehouse_v1.types.pipeline_service",
+    "google.cloud.contentwarehouse_v1.types.pipelines",
+    "google.cloud.contentwarehouse_v1.types.rule_engine",
+    "google.cloud.contentwarehouse_v1.types.ruleset_service",
+    "google.cloud.contentwarehouse_v1.types.ruleset_service_request",
+    "google.cloud.contentwarehouse_v1.types.synonymset",
+    "google.cloud.contentwarehouse_v1.types.synonymset_service",
+    "google.cloud.contentwarehouse_v1.types.synonymset_service_request",
+}
+
+
 from .services.document_link_service import (
     DocumentLinkServiceAsyncClient,
     DocumentLinkServiceClient,

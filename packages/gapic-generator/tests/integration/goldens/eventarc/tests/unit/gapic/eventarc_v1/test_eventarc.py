@@ -71,7 +71,6 @@ from google.cloud.eventarc_v1.types import google_channel_config as gce_google_c
 from google.cloud.eventarc_v1.types import logging_config
 from google.cloud.eventarc_v1.types import message_bus
 from google.cloud.eventarc_v1.types import message_bus as gce_message_bus
-from google.cloud.eventarc_v1.types import network_config
 from google.cloud.eventarc_v1.types import pipeline
 from google.cloud.eventarc_v1.types import pipeline as gce_pipeline
 from google.cloud.eventarc_v1.types import trigger
@@ -84,10 +83,8 @@ from google.longrunning import operations_pb2 # type: ignore
 from google.oauth2 import service_account
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
-import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-import google.rpc.code_pb2 as code_pb2  # type: ignore
 
 
 
@@ -97,6 +94,18 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -717,11 +726,12 @@ def test_eventarc_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):
@@ -764,11 +774,12 @@ def test_eventarc_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):

@@ -39,6 +39,16 @@ BLACK_VERSION = "black==23.7.0"
 RUFF_VERSION = "ruff==0.14.14"
 BLACK_PATHS = ["test_utils", "setup.py"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -80,8 +90,10 @@ def format(session):
 
     # 2. Run Ruff to fix imports
     session.run(
-        "ruff", "check",
-        "--select", "I",
+        "ruff",
+        "check",
+        "--select",
+        "I",
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
@@ -90,7 +102,8 @@ def format(session):
 
     # 3. Run Ruff to format code
     session.run(
-        "ruff", "format",
+        "ruff",
+        "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
         *BLACK_PATHS,
@@ -113,7 +126,7 @@ def mypy(session):
         "types-mock",
         "types-setuptools",
     )
-    session.run("mypy", "test_utils/", "tests/")
+    session.run("mypy", f"--config-file={MYPY_CONFIG_FILE}", "test_utils/", "tests/")
 
 
 @nox.session(python=ALL_PYTHON)
@@ -328,13 +341,11 @@ def prerelease_deps(session):
     )
 
 
-
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def core_deps_from_source(session):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
-
 
     # Install all dependencies
     constraints_path = str(

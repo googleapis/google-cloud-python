@@ -23,12 +23,34 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.tasks_v2beta3.services.cloud_tasks",
+    "google.cloud.tasks_v2beta3.types.cloudtasks",
+    "google.cloud.tasks_v2beta3.types.cmek_config",
+    "google.cloud.tasks_v2beta3.types.queue",
+    "google.cloud.tasks_v2beta3.types.target",
+    "google.cloud.tasks_v2beta3.types.task",
+}
+
+
 from .services.cloud_tasks import CloudTasksAsyncClient, CloudTasksClient
 from .types.cloudtasks import (
+    BatchCreateTasksMetadata,
+    BatchCreateTasksRequest,
+    BatchCreateTasksResponse,
+    BatchDeleteTasksMetadata,
+    BatchDeleteTasksRequest,
     CreateQueueRequest,
     CreateTaskRequest,
     DeleteQueueRequest,
     DeleteTaskRequest,
+    GetCmekConfigRequest,
     GetQueueRequest,
     GetTaskRequest,
     ListQueuesRequest,
@@ -39,8 +61,10 @@ from .types.cloudtasks import (
     PurgeQueueRequest,
     ResumeQueueRequest,
     RunTaskRequest,
+    UpdateCmekConfigRequest,
     UpdateQueueRequest,
 )
+from .types.cmek_config import CmekConfig
 from .types.queue import (
     Queue,
     QueueStats,
@@ -153,11 +177,18 @@ __all__ = (
     "AppEngineHttpRequest",
     "AppEngineRouting",
     "Attempt",
+    "BatchCreateTasksMetadata",
+    "BatchCreateTasksRequest",
+    "BatchCreateTasksResponse",
+    "BatchDeleteTasksMetadata",
+    "BatchDeleteTasksRequest",
     "CloudTasksClient",
+    "CmekConfig",
     "CreateQueueRequest",
     "CreateTaskRequest",
     "DeleteQueueRequest",
     "DeleteTaskRequest",
+    "GetCmekConfigRequest",
     "GetQueueRequest",
     "GetTaskRequest",
     "HttpMethod",
@@ -182,6 +213,7 @@ __all__ = (
     "RunTaskRequest",
     "StackdriverLoggingConfig",
     "Task",
+    "UpdateCmekConfigRequest",
     "UpdateQueueRequest",
     "UriOverride",
 )

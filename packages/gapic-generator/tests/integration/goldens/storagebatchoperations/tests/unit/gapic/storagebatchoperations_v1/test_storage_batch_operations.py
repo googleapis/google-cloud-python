@@ -65,7 +65,6 @@ from google.oauth2 import service_account
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-import google.rpc.code_pb2 as code_pb2  # type: ignore
 
 
 
@@ -76,6 +75,18 @@ CRED_INFO_JSON = {
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 _UUID4_RE = re.compile(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}")
+
+
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -350,82 +361,6 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
 
     client._add_cred_info_for_auth_errors(error)
     assert error.details == []
-
-def test__setup_request_id():
-    class MockRequest:
-        def __init__(self, **kwargs):
-            for k, v in kwargs.items():
-                setattr(self, k, v)
-        def __contains__(self, key):
-            return hasattr(self, key)
-
-    class MockProtoRequest:
-        def __init__(self, **kwargs):
-            for k, v in kwargs.items():
-                setattr(self, k, v)
-        def HasField(self, key):
-            return hasattr(self, key)
-
-    # Test with proto3 optional field not in request
-    request = MockRequest()
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
-    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request.request_id)
-
-    # Test with proto3 optional field already in request
-    request = MockRequest(request_id="already_set")
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
-    assert request.request_id == "already_set"
-
-    # Test with non-proto3 optional field empty
-    request = MockRequest(request_id="")
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", False)
-    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request.request_id)
-
-    # Test with non-proto3 optional field already set
-    request = MockRequest(request_id="already_set")
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", False)
-    assert request.request_id == "already_set"
-
-    # Test with proto3 optional field not in request (MockProtoRequest)
-    request = MockProtoRequest()
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
-    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request.request_id)
-
-    # Test with proto3 optional field already in request (MockProtoRequest)
-    request = MockProtoRequest(request_id="already_set")
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
-    assert request.request_id == "already_set"
-
-    # Test with ValueError
-    class MockValueErrorRequest:
-        def HasField(self, key):
-            raise ValueError("Mismatched field")
-        def __contains__(self, key):
-            return hasattr(self, key)
-
-    request = MockValueErrorRequest()
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
-    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request.request_id)
-
-    # Test with dict and proto3 optional field not in request
-    request = {}
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
-    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request["request_id"])
-
-    # Test with dict and proto3 optional field already in request
-    request = {"request_id": "already_set"}
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
-    assert request["request_id"] == "already_set"
-
-    # Test with dict and non-proto3 optional field empty
-    request = {"request_id": ""}
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", False)
-    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request["request_id"])
-
-    # Test with dict and non-proto3 optional field already set
-    request = {"request_id": "already_set"}
-    StorageBatchOperationsClient._setup_request_id(request, "request_id", False)
-    assert request["request_id"] == "already_set"
 
 @pytest.mark.parametrize("client_class,transport_name", [
     (StorageBatchOperationsClient, "grpc"),
@@ -772,11 +707,12 @@ def test_storage_batch_operations_client_get_mtls_endpoint_and_cert_source(clien
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):
@@ -819,11 +755,12 @@ def test_storage_batch_operations_client_get_mtls_endpoint_and_cert_source(clien
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):
