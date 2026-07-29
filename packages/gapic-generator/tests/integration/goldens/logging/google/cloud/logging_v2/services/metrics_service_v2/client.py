@@ -97,7 +97,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "logging.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(DEFAULT_ENDPOINT) # type: ignore
+    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(DEFAULT_ENDPOINT)
 
     _DEFAULT_ENDPOINT_TEMPLATE = "logging.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"
@@ -296,7 +296,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
         elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT or ""
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
 
