@@ -284,7 +284,8 @@ if [[ -n "${KOKORO_GITHUB_PULL_REQUEST_NUMBER}" ]]; then
     if [[ -n "${GITHUB_TOKEN:-${GH_TOKEN}}" ]]; then
         headers+=(-H "Authorization: token ${GITHUB_TOKEN:-${GH_TOKEN}}")
     fi
-    LABELS_JSON=$(curl -s "${headers[@]}" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels")
+    # Hardened curl call with || true to prevent script termination if network fails
+    LABELS_JSON=$(curl -s "${headers[@]}" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels" || echo "[]")
 
     # For this prototype:
     # we use a small inline Python snippet here because parsing JSON in pure Bash is difficult/error-prone,
@@ -305,6 +306,8 @@ except Exception:
     if [[ "$IS_ADHOC" == "true" ]]; then
         TRIGGER_ADHOC="true"
         echo "Adhoc test label 'test:adhoc' found!"
+    else
+        echo "Adhoc test label not found or error occurred."
     fi
 fi
 
@@ -312,19 +315,10 @@ if [[ "$TRIGGER_ADHOC" == "true" ]]; then
     echo "Running ad-hoc package selection..."
     source ci/adhoc/adhoc_test_runner.sh
 
-    declare -A unique_packages
-    for pkg in "${PACKAGES_TO_TEST[@]}"; do
-        unique_packages["$pkg"]=1
-    done
-
-    for pkg in $ADHOC_PACKAGES; do
-        unique_packages["$pkg"]=1
-    done
-
-    PACKAGES_TO_TEST=()
-    for pkg in "${!unique_packages[@]}"; do
-        PACKAGES_TO_TEST+=("$pkg")
-    done
+    echo "Deduplicating packages..."
+    # Portable deduplication avoiding 'declare -A' (compatible with older Bash)
+    COMBINED=$(printf "%s\n" "${PACKAGES_TO_TEST[@]}" $ADHOC_PACKAGES | sort -u | grep -v '^$' || true)
+    PACKAGES_TO_TEST=($COMBINED)
 
     echo "Combined packages to test: ${PACKAGES_TO_TEST[*]}"
 fi
