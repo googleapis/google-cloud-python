@@ -99,9 +99,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "logging.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(DEFAULT_ENDPOINT) # type: ignore
 
     _DEFAULT_ENDPOINT_TEMPLATE = "logging.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"

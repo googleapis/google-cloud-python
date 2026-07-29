@@ -150,9 +150,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = {% if service.host %}"{{ service.host }}"{% else %}None{% endif %}
 
-    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(DEFAULT_ENDPOINT) # type: ignore
 
     _DEFAULT_ENDPOINT_TEMPLATE = {% if service.host %}"{{ service.host.replace("googleapis.com", "{UNIVERSE_DOMAIN}") }}"{% else %}None{% endif %}
 

@@ -124,9 +124,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "eventarc.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(DEFAULT_ENDPOINT) # type: ignore
 
     _DEFAULT_ENDPOINT_TEMPLATE = "eventarc.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"

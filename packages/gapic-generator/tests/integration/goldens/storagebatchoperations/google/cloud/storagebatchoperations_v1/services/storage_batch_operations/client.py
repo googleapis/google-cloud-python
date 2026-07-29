@@ -108,9 +108,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "storagebatchoperations.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(DEFAULT_ENDPOINT) # type: ignore
 
     _DEFAULT_ENDPOINT_TEMPLATE = "storagebatchoperations.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"
