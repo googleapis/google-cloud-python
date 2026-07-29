@@ -282,6 +282,9 @@ if [[ -n "${KOKORO_GITHUB_PULL_REQUEST_NUMBER}" ]]; then
     echo "Checking for adhoc test label on PR #${KOKORO_GITHUB_PULL_REQUEST_NUMBER}..."
     LABELS_JSON=$(curl -s -H "User-Agent: Kokoro" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels")
 
+    # We use a small inline Python snippet here because parsing JSON in pure Bash is difficult/error-prone,
+    # and we cannot guarantee that tools like 'jq' or 'gh' are installed in the test environment.
+    # Python and its built-in 'json' module are guaranteed to be available in this repository.
     IS_ADHOC=$(python3 -c "
 import json
 import sys
