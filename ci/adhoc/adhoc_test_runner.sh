@@ -2,7 +2,7 @@
 
 # Script to determine ad-hoc packages to test.
 # This script is intended to be sourced from main test scripts.
-
+#
 # Ensure we are in the project root if called directly,
 # but usually this is sourced and CWD is already project root.
 # For safety, we can use script location but if sourced $0 might be the parent script.
