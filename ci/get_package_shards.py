@@ -91,9 +91,9 @@ def get_packages_to_test():
         return all_packages
 
     if build_type == 'presubmit':
-        git_diff_arg = f"origin/{target_branch}..."
+        git_diff_arg = f"origin/{target_branch}"
     elif build_type == 'continuous':
-        git_diff_arg = "HEAD~.."
+        git_diff_arg = "HEAD~1.."
     else:
         return all_packages
 

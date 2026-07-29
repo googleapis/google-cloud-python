@@ -86,20 +86,13 @@ if [ -n "${PACKAGE_LIST}" ]; then
 fi
 
 if [[ ${BUILD_TYPE} == "presubmit" ]]; then
-    # For presubmit build, we want to know the difference from the
-    # common commit in the target branch.
-    GIT_DIFF_ARG="origin/$TARGET_BRANCH..."
-
-    # Then fetch enough history for finding the common commit.
-    git fetch origin "$TARGET_BRANCH" --deepen=200 || true
+    # For presubmit build, we want to know the difference from the target branch.
+    GIT_DIFF_ARG="origin/$TARGET_BRANCH"
 
 elif [[ ${BUILD_TYPE} == "continuous" ]]; then
     # For continuous build, we want to know the difference in the last
     # commit. This assumes we use squash commit when merging PRs.
-    GIT_DIFF_ARG="HEAD~.."
-
-    # Then fetch one last commit for getting the diff.
-    git fetch origin "$TARGET_BRANCH" --deepen=1 || true
+    GIT_DIFF_ARG="HEAD~1.."
 
 else
     # Run everything.

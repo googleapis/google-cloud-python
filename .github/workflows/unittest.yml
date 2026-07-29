@@ -38,7 +38,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0
+        fetch-depth: 2
     - name: Check for unit_test:all_packages label
       id: check-label
       run: |
@@ -61,7 +61,7 @@ jobs:
         PACKAGE_WEIGHTS: ${{ env.PACKAGE_WEIGHTS }}
       run: |
         if [ -n "$TARGET_BRANCH" ]; then
-          git fetch origin "$TARGET_BRANCH" --deepen=200 || true
+          git fetch origin "$TARGET_BRANCH" --depth=1 || true
         fi
         python3 ci/get_package_shards.py
 
@@ -150,12 +150,14 @@ jobs:
       id: packages
       env:
         TEST_ALL_PACKAGES: ${{ needs.initialize.outputs.is_full_run }}
+        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
       run: |
         if [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
           echo "num_files_changed=1" >> "$GITHUB_OUTPUT"
         else
-          git diff HEAD~1 -- packages preview-packages > /dev/null
-          num_files_changed=$(git diff HEAD~1 -- packages preview-packages | wc -l | tr -d ' ')
+          TARGET_BRANCH="${TARGET_BRANCH:-main}"
+          git fetch origin "$TARGET_BRANCH" --depth=1 || true
+          num_files_changed=$(git diff --name-only "origin/${TARGET_BRANCH}" -- packages preview-packages | wc -l | tr -d ' ')
           echo "num_files_changed=${num_files_changed}" >> "$GITHUB_OUTPUT"
         fi
     - name: Install coverage
@@ -176,5 +178,7 @@ jobs:
         # https://github.com/googleapis/google-cloud-python/issues/17459
         DEFAULT_FAIL_UNDER: 99
         TEST_ALL_PACKAGES: ${{ needs.initialize.outputs.is_full_run }}
+        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
+        BUILD_TYPE: presubmit
       run: |
         ci/report_coverage.sh
