@@ -44,59 +44,65 @@ def _load_templates() -> dict[str, jinja2.Template]:
 TEMPLATES: dict[str, jinja2.Template] = _load_templates()
 
 
-def _get_concrete_type_expr(yaml_type: str) -> str:
+def _unwrap_list_type(yaml_type: str) -> str | None:
+    if yaml_type.startswith("list<") and yaml_type.endswith(">"):
+        return yaml_type[5:-1]
+    return None
+
+
+def _try_get_concrete_type_expr(yaml_type: str) -> str | None:
     if yaml_type in constants.DTYPE_MAP:
         return constants.DTYPE_MAP[yaml_type]
-    if yaml_type.startswith("list<") and yaml_type.endswith(">"):
-        inner = yaml_type[5:-1]
-        if inner in constants.DTYPE_MAP:
-            return f"dtypes.list_type({constants.DTYPE_MAP[inner]})"
-    raise ValueError(f"Not a concrete type: {yaml_type}")
+    inner = _unwrap_list_type(yaml_type)
+    if inner and inner in constants.DTYPE_MAP:
+        # TODO (b/540011825): Support recursive type parsing
+        return f"dtypes.list_type({constants.DTYPE_MAP[inner]})"
+    return None
+
+
+def _get_concrete_type_expr(yaml_type: str) -> str:
+    expr = _try_get_concrete_type_expr(yaml_type)
+    if expr is None:
+        raise ValueError(f"Not a concrete type: {yaml_type}")
+    return expr
 
 
 def _is_concrete_type(yaml_type: str) -> bool:
-    try:
-        _get_concrete_type_expr(yaml_type)
-        return True
-    except ValueError:
-        return False
+    return _try_get_concrete_type_expr(yaml_type) is not None
+
+
+def _validate_type(yaml_type: str) -> None:
+    if yaml_type in ("any1", "struct") or yaml_type in constants.DTYPE_MAP:
+        return
+    inner = _unwrap_list_type(yaml_type)
+    if inner is not None:
+        if inner == "any1" or inner in constants.DTYPE_MAP:
+            return
+        raise ValueError(f"Unsupported inner type: {inner}")
+    raise ValueError(f"Unsupported type: {yaml_type}")
 
 
 def _validate_types(impls: list[data_models.BQFuncImpl]) -> None:
     for impl in impls:
         for arg in impl.args:
-            val = arg.value
-            if val == "any1":
-                continue
-            if val.startswith("list<") and val.endswith(">"):
-                inner = val[5:-1]
-                if inner != "any1" and inner not in constants.DTYPE_MAP:
-                    raise ValueError(f"Unsupported inner type: {inner}")
-                continue
-            if val == "struct":
-                continue
-            if val not in constants.DTYPE_MAP:
-                raise ValueError(f"Unsupported type: {val}")
-
-        ret = impl.return_type
-        if ret == "any1":
-            continue
-        if ret.startswith("list<") and ret.endswith(">"):
-            inner = ret[5:-1]
-            if inner != "any1" and inner not in constants.DTYPE_MAP:
-                raise ValueError(f"Unsupported inner type: {inner}")
-            continue
-        if ret not in constants.DTYPE_MAP:
-            raise ValueError(f"Unsupported type: {ret}")
+            _validate_type(arg.value)
+        _validate_type(impl.return_type)
 
 
 def render_signature_def(
     bq_func: data_models.BQFunc,
 ) -> tuple[str, str | None]:
     """
-    Returns the signature function name and it's definition.
+    Returns the signature function name and its definition.
     If the signature function can be inlined, the first return value is the lambda,
     and the second value is None.
+
+    Examples:
+        Inlined signature function:
+            ("lambda *args: dtypes.FLOAT64_DTYPE", None)
+
+        Custom signature function definition:
+            ("_ABS_SIG", "def _ABS_SIG(*args): ...")
     """
     return_types = {impl.return_type for impl in bq_func.impls}
     # Optimization: if all impls return the same concrete type,
