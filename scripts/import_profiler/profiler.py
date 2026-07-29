@@ -125,33 +125,34 @@ def _run_worker_and_parse(cmd):
         print(f"Worker stderr:\n{result.stderr}", file=sys.stderr)
         raise parse_err
 
-def _calculate_percentiles(data_list):
-    """Helper method to calculate P50, P90, P99 from a list of numbers."""
-    if len(data_list) > 1:
-        q = statistics.quantiles(data_list, n=100)
-        return q[49], q[89], q[98]
-    val = data_list[0] if data_list else 0.0
-    return val, val, val
-
 def _print_outputs(target_module, iterations, loaded_modules_val, loaded_lines_val,
-                   times, p50_time, p90_time, p99_time,
-                   memories, p50_mem, p90_mem, p99_mem,
-                   rss_memories, p50_rss, p90_rss, p99_rss):
+                   times, memories, rss_memories):
     """Helper method to format and print the final benchmark results."""
-    def _format_stats(title, data, p50, p90, p99, fmt):
+    def _format_stats(title, data, fmt):
         if not data:
             return ""
-        std_str = f"  StdDev:       {statistics.stdev(data):{fmt}}\n" if len(data) > 1 else ""
-        return f"{title}:\n  P50 (Median): {p50:{fmt}}\n  P90:          {p90:{fmt}}\n  P99:          {p99:{fmt}}\n  Mean:         {statistics.mean(data):{fmt}}\n  Min:          {min(data):{fmt}}\n  Max:          {max(data):{fmt}}\n{std_str}"
+        n = len(data)
+        p50 = statistics.median(data)
+        min_val = min(data)
+        max_val = max(data)
+        std_dev = statistics.stdev(data) if n > 1 else 0.0
+
+        stats_lines = [
+            f"{title} [N={n}]:",
+            f"  Min:    {min_val:{fmt}}",
+            f"  P50:    {p50:{fmt}}",
+            f"  Max:    {max_val:{fmt}}"
+        ]
+        if n > 1:
+            stats_lines.append(f"  StdDev:    {std_dev:{fmt}}")
+        return "\n".join(stats_lines) + "\n"
 
     final_output = f"""
 --- Results for {target_module} ({iterations} iterations) ---
 Code Volume (Deterministic):
   Loaded Modules: {loaded_modules_val}
   Loaded Lines:   {loaded_lines_val}
-{_format_stats("Time (ms)", times, p50_time, p90_time, p99_time, ".2f")}
-{_format_stats("Tracemalloc RAM (MB)", memories, p50_mem, p90_mem, p99_mem, ".4f")}
-{_format_stats("Physical RSS RAM (MB)", rss_memories, p50_rss, p90_rss, p99_rss, ".4f")}"""
+{_format_stats("Time (ms)", times, ".2f")}{_format_stats("Tracemalloc RAM (MB)", memories, ".4f")}{_format_stats("Physical RSS RAM (MB)", rss_memories, ".4f")}"""
     print(final_output.strip())
 
 def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True, fail_threshold=None, diff_baseline=None, diff_threshold=None):
@@ -224,17 +225,11 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
                 writer.writerow([idx + 1, f"{t:.2f}", f"{m:.4f}", f"{r:.4f}"])
         print(f"Raw metrics successfully exported to CSV: {csv_path}")
 
-    # Compute percentiles (P50, P90, P99)
-    # statistics.quantiles returns 99 cut points for n=100
-    p50_time, p90_time, p99_time = _calculate_percentiles(times)
-    p50_mem, p90_mem, p99_mem = _calculate_percentiles(memories)
-    p50_rss, p90_rss, p99_rss = _calculate_percentiles(rss_memories)
+    p50_time = statistics.median(times) if times else 0.0
 
     _print_outputs(
         target_module, iterations, loaded_modules_val, loaded_lines_val,
-        times, p50_time, p90_time, p99_time,
-        memories, p50_mem, p90_mem, p99_mem,
-        rss_memories, p50_rss, p90_rss, p99_rss
+        times, memories, rss_memories
     )
 
     exit_code = 0
@@ -250,7 +245,7 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
                 for row in reader:
                     baseline_times.append(float(row[1]))
             if baseline_times:
-                baseline_p50, _, _ = _calculate_percentiles(baseline_times)
+                baseline_p50 = statistics.median(baseline_times)
             
             if baseline_p50 is not None:
                 diff = p50_time - baseline_p50
@@ -293,10 +288,9 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
         
     if exit_code == 0:
         print("\nSession import_profiler was successful.")
-        sys.exit(0)
     else:
         print("\nSession import_profiler failed.")
-        sys.exit(1)
+    return exit_code
 
 
 def run_trace(target_module):
@@ -461,4 +455,4 @@ if __name__ == "__main__":
         if not args.keep_pycache: clean_bytecode()
         run_mprofile(target_module)
     else:
-        run_master(args.iterations, target_module, args.cpu, args.csv, not args.keep_pycache, args.fail_threshold, args.diff_baseline, args.diff_threshold)
+        sys.exit(run_master(args.iterations, target_module, args.cpu, args.csv, not args.keep_pycache, args.fail_threshold, args.diff_baseline, args.diff_threshold))

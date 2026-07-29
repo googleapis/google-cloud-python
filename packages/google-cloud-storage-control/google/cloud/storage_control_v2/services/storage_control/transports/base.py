@@ -35,9 +35,7 @@ from google.cloud.storage_control_v2.types import storage_control
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class StorageControlTransport(abc.ABC):
@@ -159,7 +157,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -182,7 +179,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -200,7 +196,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -218,7 +213,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -236,7 +230,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -254,7 +247,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -282,7 +274,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -300,7 +291,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -311,6 +301,11 @@ class StorageControlTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.update_managed_folder: gapic_v1.method.wrap_method(
+                self.update_managed_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_anywhere_cache: gapic_v1.method.wrap_method(
                 self.create_anywhere_cache,
                 default_retry=retries.Retry(
@@ -318,7 +313,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -336,7 +330,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -354,7 +347,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -372,7 +364,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -390,7 +381,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -408,7 +398,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -426,7 +415,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -437,6 +425,26 @@ class StorageControlTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_rapid_cache: gapic_v1.method.wrap_method(
+                self.create_rapid_cache,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_rapid_cache: gapic_v1.method.wrap_method(
+                self.update_rapid_cache,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_rapid_cache: gapic_v1.method.wrap_method(
+                self.get_rapid_cache,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_rapid_caches: gapic_v1.method.wrap_method(
+                self.list_rapid_caches,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_project_intelligence_config: gapic_v1.method.wrap_method(
                 self.get_project_intelligence_config,
                 default_retry=retries.Retry(
@@ -444,7 +452,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -462,7 +469,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -480,7 +486,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -498,7 +503,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -516,7 +520,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -534,7 +537,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -567,7 +569,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -585,7 +586,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -603,7 +603,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -621,7 +620,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -639,7 +637,6 @@ class StorageControlTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -772,6 +769,15 @@ class StorageControlTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def update_managed_folder(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateManagedFolderRequest],
+        Union[storage_control.ManagedFolder, Awaitable[storage_control.ManagedFolder]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def create_anywhere_cache(
         self,
     ) -> Callable[
@@ -833,6 +839,45 @@ class StorageControlTransport(abc.ABC):
         Union[
             storage_control.ListAnywhereCachesResponse,
             Awaitable[storage_control.ListAnywhereCachesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_rapid_cache(
+        self,
+    ) -> Callable[
+        [storage_control.CreateRapidCacheRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_rapid_cache(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateRapidCacheRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_rapid_cache(
+        self,
+    ) -> Callable[
+        [storage_control.GetRapidCacheRequest],
+        Union[storage_control.RapidCache, Awaitable[storage_control.RapidCache]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_rapid_caches(
+        self,
+    ) -> Callable[
+        [storage_control.ListRapidCachesRequest],
+        Union[
+            storage_control.ListRapidCachesResponse,
+            Awaitable[storage_control.ListRapidCachesResponse],
         ],
     ]:
         raise NotImplementedError()

@@ -55,6 +55,11 @@
                 "delete_hive_table"
               ]
             },
+            "FailoverHiveCatalog": {
+              "methods": [
+                "failover_hive_catalog"
+              ]
+            },
             "GetHiveCatalog": {
               "methods": [
                 "get_hive_catalog"
@@ -155,6 +160,11 @@
                 "delete_hive_table"
               ]
             },
+            "FailoverHiveCatalog": {
+              "methods": [
+                "failover_hive_catalog"
+              ]
+            },
             "GetHiveCatalog": {
               "methods": [
                 "get_hive_catalog"
@@ -253,6 +263,11 @@
             "DeleteHiveTable": {
               "methods": [
                 "delete_hive_table"
+              ]
+            },
+            "FailoverHiveCatalog": {
+              "methods": [
+                "failover_hive_catalog"
               ]
             },
             "GetHiveCatalog": {

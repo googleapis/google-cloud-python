@@ -21,8 +21,8 @@ before invoking API methods, such as automatically generating request IDs
 if they are not already set.
 """
 
-from typing import Union
 import uuid
+from typing import Union
 
 import google.protobuf.message
 
@@ -65,7 +65,7 @@ def setup_request_id(
                 setattr(request, field_name, str(uuid.uuid4()))
         except (AttributeError, ValueError):
             # Proto-plus messages or other objects
-            if not getattr(request, field_name, None):
+            if getattr(request, field_name, None) is None:
                 setattr(request, field_name, str(uuid.uuid4()))
     else:
         if not getattr(request, field_name, None):

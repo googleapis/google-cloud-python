@@ -1,9 +1,0 @@
-{
-    "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-apigee-registry/latest",
-    "distribution_name": "google-cloud-apigee-registry",
-    "language": "python",
-    "library_type": "GAPIC_AUTO",
-    "name": "google-cloud-apigee-registry",
-    "release_level": "preview",
-    "repo": "googleapis/google-cloud-python"
-}

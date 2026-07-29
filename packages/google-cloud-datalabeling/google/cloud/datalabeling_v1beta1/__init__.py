@@ -23,6 +23,27 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.datalabeling_v1beta1.services.data_labeling_service",
+    "google.cloud.datalabeling_v1beta1.types.annotation",
+    "google.cloud.datalabeling_v1beta1.types.annotation_spec_set",
+    "google.cloud.datalabeling_v1beta1.types.data_labeling_service",
+    "google.cloud.datalabeling_v1beta1.types.data_payloads",
+    "google.cloud.datalabeling_v1beta1.types.dataset",
+    "google.cloud.datalabeling_v1beta1.types.evaluation",
+    "google.cloud.datalabeling_v1beta1.types.evaluation_job",
+    "google.cloud.datalabeling_v1beta1.types.human_annotation_config",
+    "google.cloud.datalabeling_v1beta1.types.instruction",
+    "google.cloud.datalabeling_v1beta1.types.operations",
+}
+
+
 from .services.data_labeling_service import (
     DataLabelingServiceAsyncClient,
     DataLabelingServiceClient,

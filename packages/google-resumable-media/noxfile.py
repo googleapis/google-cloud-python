@@ -21,6 +21,17 @@ import shutil
 import nox
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 SYSTEM_TEST_ENV_VARS = ("GOOGLE_APPLICATION_CREDENTIALS",)
 RUFF_VERSION = "ruff==0.14.14"
@@ -68,7 +79,7 @@ def unit(session):
         line_coverage,
         os.path.join("tests", "unit"),
         os.path.join("tests_async", "unit"),
-        *session.posargs
+        *session.posargs,
     )
 
 
@@ -105,6 +116,7 @@ def docs(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
+
 
 @nox.session(python="3.10")
 def docfx(session):
@@ -251,7 +263,16 @@ def mypy(session):
         "types-requests",
         "types-mock",
     )
-    session.run("mypy", "-p", "google", "-p", "tests", "-p", "tests_async")
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "google",
+        "-p",
+        "tests",
+        "-p",
+        "tests_async",
+    )
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
@@ -319,7 +340,9 @@ def prerelease_deps(session):
     # version, the first version we test with in the unit tests sessions has a
     # constraints file containing all dependencies and extras.
     with open(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        CURRENT_DIRECTORY
+        / "testing"
+        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
         encoding="utf-8",
     ) as constraints_file:
         constraints_text = constraints_file.read()
@@ -400,7 +423,9 @@ def core_deps_from_source(session):
     # version, the first version we test with in the unit tests sessions has a
     # constraints file containing all dependencies and extras.
     with open(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        CURRENT_DIRECTORY
+        / "testing"
+        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
         encoding="utf-8",
     ) as constraints_file:
         constraints_text = constraints_file.read()
@@ -431,7 +456,9 @@ def core_deps_from_source(session):
     dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
 
     session.install(*dep_paths, "--no-deps", "--ignore-installed")
-    print(f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}")
+    print(
+        f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
+    )
 
     other_deps = [
         "cryptography",

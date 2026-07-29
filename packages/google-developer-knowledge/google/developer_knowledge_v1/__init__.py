@@ -23,11 +23,26 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.developer_knowledge_v1.services.developer_knowledge",
+    "google.developer_knowledge_v1.types.developerknowledge",
+}
+
+
 from .services.developer_knowledge import (
     DeveloperKnowledgeAsyncClient,
     DeveloperKnowledgeClient,
 )
 from .types.developerknowledge import (
+    Answer,
+    AnswerQueryRequest,
+    AnswerQueryResponse,
     BatchGetDocumentsRequest,
     BatchGetDocumentsResponse,
     Document,
@@ -123,6 +138,9 @@ else:  # pragma: NO COVER
 
 __all__ = (
     "DeveloperKnowledgeAsyncClient",
+    "Answer",
+    "AnswerQueryRequest",
+    "AnswerQueryResponse",
     "BatchGetDocumentsRequest",
     "BatchGetDocumentsResponse",
     "DeveloperKnowledgeClient",

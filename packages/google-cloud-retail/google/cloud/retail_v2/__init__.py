@@ -23,6 +23,53 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.retail_v2.services.analytics_service",
+    "google.cloud.retail_v2.services.catalog_service",
+    "google.cloud.retail_v2.services.completion_service",
+    "google.cloud.retail_v2.services.control_service",
+    "google.cloud.retail_v2.services.conversational_search_service",
+    "google.cloud.retail_v2.services.generative_question_service",
+    "google.cloud.retail_v2.services.model_service",
+    "google.cloud.retail_v2.services.prediction_service",
+    "google.cloud.retail_v2.services.product_service",
+    "google.cloud.retail_v2.services.search_service",
+    "google.cloud.retail_v2.services.serving_config_service",
+    "google.cloud.retail_v2.services.user_event_service",
+    "google.cloud.retail_v2.types.analytics_service",
+    "google.cloud.retail_v2.types.catalog",
+    "google.cloud.retail_v2.types.catalog_service",
+    "google.cloud.retail_v2.types.common",
+    "google.cloud.retail_v2.types.completion_service",
+    "google.cloud.retail_v2.types.control",
+    "google.cloud.retail_v2.types.control_service",
+    "google.cloud.retail_v2.types.conversational_search_service",
+    "google.cloud.retail_v2.types.export_config",
+    "google.cloud.retail_v2.types.generative_question",
+    "google.cloud.retail_v2.types.generative_question_service",
+    "google.cloud.retail_v2.types.import_config",
+    "google.cloud.retail_v2.types.model",
+    "google.cloud.retail_v2.types.model_service",
+    "google.cloud.retail_v2.types.prediction_service",
+    "google.cloud.retail_v2.types.product",
+    "google.cloud.retail_v2.types.product_service",
+    "google.cloud.retail_v2.types.promotion",
+    "google.cloud.retail_v2.types.purge_config",
+    "google.cloud.retail_v2.types.safety",
+    "google.cloud.retail_v2.types.search_service",
+    "google.cloud.retail_v2.types.serving_config",
+    "google.cloud.retail_v2.types.serving_config_service",
+    "google.cloud.retail_v2.types.user_event",
+    "google.cloud.retail_v2.types.user_event_service",
+}
+
+
 from .services.analytics_service import (
     AnalyticsServiceAsyncClient,
     AnalyticsServiceClient,

@@ -25,6 +25,9 @@ from google.developer_knowledge_v1.services.developer_knowledge.client import (
     DeveloperKnowledgeClient,
 )
 from google.developer_knowledge_v1.types.developerknowledge import (
+    Answer,
+    AnswerQueryRequest,
+    AnswerQueryResponse,
     BatchGetDocumentsRequest,
     BatchGetDocumentsResponse,
     Document,
@@ -38,6 +41,9 @@ from google.developer_knowledge_v1.types.developerknowledge import (
 __all__ = (
     "DeveloperKnowledgeClient",
     "DeveloperKnowledgeAsyncClient",
+    "Answer",
+    "AnswerQueryRequest",
+    "AnswerQueryResponse",
     "BatchGetDocumentsRequest",
     "BatchGetDocumentsResponse",
     "Document",
