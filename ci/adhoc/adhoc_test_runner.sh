@@ -23,18 +23,18 @@ if [[ ! -f "$GROUPS_FILE" ]]; then
 fi
 
 # Grab individual packages
-adhoc_packages=$(grep "^package:" "$STANDALONE_LIST" | cut -d':' -f2 | xargs)
+adhoc_packages=$(grep "^package:" "$STANDALONE_LIST" | cut -d':' -f2 | xargs || true)
 
 # Grab requested groups
-requested_groups=$(grep "^group:" "$STANDALONE_LIST" | cut -d':' -f2 | xargs)
+requested_groups=$(grep "^group:" "$STANDALONE_LIST" | cut -d':' -f2 | xargs || true)
 
 # Expand groups
 for group in $requested_groups; do
-    group_pkgs=$(grep "^$group:" "$GROUPS_FILE" | cut -d':' -f2 | xargs)
+    group_pkgs=$(grep "^$group:" "$GROUPS_FILE" | cut -d':' -f2 | xargs || true)
     adhoc_packages="$adhoc_packages $group_pkgs"
 done
 
 # Convert to unique list (deduplicate our adhoc packages)
-ADHOC_PACKAGES=$(echo $adhoc_packages | tr ' ' '\n' | sort -u | xargs)
+ADHOC_PACKAGES=$(echo "$adhoc_packages" | tr ' ' '\n' | sort -u | xargs)
 
 export ADHOC_PACKAGES
