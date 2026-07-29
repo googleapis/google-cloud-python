@@ -1,0 +1,97 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+import math
+
+import pytest
+
+import bigframes
+import bigframes.bigquery
+from bigframes.testing.utils import assert_frame_equal
+
+polars = pytest.importorskip("polars")
+
+
+@pytest.fixture(scope="module")
+def session_w_polars():
+    context = bigframes.BigQueryOptions(location="US", enable_polars_execution=True)
+    session = bigframes.Session(context=context)
+    yield session
+    session.close()  # close generated session at cleanup time
+
+
+def test_polar_execution_sorted(session_w_polars, scalars_pandas_df_index):
+    execution_count_before = session_w_polars._metrics.execution_count
+    bf_df = session_w_polars.read_pandas(scalars_pandas_df_index)
+
+    pd_result = scalars_pandas_df_index.sort_index(ascending=False)[
+        ["int64_too", "bool_col"]
+    ]
+    bf_result = bf_df.sort_index(ascending=False)[["int64_too", "bool_col"]].to_pandas()
+
+    assert session_w_polars._metrics.execution_count == execution_count_before + 1
+    assert_frame_equal(bf_result, pd_result)
+
+
+def test_polar_execution_sorted_filtered(session_w_polars, scalars_pandas_df_index):
+    execution_count_before = session_w_polars._metrics.execution_count
+    bf_df = session_w_polars.read_pandas(scalars_pandas_df_index)
+
+    pd_result = scalars_pandas_df_index.sort_index(ascending=False).dropna(
+        subset=["int64_col", "string_col"]
+    )
+    bf_result = (
+        bf_df.sort_index(ascending=False)
+        .dropna(subset=["int64_col", "string_col"])
+        .to_pandas()
+    )
+
+    assert session_w_polars._metrics.execution_count == execution_count_before + 1
+    assert_frame_equal(bf_result, pd_result)
+
+
+def test_polar_execution_unsupported_sql_fallback(
+    session_w_polars, scalars_pandas_df_index
+):
+    execution_count_before = session_w_polars._metrics.execution_count
+    bf_df = session_w_polars.read_pandas(scalars_pandas_df_index)
+
+    bf_df["geo_area"] = bigframes.bigquery.st_length(bf_df.geography_col)
+    bf_result = bf_df.to_pandas()
+
+    # geo fns not supported by polar engine yet, so falls back to bq execution
+    assert session_w_polars._metrics.execution_count == (execution_count_before + 2)
+    assert math.isclose(bf_result.geo_area.sum(), 70.52332050, rel_tol=0.00001)
+
+
+def test_polars_execution_history(session_w_polars):
+    import pandas as pd
+
+    # Create a small local DataFrame
+    pdf = pd.DataFrame({"col_a": [1, 2, 3], "col_b": ["x", "y", "z"]})
+
+    # Read simple local data
+    df = session_w_polars.read_pandas(pdf)
+
+    # Trigger execution
+    _ = df.to_pandas()
+
+    # Verify the execution history captured the local job
+    history = session_w_polars.execution_history().to_dataframe()
+
+    # Verify we have at least one job and logged as polars
+    assert len(history) > 0
+    last_job = history.iloc[-1]
+
+    assert last_job["job_type"] == "polars"
+    assert last_job["status"] == "DONE"

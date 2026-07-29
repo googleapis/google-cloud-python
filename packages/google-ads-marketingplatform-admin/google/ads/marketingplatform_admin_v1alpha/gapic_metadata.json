@@ -1,0 +1,148 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.ads.marketingplatform_admin_v1alpha",
+  "protoPackage": "google.marketingplatform.admin.v1alpha",
+  "schema": "1.0",
+  "services": {
+    "MarketingplatformAdminService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "MarketingplatformAdminServiceClient",
+          "rpcs": {
+            "CreateAnalyticsAccountLink": {
+              "methods": [
+                "create_analytics_account_link"
+              ]
+            },
+            "DeleteAnalyticsAccountLink": {
+              "methods": [
+                "delete_analytics_account_link"
+              ]
+            },
+            "FindSalesPartnerManagedClients": {
+              "methods": [
+                "find_sales_partner_managed_clients"
+              ]
+            },
+            "GetOrganization": {
+              "methods": [
+                "get_organization"
+              ]
+            },
+            "ListAnalyticsAccountLinks": {
+              "methods": [
+                "list_analytics_account_links"
+              ]
+            },
+            "ListOrganizations": {
+              "methods": [
+                "list_organizations"
+              ]
+            },
+            "ReportPropertyUsage": {
+              "methods": [
+                "report_property_usage"
+              ]
+            },
+            "SetPropertyServiceLevel": {
+              "methods": [
+                "set_property_service_level"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "MarketingplatformAdminServiceAsyncClient",
+          "rpcs": {
+            "CreateAnalyticsAccountLink": {
+              "methods": [
+                "create_analytics_account_link"
+              ]
+            },
+            "DeleteAnalyticsAccountLink": {
+              "methods": [
+                "delete_analytics_account_link"
+              ]
+            },
+            "FindSalesPartnerManagedClients": {
+              "methods": [
+                "find_sales_partner_managed_clients"
+              ]
+            },
+            "GetOrganization": {
+              "methods": [
+                "get_organization"
+              ]
+            },
+            "ListAnalyticsAccountLinks": {
+              "methods": [
+                "list_analytics_account_links"
+              ]
+            },
+            "ListOrganizations": {
+              "methods": [
+                "list_organizations"
+              ]
+            },
+            "ReportPropertyUsage": {
+              "methods": [
+                "report_property_usage"
+              ]
+            },
+            "SetPropertyServiceLevel": {
+              "methods": [
+                "set_property_service_level"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "MarketingplatformAdminServiceClient",
+          "rpcs": {
+            "CreateAnalyticsAccountLink": {
+              "methods": [
+                "create_analytics_account_link"
+              ]
+            },
+            "DeleteAnalyticsAccountLink": {
+              "methods": [
+                "delete_analytics_account_link"
+              ]
+            },
+            "FindSalesPartnerManagedClients": {
+              "methods": [
+                "find_sales_partner_managed_clients"
+              ]
+            },
+            "GetOrganization": {
+              "methods": [
+                "get_organization"
+              ]
+            },
+            "ListAnalyticsAccountLinks": {
+              "methods": [
+                "list_analytics_account_links"
+              ]
+            },
+            "ListOrganizations": {
+              "methods": [
+                "list_organizations"
+              ]
+            },
+            "ReportPropertyUsage": {
+              "methods": [
+                "report_property_usage"
+              ]
+            },
+            "SetPropertyServiceLevel": {
+              "methods": [
+                "set_property_service_level"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

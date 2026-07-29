@@ -1,0 +1,3 @@
+CREATE OR REPLACE MODEL `my_model`
+OPTIONS(model_type = 'LOGISTIC_REG')
+AS SELECT * FROM t

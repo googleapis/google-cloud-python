@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "config:base",
+    "group:all",
+    ":disableDependencyDashboard",
+    "schedule:weekly"
+  ],
+  "ignorePaths": [
+    ".github/workflows/unittest.yml",
+    "**/pyproject.toml",
+    "**/setup.py"
+  ]
+}

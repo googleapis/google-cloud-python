@@ -1,0 +1,205 @@
+# Contains code from https://github.com/ibis-project/ibis/blob/9.2.0/ibis/expr/operations/maps.py
+
+"""Operations for working with AI operators."""
+
+from __future__ import annotations
+
+from typing import Optional
+
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.rules as rlz
+import pyarrow as pa
+from bigframes_vendored.ibis.common.annotations import attribute
+from bigframes_vendored.ibis.expr.operations.core import Value
+from public import public
+
+from bigframes.operations import output_schemas
+
+
+@public
+class AIGenerate(Value):
+    """Generate content based on the prompt"""
+
+    prompt: Value
+    connection_id: Optional[Value[dt.String]]
+    endpoint: Optional[Value[dt.String]]
+    request_type: Value[dt.String]
+    model_params: Optional[Value[dt.String]]
+    output_schema: Optional[Value[dt.String]]
+
+    shape = rlz.shape_like("prompt")
+
+    @attribute
+    def dtype(self) -> dt.Struct:
+        if self.output_schema is None:
+            output_pa_fields = (pa.field("result", pa.string()),)
+        else:
+            output_pa_fields = output_schemas.parse_sql_fields(self.output_schema.value)
+
+        pyarrow_output_type = pa.struct(
+            (
+                *output_pa_fields,
+                pa.field("full_resposne", pa.string()),
+                pa.field("status", pa.string()),
+            )
+        )
+
+        return dt.Struct.from_pyarrow(pyarrow_output_type)
+
+
+@public
+class AIGenerateBool(Value):
+    """Generate Bool based on the prompt"""
+
+    prompt: Value
+    connection_id: Optional[Value[dt.String]]
+    endpoint: Optional[Value[dt.String]]
+    request_type: Value[dt.String]
+    model_params: Optional[Value[dt.String]]
+
+    shape = rlz.shape_like("prompt")
+
+    @attribute
+    def dtype(self) -> dt.Struct:
+        return dt.Struct.from_tuples(
+            (("result", dt.bool), ("full_resposne", dt.string), ("status", dt.string))
+        )
+
+
+@public
+class AIGenerateInt(Value):
+    """Generate integers based on the prompt"""
+
+    prompt: Value
+    connection_id: Optional[Value[dt.String]]
+    endpoint: Optional[Value[dt.String]]
+    request_type: Value[dt.String]
+    model_params: Optional[Value[dt.String]]
+
+    shape = rlz.shape_like("prompt")
+
+    @attribute
+    def dtype(self) -> dt.Struct:
+        return dt.Struct.from_tuples(
+            (("result", dt.int64), ("full_resposne", dt.string), ("status", dt.string))
+        )
+
+
+@public
+class AIGenerateDouble(Value):
+    """Generate doubles based on the prompt"""
+
+    prompt: Value
+    connection_id: Optional[Value[dt.String]]
+    endpoint: Optional[Value[dt.String]]
+    request_type: Value[dt.String]
+    model_params: Optional[Value[dt.String]]
+
+    shape = rlz.shape_like("prompt")
+
+    @attribute
+    def dtype(self) -> dt.Struct:
+        return dt.Struct.from_tuples(
+            (
+                ("result", dt.float64),
+                ("full_resposne", dt.string),
+                ("status", dt.string),
+            )
+        )
+
+
+@public
+class AIEmbed(Value):
+    """Create embeddings from text or image data."""
+
+    content: Value
+    connection_id: Optional[Value[dt.String]]
+    endpoint: Optional[Value[dt.String]]
+    model: Optional[Value[dt.String]]
+    task_type: Optional[Value[dt.String]]
+    title: Optional[Value[dt.String]]
+    model_params: Optional[Value[dt.String]]
+
+    shape = rlz.shape_like("content")
+
+    @attribute
+    def dtype(self) -> dt.Struct:
+        return dt.Struct.from_tuples(
+            (
+                ("result", dt.Array(dt.float64)),
+                ("status", dt.string),
+            )
+        )
+
+
+@public
+class AIIf(Value):
+    """Generate True/False based on the prompt"""
+
+    prompt: Value
+    connection_id: Optional[Value[dt.String]]
+    endpoint: Optional[Value[dt.String]]
+    optimization_mode: Optional[Value[dt.String]]
+    max_error_ratio: Optional[Value[dt.Float64]]
+
+    shape = rlz.shape_like("prompt")
+
+    @attribute
+    def dtype(self) -> dt.Struct:
+        return dt.bool
+
+
+@public
+class AIClassify(Value):
+    """Generate categories based on the prompt"""
+
+    input: Value
+    categories: Value[dt.Array[dt.String]]
+    examples: Optional[Value]
+    connection_id: Optional[Value[dt.String]]
+    endpoint: Optional[Value[dt.String]]
+    output_mode: Optional[Value[dt.String]]
+    optimization_mode: Optional[Value[dt.String]]
+    max_error_ratio: Optional[Value[dt.Float64]]
+
+    shape = rlz.shape_like("input")
+
+    @attribute
+    def dtype(self) -> dt.DataType:
+        if self.output_mode is not None:
+            return dt.Array(dt.string)
+        return dt.string
+
+
+@public
+class AIScore(Value):
+    """Generate scores based on the prompt"""
+
+    prompt: Value
+    connection_id: Optional[Value[dt.String]]
+    endpoint: Optional[Value[dt.String]]
+    max_error_ratio: Optional[Value[dt.Float64]]
+
+    shape = rlz.shape_like("prompt")
+
+    @attribute
+    def dtype(self) -> dt.DataType:
+        return dt.float64
+
+
+@public
+class AISimilarity(Value):
+    """Calculate the similarity between two contents"""
+
+    content1: Value
+    content2: Value
+    endpoint: Optional[Value[dt.String]]
+    model: Optional[Value[dt.String]]
+    model_params: Optional[Value[dt.String]]
+    connection_id: Optional[Value[dt.String]]
+
+    shape = rlz.shape_like("content1")
+
+    @attribute
+    def dtype(self) -> dt.Struct:
+        return dt.float64
