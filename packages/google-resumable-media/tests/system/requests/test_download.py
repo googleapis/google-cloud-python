@@ -21,15 +21,13 @@ import os
 
 import google.auth  # type: ignore
 import google.auth.transport.requests as tr_requests  # type: ignore
-import pytest  # type: ignore
-
-from google.resumable_media import common
 import google.resumable_media.requests as resumable_requests
-from google.resumable_media import _helpers
-from google.resumable_media.requests import _request_helpers
 import google.resumable_media.requests.download as download_mod
-from tests.system import utils
+import pytest  # type: ignore
+from google.resumable_media import _helpers, common
+from google.resumable_media.requests import _request_helpers
 
+from tests.system import utils
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 DATA_DIR = os.path.join(CURR_DIR, "..", "..", "data")
@@ -270,6 +268,7 @@ class TestDownload(object):
 
     @pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
     def test_download_full(self, add_files, authorized_transport, checksum):
+        assert False, "Intentional failure to verify ad-hoc testing behavior"
         for info in ALL_FILES:
             actual_contents = self._get_contents(info)
             blob_name = get_blob_name(info)
