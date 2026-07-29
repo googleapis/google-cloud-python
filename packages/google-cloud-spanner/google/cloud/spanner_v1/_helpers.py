@@ -20,6 +20,7 @@ import decimal
 import logging
 import math
 import operator
+import os
 import threading
 import time
 import uuid
@@ -68,6 +69,11 @@ except ImportError:
     GoogleCloudResourceDetector = None
 import random
 from typing import List, Tuple
+
+ENABLE_AFE_SERVER_TIMING = (
+    os.environ.get("SPANNER_DISABLE_AFE_SERVER_TIMING", "").lower() != "true"
+    and os.environ.get("SPANNER_DISABLE_BUILTIN_METRICS", "").lower() != "true"
+)
 
 # Validation error messages
 NUMERIC_MAX_SCALE_ERR_MSG = (
@@ -707,6 +713,13 @@ class _SessionWrapper(object):
         self._session = session
 
 
+def _append_routing_headers(metadata):
+    """Appends routing and backend-specific headers to the metadata."""
+    if ENABLE_AFE_SERVER_TIMING:
+        metadata.append(("x-goog-spanner-enable-afe-server-timing", "true"))
+    return metadata
+
+
 def _metadata_with_prefix(prefix, **kw):
     """Create RPC metadata containing a prefix.
 
@@ -716,7 +729,8 @@ def _metadata_with_prefix(prefix, **kw):
     Returns:
         List[Tuple[str, str]]: RPC metadata with supplied prefix
     """
-    return [("google-cloud-resource-prefix", prefix)]
+    metadata = [("google-cloud-resource-prefix", prefix)]
+    return _append_routing_headers(metadata)
 
 
 def _retry_on_aborted_exception(
