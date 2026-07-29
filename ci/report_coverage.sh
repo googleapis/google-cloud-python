@@ -36,10 +36,10 @@ find "$RESULTS_DIR" -type f -name '*.zip' -print0 | xargs -0 -P "${MAX_JOBS}" -I
 
 # Identify modified packages
 if [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
-    modified_packages=$(ls -d packages/*/ | cut -d/ -f1,2 | sort -u)
+    modified_packages=$(ls -d packages/*/ preview-packages/*/ 2>/dev/null | cut -d/ -f1,2 | sort -u)
 else
     # Default to comparing against previous commit
-    modified_packages=$(git diff --name-only HEAD~1 -- packages | cut -d/ -f1,2 | sort -u)
+    modified_packages=$(git diff --name-only HEAD~1 -- packages preview-packages | cut -d/ -f1,2 | sort -u)
 fi
 
 # Function to report coverage for a single package

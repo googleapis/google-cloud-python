@@ -25,51 +25,8 @@ class ExperimentOptions:
     """
 
     def __init__(self):
-        self._semantic_operators: bool = False
-        self._ai_operators: bool = False
         self._sql_compiler: Literal["legacy", "stable", "experimental"] = "stable"
         self._enable_python_transpiler: bool = False
-
-    @property
-    def semantic_operators(self) -> bool:
-        """Deprecated.
-
-        **Examples:**
-
-            >>> import bigframes.pandas as bpd
-            >>> bpd.options.experiments.semantic_operators = True  # doctest: +SKIP
-        """
-        return self._semantic_operators
-
-    @semantic_operators.setter
-    def semantic_operators(self, value: bool):
-        if value is True:
-            msg = bfe.format_message(
-                "Semantic operators are deprecated, and will be removed in the future"
-            )
-            warnings.warn(msg, category=FutureWarning)
-        self._semantic_operators = value
-
-    @property
-    def ai_operators(self) -> bool:
-        """If True, allow using the AI operators.
-
-        **Examples:**
-
-            >>> import bigframes.pandas as bpd
-            >>> bpd.options.experiments.ai_operators = True  # doctest: +SKIP
-        """
-        return self._ai_operators
-
-    @ai_operators.setter
-    def ai_operators(self, value: bool):
-        if value is True:
-            msg = bfe.format_message(
-                "AI operators are still under experiments, and are subject "
-                "to change in the future."
-            )
-            warnings.warn(msg, category=bfe.PreviewWarning)
-        self._ai_operators = value
 
     @property
     def sql_compiler(self) -> Literal["legacy", "stable", "experimental"]:

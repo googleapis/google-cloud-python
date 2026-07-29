@@ -16,8 +16,8 @@ version: v0.31.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: ede8b2e652dc3716b544205ef772b39b86e3d2cb
-    sha256: 8f7c17af87f6215012010dddaffec3aa5df5668bf0def727577bc0bc6b698193
+    commit: b8486a2f44f15dc578a9dc1e17b144253079d5c1
+    sha256: 12411ca5cb6c70d7c873d7058c5182a8d23fa88af8d984b0e73b1c3ad1d83766
 tools:
   pip:
     - name: black
@@ -372,9 +372,6 @@ libraries:
     python:
       metadata_name_override: apigeeconnect
       default_version: v1
-  - name: google-cloud-apigee-registry
-    version: 0.10.1
-    skip_generate: true
   - name: google-cloud-apihub
     version: 0.7.0
     apis:
@@ -791,6 +788,10 @@ libraries:
       default_version: apiVersion
   - name: google-cloud-compute
     version: 1.50.0
+    preview:
+      version: 1.51.0-preview.1
+      apis:
+        - path: google/cloud/compute/v1
     apis:
       - path: google/cloud/compute/v1
     python:

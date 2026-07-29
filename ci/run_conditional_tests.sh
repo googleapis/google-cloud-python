@@ -117,6 +117,7 @@ set -e
 
 subdirs=(
     packages
+    preview-packages
 )
 
 for subdir in ${subdirs[@]}; do

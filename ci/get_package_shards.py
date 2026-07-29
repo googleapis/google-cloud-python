@@ -58,9 +58,9 @@ def get_packages():
     """Lists all package directories in the repository.
 
     Returns:
-        list: A sorted list of relative paths to all directories under 'packages/'.
+        list: A sorted list of relative paths to all directories under 'packages/' and 'preview-packages/'.
     """
-    subdirs = ['packages']
+    subdirs = ['packages', 'preview-packages']
     packages = []
     for subdir in subdirs:
         if not os.path.exists(subdir):
