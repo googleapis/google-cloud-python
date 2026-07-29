@@ -27,6 +27,8 @@ class BqComputeOptions:
     enable_multi_query_execution: bool = True
     maximum_bytes_billed: Optional[int] = None
     extra_query_labels: tuple[tuple[str, str], ...] = ()
+    enable_peek_cache: bool = False
+    peek_cache_size: int = 10000
 
     @classmethod
     def from_compute_options(cls, compute_options: ComputeOptions) -> BqComputeOptions:
@@ -34,6 +36,8 @@ class BqComputeOptions:
             enable_multi_query_execution=compute_options.enable_multi_query_execution,
             maximum_bytes_billed=compute_options.maximum_bytes_billed,
             extra_query_labels=tuple(compute_options.extra_query_labels.items()),
+            enable_peek_cache=compute_options.enable_peek_cache,
+            peek_cache_size=compute_options.peek_cache_size,
         )
 
     def push_labels(self, labels: Mapping[str, str]) -> BqComputeOptions:
