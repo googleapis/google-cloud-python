@@ -272,6 +272,11 @@
                 "delete_support_event_subscription"
               ]
             },
+            "ExpungeSupportEventSubscription": {
+              "methods": [
+                "expunge_support_event_subscription"
+              ]
+            },
             "GetSupportEventSubscription": {
               "methods": [
                 "get_support_event_subscription"
@@ -307,6 +312,11 @@
                 "delete_support_event_subscription"
               ]
             },
+            "ExpungeSupportEventSubscription": {
+              "methods": [
+                "expunge_support_event_subscription"
+              ]
+            },
             "GetSupportEventSubscription": {
               "methods": [
                 "get_support_event_subscription"
@@ -340,6 +350,11 @@
             "DeleteSupportEventSubscription": {
               "methods": [
                 "delete_support_event_subscription"
+              ]
+            },
+            "ExpungeSupportEventSubscription": {
+              "methods": [
+                "expunge_support_event_subscription"
               ]
             },
             "GetSupportEventSubscription": {

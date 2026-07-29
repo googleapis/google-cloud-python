@@ -23,6 +23,75 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.securitycenter_v1.services.security_center",
+    "google.cloud.securitycenter_v1.types.access",
+    "google.cloud.securitycenter_v1.types.agent",
+    "google.cloud.securitycenter_v1.types.agent_anomaly",
+    "google.cloud.securitycenter_v1.types.agent_session",
+    "google.cloud.securitycenter_v1.types.application",
+    "google.cloud.securitycenter_v1.types.asset",
+    "google.cloud.securitycenter_v1.types.attack_exposure",
+    "google.cloud.securitycenter_v1.types.attack_path",
+    "google.cloud.securitycenter_v1.types.backup_disaster_recovery",
+    "google.cloud.securitycenter_v1.types.bigquery_export",
+    "google.cloud.securitycenter_v1.types.chokepoint",
+    "google.cloud.securitycenter_v1.types.cloud_armor",
+    "google.cloud.securitycenter_v1.types.cloud_dlp_data_profile",
+    "google.cloud.securitycenter_v1.types.cloud_dlp_inspection",
+    "google.cloud.securitycenter_v1.types.compliance",
+    "google.cloud.securitycenter_v1.types.connection",
+    "google.cloud.securitycenter_v1.types.contact_details",
+    "google.cloud.securitycenter_v1.types.container",
+    "google.cloud.securitycenter_v1.types.database",
+    "google.cloud.securitycenter_v1.types.effective_event_threat_detection_custom_module",
+    "google.cloud.securitycenter_v1.types.effective_security_health_analytics_custom_module",
+    "google.cloud.securitycenter_v1.types.event_threat_detection_custom_module",
+    "google.cloud.securitycenter_v1.types.event_threat_detection_custom_module_validation_errors",
+    "google.cloud.securitycenter_v1.types.exfiltration",
+    "google.cloud.securitycenter_v1.types.external_exposure",
+    "google.cloud.securitycenter_v1.types.external_system",
+    "google.cloud.securitycenter_v1.types.file",
+    "google.cloud.securitycenter_v1.types.finding",
+    "google.cloud.securitycenter_v1.types.folder",
+    "google.cloud.securitycenter_v1.types.group_membership",
+    "google.cloud.securitycenter_v1.types.iam_binding",
+    "google.cloud.securitycenter_v1.types.indicator",
+    "google.cloud.securitycenter_v1.types.kernel_rootkit",
+    "google.cloud.securitycenter_v1.types.kubernetes",
+    "google.cloud.securitycenter_v1.types.label",
+    "google.cloud.securitycenter_v1.types.load_balancer",
+    "google.cloud.securitycenter_v1.types.log_entry",
+    "google.cloud.securitycenter_v1.types.mitre_attack",
+    "google.cloud.securitycenter_v1.types.mute_config",
+    "google.cloud.securitycenter_v1.types.notebook",
+    "google.cloud.securitycenter_v1.types.notification_config",
+    "google.cloud.securitycenter_v1.types.notification_message",
+    "google.cloud.securitycenter_v1.types.org_policy",
+    "google.cloud.securitycenter_v1.types.organization_settings",
+    "google.cloud.securitycenter_v1.types.process",
+    "google.cloud.securitycenter_v1.types.resource",
+    "google.cloud.securitycenter_v1.types.resource_value_config",
+    "google.cloud.securitycenter_v1.types.run_asset_discovery_response",
+    "google.cloud.securitycenter_v1.types.security_health_analytics_custom_config",
+    "google.cloud.securitycenter_v1.types.security_health_analytics_custom_module",
+    "google.cloud.securitycenter_v1.types.security_marks",
+    "google.cloud.securitycenter_v1.types.security_posture",
+    "google.cloud.securitycenter_v1.types.securitycenter_service",
+    "google.cloud.securitycenter_v1.types.simulation",
+    "google.cloud.securitycenter_v1.types.source",
+    "google.cloud.securitycenter_v1.types.toxic_combination",
+    "google.cloud.securitycenter_v1.types.valued_resource",
+    "google.cloud.securitycenter_v1.types.vulnerability",
+}
+
+
 from .services.security_center import SecurityCenterAsyncClient, SecurityCenterClient
 from .types.access import Access, Geolocation, ServiceAccountDelegationInfo
 from .types.agent import Agent

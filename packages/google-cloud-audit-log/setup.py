@@ -45,7 +45,6 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
@@ -59,7 +58,7 @@ setuptools.setup(
     install_requires=dependencies,
     license="Apache-2.0",
     packages=find_namespace_packages(exclude=("tests*", "testing*")),
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-audit-log",
     include_package_data=True,
 )

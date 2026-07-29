@@ -23,6 +23,20 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.certificate_manager_v1.services.certificate_manager",
+    "google.cloud.certificate_manager_v1.types.certificate_issuance_config",
+    "google.cloud.certificate_manager_v1.types.certificate_manager",
+    "google.cloud.certificate_manager_v1.types.trust_config",
+}
+
+
 from .services.certificate_manager import (
     CertificateManagerAsyncClient,
     CertificateManagerClient,
