@@ -9591,6 +9591,14 @@ def test_create_occurrence_rest_call_success(request_type):
                 "confidentiality_impact": 1,
                 "integrity_impact": 1,
                 "availability_impact": 1,
+                "attack_requirements": 1,
+                "vulnerable_system_confidentiality_impact": 1,
+                "vulnerable_system_integrity_impact": 1,
+                "vulnerable_system_availability_impact": 1,
+                "subsequent_system_confidentiality_impact": 1,
+                "subsequent_system_integrity_impact": 1,
+                "subsequent_system_availability_impact": 1,
+                "exploit_maturity": 1,
             },
             "package_issue": [
                 {
@@ -9662,6 +9670,7 @@ def test_create_occurrence_rest_call_success(request_type):
                 },
                 "epss": {"percentile": 0.1067, "score": 0.54},
             },
+            "cvss_v4": {},
         },
         "build": {
             "provenance": {
@@ -10329,6 +10338,14 @@ def test_update_occurrence_rest_call_success(request_type):
                 "confidentiality_impact": 1,
                 "integrity_impact": 1,
                 "availability_impact": 1,
+                "attack_requirements": 1,
+                "vulnerable_system_confidentiality_impact": 1,
+                "vulnerable_system_integrity_impact": 1,
+                "vulnerable_system_availability_impact": 1,
+                "subsequent_system_confidentiality_impact": 1,
+                "subsequent_system_integrity_impact": 1,
+                "subsequent_system_availability_impact": 1,
+                "exploit_maturity": 1,
             },
             "package_issue": [
                 {
@@ -10400,6 +10417,7 @@ def test_update_occurrence_rest_call_success(request_type):
                 },
                 "epss": {"percentile": 0.1067, "score": 0.54},
             },
+            "cvss_v4": {},
         },
         "build": {
             "provenance": {
@@ -11474,8 +11492,17 @@ def test_create_note_rest_call_success(request_type):
                 "confidentiality_impact": 1,
                 "integrity_impact": 1,
                 "availability_impact": 1,
+                "attack_requirements": 1,
+                "vulnerable_system_confidentiality_impact": 1,
+                "vulnerable_system_integrity_impact": 1,
+                "vulnerable_system_availability_impact": 1,
+                "subsequent_system_confidentiality_impact": 1,
+                "subsequent_system_integrity_impact": 1,
+                "subsequent_system_availability_impact": 1,
+                "exploit_maturity": 1,
             },
             "advisory_publish_time": {},
+            "cvss_v4": {},
         },
         "build": {"builder_version": "builder_version_value"},
         "image": {
@@ -11993,8 +12020,17 @@ def test_update_note_rest_call_success(request_type):
                 "confidentiality_impact": 1,
                 "integrity_impact": 1,
                 "availability_impact": 1,
+                "attack_requirements": 1,
+                "vulnerable_system_confidentiality_impact": 1,
+                "vulnerable_system_integrity_impact": 1,
+                "vulnerable_system_availability_impact": 1,
+                "subsequent_system_confidentiality_impact": 1,
+                "subsequent_system_integrity_impact": 1,
+                "subsequent_system_availability_impact": 1,
+                "exploit_maturity": 1,
             },
             "advisory_publish_time": {},
+            "cvss_v4": {},
         },
         "build": {"builder_version": "builder_version_value"},
         "image": {
