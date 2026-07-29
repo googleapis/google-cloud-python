@@ -277,6 +277,8 @@ def get(
         headers (Optional[Mapping[str, str]]): Headers for the request.
         return_none_for_not_found_error (Optional[bool]): If True, returns None
             for 404 error instead of throwing an exception.
+        method (str): The HTTP method to use for the request. Defaults to "GET".
+        body (Optional[bytes]): The HTTP request body payload to send. Defaults to None.
         timeout (int): How long to wait, in seconds for the metadata server to respond.
 
     Returns:
@@ -499,26 +501,24 @@ def get_service_account_token(request, service_account="default", scopes=None):
             scopes = ",".join(scopes)
         params["scopes"] = scopes
 
+    headers = {metrics.API_CLIENT_HEADER: metrics.token_request_access_token_mds()}
+
+    # Default to standard GET. We conditionally upgrade to POST (bound token)
+    # if certificate is found and conditions for bound token are met.
     method = "GET"
     body = None
 
     cert, cert_bytes = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
-    if cert:
-        if _agent_identity_utils.should_request_bound_token(cert):
-            method = "POST"
-            body = json.dumps({"certificate_chain": cert_bytes.decode("utf-8")}).encode(
-                "utf-8"
-            )
-
-    metrics_header = {
-        metrics.API_CLIENT_HEADER: metrics.token_request_access_token_mds()
-    }
-    if method == "POST":
-        metrics_header["Content-Type"] = "application/json"
+    if cert and _agent_identity_utils.should_request_bound_token(cert):
+        method = "POST"
+        body = json.dumps({"certificate_chain": cert_bytes.decode("utf-8")}).encode(
+            "utf-8"
+        )
+        headers["Content-Type"] = "application/json"
 
     path = "instance/service-accounts/{0}/token".format(service_account)
     token_json = get(
-        request, path, params=params, headers=metrics_header, method=method, body=body
+        request, path, params=params, headers=headers, method=method, body=body
     )
     token_expiry = _helpers.utcnow() + datetime.timedelta(
         seconds=token_json["expires_in"]
