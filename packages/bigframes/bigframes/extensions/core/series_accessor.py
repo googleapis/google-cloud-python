@@ -1225,5 +1225,5 @@ class AeadSeriesAccessor(abstract_series_accessor.AbstractBigQuerySeriesAccessor
         return self._to_series(cast(series.Series, result))
 
 
-class AiSeriesAccessor(series_tvf_mixins.AITVFMixin[T, S]):
+class AiSeriesAccessor(series_mixins.AIMixin[T, S]):
     """Series accessor for BigQuery ai functions."""
