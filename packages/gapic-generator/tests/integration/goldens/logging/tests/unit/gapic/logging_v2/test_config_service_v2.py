@@ -114,6 +114,7 @@ def set_event_loop():
 
 def test__read_environment_variables():
     assert ConfigServiceV2Client._read_environment_variables() == (False, "auto", None)
+
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         assert ConfigServiceV2Client._read_environment_variables() == (True, "auto", None)
 
