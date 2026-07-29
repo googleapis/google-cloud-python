@@ -26,9 +26,8 @@ def _ensure_init_py(directory: pathlib.Path, limit_dir: pathlib.Path):
         init_file = curr / "__init__.py"
         if not init_file.exists():
             print(f"  Creating {init_file}")
-            content = constants.TEMPLATES["license"].render()
             with open(init_file, "w", encoding="utf-8") as f:
-                f.write(content)
+                f.write(template_renderer.render_license())
         curr = curr.parent
 
 
@@ -47,14 +46,27 @@ def _run_ruff():
         constants.TEST_OUTPUT_DIR,
         constants.CODE_ROOT / "extensions",
     ]
+    ruff_common_args = [
+        "--target-version=py310",
+        "--line-length=88",
+    ]
 
+    ruff_check_args = [
+        "check",
+        "--select",
+        "I,F",
+        "--fix",
+    ] + ruff_common_args
     subprocess.run(
-        [sys.executable, "-m", "ruff"] + constants.RUFF_CHECK_ARGS + targets,
+        [sys.executable, "-m", "ruff"] + ruff_check_args + targets,
         check=True,
     )
 
+    ruff_format_args = [
+        "format",
+    ] + ruff_common_args
     subprocess.run(
-        [sys.executable, "-m", "ruff"] + constants.RUFF_FORMAT_ARGS + targets,
+        [sys.executable, "-m", "ruff"] + ruff_format_args + targets,
         check=True,
     )
 

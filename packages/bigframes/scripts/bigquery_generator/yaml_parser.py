@@ -14,12 +14,11 @@
 
 
 import pathlib
-import re
 from typing import Any
 
 import yaml
 
-from . import constants, data_models
+from . import data_models
 
 
 def _build_func_arg_ir(arg_data: Any) -> data_models.BQFuncArg:
@@ -56,8 +55,7 @@ def parse_yaml(yaml_file: pathlib.Path) -> data_models.BQModule:
     functions = []
     if isinstance(data, dict) and "scalar_functions" in data:
         functions = [
-            _build_func_ir(func_data)
-            for func_data in data["scalar_functions"]
+            _build_func_ir(func_data) for func_data in data["scalar_functions"]
         ]
 
     return data_models.BQModule(

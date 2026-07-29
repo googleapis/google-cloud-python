@@ -17,7 +17,31 @@
 Renders jinja template with module data parsed from yaml.
 """
 
+import jinja2
+
 from . import constants, data_models
+
+
+def _load_templates() -> dict[str, jinja2.Template]:
+    env = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(constants.SCRIPTS_DIRECTORY / "templates"),
+        trim_blocks=True,
+        lstrip_blocks=True,
+    )
+    return {
+        "operation": env.get_template("operation.py.j2"),
+        "test_operation": env.get_template("test_operation.py.j2"),
+        "license": env.get_template("license.py.j2"),
+        "signature_def": env.get_template("signature_def.py.j2"),
+        "core_series_accessor": env.get_template("core_series_accessor.py.j2"),
+        "bigframes_series_accessor": env.get_template(
+            "bigframes_series_accessor.py.j2"
+        ),
+        "pandas_series_accessor": env.get_template("pandas_series_accessor.py.j2"),
+    }
+
+
+TEMPLATES: dict[str, jinja2.Template] = _load_templates()
 
 
 def _get_concrete_type_expr(yaml_type: str) -> str:
@@ -89,7 +113,7 @@ def render_signature_def(
 
     max_args = max(len(impl.args) for impl in bq_func.impls)
 
-    rendered = constants.TEMPLATES["signature_def"].render(
+    rendered = TEMPLATES["signature_def"].render(
         func_name=sig_func_name,
         max_args=max_args,
         impls=[impl.to_dict() for impl in bq_func.impls],
@@ -183,6 +207,10 @@ def _to_bigframes_func(bq_func: data_models.BQFunc) -> data_models.BigFramesFunc
     )
 
 
+def render_license() -> str:
+    return TEMPLATES["license"].render()
+
+
 def render_operation(
     bq_module: data_models.BQModule,
 ) -> str:
@@ -197,7 +225,7 @@ def render_operation(
         ops.append(_to_bigframes_op(bq_func))
         functions.append(_to_bigframes_func(bq_func))
 
-    return constants.TEMPLATES["operation"].render(
+    return TEMPLATES["operation"].render(
         yaml_path=bq_module.yaml_file.relative_to(constants.PACKAGE_ROOT),
         script_path=constants.SCRIPT_PATH_RELATIVE,
         ops=ops,
@@ -217,7 +245,7 @@ def render_tests(bq_module: data_models.BQModule) -> str:
     for bq_func in bq_module.functions:
         functions.append(_to_bigframes_func(bq_func))
 
-    return constants.TEMPLATES["test_operation"].render(
+    return TEMPLATES["test_operation"].render(
         yaml_path=bq_module.yaml_file.relative_to(constants.PACKAGE_ROOT),
         script_path=constants.SCRIPT_PATH_RELATIVE,
         import_path=import_path,
@@ -285,16 +313,16 @@ def render_accessor(bq_modules: list[data_models.BQModule]) -> tuple[str, str, s
             )
             accessor_lookup_table[bq_module.namespace].functions.append(bf_func)
 
-    core_content = constants.TEMPLATES["core_series_accessor"].render(
+    core_content = TEMPLATES["core_series_accessor"].render(
         script_path=constants.SCRIPT_PATH_RELATIVE,
         namespaces=accessors,
     )
 
-    pandas_content = constants.TEMPLATES["pandas_series_accessor"].render(
+    pandas_content = TEMPLATES["pandas_series_accessor"].render(
         script_path=constants.SCRIPT_PATH_RELATIVE, namespaces=accessors
     )
 
-    bigframes_content = constants.TEMPLATES["bigframes_series_accessor"].render(
+    bigframes_content = TEMPLATES["bigframes_series_accessor"].render(
         script_path=constants.SCRIPT_PATH_RELATIVE, namespaces=accessors
     )
 
