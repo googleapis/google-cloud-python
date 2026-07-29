@@ -31,7 +31,7 @@ from typing import (
 
 from bigframes import series, session
 from bigframes.core import col, sentinels
-from bigframes.extensions.core import abstract_series_accessor, series_tvf_mixins
+from bigframes.extensions.core import abstract_series_accessor, series_mixins
 
 T = TypeVar("T")
 S = TypeVar("S")
