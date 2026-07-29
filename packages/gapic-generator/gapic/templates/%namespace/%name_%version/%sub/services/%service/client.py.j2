@@ -313,9 +313,9 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
         elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT # type: ignore
         else:
-            api_endpoint = cls.DEFAULT_ENDPOINT
+            api_endpoint = cls.DEFAULT_ENDPOINT # type: ignore
 
         return api_endpoint, client_cert_source
 
