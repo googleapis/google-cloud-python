@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
         "UpdateSupportEventSubscriptionRequest",
         "DeleteSupportEventSubscriptionRequest",
         "UndeleteSupportEventSubscriptionRequest",
+        "ExpungeSupportEventSubscriptionRequest",
     },
 )
 
@@ -213,6 +214,22 @@ class UndeleteSupportEventSubscriptionRequest(proto.Message):
         name (str):
             Required. The name of the support event subscription to
             undelete. Format:
+            organizations/{organization_id}/supportEventSubscriptions/{subscription_id}
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ExpungeSupportEventSubscriptionRequest(proto.Message):
+    r"""Request message for ExpungeSupportEventSubscription.
+
+    Attributes:
+        name (str):
+            Required. The name of the support event subscription to
+            expunge. Format:
             organizations/{organization_id}/supportEventSubscriptions/{subscription_id}
     """
 
