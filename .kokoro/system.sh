@@ -280,7 +280,11 @@ done
 TRIGGER_ADHOC="false"
 if [[ -n "${KOKORO_GITHUB_PULL_REQUEST_NUMBER}" ]]; then
     echo "Checking for adhoc test label on PR #${KOKORO_GITHUB_PULL_REQUEST_NUMBER}..."
-    LABELS_JSON=$(curl -s -H "User-Agent: Kokoro" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels")
+    headers=(-H "User-Agent: Kokoro")
+    if [[ -n "${GITHUB_TOKEN:-${GH_TOKEN}}" ]]; then
+        headers+=(-H "Authorization: token ${GITHUB_TOKEN:-${GH_TOKEN}}")
+    fi
+    LABELS_JSON=$(curl -s "${headers[@]}" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels")
 
     # For this prototype:
     # we use a small inline Python snippet here because parsing JSON in pure Bash is difficult/error-prone,
@@ -291,8 +295,9 @@ import json
 import sys
 try:
     labels = json.loads(sys.argv[1])
-    if any(l.get('name') == 'test:adhoc' for l in labels):
-        print('true')
+    if isinstance(labels, list):
+        if any(isinstance(l, dict) and l.get('name') == 'test:adhoc' for l in labels):
+            print('true')
 except Exception:
     pass
 " "$LABELS_JSON")
