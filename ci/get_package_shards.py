@@ -170,11 +170,19 @@ def group_packages(packages):
         name = f"Shard {index}"
         num_in_shard = len(shard_packages)
 
+        def format_pkg_name(pkg):
+            clean = pkg.strip('/')
+            if clean.startswith('preview-packages/'):
+                return clean
+            return clean.split('/')[-1]
+
         # Calculate contiguous range description
+        first_pkg = format_pkg_name(shard_packages[0])
+        last_pkg = format_pkg_name(shard_packages[-1])
         if len(shard_packages) == 1:
-            desc = shard_packages[0].strip('/').split('/')[-1]
+            desc = first_pkg
         else:
-            desc = f"{shard_packages[0].strip('/').split('/')[-1]}...{shard_packages[-1].strip('/').split('/')[-1]} ({num_in_shard} packages)"
+            desc = f"{first_pkg}...{last_pkg} ({num_in_shard} packages)"
 
         shards.append({
             "name": name,

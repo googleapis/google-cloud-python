@@ -53,7 +53,9 @@ RETVAL=0
 # Shared test execution logic
 run_test_in_dir() {
     local d=$1
-    echo "running test in ${d}"
+    echo "============================================================"
+    echo "Running tests in ${d}"
+    echo "============================================================"
     pushd ${d} > /dev/null
 
     # Temporarily allow failure.
