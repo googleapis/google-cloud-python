@@ -13,6 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# EXPERIMENTAL: This is a temporary change to trigger Kokoro system tests.
+# Because Kokoro is currently configured to only watch specific package paths (like packages/google-cloud-speech/.*),
+# we must touch a file in one of those paths to wake it up.
+#
+# This file is GAPIC_AUTO, and this specific file is NOT one of the 5 tracked files (setup.py, etc.)
+# in system.sh, so this change will NOT trigger tests for google-cloud-speech itself.
+#
+# If this ad-hoc testing prototype proves successful, we will update the internal Kokoro
+# JobConfigs to watch 'ci/adhoc/.*' instead, eliminating the need for this workaround.
+
 import json
 import logging as std_logging
 import os
@@ -45,9 +55,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.speech_v1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -67,9 +76,8 @@ import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
 from google.cloud.speech_v1.types import cloud_speech
+from google.longrunning import operations_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, SpeechTransport
 from .transports.grpc import SpeechGrpcTransport
