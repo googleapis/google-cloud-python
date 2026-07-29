@@ -75,7 +75,7 @@ from typing import Any
 from . import constants
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class BQFuncArg:
     name: str
     value: str  # The type of the arg
@@ -83,32 +83,20 @@ class BQFuncArg:
     keyword_only: bool
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class BQFuncImpl:
     args: list[BQFuncArg]
     return_type: str
 
     @property
-    def uses_any1(self) -> bool:
+    def requires_generic_types(self) -> bool:
         if "any1" in self.return_type:
             return True
 
         return any("any1" in arg.value for arg in self.args)
 
-    def to_dict(self) -> dict[str, Any]:
-        result = dataclasses.asdict(self)
 
-        result["uses_any1"] = self.uses_any1
-
-        # We cannot use "return" as a field name, but we need to use it
-        # as a key for template rendering
-        result["return"] = self.return_type
-        del result["return_type"]
-
-        return result
-
-
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class BQFunc:
     name: str
     description: str
@@ -120,7 +108,7 @@ class BQFunc:
         return self.name.split(".")[-1]
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class BQModule:
     yaml_file: pathlib.Path
     functions: list[BQFunc]
@@ -141,7 +129,7 @@ class BQModule:
         return "global_namespace" in self.module_path.parts
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class BigFramesOp:
     internal_name: str
     sql_name: str

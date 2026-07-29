@@ -116,7 +116,7 @@ def render_signature_def(
     rendered = TEMPLATES["signature_def"].render(
         func_name=sig_func_name,
         max_args=max_args,
-        impls=[impl.to_dict() for impl in bq_func.impls],
+        impls=bq_func.impls,
         sql_name=bq_func.name,
         dtype_map=constants.DTYPE_MAP,
     )
