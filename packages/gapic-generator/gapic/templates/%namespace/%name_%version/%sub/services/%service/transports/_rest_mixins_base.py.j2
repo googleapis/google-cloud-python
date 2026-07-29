@@ -20,7 +20,6 @@
 
     {% for name, sig in api.mixin_api_signatures.items() %}
     class _Base{{ name }}:
-        """Base class for {{ name }} REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
