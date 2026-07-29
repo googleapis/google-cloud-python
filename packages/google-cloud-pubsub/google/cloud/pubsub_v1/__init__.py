@@ -31,3 +31,4 @@ class SchemaServiceClient(schema_service.client.SchemaServiceClient):
 
 
 __all__ = ("types", "PublisherClient", "SubscriberClient", "SchemaServiceClient")
+# demo
