@@ -276,6 +276,51 @@ for path in `find 'packages' \
   fi
 done
 
+# --- Ad-hoc Testing Integration ---
+TRIGGER_ADHOC="false"
+if [[ -n "${KOKORO_GITHUB_PULL_REQUEST_NUMBER}" ]]; then
+    echo "Checking for adhoc test label on PR #${KOKORO_GITHUB_PULL_REQUEST_NUMBER}..."
+    LABELS_JSON=$(curl -s -H "User-Agent: Kokoro" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels")
+
+    IS_ADHOC=$(python3 -c "
+import json
+import sys
+try:
+    labels = json.loads(sys.argv[1])
+    if any(l.get('name') == 'test:adhoc' for l in labels):
+        print('true')
+except Exception:
+    pass
+" "$LABELS_JSON")
+
+    if [[ "$IS_ADHOC" == "true" ]]; then
+        TRIGGER_ADHOC="true"
+        echo "Adhoc test label 'test:adhoc' found!"
+    fi
+fi
+
+if [[ "$TRIGGER_ADHOC" == "true" ]]; then
+    echo "Running ad-hoc package selection..."
+    source ci/adhoc/adhoc_test_runner.sh
+
+    declare -A unique_packages
+    for pkg in "${PACKAGES_TO_TEST[@]}"; do
+        unique_packages["$pkg"]=1
+    done
+
+    for pkg in $ADHOC_PACKAGES; do
+        unique_packages["$pkg"]=1
+    done
+
+    PACKAGES_TO_TEST=()
+    for pkg in "${!unique_packages[@]}"; do
+        PACKAGES_TO_TEST+=("$pkg")
+    done
+
+    echo "Combined packages to test: ${PACKAGES_TO_TEST[*]}"
+fi
+# --- End Ad-hoc Testing Integration ---
+
 # Parallel Execution Logic
 MAX_JOBS=${MAX_JOBS:-4}
 
