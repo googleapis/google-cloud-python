@@ -17,8 +17,7 @@
 import weakref
 
 from google.cloud import bigquery
-from google.cloud.bigquery.dbapi import cursor
-from google.cloud.bigquery.dbapi import _helpers
+from google.cloud.bigquery.dbapi import _helpers, cursor
 
 
 @_helpers.raise_on_closed("Operating on a closed connection.")
@@ -84,7 +83,17 @@ class Connection(object):
 
         if self._owns_bqstorage_client:
             # There is no close() on the BQ Storage client itself.
-            self._bqstorage_client._transport.close()
+            transport = self._bqstorage_client.transport
+            transport.close()
+
+            # Ensure the underlying gRPC channel is closed explicitly.
+            # This is important because the transport might be wrapped by interceptors
+            # which may not propagate the close call to the underlying channel immediately,
+            # or Garbage Collection delays might keep sockets open longer than expected,
+            # leading to intermittent socket leaks in tests.
+            channel = getattr(transport, "_grpc_channel", None)
+            if channel is not None:
+                channel.close()
 
         for cursor_ in self._cursors_created:
             if not cursor_._closed:

@@ -923,8 +923,12 @@ class TestMutationsBatcherAsync:
                 for m in mutations:
                     await instance.append(m)
                 assert instance._entries_processed_since_last_raise == 0
-                # let flush trigger due to timer
-                await CrossSync.sleep(0.1)
+                # Poll in short intervals to wait for the background timer flush to finish,
+                # avoiding timing/scheduling flakiness on slower or heavily loaded environments.
+                for _ in range(50):
+                    if instance._entries_processed_since_last_raise == num_mutations:
+                        break
+                    await CrossSync.sleep(0.05)
                 assert instance._entries_processed_since_last_raise == num_mutations
 
     @CrossSync.pytest

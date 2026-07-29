@@ -17,7 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
+
+from google.ads.admanager_v1.types import content_bundle_enums
 
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
@@ -46,6 +49,14 @@ class ContentBundle(proto.Message):
             [ContentBundle][google.ads.admanager.v1.ContentBundle]. This
             attribute is required and has a maximum length of 255
             characters.
+        status (google.ads.admanager_v1.types.ContentBundleStatusEnum.ContentBundleStatus):
+            Output only. The ContentBundleStatus of the
+            [ContentBundle][google.ads.admanager.v1.ContentBundle]. This
+            attribute is read-only and defaults to
+            [ContentBundleStatus.INACTIVE][].
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the ``ContentBundle`` was last
+            modified.
     """
 
     name: str = proto.Field(
@@ -55,6 +66,18 @@ class ContentBundle(proto.Message):
     display_name: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    status: content_bundle_enums.ContentBundleStatusEnum.ContentBundleStatus = (
+        proto.Field(
+            proto.ENUM,
+            number=4,
+            enum=content_bundle_enums.ContentBundleStatusEnum.ContentBundleStatus,
+        )
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
 
 
