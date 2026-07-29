@@ -95,6 +95,7 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -115,6 +116,7 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -135,6 +137,7 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -155,6 +158,7 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{

@@ -349,6 +349,13 @@ class ReadRowsIterable(object):
     def to_arrow(self):
         """Create a :class:`pyarrow.Table` of all rows in the stream.
 
+        Note: This is the :class:`ReadRowsIterable` version of ``to_arrow``. It is
+        typically invoked by calling :meth:`ReadRowsStream.to_arrow`, which
+        delegates here after handling optional session context. The key difference
+        is that :meth:`ReadRowsStream.to_arrow` accepts a ``read_session`` argument
+        to provide schema hints for empty streams, whereas this method relies on
+        the parser initialized during :class:`ReadRowsIterable` construction.
+
         This method requires the pyarrow library and a stream using the Arrow
         format.
 
@@ -365,6 +372,9 @@ class ReadRowsIterable(object):
 
         # No data, return an empty Table.
         if self._stream_parser is None:
+            # Note: This returns a table with an empty schema (no columns).
+            # Downstream consumers (like Vertex Ray) might fail if they expect specific columns.
+            # To guarantee the correct schema, provide 'read_session' to `ReadRowsStream.to_arrow()`.
             return pyarrow.Table.from_batches([], schema=pyarrow.schema([]))
 
         self._stream_parser._parse_arrow_schema()

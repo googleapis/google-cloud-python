@@ -109,6 +109,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -129,6 +130,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -149,6 +151,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -169,6 +172,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -189,6 +193,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -209,6 +214,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -229,6 +235,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -249,6 +256,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -268,6 +276,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -287,6 +296,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -306,6 +316,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -325,6 +336,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -344,6 +356,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -363,6 +376,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -382,6 +396,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -401,6 +416,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -420,6 +436,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -439,6 +456,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -458,6 +476,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -477,6 +496,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -496,6 +516,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -515,6 +536,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -534,6 +556,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -553,6 +576,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -572,6 +596,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -591,6 +616,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -610,6 +636,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -629,6 +656,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -648,6 +676,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -667,6 +696,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -686,6 +716,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -705,6 +736,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -738,6 +770,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -758,6 +791,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -778,6 +812,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -798,6 +833,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -818,6 +854,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [{
@@ -843,7 +880,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return http_options
 
     class _BaseGetLocation:
-        """Base class for GetLocation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -857,7 +893,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return http_options
 
     class _BaseListLocations:
-        """Base class for ListLocations REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -871,7 +906,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return http_options
 
     class _BaseGetIamPolicy:
-        """Base class for GetIamPolicy REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -893,7 +927,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return http_options
 
     class _BaseSetIamPolicy:
-        """Base class for SetIamPolicy REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -918,7 +951,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return http_options
 
     class _BaseTestIamPermissions:
-        """Base class for TestIamPermissions REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -943,7 +975,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return http_options
 
     class _BaseCancelOperation:
-        """Base class for CancelOperation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -958,7 +989,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return http_options
 
     class _BaseDeleteOperation:
-        """Base class for DeleteOperation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -972,7 +1002,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return http_options
 
     class _BaseGetOperation:
-        """Base class for GetOperation REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -986,7 +1015,6 @@ class _BaseEventarcRestTransport(EventarcTransport):
             return http_options
 
     class _BaseListOperations:
-        """Base class for ListOperations REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 

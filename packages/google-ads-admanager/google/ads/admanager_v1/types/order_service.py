@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import order_messages
@@ -24,11 +25,518 @@ from google.ads.admanager_v1.types import order_messages
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
     manifest={
+        "BatchApproveAndOverbookOrdersRequest",
+        "BatchApproveAndOverbookOrdersResponse",
+        "BatchApproveOrdersRequest",
+        "BatchApproveOrdersResponse",
+        "BatchSubmitOrdersForApprovalRequest",
+        "BatchSubmitOrdersForApprovalResponse",
+        "BatchSubmitOrdersForApprovalAndOverbookRequest",
+        "BatchSubmitOrdersForApprovalAndOverbookResponse",
+        "BatchPauseOrdersRequest",
+        "BatchPauseOrdersResponse",
+        "BatchResumeOrdersRequest",
+        "BatchResumeOrdersResponse",
+        "BatchResumeAndOverbookOrdersRequest",
+        "BatchResumeAndOverbookOrdersResponse",
+        "BatchApproveOrdersWithoutReservationRequest",
+        "BatchApproveOrdersWithoutReservationResponse",
+        "BatchArchiveOrdersRequest",
+        "BatchArchiveOrdersResponse",
+        "BatchUnarchiveOrdersRequest",
+        "BatchUnarchiveOrdersResponse",
+        "BatchDeleteOrdersRequest",
+        "BatchDeleteOrdersResponse",
+        "BatchDisapproveOrdersRequest",
+        "BatchDisapproveOrdersResponse",
+        "BatchDisapproveOrdersWithoutReservationChangesRequest",
+        "BatchDisapproveOrdersWithoutReservationChangesResponse",
+        "BatchRetractOrdersRequest",
+        "BatchRetractOrdersResponse",
+        "BatchRetractOrdersWithoutReservationChangesRequest",
+        "BatchRetractOrdersWithoutReservationChangesResponse",
+        "BatchSubmitOrdersForApprovalWithoutReservationChangesRequest",
+        "BatchSubmitOrdersForApprovalWithoutReservationChangesResponse",
         "GetOrderRequest",
         "ListOrdersRequest",
         "ListOrdersResponse",
+        "CreateOrderRequest",
+        "UpdateOrderRequest",
+        "BatchCreateOrdersRequest",
+        "BatchCreateOrdersResponse",
+        "BatchUpdateOrdersRequest",
+        "BatchUpdateOrdersResponse",
     },
 )
+
+
+class BatchApproveAndOverbookOrdersRequest(proto.Message):
+    r"""Request message for ``BatchApproveAndOverbookOrders`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to approve and
+            overbook. Format:
+            ``networks/{network_code}/orders/{order_id}``
+        skip_inventory_check (bool):
+            Optional. Indicates whether the inventory
+            check should be skipped when performing this
+            action.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    skip_inventory_check: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class BatchApproveAndOverbookOrdersResponse(proto.Message):
+    r"""Response object for ``BatchApproveAndOverbookOrders`` method."""
+
+
+class BatchApproveOrdersRequest(proto.Message):
+    r"""Request message for ``BatchApproveOrders`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to approve.
+            Format: ``networks/{network_code}/orders/{order_id}``
+        skip_inventory_check (bool):
+            Optional. Indicates whether the inventory
+            check should be skipped when performing this
+            action.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    skip_inventory_check: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class BatchApproveOrdersResponse(proto.Message):
+    r"""Response object for ``BatchApproveOrders`` method."""
+
+
+class BatchSubmitOrdersForApprovalRequest(proto.Message):
+    r"""Request message for ``BatchSubmitOrdersForApproval`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to submit for
+            approval. Format:
+            ``networks/{network_code}/orders/{order_id}``
+        skip_inventory_check (bool):
+            Optional. Indicates whether the inventory
+            check should be skipped when performing this
+            action.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    skip_inventory_check: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class BatchSubmitOrdersForApprovalResponse(proto.Message):
+    r"""Response object for ``BatchSubmitOrdersForApproval`` method."""
+
+
+class BatchSubmitOrdersForApprovalAndOverbookRequest(proto.Message):
+    r"""Request message for ``BatchSubmitOrdersForApprovalAndOverbook``
+    method.
+
+    Attributes:
+        parent (str):
+            Required. Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to submit for
+            approval and overbook. Format:
+            ``networks/{network_code}/orders/{order_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchSubmitOrdersForApprovalAndOverbookResponse(proto.Message):
+    r"""Response object for ``BatchSubmitOrdersForApprovalAndOverbook``
+    method.
+
+    """
+
+
+class BatchPauseOrdersRequest(proto.Message):
+    r"""Request message for ``BatchPauseOrders`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to pause. Format:
+            ``networks/{network_code}/orders/{order_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchPauseOrdersResponse(proto.Message):
+    r"""Response object for ``BatchPauseOrders`` method."""
+
+
+class BatchResumeOrdersRequest(proto.Message):
+    r"""Request message for ``BatchResumeOrders`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to resume.
+            Format: ``networks/{network_code}/orders/{order_id}``
+        skip_inventory_check (bool):
+            Optional. Indicates whether the inventory
+            check should be skipped when performing this
+            action.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    skip_inventory_check: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class BatchResumeOrdersResponse(proto.Message):
+    r"""Response object for ``BatchResumeOrders`` method."""
+
+
+class BatchResumeAndOverbookOrdersRequest(proto.Message):
+    r"""Request message for ``BatchResumeAndOverbookOrders`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to resume and
+            overbook. Format:
+            ``networks/{network_code}/orders/{order_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchResumeAndOverbookOrdersResponse(proto.Message):
+    r"""Response object for ``BatchResumeAndOverbookOrders`` method."""
+
+
+class BatchApproveOrdersWithoutReservationRequest(proto.Message):
+    r"""Request message for ``BatchApproveOrdersWithoutReservation`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to approve.
+            Format: ``networks/{network_code}/orders/{order_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchApproveOrdersWithoutReservationResponse(proto.Message):
+    r"""Response object for ``BatchApproveOrdersWithoutReservation`` method."""
+
+
+class BatchArchiveOrdersRequest(proto.Message):
+    r"""Request message for ``BatchArchiveOrders`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to archive.
+            Format: ``networks/{network_code}/orders/{order_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchArchiveOrdersResponse(proto.Message):
+    r"""Response object for ``BatchArchiveOrders`` method."""
+
+
+class BatchUnarchiveOrdersRequest(proto.Message):
+    r"""Request message for ``BatchUnarchiveOrders`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to extract.
+            Format: ``networks/{network_code}/orders/{order_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchUnarchiveOrdersResponse(proto.Message):
+    r"""Response object for ``BatchUnarchiveOrders`` method."""
+
+
+class BatchDeleteOrdersRequest(proto.Message):
+    r"""Request message for ``BatchDeleteOrders`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to delete.
+            Format: ``networks/{network_code}/orders/{order_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchDeleteOrdersResponse(proto.Message):
+    r"""Response object for ``BatchDeleteOrders`` method."""
+
+
+class BatchDisapproveOrdersRequest(proto.Message):
+    r"""Request message for ``BatchDisapproveOrders`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to disapprove.
+            Format: ``networks/{network_code}/orders/{order_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchDisapproveOrdersResponse(proto.Message):
+    r"""Response object for ``BatchDisapproveOrders`` method."""
+
+
+class BatchDisapproveOrdersWithoutReservationChangesRequest(proto.Message):
+    r"""Request message for
+    ``BatchDisapproveOrdersWithoutReservationChanges`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to disapprove
+            without reservation changes. Format:
+            ``networks/{network_code}/orders/{order_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchDisapproveOrdersWithoutReservationChangesResponse(proto.Message):
+    r"""Response object for
+    ``BatchDisapproveOrdersWithoutReservationChanges`` method.
+
+    """
+
+
+class BatchRetractOrdersRequest(proto.Message):
+    r"""Request message for ``BatchRetractOrders`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to retract.
+            Format: ``networks/{network_code}/orders/{order_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchRetractOrdersResponse(proto.Message):
+    r"""Response object for ``BatchRetractOrders`` method."""
+
+
+class BatchRetractOrdersWithoutReservationChangesRequest(proto.Message):
+    r"""Request message for ``BatchRetractOrdersWithoutReservationChanges``
+    method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to retract.
+            Format: ``networks/{network_code}/orders/{order_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchRetractOrdersWithoutReservationChangesResponse(proto.Message):
+    r"""Response object for ``BatchRetractOrdersWithoutReservationChanges``
+    method.
+
+    """
+
+
+class BatchSubmitOrdersForApprovalWithoutReservationChangesRequest(proto.Message):
+    r"""Request message for
+    ``BatchSubmitOrdersForApprovalWithoutReservationChanges`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of Orders.
+            Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the orders to submit for
+            approval. Format:
+            ``networks/{network_code}/orders/{order_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchSubmitOrdersForApprovalWithoutReservationChangesResponse(proto.Message):
+    r"""Response object for
+    ``BatchSubmitOrdersForApprovalWithoutReservationChanges`` method.
+
+    """
 
 
 class GetOrderRequest(proto.Message):
@@ -81,6 +589,7 @@ class ListOrdersRequest(proto.Message):
               <li><code>displayName</code></li>
               <li><code>endTime</code></li>
               <li><code>externalOrderId</code></li>
+              <li><code>impressionsDelivered</code></li>
               <li><code>name</code></li>
               <li><code>orderId</code></li>
               <li><code>poNumber</code></li>
@@ -90,7 +599,9 @@ class ListOrdersRequest(proto.Message):
               <li><code>secondaryTraffickers</code></li>
               <li><code>startTime</code></li>
               <li><code>status</code></li>
-              <li><code>trafficker</code></li>
+              <li><code>totalClicksDelivered</code></li>
+            <li><code>totalViewableImpressionsDelivered</code></li>
+            <li><code>trafficker</code></li>
               <li><code>updateTime</code></li>
             </ul>
         order_by (str):
@@ -170,6 +681,131 @@ class ListOrdersResponse(proto.Message):
     total_size: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+
+
+class CreateOrderRequest(proto.Message):
+    r"""Request object for ``CreateOrder`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where this Order will be
+            created. Format: ``networks/{network_code}``
+        order (google.ads.admanager_v1.types.Order):
+            Required. The ``Order`` to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    order: order_messages.Order = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=order_messages.Order,
+    )
+
+
+class UpdateOrderRequest(proto.Message):
+    r"""Request object for ``UpdateOrder`` method.
+
+    Attributes:
+        order (google.ads.admanager_v1.types.Order):
+            Required. The ``Order`` to update.
+
+            The Order's name is used to identify the order to update.
+            Format: ``networks/{network_code}/orders/{order_id}``
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The list of fields to update.
+    """
+
+    order: order_messages.Order = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=order_messages.Order,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class BatchCreateOrdersRequest(proto.Message):
+    r"""Request object for ``BatchCreateOrders`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``Orders`` will be
+            created. Format: ``networks/{network_code}`` The parent
+            field in the CreateOrderRequest must match this field.
+        requests (MutableSequence[google.ads.admanager_v1.types.CreateOrderRequest]):
+            Required. The ``Order`` objects to create. A maximum of 100
+            objects can be created in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["CreateOrderRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="CreateOrderRequest",
+    )
+
+
+class BatchCreateOrdersResponse(proto.Message):
+    r"""Response object for ``BatchCreateOrders`` method.
+
+    Attributes:
+        orders (MutableSequence[google.ads.admanager_v1.types.Order]):
+            The ``Order`` objects created.
+    """
+
+    orders: MutableSequence[order_messages.Order] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=order_messages.Order,
+    )
+
+
+class BatchUpdateOrdersRequest(proto.Message):
+    r"""Request object for ``BatchUpdateOrders`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``Orders`` will be
+            updated. Format: ``networks/{network_code}`` The parent
+            field in the UpdateOrderRequest must match this field.
+        requests (MutableSequence[google.ads.admanager_v1.types.UpdateOrderRequest]):
+            Required. The ``Order`` objects to update. A maximum of 100
+            objects can be updated in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["UpdateOrderRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="UpdateOrderRequest",
+    )
+
+
+class BatchUpdateOrdersResponse(proto.Message):
+    r"""Response object for ``BatchUpdateOrders`` method.
+
+    Attributes:
+        orders (MutableSequence[google.ads.admanager_v1.types.Order]):
+            The ``Order`` objects updated.
+    """
+
+    orders: MutableSequence[order_messages.Order] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=order_messages.Order,
     )
 
 

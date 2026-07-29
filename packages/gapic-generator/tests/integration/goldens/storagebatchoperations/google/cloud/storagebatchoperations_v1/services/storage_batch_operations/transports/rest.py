@@ -691,6 +691,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseCancelJob._get_http_options()
+
             request, metadata = self._interceptor.pre_cancel_job(request, metadata)
             transcoded_request, body, query_params = rest_helpers.transcode_request(
                 http_options,
@@ -819,6 +820,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseCreateJob._get_http_options()
+
             request, metadata = self._interceptor.pre_create_job(request, metadata)
             transcoded_request, body, query_params = rest_helpers.transcode_request(
                 http_options,
@@ -937,6 +939,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseDeleteJob._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_job(request, metadata)
             transcoded_request, body, query_params = rest_helpers.transcode_request(
                 http_options,
@@ -1034,6 +1037,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseGetBucketOperation._get_http_options()
+
             request, metadata = self._interceptor.pre_get_bucket_operation(request, metadata)
             transcoded_request, body, query_params = rest_helpers.transcode_request(
                 http_options,
@@ -1160,6 +1164,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseGetJob._get_http_options()
+
             request, metadata = self._interceptor.pre_get_job(request, metadata)
             transcoded_request, body, query_params = rest_helpers.transcode_request(
                 http_options,
@@ -1287,6 +1292,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseListBucketOperations._get_http_options()
+
             request, metadata = self._interceptor.pre_list_bucket_operations(request, metadata)
             transcoded_request, body, query_params = rest_helpers.transcode_request(
                 http_options,
@@ -1411,6 +1417,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseListJobs._get_http_options()
+
             request, metadata = self._interceptor.pre_list_jobs(request, metadata)
             transcoded_request, body, query_params = rest_helpers.transcode_request(
                 http_options,
@@ -1595,6 +1602,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseGetLocation._get_http_options()
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request, body, query_params = rest_helpers.transcode_request(
                 http_options,
@@ -1718,6 +1726,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseListLocations._get_http_options()
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request, body, query_params = rest_helpers.transcode_request(
                 http_options,
@@ -1839,6 +1848,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseCancelOperation._get_http_options()
+
             request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
             transcoded_request, body, query_params = rest_helpers.transcode_request(
                 http_options,
@@ -1936,6 +1946,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseDeleteOperation._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_operation(request, metadata)
             transcoded_request, body, query_params = rest_helpers.transcode_request(
                 http_options,
@@ -2036,6 +2047,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseGetOperation._get_http_options()
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request, body, query_params = rest_helpers.transcode_request(
                 http_options,
@@ -2159,6 +2171,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             """
 
             http_options = _BaseStorageBatchOperationsRestTransport._BaseListOperations._get_http_options()
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request, body, query_params = rest_helpers.transcode_request(
                 http_options,

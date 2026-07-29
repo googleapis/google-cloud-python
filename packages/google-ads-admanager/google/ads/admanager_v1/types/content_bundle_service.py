@@ -27,6 +27,10 @@ __protobuf__ = proto.module(
         "GetContentBundleRequest",
         "ListContentBundlesRequest",
         "ListContentBundlesResponse",
+        "BatchActivateContentBundlesRequest",
+        "BatchActivateContentBundlesResponse",
+        "BatchDeactivateContentBundlesRequest",
+        "BatchDeactivateContentBundlesResponse",
     },
 )
 
@@ -76,6 +80,8 @@ class ListContentBundlesRequest(proto.Message):
             <ul style="list-style-type:none">
               <li><code>displayName</code></li>
               <li><code>name</code></li>
+              <li><code>status</code></li>
+              <li><code>updateTime</code></li>
             </ul>
         order_by (str):
             Optional. Expression to specify sorting
@@ -157,6 +163,60 @@ class ListContentBundlesResponse(proto.Message):
         proto.INT32,
         number=3,
     )
+
+
+class BatchActivateContentBundlesRequest(proto.Message):
+    r"""Request message for ``BatchActivateContentBundles`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``ContentBundles`` will
+            be activated. Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the ``ContentBundle``\ s to
+            activate. Format:
+            ``networks/{network_code}/contentBundles/{content_bundle_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchActivateContentBundlesResponse(proto.Message):
+    r"""Response object for ``BatchActivateContentBundles`` method."""
+
+
+class BatchDeactivateContentBundlesRequest(proto.Message):
+    r"""Request message for ``BatchDeactivateContentBundles`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``ContentBundles`` will
+            be deactivated. Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the ``ContentBundle``\ s to
+            deactivate. Format:
+            ``networks/{network_code}/contentBundles/{content_bundle_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchDeactivateContentBundlesResponse(proto.Message):
+    r"""Response object for ``BatchDeactivateContentBundles`` method."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
