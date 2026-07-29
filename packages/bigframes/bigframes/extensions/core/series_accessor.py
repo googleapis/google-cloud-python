@@ -31,7 +31,7 @@ from typing import (
 
 from bigframes import series, session
 from bigframes.core import col, sentinels
-from bigframes.extensions.core import abstract_series_accessor, series_tvf_mixins
+from bigframes.extensions.core import abstract_series_accessor, series_mixins
 
 T = TypeVar("T")
 S = TypeVar("S")
@@ -1112,7 +1112,7 @@ class BigQuerySeriesAccessor(
         return self._to_series(cast(series.Series, result))
 
 
-class AiSeriesAccessor(series_tvf_mixins.AITVFMixin[T, S]):
+class AiSeriesAccessor(series_mixins.AIMixin[T, S]):
     """Series accessor for BigQuery ai functions."""
 
 
