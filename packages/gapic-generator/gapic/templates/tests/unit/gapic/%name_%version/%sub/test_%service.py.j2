@@ -1,14 +1,14 @@
+{% extends "_base.py.j2" %}
+{% block content %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
 {% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
-{% extends "_base.py.j2" %}
-
-{% block content %}
+{% set has_auto_populated_fields = api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 {% import "tests/unit/gapic/%name_%version/%sub/test_macros.j2" as test_macros %}
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 import os
 import asyncio
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+{% if has_auto_populated_fields %}
 import re
 {% endif %}
 from unittest import mock
@@ -86,7 +86,7 @@ from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 from google.api_core import gapic_v1
 {% for method in service.methods.values() %}
-{% for ref_type in method.ref_types
+{% for ref_type in method.flat_ref_types
    if not (ref_type.ident.python_import.package == ('google', 'api_core') and ref_type.ident.python_import.module == 'operation') %}
 {{ ref_type.ident.python_import }}
 {% endfor %}
@@ -107,9 +107,21 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+{% if has_auto_populated_fields %}
 _UUID4_RE = re.compile(r"{{ uuid4_re }}")
 {% endif %}
+
+
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -174,13 +186,13 @@ def test__get_default_mtls_endpoint():
 
 def test__read_environment_variables():
     assert {{ service.client_name }}._read_environment_variables() == (False, "auto", None)
-    
+
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         assert {{ service.client_name }}._read_environment_variables() == (True, "auto", None)
-    
+
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         assert {{ service.client_name }}._read_environment_variables() == (False, "auto", None)
-    
+
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
@@ -200,10 +212,10 @@ def test__read_environment_variables():
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         assert {{ service.client_name }}._read_environment_variables() == (False, "never", None)
-    
+
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         assert {{ service.client_name }}._read_environment_variables() == (False, "always", None)
-    
+
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
         assert {{ service.client_name }}._read_environment_variables() == (False, "auto", None)
 
@@ -293,7 +305,7 @@ def test_use_client_cert_effective():
             assert {{ service.client_name }}._use_client_cert_effective() is False
 
     # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also, 
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
     # the GOOGLE_API_CONFIG environment variable is unset.
     if  hasattr(google.auth.transport.mtls, "should_use_client_cert"):
         with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
@@ -303,7 +315,7 @@ def test_use_client_cert_effective():
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
-    
+
     assert {{ service.client_name }}._get_client_cert_source(None, False) is None
     assert {{ service.client_name }}._get_client_cert_source(mock_provided_cert_source, False) is None
     assert {{ service.client_name }}._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
@@ -434,84 +446,6 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
     client._add_cred_info_for_auth_errors(error)
     assert error.details == []
 
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
-def test__setup_request_id():
-    class MockRequest:
-        def __init__(self, **kwargs):
-            for k, v in kwargs.items():
-                setattr(self, k, v)
-        def __contains__(self, key):
-            return hasattr(self, key)
-
-    class MockProtoRequest:
-        def __init__(self, **kwargs):
-            for k, v in kwargs.items():
-                setattr(self, k, v)
-        def HasField(self, key):
-            return hasattr(self, key)
-
-    # Test with proto3 optional field not in request
-    request = MockRequest()
-    {{ service.client_name }}._setup_request_id(request, "request_id", True)
-    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request.request_id)
-
-    # Test with proto3 optional field already in request
-    request = MockRequest(request_id="already_set")
-    {{ service.client_name }}._setup_request_id(request, "request_id", True)
-    assert request.request_id == "already_set"
-
-    # Test with non-proto3 optional field empty
-    request = MockRequest(request_id="")
-    {{ service.client_name }}._setup_request_id(request, "request_id", False)
-    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request.request_id)
-
-    # Test with non-proto3 optional field already set
-    request = MockRequest(request_id="already_set")
-    {{ service.client_name }}._setup_request_id(request, "request_id", False)
-    assert request.request_id == "already_set"
-
-    # Test with proto3 optional field not in request (MockProtoRequest)
-    request = MockProtoRequest()
-    {{ service.client_name }}._setup_request_id(request, "request_id", True)
-    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request.request_id)
-
-    # Test with proto3 optional field already in request (MockProtoRequest)
-    request = MockProtoRequest(request_id="already_set")
-    {{ service.client_name }}._setup_request_id(request, "request_id", True)
-    assert request.request_id == "already_set"
-
-    # Test with ValueError
-    class MockValueErrorRequest:
-        def HasField(self, key):
-            raise ValueError("Mismatched field")
-        def __contains__(self, key):
-            return hasattr(self, key)
-
-    request = MockValueErrorRequest()
-    {{ service.client_name }}._setup_request_id(request, "request_id", True)
-    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request.request_id)
-
-    # Test with dict and proto3 optional field not in request
-    request = {}
-    {{ service.client_name }}._setup_request_id(request, "request_id", True)
-    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request["request_id"])
-
-    # Test with dict and proto3 optional field already in request
-    request = {"request_id": "already_set"}
-    {{ service.client_name }}._setup_request_id(request, "request_id", True)
-    assert request["request_id"] == "already_set"
-
-    # Test with dict and non-proto3 optional field empty
-    request = {"request_id": ""}
-    {{ service.client_name }}._setup_request_id(request, "request_id", False)
-    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request["request_id"])
-
-    # Test with dict and non-proto3 optional field already set
-    request = {"request_id": "already_set"}
-    {{ service.client_name }}._setup_request_id(request, "request_id", False)
-    assert request["request_id"] == "already_set"
-
-{% endif %}
 @pytest.mark.parametrize("client_class,transport_name", [
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, "grpc"),
@@ -867,7 +801,7 @@ def test_{{ service.client_name|snake_case }}_get_mtls_endpoint_and_cert_source(
             )
             assert api_endpoint == mock_api_endpoint
             assert cert_source is None
-   
+
     # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
     test_cases = [
         (
@@ -896,11 +830,12 @@ def test_{{ service.client_name|snake_case }}_get_mtls_endpoint_and_cert_source(
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):
@@ -929,10 +864,10 @@ def test_{{ service.client_name|snake_case }}_get_mtls_endpoint_and_cert_source(
                 },
             },
             mock_client_cert_source,
-        ),   
+        ),
         (
             # With workloads not present in config, mTLS is disabled.
-            {   
+            {
                 "version": 1,
                 "cert_configs": {},
             },
@@ -943,11 +878,12 @@ def test_{{ service.client_name|snake_case }}_get_mtls_endpoint_and_cert_source(
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):
@@ -994,7 +930,7 @@ def test_{{ service.client_name|snake_case }}_get_mtls_endpoint_and_cert_source(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
-        
+
         assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 @pytest.mark.parametrize("client_class", [
@@ -1059,7 +995,7 @@ def test_{{ service.client_name|snake_case }}_client_api_endpoint(client_class):
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
-        
+
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     {% if 'grpc' in opts.transport %}

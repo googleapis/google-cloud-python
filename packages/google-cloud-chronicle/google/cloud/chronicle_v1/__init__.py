@@ -23,6 +23,43 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.chronicle_v1.services.big_query_export_service",
+    "google.cloud.chronicle_v1.services.dashboard_chart_service",
+    "google.cloud.chronicle_v1.services.dashboard_query_service",
+    "google.cloud.chronicle_v1.services.data_access_control_service",
+    "google.cloud.chronicle_v1.services.data_table_service",
+    "google.cloud.chronicle_v1.services.entity_service",
+    "google.cloud.chronicle_v1.services.featured_content_native_dashboard_service",
+    "google.cloud.chronicle_v1.services.findings_refinement_service",
+    "google.cloud.chronicle_v1.services.instance_service",
+    "google.cloud.chronicle_v1.services.native_dashboard_service",
+    "google.cloud.chronicle_v1.services.reference_list_service",
+    "google.cloud.chronicle_v1.services.rule_execution_error_service",
+    "google.cloud.chronicle_v1.services.rule_service",
+    "google.cloud.chronicle_v1.types.big_query_export",
+    "google.cloud.chronicle_v1.types.dashboard_chart",
+    "google.cloud.chronicle_v1.types.dashboard_query",
+    "google.cloud.chronicle_v1.types.data_access_control",
+    "google.cloud.chronicle_v1.types.data_table",
+    "google.cloud.chronicle_v1.types.entity",
+    "google.cloud.chronicle_v1.types.featured_content_metadata",
+    "google.cloud.chronicle_v1.types.featured_content_native_dashboard",
+    "google.cloud.chronicle_v1.types.findings_refinement",
+    "google.cloud.chronicle_v1.types.instance",
+    "google.cloud.chronicle_v1.types.native_dashboard",
+    "google.cloud.chronicle_v1.types.reference_list",
+    "google.cloud.chronicle_v1.types.rule",
+    "google.cloud.chronicle_v1.types.rule_execution_error",
+}
+
+
 from .services.big_query_export_service import (
     BigQueryExportServiceAsyncClient,
     BigQueryExportServiceClient,

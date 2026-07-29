@@ -12,12 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.26.0
+version: v0.31.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: fe04226e3d76435acbfd3ffb51f6771740e1fb5b
-    sha256: e99c641a9c5525394de43c762b9db50c3ada1f219d6dbdba594ae992fbe1d838
+    commit: b8486a2f44f15dc578a9dc1e17b144253079d5c1
+    sha256: 12411ca5cb6c70d7c873d7058c5182a8d23fa88af8d984b0e73b1c3ad1d83766
+tools:
+  pip:
+    - name: black
+      version: 23.7.0
+      package: black[jupyter]==23.7.0
+    - name: gapic-generator
+      version: 1.37.1
+    - name: isort
+      version: 5.11.0
+    - name: nox
+      version: 2025.11.12
+    - name: ruff
+      version: 0.14.14
+    - name: synthtool
+      version: e643ce8e20f8fe237a31a1754524ba987de72875
+      package: gcp-synthtool@git+https://github.com/googleapis/synthtool@e643ce8e20f8fe237a31a1754524ba987de72875
 default:
   output: packages
   tag_format: '{name}-v{version}'
@@ -74,7 +90,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.37.0
+    version: 1.37.1
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -134,7 +150,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.32.0
+    version: 2.33.0
     python:
       library_type: CORE
   - name: google-apps-card
@@ -227,7 +243,7 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.56.1
+    version: 2.56.2
     python:
       library_type: AUTH
   - name: google-auth-httplib2
@@ -290,6 +306,7 @@ libraries:
     version: 0.1.0
     apis:
       - path: google/cloud/agentidentitycredentials/v1
+      - path: google/cloud/agentidentitycredentials/v1beta
     copyright_year: "2026"
     python:
       default_version: v1
@@ -355,9 +372,6 @@ libraries:
     python:
       metadata_name_override: apigeeconnect
       default_version: v1
-  - name: google-cloud-apigee-registry
-    version: 0.10.1
-    skip_generate: true
   - name: google-cloud-apihub
     version: 0.7.0
     apis:
@@ -719,7 +733,6 @@ libraries:
     apis:
       - path: google/cloud/ces/v1
       - path: google/cloud/ces/v1beta
-    skip_generate: true
     python:
       default_version: v1
   - name: google-cloud-channel
@@ -756,6 +769,13 @@ libraries:
     python:
       metadata_name_override: procurement
       default_version: v1
+  - name: google-cloud-commerceproducer
+    version: 0.1.0
+    apis:
+      - path: google/cloud/commerceproducer/v1beta
+    copyright_year: "2026"
+    python:
+      default_version: v1beta
   - name: google-cloud-common
     version: 1.10.0
     apis:
@@ -768,6 +788,10 @@ libraries:
       default_version: apiVersion
   - name: google-cloud-compute
     version: 1.50.0
+    preview:
+      version: 1.51.0-preview.1
+      apis:
+        - path: google/cloud/compute/v1
     apis:
       - path: google/cloud/compute/v1
     python:
@@ -1689,6 +1713,12 @@ libraries:
       - path: google/cloud/privilegedaccessmanager/v1
     python:
       default_version: v1
+  - name: google-cloud-productregistry
+    version: 0.1.0
+    apis:
+      - path: google/cloud/productregistry/v1
+    python:
+      default_version: v1
   - name: google-cloud-pubsub
     version: 2.39.0
     apis:
@@ -2303,6 +2333,13 @@ libraries:
         google/maps/geocode/v4:
           - proto-plus-deps=google.geo.type
       default_version: v4
+  - name: google-maps-isochrones
+    version: 0.1.0
+    apis:
+      - path: google/maps/isochrones/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-maps-mapmanagement
     version: 0.1.0
     apis:
@@ -2575,11 +2612,11 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: proto-plus
-    version: 1.28.1
+    version: 1.28.2
     python:
       library_type: CORE
   - name: sqlalchemy-bigquery
-    version: 1.17.0
+    version: 1.17.1
     python:
       library_type: INTEGRATION
   - name: sqlalchemy-spanner
