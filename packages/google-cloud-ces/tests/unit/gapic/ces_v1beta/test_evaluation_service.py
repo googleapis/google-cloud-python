@@ -1016,7 +1016,14 @@ def test_evaluation_service_client_get_mtls_endpoint_and_cert_source(client_clas
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1063,7 +1070,14 @@ def test_evaluation_service_client_get_mtls_endpoint_and_cert_source(client_clas
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -7724,6 +7738,9 @@ def test_list_evaluations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation.Evaluation) for i in results)
@@ -7812,6 +7829,8 @@ async def test_list_evaluations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8267,6 +8286,9 @@ def test_list_evaluation_results_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation.EvaluationResult) for i in results)
@@ -8359,6 +8381,8 @@ async def test_list_evaluation_results_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8818,6 +8842,9 @@ def test_list_evaluation_datasets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation.EvaluationDataset) for i in results)
@@ -8910,6 +8937,8 @@ async def test_list_evaluation_datasets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9366,6 +9395,9 @@ def test_list_evaluation_runs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation.EvaluationRun) for i in results)
@@ -9458,6 +9490,8 @@ async def test_list_evaluation_runs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9917,6 +9951,9 @@ def test_list_evaluation_expectations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation.EvaluationExpectation) for i in results)
@@ -10009,6 +10046,8 @@ async def test_list_evaluation_expectations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12736,6 +12775,9 @@ def test_list_scheduled_evaluation_runs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation.ScheduledEvaluationRun) for i in results)
@@ -12828,6 +12870,8 @@ async def test_list_scheduled_evaluation_runs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -18667,6 +18711,9 @@ def test_list_evaluations_rest_pager(transport: str = "rest"):
 
         pager = client.list_evaluations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation.Evaluation) for i in results)
@@ -18939,6 +18986,9 @@ def test_list_evaluation_results_rest_pager(transport: str = "rest"):
 
         pager = client.list_evaluation_results(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation.EvaluationResult) for i in results)
@@ -19209,6 +19259,9 @@ def test_list_evaluation_datasets_rest_pager(transport: str = "rest"):
 
         pager = client.list_evaluation_datasets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation.EvaluationDataset) for i in results)
@@ -19474,6 +19527,9 @@ def test_list_evaluation_runs_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/apps/sample3"}
 
         pager = client.list_evaluation_runs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -19744,6 +19800,9 @@ def test_list_evaluation_expectations_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/apps/sample3"}
 
         pager = client.list_evaluation_expectations(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -21179,6 +21238,9 @@ def test_list_scheduled_evaluation_runs_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/apps/sample3"}
 
         pager = client.list_scheduled_evaluation_runs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -29238,6 +29300,7 @@ def test_create_scheduled_evaluation_run_rest_call_success(request_type):
             "scheduled_evaluation_run": "scheduled_evaluation_run_value",
             "golden_run_method": 1,
             "generate_latency_report": True,
+            "evaluation_run_caching_settings": {"run_caching_mode": 1},
         },
         "description": "description_value",
         "scheduling_config": {
@@ -29813,6 +29876,7 @@ def test_update_scheduled_evaluation_run_rest_call_success(request_type):
             "scheduled_evaluation_run": "scheduled_evaluation_run_value",
             "golden_run_method": 1,
             "generate_latency_report": True,
+            "evaluation_run_caching_settings": {"run_caching_mode": 1},
         },
         "description": "description_value",
         "scheduling_config": {

@@ -208,6 +208,32 @@ def test_rows_w_empty_stream_arrow(class_under_test, mock_gapic_client):
     assert tuple(got) == ()
 
 
+@pytest.mark.parametrize(
+    "use_session",
+    [False, True],
+    ids=["no_session", "with_session"],
+)
+def test_to_arrow_empty_stream(class_under_test, mock_gapic_client, use_session):
+    """Verify that to_arrow() handles empty streams safely.
+
+    Note: This test focuses specifically on ReadRowsStream.to_arrow(), which
+    accepts a read_session argument to provide schema hints for empty streams,
+    unlike ReadRowsIterable.to_arrow().
+    """
+    arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
+    mock_gapic_client.read_rows.return_value = iter([])
+
+    reader = class_under_test(mock_gapic_client, "name", 0, {})
+
+    read_session = _generate_arrow_read_session(arrow_schema) if use_session else None
+    expected_schema = arrow_schema if use_session else pyarrow.schema([])
+
+    table = reader.to_arrow(read_session)
+
+    assert len(table) == 0
+    assert table.schema == expected_schema
+
+
 def test_rows_w_scalars_arrow(class_under_test, mock_gapic_client):
     arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
     arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)

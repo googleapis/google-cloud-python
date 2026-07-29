@@ -53,12 +53,6 @@ from google.longrunning import operations_pb2 # type: ignore
 from google.oauth2 import service_account
 import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
 import google.auth
-import google.logging.type.http_request_pb2 as http_request_pb2  # type: ignore
-import google.logging.type.log_severity_pb2 as log_severity_pb2  # type: ignore
-import google.protobuf.any_pb2 as any_pb2  # type: ignore
-import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
-import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 
@@ -68,6 +62,18 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
 
 
 async def mock_async_gen(data, chunk_size=1):

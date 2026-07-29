@@ -32,7 +32,6 @@
   "packages/google-cloud-api-gateway": "1.16.0",
   "packages/google-cloud-api-keys": "0.9.0",
   "packages/google-cloud-apigee-connect": "1.16.0",
-  "packages/google-cloud-apigee-registry": "0.10.1",
   "packages/google-cloud-apihub": "0.7.0",
   "packages/google-cloud-apiregistry": "0.3.0",
   "packages/google-cloud-appengine-admin": "1.18.0",

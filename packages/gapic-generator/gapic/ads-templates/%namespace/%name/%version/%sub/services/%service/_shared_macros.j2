@@ -65,7 +65,7 @@ except ImportError:  # pragma: NO COVER
 
 {% macro create_metadata(method) %}
     {% if method.explicit_routing %}
-        header_params = {}
+        header_params: dict[str, str] = {}
         {% if not method.client_streaming %}
         {% for routing_param in method.routing_rule.routing_parameters %}
         {% if routing_param.path_template %} {# Need to match. #}
