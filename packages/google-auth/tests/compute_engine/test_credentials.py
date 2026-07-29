@@ -515,26 +515,22 @@ class TestCredentials(object):
         assert kwargs["body"] == json.dumps(
             {"certificate_chain": mock_cert_bytes.decode("utf-8")}
         ).encode("utf-8")
+        assert kwargs["headers"]["Content-Type"] == "application/json"
 
-    @mock.patch("google.auth.compute_engine._metadata.get")
-    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
-    @mock.patch("google.auth._agent_identity_utils.parse_certificate")
+    @mock.patch(
+        "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
+    )
     @mock.patch(
         "google.auth._agent_identity_utils.should_request_bound_token",
         return_value=False,
     )
+    @mock.patch("google.auth.compute_engine._metadata.get")
     def test_refresh_with_agent_identity_opt_out_or_not_agent(
         self,
-        mock_should_request,
-        mock_parse_certificate,
-        mock_get_path,
         mock_metadata_get,
-        tmpdir,
+        mock_should_request,
+        mock_get_cert_and_bytes,
     ):
-        cert_path = tmpdir.join("cert.pem")
-        cert_path.write(b"cert_content")
-        mock_get_path.return_value = str(cert_path)
-
         mock_metadata_get.side_effect = [
             {
                 "email": "service-account@project.iam.gserviceaccount.com",
@@ -543,13 +539,42 @@ class TestCredentials(object):
             {"access_token": "token", "expires_in": 500},
         ]
 
+        mock_cert = mock.sentinel.cert
+        mock_cert_bytes = b"cert_content"
+        mock_get_cert_and_bytes.return_value = (mock_cert, mock_cert_bytes)
+
         self.credentials.refresh(None)
 
         assert self.credentials.token == "token"
-        mock_parse_certificate.assert_called_once_with(b"cert_content")
-        mock_should_request.assert_called_once_with(mock_parse_certificate.return_value)
+        mock_get_cert_and_bytes.assert_called_once()
+        mock_should_request.assert_called_once_with(mock_cert)
         kwargs = mock_metadata_get.call_args[1]
-        assert "bindCertificateFingerprint" not in kwargs.get("params", {})
+        assert kwargs.get("method", "GET") == "GET"
+        assert kwargs.get("body") is None
+
+    @mock.patch(
+        "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
+    )
+    @mock.patch("google.auth.compute_engine._metadata.get")
+    def test_refresh_without_agent_identity_certificate(
+        self,
+        mock_metadata_get,
+        mock_get_cert_and_bytes,
+    ):
+        mock_metadata_get.side_effect = [
+            {"email": "service-account@example.com", "scopes": ["one", "two"]},
+            {"access_token": "token", "expires_in": 500},
+        ]
+
+        mock_get_cert_and_bytes.return_value = (None, None)
+
+        self.credentials.refresh(None)
+
+        assert self.credentials.token == "token"
+        mock_get_cert_and_bytes.assert_called_once()
+        kwargs = mock_metadata_get.call_args[1]
+        assert kwargs.get("method", "GET") == "GET"
+        assert kwargs.get("body") is None
 
     def test_set_blocking_regional_access_boundary_lookup(self):
         creds = self.credentials
@@ -907,6 +932,7 @@ class TestIDTokenCredentials(object):
         assert kwargs["body"] == json.dumps(
             {"certificate_chain": mock_cert_bytes.decode("utf-8")}
         ).encode("utf-8")
+        assert kwargs["headers"]["Content-Type"] == "application/json"
         assert (
             kwargs["headers"][metrics.API_CLIENT_HEADER]
             == metrics.token_request_id_token_mds()
@@ -955,6 +981,50 @@ class TestIDTokenCredentials(object):
         assert self.credentials.token == id_token
         mock_get_cert_and_bytes.assert_called_once()
         mock_should_request.assert_called_once_with(mock_cert)
+
+        kwargs = mock_metadata_get.call_args[1]
+        assert kwargs["method"] == "GET"
+        assert kwargs["body"] is None
+        assert (
+            kwargs["headers"][metrics.API_CLIENT_HEADER]
+            == metrics.token_request_id_token_mds()
+        )
+
+    @mock.patch(
+        "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
+    )
+    @mock.patch("google.auth.compute_engine._metadata.get")
+    def test_refresh_without_agent_identity_certificate(
+        self,
+        mock_metadata_get,
+        mock_get_cert_and_bytes,
+    ):
+        import base64
+        from google.auth import metrics
+
+        id_token = "{}.{}.{}".format(
+            base64.b64encode(b'{"some":"some"}').decode("utf-8"),
+            base64.b64encode(b'{"exp": 3210}').decode("utf-8"),
+            base64.b64encode(b"token").decode("utf-8"),
+        )
+        mock_metadata_get.side_effect = [
+            {"email": "service-account@example.com", "scopes": ["one", "two"]},
+            id_token,
+        ]
+
+        mock_get_cert_and_bytes.return_value = (None, None)
+
+        request = mock.create_autospec(transport.Request, instance=True)
+        self.credentials = credentials.IDTokenCredentials(
+            request=request,
+            target_audience="https://audience.com",
+            use_metadata_identity_endpoint=True,
+        )
+
+        self.credentials.refresh(None)
+
+        assert self.credentials.token == id_token
+        mock_get_cert_and_bytes.assert_called_once()
 
         kwargs = mock_metadata_get.call_args[1]
         assert kwargs["method"] == "GET"
