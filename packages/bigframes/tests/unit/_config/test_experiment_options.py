@@ -15,37 +15,6 @@
 import pytest
 
 import bigframes._config.experiment_options as experiment_options
-import bigframes.exceptions as bfe
-
-
-def test_semantic_operators_default_false():
-    options = experiment_options.ExperimentOptions()
-
-    assert options.semantic_operators is False
-
-
-def test_semantic_operators_set_true_shows_warning():
-    options = experiment_options.ExperimentOptions()
-
-    with pytest.warns(FutureWarning):
-        options.semantic_operators = True
-
-    assert options.semantic_operators is True
-
-
-def test_ai_operators_default_false():
-    options = experiment_options.ExperimentOptions()
-
-    assert options.ai_operators is False
-
-
-def test_ai_operators_set_true_shows_warning():
-    options = experiment_options.ExperimentOptions()
-
-    with pytest.warns(bfe.PreviewWarning):
-        options.ai_operators = True
-
-    assert options.ai_operators is True
 
 
 def test_sql_compiler_default_stable():

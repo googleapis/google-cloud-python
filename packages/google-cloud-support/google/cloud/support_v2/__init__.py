@@ -90,6 +90,7 @@ from .types.support_event_subscription import SupportEventSubscription
 from .types.support_event_subscription_service import (
     CreateSupportEventSubscriptionRequest,
     DeleteSupportEventSubscriptionRequest,
+    ExpungeSupportEventSubscriptionRequest,
     GetSupportEventSubscriptionRequest,
     ListSupportEventSubscriptionsRequest,
     ListSupportEventSubscriptionsResponse,
@@ -200,6 +201,7 @@ __all__ = (
     "DeleteSupportEventSubscriptionRequest",
     "EscalateCaseRequest",
     "Escalation",
+    "ExpungeSupportEventSubscriptionRequest",
     "GetAttachmentRequest",
     "GetCaseRequest",
     "GetCommentRequest",
