@@ -22,17 +22,7 @@ import yaml
 from . import constants, data_models
 
 
-def _to_snake_case(name: str) -> str:
-    # Replace dots with underscores
-    name = name.replace(".", "_")
-    # Handle CamelCase to snake_case
-    name = re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
-    # Replace multiple underscores with one
-    name = re.sub(r"_+", "_", name)
-    return name
-
-
-def _parse_func_arg(arg_data: Any) -> data_models.BQFuncArg:
+def _build_func_arg_ir(arg_data: Any) -> data_models.BQFuncArg:
     return data_models.BQFuncArg(
         name=arg_data["name"],
         value=arg_data["value"],
@@ -41,26 +31,18 @@ def _parse_func_arg(arg_data: Any) -> data_models.BQFuncArg:
     )
 
 
-def _parse_func_impl(impl_data: Any) -> data_models.BQFuncImpl:
+def _build_func_impl_ir(impl_data: Any) -> data_models.BQFuncImpl:
     return data_models.BQFuncImpl(
-        args=[_parse_func_arg(arg) for arg in impl_data["args"]],
+        args=[_build_func_arg_ir(arg) for arg in impl_data["args"]],
         return_type=impl_data["return"],
     )
 
 
-def _parse_bq_func(
-    func_data: Any, module_name: str, is_global: bool
-) -> data_models.BQFunc:
-    op_base_name = _to_snake_case(func_data["name"])
-
-    if not is_global and op_base_name.startswith(module_name + "_"):
-        op_base_name = op_base_name[len(module_name) + 1 :]
-
+def _build_func_ir(func_data: Any) -> data_models.BQFunc:
     return data_models.BQFunc(
         name=func_data["name"],
-        op_base_name=op_base_name,
         description=func_data["description"],
-        impls=[_parse_func_impl(impl) for impl in func_data["impls"]],
+        impls=[_build_func_impl_ir(impl) for impl in func_data["impls"]],
         series_accessor_arg=func_data.get("series_accessor_arg", None),
     )
 
@@ -72,11 +54,9 @@ def parse_yaml(yaml_file: pathlib.Path) -> data_models.BQModule:
         data = yaml.safe_load(f)
 
     functions = []
-    module_path = yaml_file.relative_to(constants.DATA_DIR).with_suffix("")
-    is_global = "global_namespace" in module_path.parts
     if isinstance(data, dict) and "scalar_functions" in data:
         functions = [
-            _parse_bq_func(func_data, module_path.name, is_global)
+            _build_func_ir(func_data)
             for func_data in data["scalar_functions"]
         ]
 

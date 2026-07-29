@@ -111,10 +111,13 @@ class BQFuncImpl:
 @dataclasses.dataclass
 class BQFunc:
     name: str
-    op_base_name: str
     description: str
     impls: list[BQFuncImpl]
     series_accessor_arg: str | None
+
+    @property
+    def op_base_name(self) -> str:
+        return self.name.split(".")[-1]
 
 
 @dataclasses.dataclass
