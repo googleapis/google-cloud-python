@@ -112,8 +112,10 @@ def test__read_environment_variables():
     assert BaseMetricsServiceV2Client._read_environment_variables() == (False, "auto", None)
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         assert BaseMetricsServiceV2Client._read_environment_variables() == (True, "auto", None)
+
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         assert BaseMetricsServiceV2Client._read_environment_variables() == (False, "auto", None)
+
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
@@ -130,10 +132,13 @@ def test__read_environment_variables():
             "auto",
             None,
         )
+
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         assert BaseMetricsServiceV2Client._read_environment_variables() == (False, "never", None)
+
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         assert BaseMetricsServiceV2Client._read_environment_variables() == (False, "always", None)
+
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
         assert BaseMetricsServiceV2Client._read_environment_variables() == (False, "auto", None)
 
@@ -233,6 +238,7 @@ def test_use_client_cert_effective():
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
+
     assert BaseMetricsServiceV2Client._get_client_cert_source(None, False) is None
     assert BaseMetricsServiceV2Client._get_client_cert_source(mock_provided_cert_source, False) is None
     assert BaseMetricsServiceV2Client._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
@@ -713,6 +719,7 @@ def test_base_metrics_service_v2_client_get_mtls_endpoint_and_cert_source(client
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
+
         assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 @pytest.mark.parametrize("client_class", [
@@ -770,6 +777,7 @@ def test_base_metrics_service_v2_client_client_api_endpoint(client_class):
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
+
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (BaseMetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport, "grpc"),
