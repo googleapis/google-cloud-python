@@ -639,8 +639,8 @@ def test_get_universe_domain_other_error():
 
 
 @mock.patch(
-    "google.auth._agent_identity_utils.get_and_parse_agent_identity_certificate",
-    return_value=None,
+    "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes",
+    return_value=(None, None),
 )
 @mock.patch(
     "google.auth.metrics.token_request_access_token_mds",
@@ -672,8 +672,8 @@ def test_get_service_account_token(
 
 
 @mock.patch(
-    "google.auth._agent_identity_utils.get_and_parse_agent_identity_certificate",
-    return_value=None,
+    "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes",
+    return_value=(None, None),
 )
 @mock.patch(
     "google.auth.metrics.token_request_access_token_mds",
@@ -708,8 +708,8 @@ def test_get_service_account_token_with_scopes_list(
 
 
 @mock.patch(
-    "google.auth._agent_identity_utils.get_and_parse_agent_identity_certificate",
-    return_value=None,
+    "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes",
+    return_value=(None, None),
 )
 @mock.patch(
     "google.auth.metrics.token_request_access_token_mds",
@@ -779,6 +779,7 @@ def test_get_service_account_token_with_bound_token(
     assert kwargs["body"] == json.dumps(
         {"certificate_chain": mock_cert_bytes.decode("utf-8")}
     ).encode("utf-8")
+    assert kwargs["headers"]["Content-Type"] == "application/json"
 
 
 @mock.patch(
@@ -794,19 +795,19 @@ def test_get_service_account_token_no_cert(mock_get_and_parse):
 
     request.assert_called_once()
     _, kwargs = request.call_args
-    url = kwargs["url"]
-    assert "bindCertificateFingerprint" not in url
+    assert kwargs.get("method", "GET") == "GET"
+    assert kwargs.get("body") is None
 
 
 @mock.patch("google.auth._agent_identity_utils.should_request_bound_token")
 @mock.patch(
-    "google.auth._agent_identity_utils.get_and_parse_agent_identity_certificate"
+    "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
 )
 def test_get_service_account_token_should_not_bind(
     mock_get_and_parse, mock_should_request
 ):
     # Test that no fingerprint is added when a cert is found but should not be used.
-    mock_get_and_parse.return_value = mock.sentinel.cert
+    mock_get_and_parse.return_value = (mock.sentinel.cert, b"fake_cert_bytes")
     mock_should_request.return_value = False
     token_response = json.dumps({"access_token": "token", "expires_in": 3600})
     request = make_request(token_response, headers={"content-type": "application/json"})
@@ -815,8 +816,8 @@ def test_get_service_account_token_should_not_bind(
 
     request.assert_called_once()
     _, kwargs = request.call_args
-    url = kwargs["url"]
-    assert "bindCertificateFingerprint" not in url
+    assert kwargs.get("method", "GET") == "GET"
+    assert kwargs.get("body") is None
 
 
 def test_get_service_account_info():
