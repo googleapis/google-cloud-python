@@ -92,6 +92,21 @@ jobs:
         # https://github.com/googleapis/google-cloud-python/issues/17459
         DEFAULT_FAIL_UNDER: 99
       run: |
+        # Find all modified packages
+        modified_packages=$(git diff --name-only HEAD~1 -- packages preview-packages | cut -d/ -f1,2 | sort -u)
+
+        existing_modified_packages=()
+        for pkg in ${modified_packages}; do
+          if [ -d "${pkg}" ]; then
+            existing_modified_packages+=("${pkg}")
+          fi
+        done
+
+        if [ ${#existing_modified_packages[@]} -eq 0 ]; then
+          echo "All modified packages were deleted. Skipping coverage evaluation."
+          exit 0
+        fi
+
         if [ -d .coverage-results ]; then
           # Unzip any zipped coverage results
           find .coverage-results -type f -name '*.zip' -exec unzip -o {} \;
