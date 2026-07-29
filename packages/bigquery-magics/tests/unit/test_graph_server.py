@@ -747,3 +747,33 @@ def test_convert_schema_shared_label():
     labels = {label["name"]: label for label in result["labels"]}
     assert "Person" in labels
     assert set(labels["Person"]["propertyDeclarationNames"]) == {"id", "name"}
+
+
+class TestGraphServerHostHeader(unittest.TestCase):
+    def setUp(self):
+        self.server = graph_server.GraphServer()
+        self.server_thread = self.server.init()
+
+    def tearDown(self):
+        self.server.stop_server()
+        self.server_thread.join()
+
+    def _route(self):
+        return self.server.build_route(graph_server.GraphServer.endpoints["get_ping"])
+
+    def test_loopback_host_allowed(self):
+        response = requests.get(self._route())
+        self.assertEqual(response.status_code, 200)
+
+    def test_non_loopback_host_rejected(self):
+        # A DNS-rebinding page reaches the loopback socket but carries the
+        # attacker's hostname in the Host header.
+        response = requests.get(self._route(), headers={"Host": "attacker.example"})
+        self.assertEqual(response.status_code, 403)
+
+    def test_non_loopback_host_rejected_post(self):
+        route = self.server.build_route(graph_server.GraphServer.endpoints["post_ping"])
+        response = requests.post(
+            route, json={"data": "ping"}, headers={"Host": "evil.example:1234"}
+        )
+        self.assertEqual(response.status_code, 403)

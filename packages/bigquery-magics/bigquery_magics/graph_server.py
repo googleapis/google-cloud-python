@@ -17,11 +17,17 @@ import http.server
 import json
 import socketserver
 import threading
+import urllib.parse
 from typing import Any, Dict, List
 
 from google.cloud import bigquery
 
 from bigquery_magics import core
+
+# The graph widget only ever reaches this server over the loopback interface.
+# Requests carrying any other Host are cross-site (e.g. a DNS-rebinding page in
+# the notebook user's browser) and are refused.
+_LOOPBACK_HOSTS = frozenset({"localhost", "127.0.0.1", "::1"})
 
 
 def execute_node_expansion(params, request):
@@ -354,6 +360,19 @@ class GraphServerHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
+    def _host_is_loopback(self):
+        """Return True if the request targets the loopback interface.
+
+        Origin cannot be used here because the notebook page and this server
+        live on different ports, so legitimate widget traffic is cross-origin.
+        The Host header, however, is always a loopback name for that traffic.
+        """
+        host = self.headers.get("Host")
+        if not host:
+            return False
+        hostname = urllib.parse.urlsplit(f"//{host}").hostname
+        return hostname in _LOOPBACK_HOSTS
+
     def do_json_response(self, data):
         self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -406,10 +425,16 @@ class GraphServerHandler(http.server.SimpleHTTPRequestHandler):
         )
 
     def do_GET(self):
+        if not self._host_is_loopback():
+            self.send_error(403, "Forbidden")
+            return
         assert self.path == GraphServer.endpoints["get_ping"]
         self.handle_get_ping()
 
     def do_POST(self):
+        if not self._host_is_loopback():
+            self.send_error(403, "Forbidden")
+            return
         if self.path == GraphServer.endpoints["post_ping"]:
             self.handle_post_ping()
         elif self.path == GraphServer.endpoints["post_node_expansion"]:
