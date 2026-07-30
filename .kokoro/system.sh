@@ -162,6 +162,7 @@ reap_parallel_results() {
   done
 
 
+
   if [ "$failed_count" -gt 0 ]; then
     echo "=================================================="
     echo "@FAILED - DETAILED LOGS FOR FAILED PACKAGES"
@@ -184,6 +185,7 @@ reap_parallel_results() {
           cat "$LOG_DIR/$pkg.log"
         else
           echo "Warning: No log file found for failed package $pkg"
+
         fi
         echo ""
       fi
@@ -357,11 +359,12 @@ printf '%s\n' "${PACKAGES_TO_TEST[@]}" \
       # Determine log location: prefer Sponge artifacts directory if available
       if [ -n "$KOKORO_ARTIFACTS_DIR" ]; then
         pkg_log_dir="$KOKORO_ARTIFACTS_DIR/$pkg"
-        mkdir -p "$pkg_log_dir" || { touch "$LOG_DIR/$pkg.failed"; exit 1; }
+        mkdir -p "$pkg_log_dir" || { echo "Failed to mkdir $pkg_log_dir"; touch "$LOG_DIR/$pkg.failed"; exit 1; }
         log_file="$pkg_log_dir/sponge_log.log"
       else
         log_file="$LOG_DIR/$pkg.log"
       fi
+      echo "Log file for $pkg: $log_file"
 
       # Run test; if it fails, create a .failed file to signal failure to the reaper
       run_package_test "$pkg" > "$log_file" 2>&1 || touch "$LOG_DIR/$pkg.failed"
