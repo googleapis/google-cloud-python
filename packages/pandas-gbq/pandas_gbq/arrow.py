@@ -32,17 +32,17 @@ def from_read_rows_response(
     if arrow_schema is not None:
         try:
             return pa.ipc.read_record_batch(buffer, arrow_schema)
-        except Exception:
+        except pa.ArrowException:
             pass
 
     try:
         reader = pa.ipc.RecordBatchStreamReader(buffer)
         return reader.read_next_batch()
-    except Exception:
+    except pa.ArrowException:
+        if arrow_schema is None:
+            raise ValueError(
+                "arrow_schema is required to decode a serialized record batch message "
+                "when it is not formatted as an Arrow IPC stream."
+            )
         msg = pa.ipc.read_message(buffer)
-        batch_schema = (
-            arrow_schema
-            if arrow_schema is not None
-            else getattr(msg, "schema", pa.schema([]))
-        )
-        return pa.ipc.read_record_batch(msg, batch_schema)
+        return pa.ipc.read_record_batch(msg, arrow_schema)
