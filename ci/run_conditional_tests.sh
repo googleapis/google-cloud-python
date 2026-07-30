@@ -144,8 +144,17 @@ if [ ${#dirs_to_test[@]} -eq 0 ]; then
     exit 0
 fi
 
-# Run tests across target packages in parallel using available CPU cores
-NPROC=$(nproc 2>/dev/null || echo 4)
-echo "Running tests across ${#dirs_to_test[@]} package(s) using ${NPROC} parallel workers..."
+# PARALLEL_WORKERS controls the number of concurrent package test processes inside the runner.
+# Defaults to 1 (safe sequential execution) unless explicitly set in workflow YAML.
+PARALLEL_WORKERS="${PARALLEL_WORKERS:-1}"
 
-printf "%s\0" "${dirs_to_test[@]}" | xargs -0 -P "${NPROC}" -I {} bash -c 'run_test_in_dir "$@"' _ {}
+# Cap PARALLEL_WORKERS at available CPU cores to prevent CPU thrashing and RAM Out-Of-Memory (OOM) failures
+AVAIL_CORES=$(nproc 2>/dev/null || echo 4)
+if [ "${PARALLEL_WORKERS}" -gt "${AVAIL_CORES}" ]; then
+    echo "Requested PARALLEL_WORKERS (${PARALLEL_WORKERS}) exceeds available CPU cores (${AVAIL_CORES}). Capping to ${AVAIL_CORES}."
+    PARALLEL_WORKERS="${AVAIL_CORES}"
+fi
+
+echo "Running tests across ${#dirs_to_test[@]} package(s) using ${PARALLEL_WORKERS} parallel worker(s)..."
+
+printf "%s\0" "${dirs_to_test[@]}" | xargs -0 -P "${PARALLEL_WORKERS}" -I {} bash -c 'run_test_in_dir "$@"' _ {}

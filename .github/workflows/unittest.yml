@@ -18,6 +18,9 @@ env:
   NOX_ENVDIR: "/tmp/shared_nox_envs"
   NOX_DEFAULT_VENV_BACKEND: "uv"
   UV_VENV_SEED: "1"
+  # Note: PARALLEL_WORKERS must remain "1" for unit tests because running pytest concurrently
+  # on the same runner VM can cause socket/IPC/process deadlocks across packages.
+  PARALLEL_WORKERS: "1"
 
 jobs:
   initialize:
@@ -26,7 +29,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       is_full_run: ${{ steps.check-label.outputs.is_full_run }}
     env:
-      MAX_SHARDS: 10
+      MAX_SHARDS: 16
       # Define weights for long-running unit tests to balance shard execution time
       # Each weight is roughly 1 minute of expected execution time
       # Default for unset packages is 1

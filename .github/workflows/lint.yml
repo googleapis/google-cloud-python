@@ -17,6 +17,8 @@ env:
   NOX_ENVDIR: "/tmp/shared_nox_envs"
   NOX_DEFAULT_VENV_BACKEND: "uv"
   UV_VENV_SEED: "1"
+  # Run checks in parallel using 4 cores
+  PARALLEL_WORKERS: "4"
 
 jobs:
   initialize:
