@@ -142,7 +142,7 @@ jobs:
   cover:
     runs-on: ubuntu-latest
     needs:
-        - unit
+        - all-tests
         - initialize
     steps:
     - name: Checkout
