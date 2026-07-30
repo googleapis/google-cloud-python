@@ -79,11 +79,8 @@ class Connection(object):
         self._closed = True
 
         for cursor_ in list(self._cursors_created):
-            try:
-                if not cursor_._closed:
-                    cursor_.close()
-            except Exception:
-                pass
+            if not cursor_._closed:
+                cursor_.close()
 
         if self._owns_client and self._client is not None:
             self._client.close()
