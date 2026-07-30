@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/proto-plus/#history
 
+## [1.28.3](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.2...proto-plus-v1.28.3) (2026-07-30)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
 ## [1.28.2](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.1...proto-plus-v1.28.2) (2026-07-22)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-testutils/#history
 
+## [1.9.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.9.1...google-cloud-testutils-v1.9.2) (2026-07-30)
+
+
+### Bug Fixes
+
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
 ## [1.9.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.9.0...google-cloud-testutils-v1.9.1) (2026-06-22)
 
 
