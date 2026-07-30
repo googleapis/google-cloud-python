@@ -475,19 +475,14 @@ def test_run_worker_and_parse_missing_key():
             _run_worker_and_parse(["python", "profiler.py"])
 
 
-def test_calculate_percentiles():
-    from profiler import _calculate_percentiles
-    assert _calculate_percentiles([]) == (0.0, 0.0, 0.0)
-    assert _calculate_percentiles([5.0]) == (5.0, 5.0, 5.0)
-    p50, p90, p99 = _calculate_percentiles(list(range(100)))
-    assert p50 < p90 < p99
-
-
-def test_print_outputs_empty():
+def test_print_outputs_multiple_and_empty():
     from profiler import _print_outputs
     with patch("builtins.print") as mock_print:
-        _print_outputs("math", 1, 10, 500, [], 0, 0, 0, [], 0, 0, 0, [], 0, 0, 0)
+        _print_outputs("math", 1, 10, 500, [], [], [])
+        _print_outputs("math", 2, 10, 500, [10.0, 12.0], [1.0, 2.0], [1.0, 2.0])
         assert mock_print.called
+
+
 
 
 def test_run_master_invalid_iterations():
@@ -644,6 +639,7 @@ def test_find_module_from_package_metadata_init():
 
 
 def test_find_module_from_package_setuptools():
+    sys.modules.setdefault("setuptools", MagicMock())
     with patch("importlib.metadata.files", side_effect=Exception), \
          patch("os.path.exists", return_value=True), \
          patch("setuptools.find_namespace_packages", return_value=["google", "google.cloud", "tests.dummy", "my_pkg"]), \
@@ -653,8 +649,8 @@ def test_find_module_from_package_setuptools():
         assert res == "my_pkg"
 
 
-
 def test_find_module_from_package_setuptools_not_file_and_exception():
+    sys.modules.setdefault("setuptools", MagicMock())
     def mock_isfile(path):
         if "a_pkg" in path:
             return False
@@ -675,9 +671,8 @@ def test_find_module_from_package_setuptools_not_file_and_exception():
         assert res == "my.pkg"
 
 
-
-
 def test_find_module_from_package_exception_in_find_spec():
+    sys.modules.setdefault("setuptools", MagicMock())
     def mock_find_spec(mod):
         raise Exception("Find spec error")
 
@@ -686,6 +681,7 @@ def test_find_module_from_package_exception_in_find_spec():
          patch("importlib.util.find_spec", side_effect=mock_find_spec):
         res = find_module_from_package("foo-bar")
         assert res == "foo.bar"
+
 
 
 def test_cli_main_options():
