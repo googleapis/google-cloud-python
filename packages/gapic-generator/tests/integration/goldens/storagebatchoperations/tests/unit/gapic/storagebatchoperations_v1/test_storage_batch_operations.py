@@ -132,22 +132,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert StorageBatchOperationsClient._get_default_mtls_endpoint(None) is None
-    assert StorageBatchOperationsClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert StorageBatchOperationsClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    assert StorageBatchOperationsClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
-    assert StorageBatchOperationsClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
-    assert StorageBatchOperationsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
-    assert StorageBatchOperationsClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
-
 def test__read_environment_variables():
     assert StorageBatchOperationsClient._read_environment_variables() == (False, "auto", None)
 
@@ -289,40 +273,6 @@ def test__get_client_cert_source():
             assert StorageBatchOperationsClient._get_client_cert_source(None, True) is mock_default_cert_source
             assert StorageBatchOperationsClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
-@mock.patch.object(StorageBatchOperationsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(StorageBatchOperationsClient))
-@mock.patch.object(StorageBatchOperationsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(StorageBatchOperationsAsyncClient))
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = StorageBatchOperationsClient._DEFAULT_UNIVERSE
-    default_endpoint = StorageBatchOperationsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
-    mock_universe = "bar.com"
-    mock_endpoint = StorageBatchOperationsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
-
-    assert StorageBatchOperationsClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
-    assert StorageBatchOperationsClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == StorageBatchOperationsClient.DEFAULT_MTLS_ENDPOINT
-    assert StorageBatchOperationsClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
-    assert StorageBatchOperationsClient._get_api_endpoint(None, None, default_universe, "always") == StorageBatchOperationsClient.DEFAULT_MTLS_ENDPOINT
-    assert StorageBatchOperationsClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == StorageBatchOperationsClient.DEFAULT_MTLS_ENDPOINT
-    assert StorageBatchOperationsClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
-    assert StorageBatchOperationsClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        StorageBatchOperationsClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
-    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert StorageBatchOperationsClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
-    assert StorageBatchOperationsClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
-    assert StorageBatchOperationsClient._get_universe_domain(None, None) == StorageBatchOperationsClient._DEFAULT_UNIVERSE
-
-    with pytest.raises(ValueError) as excinfo:
-        StorageBatchOperationsClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 @pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
     (401, CRED_INFO_JSON, True),

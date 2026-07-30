@@ -52,16 +52,16 @@ class PandasBigQuerySeriesAccessor(core_accessor.BigQuerySeriesAccessor[T, S]):
         return cast(S, bf_series.to_pandas(ordered=True))
 
     @property
-    def ai(self) -> PandasAiSeriesAccessor[T, S]:
-        return PandasAiSeriesAccessor(self._obj)
-
-    @property
     def aead(self) -> PandasAeadSeriesAccessor[T, S]:
         return PandasAeadSeriesAccessor(self._obj)
 
+    @property
+    def ai(self) -> PandasAiSeriesAccessor[T, S]:
+        return PandasAiSeriesAccessor(self._obj)
+
 
 @log_adapter.class_logger
-class PandasAiSeriesAccessor(core_accessor.AiSeriesAccessor[T, S]):
+class PandasAeadSeriesAccessor(core_accessor.AeadSeriesAccessor[T, S]):
     def __init__(self, pandas_obj: S):
         super().__init__(pandas_obj)
 
@@ -80,7 +80,7 @@ class PandasAiSeriesAccessor(core_accessor.AiSeriesAccessor[T, S]):
 
 
 @log_adapter.class_logger
-class PandasAeadSeriesAccessor(core_accessor.AeadSeriesAccessor[T, S]):
+class PandasAiSeriesAccessor(core_accessor.AiSeriesAccessor[T, S]):
     def __init__(self, pandas_obj: S):
         super().__init__(pandas_obj)
 
