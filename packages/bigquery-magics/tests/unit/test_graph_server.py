@@ -761,16 +761,25 @@ class TestGraphServerHostHeader(unittest.TestCase):
     def _route(self):
         return self.server.build_route(graph_server.GraphServer.endpoints["get_ping"])
 
+    @pytest.mark.skipif(
+        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
+    )
     def test_loopback_host_allowed(self):
         response = requests.get(self._route())
         self.assertEqual(response.status_code, 200)
 
+    @pytest.mark.skipif(
+        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
+    )
     def test_non_loopback_host_rejected(self):
         # A DNS-rebinding page reaches the loopback socket but carries the
         # attacker's hostname in the Host header.
         response = requests.get(self._route(), headers={"Host": "attacker.example"})
         self.assertEqual(response.status_code, 403)
 
+    @pytest.mark.skipif(
+        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
+    )
     def test_non_loopback_host_rejected_post(self):
         route = self.server.build_route(graph_server.GraphServer.endpoints["post_ping"])
         response = requests.post(

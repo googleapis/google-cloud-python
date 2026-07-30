@@ -370,7 +370,10 @@ class GraphServerHandler(http.server.SimpleHTTPRequestHandler):
         host = self.headers.get("Host")
         if not host:
             return False
-        hostname = urllib.parse.urlsplit(f"//{host}").hostname
+        try:
+            hostname = urllib.parse.urlsplit(f"//{host}").hostname
+        except ValueError:
+            return False
         return hostname in _LOOPBACK_HOSTS
 
     def do_json_response(self, data):
