@@ -12,6 +12,9 @@ name: unittest
 permissions:
   contents: read
 
+env:
+  PACKAGE_DIRS: packages preview-packages
+
 jobs:
   initialize:
     runs-on: ubuntu-latest
@@ -157,7 +160,7 @@ jobs:
         else
           TARGET_BRANCH="${TARGET_BRANCH:-main}"
           git fetch origin "$TARGET_BRANCH" --depth=1 || true
-          num_files_changed=$(git diff --name-only "origin/${TARGET_BRANCH}" -- packages preview-packages | wc -l | tr -d ' ')
+          num_files_changed=$(git diff --name-only "origin/${TARGET_BRANCH}" -- ${PACKAGE_DIRS} | wc -l | tr -d ' ')
           echo "num_files_changed=${num_files_changed}" >> "$GITHUB_OUTPUT"
         fi
     - name: Install coverage

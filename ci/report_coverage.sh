@@ -38,15 +38,17 @@ find "$RESULTS_DIR" -type f -name '*.zip' -print0 | xargs -0 -P "${MAX_JOBS}" -I
 BUILD_TYPE="${BUILD_TYPE:-presubmit}"
 TARGET_BRANCH="${TARGET_BRANCH:-main}"
 
+PACKAGE_DIRS="${PACKAGE_DIRS:-packages preview-packages}"
+
 if [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
     # Test all packages mode: evaluate coverage for every package in the repository
-    modified_packages=$(ls -d packages/*/ preview-packages/*/ 2>/dev/null | cut -d/ -f1,2 | sort -u)
+    modified_packages=$(for dir in ${PACKAGE_DIRS}; do ls -d ${dir}/*/ 2>/dev/null; done | cut -d/ -f1,2 | sort -u)
 elif [[ "${BUILD_TYPE}" == "presubmit" ]]; then
     # Presubmit build: evaluate coverage only for packages modified relative to the target branch
-    modified_packages=$(git diff --name-only "origin/${TARGET_BRANCH}" -- packages preview-packages 2>/dev/null | cut -d/ -f1,2 | sort -u)
+    modified_packages=$(git diff --name-only "origin/${TARGET_BRANCH}" -- ${PACKAGE_DIRS} 2>/dev/null | cut -d/ -f1,2 | sort -u)
 else
     # Continuous build (post-merge on main): evaluate coverage for packages modified in the last commit
-    modified_packages=$(git diff --name-only HEAD~1 -- packages preview-packages 2>/dev/null | cut -d/ -f1,2 | sort -u)
+    modified_packages=$(git diff --name-only HEAD~1 -- ${PACKAGE_DIRS} 2>/dev/null | cut -d/ -f1,2 | sort -u)
 fi
 
 # Function to report coverage for a single package
@@ -63,7 +65,12 @@ report_package_coverage() {
     (
         # Find coverage databases belonging specifically to this package
         shopt -s nullglob
-        local pkg_files=("${RESULTS_DIR}/.coverage."*"."*"${pkg_name_clean}" "${RESULTS_DIR}"/*/".coverage."*"."*"${pkg_name_clean}")
+        local pkg_files=(
+            "${RESULTS_DIR}/.coverage."*"."${pkg_name_clean}
+            "${RESULTS_DIR}/.coverage."*"."${pkg_name_clean}"."*
+            "${RESULTS_DIR}"/*/".coverage."*"."${pkg_name_clean}
+            "${RESULTS_DIR}"/*/".coverage."*"."${pkg_name_clean}"."*
+        )
         shopt -u nullglob
 
         # Handle explicit skip via .coveragerc

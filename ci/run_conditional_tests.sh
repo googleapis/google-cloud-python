@@ -110,10 +110,7 @@ set -e
 # Now we have a fixed list, but we can change it to autodetect if
 # necessary.
 
-subdirs=(
-    packages
-    preview-packages
-)
+subdirs=(${PACKAGE_DIRS:-packages preview-packages})
 
 for subdir in ${subdirs[@]}; do
     for d in `ls -d ${subdir}/*/`; do

@@ -27,6 +27,20 @@ import json
 import math
 import sys
 
+
+def get_package_directories():
+    """Parses package directory roots from the PACKAGE_DIRS environment variable.
+
+    Defaults to ['packages', 'preview-packages'] if not set.
+    """
+    env_dirs = os.environ.get("PACKAGE_DIRS", "")
+    if env_dirs:
+        dirs = [d.strip() for d in env_dirs.replace('\n', ' ').split(' ') if d.strip()]
+        if dirs:
+            return dirs
+    return ["packages", "preview-packages"]
+
+
 def get_package_weights():
     """Parses package weights from the PACKAGE_WEIGHTS environment variable.
     Package weights represent the relative size of the test, where the weight
@@ -58,9 +72,9 @@ def get_packages():
     """Lists all package directories in the repository.
 
     Returns:
-        list: A sorted list of relative paths to all directories under 'packages/' and 'preview-packages/'.
+        list: A sorted list of relative paths to all directories under configured package roots.
     """
-    subdirs = ['packages', 'preview-packages']
+    subdirs = get_package_directories()
     packages = []
     for subdir in subdirs:
         if not os.path.exists(subdir):
@@ -104,13 +118,16 @@ def get_packages_to_test():
         # If change detection fails, fall back to all packages
         return all_packages
 
-    to_test = []
-    for pkg in all_packages:
-        # Check if any changed file starts with the package path
-        if any(f.startswith(pkg) for f in changed_files):
-            to_test.append(pkg)
+    package_dirs = set(get_package_directories())
+    to_test = set()
+    for f in changed_files:
+        parts = f.split('/')
+        if len(parts) >= 2 and parts[0] in package_dirs:
+            pkg = f"{parts[0]}/{parts[1]}/"
+            if pkg in all_packages:
+                to_test.add(pkg)
 
-    return to_test
+    return sorted(to_test)
 
 
 def group_packages(packages):
@@ -172,9 +189,10 @@ def group_packages(packages):
 
         def format_pkg_name(pkg):
             clean = pkg.strip('/')
-            if clean.startswith('preview-packages/'):
+            parts = clean.split('/')
+            if len(parts) > 1 and parts[0] != 'packages':
                 return clean
-            return clean.split('/')[-1]
+            return parts[-1]
 
         # Calculate contiguous range description
         first_pkg = format_pkg_name(shard_packages[0])
