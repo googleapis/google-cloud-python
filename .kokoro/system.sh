@@ -67,9 +67,6 @@ run_package_test() {
   # 🪤 TRAP: Ensure cleanup of THIS specific temp dir on exit of this subshell
   trap 'rm -rf "$gcloud_config_dir"' EXIT
 
-
-
-
   case "${package_name}" in
     "google-auth")
       # Copy files needed for google-auth system tests
@@ -91,10 +88,11 @@ run_package_test() {
       fi
       ;;
     "google-cloud-dns")
+      # EXPERIMENTAL: Force running all system sessions to test mixed results. This will be reverted
+      # before merge. You can safely ignore it.
       PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
       GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/service-account.json"
       NOX_FILE="noxfile.py"
-      # EXPERIMENTAL: Force running all system sessions to test mixed results
       NOX_SESSION="system"
       ;;
     *)
