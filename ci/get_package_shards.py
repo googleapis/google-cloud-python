@@ -133,6 +133,49 @@ def get_packages_to_test():
     return {name: all_packages[name] for name in to_test_names}
 
 
+def find_optimal_max_shard_weight(pkg_items, max_shards):
+    """Calculates the tightest workload ceiling per shard to keep test shards balanced.
+
+    When packing packages in alphabetical order, heavy packages can cause preceding
+    shards to be under-utilized. This method addresses that by determining the ideal
+    target based on the package weights.
+
+    Args:
+        pkg_items (list): Packages to shard, each formatted as (name, paths, weight).
+        max_shards (int): Maximum number of test shards available.
+
+    Returns:
+        int: The ideal target workload limit per shard.
+    """
+    if not pkg_items:
+        return 0
+
+    low = max(item[2] for item in pkg_items)
+    high = sum(item[2] for item in pkg_items)
+
+    def can_partition(max_w):
+        count = 1
+        current_w = 0
+        for _, _, w in pkg_items:
+            if current_w + w > max_w:
+                count += 1
+                current_w = w
+            else:
+                current_w += w
+        return count <= max_shards
+
+    best_max = high
+    while low <= high:
+        mid = (low + high) // 2
+        if can_partition(mid):
+            best_max = mid
+            high = mid - 1
+        else:
+            low = mid + 1
+
+    return best_max
+
+
 def group_packages(packages_map):
     """Groups packages by package name into balanced shards.
 
@@ -161,24 +204,22 @@ def group_packages(packages_map):
         pkg_items.append((name, paths, weight))
         total_weight += weight
 
-    # Dynamically determine target weight to balance across max shards.
     max_shards = int(os.environ.get("MAX_SHARDS", 16))
-    target_weight = max(10, math.ceil(total_weight / max_shards))
+    best_max = find_optimal_max_shard_weight(pkg_items, max_shards)
 
     shards_list = []
     current_shard_items = []
     current_shard_weight = 0
 
-    # Pack packages alphabetically by package name.
-    for name, paths, weight in pkg_items:
-        # If adding this package would exceed target weight AND we haven't reached the 
-        # shard limit, start a new shard. Otherwise, keep "stuffing" the current one.
-        if current_shard_items and (current_shard_weight + weight > target_weight) and len(shards_list) < max_shards - 1:
+    # Pack packages alphabetically by package name respecting best_max.
+    for item in pkg_items:
+        name, paths, weight = item
+        if current_shard_items and (current_shard_weight + weight > best_max) and len(shards_list) < max_shards - 1:
             shards_list.append(current_shard_items)
-            current_shard_items = [(name, paths, weight)]
+            current_shard_items = [item]
             current_shard_weight = weight
         else:
-            current_shard_items.append((name, paths, weight))
+            current_shard_items.append(item)
             current_shard_weight += weight
 
     if current_shard_items:
