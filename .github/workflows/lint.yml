@@ -25,7 +25,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       is_full_run: ${{ steps.check-label.outputs.is_full_run }}
     env:
-      MAX_SHARDS: 5
+      MAX_SHARDS: 6
     steps:
     - name: Checkout
       uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
@@ -115,7 +115,7 @@ jobs:
       fail-fast: true
       matrix:
         package_shard: ${{ fromJson(needs.initialize.outputs.matrix) }}
-    name: ${{ format('mypy ({0})', matrix.package_shard.description) }}
+    name: ${{ matrix.package_shard.is_sharded && format('mypy ({0})', matrix.package_shard.name) || format('mypy ({0})', matrix.package_shard.description) }}
     steps:
     - name: Checkout
       uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
@@ -144,13 +144,13 @@ jobs:
       run: |
         ci/run_conditional_tests.sh
 
-  mypy-result:
+  mypy-status:
     if: always()
     needs: [initialize, mypy-shard]
     runs-on: ubuntu-latest
-    name: mypy
+    name: mypy-status
     steps:
-    - name: Check mypy status
+    - name: Check mypy job status
       run: |
         if [[ "${{ needs['mypy-shard'].result }}" != "success" && "${{ needs['mypy-shard'].result }}" != "skipped" ]]; then
           echo "mypy failed with result: ${{ needs['mypy-shard'].result }}"
