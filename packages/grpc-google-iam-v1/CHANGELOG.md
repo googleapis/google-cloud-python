@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grpc-google-iam-v1/#history
 
+## [0.14.5](https://github.com/googleapis/google-cloud-python/compare/grpc-google-iam-v1-v0.14.4...grpc-google-iam-v1-v0.14.5) (2026-07-30)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+
 ## [0.14.3](https://github.com/googleapis/google-cloud-python/compare/grpc-google-iam-v1-v0.14.2...grpc-google-iam-v1-v0.14.3) (2025-10-15)
 
 
