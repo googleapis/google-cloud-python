@@ -26,7 +26,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       is_full_run: ${{ steps.check-label.outputs.is_full_run }}
     env:
-      MAX_SHARDS: 20
+      MAX_SHARDS: 16
       # Define weights for long-running unit tests to balance shard execution time
       # Each weight is roughly 1 minute of expected execution time
       # Default for unset packages is 1
