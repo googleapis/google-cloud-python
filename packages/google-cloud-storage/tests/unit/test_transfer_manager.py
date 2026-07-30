@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import concurrent.futures
+import io
 import os
 import pickle
 import tempfile
+import threading
 
 import mock
 import pytest
@@ -114,6 +117,7 @@ def test_upload_many_passes_concurrency_options():
         mock.patch("concurrent.futures.ThreadPoolExecutor") as pool_patch,
         mock.patch("concurrent.futures.wait") as wait_patch,
     ):
+        wait_patch.return_value = ({pool_patch.return_value.submit.return_value}, set())
         transfer_manager.upload_many(
             FILE_BLOB_PAIRS,
             deadline=DEADLINE,
@@ -135,6 +139,7 @@ def test_threads_deprecation_with_upload():
         mock.patch("concurrent.futures.ThreadPoolExecutor") as pool_patch,
         mock.patch("concurrent.futures.wait") as wait_patch,
     ):
+        wait_patch.return_value = ({pool_patch.return_value.submit.return_value}, set())
         with pytest.warns():
             transfer_manager.upload_many(
                 FILE_BLOB_PAIRS, deadline=DEADLINE, threads=MAX_WORKERS
@@ -187,6 +192,31 @@ def test_upload_many_raises_exceptions():
         transfer_manager.upload_many(
             FILE_BLOB_PAIRS, raise_exception=True, worker_type=transfer_manager.THREAD
         )
+
+
+def test_upload_many_raises_timeout_error_when_deadline_exceeded():
+    # Regression test: a stuck upload must not make upload_many hang past the
+    # deadline. The worker blocks until released; the deadline should fire first
+    # and raise, rather than the executor's shutdown waiting for the worker.
+    release = threading.Event()
+
+    def blocking_upload(*args, **kwargs):
+        # Bounded so a regression fails fast (DID NOT RAISE) instead of hanging.
+        release.wait(timeout=30)
+
+    mock_blob = mock.Mock(spec=Blob)
+    mock_blob._prep_and_do_upload.side_effect = blocking_upload
+
+    try:
+        with pytest.raises(concurrent.futures.TimeoutError):
+            transfer_manager.upload_many(
+                [(io.BytesIO(b"data"), mock_blob)],
+                worker_type=transfer_manager.THREAD,
+                deadline=0.1,
+            )
+    finally:
+        # Let the background worker thread finish.
+        release.set()
 
 
 def test_upload_many_suppresses_412_with_skip_if_exists():
