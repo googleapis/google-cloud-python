@@ -123,6 +123,8 @@ jobs:
     - name: Pre-cache heavy dependencies (grpcio)
       if: matrix.python == '3.15'
       run: |
+        # Create the directory so uv doesn't crash if there is a `cache miss`
+        mkdir -p .uv-wheel-cache
         # Download and compile grpcio sequentially so that parallel test workers
         # immediately hit the warm cache instead of deadlocking on compilation.
         uv pip install --system grpcio --find-links .uv-wheel-cache
