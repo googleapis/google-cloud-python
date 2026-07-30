@@ -150,6 +150,8 @@ _compound_keywords = {
     selectable.CompoundSelect.INTERSECT_ALL: "INTERSECT ALL",
 }
 
+#: Maximum allowable character/byte length for Cloud Spanner STRING(MAX) and
+#: BYTES(MAX) DDL data types (2.5 MiB = 2,621,440 bytes).
 MAX_SIZE = 2621440
 _max_size = MAX_SIZE
 
