@@ -15,8 +15,10 @@
 import csv
 import json
 import os
+import subprocess
 import sys
 from unittest.mock import MagicMock, mock_open, patch
+
 
 import pytest
 
@@ -363,4 +365,378 @@ def test_run_mprofile(mock_context):
         run_mprofile("math")
     assert mock_proc.start.called
     assert mock_proc.join.called
+
+
+# =====================================================================
+# 5. ADDITIONAL COVERAGE TESTS FOR 100% COVERAGE
+# =====================================================================
+
+
+def test_run_worker_file_path_edge_cases(capsys):
+    dummy_module = "math"
+
+    mod_none = MagicMock()
+    mod_none.__file__ = None
+
+    mod_pyc = MagicMock()
+    mod_pyc.__file__ = "/mock/path/dummy.pyc"
+
+    mod_pyc_err = MagicMock()
+    mod_pyc_err.__file__ = "/mock/path/invalid.pyc"
+
+    mod_os_err = MagicMock()
+    mod_os_err.__file__ = "/mock/path/os_error.py"
+
+    fake_modules = {
+        "math": sys.modules["math"],
+        "mod_none": mod_none,
+        "mod_pyc": mod_pyc,
+        "mod_pyc_err": mod_pyc_err,
+        "mod_os_err": mod_os_err,
+    }
+
+    class CustomModulesDict(dict):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._call_count = 0
+
+        def keys(self):
+            self._call_count += 1
+            if self._call_count == 1:
+                return {"math"}
+            return {"math", "mod_none", "mod_pyc", "mod_pyc_err", "mod_os_err", "mod_key_err"}
+
+        def __getitem__(self, key):
+            if key == "mod_key_err":
+                raise KeyError("mod_key_err")
+            return super().__getitem__(key)
+
+    def mock_source_from_cache(path):
+        if "invalid" in path:
+            raise ValueError("Invalid pyc path")
+        return path.replace(".pyc", ".py")
+
+    def mock_open_func(file_path, *args, **kwargs):
+        if "os_error" in str(file_path):
+            raise OSError("Permission denied")
+        return mock_open(read_data="x = 1\n")(file_path, *args, **kwargs)
+
+    with patch("sys.modules", CustomModulesDict(fake_modules)), \
+         patch("importlib.util.source_from_cache", side_effect=mock_source_from_cache), \
+         patch("builtins.open", side_effect=mock_open_func), \
+         patch("profiler.importlib.invalidate_caches"):
+        run_worker(dummy_module, skip_line_count=False)
+        captured = capsys.readouterr()
+        assert "WARNING: Failed to read lines" in captured.err
+
+
+def test_run_worker_attribute_error(capsys):
+    dummy_module = "math"
+
+    class ModNoFile:
+        @property
+        def __file__(self):
+            raise AttributeError("No __file__")
+
+    class CustomModulesDict(dict):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._call_count = 0
+
+        def keys(self):
+            self._call_count += 1
+            if self._call_count == 1:
+                return {"math"}
+            return {"math", "mod_no_file"}
+
+    fake_modules = CustomModulesDict({"math": sys.modules["math"], "mod_no_file": ModNoFile()})
+    with patch("sys.modules", fake_modules), patch("profiler.importlib.invalidate_caches"):
+        run_worker(dummy_module, skip_line_count=False)
+
+
+def test_run_worker_and_parse_no_metrics_tag():
+    mock_process = MagicMock(stdout="No metrics tag output\n", stderr="some stderr")
+    with patch("subprocess.run", return_value=mock_process):
+        with pytest.raises(ValueError, match="Worker did not output metrics JSON"):
+            _run_worker_and_parse(["python", "profiler.py"])
+
+
+def test_run_worker_and_parse_invalid_json():
+    mock_process = MagicMock(stdout="__METRICS__:{invalid_json}\n", stderr="stderr info")
+    with patch("subprocess.run", return_value=mock_process):
+        with pytest.raises(json.JSONDecodeError):
+            _run_worker_and_parse(["python", "profiler.py"])
+
+
+def test_run_worker_and_parse_missing_key():
+    mock_process = MagicMock(stdout='__METRICS__:{"time_ms": 10.0}\n', stderr="")
+    with patch("subprocess.run", return_value=mock_process):
+        with pytest.raises(KeyError, match="Missing key"):
+            _run_worker_and_parse(["python", "profiler.py"])
+
+
+def test_calculate_percentiles():
+    from profiler import _calculate_percentiles
+    assert _calculate_percentiles([]) == (0.0, 0.0, 0.0)
+    assert _calculate_percentiles([5.0]) == (5.0, 5.0, 5.0)
+    p50, p90, p99 = _calculate_percentiles(list(range(100)))
+    assert p50 < p90 < p99
+
+
+def test_print_outputs_empty():
+    from profiler import _print_outputs
+    with patch("builtins.print") as mock_print:
+        _print_outputs("math", 1, 10, 500, [], 0, 0, 0, [], 0, 0, 0, [], 0, 0, 0)
+        assert mock_print.called
+
+
+def test_run_master_invalid_iterations():
+    with pytest.raises(ValueError, match="Number of iterations must be at least 1"):
+        run_master(0, "math")
+
+
+def test_run_master_non_linux_cpu_pinning(capsys):
+    with patch("sys.platform", "darwin"), patch("profiler._run_worker_and_parse") as mock_parse:
+        mock_parse.return_value = {
+            "loaded_modules": 5, "loaded_lines": 100, "time_ms": 10.0, "peak_ram_mb": 1.0, "rss_ram_mb": 1.0
+        }
+        run_master(1, "math", cpu=0, clear_cache=False)
+        captured = capsys.readouterr()
+        assert "WARNING: CPU pinning is only supported on Linux" in captured.out
+
+
+def test_run_master_taskset_not_found():
+    with patch("sys.platform", "linux"), patch("profiler._run_worker_and_parse", side_effect=FileNotFoundError):
+        with pytest.raises(FileNotFoundError):
+            run_master(1, "math", cpu=0, clear_cache=False)
+
+
+def test_run_master_called_process_error():
+    err = subprocess.CalledProcessError(1, ["cmd"], stderr="Worker crashed")
+    with patch("profiler._run_worker_and_parse", side_effect=err), patch("sys.stderr"):
+        with pytest.raises(subprocess.CalledProcessError):
+            run_master(1, "math", cpu=NO_CPU_PINNING, clear_cache=False)
+
+
+@patch("profiler._run_worker_and_parse")
+def test_run_master_diff_baseline_missing(mock_parse, capsys):
+    mock_parse.return_value = {
+        "loaded_modules": 5, "loaded_lines": 100, "time_ms": 10.0, "peak_ram_mb": 1.0, "rss_ram_mb": 1.0
+    }
+    code = run_master(1, "math", cpu=NO_CPU_PINNING, diff_baseline="/nonexistent/baseline.csv", clear_cache=False)
+    captured = capsys.readouterr()
+    assert "WARNING: Baseline CSV" in captured.out
+    assert code == 0
+
+
+@patch("profiler._run_worker_and_parse")
+def test_run_master_diff_baseline_exceeds_absolute_within_relative(mock_parse, tmp_path, capsys):
+    mock_parse.return_value = {
+        "loaded_modules": 5, "loaded_lines": 100, "time_ms": 110.0, "peak_ram_mb": 1.0, "rss_ram_mb": 1.0
+    }
+    baseline_file = tmp_path / "baseline.csv"
+    with open(baseline_file, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["Iteration", "Time (ms)", "RAM", "RSS"])
+        writer.writerow([1, 100.0, 1.0, 1.0])
+
+    code = run_master(1, "math", cpu=NO_CPU_PINNING, diff_baseline=str(baseline_file), diff_threshold=5.0, clear_cache=False)
+    captured = capsys.readouterr()
+    assert "SUCCESS: Import time regression" in captured.out
+    assert code == 0
+
+
+@patch("profiler._run_worker_and_parse")
+def test_run_master_diff_baseline_exceeds_both_thresholds(mock_parse, tmp_path, capsys):
+    mock_parse.return_value = {
+        "loaded_modules": 5, "loaded_lines": 100, "time_ms": 150.0, "peak_ram_mb": 1.0, "rss_ram_mb": 1.0
+    }
+    baseline_file = tmp_path / "baseline.csv"
+    with open(baseline_file, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["Iteration", "Time (ms)", "RAM", "RSS"])
+        writer.writerow([1, 100.0, 1.0, 1.0])
+
+    code = run_master(1, "math", cpu=NO_CPU_PINNING, diff_baseline=str(baseline_file), diff_threshold=5.0, clear_cache=False)
+    captured = capsys.readouterr()
+    assert "FAILURE: Import time regression" in captured.out
+    assert code == 1
+
+
+@patch("profiler._run_worker_and_parse")
+def test_run_master_fail_threshold_bypassed(mock_parse, tmp_path, capsys):
+    mock_parse.return_value = {
+        "loaded_modules": 5, "loaded_lines": 100, "time_ms": 200.0, "peak_ram_mb": 1.0, "rss_ram_mb": 1.0
+    }
+    baseline_file = tmp_path / "baseline.csv"
+    with open(baseline_file, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["Iteration", "Time (ms)", "RAM", "RSS"])
+        writer.writerow([1, 150.0, 1.0, 1.0])
+
+    code = run_master(1, "math", cpu=NO_CPU_PINNING, fail_threshold=100.0, diff_baseline=str(baseline_file), diff_threshold=100.0, clear_cache=False)
+    captured = capsys.readouterr()
+    assert "Bypassing absolute backstop failure" in captured.out
+    assert code == 0
+
+
+@patch("profiler._run_worker_and_parse")
+def test_run_master_fail_threshold_passed_and_failed(mock_parse, capsys):
+    # Test passed fail_threshold
+    mock_parse.return_value = {
+        "loaded_modules": 5, "loaded_lines": 100, "time_ms": 50.0, "peak_ram_mb": 1.0, "rss_ram_mb": 1.0
+    }
+    code_pass = run_master(1, "math", cpu=NO_CPU_PINNING, fail_threshold=100.0, clear_cache=False)
+    captured_pass = capsys.readouterr()
+    assert "SUCCESS: Median import time" in captured_pass.out
+    assert code_pass == 0
+
+    # Test failed fail_threshold
+    mock_parse.return_value = {
+        "loaded_modules": 5, "loaded_lines": 100, "time_ms": 200.0, "peak_ram_mb": 1.0, "rss_ram_mb": 1.0
+    }
+    code_fail = run_master(1, "math", cpu=NO_CPU_PINNING, fail_threshold=100.0, clear_cache=False)
+    captured_fail = capsys.readouterr()
+    assert "FAILURE: Median import time" in captured_fail.out
+    assert code_fail == 1
+
+
+@patch("subprocess.run")
+def test_run_trace_failed(mock_run, capsys):
+    from profiler import run_trace
+    mock_run.return_value = MagicMock(returncode=1, stdout="out", stderr="err")
+    with patch("builtins.open", mock_open()):
+        run_trace("math")
+    captured = capsys.readouterr()
+    assert "WARNING: Import failed" in captured.err
+
+
+@patch("subprocess.run")
+def test_run_cprofile_failed(mock_run, capsys):
+    from profiler import run_cprofile
+    mock_run.return_value = MagicMock(returncode=1, stderr="cprofile err")
+    run_cprofile("math")
+    captured = capsys.readouterr()
+    assert "Error generating cProfile data" in captured.err
+
+
+def test_mprofile_worker():
+    from profiler import _mprofile_worker
+    with patch("builtins.print"):
+        _mprofile_worker("math")
+
+
+@patch("multiprocessing.get_context")
+def test_run_mprofile_failed(mock_context, capsys):
+    from profiler import run_mprofile
+    mock_proc = MagicMock(exitcode=1)
+    mock_context.return_value.Process.return_value = mock_proc
+    run_mprofile("math")
+    captured = capsys.readouterr()
+    assert "Error generating memory snapshot" in captured.err
+
+
+def test_find_module_from_package_metadata_init():
+    with patch("importlib.metadata.files", return_value=["foo/bar/__init__.py"]), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("foo-bar")
+        assert res == "foo.bar"
+
+
+def test_find_module_from_package_setuptools():
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["google", "google.cloud", "tests.dummy", "my_pkg"]), \
+         patch("os.path.isfile", return_value=True), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("my-pkg")
+        assert res == "my_pkg"
+
+
+
+def test_find_module_from_package_setuptools_not_file_and_exception():
+    def mock_isfile(path):
+        if "a_pkg" in path:
+            return False
+        return True
+
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["a_pkg", "my_pkg"]), \
+         patch("os.path.isfile", side_effect=mock_isfile), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("my-pkg")
+        assert res == "my_pkg"
+
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("setuptools.find_namespace_packages", side_effect=RuntimeError("setuptools fail")):
+        res = find_module_from_package("my-pkg")
+        assert res == "my.pkg"
+
+
+
+
+def test_find_module_from_package_exception_in_find_spec():
+    def mock_find_spec(mod):
+        raise Exception("Find spec error")
+
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("setuptools.find_namespace_packages", side_effect=Exception), \
+         patch("importlib.util.find_spec", side_effect=mock_find_spec):
+        res = find_module_from_package("foo-bar")
+        assert res == "foo.bar"
+
+
+def test_cli_main_options():
+    import runpy
+
+    profiler_path = profiler.__file__
+
+    # Test --module CLI
+    with patch("sys.argv", ["profiler.py", "--module=math", "--iterations=1"]), \
+         patch("profiler._run_worker_and_parse", return_value={"loaded_modules": 1, "loaded_lines": 10, "time_ms": 1.0, "peak_ram_mb": 1.0, "rss_ram_mb": 1.0}), \
+         patch("builtins.print"):
+        with pytest.raises(SystemExit) as exc:
+            runpy.run_path(profiler_path, run_name="__main__")
+        assert exc.value.code == 0
+
+    # Test --package CLI
+    with patch("sys.argv", ["profiler.py", "--package=math", "--iterations=1"]), \
+         patch("profiler._run_worker_and_parse", return_value={"loaded_modules": 1, "loaded_lines": 10, "time_ms": 1.0, "peak_ram_mb": 1.0, "rss_ram_mb": 1.0}), \
+         patch("builtins.print"):
+        with pytest.raises(SystemExit) as exc:
+            runpy.run_path(profiler_path, run_name="__main__")
+        assert exc.value.code == 0
+
+    # Test --worker CLI
+    with patch("sys.argv", ["profiler.py", "--module=math", "--worker", "--skip-line-count"]), \
+         patch("builtins.print"):
+        runpy.run_path(profiler_path, run_name="__main__")
+
+    # Test --trace CLI
+    with patch("sys.argv", ["profiler.py", "--module=math", "--trace"]), \
+         patch("subprocess.run") as mock_run, \
+         patch("builtins.open", mock_open()), \
+         patch("builtins.print"):
+        mock_run.return_value = MagicMock(returncode=0, stderr="")
+        runpy.run_path(profiler_path, run_name="__main__")
+
+    # Test --cprofile CLI
+    with patch("sys.argv", ["profiler.py", "--module=math", "--cprofile"]), \
+         patch("subprocess.run") as mock_run, \
+         patch("pstats.Stats"), \
+         patch("builtins.print"):
+        mock_run.return_value = MagicMock(returncode=0)
+        runpy.run_path(profiler_path, run_name="__main__")
+
+    # Test --mprofile CLI
+    with patch("sys.argv", ["profiler.py", "--module=math", "--mprofile"]), \
+         patch("multiprocessing.get_context") as mock_ctx, \
+         patch("builtins.print"):
+        mock_proc = MagicMock(exitcode=0)
+        mock_ctx.return_value.Process.return_value = mock_proc
+        runpy.run_path(profiler_path, run_name="__main__")
+
+
 
