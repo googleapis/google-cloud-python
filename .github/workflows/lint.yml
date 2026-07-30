@@ -24,6 +24,14 @@ jobs:
       with:
         fetch-depth: 2
         persist-credentials: false
+    - name: Check for unit_test:all_packages label
+      id: check-label
+      run: |
+        if [[ "${{ contains(github.event.pull_request.labels.*.name, 'unit_test:all_packages') }}" == "true" ]]; then
+          echo "is_full_run=true" >> $GITHUB_OUTPUT
+        else
+          echo "is_full_run=false" >> $GITHUB_OUTPUT
+        fi
     - name: Setup Python
       uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
       with:
@@ -36,6 +44,7 @@ jobs:
       env:
         BUILD_TYPE: presubmit
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
+        TEST_ALL_PACKAGES: ${{ steps.check-label.outputs.is_full_run }}
         TEST_TYPE: lint
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
         PY_VERSION: "unused"
@@ -45,6 +54,7 @@ jobs:
       env:
         BUILD_TYPE: presubmit
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
+        TEST_ALL_PACKAGES: ${{ steps.check-label.outputs.is_full_run }}
         TEST_TYPE: lint_setup_py
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
         PY_VERSION: "unused"
@@ -61,6 +71,14 @@ jobs:
       with:
         fetch-depth: 2
         persist-credentials: false
+    - name: Check for unit_test:all_packages label
+      id: check-label
+      run: |
+        if [[ "${{ contains(github.event.pull_request.labels.*.name, 'unit_test:all_packages') }}" == "true" ]]; then
+          echo "is_full_run=true" >> $GITHUB_OUTPUT
+        else
+          echo "is_full_run=false" >> $GITHUB_OUTPUT
+        fi
     - name: Setup Python
       uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
       with:
@@ -73,6 +91,7 @@ jobs:
       env:
         BUILD_TYPE: presubmit
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
+        TEST_ALL_PACKAGES: ${{ steps.check-label.outputs.is_full_run }}
         TEST_TYPE: mypy
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
         PY_VERSION: "unused"

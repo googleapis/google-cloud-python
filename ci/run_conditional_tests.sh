@@ -85,7 +85,10 @@ if [ -n "${PACKAGE_LIST}" ]; then
     exit ${RETVAL}
 fi
 
-if [[ ${BUILD_TYPE} == "presubmit" ]]; then
+if [ "${TEST_ALL_PACKAGES}" = "true" ]; then
+    GIT_DIFF_ARG=""
+
+elif [[ ${BUILD_TYPE} == "presubmit" ]]; then
     # For presubmit build, we want to know the difference from the target branch.
     TARGET_BRANCH="${TARGET_BRANCH:-main}"
     if [ -n "${TARGET_BRANCH}" ]; then
