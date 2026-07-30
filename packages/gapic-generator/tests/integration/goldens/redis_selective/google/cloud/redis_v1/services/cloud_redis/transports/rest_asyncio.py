@@ -675,9 +675,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseCreateInstance._get_http_options()
-
             request, metadata = await self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -808,9 +807,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseDeleteInstance._get_http_options()
-
             request, metadata = await self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -938,9 +936,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseGetInstance._get_http_options()
-
             request, metadata = await self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -1070,9 +1067,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseListInstances._get_http_options()
-
             request, metadata = await self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -1204,9 +1200,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseUpdateInstance._get_http_options()
-
             request, metadata = await self._interceptor.pre_update_instance(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -1423,9 +1418,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = await self._interceptor.pre_get_location(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -1551,9 +1545,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = await self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -1676,9 +1669,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = await self._interceptor.pre_cancel_operation(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -1778,9 +1770,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = await self._interceptor.pre_delete_operation(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -1883,9 +1874,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = await self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2011,9 +2001,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = await self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2140,9 +2129,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseWaitOperation._get_http_options()
-
             request, metadata = await self._interceptor.pre_wait_operation(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(

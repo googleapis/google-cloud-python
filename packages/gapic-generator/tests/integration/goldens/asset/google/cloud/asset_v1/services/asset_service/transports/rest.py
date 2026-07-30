@@ -1235,9 +1235,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_analyze_iam_policy(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -1366,9 +1365,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_http_options()
-
             request, metadata = self._interceptor.pre_analyze_iam_policy_longrunning(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -1492,9 +1490,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_http_options()
-
             request, metadata = self._interceptor.pre_analyze_move(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -1620,9 +1617,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_http_options()
-
             request, metadata = self._interceptor.pre_analyze_org_policies(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -1749,9 +1745,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_http_options()
-
             request, metadata = self._interceptor.pre_analyze_org_policy_governed_assets(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -1878,9 +1873,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_http_options()
-
             request, metadata = self._interceptor.pre_analyze_org_policy_governed_containers(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2003,9 +1997,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_get_assets_history(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2132,9 +2125,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_get_effective_iam_policies(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2266,9 +2258,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseCreateFeed._get_http_options()
-
             request, metadata = self._interceptor.pre_create_feed(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2394,9 +2385,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_http_options()
-
             request, metadata = self._interceptor.pre_create_saved_query(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2515,9 +2505,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_feed(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2606,9 +2595,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_saved_query(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2705,9 +2693,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseExportAssets._get_http_options()
-
             request, metadata = self._interceptor.pre_export_assets(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2836,9 +2823,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseGetFeed._get_http_options()
-
             request, metadata = self._interceptor.pre_get_feed(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2963,9 +2949,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_http_options()
-
             request, metadata = self._interceptor.pre_get_saved_query(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3088,9 +3073,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseListAssets._get_http_options()
-
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3213,9 +3197,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseListFeeds._get_http_options()
-
             request, metadata = self._interceptor.pre_list_feeds(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3338,9 +3321,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_http_options()
-
             request, metadata = self._interceptor.pre_list_saved_queries(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3464,9 +3446,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseQueryAssets._get_http_options()
-
             request, metadata = self._interceptor.pre_query_assets(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3589,9 +3570,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_http_options()
-
             request, metadata = self._interceptor.pre_search_all_iam_policies(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3714,9 +3694,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_http_options()
-
             request, metadata = self._interceptor.pre_search_all_resources(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3848,9 +3827,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_http_options()
-
             request, metadata = self._interceptor.pre_update_feed(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3976,9 +3954,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_http_options()
-
             request, metadata = self._interceptor.pre_update_saved_query(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -4289,9 +4266,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(

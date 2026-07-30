@@ -2206,9 +2206,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCreateChannel._get_http_options()
-
             request, metadata = self._interceptor.pre_create_channel(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2334,9 +2333,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_http_options()
-
             request, metadata = self._interceptor.pre_create_channel_connection(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2462,9 +2460,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCreateEnrollment._get_http_options()
-
             request, metadata = self._interceptor.pre_create_enrollment(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2590,9 +2587,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_http_options()
-
             request, metadata = self._interceptor.pre_create_google_api_source(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2718,9 +2714,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCreateMessageBus._get_http_options()
-
             request, metadata = self._interceptor.pre_create_message_bus(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2846,9 +2841,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCreatePipeline._get_http_options()
-
             request, metadata = self._interceptor.pre_create_pipeline(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -2974,9 +2968,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCreateTrigger._get_http_options()
-
             request, metadata = self._interceptor.pre_create_trigger(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3101,9 +3094,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteChannel._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_channel(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3228,9 +3220,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_channel_connection(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3355,9 +3346,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteEnrollment._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_enrollment(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3482,9 +3472,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_google_api_source(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3609,9 +3598,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteMessageBus._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_message_bus(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3736,9 +3724,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeletePipeline._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_pipeline(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3863,9 +3850,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteTrigger._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_trigger(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -3995,9 +3981,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetChannel._get_http_options()
-
             request, metadata = self._interceptor.pre_get_channel(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -4128,9 +4113,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetChannelConnection._get_http_options()
-
             request, metadata = self._interceptor.pre_get_channel_connection(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -4260,9 +4244,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetEnrollment._get_http_options()
-
             request, metadata = self._interceptor.pre_get_enrollment(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -4389,9 +4372,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetGoogleApiSource._get_http_options()
-
             request, metadata = self._interceptor.pre_get_google_api_source(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -4523,9 +4505,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_http_options()
-
             request, metadata = self._interceptor.pre_get_google_channel_config(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -4657,9 +4638,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetMessageBus._get_http_options()
-
             request, metadata = self._interceptor.pre_get_message_bus(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -4785,9 +4765,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetPipeline._get_http_options()
-
             request, metadata = self._interceptor.pre_get_pipeline(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -4913,9 +4892,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetProvider._get_http_options()
-
             request, metadata = self._interceptor.pre_get_provider(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -5041,9 +5019,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetTrigger._get_http_options()
-
             request, metadata = self._interceptor.pre_get_trigger(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -5169,9 +5146,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListChannelConnections._get_http_options()
-
             request, metadata = self._interceptor.pre_list_channel_connections(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -5295,9 +5271,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListChannels._get_http_options()
-
             request, metadata = self._interceptor.pre_list_channels(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -5421,9 +5396,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListEnrollments._get_http_options()
-
             request, metadata = self._interceptor.pre_list_enrollments(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -5549,9 +5523,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListGoogleApiSources._get_http_options()
-
             request, metadata = self._interceptor.pre_list_google_api_sources(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -5678,9 +5651,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_http_options()
-
             request, metadata = self._interceptor.pre_list_message_bus_enrollments(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -5806,9 +5778,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListMessageBuses._get_http_options()
-
             request, metadata = self._interceptor.pre_list_message_buses(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -5934,9 +5905,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListPipelines._get_http_options()
-
             request, metadata = self._interceptor.pre_list_pipelines(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -6060,9 +6030,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListProviders._get_http_options()
-
             request, metadata = self._interceptor.pre_list_providers(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -6186,9 +6155,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListTriggers._get_http_options()
-
             request, metadata = self._interceptor.pre_list_triggers(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -6316,9 +6284,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseUpdateChannel._get_http_options()
-
             request, metadata = self._interceptor.pre_update_channel(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -6444,9 +6411,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseUpdateEnrollment._get_http_options()
-
             request, metadata = self._interceptor.pre_update_enrollment(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -6572,9 +6538,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_http_options()
-
             request, metadata = self._interceptor.pre_update_google_api_source(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -6706,9 +6671,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_http_options()
-
             request, metadata = self._interceptor.pre_update_google_channel_config(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -6836,9 +6800,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseUpdateMessageBus._get_http_options()
-
             request, metadata = self._interceptor.pre_update_message_bus(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -6964,9 +6927,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseUpdatePipeline._get_http_options()
-
             request, metadata = self._interceptor.pre_update_pipeline(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -7092,9 +7054,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseUpdateTrigger._get_http_options()
-
             request, metadata = self._interceptor.pre_update_trigger(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -7531,9 +7492,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -7655,9 +7615,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -7779,9 +7738,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetIamPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -7904,9 +7862,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseSetIamPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -8029,9 +7986,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseTestIamPermissions._get_http_options()
-
             request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -8151,9 +8107,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -8249,9 +8204,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -8350,9 +8304,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -8474,9 +8427,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(

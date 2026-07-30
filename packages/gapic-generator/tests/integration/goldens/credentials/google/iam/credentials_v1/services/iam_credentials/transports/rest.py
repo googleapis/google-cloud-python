@@ -414,9 +414,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             """
 
             http_options = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_http_options()
-
             request, metadata = self._interceptor.pre_generate_access_token(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -540,9 +539,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             """
 
             http_options = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_http_options()
-
             request, metadata = self._interceptor.pre_generate_id_token(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -666,9 +664,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             """
 
             http_options = _BaseIAMCredentialsRestTransport._BaseSignBlob._get_http_options()
-
             request, metadata = self._interceptor.pre_sign_blob(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
@@ -792,9 +789,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             """
 
             http_options = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_http_options()
-
             request, metadata = self._interceptor.pre_sign_jwt(request, metadata)
-            transcoded_request, body, query_params = rest_helpers.transcode_request(
+            transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
                 required_fields_default_values=getattr(
