@@ -29,10 +29,10 @@ scripts_dir = pathlib.Path(__file__).parent
 if str(scripts_dir) not in sys.path:
     sys.path.insert(0, str(scripts_dir))
 
-from bigquery_generator import constants, file_generator, yaml_parser
+from bigquery_generator import constants, file_generator, yaml_parser  # noqa: E402
 
 
-def main():
+def main() -> None:
     modules = []
 
     for yaml_file in sorted(constants.DATA_DIR.glob("**/*.yaml")):

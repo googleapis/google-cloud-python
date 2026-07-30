@@ -17,6 +17,8 @@
 Renders jinja template with module data parsed from yaml.
 """
 
+from typing import Sequence
+
 import jinja2
 
 from . import constants, data_models
@@ -82,7 +84,7 @@ def _validate_type(yaml_type: str) -> None:
     raise ValueError(f"Unsupported type: {yaml_type}")
 
 
-def _validate_types(impls: list[data_models.BQFuncImpl]) -> None:
+def _validate_types(impls: Sequence[data_models.BQFuncImpl]) -> None:
     for impl in impls:
         for arg in impl.args:
             _validate_type(arg.value)
@@ -137,9 +139,9 @@ def _get_bigframes_func_args(
     Coalesces arguments from all the signatures of this function,
     and return them in the order of appearance in the yaml file
     """
-    args_by_name = {}
-    arg_order = []
-    arg_appearances = {}
+    args_by_name: dict[str, data_models.BigFramesFuncArgBuilder] = {}
+    arg_order: list[str] = []
+    arg_appearances: dict[str, int] = {}
     for impl in bq_func.impls:
         seen_in_impl = set()
         for bq_func_arg in impl.args:
@@ -223,8 +225,8 @@ def render_license() -> str:
 def render_operation(
     bq_module: data_models.BQModule,
 ) -> str:
-    ops = []
-    functions = []
+    ops: list[data_models.BigFramesOp] = []
+    functions: list[data_models.BigFramesFunc] = []
 
     for bq_func in bq_module.functions:
         ops.append(_to_bigframes_op(bq_func))
@@ -242,7 +244,7 @@ def render_tests(bq_module: data_models.BQModule) -> str:
     import_path = "bigframes.operations.googlesql." + ".".join(
         bq_module.module_path.parts
     )
-    functions = []
+    functions: list[data_models.BigFramesFunc] = []
     for bq_func in bq_module.functions:
         functions.append(_to_bigframes_func(bq_func))
 
@@ -263,20 +265,22 @@ def _create_accessor_class_name(namespace: tuple[str, ...], prefix: str = "") ->
     return f"{prefix}{''.join(camel_parts)}SeriesAccessor"
 
 
-def render_accessor(bq_modules: list[data_models.BQModule]) -> tuple[str, str, str]:
+def render_accessor(
+    bq_modules: Sequence[data_models.BQModule],
+) -> tuple[str, str, str]:
     """
     Returns the content for core accessor, pandas accessor and BF accessor
     """
 
-    namespaces = set()
+    namespaces: set[tuple[str, ...]] = set()
     for bq_module in bq_modules:
         for i in range(len(bq_module.namespace) + 1):
             namespaces.add(bq_module.namespace[:i])
 
     sorted_namespaces = sorted(list(namespaces), key=lambda ns: (len(ns), ns))
 
-    accessors = []
-    accessor_lookup_table = {}
+    accessors: list[data_models.Accessor] = []
+    accessor_lookup_table: dict[tuple[str, ...], data_models.Accessor] = {}
     for namespace in sorted_namespaces:
         accessor = data_models.Accessor(
             class_name=_create_accessor_class_name(namespace),

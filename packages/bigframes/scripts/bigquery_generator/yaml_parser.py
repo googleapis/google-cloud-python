@@ -52,7 +52,7 @@ def parse_yaml(yaml_file: pathlib.Path) -> data_models.BQModule:
     with open(yaml_file, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
-    functions = []
+    functions: tuple[data_models.BQFunc, ...] = ()
     if isinstance(data, dict) and "scalar_functions" in data:
         functions = tuple(
             _build_func_ir(func_data) for func_data in data["scalar_functions"]

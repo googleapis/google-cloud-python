@@ -169,7 +169,7 @@ class BigFramesFuncArgBuilder:
     optional: bool
     keyword_only: bool
 
-    def build(self):
+    def build(self) -> BigFramesFuncArg:
         return BigFramesFuncArg(
             name=self.name,
             types=frozenset(self.types),
@@ -183,7 +183,7 @@ class BigFramesFunc:
     name: str
     op_name: str
     description: str
-    args: tuple[BigFramesFuncArg]
+    args: tuple[BigFramesFuncArg, ...]
     series_accessor_arg: str | None
     import_module: str | None = None
 
@@ -192,7 +192,7 @@ class BigFramesFunc:
 class Accessor:
     """
     This class is designed to be mutable because it has a recursive data structure. A mutable class
-    makes it easier to build the tree from the top.
+    makes it easier to build the trees from the top.
     """
 
     class_name: str

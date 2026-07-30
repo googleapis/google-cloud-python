@@ -15,11 +15,12 @@
 import pathlib
 import subprocess
 import sys
+from typing import Sequence
 
 from . import constants, data_models, template_renderer
 
 
-def _ensure_init_py(directory: pathlib.Path, limit_dir: pathlib.Path):
+def _ensure_init_py(directory: pathlib.Path, limit_dir: pathlib.Path) -> None:
     """Ensures __init__.py exists in the directory and its parents up to limit_dir."""
     curr = directory
     while curr != limit_dir and curr != curr.parent:
@@ -31,7 +32,9 @@ def _ensure_init_py(directory: pathlib.Path, limit_dir: pathlib.Path):
         curr = curr.parent
 
 
-def _write_file(content: str, output_file: pathlib.Path, limit_dir: pathlib.Path):
+def _write_file(
+    content: str, output_file: pathlib.Path, limit_dir: pathlib.Path
+) -> None:
     output_file.parent.mkdir(parents=True, exist_ok=True)
     _ensure_init_py(output_file.parent, limit_dir)
 
@@ -40,7 +43,7 @@ def _write_file(content: str, output_file: pathlib.Path, limit_dir: pathlib.Path
     print(f"  Generated {output_file}")
 
 
-def _run_ruff():
+def _run_ruff() -> None:
     targets = [
         constants.OUTPUT_DIR,
         constants.TEST_OUTPUT_DIR,
@@ -71,7 +74,7 @@ def _run_ruff():
     )
 
 
-def _generate_op_defs(bq_module: data_models.BQModule):
+def _generate_op_defs(bq_module: data_models.BQModule) -> None:
     if not bq_module.functions:
         # If there are no function definitions, do not generate file without Python code.
         return
@@ -84,7 +87,7 @@ def _generate_op_defs(bq_module: data_models.BQModule):
     _write_file(content, output_file, constants.OUTPUT_DIR.parent)
 
 
-def _generate_tests(bq_module: data_models.BQModule):
+def _generate_tests(bq_module: data_models.BQModule) -> None:
     if not bq_module.functions:
         # If there are no function definitions, do not generate file without Python code.
         return
@@ -97,7 +100,7 @@ def _generate_tests(bq_module: data_models.BQModule):
     _write_file(content, output_file, constants.TEST_OUTPUT_DIR.parent)
 
 
-def _generate_accesor(bq_modules: list[data_models.BQModule]):
+def _generate_accesor(bq_modules: Sequence[data_models.BQModule]) -> None:
     (core_content, pd_content, bf_content) = template_renderer.render_accessor(
         bq_modules
     )
@@ -118,7 +121,7 @@ def _generate_accesor(bq_modules: list[data_models.BQModule]):
     _write_file(bf_content, bf_output_file, constants.CODE_ROOT)
 
 
-def generate(bq_modules: list[data_models.BQModule]):
+def generate(bq_modules: Sequence[data_models.BQModule]) -> None:
     for bq_module in bq_modules:
         _generate_op_defs(bq_module)
         _generate_tests(bq_module)
