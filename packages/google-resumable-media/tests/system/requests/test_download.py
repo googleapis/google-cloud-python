@@ -268,7 +268,6 @@ class TestDownload(object):
 
     @pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
     def test_download_full(self, add_files, authorized_transport, checksum):
-        assert False, "Intentional failure to verify ad-hoc testing behavior"
         for info in ALL_FILES:
             actual_contents = self._get_contents(info)
             blob_name = get_blob_name(info)
