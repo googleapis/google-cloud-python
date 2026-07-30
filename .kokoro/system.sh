@@ -165,6 +165,12 @@ reap_parallel_results() {
     echo "=================================================="
     echo "@FAILED - DETAILED LOGS FOR FAILED PACKAGES"
     echo "=================================================="
+    # List failed packages
+    for failed in "$LOG_DIR"/*.failed; do
+      if [ -f "$failed" ]; then
+        basename "$failed" .failed
+      fi
+    done
     for failed in "$LOG_DIR"/*.failed; do
       if [ -f "$failed" ]; then
         local pkg=$(basename "$failed" .failed)
@@ -188,6 +194,10 @@ reap_parallel_results() {
     echo "=================================================="
     echo "@SUCCEEDED - DETAILED LOGS FOR SUCCEEDED PACKAGES"
     echo "=================================================="
+    # List succeeded packages
+    for pkg in "${succeeded_packages[@]}"; do
+      echo "$pkg"
+    done
     for pkg in "${succeeded_packages[@]}"; do
       echo "--------------------------------------------------"
       echo "@PACKAGE (SUCCEEDED): $pkg"
