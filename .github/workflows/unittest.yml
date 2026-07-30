@@ -102,8 +102,9 @@ jobs:
         # https://github.com/googleapis/google-cloud-python/issues/17459
         DEFAULT_FAIL_UNDER: 99
       run: |
+        target_ref="${{ steps.target.outputs.branch }}"
         # Find all modified packages
-        modified_packages=$(git diff --name-only HEAD~1 -- packages preview-packages | cut -d/ -f1,2 | sort -u)
+        modified_packages=$(git diff --name-only ${target_ref}...HEAD -- packages preview-packages | cut -d/ -f1,2 | sort -u)
 
         existing_modified_packages=()
         for pkg in ${modified_packages}; do
@@ -132,7 +133,7 @@ jobs:
           fi
 
           # Find all modified packages
-          modified_packages=$(git diff --name-only HEAD~1 -- packages preview-packages | cut -d/ -f1,2 | sort -u)
+          modified_packages=$(git diff --name-only ${target_ref}...HEAD -- packages preview-packages | cut -d/ -f1,2 | sort -u)
 
           failed_packages=()
           passed_packages=()
