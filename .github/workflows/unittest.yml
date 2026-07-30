@@ -74,7 +74,8 @@ jobs:
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref || 'main' }}
       run: |
         git fetch origin $TARGET_BRANCH
-        echo "branch=origin/$TARGET_BRANCH" >> "$GITHUB_OUTPUT"
+        target_sha=$(git rev-parse FETCH_HEAD)
+        echo "sha=${target_sha}" >> "$GITHUB_OUTPUT"
     - name: Setup Python
       uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
       with:
@@ -82,10 +83,10 @@ jobs:
     - name: Set number of files changes in packages and preview-packages directories
       id: packages
       env:
-        TARGET_BRANCH_REF: ${{ steps.target.outputs.branch }}
+        TARGET_SHA: ${{ steps.target.outputs.sha }}
       run: |
-        git diff "$TARGET_BRANCH_REF"...HEAD -- packages preview-packages > /dev/null
-        num_files_changed=$(git diff "$TARGET_BRANCH_REF"...HEAD -- packages preview-packages | wc -l | tr -d ' ')
+        git diff "$TARGET_SHA"...HEAD -- packages preview-packages > /dev/null
+        num_files_changed=$(git diff "$TARGET_SHA"...HEAD -- packages preview-packages | wc -l | tr -d ' ')
         echo "num_files_changed=${num_files_changed}" >> "$GITHUB_OUTPUT"
     - name: Install coverage
       if: ${{ steps.packages.outputs.num_files_changed > 0 }}
@@ -103,9 +104,9 @@ jobs:
         # TODO: default to 100% coverage after next gapic-generator release
         # https://github.com/googleapis/google-cloud-python/issues/17459
         DEFAULT_FAIL_UNDER: 99
-        TARGET_BRANCH_REF: ${{ steps.target.outputs.branch }}
+        TARGET_SHA: ${{ steps.target.outputs.sha }}
       run: |
-        target_ref="$TARGET_BRANCH_REF"
+        target_ref="$TARGET_SHA"
         # Find all modified packages
         modified_packages=$(git diff --name-only ${target_ref}...HEAD -- packages preview-packages | cut -d/ -f1,2 | sort -u)
 
