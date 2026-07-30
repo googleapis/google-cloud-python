@@ -47,77 +47,105 @@ git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleap
 # A script file for running the test in a sub project.
 test_script="${PROJECT_ROOT}/ci/run_single_test.sh"
 
-if [[ ${BUILD_TYPE} == "presubmit" ]]; then
-    # For presubmit build, we want to know the difference from the
-    # common commit in the target branch.
-    GIT_DIFF_ARG="origin/$TARGET_BRANCH..."
-
-    # Then fetch enough history for finding the common commit.
-    git fetch origin "$TARGET_BRANCH" --deepen=200
-
-elif [[ ${BUILD_TYPE} == "continuous" ]]; then
-    # For continuous build, we want to know the difference in the last
-    # commit. This assumes we use squash commit when merging PRs.
-    GIT_DIFF_ARG="HEAD~.."
-
-    # Then fetch one last commit for getting the diff.
-    git fetch origin "$TARGET_BRANCH" --deepen=1
-
-else
-    # Run everything.
-    GIT_DIFF_ARG=""
-fi
-
-# Then detect changes in the test scripts.
-
-set +e
-git diff --quiet ${GIT_DIFF_ARG} ci
-changed=$?
-set -e
-
-# Now we have a fixed list, but we can change it to autodetect if
-# necessary.
-
-subdirs=(
-    packages
-    preview-packages
-)
-
+# Global exit code tracker
 RETVAL=0
 
-for subdir in ${subdirs[@]}; do
-    for d in `ls -d ${subdir}/*/`; do
-        should_test=false
-        if [ -n "${GIT_DIFF_ARG}" ]; then
-            echo "checking changes with 'git diff --quiet ${GIT_DIFF_ARG} ${d}'"
-            set +e
-            git diff --quiet ${GIT_DIFF_ARG} ${d}
-            changed=$?
-            set -e
-            if [[ "${changed}" -eq 0 ]]; then
-                echo "no change detected in ${d}, skipping"
+# Shared test execution logic
+run_test_in_dir() {
+    local d=$1
+    local pkg_name_clean=$(echo ${d} | sed 's|/$||' | sed 's|/|_|g')
+    local log_file="/tmp/test_log_${PY_VERSION}_${pkg_name_clean}.log"
+    export COVERAGE_FILE="${PROJECT_ROOT}/.coverage.${PY_VERSION}.${pkg_name_clean}"
+
+    pushd ${d} > /dev/null
+
+    # Temporarily allow failure.
+    set +e
+    ${test_script} > "${log_file}" 2>&1
+    local ret=$?
+    set -e
+
+    popd > /dev/null
+
+    # Atomically print complete package log block so parallel outputs never interleave
+    {
+        echo "============================================================"
+        echo "Running tests in ${d}"
+        echo "============================================================"
+        cat "${log_file}"
+        rm -f "${log_file}"
+    }
+
+    if [ ${ret} -ne 0 ]; then
+        exit ${ret}
+    fi
+}
+
+export -f run_test_in_dir
+export test_script PROJECT_ROOT PY_VERSION TEST_TYPE
+
+dirs_to_test=()
+
+if [ -n "${PACKAGE_LIST}" ]; then
+    echo "Using provided PACKAGE_LIST"
+    for d in ${PACKAGE_LIST}; do
+        dirs_to_test+=("${d}")
+    done
+else
+    if [ "${TEST_ALL_PACKAGES}" = "true" ]; then
+        GIT_DIFF_ARG=""
+
+    elif [[ ${BUILD_TYPE} == "presubmit" ]]; then
+        # For presubmit build, we want to know the difference from the target branch.
+        TARGET_BRANCH="${TARGET_BRANCH:-main}"
+        if [ -n "${TARGET_BRANCH}" ]; then
+            git fetch origin "${TARGET_BRANCH}" --depth=1 || true
+        fi
+        GIT_DIFF_ARG="origin/${TARGET_BRANCH}"
+
+    elif [[ ${BUILD_TYPE} == "continuous" ]]; then
+        # For continuous build, we want to know the difference in the last
+        # commit. This assumes we use squash commit when merging PRs.
+        GIT_DIFF_ARG="HEAD~1.."
+
+    else
+        # Run everything.
+        GIT_DIFF_ARG=""
+    fi
+
+    subdirs=(${PACKAGE_DIRS:-packages preview-packages})
+
+    for subdir in ${subdirs[@]}; do
+        if [ ! -d "${subdir}" ]; then continue; fi
+        for d in `ls -d ${subdir}/*/ 2>/dev/null`; do
+            should_test=false
+            if [ -n "${GIT_DIFF_ARG}" ]; then
+                set +e
+                git diff --quiet ${GIT_DIFF_ARG} -- "${d}"
+                changed=$?
+                set -e
+                if [[ "${changed}" -ne 0 ]]; then
+                    echo "change detected in ${d}"
+                    should_test=true
+                fi
             else
-                echo "change detected in ${d}"
+                # If GIT_DIFF_ARG is empty, run all the tests.
                 should_test=true
             fi
-        else
-            # If GIT_DIFF_ARG is empty, run all the tests.
-            should_test=true
-        fi
-        if [ "${should_test}" = true ]; then
-            echo "running test in ${d}"
-            pushd ${d}
-            # Temporarily allow failure.
-            set +e
-            ${test_script}
-            ret=$?
-            set -e
-            if [ ${ret} -ne 0 ]; then
-                RETVAL=${ret}
+            if [ "${should_test}" = true ]; then
+                dirs_to_test+=("${d}")
             fi
-            popd
-        fi
+        done
     done
-done
+fi
 
-exit ${RETVAL}
+if [ ${#dirs_to_test[@]} -eq 0 ]; then
+    echo "No packages to test."
+    exit 0
+fi
+
+# Run tests across target packages in parallel using available CPU cores
+NPROC=$(nproc 2>/dev/null || echo 4)
+echo "Running tests across ${#dirs_to_test[@]} package(s) using ${NPROC} parallel workers..."
+
+printf "%s\0" "${dirs_to_test[@]}" | xargs -0 -P "${NPROC}" -I {} bash -c 'run_test_in_dir "$@"' _ {}
