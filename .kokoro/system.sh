@@ -356,6 +356,7 @@ printf '%s\n' "${PACKAGES_TO_TEST[@]}" \
   | xargs -n 1 -P "$MAX_JOBS" \
     bash -c '
       pkg="$0"
+
       # Determine log location: prefer Sponge artifacts directory if available
       if [ -n "$KOKORO_ARTIFACTS_DIR" ]; then
         pkg_log_dir="$KOKORO_ARTIFACTS_DIR/$pkg"
