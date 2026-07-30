@@ -119,6 +119,13 @@ jobs:
         key: ${{ runner.os }}-uv-wheels-3.15-${{ hashFiles('packages/**/testing/constraints*.txt') }}
         restore-keys: |
           ${{ runner.os }}-uv-wheels-3.15-
+    # Pre-cache heavy dependencies sequentially before running parallel tests
+    - name: Pre-cache heavy dependencies (grpcio)
+      if: matrix.python == '3.15'
+      run: |
+        # Download and compile grpcio sequentially so that parallel test workers
+        # immediately hit the warm cache instead of deadlocking on compilation.
+        uv pip install --system grpcio --find-links .uv-wheel-cache
     - name: Run unit tests for ${{ matrix.package_shard.description }}
       env:
         BUILD_TYPE: presubmit
