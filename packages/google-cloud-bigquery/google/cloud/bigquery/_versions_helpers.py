@@ -277,9 +277,10 @@ class PandasGBQVersions:
         try:
             import pandas_gbq  # type: ignore
 
-            return int(getattr(pandas_gbq, "_internal_delegation_api_version", 0))
+            self._delegation_api_version = int(getattr(pandas_gbq, "_internal_delegation_api_version", 0))
         except Exception:
-            return 0
+            self._delegation_api_version = 0
+        return self._delegation_api_version
 
     @property
     def is_delegation_supported(self) -> bool:
