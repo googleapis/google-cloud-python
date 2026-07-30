@@ -72,10 +72,11 @@ def _run_ruff():
 
 
 def _generate_op_defs(bq_module: data_models.BQModule):
-    content = template_renderer.render_operation(bq_module)
-    if not content:
+    if not bq_module.functions:
+        # If there are no function definitions, do not generate file without Python code.
         return
 
+    content = template_renderer.render_operation(bq_module)
     output_file = constants.OUTPUT_DIR.joinpath(bq_module.module_path).with_suffix(
         ".py"
     )
@@ -84,10 +85,11 @@ def _generate_op_defs(bq_module: data_models.BQModule):
 
 
 def _generate_tests(bq_module: data_models.BQModule):
-    content = template_renderer.render_tests(bq_module)
-    if not content:
+    if not bq_module.functions:
+        # If there are no function definitions, do not generate file without Python code.
         return
 
+    content = template_renderer.render_tests(bq_module)
     output_file = constants.TEST_OUTPUT_DIR.joinpath(
         bq_module.module_path.with_name(f"test_{bq_module.module_path.name}")
     ).with_suffix(".py")

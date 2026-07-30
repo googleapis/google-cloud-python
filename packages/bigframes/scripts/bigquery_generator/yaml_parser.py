@@ -32,7 +32,7 @@ def _build_func_arg_ir(arg_data: Any) -> data_models.BQFuncArg:
 
 def _build_func_impl_ir(impl_data: Any) -> data_models.BQFuncImpl:
     return data_models.BQFuncImpl(
-        args=[_build_func_arg_ir(arg) for arg in impl_data["args"]],
+        args=tuple(_build_func_arg_ir(arg) for arg in impl_data["args"]),
         return_type=impl_data["return"],
     )
 
@@ -41,7 +41,7 @@ def _build_func_ir(func_data: Any) -> data_models.BQFunc:
     return data_models.BQFunc(
         name=func_data["name"],
         description=func_data["description"],
-        impls=[_build_func_impl_ir(impl) for impl in func_data["impls"]],
+        impls=tuple(_build_func_impl_ir(impl) for impl in func_data["impls"]),
         series_accessor_arg=func_data.get("series_accessor_arg", None),
     )
 
@@ -54,9 +54,9 @@ def parse_yaml(yaml_file: pathlib.Path) -> data_models.BQModule:
 
     functions = []
     if isinstance(data, dict) and "scalar_functions" in data:
-        functions = [
+        functions = tuple(
             _build_func_ir(func_data) for func_data in data["scalar_functions"]
-        ]
+        )
 
     return data_models.BQModule(
         yaml_file=yaml_file,

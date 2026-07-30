@@ -84,7 +84,7 @@ class BQFuncArg:
 
 @dataclasses.dataclass(frozen=True)
 class BQFuncImpl:
-    args: list[BQFuncArg]
+    args: tuple[BQFuncArg, ...]
     return_type: str
 
     @property
@@ -99,7 +99,7 @@ class BQFuncImpl:
 class BQFunc:
     name: str
     description: str
-    impls: list[BQFuncImpl]
+    impls: tuple[BQFuncImpl, ...]
     series_accessor_arg: str | None
 
     @property
@@ -110,7 +110,7 @@ class BQFunc:
 @dataclasses.dataclass(frozen=True)
 class BQModule:
     yaml_file: pathlib.Path
-    functions: list[BQFunc]
+    functions: tuple[BQFunc, ...]
 
     @property
     def module_path(self) -> pathlib.Path:
@@ -137,10 +137,10 @@ class BigFramesOp:
     signature_definition: str | None
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class BigFramesFuncArg:
     name: str
-    types: set[str]
+    types: frozenset[str]
     optional: bool
     keyword_only: bool
 
@@ -163,17 +163,38 @@ class BigFramesFuncArg:
 
 
 @dataclasses.dataclass
+class BigFramesFuncArgBuilder:
+    name: str
+    types: set[str]
+    optional: bool
+    keyword_only: bool
+
+    def build(self):
+        return BigFramesFuncArg(
+            name=self.name,
+            types=frozenset(self.types),
+            optional=self.optional,
+            keyword_only=self.keyword_only,
+        )
+
+
+@dataclasses.dataclass(frozen=True)
 class BigFramesFunc:
     name: str
     op_name: str
     description: str
-    args: list[BigFramesFuncArg]
+    args: tuple[BigFramesFuncArg]
     series_accessor_arg: str | None
     import_module: str | None = None
 
 
 @dataclasses.dataclass
 class Accessor:
+    """
+    This class is designed to be mutable because it has a recursive data structure. A mutable class
+    makes it easier to build the tree from the top.
+    """
+
     class_name: str
     bigframes_class_name: str
     pandas_class_name: str

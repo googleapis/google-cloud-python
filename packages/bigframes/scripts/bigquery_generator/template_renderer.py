@@ -132,9 +132,9 @@ def render_signature_def(
 
 def _get_bigframes_func_args(
     bq_func: data_models.BQFunc,
-) -> list[data_models.BigFramesFuncArg]:
+) -> tuple[data_models.BigFramesFuncArg, ...]:
     """
-    Coalesces arguments from all the implementations of this function,
+    Coalesces arguments from all the signatures of this function,
     and return them in the order of appearance in the yaml file
     """
     args_by_name = {}
@@ -146,7 +146,7 @@ def _get_bigframes_func_args(
             name = bq_func_arg.name
             seen_in_impl.add(name)
             if name not in args_by_name:
-                args_by_name[name] = data_models.BigFramesFuncArg(
+                args_by_name[name] = data_models.BigFramesFuncArgBuilder(
                     name=name,
                     types=set(),
                     optional=bq_func_arg.optional,
@@ -155,7 +155,7 @@ def _get_bigframes_func_args(
                 arg_order.append(name)
             else:
                 # If it was marked optional or keyword_only in any previous impl, keep it.
-                # Or if this impl marks it as optional/keyword_only, update it.
+                # Or if this signature marks it as optional/keyword_only, update it.
                 if bq_func_arg.optional:
                     args_by_name[name].optional = True
                 if bq_func_arg.keyword_only:
@@ -170,7 +170,7 @@ def _get_bigframes_func_args(
         if count < num_impls:
             args_by_name[name].optional = True
 
-    return [args_by_name[name] for name in arg_order]
+    return tuple(args_by_name[name].build() for name in arg_order)
 
 
 def _to_bigframes_op(bq_func: data_models.BQFunc) -> data_models.BigFramesOp:
@@ -199,7 +199,9 @@ def _to_bigframes_op(bq_func: data_models.BQFunc) -> data_models.BigFramesOp:
     )
 
 
-def _to_bigframes_func(bq_func: data_models.BQFunc) -> data_models.BigFramesFunc:
+def _to_bigframes_func(
+    bq_func: data_models.BQFunc, import_module: str | None = None
+) -> data_models.BigFramesFunc:
     python_name = bq_func.op_base_name
     if python_name in constants.PYTHON_BUILTINS:
         python_name = python_name + "_"
@@ -210,6 +212,7 @@ def _to_bigframes_func(bq_func: data_models.BQFunc) -> data_models.BigFramesFunc
         description=bq_func.description,
         args=_get_bigframes_func_args(bq_func),
         series_accessor_arg=bq_func.series_accessor_arg,
+        import_module=import_module,
     )
 
 
@@ -220,10 +223,6 @@ def render_license() -> str:
 def render_operation(
     bq_module: data_models.BQModule,
 ) -> str:
-    if not bq_module.functions:
-        # If there are no function definitions, do not generate an empty file.
-        return ""
-
     ops = []
     functions = []
 
@@ -240,10 +239,6 @@ def render_operation(
 
 
 def render_tests(bq_module: data_models.BQModule) -> str:
-    if not bq_module.functions:
-        # If there are no function definitions, do not generate an empty test file.
-        return ""
-
     import_path = "bigframes.operations.googlesql." + ".".join(
         bq_module.module_path.parts
     )
@@ -313,9 +308,9 @@ def render_accessor(bq_modules: list[data_models.BQModule]) -> tuple[str, str, s
         for bq_func in bq_module.functions:
             if bq_func.series_accessor_arg is None:
                 continue
-            bf_func = _to_bigframes_func(bq_func)
-            bf_func.import_module = (
-                f"bigframes.operations.googlesql.{'.'.join(module_parts)}"
+            bf_func = _to_bigframes_func(
+                bq_func,
+                import_module=f"bigframes.operations.googlesql.{'.'.join(module_parts)}",
             )
             accessor_lookup_table[bq_module.namespace].functions.append(bf_func)
 
