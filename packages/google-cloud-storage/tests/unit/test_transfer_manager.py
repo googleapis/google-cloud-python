@@ -17,7 +17,7 @@ import io
 import os
 import pickle
 import tempfile
-import threading
+import time
 
 import mock
 import pytest
@@ -196,10 +196,8 @@ def test_upload_many_raises_exceptions():
 
 def test_upload_many_raises_timeout_error_when_deadline_exceeded():
     # Thread-mode: A stuck upload must not make upload_many hang past the deadline.
-    release = threading.Event()
-
     def blocking_upload(*args, **kwargs):
-        time.sleep(2)
+        time.sleep(5)
 
     mock_blob = mock.Mock(spec=Blob)
     mock_blob._prep_and_do_upload.side_effect = blocking_upload
