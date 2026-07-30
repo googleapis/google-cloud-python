@@ -195,28 +195,56 @@ def test_upload_many_raises_exceptions():
 
 
 def test_upload_many_raises_timeout_error_when_deadline_exceeded():
-    # Regression test: a stuck upload must not make upload_many hang past the
-    # deadline. The worker blocks until released; the deadline should fire first
-    # and raise, rather than the executor's shutdown waiting for the worker.
+    # Thread-mode: A stuck upload must not make upload_many hang past the deadline.
     release = threading.Event()
 
     def blocking_upload(*args, **kwargs):
-        # Bounded so a regression fails fast (DID NOT RAISE) instead of hanging.
-        release.wait(timeout=30)
+        time.sleep(2)
 
     mock_blob = mock.Mock(spec=Blob)
     mock_blob._prep_and_do_upload.side_effect = blocking_upload
 
-    try:
+    with pytest.raises(concurrent.futures.TimeoutError):
+        transfer_manager.upload_many(
+            [(io.BytesIO(b"data"), mock_blob)],
+            worker_type=transfer_manager.THREAD,
+            deadline=0.1,
+        )
+
+
+def test_upload_many_terminates_process_workers_on_deadline():
+    # Process-mode: A stuck upload must not make upload_many hang past the deadline.
+    # After the deadline, the worker processes should be terminated.
+    fake_processes = {1: mock.Mock(), 2: mock.Mock()}
+
+    class FakeProcessPoolExecutor(concurrent.futures.ProcessPoolExecutor):
+        def __init__(self, *args, **kwargs):
+            self._processes = fake_processes
+
+        def submit(self, *args, **kwargs):
+            return concurrent.futures.Future()
+
+        def shutdown(self, *args, **kwargs):
+            pass
+
+    with (
+        mock.patch(
+            "google.cloud.storage.transfer_manager._get_pool_class_and_requirements",
+            return_value=(FakeProcessPoolExecutor, False),
+        ),
+        mock.patch("concurrent.futures.wait") as wait_patch,
+    ):
+        # A non-empty not_done set signals the deadline was exceeded.
+        wait_patch.return_value = (set(), {concurrent.futures.Future()})
         with pytest.raises(concurrent.futures.TimeoutError):
             transfer_manager.upload_many(
-                [(io.BytesIO(b"data"), mock_blob)],
-                worker_type=transfer_manager.THREAD,
+                [("file_a.txt", mock.Mock(spec=Blob))],
+                worker_type=transfer_manager.PROCESS,
                 deadline=0.1,
             )
-    finally:
-        # Let the background worker thread finish.
-        release.set()
+
+    for process in fake_processes.values():
+        process.terminate.assert_called_once_with()
 
 
 def test_upload_many_suppresses_412_with_skip_if_exists():
