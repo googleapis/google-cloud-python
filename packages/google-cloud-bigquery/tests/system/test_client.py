@@ -2244,16 +2244,28 @@ class TestBigQuery(unittest.TestCase):
             connection.close()
 
             # Assertions
-            self.assertEqual(
-                len(created_sessions),
-                len(closed_sessions),
-                f"HTTP Sessions leak detected! Created: {len(created_sessions)}, Closed: {len(closed_sessions)}",
-            )
+            created_session_ids = {id(s) for s in created_sessions}
+            closed_session_ids = {id(s) for s in closed_sessions}
+            leaked_session_ids = created_session_ids - closed_session_ids
 
             self.assertEqual(
-                len(created_channels),
-                len(closed_channels),
-                f"gRPC Channels leak detected! Created: {len(created_channels)}, Closed: {len(closed_channels)}",
+                len(leaked_session_ids),
+                0,
+                f"HTTP Sessions leak detected! Leaked: {len(leaked_session_ids)}. "
+                f"Unique Created: {len(created_session_ids)}, Unique Closed: {len(closed_session_ids)}. "
+                f"Total Created: {len(created_sessions)}, Total Closed: {len(closed_sessions)}",
+            )
+
+            created_channel_ids = {id(c) for c in created_channels}
+            closed_channel_ids = {id(c) for c in closed_channels}
+            leaked_channel_ids = created_channel_ids - closed_channel_ids
+
+            self.assertEqual(
+                len(leaked_channel_ids),
+                0,
+                f"gRPC Channels leak detected! Leaked: {len(leaked_channel_ids)}. "
+                f"Unique Created: {len(created_channel_ids)}, Unique Closed: {len(closed_channel_ids)}. "
+                f"Total Created: {len(created_channels)}, Total Closed: {len(closed_channels)}",
             )
 
         finally:
