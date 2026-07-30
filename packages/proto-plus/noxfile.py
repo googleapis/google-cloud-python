@@ -54,19 +54,9 @@ nox.options.error_on_missing_interpreters = True
 
 
 @nox.session(python=PYTHON_VERSIONS)
-@nox.parametrize("implementation", ["cpp", "upb", "python"])
+@nox.parametrize("implementation", ["upb", "python"])
 def unit(session, implementation):
     """Run the unit test suite."""
-
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
-    # Remove this check once support for Protobuf 3.x is dropped.
-    if implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -75,11 +65,6 @@ def unit(session, implementation):
     session.env["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = implementation
     session.install("coverage", "pytest", "pytest-cov", "pytz")
     session.install("-e", ".[testing]", "-c", constraints_path)
-    # TODO(https://github.com/googleapis/proto-plus-python/issues/389):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if implementation == "cpp":
-        session.install("protobuf<4")
 
     # TODO(https://github.com/googleapis/proto-plus-python/issues/403): re-enable `-W=error`
     # The warnings-as-errors flag `-W=error` was removed in

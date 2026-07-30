@@ -5,6 +5,9 @@
     "packages/bigframes": {
       "component": "bigframes"
     },
+    "packages/google-cloud-bigquery": {
+      "component": "google-cloud-bigquery"
+    },
     "packages/google-crc32c": {
       "component": "google-crc32c"
     },
