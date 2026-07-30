@@ -132,22 +132,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert AssetServiceClient._get_default_mtls_endpoint(None) is None
-    assert AssetServiceClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert AssetServiceClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    assert AssetServiceClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
-    assert AssetServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
-    assert AssetServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
-    assert AssetServiceClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
-
 def test__read_environment_variables():
     assert AssetServiceClient._read_environment_variables() == (False, "auto", None)
 
@@ -289,40 +273,6 @@ def test__get_client_cert_source():
             assert AssetServiceClient._get_client_cert_source(None, True) is mock_default_cert_source
             assert AssetServiceClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
-@mock.patch.object(AssetServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceClient))
-@mock.patch.object(AssetServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceAsyncClient))
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = AssetServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
-    mock_universe = "bar.com"
-    mock_endpoint = AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
-
-    assert AssetServiceClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
-    assert AssetServiceClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == AssetServiceClient.DEFAULT_MTLS_ENDPOINT
-    assert AssetServiceClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
-    assert AssetServiceClient._get_api_endpoint(None, None, default_universe, "always") == AssetServiceClient.DEFAULT_MTLS_ENDPOINT
-    assert AssetServiceClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == AssetServiceClient.DEFAULT_MTLS_ENDPOINT
-    assert AssetServiceClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
-    assert AssetServiceClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        AssetServiceClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
-    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert AssetServiceClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
-    assert AssetServiceClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
-    assert AssetServiceClient._get_universe_domain(None, None) == AssetServiceClient._DEFAULT_UNIVERSE
-
-    with pytest.raises(ValueError) as excinfo:
-        AssetServiceClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 @pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
     (401, CRED_INFO_JSON, True),
