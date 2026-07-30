@@ -2182,6 +2182,11 @@ class TestBigQuery(unittest.TestCase):
 
     def test_dbapi_connection_does_not_leak_sockets(self):
         pytest.importorskip("google.cloud.bigquery_storage")
+
+        # Ensure any garbage collection from previous tests is done to avoid false positives.
+        import gc
+        gc.collect()
+
         current_process = psutil.Process()
         conn_start = current_process.net_connections()
         conn_count_start = len(conn_start)
