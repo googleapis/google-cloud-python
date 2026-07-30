@@ -87,7 +87,11 @@ fi
 
 if [[ ${BUILD_TYPE} == "presubmit" ]]; then
     # For presubmit build, we want to know the difference from the target branch.
-    GIT_DIFF_ARG="origin/$TARGET_BRANCH"
+    TARGET_BRANCH="${TARGET_BRANCH:-main}"
+    if [ -n "${TARGET_BRANCH}" ]; then
+        git fetch origin "${TARGET_BRANCH}" --depth=1 || true
+    fi
+    GIT_DIFF_ARG="origin/${TARGET_BRANCH}"
 
 elif [[ ${BUILD_TYPE} == "continuous" ]]; then
     # For continuous build, we want to know the difference in the last
@@ -103,7 +107,7 @@ fi
 # Detect changes in test scripts
 
 set +e
-git diff --quiet ${GIT_DIFF_ARG} ci
+git diff --quiet ${GIT_DIFF_ARG} -- ci
 changed=$?
 set -e
 
@@ -116,9 +120,9 @@ for subdir in ${subdirs[@]}; do
     for d in `ls -d ${subdir}/*/`; do
         should_test=false
         if [ -n "${GIT_DIFF_ARG}" ]; then
-            echo "checking changes with 'git diff --quiet ${GIT_DIFF_ARG} ${d}'"
+            echo "checking changes with 'git diff --quiet ${GIT_DIFF_ARG} -- ${d}'"
             set +e
-            git diff --quiet ${GIT_DIFF_ARG} ${d}
+            git diff --quiet ${GIT_DIFF_ARG} -- ${d}
             changed=$?
             set -e
             if [[ "${changed}" -eq 0 ]]; then
