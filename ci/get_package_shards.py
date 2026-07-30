@@ -161,39 +161,27 @@ def group_packages(packages_map):
         pkg_items.append((name, paths, weight))
         total_weight += weight
 
+    # Dynamically determine target weight to balance across max shards.
     max_shards = int(os.environ.get("MAX_SHARDS", 16))
     target_weight = max(10, math.ceil(total_weight / max_shards))
-    max_capacity = max(24, int(target_weight * 1.3))
 
     shards_list = []
     current_shard_items = []
     current_shard_weight = 0
 
-    def try_merge_tiny_shard():
-        """Merges current_shard_items into the previous shard if it is tiny (<= 5) and capacity allows."""
-        nonlocal current_shard_items, current_shard_weight
-        if shards_list and current_shard_weight <= 5:
-            prev_items = shards_list[-1]
-            prev_weight = sum(x[2] for x in prev_items)
-            if prev_weight + current_shard_weight <= max_capacity:
-                shards_list.pop()
-                current_shard_items = prev_items + current_shard_items
-                current_shard_weight = prev_weight + current_shard_weight
-
     # Pack packages alphabetically by package name.
-    for item in pkg_items:
-        name, paths, weight = item
+    for name, paths, weight in pkg_items:
+        # If adding this package would exceed target weight AND we haven't reached the 
+        # shard limit, start a new shard. Otherwise, keep "stuffing" the current one.
         if current_shard_items and (current_shard_weight + weight > target_weight) and len(shards_list) < max_shards - 1:
-            try_merge_tiny_shard()
             shards_list.append(current_shard_items)
-            current_shard_items = [item]
+            current_shard_items = [(name, paths, weight)]
             current_shard_weight = weight
         else:
-            current_shard_items.append(item)
+            current_shard_items.append((name, paths, weight))
             current_shard_weight += weight
 
     if current_shard_items:
-        try_merge_tiny_shard()
         shards_list.append(current_shard_items)
 
     # Construct the final shards output list
