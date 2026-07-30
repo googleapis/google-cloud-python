@@ -44,3 +44,16 @@ def test_bq_to_arrow_scalars(module_under_test):
 def test_arrow_scalar_ids_to_bq(module_under_test):
     assert module_under_test.arrow_scalar_ids_to_bq(pyarrow.bool_().id) == "BOOL"
     assert module_under_test.arrow_scalar_ids_to_bq("UNKNOWN_TYPE") is None
+
+
+def test_pyarrow_helpers_when_pyarrow_none(module_under_test):
+    import importlib
+    import sys
+    from unittest import mock
+
+    with mock.patch.dict(sys.modules, {"pyarrow": None}):
+        importlib.reload(module_under_test)
+        assert module_under_test.pyarrow is None
+        assert module_under_test.arrow_scalar_ids_to_bq(1) is None
+
+    importlib.reload(module_under_test)
