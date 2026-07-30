@@ -44,7 +44,29 @@ TARGET_BRANCH="${TARGET_BRANCH:-main}"
 git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleapis/google-cloud-python"
 git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleapis/google-cloud-python.git"
 
+# A script file for running the test in a sub project.
 test_script="${PROJECT_ROOT}/ci/run_single_test.sh"
+
+if [ "${TEST_ALL_PACKAGES}" = "true" ]; then
+    GIT_DIFF_ARG=""
+
+elif [[ ${BUILD_TYPE} == "presubmit" ]]; then
+    # For presubmit build, we want to know the difference from the
+    # common commit in the target branch.
+    if [ -n "${TARGET_BRANCH}" ]; then
+        git fetch origin "${TARGET_BRANCH}" --depth=1 || true
+    fi
+    GIT_DIFF_ARG="origin/${TARGET_BRANCH}"
+
+elif [[ ${BUILD_TYPE} == "continuous" ]]; then
+    # For continuous build, we want to know the difference in the last
+    # commit. This assumes we use squash commit when merging PRs.
+    GIT_DIFF_ARG="HEAD~1.."
+
+else
+    # Run everything.
+    GIT_DIFF_ARG=""
+fi
 
 run_test_in_dir() {
     local d=$1
@@ -78,32 +100,25 @@ if [ -n "${PACKAGE_LIST}" ]; then
     echo "Using provided PACKAGE_LIST"
     dirs_to_test=(${PACKAGE_LIST})
 else
-    if [ "${TEST_ALL_PACKAGES}" = "true" ]; then
-        GIT_DIFF_ARG=""
-    elif [[ ${BUILD_TYPE} == "presubmit" ]]; then
-        # For presubmit build, we want to know the difference from the target branch.
-        git fetch origin "${TARGET_BRANCH}" --depth=1 || true
-        GIT_DIFF_ARG="origin/${TARGET_BRANCH}"
-    elif [[ ${BUILD_TYPE} == "continuous" ]]; then
-        # For continuous build, we want to know the difference in the last
-        # commit. This assumes we use squash commit when merging PRs.
-        GIT_DIFF_ARG="HEAD~1.."
-    else
-        # Run everything.
-        GIT_DIFF_ARG=""
-    fi
-
     subdirs=(${PACKAGE_DIRS:-packages preview-packages})
+
     for subdir in ${subdirs[@]}; do
         if [ ! -d "${subdir}" ]; then continue; fi
         for d in `ls -d ${subdir}/*/ 2>/dev/null`; do
+            should_test=false
             if [ -n "${GIT_DIFF_ARG}" ]; then
                 set +e
                 git diff --quiet ${GIT_DIFF_ARG} -- "${d}"
                 changed=$?
                 set -e
-                if [[ "${changed}" -ne 0 ]]; then dirs_to_test+=("${d}"); fi
+                if [[ "${changed}" -ne 0 ]]; then
+                    should_test=true
+                fi
             else
+                # If GIT_DIFF_ARG is empty, run all the tests.
+                should_test=true
+            fi
+            if [ "${should_test}" = true ]; then
                 dirs_to_test+=("${d}")
             fi
         done
