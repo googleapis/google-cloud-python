@@ -44,13 +44,8 @@ TARGET_BRANCH="${TARGET_BRANCH:-main}"
 git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleapis/google-cloud-python"
 git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleapis/google-cloud-python.git"
 
-# A script file for running the test in a sub project.
 test_script="${PROJECT_ROOT}/ci/run_single_test.sh"
 
-# Global exit code tracker
-RETVAL=0
-
-# Shared test execution logic
 run_test_in_dir() {
     local d=$1
     local pkg_name_clean=$(echo ${d} | sed 's|/$||' | sed 's|/|_|g')
@@ -58,29 +53,22 @@ run_test_in_dir() {
     export COVERAGE_FILE="${PROJECT_ROOT}/.coverage.${PY_VERSION}.${pkg_name_clean}"
 
     pushd ${d} > /dev/null
-
-    # Temporarily allow failure.
     set +e
     ${test_script} > "${log_file}" 2>&1
     local ret=$?
     set -e
-
     popd > /dev/null
 
-    # Atomically print complete package log block so parallel outputs never interleave
-    {
-        echo "============================================================"
-        echo "Running tests in ${d}"
-        echo "============================================================"
-        cat "${log_file}"
-        rm -f "${log_file}"
-    }
+    echo "============================================================"
+    echo "Running tests in ${d}"
+    echo "============================================================"
+    cat "${log_file}"
+    rm -f "${log_file}"
 
     if [ ${ret} -ne 0 ]; then
         exit ${ret}
     fi
 }
-
 export -f run_test_in_dir
 export test_script PROJECT_ROOT PY_VERSION TEST_TYPE
 
@@ -88,51 +76,34 @@ dirs_to_test=()
 
 if [ -n "${PACKAGE_LIST}" ]; then
     echo "Using provided PACKAGE_LIST"
-    for d in ${PACKAGE_LIST}; do
-        dirs_to_test+=("${d}")
-    done
+    dirs_to_test=(${PACKAGE_LIST})
 else
     if [ "${TEST_ALL_PACKAGES}" = "true" ]; then
         GIT_DIFF_ARG=""
-
     elif [[ ${BUILD_TYPE} == "presubmit" ]]; then
         # For presubmit build, we want to know the difference from the target branch.
-        TARGET_BRANCH="${TARGET_BRANCH:-main}"
-        if [ -n "${TARGET_BRANCH}" ]; then
-            git fetch origin "${TARGET_BRANCH}" --depth=1 || true
-        fi
+        git fetch origin "${TARGET_BRANCH}" --depth=1 || true
         GIT_DIFF_ARG="origin/${TARGET_BRANCH}"
-
     elif [[ ${BUILD_TYPE} == "continuous" ]]; then
         # For continuous build, we want to know the difference in the last
         # commit. This assumes we use squash commit when merging PRs.
         GIT_DIFF_ARG="HEAD~1.."
-
     else
         # Run everything.
         GIT_DIFF_ARG=""
     fi
 
     subdirs=(${PACKAGE_DIRS:-packages preview-packages})
-
     for subdir in ${subdirs[@]}; do
         if [ ! -d "${subdir}" ]; then continue; fi
         for d in `ls -d ${subdir}/*/ 2>/dev/null`; do
-            should_test=false
             if [ -n "${GIT_DIFF_ARG}" ]; then
                 set +e
                 git diff --quiet ${GIT_DIFF_ARG} -- "${d}"
                 changed=$?
                 set -e
-                if [[ "${changed}" -ne 0 ]]; then
-                    echo "change detected in ${d}"
-                    should_test=true
-                fi
+                if [[ "${changed}" -ne 0 ]]; then dirs_to_test+=("${d}"); fi
             else
-                # If GIT_DIFF_ARG is empty, run all the tests.
-                should_test=true
-            fi
-            if [ "${should_test}" = true ]; then
                 dirs_to_test+=("${d}")
             fi
         done
@@ -144,17 +115,11 @@ if [ ${#dirs_to_test[@]} -eq 0 ]; then
     exit 0
 fi
 
-# PARALLEL_WORKERS controls the number of concurrent package test processes inside the runner.
-# Defaults to 1 (safe sequential execution) unless explicitly set in workflow YAML.
 PARALLEL_WORKERS="${PARALLEL_WORKERS:-1}"
-
-# Cap PARALLEL_WORKERS at available CPU cores to prevent CPU thrashing and RAM Out-Of-Memory (OOM) failures
 AVAIL_CORES=$(nproc 2>/dev/null || echo 4)
 if [ "${PARALLEL_WORKERS}" -gt "${AVAIL_CORES}" ]; then
-    echo "Requested PARALLEL_WORKERS (${PARALLEL_WORKERS}) exceeds available CPU cores (${AVAIL_CORES}). Capping to ${AVAIL_CORES}."
     PARALLEL_WORKERS="${AVAIL_CORES}"
 fi
 
 echo "Running tests across ${#dirs_to_test[@]} package(s) using ${PARALLEL_WORKERS} parallel worker(s)..."
-
 printf "%s\0" "${dirs_to_test[@]}" | xargs -0 -P "${PARALLEL_WORKERS}" -I {} bash -c 'run_test_in_dir "$@"' _ {}
