@@ -653,9 +653,6 @@
         }
       ]
     },
-    "packages/google-cloud-bigquery": {
-      "component": "google-cloud-bigquery"
-    },
     "packages/google-cloud-bigquery-analyticshub": {
       "component": "google-cloud-bigquery-analyticshub",
       "extra-files": [
