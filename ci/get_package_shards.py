@@ -150,14 +150,14 @@ def find_optimal_max_shard_weight(pkg_items, max_shards):
     if not pkg_items:
         return 0
 
-    low = max(item[2] for item in pkg_items)
+    low = 1
     high = sum(item[2] for item in pkg_items)
 
     def can_partition(max_w):
         count = 1
         current_w = 0
         for _, _, w in pkg_items:
-            if current_w + w > max_w:
+            if current_w > 0 and (current_w + w > max_w):
                 count += 1
                 current_w = w
             else:
@@ -210,12 +210,17 @@ def group_packages(packages_map):
     shards_list = []
     current_shard_items = []
     current_shard_weight = 0
+    remaining_weight = total_weight
 
-    # Pack packages alphabetically by package name respecting best_max.
+    # Pack packages alphabetically by package name respecting best_max and remaining average.
     for item in pkg_items:
         name, paths, weight = item
-        if current_shard_items and (current_shard_weight + weight > best_max) and len(shards_list) < max_shards - 1:
+        remaining_shards = max_shards - len(shards_list)
+        target_weight = min(best_max, math.ceil(remaining_weight / max(1, remaining_shards)))
+
+        if current_shard_items and (current_shard_weight + weight > target_weight) and remaining_shards > 1:
             shards_list.append(current_shard_items)
+            remaining_weight -= current_shard_weight
             current_shard_items = [item]
             current_shard_weight = weight
         else:
