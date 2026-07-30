@@ -159,7 +159,10 @@ _compound_keywords = {
     selectable.CompoundSelect.INTERSECT_ALL: "INTERSECT ALL",
 }
 
-_max_size = 2621440
+#: Maximum allowable character/byte length for Cloud Spanner STRING(MAX) and
+#: BYTES(MAX) DDL data types (2.5 MiB = 2,621,440 bytes).
+MAX_SIZE = 2621440
+_max_size = MAX_SIZE
 
 
 def int_from_size(size_str):
@@ -171,7 +174,7 @@ def int_from_size(size_str):
     Returns:
         int: The column length value.
     """
-    return _max_size if size_str == "MAX" else int(size_str)
+    return MAX_SIZE if size_str == "MAX" else int(size_str)
 
 
 def engine_to_connection(function):
@@ -848,6 +851,7 @@ class SpannerDialect(DefaultDialect):
     paramstyle = "format"
     encoding = "utf-8"
     max_identifier_length = 256
+    max_size = MAX_SIZE
     _legacy_binary_type_literal_encoding = "utf-8"
     _default_isolation_level = "SERIALIZABLE"
 
