@@ -28,6 +28,26 @@ def test_from_read_rows_response_valid_message_returns_record_batch():
     assert result_batch.column(1).to_pylist() == ["alice", "bob"]
 
 
+def test_from_read_rows_response_serialized_record_batch_returns_record_batch():
+    schema = pa.schema([("id", pa.int64()), ("name", pa.string())])
+    batch = pa.RecordBatch.from_arrays(
+        [pa.array([10, 20]), pa.array(["carol", "dave"])], schema=schema
+    )
+    serialized_bytes = batch.serialize().to_pybytes()
+
+    mock_message = mock.MagicMock()
+    mock_message.arrow_record_batch.serialized_record_batch = serialized_bytes
+
+    result_batch = pandas_gbq.arrow.from_read_rows_response(
+        mock_message, arrow_schema=schema
+    )
+
+    assert result_batch.num_rows == 2
+    assert result_batch.schema.names == ["id", "name"]
+    assert result_batch.column(0).to_pylist() == [10, 20]
+    assert result_batch.column(1).to_pylist() == ["carol", "dave"]
+
+
 def test_from_read_rows_response_empty_message_returns_empty_batch():
     schema = pa.schema([("val", pa.float64())])
     mock_message = mock.MagicMock()
