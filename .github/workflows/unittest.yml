@@ -75,7 +75,7 @@ jobs:
 
   unit:
     needs: initialize
-    if: ${{ needs.initialize.outputs.matrix && needs.initialize.outputs.matrix != '[]' }}
+    if: ${{ needs.initialize.outputs.matrix && needs.initialize.outputs.matrix != '[]' && needs.initialize.outputs.matrix != '' }}
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: true
