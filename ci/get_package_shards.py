@@ -68,21 +68,34 @@ def get_package_weights():
     return weights
 
 
+def package_sort_key(pkg_path):
+    """Sort key to order package paths primarily by package directory name, then full path.
+
+    For example, 'preview-packages/google-cloud-compute/' maps to:
+    ('google-cloud-compute', 'preview-packages/google-cloud-compute/')
+
+    This ensures preview packages are interleaved next to their standard counterparts
+    in shard matrices rather than being grouped at the end.
+    """
+    clean_path = pkg_path.rstrip('/')
+    pkg_name = os.path.basename(clean_path)
+    return (pkg_name, clean_path)
+
+
 def get_packages():
     """Lists all package directories in the repository.
 
     Returns:
-        list: A sorted list of relative paths to all directories under configured package roots.
+        list: A list of relative paths under configured package roots, sorted by package name.
     """
     subdirs = get_package_directories()
     packages = []
     for subdir in subdirs:
         if not os.path.exists(subdir):
             continue
-        # Use the same sorting as the shell script
         pkg_dirs = [os.path.join(subdir, d) + '/' for d in os.listdir(subdir) if os.path.isdir(os.path.join(subdir, d))]
-        packages.extend(sorted(pkg_dirs))
-    return packages
+        packages.extend(pkg_dirs)
+    return sorted(packages, key=package_sort_key)
 
 
 def get_packages_to_test():
@@ -127,7 +140,7 @@ def get_packages_to_test():
             if pkg in all_packages:
                 to_test.add(pkg)
 
-    return sorted(to_test)
+    return sorted(to_test, key=package_sort_key)
 
 
 def group_packages(packages):
@@ -187,12 +200,13 @@ def group_packages(packages):
         name = f"Shard {index}"
         num_in_shard = len(shard_packages)
 
-        def format_pkg_name(pkg):
-            clean = pkg.strip('/')
-            parts = clean.split('/')
-            if len(parts) > 1 and parts[0] != 'packages':
-                return clean
-            return parts[-1]
+        def format_pkg_name(pkg_path):
+            # Extract package directory name and append '(preview)' if under preview-packages/
+            clean_path = pkg_path.rstrip('/')
+            pkg_name = os.path.basename(clean_path)
+            if clean_path.startswith("preview-packages/"):
+                return f"{pkg_name} (preview)"
+            return pkg_name
 
         # Calculate contiguous range description
         first_pkg = format_pkg_name(shard_packages[0])
