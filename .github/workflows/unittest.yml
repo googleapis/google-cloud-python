@@ -17,6 +17,7 @@ env:
   NOX_REUSE_EXISTING_VIRTUALENVS: "true"
   NOX_ENVDIR: "/tmp/shared_nox_envs"
   NOX_DEFAULT_VENV_BACKEND: "uv"
+  UV_VENV_SEED: "1"
 
 jobs:
   initialize:
