@@ -81,9 +81,11 @@ jobs:
         python-version: "3.10"
     - name: Set number of files changes in packages and preview-packages directories
       id: packages
+      env:
+        TARGET_BRANCH_REF: ${{ steps.target.outputs.branch }}
       run: |
-        git diff ${{ steps.target.outputs.branch }}...HEAD -- packages preview-packages > /dev/null
-        num_files_changed=$(git diff ${{ steps.target.outputs.branch }}...HEAD -- packages preview-packages | wc -l | tr -d ' ')
+        git diff "$TARGET_BRANCH_REF"...HEAD -- packages preview-packages > /dev/null
+        num_files_changed=$(git diff "$TARGET_BRANCH_REF"...HEAD -- packages preview-packages | wc -l | tr -d ' ')
         echo "num_files_changed=${num_files_changed}" >> "$GITHUB_OUTPUT"
     - name: Install coverage
       if: ${{ steps.packages.outputs.num_files_changed > 0 }}
