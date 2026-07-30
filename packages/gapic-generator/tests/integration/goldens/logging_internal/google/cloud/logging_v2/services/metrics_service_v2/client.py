@@ -27,7 +27,7 @@ from google.cloud.logging_v2 import gapic_version as package_version
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.cloud.logging_v2._compat import determine_domain, get_api_endpoint, get_default_mtls_endpoint
+from google.cloud.logging_v2._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
@@ -296,7 +296,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
         elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT or ""
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT # type: ignore
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
 
@@ -463,7 +463,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
 
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = BaseMetricsServiceV2Client._read_environment_variables()
         self._client_cert_source = BaseMetricsServiceV2Client._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
-        self._universe_domain = determine_domain(universe_domain_opt, self._universe_domain_env)
+        self._universe_domain = get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.

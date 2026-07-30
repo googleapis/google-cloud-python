@@ -30,7 +30,7 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import extended_operation
 {% endif %}
 from google.api_core import gapic_v1
-from {{package_path}}._compat import determine_domain, get_api_endpoint, get_default_mtls_endpoint
+from {{package_path}}._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint
 {% if has_auto_populated_fields %}
 from {{package_path}}._compat import setup_request_id
 {% endif %}
@@ -313,7 +313,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
         elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT or ""
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT # type: ignore
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
 
@@ -487,7 +487,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = {{ service.client_name }}._read_environment_variables()
         self._client_cert_source = {{ service.client_name }}._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
-        self._universe_domain = determine_domain(universe_domain_opt, self._universe_domain_env)
+        self._universe_domain = get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.

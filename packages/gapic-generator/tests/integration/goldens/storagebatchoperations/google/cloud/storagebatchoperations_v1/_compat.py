@@ -119,7 +119,7 @@ def get_api_endpoint(
 
 def get_universe_domain(
     *potential_universes: Optional[str],
-    default_universe: str,
+    default_universe: str = DEFAULT_UNIVERSE,
 ) -> str:
     """Return the universe domain used by the client.
 
@@ -141,28 +141,6 @@ def get_universe_domain(
     if not resolved:
         raise EmptyUniverseError()
     return resolved
-
-def determine_domain(
-    client_universe_domain: Optional[str], universe_domain_env: Optional[str]
-) -> str:
-    """Return the universe domain used by the client.
-
-    Args:
-        client_universe_domain (Optional[str]): The universe domain configured via the client options.
-        universe_domain_env (Optional[str]): The universe domain configured via the
-        "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
-
-    Returns:
-        str: The universe domain to be used by the client.
-
-    Raises:
-        ValueError: If the universe domain is an empty string.
-    """
-    return get_universe_domain(
-        client_universe_domain,
-        universe_domain_env,
-        default_universe=DEFAULT_UNIVERSE,
-    )
 
 
 def setup_request_id(
