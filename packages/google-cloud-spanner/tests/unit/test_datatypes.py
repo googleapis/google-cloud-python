@@ -96,3 +96,90 @@ class Test_JsonObject_serde(unittest.TestCase):
         expected = json.dumps(data, sort_keys=True, separators=(",", ":"))
         data_jsonobject = JsonObject(JsonObject(data))
         self.assertEqual(data_jsonobject.serialize(), expected)
+
+
+class Test_JsonObject_dict_protocol(unittest.TestCase):
+    """Verify that JsonObject behaves correctly with standard Python
+    operations (len, bool, iteration, indexing) for all JSON variants."""
+
+    def test_array_len(self):
+        obj = JsonObject([{"id": 1}, {"id": 2}])
+        self.assertEqual(len(obj), 2)
+
+    def test_array_bool_truthy(self):
+        obj = JsonObject([{"id": 1}])
+        self.assertTrue(obj)
+
+    def test_array_bool_empty(self):
+        obj = JsonObject([])
+        self.assertFalse(obj)
+
+    def test_array_iter(self):
+        data = [{"a": 1}, {"b": 2}]
+        obj = JsonObject(data)
+        self.assertEqual(list(obj), data)
+
+    def test_array_getitem(self):
+        data = [{"a": 1}, {"b": 2}]
+        obj = JsonObject(data)
+        self.assertEqual(obj[0], {"a": 1})
+        self.assertEqual(obj[1], {"b": 2})
+
+    def test_array_contains(self):
+        data = [1, 2, 3]
+        obj = JsonObject(data)
+        self.assertIn(2, obj)
+        self.assertNotIn(4, obj)
+
+    def test_array_eq(self):
+        data = [{"id": 1}]
+        obj = JsonObject(data)
+        self.assertEqual(obj, data)
+
+    def test_array_json_dumps(self):
+        data = [{"id": "m1", "content": "hello"}]
+        obj = JsonObject(data)
+        result = json.loads(json.dumps(list(obj)))
+        self.assertEqual(result, data)
+
+    def test_dict_len(self):
+        obj = JsonObject({"a": 1, "b": 2})
+        self.assertEqual(len(obj), 2)
+
+    def test_dict_bool(self):
+        obj = JsonObject({"a": 1})
+        self.assertTrue(obj)
+
+    def test_dict_iter(self):
+        obj = JsonObject({"a": 1, "b": 2})
+        self.assertEqual(sorted(obj), ["a", "b"])
+
+    def test_dict_getitem(self):
+        obj = JsonObject({"key": "value"})
+        self.assertEqual(obj["key"], "value")
+
+    def test_null_len(self):
+        obj = JsonObject(None)
+        self.assertEqual(len(obj), 0)
+
+    def test_null_bool(self):
+        obj = JsonObject(None)
+        self.assertFalse(obj)
+
+    def test_scalar_len(self):
+        obj = JsonObject(42)
+        self.assertEqual(len(obj), 1)
+
+    def test_scalar_bool(self):
+        obj = JsonObject(42)
+        self.assertTrue(obj)
+
+    def test_scalar_not_iterable(self):
+        obj = JsonObject(42)
+        with self.assertRaises(TypeError):
+            iter(obj)
+
+    def test_scalar_not_subscriptable(self):
+        obj = JsonObject(42)
+        with self.assertRaises(TypeError):
+            obj[0]
