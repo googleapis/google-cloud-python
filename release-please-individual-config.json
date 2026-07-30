@@ -8,18 +8,6 @@
     "packages/google-cloud-bigquery": {
       "component": "google-cloud-bigquery"
     },
-    "packages/google-cloud-bigquery-analyticshub": {
-      "component": "google-cloud-bigquery-analyticshub",
-      "extra-files": [
-        "google/cloud/bigquery_analyticshub/gapic_version.py",
-        "google/cloud/bigquery_analyticshub_v1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.analyticshub.v1.json",
-          "type": "json"
-        }
-      ]
-    },
     "packages/google-crc32c": {
       "component": "google-crc32c"
     },
