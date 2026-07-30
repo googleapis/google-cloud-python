@@ -2189,13 +2189,17 @@ class TestBigQuery(unittest.TestCase):
         # Track HTTP Sessions
         created_sessions = []
         closed_sessions = []
+        session_creation_stacks = {}
 
         original_session_init = requests.Session.__init__
         original_session_close = requests.Session.close
 
+        import traceback
+
         def patched_session_init(self, *args, **kwargs):
             original_session_init(self, *args, **kwargs)
             created_sessions.append(self)
+            session_creation_stacks[id(self)] = traceback.format_stack(limit=10)
 
         def patched_session_close(self):
             original_session_close(self)
@@ -2248,12 +2252,23 @@ class TestBigQuery(unittest.TestCase):
             closed_session_ids = {id(s) for s in closed_sessions}
             leaked_session_ids = created_session_ids - closed_session_ids
 
+            debug_info = ""
+            if leaked_session_ids:
+                debug_info += "\n--- Leaked Sessions Creation Stacks ---\n"
+                for s_id in leaked_session_ids:
+                    debug_info += f"\nSession ID: {s_id}\n"
+                    debug_info += "".join(
+                        session_creation_stacks.get(s_id, ["No stack trace available"])
+                    )
+                    debug_info += "----------------------------------------\n"
+
             self.assertEqual(
                 len(leaked_session_ids),
                 0,
                 f"HTTP Sessions leak detected! Leaked: {len(leaked_session_ids)}. "
                 f"Unique Created: {len(created_session_ids)}, Unique Closed: {len(closed_session_ids)}. "
-                f"Total Created: {len(created_sessions)}, Total Closed: {len(closed_sessions)}",
+                f"Total Created: {len(created_sessions)}, Total Closed: {len(closed_sessions)}"
+                f"{debug_info}",
             )
 
             created_channel_ids = {id(c) for c in created_channels}
