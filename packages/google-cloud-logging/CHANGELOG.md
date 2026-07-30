@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.16.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-logging-v3.16.1...google-cloud-logging-v3.16.2) (2026-07-30)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+
 ## [3.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-logging-v3.16.0...google-cloud-logging-v3.16.1) (2026-07-07)
 
 

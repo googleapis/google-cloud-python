@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.69.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.69.0...google-cloud-spanner-v3.69.1) (2026-07-30)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* **metrics:** fix GFE and AFE metrics publishing ([#17561](https://github.com/googleapis/google-cloud-python/issues/17561)) ([abf1178](https://github.com/googleapis/google-cloud-python/commit/abf117892eac3e973749f94fc7a225f1d122fd20))
+* **spanner:** escape embedded backticks in dbapi escape_name ([#17810](https://github.com/googleapis/google-cloud-python/issues/17810)) ([c8b0b28](https://github.com/googleapis/google-cloud-python/commit/c8b0b2841d424ad24228d8b537d7920de078dd23))
+
 ## [3.69.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.68.0...google-cloud-spanner-v3.69.0) (2026-06-25)
 
 
