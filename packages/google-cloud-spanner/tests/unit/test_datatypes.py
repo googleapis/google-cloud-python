@@ -353,3 +353,80 @@ class Test_JsonObject_edge_cases_and_invariants(unittest.TestCase):
 
         raw_unwrapped = _unwrap_for_json({"a": JsonObject(JsonObject(None))})
         self.assertEqual(raw_unwrapped, {"a": None})
+
+
+class Test_JsonObject_coverage_boost(unittest.TestCase):
+    """Targeted unit tests covering all remaining branches in JsonObject."""
+
+    def test_pop_default_and_key_errors(self):
+        arr = JsonObject([10])
+        self.assertEqual(arr.pop(5, "default"), "default")
+        with self.assertRaises(KeyError):
+            arr.pop(5)
+
+        scalar = JsonObject(42)
+        self.assertEqual(scalar.pop("missing", "default"), "default")
+        with self.assertRaises(KeyError):
+            scalar.pop("missing")
+
+        null_obj = JsonObject()
+        self.assertEqual(null_obj.pop("missing", "default"), "default")
+        with self.assertRaises(KeyError):
+            null_obj.pop("missing")
+
+    def test_scalar_contains_typeerror(self):
+        scalar = JsonObject(42)
+        with self.assertRaises(TypeError):
+            _ = "item" in scalar
+
+    def test_repr_formatting(self):
+        self.assertEqual(repr(JsonObject([1, 2])), "[1, 2]")
+        self.assertEqual(repr(JsonObject(42)), "42")
+        self.assertEqual(repr(JsonObject({"a": 1})), "{'a': 1}")
+
+    def test_ne_operator(self):
+        self.assertTrue(JsonObject(1) != JsonObject(2))
+        self.assertFalse(JsonObject(1) != JsonObject(1))
+
+    def test_from_str_scalar(self):
+        obj = JsonObject.from_str("42")
+        self.assertEqual(obj, 42)
+        self.assertTrue(obj._is_scalar_value)
+
+    def test_unwrap_for_json_tuple_and_nested_types(self):
+        from google.cloud.spanner_v1.data_types import _unwrap_for_json
+
+        tup_unwrapped = _unwrap_for_json((JsonObject(1), JsonObject(2)))
+        self.assertEqual(tup_unwrapped, [1, 2])
+
+    def test_rewrapping_scalar_and_dict_jsonobject(self):
+        scalar_rewrapped = JsonObject(JsonObject(42))
+        self.assertTrue(scalar_rewrapped._is_scalar_value)
+        self.assertEqual(scalar_rewrapped._simple_value, 42)
+
+        dict_rewrapped = JsonObject(JsonObject({"a": 1}))
+        self.assertEqual(dict_rewrapped.get("a"), 1)
+
+    def test_values_and_items_for_scalar_null_dict(self):
+        self.assertEqual(list(JsonObject(42).values()), [42])
+        self.assertEqual(list(JsonObject().values()), [])
+        self.assertEqual(list(JsonObject(42).items()), [(0, 42)])
+        self.assertEqual(list(JsonObject().items()), [])
+        self.assertEqual(list(JsonObject().keys()), [])
+        self.assertTrue(JsonObject().copy()._is_null)
+
+    def test_dict_pop_and_contains(self):
+        d = JsonObject({"a": 1})
+        self.assertEqual(d.pop("missing", "default"), "default")
+        self.assertIn("a", d)
+        self.assertNotIn("b", d)
+
+    def test_from_str_null(self):
+        null_obj = JsonObject.from_str("null")
+        self.assertTrue(null_obj._is_null)
+        self.assertIsNone(null_obj.serialize())
+
+    def test_unwrap_for_json_scalar(self):
+        from google.cloud.spanner_v1.data_types import _unwrap_for_json
+
+        self.assertEqual(_unwrap_for_json(JsonObject(42)), 42)
