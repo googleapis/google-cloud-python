@@ -27,3 +27,14 @@ def test_quota():
     assert "kind" not in quotas
     for keyspec in quotas["whitelistedKeySpecs"]:
         assert "kind" not in keyspec
+
+
+import sys
+
+import pytest
+
+
+def test_dummy_mixed_results():
+    if sys.version_info >= (3, 12):
+        pytest.skip("Skipping on Python 3.12+ to test mixed results")
+    assert False, "Intentional failure on Python < 3.12 to verify output formatting"
