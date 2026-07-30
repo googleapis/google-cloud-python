@@ -59,12 +59,22 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-      # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
-      # See https://github.com/googleapis/google-cloud-python/issues/12013
-      # and https://github.com/actions/checkout#checkout-head.
       with:
-        fetch-depth: 2
+        # Use fetch-depth of 0 (full history) so Git can find the merge-base with the
+        # target branch and calculate the exact list of modified packages.
+        fetch-depth: 0
         persist-credentials: false
+      # We must explicitly fetch and set the target branch reference (main, etc.)
+      # to perform a relative diff (target_branch...HEAD). Comparing against a generic "HEAD~1"
+      # is fragile and fails if developers merge main back into their PR, if the PR has
+      # multiple commits, or if running inside a Merge Queue (merge_group) environment.
+    - name: Set target branch ref
+      id: target
+      env:
+        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref || 'main' }}
+      run: |
+        git fetch origin $TARGET_BRANCH --depth=1
+        echo "branch=origin/$TARGET_BRANCH" >> "$GITHUB_OUTPUT"
     - name: Setup Python
       uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
       with:
@@ -72,8 +82,8 @@ jobs:
     - name: Set number of files changes in packages and preview-packages directories
       id: packages
       run: |
-        git diff HEAD~1 -- packages preview-packages > /dev/null
-        num_files_changed=$(git diff HEAD~1 -- packages preview-packages | wc -l | tr -d ' ')
+        git diff ${{ steps.target.outputs.branch }}...HEAD -- packages preview-packages > /dev/null
+        num_files_changed=$(git diff ${{ steps.target.outputs.branch }}...HEAD -- packages preview-packages | wc -l | tr -d ' ')
         echo "num_files_changed=${num_files_changed}" >> "$GITHUB_OUTPUT"
     - name: Install coverage
       if: ${{ steps.packages.outputs.num_files_changed > 0 }}
