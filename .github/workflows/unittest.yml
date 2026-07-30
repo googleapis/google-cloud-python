@@ -111,16 +111,6 @@ jobs:
           # Unzip any zipped coverage results
           find .coverage-results -type f -name '*.zip' -exec unzip -o {} \;
 
-          # Find all coverage files and combine them.
-          # We find files starting with .coverage (excluding .coveragerc files and templates)
-          coverage_files=$(find .coverage-results . -type f -name '.coverage*' ! -name '.coveragerc*')
-          if [ -n "${coverage_files}" ]; then
-            coverage combine ${coverage_files}
-          else
-            echo "Error: No coverage files found to combine."
-            exit 1
-          fi
-
           # Find all modified packages
           modified_packages=$(git diff --name-only HEAD~1 -- packages preview-packages | cut -d/ -f1,2 | sort -u)
 
@@ -133,21 +123,28 @@ jobs:
               echo "Evaluating coverage for package: ${pkg}"
               echo "============================================================"
 
+              pkg_name_clean=$(echo "${pkg}" | sed 's|/$||' | sed 's|/|_|g')
+              pkg_coverage_files=$(find .coverage-results -type f -name ".coverage*.${pkg_name_clean}*" 2>/dev/null)
+
               set +e
               pushd "${pkg}" > /dev/null
+              if [ -n "${pkg_coverage_files}" ]; then
+                COVERAGE_FILE=.coverage coverage combine ${pkg_coverage_files} > /dev/null 2>&1
+              fi
+
               if [ -f ".coveragerc" ]; then
                 echo "Using package-specific configuration: ${pkg}/.coveragerc"
                 # If fail_under is specified in the package-specific .coveragerc, coverage report
                 # will automatically enforce it. Otherwise, we enforce the default.
                 if grep -q "fail_under" ".coveragerc"; then
-                  COVERAGE_FILE=../../.coverage coverage report --include="$PWD/**"
+                  coverage report
                 else
-                  echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default"
-                  COVERAGE_FILE=../../.coverage coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}"
+                  echo "No fail_under specified in .coveragerc, enforcing default"
+                  coverage report --fail-under="${DEFAULT_FAIL_UNDER}"
                 fi
               else
                 echo "No .coveragerc found for ${pkg}, enforcing default"
-                COVERAGE_FILE=../../.coverage coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}"
+                coverage report --fail-under="${DEFAULT_FAIL_UNDER}"
               fi
               status=$?
               popd > /dev/null
