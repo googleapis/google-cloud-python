@@ -32,9 +32,11 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 from google.api_core import retry_async as retries
-{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
-from {{package_path}} import _compat as rest_helpers
+from google.api_core import rest_helpers
 from google.api_core import rest_streaming_async  # type: ignore
+{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
+from {{package_path}}._compat import transcode_request
+
 import google.protobuf
 
 from google.protobuf import json_format

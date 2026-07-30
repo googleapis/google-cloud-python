@@ -19,6 +19,7 @@ import json
 
 from typing import Any, Dict, List, Optional, Tuple
 
+from google.api_core import path_template
 from google.protobuf import json_format
 
 

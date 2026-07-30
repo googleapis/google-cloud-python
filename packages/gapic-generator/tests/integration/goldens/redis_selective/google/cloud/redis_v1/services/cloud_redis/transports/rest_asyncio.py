@@ -30,8 +30,10 @@ from google.api_core import gapic_v1
 from google.api_core import operations_v1
 from google.cloud.location import locations_pb2 # type: ignore
 from google.api_core import retry_async as retries
-from google.cloud.redis_v1 import _compat as rest_helpers
+from google.api_core import rest_helpers
 from google.api_core import rest_streaming_async  # type: ignore
+from google.cloud.redis_v1._compat import transcode_request
+
 import google.protobuf
 
 from google.protobuf import json_format

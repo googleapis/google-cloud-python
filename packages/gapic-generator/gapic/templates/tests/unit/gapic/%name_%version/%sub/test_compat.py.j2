@@ -262,11 +262,6 @@ def test_transcode_with_required_fields_existing_key():
     assert query_params["name"] == "custom-name"
 
 
-def test_transcode_alias():
-
-    assert tr_top is transcode_request
-
-
 def test_transcode_request_invalid_request():
     http_options = [{"method": "get", "uri": "/v1/test"}]
     with pytest.raises(TypeError, match="request cannot be None"):

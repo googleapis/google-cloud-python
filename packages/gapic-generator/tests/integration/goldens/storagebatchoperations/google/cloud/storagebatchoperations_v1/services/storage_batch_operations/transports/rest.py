@@ -20,9 +20,10 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-from google.cloud.storagebatchoperations_v1 import _compat as rest_helpers
+from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
+from google.cloud.storagebatchoperations_v1._compat import transcode_request
 import google.protobuf
 
 from google.protobuf import json_format
