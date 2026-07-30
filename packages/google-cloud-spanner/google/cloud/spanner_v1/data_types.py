@@ -31,15 +31,47 @@ class JsonObject(dict):
     """
 
     def __init__(self, *args, **kwargs):
-        self._is_null = (args, kwargs) == ((), {}) or (
-            len(args) == 1 and args[0] is None
+        self._is_null = (
+            (args, kwargs) == ((), {})
+            or (len(args) == 1 and args[0] is None)
+            or (len(args) == 1 and isinstance(args[0], JsonObject) and args[0]._is_null)
         )
-        self._is_array = len(args) == 1 and isinstance(args[0], (list, tuple))
+        self._is_array = (
+            len(args) == 1
+            and not self._is_null
+            and isinstance(
+                args[0]._array_value
+                if isinstance(args[0], JsonObject) and args[0]._is_array
+                else args[0],
+                (list, tuple),
+            )
+        )
         self._is_scalar_value = (
             len(args) == 1
-            and args[0] is not None
-            and not isinstance(args[0], (list, dict))
+            and not self._is_null
+            and not self._is_array
+            and not isinstance(
+                args[0]._simple_value
+                if isinstance(args[0], JsonObject) and args[0]._is_scalar_value
+                else args[0],
+                dict,
+            )
         )
+
+        if self._is_null:
+            super().__init__({"__json_null__": True})
+            return
+
+        if len(args) and isinstance(args[0], JsonObject):
+            if args[0]._is_array:
+                self._array_value = list(args[0]._array_value)
+                return
+            elif args[0]._is_scalar_value:
+                self._simple_value = args[0]._simple_value
+                return
+            else:
+                super().__init__(args[0].copy())
+                return
 
         # if the JSON object is represented with an array,
         # the value is contained separately
@@ -52,18 +84,7 @@ class JsonObject(dict):
             self._simple_value = args[0]
             return
 
-        if len(args) and isinstance(args[0], JsonObject):
-            self._is_array = args[0]._is_array
-            self._is_scalar_value = args[0]._is_scalar_value
-            if self._is_array:
-                self._array_value = list(args[0]._array_value)
-            elif self._is_scalar_value:
-                self._simple_value = args[0]._simple_value
-
-        if self._is_null:
-            super().__init__({"__json_null__": True})
-        else:
-            super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def get(self, key, default=None):
         if self._is_array:
@@ -85,7 +106,9 @@ class JsonObject(dict):
         return JsonObject(super().copy())
 
     def keys(self):
-        if self._is_array or self._is_scalar_value or self._is_null:
+        if self._is_array:
+            return dict(enumerate(self._array_value)).keys()
+        if self._is_scalar_value or self._is_null:
             return {}.keys()
         return super().keys()
 

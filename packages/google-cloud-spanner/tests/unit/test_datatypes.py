@@ -103,7 +103,7 @@ class Test_JsonObject_dict_protocol(unittest.TestCase):
 
     def test_keys_values_items_pop(self):
         arr = JsonObject([10, 20])
-        self.assertEqual(list(arr.keys()), [])
+        self.assertEqual(list(arr.keys()), [0, 1])
         self.assertEqual(list(arr.values()), [10, 20])
         self.assertEqual(list(arr.items()), [(0, 10), (1, 20)])
         val = arr.pop(0)
@@ -288,3 +288,68 @@ class Test_JsonObject_complex_nested(unittest.TestCase):
         self.assertEqual(len(obj), 3)
         self.assertEqual(obj[0], 1)
         self.assertEqual(obj.serialize(), "[1,2,3]")
+
+
+class Test_JsonObject_edge_cases_and_invariants(unittest.TestCase):
+    """Edge cases for JsonObject rewrapping and dict invariants."""
+
+    def test_rewrapping_null_object_preserves_null_state(self):
+        """Verify that wrapping a null JsonObject preserves _is_null and serialize()."""
+        # Test default JsonObject() null
+        null_obj = JsonObject()
+        rewrapped = JsonObject(null_obj)
+        self.assertTrue(
+            rewrapped._is_null, "Rewrapped JsonObject lost _is_null=True flag"
+        )
+        self.assertIsNone(
+            rewrapped.serialize(),
+            "Rewrapped JsonObject() should serialize to None",
+        )
+        self.assertFalse(bool(rewrapped), "Rewrapped JsonObject() should be falsy")
+        self.assertEqual(len(rewrapped), 0, "Rewrapped JsonObject() length should be 0")
+
+        # Test JsonObject(None) null
+        null_none_obj = JsonObject(None)
+        rewrapped_none = JsonObject(null_none_obj)
+        self.assertTrue(
+            rewrapped_none._is_null,
+            "Rewrapped JsonObject(None) lost _is_null=True flag",
+        )
+        self.assertIsNone(
+            rewrapped_none.serialize(),
+            "Rewrapped JsonObject(None) should serialize to None",
+        )
+
+    def test_keys_values_items_dict_invariant_for_arrays(self):
+        """Verify keys(), values(), and items() consistency for array JsonObjects."""
+        arr = JsonObject([10, 20])
+        keys = list(arr.keys())
+        values = list(arr.values())
+        items = list(arr.items())
+
+        # Standard Python dict invariant: list(keys) MUST match [k for k, v in items]
+        self.assertEqual(
+            keys,
+            [0, 1],
+            "keys() should return integer indices matching items() keys",
+        )
+        self.assertEqual(values, [10, 20], "values() should return array elements")
+        self.assertEqual(items, [(0, 10), (1, 20)])
+        self.assertEqual(
+            keys,
+            [k for k, v in items],
+            "d.keys() must match [k for k, v in d.items()]",
+        )
+
+        # Verify zip(keys, values) reconstructs items
+        self.assertEqual(dict(zip(arr.keys(), arr.values())), {0: 10, 1: 20})
+
+    def test_nested_rewrapped_null_serialization(self):
+        """Verify nested rewrapped null JsonObjects serialize correctly."""
+        from google.cloud.spanner_v1.data_types import _unwrap_for_json
+
+        nested = JsonObject({"a": JsonObject(JsonObject(None))})
+        self.assertEqual(nested.serialize(), '{"a":null}')
+
+        raw_unwrapped = _unwrap_for_json({"a": JsonObject(JsonObject(None))})
+        self.assertEqual(raw_unwrapped, {"a": None})
