@@ -68,9 +68,7 @@ run_package_test() {
   trap 'rm -rf "$gcloud_config_dir"' EXIT
 
 
-  echo "------------------------------------------------------------"
-  echo "Configuring environment for: ${package_name}"
-  echo "------------------------------------------------------------"
+
 
   case "${package_name}" in
     "google-auth")
@@ -91,6 +89,13 @@ run_package_test() {
       else
         NOX_FILE="noxfile.py"
       fi
+      ;;
+    "google-cloud-dns")
+      PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
+      GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/service-account.json"
+      NOX_FILE="noxfile.py"
+      # EXPERIMENTAL: Force running all system sessions to test mixed results
+      NOX_SESSION="system"
       ;;
     *)
       PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
@@ -125,7 +130,7 @@ run_package_test() {
 reap_parallel_results() {
   local retval=0
   local failed_count=0
-  local passed_count=0
+  local succeeded_count=0
 
   if [ -z "$LOG_DIR" ]; then
     echo "Error: LOG_DIR is not set."
@@ -140,49 +145,66 @@ reap_parallel_results() {
   done
 
   local total_tested=${#PACKAGES_TO_TEST[@]}
-  passed_count=$((total_tested - failed_count))
+  succeeded_count=$((total_tested - failed_count))
 
   echo ""
   echo "=================================================="
-  echo "               TEST RUN SUMMARY                   "
+  echo "@SUMMARY - TEST RUN RESULTS"
   echo "=================================================="
-  echo "Total tested: $total_tested"
-  echo "Passed:       $passed_count"
-  echo "Failed:       $failed_count"
+  echo "Total Packages: $total_tested"
+  echo "Succeeded:      $succeeded_count"
+  echo "Failed:         $failed_count"
   echo "=================================================="
 
-  local passed_packages=()
+  local succeeded_packages=()
   for pkg in "${PACKAGES_TO_TEST[@]}"; do
     if [ ! -f "$LOG_DIR/$pkg.failed" ]; then
-      passed_packages+=("$pkg")
+      succeeded_packages+=("$pkg")
     fi
   done
 
-  if [ ${#passed_packages[@]} -gt 0 ]; then
-    echo ""
-    echo "PASSED PACKAGES:"
-    printf "%s\n" "${passed_packages[@]}" | sort | sed 's/^/- /'
-  fi
-
   if [ "$failed_count" -gt 0 ]; then
-    echo ""
-    echo "!!! DETAILED LOGS FOR FAILED PACKAGES !!!"
+    echo "=================================================="
+    echo "@FAILED - DETAILED LOGS FOR FAILED PACKAGES"
+    echo "=================================================="
     for failed in "$LOG_DIR"/*.failed; do
       if [ -f "$failed" ]; then
         local pkg=$(basename "$failed" .failed)
         echo "--------------------------------------------------"
-        echo "LOGS FOR: $pkg"
+        echo "@PACKAGE (FAILED): $pkg"
         echo "--------------------------------------------------"
         if [ -n "$KOKORO_ARTIFACTS_DIR" ] && [ -f "$KOKORO_ARTIFACTS_DIR/$pkg/sponge_log.log" ]; then
           cat "$KOKORO_ARTIFACTS_DIR/$pkg/sponge_log.log"
-        else
+        elif [ -f "$LOG_DIR/$pkg.log" ]; then
           cat "$LOG_DIR/$pkg.log"
+        else
+          echo "Warning: No log file found for failed package $pkg"
         fi
         echo ""
       fi
     done
     retval=1
   fi
+
+  if [ ${#succeeded_packages[@]} -gt 0 ]; then
+    echo "=================================================="
+    echo "@SUCCEEDED - DETAILED LOGS FOR SUCCEEDED PACKAGES"
+    echo "=================================================="
+    for pkg in "${succeeded_packages[@]}"; do
+      echo "--------------------------------------------------"
+      echo "@PACKAGE (SUCCEEDED): $pkg"
+      echo "--------------------------------------------------"
+      if [ -n "$KOKORO_ARTIFACTS_DIR" ] && [ -f "$KOKORO_ARTIFACTS_DIR/$pkg/sponge_log.log" ]; then
+        cat "$KOKORO_ARTIFACTS_DIR/$pkg/sponge_log.log"
+      elif [ -f "$LOG_DIR/$pkg.log" ]; then
+        cat "$LOG_DIR/$pkg.log"
+      else
+        echo "Warning: No log file found for succeeded package $pkg"
+      fi
+      echo ""
+    done
+  fi
+
   return $retval
 }
 
@@ -272,9 +294,9 @@ export system_test_script PROJECT_ROOT KOKORO_GFILE_DIR
 # -P "$MAX_JOBS" controls concurrency
 # -I {} replaces {} with the package name
 printf '%s\n' "${PACKAGES_TO_TEST[@]}" \
-  | xargs -P "$MAX_JOBS" -I {} \
+  | xargs -n 1 -P "$MAX_JOBS" \
     bash -c '
-      pkg="$1"
+      pkg="$0"
       # Determine log location: prefer Sponge artifacts directory if available
       if [ -n "$KOKORO_ARTIFACTS_DIR" ]; then
         pkg_log_dir="$KOKORO_ARTIFACTS_DIR/$pkg"
@@ -286,7 +308,7 @@ printf '%s\n' "${PACKAGES_TO_TEST[@]}" \
 
       # Run test; if it fails, create a .failed file to signal failure to the reaper
       run_package_test "$pkg" > "$log_file" 2>&1 || touch "$LOG_DIR/$pkg.failed"
-    ' _ "{}"
+    '
 
 reap_parallel_results || RETVAL=1
 
