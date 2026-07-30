@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.37.2](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.37.1...gapic-generator-v1.37.2) (2026-07-30)
+
+
+### Bug Fixes
+
+* add typing for header_params ([#17914](https://github.com/googleapis/google-cloud-python/issues/17914)) ([9e98b93](https://github.com/googleapis/google-cloud-python/commit/9e98b93e89c26dfca7ca4980b2da8ff3d2303771))
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* **generator:** use flat_ref_types in test templates and delete remove-unused-imports ([#17900](https://github.com/googleapis/google-cloud-python/issues/17900)) ([395f764](https://github.com/googleapis/google-cloud-python/commit/395f764737bd976593b9b034130012522c44344c))
+* resolve collision with reserved words in samples ([#17912](https://github.com/googleapis/google-cloud-python/issues/17912)) ([588cda9](https://github.com/googleapis/google-cloud-python/commit/588cda95202e094511f39f244aa6acea654a7af6))
+* upgrade Protobuf and gRPC in WORKSPACE ([#17882](https://github.com/googleapis/google-cloud-python/issues/17882)) ([5b5ece5](https://github.com/googleapis/google-cloud-python/commit/5b5ece55d1b2a427ccc2b461442a4e7751b33919))
+
 ## [1.37.1](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.37.0...gapic-generator-v1.37.1) (2026-07-22)
 
 

@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
+## [2.28.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.28.0...google-cloud-firestore-v2.28.1) (2026-07-30)
+
+
+### Bug Fixes
+
+* **firestore:** BulkWriter pop from an empty deque ([#17490](https://github.com/googleapis/google-cloud-python/issues/17490)) ([8e826f0](https://github.com/googleapis/google-cloud-python/commit/8e826f078efaa0b5c9372ab8444864026abe4727))
+* **firestore:** preserve async limit_to_last ordering ([#17879](https://github.com/googleapis/google-cloud-python/issues/17879)) ([caf2fdb](https://github.com/googleapis/google-cloud-python/commit/caf2fdb646714f07cf039b0dbb88d0ce594f6567))
+
 ## [2.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.27.0...google-cloud-firestore-v2.28.0) (2026-06-25)
 
 

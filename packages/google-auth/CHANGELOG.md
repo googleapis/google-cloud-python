@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.56.3](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.2...google-auth-v2.56.3) (2026-07-30)
+
+
+### Bug Fixes
+
+* **auth:** avoid creating mTLS SSL context for custom async transports ([#17825](https://github.com/googleapis/google-cloud-python/issues/17825)) ([fbe33f9](https://github.com/googleapis/google-cloud-python/commit/fbe33f9653d61353c0263ac2d0bff71eb76131f8)), refs [#17622](https://github.com/googleapis/google-cloud-python/issues/17622)
+* **auth:** only trigger mTLS certificate rotation on mTLS endpoints ([#17928](https://github.com/googleapis/google-cloud-python/issues/17928)) ([f7b49ea](https://github.com/googleapis/google-cloud-python/commit/f7b49ea967d93a969c73389c7b7baddf595d9a48))
+* **auth:** properly extract stdout from gnubby webauthn plugin failures ([#17885](https://github.com/googleapis/google-cloud-python/issues/17885)) ([744e826](https://github.com/googleapis/google-cloud-python/commit/744e826f79e99a75600193f4794e6eb225871e37))
+* **oauth2:** avoid redundant JWKS network fetches ([#17891](https://github.com/googleapis/google-cloud-python/issues/17891)) ([de53298](https://github.com/googleapis/google-cloud-python/commit/de53298212cd4da417f22a5c1697901e0621b975))
+
+
+### Performance Improvements
+
+* **auth:** use generator expression in any() to allow short-circuiting ([735e565](https://github.com/googleapis/google-cloud-python/commit/735e5659be9e48776101f3530db441968e587135))
+* **auth:** use generator expression in any() to allow short-circuiting ([#17937](https://github.com/googleapis/google-cloud-python/issues/17937)) ([735e565](https://github.com/googleapis/google-cloud-python/commit/735e5659be9e48776101f3530db441968e587135))
+
 ## [2.56.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.1...google-auth-v2.56.2) (2026-07-21)
 
 

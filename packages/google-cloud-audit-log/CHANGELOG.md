@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-audit-log/#history
 
+## [0.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.6.0...google-cloud-audit-log-v0.6.1) (2026-07-30)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.5.0...google-cloud-audit-log-v0.6.0) (2026-06-02)
 
 

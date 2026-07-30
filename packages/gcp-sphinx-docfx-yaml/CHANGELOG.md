@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/gcp-sphinx-docfx-yaml/#history
 
+## [3.3.1](https://github.com/googleapis/google-cloud-python/compare/gcp-sphinx-docfx-yaml-v3.3.0...gcp-sphinx-docfx-yaml-v3.3.1) (2026-07-30)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+
 ## [3.3.0](https://github.com/googleapis/google-cloud-python/compare/gcp-sphinx-docfx-yaml-v3.2.5...gcp-sphinx-docfx-yaml-v3.3.0) (2026-05-06)
 
 
