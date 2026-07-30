@@ -264,7 +264,9 @@ class PandasGBQVersions:
         try:
             import pandas_gbq  # type: ignore
 
-            self._installed_version = packaging.version.parse(getattr(pandas_gbq, "__version__", "0.0.0"))
+            self._installed_version = packaging.version.parse(
+                getattr(pandas_gbq, "__version__", "0.0.0")
+            )
         except Exception:
             self._installed_version = packaging.version.parse("0.0.0")
         return self._installed_version
@@ -278,7 +280,9 @@ class PandasGBQVersions:
         try:
             import pandas_gbq  # type: ignore
 
-            self._delegation_api_version = int(getattr(pandas_gbq, "_internal_delegation_api_version", 0))
+            self._delegation_api_version = int(
+                getattr(pandas_gbq, "_internal_delegation_api_version", 0)
+            )
         except Exception:
             self._delegation_api_version = 0
         return self._delegation_api_version
