@@ -18,7 +18,8 @@ This script identifies which packages have changed compared to a target branch
 (or since the last commit) and groups them into a fixed number of shards.
 It uses package weights (configured via environment variables) to balance the
 execution time across shards while maintaining alphabetical order and
-contiguous grouping.
+contiguous grouping. All directory variants of a package (e.g. packages/foo and
+preview-packages/foo) are kept aligned in the exact same shard.
 """
 
 import os
@@ -26,6 +27,7 @@ import subprocess
 import json
 import math
 import sys
+import collections
 
 
 def get_package_directories():
@@ -68,45 +70,33 @@ def get_package_weights():
     return weights
 
 
-def package_sort_key(pkg_path):
-    """Sort key to order package paths primarily by package directory name, then full path.
-
-    For example, 'preview-packages/google-cloud-compute/' maps to:
-    ('google-cloud-compute', 'preview-packages/google-cloud-compute/')
-
-    This ensures preview packages are interleaved next to their standard counterparts
-    in shard matrices rather than being grouped at the end.
-    """
-    clean_path = pkg_path.rstrip('/')
-    pkg_name = os.path.basename(clean_path)
-    return (pkg_name, clean_path)
-
-
 def get_packages():
-    """Lists all package directories in the repository.
+    """Lists all package directory paths in the repository grouped by package name.
 
     Returns:
-        list: A list of relative paths under configured package roots, sorted by package name.
+        dict: A dictionary mapping package_name -> list of relative directory paths.
     """
     subdirs = get_package_directories()
-    packages = []
+    packages_map = collections.defaultdict(list)
     for subdir in subdirs:
         if not os.path.exists(subdir):
             continue
-        pkg_dirs = [os.path.join(subdir, d) + '/' for d in os.listdir(subdir) if os.path.isdir(os.path.join(subdir, d))]
-        packages.extend(pkg_dirs)
-    return sorted(packages, key=package_sort_key)
+        for d in os.listdir(subdir):
+            full_path = os.path.join(subdir, d) + '/'
+            if os.path.isdir(full_path):
+                packages_map[d].append(full_path)
+    return packages_map
 
 
 def get_packages_to_test():
-    """Determines the list of packages that need to be tested.
+    """Determines the dictionary of package names to directory paths that need to be tested.
 
     This is based on git diffs against the target branch (presubmit) or the
     previous commit (continuous). If TEST_ALL_PACKAGES is set to true,
     all packages are returned.
 
     Returns:
-        list: A list of package directory paths to be included in the test matrix.
+        dict: A dictionary mapping package_name -> list of relative directory paths to be tested.
     """
     build_type = os.environ.get('BUILD_TYPE', 'presubmit')
     target_branch = os.environ.get('TARGET_BRANCH', 'main')
@@ -132,42 +122,43 @@ def get_packages_to_test():
         return all_packages
 
     package_dirs = set(get_package_directories())
-    to_test = set()
+    to_test_names = set()
     for f in changed_files:
         parts = f.split('/')
         if len(parts) >= 2 and parts[0] in package_dirs:
-            pkg = f"{parts[0]}/{parts[1]}/"
-            if pkg in all_packages:
-                to_test.add(pkg)
+            pkg_name = parts[1]
+            if pkg_name in all_packages:
+                to_test_names.add(pkg_name)
 
-    return sorted(to_test, key=package_sort_key)
+    return {name: all_packages[name] for name in to_test_names}
 
 
-def group_packages(packages):
-    """Groups the provided packages into balanced shards.
+def group_packages(packages_map):
+    """Groups packages by package name into balanced shards.
 
-    The grouping respects the MAX_SHARDS limit. It uses a target weight per shard
-    to distribute the workload. If the contiguous packing exceeds the shard limit,
-    all remaining packages are added to the final shard.
+    All directory variants of a package (e.g. packages/foo and preview-packages/foo)
+    are kept together in the exact same shard.
 
     Args:
-        packages (list): The list of package directory paths to group.
+        packages_map (dict): Dictionary mapping package_name -> list of directory paths.
 
     Returns:
         list: A list of dictionaries, each representing a shard with its name,
               index, description, and the space-separated list of packages.
     """
-    if not packages:
+    if not packages_map:
         return []
 
-    # Map packages to their weights
     package_weights_map = get_package_weights()
-    package_weights = []
+    sorted_pkg_names = sorted(packages_map.keys())
+
+    pkg_items = []
     total_weight = 0
-    for pkg in packages:
-        pkg_name = pkg.strip('/').split('/')[-1]
-        weight = package_weights_map.get(pkg_name, 1)
-        package_weights.append((pkg, weight))
+    for name in sorted_pkg_names:
+        paths = packages_map[name]
+        # Multiply base weight by number of directory variants (e.g. standard + preview)
+        weight = package_weights_map.get(name, 1) * len(paths)
+        pkg_items.append((name, paths, weight))
         total_weight += weight
 
     # Dynamically determine target weight to balance across max shards.
@@ -175,52 +166,48 @@ def group_packages(packages):
     target_weight = max(10, math.ceil(total_weight / max_shards))
 
     shards_list = []
-    current_shard_packages = []
+    current_shard_items = []
     current_shard_weight = 0
 
-    # Pack packages alphabetically and contiguously.
-    for pkg, weight in package_weights:
+    # Pack packages alphabetically by package name.
+    for name, paths, weight in pkg_items:
         # If adding this package would exceed target weight AND we haven't reached the 
         # shard limit, start a new shard. Otherwise, keep "stuffing" the current one.
-        if current_shard_packages and (current_shard_weight + weight > target_weight) and len(shards_list) < max_shards - 1:
-            shards_list.append(current_shard_packages)
-            current_shard_packages = [pkg]
+        if current_shard_items and (current_shard_weight + weight > target_weight) and len(shards_list) < max_shards - 1:
+            shards_list.append(current_shard_items)
+            current_shard_items = [(name, paths, weight)]
             current_shard_weight = weight
         else:
-            current_shard_packages.append(pkg)
+            current_shard_items.append((name, paths, weight))
             current_shard_weight += weight
 
-    if current_shard_packages:
-        shards_list.append(current_shard_packages)
+    if current_shard_items:
+        shards_list.append(current_shard_items)
 
     # Construct the final shards output list
     shards = []
-    for i, shard_packages in enumerate(shards_list):
+    for i, shard_items in enumerate(shards_list):
         index = i + 1
         name = f"Shard {index}"
-        num_in_shard = len(shard_packages)
+        num_in_shard = len(shard_items)
 
-        def format_pkg_name(pkg_path):
-            # Extract package directory name and append '(preview)' if under preview-packages/
-            clean_path = pkg_path.rstrip('/')
-            pkg_name = os.path.basename(clean_path)
-            if clean_path.startswith("preview-packages/"):
-                return f"{pkg_name} (preview)"
-            return pkg_name
-
-        # Calculate contiguous range description
-        first_pkg = format_pkg_name(shard_packages[0])
-        last_pkg = format_pkg_name(shard_packages[-1])
-        if len(shard_packages) == 1:
-            desc = first_pkg
+        # Calculate contiguous range description using package names
+        first_pkg_name = shard_items[0][0]
+        last_pkg_name = shard_items[-1][0]
+        if num_in_shard == 1:
+            desc = first_pkg_name
         else:
-            desc = f"{first_pkg}...{last_pkg} ({num_in_shard} packages)"
+            desc = f"{first_pkg_name}...{last_pkg_name} ({num_in_shard} packages)"
+
+        all_paths = []
+        for _, paths, _ in shard_items:
+            all_paths.extend(paths)
 
         shards.append({
             "name": name,
             "index": index,
             "description": desc,
-            "packages": " ".join(shard_packages),
+            "packages": " ".join(all_paths),
             "is_sharded": True
         })
 
