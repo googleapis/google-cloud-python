@@ -21,8 +21,7 @@ import datetime
 import functools
 import operator
 import typing
-from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple, Union, Sequence
-
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -57,29 +56,34 @@ else:
 
 import google.api_core.exceptions
 from google.api_core.page_iterator import HTTPIterator
-
 import google.cloud._helpers  # type: ignore
-from google.cloud.bigquery import _helpers
-from google.cloud.bigquery import _pandas_helpers
-from google.cloud.bigquery import _versions_helpers
+
+from google.cloud.bigquery import (
+    _helpers,
+    _pandas_helpers,
+    _string_references,
+    _versions_helpers,
+)
 from google.cloud.bigquery import exceptions as bq_exceptions
+from google.cloud.bigquery import external_config
+from google.cloud.bigquery import schema as _schema
 from google.cloud.bigquery._tqdm_helpers import get_progress_bar
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery.enums import DefaultPandasDTypes
 from google.cloud.bigquery.external_config import ExternalConfig
-from google.cloud.bigquery import schema as _schema
-from google.cloud.bigquery.schema import _build_schema_resource
-from google.cloud.bigquery.schema import _parse_schema_resource
-from google.cloud.bigquery.schema import _to_schema_fields
-from google.cloud.bigquery import external_config
-from google.cloud.bigquery import _string_references
+from google.cloud.bigquery.schema import (
+    _build_schema_resource,
+    _parse_schema_resource,
+    _to_schema_fields,
+)
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     # Unconditionally import optional dependencies again to tell pytype that
     # they are not None, avoiding false "no attribute" errors.
+    import geopandas  # type: ignore
     import pandas
     import pyarrow
-    import geopandas  # type: ignore
+
     from google.cloud import bigquery_storage  # type: ignore
     from google.cloud.bigquery.dataset import DatasetReference
 
@@ -797,7 +801,7 @@ class Table(_TableBase):
             api_repr = value.to_api_repr()
         elif value is not None:
             raise ValueError(
-                "value must be google.cloud.bigquery.table.TimePartitioning " "or None"
+                "value must be google.cloud.bigquery.table.TimePartitioning or None"
             )
         self._properties[self._PROPERTY_TO_API_FIELD["time_partitioning"]] = api_repr
 
@@ -2801,6 +2805,24 @@ class RowIterator(HTTPIterator):
             create_bqstorage_client = False
             bqstorage_client = None
 
+        if _versions_helpers.PANDAS_GBQ_VERSIONS.is_delegation_supported:
+            try:
+                import pandas_gbq  # type: ignore
+
+                pandas_gbq_version = getattr(pandas_gbq, "__version__", "0.0.0")
+            except ImportError:
+                pandas_gbq_version = "0.0.0"
+
+            client_info = getattr(
+                getattr(self.client, "_connection", None), "_client_info", None
+            )
+            if client_info:
+                ua = client_info.user_agent or ""
+                if "pandas-gbq" not in ua:
+                    client_info.user_agent = (
+                        f"{ua} pandas-gbq/{pandas_gbq_version}".strip()
+                    )
+
         record_batch = self.to_arrow(
             progress_bar_type=progress_bar_type,
             bqstorage_client=bqstorage_client,
@@ -2990,8 +3012,7 @@ class RowIterator(HTTPIterator):
         )
         if not geography_columns:
             raise TypeError(
-                "There must be at least one GEOGRAPHY column"
-                " to create a GeoDataFrame"
+                "There must be at least one GEOGRAPHY column to create a GeoDataFrame"
             )
 
         if geography_column:
