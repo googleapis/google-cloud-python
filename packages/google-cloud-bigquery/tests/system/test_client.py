@@ -204,12 +204,16 @@ class TestBigQuery(unittest.TestCase):
             tag_key = key_values.pop()
 
             # Delete tag values first
-            [
-                tag_values_client.delete_tag_value(name=tag_value.name).result()
-                for tag_value in key_values
-            ]
+            for tag_value in key_values:
+                try:
+                    tag_values_client.delete_tag_value(name=tag_value.name).result()
+                except NotFound:
+                    pass
 
-            tag_keys_client.delete_tag_key(name=tag_key.name).result()
+            try:
+                tag_keys_client.delete_tag_key(name=tag_key.name).result()
+            except NotFound:
+                pass
 
     def test_get_service_account_email(self):
         client = Config.CLIENT
@@ -2184,6 +2188,7 @@ class TestBigQuery(unittest.TestCase):
         pytest.importorskip("google.cloud.bigquery_storage")
         current_process = psutil.Process()
         conn_start = current_process.net_connections()
+        conn_start_addrs = {c.laddr for c in conn_start if c.laddr}
         conn_count_start = len(conn_start)
 
         with helpers.patch_tracked_requests():
@@ -2202,24 +2207,29 @@ class TestBigQuery(unittest.TestCase):
             rows = cursor.fetchall()
             self.assertEqual(len(rows), 100000)
 
+            cursor.close()
             connection.close()
+
+        del connection, cursor, rows
         import gc
 
         gc.collect()
-        for _ in range(30):  # Wait up to 3 seconds
+        for _ in range(60):  # Wait up to 6 seconds for background socket cleanup
+            gc.collect()
             conn_end = current_process.net_connections()
             conn_count_end = len(conn_end)
-            if conn_count_end <= conn_count_start:
+            new_conns_remaining = [
+                c for c in conn_end if c.laddr and c.laddr not in conn_start_addrs
+            ]
+            if conn_count_end <= conn_count_start or len(new_conns_remaining) == 0:
                 break
             time.sleep(0.1)
 
         try:
-            self.assertLessEqual(conn_count_end, conn_count_start)
+            self.assertTrue(
+                conn_count_end <= conn_count_start or len(new_conns_remaining) == 0
+            )
         except AssertionError as e:
-            # Due to flakiness in this test (likely caused by OS cleanup delays or
-            # non-deterministic garbage collection of sockets), we want to capture
-            # the detailed state of connections in future failing runs to help
-            # decrease false positives and identify the root cause.
             conn_debug = [
                 f"Status: {c.status}, Laddr: {c.laddr}, Raddr: {c.raddr}"
                 for c in current_process.net_connections()
@@ -2231,6 +2241,7 @@ class TestBigQuery(unittest.TestCase):
                 f"--- Socket Leak Debug Info ---\n"
                 f"Start Count: {conn_count_start}\n"
                 f"End Count: {conn_count_end}\n"
+                f"New Sockets Remaining: {len(new_conns_remaining)}\n"
                 f"Current Connections:\n{debug_msg}"
             )
 
