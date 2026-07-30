@@ -16,6 +16,7 @@
 
 [run]
 branch = True
+source = docfx_yaml
 
 [report]
 fail_under = 40
