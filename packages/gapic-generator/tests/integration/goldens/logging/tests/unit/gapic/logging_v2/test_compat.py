@@ -16,6 +16,7 @@
 """Tests for the compatibility module for older versions of google-api-core."""
 
 import json
+import pytest
 
 from unittest import mock
 

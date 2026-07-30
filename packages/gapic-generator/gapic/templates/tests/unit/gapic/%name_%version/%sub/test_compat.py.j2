@@ -11,6 +11,7 @@ google-api-core has the functions in `_compat.py.j2`. #}
 Backfill compatibility functions tests being removed from the client layer. #}
 
 import json
+import pytest
 
 from unittest import mock
 
@@ -21,7 +22,6 @@ from {{package_path}}._compat import transcode_request
 
 {% if has_auto_populated_fields %}
 import re
-import pytest
 
 from {{package_path}}._compat import setup_request_id
 

@@ -16,6 +16,7 @@
 """Tests for the compatibility module for older versions of google-api-core."""
 
 import json
+import pytest
 
 from unittest import mock
 
@@ -24,7 +25,6 @@ from google.protobuf import descriptor_pb2
 from google.cloud.storagebatchoperations_v1._compat import transcode_request
 
 import re
-import pytest
 
 from google.cloud.storagebatchoperations_v1._compat import setup_request_id
 
