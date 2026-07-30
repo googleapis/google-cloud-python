@@ -2230,22 +2230,23 @@ class TestBigQuery(unittest.TestCase):
         google.api_core.grpc_helpers.create_channel = patched_create_channel
 
         try:
-            # Provide no explicit clients, so that the connection will create and own them.
-            connection = dbapi.connect()
-            cursor = connection.cursor()
+            with helpers.patch_tracked_requests():
+                # Provide no explicit clients, so that the connection will create and own them.
+                connection = dbapi.connect()
+                cursor = connection.cursor()
 
-            cursor.execute(
+                cursor.execute(
+                    """
+                    SELECT id, `by`, timestamp
+                    FROM `bigquery-public-data.hacker_news.full`
+                    ORDER BY `id` ASC
+                    LIMIT 100000
                 """
-                SELECT id, `by`, timestamp
-                FROM `bigquery-public-data.hacker_news.full`
-                ORDER BY `id` ASC
-                LIMIT 100000
-            """
-            )
-            rows = cursor.fetchall()
-            self.assertEqual(len(rows), 100000)
+                )
+                rows = cursor.fetchall()
+                self.assertEqual(len(rows), 100000)
 
-            connection.close()
+                connection.close()
 
             # Assertions
             created_session_ids = {id(s) for s in created_sessions}
