@@ -76,6 +76,10 @@ from . import constants
 
 @dataclasses.dataclass(frozen=True)
 class BQFuncArg:
+    """
+    Represents an argument of a SQL function loaded from a yaml file.
+    """
+
     name: str
     value: str  # The type of the arg
     optional: bool
@@ -84,6 +88,11 @@ class BQFuncArg:
 
 @dataclasses.dataclass(frozen=True)
 class BQFuncImpl:
+    """
+    Represents an implementation (i.e. signature) for some SQL function loaded
+    from a yaml file.
+    """
+
     args: tuple[BQFuncArg, ...]
     return_type: str
 
@@ -97,6 +106,10 @@ class BQFuncImpl:
 
 @dataclasses.dataclass(frozen=True)
 class BQFunc:
+    """
+    Represents a SQL function loaded from a yaml file.
+    """
+
     name: str
     description: str
     impls: tuple[BQFuncImpl, ...]
@@ -109,6 +122,10 @@ class BQFunc:
 
 @dataclasses.dataclass(frozen=True)
 class BQModule:
+    """
+    Represents the data loaded from a yaml file with SQL functions info.
+    """
+
     yaml_file: pathlib.Path
     functions: tuple[BQFunc, ...]
 
@@ -130,6 +147,10 @@ class BQModule:
 
 @dataclasses.dataclass(frozen=True)
 class BigFramesOp:
+    """
+    Represents a BigFrames GoogleScalarOp impl to be defined in the code base.
+    """
+
     internal_name: str
     sql_name: str
     arg_specs: str
@@ -139,6 +160,10 @@ class BigFramesOp:
 
 @dataclasses.dataclass(frozen=True)
 class BigFramesFuncArg:
+    """
+    Represents an argument of a BigFrames BigQuery function to be defined in the code base.
+    """
+
     name: str
     types: frozenset[str]
     optional: bool
@@ -180,6 +205,10 @@ class BigFramesFuncArgBuilder:
 
 @dataclasses.dataclass(frozen=True)
 class BigFramesFunc:
+    """
+    Represents a BigFrames BigQuery function to be defined in the codebase.
+    """
+
     name: str
     op_name: str
     description: str
@@ -191,8 +220,11 @@ class BigFramesFunc:
 @dataclasses.dataclass
 class Accessor:
     """
-    This class is designed to be mutable because it has a recursive data structure. A mutable class
-    makes it easier to build the trees from the top.
+    Represents the accessor extensions to be defined for pandas and BigFrames.
+    It consists of multiple functions bundled under the different namespaces.
+
+    This class is designed to be mutable because it has a recursive data structure.
+    Mutability makes it easier to build the data structure trees from the top.
     """
 
     class_name: str
