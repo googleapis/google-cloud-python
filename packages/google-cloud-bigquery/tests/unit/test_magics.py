@@ -165,7 +165,7 @@ def test_context_resolves_unset_credentials_and_project():
     assert default_mock.call_count == 2
 
 
-def test_context_fallback_when_bigquery_magics_none():
+def test_context_fallback_to_default_credentials():
     ctx = magics.Context()
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
