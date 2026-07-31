@@ -1340,8 +1340,8 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     {% endfor %}
 
     default_values = getattr(
-        transport_class.{{ method.transport_safe_name | snake_case }},
-        "_{{ method.transport_safe_name }}__REQUIRED_FIELDS_DEFAULT_VALUES",
+        transport_class._Base{{ method.name }},
+        "_Base{{ method.name }}__REQUIRED_FIELDS_DEFAULT_VALUES",
         {},
     )
     unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}

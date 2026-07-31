@@ -162,7 +162,8 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
                 use_integers_for_enums={{ opts.rest_numeric_enums }},
             ))
             {% if method.input.required_fields %}
-            query_params.update(_Base{{ service.name }}RestTransport._Base{{method.name}}._get_unset_required_fields(query_params))
+            default_values = _Base{{ service.name }}RestTransport._Base{{method.name}}._Base{{method.name}}__REQUIRED_FIELDS_DEFAULT_VALUES
+            query_params.update({k: v for k, v in default_values.items() if k not in query_params})
             {% endif %}{# required fields #}
 
             {% if opts.rest_numeric_enums %}
