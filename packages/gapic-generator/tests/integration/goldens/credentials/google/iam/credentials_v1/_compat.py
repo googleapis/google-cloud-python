@@ -144,7 +144,7 @@ def get_universe_domain(
         raise EmptyUniverseError()
     return resolved
 
-def should_use_client_cert() -> bool:
+def should_use_client_cert() -> Optional[bool]:
     """Returns whether client certificate should be used for mTLS."""
     if hasattr(mtls, "should_use_client_cert"):
         return mtls.should_use_client_cert()
