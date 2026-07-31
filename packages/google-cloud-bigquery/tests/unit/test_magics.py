@@ -146,8 +146,6 @@ def test_context_resolves_unset_credentials_and_project():
     """When context credentials and project are unset (None), accessing them
     resolves them from Application Default Credentials.
     """
-    magics.context._credentials = None
-    magics.context._project = None
     assert magics.context._credentials is None
     assert magics.context._project is None
 
