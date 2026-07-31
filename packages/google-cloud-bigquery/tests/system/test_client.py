@@ -2187,39 +2187,35 @@ class TestBigQuery(unittest.TestCase):
         import requests
 
         # Track HTTP Sessions
-        created_sessions = []
-        closed_sessions = []
-        session_creation_stacks = {}
+        created_sessions = set()
+        closed_sessions = set()
 
         original_session_init = requests.Session.__init__
         original_session_close = requests.Session.close
 
-        import traceback
-
         def patched_session_init(self, *args, **kwargs):
             original_session_init(self, *args, **kwargs)
-            created_sessions.append(self)
-            session_creation_stacks[id(self)] = traceback.format_stack(limit=10)
+            created_sessions.add(self)
 
         def patched_session_close(self):
             original_session_close(self)
-            closed_sessions.append(self)
+            closed_sessions.add(self)
 
         # Track gRPC Channels
-        created_channels = []
-        closed_channels = []
+        created_channels = set()
+        closed_channels = set()
 
         original_create_channel = google.api_core.grpc_helpers.create_channel
 
         def patched_create_channel(*args, **kwargs):
             channel = original_create_channel(*args, **kwargs)
-            created_channels.append(channel)
+            created_channels.add(channel)
 
             original_channel_close = channel.close
 
             def patched_channel_close(*c_args, **c_kwargs):
                 original_channel_close(*c_args, **c_kwargs)
-                closed_channels.append(channel)
+                closed_channels.add(channel)
 
             channel.close = patched_channel_close
             return channel
@@ -2249,39 +2245,16 @@ class TestBigQuery(unittest.TestCase):
                 connection.close()
 
             # Assertions
-            created_session_ids = {id(s) for s in created_sessions}
-            closed_session_ids = {id(s) for s in closed_sessions}
-            leaked_session_ids = created_session_ids - closed_session_ids
-
-            debug_info = ""
-            if leaked_session_ids:
-                debug_info += "\n--- Leaked Sessions Creation Stacks ---\n"
-                for s_id in leaked_session_ids:
-                    debug_info += f"\nSession ID: {s_id}\n"
-                    debug_info += "".join(
-                        session_creation_stacks.get(s_id, ["No stack trace available"])
-                    )
-                    debug_info += "----------------------------------------\n"
-
             self.assertEqual(
-                len(leaked_session_ids),
-                0,
-                f"HTTP Sessions leak detected! Leaked: {len(leaked_session_ids)}. "
-                f"Unique Created: {len(created_session_ids)}, Unique Closed: {len(closed_session_ids)}. "
-                f"Total Created: {len(created_sessions)}, Total Closed: {len(closed_sessions)}"
-                f"{debug_info}",
+                created_sessions,
+                closed_sessions,
+                f"HTTP Sessions leak detected! Leaked: {created_sessions - closed_sessions}",
             )
 
-            created_channel_ids = {id(c) for c in created_channels}
-            closed_channel_ids = {id(c) for c in closed_channels}
-            leaked_channel_ids = created_channel_ids - closed_channel_ids
-
             self.assertEqual(
-                len(leaked_channel_ids),
-                0,
-                f"gRPC Channels leak detected! Leaked: {len(leaked_channel_ids)}. "
-                f"Unique Created: {len(created_channel_ids)}, Unique Closed: {len(closed_channel_ids)}. "
-                f"Total Created: {len(created_channels)}, Total Closed: {len(closed_channels)}",
+                created_channels,
+                closed_channels,
+                f"gRPC Channels leak detected! Leaked: {created_channels - closed_channels}",
             )
 
         finally:
@@ -2291,19 +2264,17 @@ class TestBigQuery(unittest.TestCase):
             google.api_core.grpc_helpers.create_channel = original_create_channel
 
             # Clean up any unclosed sessions/channels to avoid leaking in the test runner
-            for s in created_sessions:
-                if s not in closed_sessions:
-                    try:
-                        s.close()
-                    except Exception:
-                        pass
+            for s in created_sessions - closed_sessions:
+                try:
+                    s.close()
+                except Exception:
+                    pass
 
-            for c in created_channels:
-                if c not in closed_channels:
-                    try:
-                        c.close()
-                    except Exception:
-                        pass
+            for c in created_channels - closed_channels:
+                try:
+                    c.close()
+                except Exception:
+                    pass
 
     def _load_table_for_dml(self, rows, dataset_id, table_id):
         from google.cloud._testing import _NamedTemporaryFile
