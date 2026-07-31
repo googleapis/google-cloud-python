@@ -28,7 +28,7 @@ from google.cloud.storagebatchoperations_v1 import gapic_version as package_vers
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.cloud.storagebatchoperations_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, use_client_cert_effective
+from google.cloud.storagebatchoperations_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert
 from google.cloud.storagebatchoperations_v1._compat import setup_request_id
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
@@ -286,7 +286,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
             DeprecationWarning)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
-        use_client_cert = use_client_cert_effective()
+        use_client_cert = should_use_client_cert()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
@@ -323,7 +323,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
                 is not any of ["auto", "never", "always"].
         """
-        use_client_cert = use_client_cert_effective()
+        use_client_cert = should_use_client_cert()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
         if use_mtls_endpoint not in ("auto", "never", "always"):

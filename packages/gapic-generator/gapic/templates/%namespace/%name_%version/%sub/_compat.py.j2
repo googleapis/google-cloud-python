@@ -145,20 +145,18 @@ def get_universe_domain(
         raise EmptyUniverseError()
     return resolved
 
-def use_client_cert_effective() -> bool:
+def should_use_client_cert() -> bool:
     """Returns whether client certificate should be used for mTLS."""
     if hasattr(mtls, "should_use_client_cert"):
         return mtls.should_use_client_cert()
     else:
-        use_client_cert_str = os.getenv(
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
-        ).lower()
-        if use_client_cert_str not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
-                " either `true` or `false`"
-            )
-        return use_client_cert_str == "true"
+        use_client_cert = os.getenv(
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE"
+        ) or os.getenv("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE")
+
+        if use_client_cert:
+            return use_client_cert.lower() == "true"
+        return None
 
 {% if has_auto_populated_fields %}
 
