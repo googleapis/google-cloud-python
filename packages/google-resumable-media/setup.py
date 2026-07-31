@@ -16,8 +16,6 @@ import os
 
 import setuptools
 
-raise RuntimeError("Intentional breakage to verify ad-hoc testing behavior")
-
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
