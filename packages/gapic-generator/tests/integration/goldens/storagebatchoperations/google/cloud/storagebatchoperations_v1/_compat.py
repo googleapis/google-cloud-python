@@ -27,9 +27,24 @@ import google.protobuf.message
 from google.api_core import path_template
 from google.api_core.universe import EmptyUniverseError
 from google.auth.exceptions import MutualTLSChannelError
-from google.auth.transport import mtls
 from google.protobuf import json_format
 from urllib.parse import urlparse, urlunparse
+
+try:
+    # note: `#type: ignore` is added because the return type for `should_use_client_cert`
+    # is different than that of the fallback implementation below. This will be removed once
+    # we bump the minimum supported version of google-auth.
+    from google.auth.transport.mtls import should_use_client_cert  # type: ignore
+except ImportError:  # pragma: no cover
+    def should_use_client_cert() -> bool: # type: ignore
+        """Returns whether client certificate should be used for mTLS."""
+        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+        if use_client_cert not in ("true", "false"):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
+                " either `true` or `false`"
+            )
+        return use_client_cert == "true"
 
 DEFAULT_UNIVERSE = "googleapis.com"
 
@@ -147,19 +162,6 @@ def get_universe_domain(
     if not resolved:
         raise EmptyUniverseError()
     return resolved
-
-def should_use_client_cert() -> Optional[bool]:
-    """Returns whether client certificate should be used for mTLS."""
-    if hasattr(mtls, "should_use_client_cert"):
-        return mtls.should_use_client_cert()
-    else:
-        use_client_cert = os.getenv(
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE"
-        ) or os.getenv("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE")
-
-        if use_client_cert:
-            return use_client_cert.lower() == "true"
-        return None
 
 
 def setup_request_id(

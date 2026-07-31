@@ -229,27 +229,25 @@ def test_get_api_endpoint(
 
 
 def test_should_use_client_cert_with_should_use_client_cert():
-    mock_mtls = mock.Mock()
-    mock_mtls.should_use_client_cert.return_value = True
-    with mock.patch(f"{universe.__name__}.mtls", mock_mtls):
+    mock_func = mock.Mock(return_value=True)
+    with mock.patch.object(universe, "should_use_client_cert", mock_func):
         assert universe.should_use_client_cert() is True
 
-    mock_mtls.should_use_client_cert.return_value = False
-    with mock.patch(f"{universe.__name__}.mtls", mock_mtls):
+    mock_func.return_value = False
+    with mock.patch.object(universe, "should_use_client_cert", mock_func):
         assert universe.should_use_client_cert() is False
 
 
 def test_should_use_client_cert_fallback_env():
-    mock_mtls = mock.Mock(spec=[])
-    with mock.patch(f"{universe.__name__}.mtls", mock_mtls):
-        with mock.patch.dict(os.environ, {"CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "true"}, clear=True):
-            assert universe.should_use_client_cert() is True
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}, clear=True):
+        assert universe.should_use_client_cert() is True
 
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}, clear=True):
-            assert universe.should_use_client_cert() is False
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}, clear=True):
+        assert universe.should_use_client_cert() is False
 
-        with mock.patch.dict(os.environ, {}, clear=True):
-            assert universe.should_use_client_cert() is None
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "invalid"}, clear=True):
+        with pytest.raises(ValueError, match="Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"):
+            universe.should_use_client_cert()
 
 
 class MockRequest:
