@@ -21,14 +21,13 @@ import os
 
 from unittest import mock
 
-from google.protobuf import descriptor_pb2
+import google.auth.transport.mtls
 
 from google.cloud.eventarc_v1._compat import transcode_request
 from google.cloud.eventarc_v1 import _compat as universe
 
+from google.protobuf import descriptor_pb2
 from google.auth.exceptions import MutualTLSChannelError
-import google.auth.transport.mtls
-from unittest import mock
 
 
 def test_get_universe_domain():
@@ -227,7 +226,6 @@ def test_get_api_endpoint(
         )
 
 
-<<<<<<< HEAD
 def test_should_use_client_cert_with_should_use_client_cert():
     mock_mtls = mock.Mock()
     mock_mtls.should_use_client_cert.return_value = True
@@ -250,7 +248,8 @@ def test_should_use_client_cert_fallback_env():
 
         with mock.patch.dict(os.environ, {}, clear=True):
             assert universe.should_use_client_cert() is None
-=======
+
+
 def test_transcode_basic():
     # We use FieldDescriptorProto as it has standard primitive fields and nested messages.
     http_options = [
@@ -422,4 +421,3 @@ def test_transcode_request_proto_plus_wrapper():
 
     transcoded, _, _ = transcode_request(http_options, mock_proto_plus)
     assert transcoded["uri"] == "/v1/test/proto-plus-field"
->>>>>>> main

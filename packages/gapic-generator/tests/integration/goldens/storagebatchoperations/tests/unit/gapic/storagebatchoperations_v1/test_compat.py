@@ -17,23 +17,19 @@
 
 import json
 import pytest
-<<<<<<< HEAD
 import os
-=======
 import re
->>>>>>> main
 
 from unittest import mock
 
-from google.protobuf import descriptor_pb2
+import google.auth.transport.mtls
 
+from google.cloud.storagebatchoperations_v1._compat import setup_request_id
 from google.cloud.storagebatchoperations_v1._compat import transcode_request
 from google.cloud.storagebatchoperations_v1 import _compat as universe
-from google.cloud.storagebatchoperations_v1._compat import setup_request_id
 
+from google.protobuf import descriptor_pb2
 from google.auth.exceptions import MutualTLSChannelError
-import google.auth.transport.mtls
-from unittest import mock
 
 
 def test_get_universe_domain():

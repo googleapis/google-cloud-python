@@ -15,24 +15,17 @@
 #
 """A compatibility module for older versions of google-api-core."""
 
-<<<<<<< HEAD
 import os
-
-from typing import Optional
-=======
 import json
 
 from typing import Any, Dict, List, Optional, Tuple
 
 from google.api_core import path_template
-from google.protobuf import json_format
->>>>>>> main
-from urllib.parse import urlparse, urlunparse
-
+from google.api_core.universe import EmptyUniverseError
 from google.auth.exceptions import MutualTLSChannelError
 from google.auth.transport import mtls
-from google.api_core.universe import EmptyUniverseError
-
+from google.protobuf import json_format
+from urllib.parse import urlparse, urlunparse
 
 DEFAULT_UNIVERSE = "googleapis.com"
 
@@ -151,7 +144,6 @@ def get_universe_domain(
         raise EmptyUniverseError()
     return resolved
 
-<<<<<<< HEAD
 def should_use_client_cert() -> bool:
     """Returns whether client certificate should be used for mTLS."""
     if hasattr(mtls, "should_use_client_cert"):
@@ -164,7 +156,7 @@ def should_use_client_cert() -> bool:
         if use_client_cert:
             return use_client_cert.lower() == "true"
         return None
-=======
+
 
 def transcode_request(
     http_options: List[Dict[str, str]],
@@ -222,4 +214,3 @@ def transcode_request(
         query_params_json["$alt"] = "json;enum-encoding=int"
 
     return transcoded_request, body_json, query_params_json
->>>>>>> main

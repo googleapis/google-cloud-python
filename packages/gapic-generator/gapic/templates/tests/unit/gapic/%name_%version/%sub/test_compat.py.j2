@@ -26,7 +26,7 @@ import google.auth.transport.mtls
 from {{package_path}}._compat import setup_request_id
 {% endif %}
 from {{package_path}}._compat import transcode_request
-from {{package_path}}._compat import universe
+from {{package_path}} import _compat as universe
 
 from google.protobuf import descriptor_pb2
 from google.auth.exceptions import MutualTLSChannelError

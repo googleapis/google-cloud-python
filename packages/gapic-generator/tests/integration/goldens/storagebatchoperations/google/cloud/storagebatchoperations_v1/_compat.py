@@ -15,27 +15,21 @@
 #
 """A compatibility module for older versions of google-api-core."""
 
-<<<<<<< HEAD
 import os
-
-from typing import Optional
-=======
 import json
 import uuid
 
 from typing import Any, Dict, List, Optional, Tuple
 from typing import Union
 
-from google.api_core import path_template
-from google.protobuf import json_format
->>>>>>> main
-from urllib.parse import urlparse, urlunparse
+import google.protobuf.message
 
+from google.api_core import path_template
+from google.api_core.universe import EmptyUniverseError
 from google.auth.exceptions import MutualTLSChannelError
 from google.auth.transport import mtls
-from google.api_core.universe import EmptyUniverseError
-
-import google.protobuf.message
+from google.protobuf import json_format
+from urllib.parse import urlparse, urlunparse
 
 DEFAULT_UNIVERSE = "googleapis.com"
 
