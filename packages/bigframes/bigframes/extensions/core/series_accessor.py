@@ -44,13 +44,13 @@ class BigQuerySeriesAccessor(
 
     @property
     @abc.abstractmethod
-    def ai(self) -> AiSeriesAccessor[T, S]:
-        """Accessor for BigQuery ai functions."""
+    def aead(self) -> AeadSeriesAccessor[T, S]:
+        """Accessor for BigQuery aead functions."""
 
     @property
     @abc.abstractmethod
-    def aead(self) -> AeadSeriesAccessor[T, S]:
-        """Accessor for BigQuery aead functions."""
+    def ai(self) -> AiSeriesAccessor[T, S]:
+        """Accessor for BigQuery ai functions."""
 
     def deterministic_decrypt_bytes(
         self,
@@ -1112,10 +1112,6 @@ class BigQuerySeriesAccessor(
         return self._to_series(cast(series.Series, result))
 
 
-class AiSeriesAccessor(series_mixins.AIMixin[T, S]):
-    """Series accessor for BigQuery ai functions."""
-
-
 class AeadSeriesAccessor(abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]):
     """Series accessor for BigQuery aead functions."""
 
@@ -1227,3 +1223,7 @@ class AeadSeriesAccessor(abstract_series_accessor.AbstractBigQuerySeriesAccessor
             additional_data,
         )
         return self._to_series(cast(series.Series, result))
+
+
+class AiSeriesAccessor(series_mixins.AIMixin[T, S]):
+    """Series accessor for BigQuery ai functions."""
