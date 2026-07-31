@@ -15,10 +15,13 @@
 #
 """A compatibility module for older versions of google-api-core."""
 
+import os
+
 from typing import Optional
 from urllib.parse import urlparse, urlunparse
 
 from google.auth.exceptions import MutualTLSChannelError
+from google.auth.transport import mtls
 from google.api_core.universe import EmptyUniverseError
 
 
@@ -138,3 +141,18 @@ def get_universe_domain(
     if not resolved:
         raise EmptyUniverseError()
     return resolved
+
+def use_client_cert_effective() -> bool:
+    """Returns whether client certificate should be used for mTLS."""
+    if hasattr(mtls, "should_use_client_cert"):
+        return mtls.should_use_client_cert()
+    else:
+        use_client_cert_str = os.getenv(
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
+        ).lower()
+        if use_client_cert_str not in ("true", "false"):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
+                " either `true` or `false`"
+            )
+        return use_client_cert_str == "true"
