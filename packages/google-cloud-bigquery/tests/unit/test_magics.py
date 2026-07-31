@@ -146,8 +146,6 @@ def test_context_with_default_credentials():
     """When Application Default Credentials are set, the context credentials
     will be created the first time it is called
     """
-    magics.context._credentials = None
-    magics.context._project = None
     assert magics.context._credentials is None
     assert magics.context._project is None
 
