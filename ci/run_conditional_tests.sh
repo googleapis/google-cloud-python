@@ -47,10 +47,27 @@ git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleap
 # A script file for running the test in a sub project.
 test_script="${PROJECT_ROOT}/ci/run_single_test.sh"
 
-# Global exit code tracker
-RETVAL=0
+if [ "${TEST_ALL_PACKAGES}" = "true" ]; then
+    GIT_DIFF_ARG=""
 
-# Shared test execution logic
+elif [[ ${BUILD_TYPE} == "presubmit" ]]; then
+    # For presubmit build, we want to know the difference from the
+    # common commit in the target branch.
+    if [ -n "${TARGET_BRANCH}" ]; then
+        git fetch origin "${TARGET_BRANCH}" --depth=1 || true
+    fi
+    GIT_DIFF_ARG="origin/${TARGET_BRANCH}"
+
+elif [[ ${BUILD_TYPE} == "continuous" ]]; then
+    # For continuous build, we want to know the difference in the last
+    # commit. This assumes we use squash commit when merging PRs.
+    GIT_DIFF_ARG="HEAD~1.."
+
+else
+    # Run everything.
+    GIT_DIFF_ARG=""
+fi
+
 run_test_in_dir() {
     local d=$1
     local pkg_name_clean=$(echo ${d} | sed 's|/$||' | sed 's|/|_|g')
@@ -58,29 +75,22 @@ run_test_in_dir() {
     export COVERAGE_FILE="${PROJECT_ROOT}/.coverage.${PY_VERSION}.${pkg_name_clean}"
 
     pushd ${d} > /dev/null
-
-    # Temporarily allow failure.
     set +e
     ${test_script} > "${log_file}" 2>&1
     local ret=$?
     set -e
-
     popd > /dev/null
 
-    # Atomically print complete package log block so parallel outputs never interleave
-    {
-        echo "============================================================"
-        echo "Running tests in ${d}"
-        echo "============================================================"
-        cat "${log_file}"
-        rm -f "${log_file}"
-    }
+    echo "============================================================"
+    echo "Running tests in ${d}"
+    echo "============================================================"
+    cat "${log_file}"
+    rm -f "${log_file}"
 
     if [ ${ret} -ne 0 ]; then
         exit ${ret}
     fi
 }
-
 export -f run_test_in_dir
 export test_script PROJECT_ROOT PY_VERSION TEST_TYPE
 
@@ -88,31 +98,8 @@ dirs_to_test=()
 
 if [ -n "${PACKAGE_LIST}" ]; then
     echo "Using provided PACKAGE_LIST"
-    for d in ${PACKAGE_LIST}; do
-        dirs_to_test+=("${d}")
-    done
+    dirs_to_test=(${PACKAGE_LIST})
 else
-    if [ "${TEST_ALL_PACKAGES}" = "true" ]; then
-        GIT_DIFF_ARG=""
-
-    elif [[ ${BUILD_TYPE} == "presubmit" ]]; then
-        # For presubmit build, we want to know the difference from the target branch.
-        TARGET_BRANCH="${TARGET_BRANCH:-main}"
-        if [ -n "${TARGET_BRANCH}" ]; then
-            git fetch origin "${TARGET_BRANCH}" --depth=1 || true
-        fi
-        GIT_DIFF_ARG="origin/${TARGET_BRANCH}"
-
-    elif [[ ${BUILD_TYPE} == "continuous" ]]; then
-        # For continuous build, we want to know the difference in the last
-        # commit. This assumes we use squash commit when merging PRs.
-        GIT_DIFF_ARG="HEAD~1.."
-
-    else
-        # Run everything.
-        GIT_DIFF_ARG=""
-    fi
-
     subdirs=(${PACKAGE_DIRS:-packages preview-packages})
 
     for subdir in ${subdirs[@]}; do
@@ -125,7 +112,6 @@ else
                 changed=$?
                 set -e
                 if [[ "${changed}" -ne 0 ]]; then
-                    echo "change detected in ${d}"
                     should_test=true
                 fi
             else
@@ -144,8 +130,11 @@ if [ ${#dirs_to_test[@]} -eq 0 ]; then
     exit 0
 fi
 
-# Run tests across target packages in parallel using available CPU cores
-NPROC=$(nproc 2>/dev/null || echo 4)
-echo "Running tests across ${#dirs_to_test[@]} package(s) using ${NPROC} parallel workers..."
+PARALLEL_WORKERS="${PARALLEL_WORKERS:-1}"
+AVAIL_CORES=$(nproc 2>/dev/null || echo 4)
+if [ "${PARALLEL_WORKERS}" -gt "${AVAIL_CORES}" ]; then
+    PARALLEL_WORKERS="${AVAIL_CORES}"
+fi
 
-printf "%s\0" "${dirs_to_test[@]}" | xargs -0 -P "${NPROC}" -I {} bash -c 'run_test_in_dir "$@"' _ {}
+echo "Running tests across ${#dirs_to_test[@]} package(s) using ${PARALLEL_WORKERS} parallel worker(s)..."
+printf "%s\0" "${dirs_to_test[@]}" | xargs -0 -P "${PARALLEL_WORKERS}" -I {} bash -c 'run_test_in_dir "$@"' _ {}

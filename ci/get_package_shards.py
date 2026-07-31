@@ -122,15 +122,17 @@ def get_packages_to_test():
         return all_packages
 
     package_dirs = set(get_package_directories())
-    to_test_names = set()
+    to_test_paths = collections.defaultdict(list)
     for f in changed_files:
         parts = f.split('/')
         if len(parts) >= 2 and parts[0] in package_dirs:
             pkg_name = parts[1]
-            if pkg_name in all_packages:
-                to_test_names.add(pkg_name)
+            full_path = f"{parts[0]}/{parts[1]}/"
+            if pkg_name in all_packages and full_path in all_packages[pkg_name]:
+                if full_path not in to_test_paths[pkg_name]:
+                    to_test_paths[pkg_name].append(full_path)
 
-    return {name: all_packages[name] for name in to_test_names}
+    return dict(to_test_paths)
 
 
 def group_packages(packages_map):
@@ -163,7 +165,7 @@ def group_packages(packages_map):
 
     # Dynamically determine target weight to balance across max shards.
     max_shards = int(os.environ.get("MAX_SHARDS", 16))
-    target_weight = max(5, math.ceil(total_weight / max_shards))
+    target_weight = max(10, math.ceil(total_weight / max_shards))
 
     shards_list = []
     current_shard_items = []
