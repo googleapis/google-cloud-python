@@ -125,7 +125,7 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
         {% endfor %}
         }
         {% endif %}{# required fields #}
-        
+
         {% set method_http_options = method.http_options %}
         
         {{ shared_macros.http_options_method(method_http_options)|indent(8) }}
