@@ -18,7 +18,6 @@ Temporary dummy test to verify ad-hoc testing failure reporting.
 This file is for experimentation/prototyping only and will be removed before merge.
 """
 
-import pytest
 
 
 def test_intentional_failure():
