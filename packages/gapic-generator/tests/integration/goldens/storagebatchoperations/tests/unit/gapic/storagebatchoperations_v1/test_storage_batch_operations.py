@@ -3565,17 +3565,20 @@ def test_list_jobs_rest_required_fields(request_type=storage_batch_operations.Li
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_jobs._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListJobs,
+        "_BaseListJobs__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_jobs._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("filter", "orderBy", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -3622,13 +3625,6 @@ def test_list_jobs_rest_required_fields(request_type=storage_batch_operations.Li
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_jobs_rest_unset_required_fields():
-    transport = transports.StorageBatchOperationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_jobs._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("filter", "orderBy", "pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_jobs_rest_flattened():
@@ -3798,15 +3794,17 @@ def test_get_job_rest_required_fields(request_type=storage_batch_operations.GetJ
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_job._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetJob,
+        "_BaseGetJob__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_job._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -3853,13 +3851,6 @@ def test_get_job_rest_required_fields(request_type=storage_batch_operations.GetJ
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_job_rest_unset_required_fields():
-    transport = transports.StorageBatchOperationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_job._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_job_rest_flattened():
@@ -3970,7 +3961,12 @@ def test_create_job_rest_required_fields(request_type=storage_batch_operations.C
     # verify fields with default values are dropped
     assert "jobId" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_job._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateJob,
+        "_BaseCreateJob__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3980,10 +3976,8 @@ def test_create_job_rest_required_fields(request_type=storage_batch_operations.C
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["jobId"] = 'job_id_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_job._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("job_id", "request_id", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("jobId", "requestId", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -4045,13 +4039,6 @@ def test_create_job_rest_required_fields(request_type=storage_batch_operations.C
             )
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_job_rest_unset_required_fields():
-    transport = transports.StorageBatchOperationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_job._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("jobId", "requestId", )) & set(("parent", "jobId", "job", )))
 
 
 def test_create_job_rest_flattened():
@@ -4158,17 +4145,20 @@ def test_delete_job_rest_required_fields(request_type=storage_batch_operations.D
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_job._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteJob,
+        "_BaseDeleteJob__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_job._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("force", "request_id", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("force", "requestId", ))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -4223,13 +4213,6 @@ def test_delete_job_rest_required_fields(request_type=storage_batch_operations.D
             )
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_job_rest_unset_required_fields():
-    transport = transports.StorageBatchOperationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_job._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("force", "requestId", )) & set(("name", )))
 
 
 def test_delete_job_rest_flattened():
@@ -4332,15 +4315,17 @@ def test_cancel_job_rest_required_fields(request_type=storage_batch_operations.C
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).cancel_job._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCancelJob,
+        "_BaseCancelJob__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).cancel_job._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -4399,13 +4384,6 @@ def test_cancel_job_rest_required_fields(request_type=storage_batch_operations.C
             )
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_cancel_job_rest_unset_required_fields():
-    transport = transports.StorageBatchOperationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.cancel_job._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_cancel_job_rest_flattened():
@@ -4510,17 +4488,20 @@ def test_list_bucket_operations_rest_required_fields(request_type=storage_batch_
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_bucket_operations._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListBucketOperations,
+        "_BaseListBucketOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_bucket_operations._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("filter", "orderBy", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -4567,13 +4548,6 @@ def test_list_bucket_operations_rest_required_fields(request_type=storage_batch_
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_bucket_operations_rest_unset_required_fields():
-    transport = transports.StorageBatchOperationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_bucket_operations._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("filter", "orderBy", "pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_bucket_operations_rest_flattened():
@@ -4743,15 +4717,17 @@ def test_get_bucket_operation_rest_required_fields(request_type=storage_batch_op
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_bucket_operation._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetBucketOperation,
+        "_BaseGetBucketOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_bucket_operation._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -4798,13 +4774,6 @@ def test_get_bucket_operation_rest_required_fields(request_type=storage_batch_op
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_bucket_operation_rest_unset_required_fields():
-    transport = transports.StorageBatchOperationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_bucket_operation._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_bucket_operation_rest_flattened():
