@@ -15541,7 +15541,6 @@ def test_get_trigger_rest_required_fields(request_type=eventarc.GetTriggerReques
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -15705,7 +15704,6 @@ def test_list_triggers_rest_required_fields(request_type=eventarc.ListTriggersRe
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -15945,7 +15943,6 @@ def test_create_trigger_rest_required_fields(request_type=eventarc.CreateTrigger
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["triggerId"] = 'trigger_id_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("trigger_id", "validate_only", ))
     jsonified_request.update(unset_fields)
@@ -16215,7 +16212,6 @@ def test_delete_trigger_rest_required_fields(request_type=eventarc.DeleteTrigger
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("allow_missing", "etag", "validate_only", ))
     jsonified_request.update(unset_fields)
@@ -16378,7 +16374,6 @@ def test_get_channel_rest_required_fields(request_type=eventarc.GetChannelReques
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -16542,7 +16537,6 @@ def test_list_channels_rest_required_fields(request_type=eventarc.ListChannelsRe
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("order_by", "page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -16782,7 +16776,6 @@ def test_create_channel_rest_required_fields(request_type=eventarc.CreateChannel
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["channelId"] = 'channel_id_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("channel_id", "validate_only", ))
     jsonified_request.update(unset_fields)
@@ -17050,7 +17043,6 @@ def test_delete_channel_rest_required_fields(request_type=eventarc.DeleteChannel
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("validate_only", ))
     jsonified_request.update(unset_fields)
@@ -17211,7 +17203,6 @@ def test_get_provider_rest_required_fields(request_type=eventarc.GetProviderRequ
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -17375,7 +17366,6 @@ def test_list_providers_rest_required_fields(request_type=eventarc.ListProviders
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -17606,7 +17596,6 @@ def test_get_channel_connection_rest_required_fields(request_type=eventarc.GetCh
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -17770,7 +17759,6 @@ def test_list_channel_connections_rest_required_fields(request_type=eventarc.Lis
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -18010,7 +17998,6 @@ def test_create_channel_connection_rest_required_fields(request_type=eventarc.Cr
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["channelConnectionId"] = 'channel_connection_id_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("channel_connection_id", ))
     jsonified_request.update(unset_fields)
@@ -18186,7 +18173,6 @@ def test_delete_channel_connection_rest_required_fields(request_type=eventarc.De
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -18345,7 +18331,6 @@ def test_get_google_channel_config_rest_required_fields(request_type=eventarc.Ge
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -18506,7 +18491,6 @@ def test_update_google_channel_config_rest_required_fields(request_type=eventarc
 
     # verify required fields with default values are now present
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask", ))
     jsonified_request.update(unset_fields)
@@ -18673,7 +18657,6 @@ def test_get_message_bus_rest_required_fields(request_type=eventarc.GetMessageBu
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -18837,7 +18820,6 @@ def test_list_message_buses_rest_required_fields(request_type=eventarc.ListMessa
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -19068,7 +19050,6 @@ def test_list_message_bus_enrollments_rest_required_fields(request_type=eventarc
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -19308,7 +19289,6 @@ def test_create_message_bus_rest_required_fields(request_type=eventarc.CreateMes
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["messageBusId"] = 'message_bus_id_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("message_bus_id", "validate_only", ))
     jsonified_request.update(unset_fields)
@@ -19481,7 +19461,6 @@ def test_update_message_bus_rest_required_fields(request_type=eventarc.UpdateMes
 
     # verify required fields with default values are now present
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("allow_missing", "update_mask", "validate_only", ))
     jsonified_request.update(unset_fields)
@@ -19647,7 +19626,6 @@ def test_delete_message_bus_rest_required_fields(request_type=eventarc.DeleteMes
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("allow_missing", "etag", "validate_only", ))
     jsonified_request.update(unset_fields)
@@ -19810,7 +19788,6 @@ def test_get_enrollment_rest_required_fields(request_type=eventarc.GetEnrollment
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -19974,7 +19951,6 @@ def test_list_enrollments_rest_required_fields(request_type=eventarc.ListEnrollm
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -20214,7 +20190,6 @@ def test_create_enrollment_rest_required_fields(request_type=eventarc.CreateEnro
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["enrollmentId"] = 'enrollment_id_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("enrollment_id", "validate_only", ))
     jsonified_request.update(unset_fields)
@@ -20387,7 +20362,6 @@ def test_update_enrollment_rest_required_fields(request_type=eventarc.UpdateEnro
 
     # verify required fields with default values are now present
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("allow_missing", "update_mask", "validate_only", ))
     jsonified_request.update(unset_fields)
@@ -20553,7 +20527,6 @@ def test_delete_enrollment_rest_required_fields(request_type=eventarc.DeleteEnro
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("allow_missing", "etag", "validate_only", ))
     jsonified_request.update(unset_fields)
@@ -20716,7 +20689,6 @@ def test_get_pipeline_rest_required_fields(request_type=eventarc.GetPipelineRequ
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -20880,7 +20852,6 @@ def test_list_pipelines_rest_required_fields(request_type=eventarc.ListPipelines
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -21120,7 +21091,6 @@ def test_create_pipeline_rest_required_fields(request_type=eventarc.CreatePipeli
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["pipelineId"] = 'pipeline_id_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("pipeline_id", "validate_only", ))
     jsonified_request.update(unset_fields)
@@ -21293,7 +21263,6 @@ def test_update_pipeline_rest_required_fields(request_type=eventarc.UpdatePipeli
 
     # verify required fields with default values are now present
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("allow_missing", "update_mask", "validate_only", ))
     jsonified_request.update(unset_fields)
@@ -21459,7 +21428,6 @@ def test_delete_pipeline_rest_required_fields(request_type=eventarc.DeletePipeli
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("allow_missing", "etag", "validate_only", ))
     jsonified_request.update(unset_fields)
@@ -21622,7 +21590,6 @@ def test_get_google_api_source_rest_required_fields(request_type=eventarc.GetGoo
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -21786,7 +21753,6 @@ def test_list_google_api_sources_rest_required_fields(request_type=eventarc.List
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -22026,7 +21992,6 @@ def test_create_google_api_source_rest_required_fields(request_type=eventarc.Cre
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["googleApiSourceId"] = 'google_api_source_id_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("google_api_source_id", "validate_only", ))
     jsonified_request.update(unset_fields)
@@ -22199,7 +22164,6 @@ def test_update_google_api_source_rest_required_fields(request_type=eventarc.Upd
 
     # verify required fields with default values are now present
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("allow_missing", "update_mask", "validate_only", ))
     jsonified_request.update(unset_fields)
@@ -22365,7 +22329,6 @@ def test_delete_google_api_source_rest_required_fields(request_type=eventarc.Del
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("allow_missing", "etag", "validate_only", ))
     jsonified_request.update(unset_fields)

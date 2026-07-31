@@ -4869,7 +4869,6 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -5100,7 +5099,6 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5264,7 +5262,6 @@ def test_get_instance_auth_string_rest_required_fields(request_type=cloud_redis.
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5437,7 +5434,6 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["instanceId"] = 'instance_id_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("instance_id", ))
     jsonified_request.update(unset_fields)
@@ -5610,7 +5606,6 @@ def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateIns
 
     # verify required fields with default values are now present
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask", ))
     jsonified_request.update(unset_fields)
@@ -5778,7 +5773,6 @@ def test_upgrade_instance_rest_required_fields(request_type=cloud_redis.UpgradeI
     jsonified_request["name"] = 'name_value'
     jsonified_request["redisVersion"] = 'redis_version_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5946,7 +5940,6 @@ def test_import_instance_rest_required_fields(request_type=cloud_redis.ImportIns
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -6112,7 +6105,6 @@ def test_export_instance_rest_required_fields(request_type=cloud_redis.ExportIns
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -6278,7 +6270,6 @@ def test_failover_instance_rest_required_fields(request_type=cloud_redis.Failove
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -6444,7 +6435,6 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -6607,7 +6597,6 @@ def test_reschedule_maintenance_rest_required_fields(request_type=cloud_redis.Re
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
