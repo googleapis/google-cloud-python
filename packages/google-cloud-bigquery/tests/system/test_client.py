@@ -2191,15 +2191,18 @@ class TestBigQuery(unittest.TestCase):
         closed_sessions = set()
 
         original_session_init = requests.Session.__init__
-        original_session_close = requests.Session.close
 
         def patched_session_init(self, *args, **kwargs):
             original_session_init(self, *args, **kwargs)
             created_sessions.add(self)
 
-        def patched_session_close(self):
-            original_session_close(self)
-            closed_sessions.add(self)
+            original_close = self.close
+
+            def patched_close(*s_args, **s_kwargs):
+                original_close(*s_args, **s_kwargs)
+                closed_sessions.add(self)
+
+            self.close = patched_close
 
         # Track gRPC Channels
         created_channels = set()
@@ -2222,7 +2225,6 @@ class TestBigQuery(unittest.TestCase):
 
         # Apply patches
         requests.Session.__init__ = patched_session_init
-        requests.Session.close = patched_session_close
         google.api_core.grpc_helpers.create_channel = patched_create_channel
 
         try:
@@ -2260,7 +2262,6 @@ class TestBigQuery(unittest.TestCase):
         finally:
             # Revert patches
             requests.Session.__init__ = original_session_init
-            requests.Session.close = original_session_close
             google.api_core.grpc_helpers.create_channel = original_create_channel
 
             # Clean up any unclosed sessions/channels to avoid leaking in the test runner
