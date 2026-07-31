@@ -15,26 +15,19 @@
 #
 """A compatibility module for older versions of google-api-core."""
 
-<<<<<<< HEAD
 import json
+import uuid
 
 from typing import Any, Dict, List, Optional, Tuple
+from typing import Union
 
 from google.api_core import path_template
 from google.protobuf import json_format
-
-from typing import Union
-import uuid
-=======
-from typing import Optional
 from urllib.parse import urlparse, urlunparse
->>>>>>> main
 
 from google.auth.exceptions import MutualTLSChannelError
 from google.api_core.universe import EmptyUniverseError
 
-import uuid
-from typing import Union
 import google.protobuf.message
 
 DEFAULT_UNIVERSE = "googleapis.com"
@@ -198,6 +191,7 @@ def setup_request_id(
     else:
         if not getattr(request, field_name, None):
             setattr(request, field_name, str(uuid.uuid4()))
+
 
 def transcode_request(
     http_options: List[Dict[str, str]],

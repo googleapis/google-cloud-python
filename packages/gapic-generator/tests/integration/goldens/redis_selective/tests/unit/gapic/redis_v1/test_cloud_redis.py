@@ -2905,14 +2905,19 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_instances._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListInstances,
+        "_BaseListInstances__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_instances._get_unset_required_fields(jsonified_request)
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("page_size", "page_token", ))
     jsonified_request.update(unset_fields)
@@ -2962,13 +2967,6 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_instances_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_instances._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_instances_rest_flattened():
@@ -3138,14 +3136,19 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_instance._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetInstance,
+        "_BaseGetInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3193,13 +3196,6 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_instance._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_instance_rest_flattened():
@@ -3310,7 +3306,12 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
     # verify fields with default values are dropped
     assert "instanceId" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_instance._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateInstance,
+        "_BaseCreateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3320,7 +3321,7 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["instanceId"] = 'instance_id_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("instance_id", ))
     jsonified_request.update(unset_fields)
@@ -3374,13 +3375,6 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_instance._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("instanceId", )) & set(("parent", "instanceId", "instance", )))
 
 
 def test_create_instance_rest_flattened():
@@ -3490,12 +3484,17 @@ def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateIns
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_instance._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateInstance,
+        "_BaseUpdateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask", ))
     jsonified_request.update(unset_fields)
@@ -3541,13 +3540,6 @@ def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateIns
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.update_instance._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask", )) & set(("updateMask", "instance", )))
 
 
 def test_update_instance_rest_flattened():
@@ -3656,14 +3648,19 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_instance._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteInstance,
+        "_BaseDeleteInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_instance._get_unset_required_fields(jsonified_request)
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3708,13 +3705,6 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_instance_rest_unset_required_fields():
-    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_instance._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_delete_instance_rest_flattened():

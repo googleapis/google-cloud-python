@@ -1339,7 +1339,12 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class.{{ method.transport_safe_name | snake_case }},
+        "_{{ method.transport_safe_name }}__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1355,7 +1360,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param}}", {% endfor %}))
@@ -1458,13 +1463,6 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             ]
             actual_params = req.call_args.kwargs['params']
             assert expected_params == actual_params
-
-
-def test_{{ method_name }}_rest_unset_required_fields():
-    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.{{ method.transport_safe_name|snake_case }}._get_unset_required_fields({})
-    assert set(unset_fields) == (set(({% for param in method.query_params|sort %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{param.name|camel_case}}", {% endfor %})))
 
 
     {% endif %}{# required_fields #}

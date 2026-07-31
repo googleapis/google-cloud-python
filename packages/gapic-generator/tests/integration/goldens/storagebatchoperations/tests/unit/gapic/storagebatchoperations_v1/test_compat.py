@@ -15,20 +15,15 @@
 #
 """Tests for the compatibility module for older versions of google-api-core."""
 
-<<<<<<< HEAD
 import json
 import pytest
+import re
 
 from unittest import mock
 
 from google.protobuf import descriptor_pb2
 
 from google.cloud.storagebatchoperations_v1._compat import transcode_request
-
-=======
->>>>>>> main
-import re
-
 from google.cloud.storagebatchoperations_v1 import _compat as universe
 from google.cloud.storagebatchoperations_v1._compat import setup_request_id
 
