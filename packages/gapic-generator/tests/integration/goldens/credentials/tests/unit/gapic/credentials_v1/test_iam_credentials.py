@@ -2340,8 +2340,6 @@ def test_generate_access_token_rest_required_fields(request_type=common.Generate
     jsonified_request["name"] = 'name_value'
     jsonified_request["scope"] = 'scope_value'
 
-    jsonified_request.update(unset_fields)
-
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
     assert jsonified_request["name"] == 'name_value'
@@ -2513,8 +2511,6 @@ def test_generate_id_token_rest_required_fields(request_type=common.GenerateIdTo
 
     jsonified_request["name"] = 'name_value'
     jsonified_request["audience"] = 'audience_value'
-
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -2688,8 +2684,6 @@ def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
     jsonified_request["name"] = 'name_value'
     jsonified_request["payload"] = b'payload_blob'
 
-    jsonified_request.update(unset_fields)
-
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
     assert jsonified_request["name"] == 'name_value'
@@ -2859,8 +2853,6 @@ def test_sign_jwt_rest_required_fields(request_type=common.SignJwtRequest):
 
     jsonified_request["name"] = 'name_value'
     jsonified_request["payload"] = 'payload_value'
-
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request

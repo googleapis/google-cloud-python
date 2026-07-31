@@ -2918,8 +2918,7 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
     jsonified_request["parent"] = 'parent_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -3147,8 +3146,6 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
 
     jsonified_request["name"] = 'name_value'
 
-    jsonified_request.update(unset_fields)
-
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
     assert jsonified_request["name"] == 'name_value'
@@ -3320,8 +3317,7 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
     jsonified_request["instanceId"] = 'instance_id_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("instance_id", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("instanceId", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -3492,8 +3488,7 @@ def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateIns
     # verify required fields with default values are now present
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask", ))
 
     # verify required fields with non-default values are left alone
 
@@ -3655,8 +3650,6 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request

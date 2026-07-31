@@ -3662,8 +3662,7 @@ def test_list_jobs_rest_required_fields(request_type=storage_batch_operations.Li
     jsonified_request["parent"] = 'parent_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("filter", "orderBy", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -3891,8 +3890,6 @@ def test_get_job_rest_required_fields(request_type=storage_batch_operations.GetJ
 
     jsonified_request["name"] = 'name_value'
 
-    jsonified_request.update(unset_fields)
-
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
     assert jsonified_request["name"] == 'name_value'
@@ -4064,8 +4061,7 @@ def test_create_job_rest_required_fields(request_type=storage_batch_operations.C
     jsonified_request["jobId"] = 'job_id_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("job_id", "request_id", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("jobId", "requestId", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -4246,8 +4242,7 @@ def test_delete_job_rest_required_fields(request_type=storage_batch_operations.D
     jsonified_request["name"] = 'name_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("force", "request_id", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("force", "requestId", ))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -4415,8 +4410,6 @@ def test_cancel_job_rest_required_fields(request_type=storage_batch_operations.C
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -4592,8 +4585,7 @@ def test_list_bucket_operations_rest_required_fields(request_type=storage_batch_
     jsonified_request["parent"] = 'parent_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("filter", "orderBy", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -4820,8 +4812,6 @@ def test_get_bucket_operation_rest_required_fields(request_type=storage_batch_op
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request

@@ -9170,8 +9170,6 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
 
     jsonified_request["parent"] = 'parent_value'
 
-    jsonified_request.update(unset_fields)
-
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
     assert jsonified_request["parent"] == 'parent_value'
@@ -9278,8 +9276,7 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
     jsonified_request["parent"] = 'parent_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_types", "content_type", "page_size", "page_token", "read_time", "relationship_types", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("assetTypes", "contentType", "pageSize", "pageToken", "readTime", "relationshipTypes", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -9508,8 +9505,7 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
     jsonified_request["parent"] = 'parent_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_names", "content_type", "read_time_window", "relationship_types", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("assetNames", "contentType", "readTimeWindow", "relationshipTypes", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -9619,8 +9615,6 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
 
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["feedId"] = 'feed_id_value'
-
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -9786,8 +9780,6 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
 
     jsonified_request["name"] = 'name_value'
 
-    jsonified_request.update(unset_fields)
-
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
     assert jsonified_request["name"] == 'name_value'
@@ -9949,8 +9941,6 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
 
     jsonified_request["parent"] = 'parent_value'
 
-    jsonified_request.update(unset_fields)
-
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
     assert jsonified_request["parent"] == 'parent_value'
@@ -10108,8 +10098,6 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
@@ -10271,8 +10259,6 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
 
     jsonified_request["name"] = 'name_value'
 
-    jsonified_request.update(unset_fields)
-
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
     assert jsonified_request["name"] == 'name_value'
@@ -10430,8 +10416,7 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
     jsonified_request["scope"] = 'scope_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_types", "order_by", "page_size", "page_token", "query", "read_mask", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", "readMask", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -10664,8 +10649,7 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
     jsonified_request["scope"] = 'scope_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_types", "order_by", "page_size", "page_token", "query", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -10893,8 +10877,7 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
     # verify required fields with default values are now present
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("analysis_query", "execution_timeout", "saved_analysis_query", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("analysisQuery", "executionTimeout", "savedAnalysisQuery", ))
 
     # verify required fields with non-default values are left alone
 
@@ -11001,8 +10984,6 @@ def test_analyze_iam_policy_longrunning_rest_required_fields(request_type=asset_
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
@@ -11113,8 +11094,7 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
     jsonified_request["destinationParent"] = 'destination_parent_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("destination_parent", "view", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("destinationParent", "view", ))
 
     # verify required fields with non-default values are left alone
     assert "resource" in jsonified_request
@@ -11228,8 +11208,6 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
-
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -11345,8 +11323,7 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
     jsonified_request["savedQueryId"] = 'saved_query_id_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("saved_query_id", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("savedQueryId", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -11520,8 +11497,6 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
 
     jsonified_request["name"] = 'name_value'
 
-    jsonified_request.update(unset_fields)
-
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
     assert jsonified_request["name"] == 'name_value'
@@ -11684,8 +11659,7 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
     jsonified_request["parent"] = 'parent_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("filter", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("filter", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -11911,8 +11885,7 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
     # verify required fields with default values are now present
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask", ))
 
     # verify required fields with non-default values are left alone
 
@@ -12075,8 +12048,6 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -12241,7 +12212,6 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
 
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("names", ))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -12362,8 +12332,7 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
     jsonified_request["constraint"] = 'constraint_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("constraint", "filter", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -12607,8 +12576,7 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
     jsonified_request["constraint"] = 'constraint_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("constraint", "filter", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -12852,8 +12820,7 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
     jsonified_request["constraint"] = 'constraint_value'
 
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("constraint", "filter", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
