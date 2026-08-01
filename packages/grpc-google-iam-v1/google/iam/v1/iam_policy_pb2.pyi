@@ -32,13 +32,25 @@ from google.iam.v1 import policy_pb2 as _policy_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class SetIamPolicyRequest(_message.Message):
-    __slots__ = ("resource", "policy", "update_mask")
+class GetIamPolicyRequest(_message.Message):
+    __slots__ = ["options", "resource"]
+    OPTIONS_FIELD_NUMBER: _ClassVar[int]
     RESOURCE_FIELD_NUMBER: _ClassVar[int]
-    POLICY_FIELD_NUMBER: _ClassVar[int]
-    UPDATE_MASK_FIELD_NUMBER: _ClassVar[int]
+    options: _options_pb2.GetPolicyOptions
     resource: str
+    def __init__(
+        self,
+        resource: _Optional[str] = ...,
+        options: _Optional[_Union[_options_pb2.GetPolicyOptions, _Mapping]] = ...,
+    ) -> None: ...
+
+class SetIamPolicyRequest(_message.Message):
+    __slots__ = ["policy", "resource", "update_mask"]
+    POLICY_FIELD_NUMBER: _ClassVar[int]
+    RESOURCE_FIELD_NUMBER: _ClassVar[int]
+    UPDATE_MASK_FIELD_NUMBER: _ClassVar[int]
     policy: _policy_pb2.Policy
+    resource: str
     update_mask: _field_mask_pb2.FieldMask
     def __init__(
         self,
@@ -47,24 +59,12 @@ class SetIamPolicyRequest(_message.Message):
         update_mask: _Optional[_Union[_field_mask_pb2.FieldMask, _Mapping]] = ...,
     ) -> None: ...
 
-class GetIamPolicyRequest(_message.Message):
-    __slots__ = ("resource", "options")
-    RESOURCE_FIELD_NUMBER: _ClassVar[int]
-    OPTIONS_FIELD_NUMBER: _ClassVar[int]
-    resource: str
-    options: _options_pb2.GetPolicyOptions
-    def __init__(
-        self,
-        resource: _Optional[str] = ...,
-        options: _Optional[_Union[_options_pb2.GetPolicyOptions, _Mapping]] = ...,
-    ) -> None: ...
-
 class TestIamPermissionsRequest(_message.Message):
-    __slots__ = ("resource", "permissions")
-    RESOURCE_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["permissions", "resource"]
     PERMISSIONS_FIELD_NUMBER: _ClassVar[int]
-    resource: str
+    RESOURCE_FIELD_NUMBER: _ClassVar[int]
     permissions: _containers.RepeatedScalarFieldContainer[str]
+    resource: str
     def __init__(
         self,
         resource: _Optional[str] = ...,
@@ -72,7 +72,7 @@ class TestIamPermissionsRequest(_message.Message):
     ) -> None: ...
 
 class TestIamPermissionsResponse(_message.Message):
-    __slots__ = ("permissions",)
+    __slots__ = ["permissions"]
     PERMISSIONS_FIELD_NUMBER: _ClassVar[int]
     permissions: _containers.RepeatedScalarFieldContainer[str]
     def __init__(self, permissions: _Optional[_Iterable[str]] = ...) -> None: ...
