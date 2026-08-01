@@ -923,6 +923,31 @@ class Test_delete_WithGlobalCache:
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api._NonTransactionalCommitBatch")
+    def test_without_datastore_with_transaction(Batch, global_cache):
+        context = context_module.get_context()
+        callbacks = []
+
+        with context.new(
+            transaction=b"abc123", transaction_complete_callbacks=callbacks
+        ).use():
+            key = key_module.Key("SomeKind", 1)
+            cache_key = _cache.global_cache_key(key._key)
+            global_cache.set({cache_key: b"foo"})
+
+            batch = Batch.return_value
+            batch.delete.side_effect = Exception("Shouldn't use Datastore")
+
+            future = _api.delete(
+                key._key,
+                _options.Options(use_datastore=False),
+            )
+            assert future.result() is None
+
+            assert callbacks == []
+            assert global_cache.get([cache_key]) == [None]
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._NonTransactionalCommitBatch")
     def test_cache_disabled(Batch, global_cache):
         key = key_module.Key("SomeKind", 1)
         cache_key = _cache.global_cache_key(key._key)
