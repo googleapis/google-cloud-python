@@ -33,7 +33,7 @@ def metrics_tracer():
     mock_gfe_missing = mock.create_autospec(Counter, instance=True)
     mock_afe_latency = mock.create_autospec(Histogram, instance=True)
     mock_afe_missing = mock.create_autospec(Counter, instance=True)
-    return MetricsTracer(
+    tracer = MetricsTracer(
         enabled=True,
         instrument_attempt_latency=mock_attempt_latency,
         instrument_attempt_counter=mock_attempt_counter,
@@ -45,6 +45,8 @@ def metrics_tracer():
         instrument_afe_latency=mock_afe_latency,
         instrument_afe_connectivity_error_count=mock_afe_missing,
     )
+    tracer.afe_server_timing_enabled = True
+    return tracer
 
 
 def test_record_attempt_start(metrics_tracer):
