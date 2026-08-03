@@ -115,6 +115,18 @@ else:   # pragma: NO COVER
                           f"least version {_next_supported_version} of " +
                           f"{_dependency_package}.",
                           FutureWarning)
+        _grpc_package = "grpcio"
+        _grpc_min_version = "1.83.0"
+        _grpc_min_version_tuple = (1, 83, 0)
+        (_grpc_version_used, _grpc_version_used_string) = _get_version(_grpc_package)
+        if _grpc_version_used and _grpc_version_used < _grpc_min_version_tuple:
+            warnings.warn(f"Package {_package_label} depends on {_grpc_package}, currently installed at version {_grpc_version_used_string}. " +
+                          "grpcio < 1.83.0 does not support Post-Quantum Cryptography (PQC). " +
+                          "Support for non-PQC environments is deprecated. In October 2026, " +
+                          "Google Cloud Python client libraries will raise their minimum requirements " +
+                          "(including google-api-core, grpcio, and grpcio-status) to enforce grpcio >= 1.83.0. For more details on Google Cloud's post-quantum " +
+                          "security migration, visit: https://cloud.google.com/security/resources/post-quantum-cryptography",
+                          FutureWarning)
     except Exception:
             warnings.warn("Could not determine the version of Python " +
                           "currently being used. To continue receiving " +
