@@ -20,16 +20,16 @@ import time
 from typing import List, Optional
 
 from google.api_core.exceptions import InternalServerError
+from google.cloud._helpers import _datetime_to_pb_timestamp
 
 from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_v1._async._helpers import _retry, _retry_on_aborted_exception
-from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _check_rst_stream_error,
-    _make_value_pb,
     _make_list_value_pb,
     _make_list_value_pbs,
+    _make_value_pb,
     _merge_client_context,
     _merge_request_options,
     _merge_Transaction_Options,
@@ -183,15 +183,12 @@ class _BatchBase(_SessionWrapper):
         :type deliver_time: :class:`datetime.datetime`
         :param deliver_time: (Optional) The time at which Spanner will begin attempting to deliver the message.
         """
-        send_kwargs = {
-            "queue": queue,
-            "key": _make_list_value_pb(key)
-        }
+        send_kwargs = {"queue": queue, "key": _make_list_value_pb(key)}
         if payload is not None:
             send_kwargs["payload"] = _make_value_pb(payload)
         if deliver_time is not None:
             send_kwargs["deliver_time"] = _datetime_to_pb_timestamp(deliver_time)
-            
+
         send = Mutation.Send(**send_kwargs)
         self._mutations.append(Mutation(send=send))
 
@@ -207,13 +204,10 @@ class _BatchBase(_SessionWrapper):
         :type ignore_not_found: bool
         :param ignore_not_found: (Optional) Whether to ignore if the message does not exist.
         """
-        ack_kwargs = {
-            "queue": queue,
-            "key": _make_list_value_pb(key)
-        }
+        ack_kwargs = {"queue": queue, "key": _make_list_value_pb(key)}
         if ignore_not_found is not None:
             ack_kwargs["ignore_not_found"] = ignore_not_found
-            
+
         ack = Mutation.Ack(**ack_kwargs)
         self._mutations.append(Mutation(ack=ack))
 
