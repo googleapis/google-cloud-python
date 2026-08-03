@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.12.1...google-cloud-storage-v3.13.0) (2026-07-13)
+
+
+### Features
+
+* **storage:** add option to disable checksums and improve robustness of full_object_checksum validation ([#17665](https://github.com/googleapis/google-cloud-python/issues/17665)) ([a5a717d](https://github.com/googleapis/google-cloud-python/commit/a5a717df2434b756c9043cd53d7cef15c5a4b552))
+* **storage:** support full_object_checksum in AsyncAppendableObjectWriter ([#17658](https://github.com/googleapis/google-cloud-python/issues/17658)) ([e08d5ca](https://github.com/googleapis/google-cloud-python/commit/e08d5cadd14e51e79e573dc0cf083e100e08d7bf))
+
 ## [3.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.12.0...google-cloud-storage-v3.12.1) (2026-07-07)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-shopping-merchant-inventories/#history
 
+## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v1.5.0...google-shopping-merchant-inventories-v1.6.0) (2026-07-16)
+
+
+### Features
+
+* update googleapis and regenerate ([#17725](https://github.com/googleapis/google-cloud-python/issues/17725)) ([35e16da](https://github.com/googleapis/google-cloud-python/commit/35e16daf25480d66e9fc3443fe485ae2b0241ae3))
+
 ## [1.5.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v1.4.0...google-shopping-merchant-inventories-v1.5.0) (2026-06-02)
 
 

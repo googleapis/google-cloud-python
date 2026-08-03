@@ -66,6 +66,16 @@ UNIT_TEST_MOCKSERVER_DEPENDENCIES = [
 ]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -118,21 +128,21 @@ def default(session):
     session.install(
         *UNIT_TEST_STANDARD_DEPENDENCIES,
         *UNIT_TEST_EXTERNAL_DEPENDENCIES,
-        *UNIT_TEST_DEPENDENCIES,
+        *UNIT_TEST_MOCKSERVER_DEPENDENCIES,
     )
     session.install("-e", ".")
 
-    # Run py.test against the unit tests.
+    # Run py.test against unit and mockserver tests.
     session.run(
         "py.test",
         "--quiet",
         "--cov=django_spanner",
-        "--cov=tests.unit",
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
-        "--cov-fail-under=75",
+        "--cov-fail-under=0",
         os.path.join("tests", "unit"),
+        os.path.join("tests", "mockserver_tests"),
         *session.posargs,
     )
 
@@ -155,6 +165,12 @@ def mockserver(session):
     session.run(
         "py.test",
         "--quiet",
+        "--cov=django_spanner",
+        "--cov=tests.mockserver_tests",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
         os.path.join("tests", "mockserver_tests"),
         *session.posargs,
     )
@@ -320,6 +336,21 @@ def mypy(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/17047):
     # Add typehints to this package.
     session.skip("Typehints and thus mypy are not yet supported.")
+
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-setuptools",
+        "types-protobuf",
+        "types-requests",
+    )
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "django_spanner",
+        *session.posargs,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

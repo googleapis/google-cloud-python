@@ -1101,7 +1101,12 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._Base{{ method.name }},
+        "_Base{{ method.name }}__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1117,12 +1122,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param}}", {% endfor %}))
+    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param | camel_case}}", {% endfor %}))
     {% endif %}
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     {% for req_field in method.input.required_fields if req_field.is_primitive %}
@@ -1238,13 +1241,6 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     {% endwith %}
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_{{ method_name }}_rest_unset_required_fields():
-    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.{{ method.transport_safe_name|snake_case }}._get_unset_required_fields({})
-    assert set(unset_fields) == (set(({% for param in method.query_params|sort %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{ param.name|camel_case }}", {% endfor %})))
 
     {% endif %}{# required_fields #}
 
@@ -2214,10 +2210,6 @@ def test_initialize_client_w_{{transport_name}}():
 {% endif %}{# not method.client_streaming #}
 {% endfor %}{# method in service.methods.values() #}
 {% endmacro %}{# empty_call_test #}
-
-{% macro get_uuid4_re() -%}
-{{ uuid4_re }}
-{%- endmacro %}{# uuid_re #}
 
 {% macro routing_parameter_test(service, api, transport, is_async) %}
 {% for method in service.methods.values() %}{# method #}

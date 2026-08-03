@@ -19,12 +19,11 @@ try:
 except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
-from google.api_core import grpc_helpers
-from google.api_core import operations_v1
-from google.api_core import page_iterator
-from google.api_core.operations_v1 import operations_client_config
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
+
+from google.api_core import grpc_helpers, operations_v1, page_iterator
+from google.api_core.operations_v1 import operations_client_config
 
 
 def test_get_operation():
@@ -101,3 +100,52 @@ def test_cancel_operation():
 
 def test_operations_client_config():
     assert operations_client_config.config["interfaces"]
+
+
+def test_operations_v1_transport_base_to_dict_protobuf_versions(monkeypatch):
+    from google.auth import credentials as ga_credentials
+    from google.longrunning import operations_pb2
+
+    from google.api_core.operations_v1.transports import base
+
+    message = operations_pb2.Operation(name="test_op")
+    transport = base.OperationsTransport(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+
+    calls = []
+
+    def mock_message_to_dict(*args, **kwargs):
+        calls.append(kwargs)
+        return {"name": "test_op"}
+
+    monkeypatch.setattr(base.json_format, "MessageToDict", mock_message_to_dict)
+
+    monkeypatch.setattr(base, "PROTOBUF_VERSION", "3.20.0")
+    res3 = transport._convert_protobuf_message_to_dict(message)
+    assert res3.get("name") == "test_op"
+    assert "including_default_value_fields" in calls[-1]
+
+    monkeypatch.setattr(base, "PROTOBUF_VERSION", "5.26.0")
+    res5 = transport._convert_protobuf_message_to_dict(message)
+    assert res5.get("name") == "test_op"
+    assert "always_print_fields_with_no_presence" in calls[-1]
+
+
+def test_operations_v1_init_import_error_fallback(monkeypatch):
+    import importlib
+
+    import google.api_core.operations_v1 as op_v1
+
+    orig_import = __import__
+
+    def mock_import(name, globals=None, locals=None, fromlist=(), level=0):
+        if "operations_rest_client_async" in name or (
+            fromlist and "AsyncOperationsRestClient" in fromlist
+        ):
+            raise ImportError("Simulated async rest import error")
+        return orig_import(name, globals, locals, fromlist, level)
+
+    monkeypatch.setattr("builtins.__import__", mock_import)
+    monkeypatch.setattr(op_v1, "_has_async_rest", True)
+    importlib.reload(op_v1)

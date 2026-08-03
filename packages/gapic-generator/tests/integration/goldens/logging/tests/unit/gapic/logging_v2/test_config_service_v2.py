@@ -69,6 +69,18 @@ CRED_INFO_JSON = {
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
 
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -111,22 +123,6 @@ def set_event_loop():
             loop.close()
             asyncio.set_event_loop(None)
 
-
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert ConfigServiceV2Client._get_default_mtls_endpoint(None) is None
-    assert ConfigServiceV2Client._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert ConfigServiceV2Client._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    assert ConfigServiceV2Client._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
-    assert ConfigServiceV2Client._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
-    assert ConfigServiceV2Client._get_default_mtls_endpoint(non_googleapi) == non_googleapi
-    assert ConfigServiceV2Client._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
 
 def test__read_environment_variables():
     assert ConfigServiceV2Client._read_environment_variables() == (False, "auto", None)
@@ -269,40 +265,6 @@ def test__get_client_cert_source():
             assert ConfigServiceV2Client._get_client_cert_source(None, True) is mock_default_cert_source
             assert ConfigServiceV2Client._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
-@mock.patch.object(ConfigServiceV2Client, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ConfigServiceV2Client))
-@mock.patch.object(ConfigServiceV2AsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ConfigServiceV2AsyncClient))
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = ConfigServiceV2Client._DEFAULT_UNIVERSE
-    default_endpoint = ConfigServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
-    mock_universe = "bar.com"
-    mock_endpoint = ConfigServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
-
-    assert ConfigServiceV2Client._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
-    assert ConfigServiceV2Client._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == ConfigServiceV2Client.DEFAULT_MTLS_ENDPOINT
-    assert ConfigServiceV2Client._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
-    assert ConfigServiceV2Client._get_api_endpoint(None, None, default_universe, "always") == ConfigServiceV2Client.DEFAULT_MTLS_ENDPOINT
-    assert ConfigServiceV2Client._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == ConfigServiceV2Client.DEFAULT_MTLS_ENDPOINT
-    assert ConfigServiceV2Client._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
-    assert ConfigServiceV2Client._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        ConfigServiceV2Client._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
-    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert ConfigServiceV2Client._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
-    assert ConfigServiceV2Client._get_universe_domain(None, universe_domain_env) == universe_domain_env
-    assert ConfigServiceV2Client._get_universe_domain(None, None) == ConfigServiceV2Client._DEFAULT_UNIVERSE
-
-    with pytest.raises(ValueError) as excinfo:
-        ConfigServiceV2Client._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 @pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
     (401, CRED_INFO_JSON, True),
@@ -674,11 +636,12 @@ def test_config_service_v2_client_get_mtls_endpoint_and_cert_source(client_class
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):
@@ -721,11 +684,12 @@ def test_config_service_v2_client_get_mtls_endpoint_and_cert_source(client_class
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):

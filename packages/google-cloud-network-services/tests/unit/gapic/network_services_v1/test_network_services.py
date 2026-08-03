@@ -1025,7 +1025,14 @@ def test_network_services_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1072,7 +1079,14 @@ def test_network_services_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1794,6 +1808,9 @@ def test_list_endpoint_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, endpoint_policy.EndpointPolicy) for i in results)
@@ -1886,6 +1903,8 @@ async def test_list_endpoint_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3788,6 +3807,9 @@ def test_list_wasm_plugin_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, extensibility.WasmPluginVersion) for i in results)
@@ -3880,6 +3902,8 @@ async def test_list_wasm_plugin_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5426,6 +5450,9 @@ def test_list_wasm_plugins_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, extensibility.WasmPlugin) for i in results)
@@ -5518,6 +5545,8 @@ async def test_list_wasm_plugins_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7350,6 +7379,9 @@ def test_list_gateways_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, gateway.Gateway) for i in results)
@@ -7438,6 +7470,8 @@ async def test_list_gateways_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9268,6 +9302,9 @@ def test_list_grpc_routes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, grpc_route.GrpcRoute) for i in results)
@@ -9356,6 +9393,8 @@ async def test_list_grpc_routes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11196,6 +11235,9 @@ def test_list_http_routes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, http_route.HttpRoute) for i in results)
@@ -11284,6 +11326,8 @@ async def test_list_http_routes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -13120,6 +13164,9 @@ def test_list_tcp_routes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tcp_route.TcpRoute) for i in results)
@@ -13208,6 +13255,8 @@ async def test_list_tcp_routes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14994,6 +15043,9 @@ def test_list_tls_routes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tls_route.TlsRoute) for i in results)
@@ -15082,6 +15134,8 @@ async def test_list_tls_routes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -16895,6 +16949,9 @@ def test_list_service_bindings_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service_binding.ServiceBinding) for i in results)
@@ -16987,6 +17044,8 @@ async def test_list_service_bindings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -18850,6 +18909,9 @@ def test_list_meshes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, mesh.Mesh) for i in results)
@@ -18938,6 +19000,8 @@ async def test_list_meshes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -20741,6 +20805,9 @@ def test_list_service_lb_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service_lb_policy.ServiceLbPolicy) for i in results)
@@ -20833,6 +20900,8 @@ async def test_list_service_lb_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -23445,6 +23514,9 @@ def test_list_gateway_route_views_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, route_view.GatewayRouteView) for i in results)
@@ -23537,6 +23609,8 @@ async def test_list_gateway_route_views_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -23994,6 +24068,9 @@ def test_list_mesh_route_views_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, route_view.MeshRouteView) for i in results)
@@ -24086,6 +24163,8 @@ async def test_list_mesh_route_views_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -24540,6 +24619,9 @@ def test_list_agent_gateways_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, agent_gateway.AgentGateway) for i in results)
@@ -24632,6 +24714,8 @@ async def test_list_agent_gateways_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -26419,6 +26503,9 @@ def test_list_endpoint_policies_rest_pager(transport: str = "rest"):
 
         pager = client.list_endpoint_policies(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, endpoint_policy.EndpointPolicy) for i in results)
@@ -27449,6 +27536,9 @@ def test_list_wasm_plugin_versions_rest_pager(transport: str = "rest"):
 
         pager = client.list_wasm_plugin_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, extensibility.WasmPluginVersion) for i in results)
@@ -28295,6 +28385,9 @@ def test_list_wasm_plugins_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_wasm_plugins(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -29307,6 +29400,9 @@ def test_list_gateways_rest_pager(transport: str = "rest"):
 
         pager = client.list_gateways(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, gateway.Gateway) for i in results)
@@ -30296,6 +30392,9 @@ def test_list_grpc_routes_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_grpc_routes(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -31304,6 +31403,9 @@ def test_list_http_routes_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_http_routes(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -32319,6 +32421,9 @@ def test_list_tcp_routes_rest_pager(transport: str = "rest"):
 
         pager = client.list_tcp_routes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tcp_route.TcpRoute) for i in results)
@@ -33320,6 +33425,9 @@ def test_list_tls_routes_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_tls_routes(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -34328,6 +34436,9 @@ def test_list_service_bindings_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_service_bindings(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -35347,6 +35458,9 @@ def test_list_meshes_rest_pager(transport: str = "rest"):
 
         pager = client.list_meshes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, mesh.Mesh) for i in results)
@@ -36338,6 +36452,9 @@ def test_list_service_lb_policies_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_service_lb_policies(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -37741,6 +37858,9 @@ def test_list_gateway_route_views_rest_pager(transport: str = "rest"):
 
         pager = client.list_gateway_route_views(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, route_view.GatewayRouteView) for i in results)
@@ -38001,6 +38121,9 @@ def test_list_mesh_route_views_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/meshes/sample3"}
 
         pager = client.list_mesh_route_views(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -38263,6 +38386,9 @@ def test_list_agent_gateways_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_agent_gateways(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -52291,7 +52417,10 @@ def test_create_agent_gateway_rest_call_success(request_type):
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["agent_gateway"] = {
         "google_managed": {"governed_access_path": 1},
-        "self_managed": {"resource_uri": "resource_uri_value"},
+        "self_managed": {
+            "resource_uri": "resource_uri_value",
+            "resource_uris": ["resource_uris_value1", "resource_uris_value2"],
+        },
         "name": "name_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
@@ -52530,7 +52659,10 @@ def test_update_agent_gateway_rest_call_success(request_type):
     }
     request_init["agent_gateway"] = {
         "google_managed": {"governed_access_path": 1},
-        "self_managed": {"resource_uri": "resource_uri_value"},
+        "self_managed": {
+            "resource_uri": "resource_uri_value",
+            "resource_uris": ["resource_uris_value1", "resource_uris_value2"],
+        },
         "name": "projects/sample1/locations/sample2/agentGateways/sample3",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},

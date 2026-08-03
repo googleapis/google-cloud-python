@@ -13,6 +13,9 @@ LIB_VERSION = gapic_version.__version__
 
 try:
     from opentelemetry import trace
+    from opentelemetry.resourcedetector.gcp_resource_detector import (  # noqa: F401
+        GoogleCloudResourceDetector,
+    )
     from opentelemetry.sdk.trace import TracerProvider
     from opentelemetry.sdk.trace.export import SimpleSpanProcessor
     from opentelemetry.sdk.trace.export.in_memory_span_exporter import (

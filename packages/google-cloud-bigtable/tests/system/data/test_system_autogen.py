@@ -57,7 +57,7 @@ class TempRowBuilder:
         elif isinstance(value, int):
             value = value.to_bytes(8, byteorder="big", signed=True)
         request = {
-            "table_name": self.target.table_name,
+            **self.target._request_path,
             "row_key": row_key,
             "mutations": [
                 {
@@ -76,7 +76,7 @@ class TempRowBuilder:
         self, row_key, *, family=TEST_AGGREGATE_FAMILY, qualifier=b"q", input=0
     ):
         request = {
-            "table_name": self.target.table_name,
+            **self.target._request_path,
             "row_key": row_key,
             "mutations": [
                 {
@@ -94,14 +94,31 @@ class TempRowBuilder:
 
     def delete_rows(self):
         if self.rows:
-            request = {
-                "table_name": self.target.table_name,
-                "entries": [
-                    {"row_key": row, "mutations": [{"delete_from_row": {}}]}
-                    for row in self.rows
-                ],
-            }
-            self.target.client._gapic_client.mutate_rows(request)
+            chunk_size = 5000
+            rows_list = list(self.rows)
+            is_authorized_view = "authorized_view_name" in self.target._request_path
+            if is_authorized_view:
+                mutations = [
+                    {"delete_from_family": {"family_name": TEST_FAMILY}},
+                    {"delete_from_family": {"family_name": TEST_AGGREGATE_FAMILY}},
+                ]
+            else:
+                mutations = [{"delete_from_row": {}}]
+            for i in range(0, len(rows_list), chunk_size):
+                chunk = rows_list[i : i + chunk_size]
+                request = {
+                    **self.target._request_path,
+                    "entries": [
+                        {"row_key": row, "mutations": mutations} for row in chunk
+                    ],
+                }
+                stream = self.target.client._gapic_client.mutate_rows(request)
+                for response in stream:
+                    for entry in response.entries:
+                        if entry.status.code != 0:
+                            raise RuntimeError(
+                                f"Failed to delete row: {entry.status.message}"
+                            )
 
     def retrieve_cell_value(self, target, row_key):
         """Helper to read an individual row"""

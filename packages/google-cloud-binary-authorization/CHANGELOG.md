@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-binary-authorization/#history
 
+## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-binary-authorization-v1.18.0...google-cloud-binary-authorization-v1.19.0) (2026-07-13)
+
+
+### Features
+
+* update googleapis and regenerate ([#17678](https://github.com/googleapis/google-cloud-python/issues/17678)) ([670917c](https://github.com/googleapis/google-cloud-python/commit/670917c9cff5b93983bb75790170716e917b72bb))
+
 ## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-binary-authorization-v1.17.0...google-cloud-binary-authorization-v1.18.0) (2026-07-07)
 
 

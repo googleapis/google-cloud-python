@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [3.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.15.0...google-cloud-kms-v3.16.0) (2026-07-16)
+
+
+### Features
+
+* update googleapis and regenerate ([#17725](https://github.com/googleapis/google-cloud-python/issues/17725)) ([35e16da](https://github.com/googleapis/google-cloud-python/commit/35e16daf25480d66e9fc3443fe485ae2b0241ae3))
+
 ## [3.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.14.0...google-cloud-kms-v3.15.0) (2026-07-07)
 
 

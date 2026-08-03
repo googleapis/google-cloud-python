@@ -25,6 +25,11 @@
                 "create_managed_folder"
               ]
             },
+            "CreateRapidCache": {
+              "methods": [
+                "create_rapid_cache"
+              ]
+            },
             "DeleteFolder": {
               "methods": [
                 "delete_folder"
@@ -90,6 +95,11 @@
                 "get_project_intelligence_config"
               ]
             },
+            "GetRapidCache": {
+              "methods": [
+                "get_rapid_cache"
+              ]
+            },
             "GetStorageLayout": {
               "methods": [
                 "get_storage_layout"
@@ -118,6 +128,11 @@
             "ListManagedFolders": {
               "methods": [
                 "list_managed_folders"
+              ]
+            },
+            "ListRapidCaches": {
+              "methods": [
+                "list_rapid_caches"
               ]
             },
             "PauseAnywhereCache": {
@@ -160,6 +175,11 @@
                 "update_folder_intelligence_config"
               ]
             },
+            "UpdateManagedFolder": {
+              "methods": [
+                "update_managed_folder"
+              ]
+            },
             "UpdateOrganizationIntelligenceConfig": {
               "methods": [
                 "update_organization_intelligence_config"
@@ -168,6 +188,11 @@
             "UpdateProjectIntelligenceConfig": {
               "methods": [
                 "update_project_intelligence_config"
+              ]
+            },
+            "UpdateRapidCache": {
+              "methods": [
+                "update_rapid_cache"
               ]
             }
           }
@@ -190,6 +215,11 @@
                 "create_managed_folder"
               ]
             },
+            "CreateRapidCache": {
+              "methods": [
+                "create_rapid_cache"
+              ]
+            },
             "DeleteFolder": {
               "methods": [
                 "delete_folder"
@@ -255,6 +285,11 @@
                 "get_project_intelligence_config"
               ]
             },
+            "GetRapidCache": {
+              "methods": [
+                "get_rapid_cache"
+              ]
+            },
             "GetStorageLayout": {
               "methods": [
                 "get_storage_layout"
@@ -283,6 +318,11 @@
             "ListManagedFolders": {
               "methods": [
                 "list_managed_folders"
+              ]
+            },
+            "ListRapidCaches": {
+              "methods": [
+                "list_rapid_caches"
               ]
             },
             "PauseAnywhereCache": {
@@ -325,6 +365,11 @@
                 "update_folder_intelligence_config"
               ]
             },
+            "UpdateManagedFolder": {
+              "methods": [
+                "update_managed_folder"
+              ]
+            },
             "UpdateOrganizationIntelligenceConfig": {
               "methods": [
                 "update_organization_intelligence_config"
@@ -333,6 +378,11 @@
             "UpdateProjectIntelligenceConfig": {
               "methods": [
                 "update_project_intelligence_config"
+              ]
+            },
+            "UpdateRapidCache": {
+              "methods": [
+                "update_rapid_cache"
               ]
             }
           }
@@ -355,6 +405,11 @@
                 "create_managed_folder"
               ]
             },
+            "CreateRapidCache": {
+              "methods": [
+                "create_rapid_cache"
+              ]
+            },
             "DeleteFolder": {
               "methods": [
                 "delete_folder"
@@ -420,6 +475,11 @@
                 "get_project_intelligence_config"
               ]
             },
+            "GetRapidCache": {
+              "methods": [
+                "get_rapid_cache"
+              ]
+            },
             "GetStorageLayout": {
               "methods": [
                 "get_storage_layout"
@@ -448,6 +508,11 @@
             "ListManagedFolders": {
               "methods": [
                 "list_managed_folders"
+              ]
+            },
+            "ListRapidCaches": {
+              "methods": [
+                "list_rapid_caches"
               ]
             },
             "PauseAnywhereCache": {
@@ -490,6 +555,11 @@
                 "update_folder_intelligence_config"
               ]
             },
+            "UpdateManagedFolder": {
+              "methods": [
+                "update_managed_folder"
+              ]
+            },
             "UpdateOrganizationIntelligenceConfig": {
               "methods": [
                 "update_organization_intelligence_config"
@@ -498,6 +568,11 @@
             "UpdateProjectIntelligenceConfig": {
               "methods": [
                 "update_project_intelligence_config"
+              ]
+            },
+            "UpdateRapidCache": {
+              "methods": [
+                "update_rapid_cache"
               ]
             }
           }

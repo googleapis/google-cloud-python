@@ -23,6 +23,22 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.capacityplanner_v1beta.services.usage_service",
+    "google.cloud.capacityplanner_v1beta.types.allocation",
+    "google.cloud.capacityplanner_v1beta.types.future_reservation",
+    "google.cloud.capacityplanner_v1beta.types.location",
+    "google.cloud.capacityplanner_v1beta.types.resource",
+    "google.cloud.capacityplanner_v1beta.types.usage_service",
+}
+
+
 from .services.usage_service import UsageServiceAsyncClient, UsageServiceClient
 from .types.allocation import Allocation
 from .types.future_reservation import FutureReservation

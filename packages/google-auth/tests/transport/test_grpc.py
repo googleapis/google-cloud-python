@@ -404,13 +404,16 @@ class TestSecureAuthorizedChannel(object):
 @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
 @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
 class TestSslCredentials(object):
+    @mock.patch("os.path.exists", autospec=True)
     def test_no_context_aware_metadata(
         self,
+        mock_path_exists,
         mock_check_config_path,
         mock_load_json_file,
         mock_get_client_ssl_credentials,
         mock_ssl_channel_credentials,
     ):
+        mock_path_exists.return_value = False
         # Mock that the metadata file doesn't exist.
         mock_check_config_path.return_value = None
 
@@ -608,19 +611,14 @@ class TestSslCredentials(object):
             certificate_chain=b"cert", private_key=b"key"
         )
 
-    @mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", autospec=True
-    )
     def test_get_client_ssl_credentials_auto_enablement(
         self,
-        mock_has_default_client_cert_source,
         mock_check_config_path,
         mock_load_json_file,
         mock_get_client_ssl_credentials,
         mock_ssl_channel_credentials,
     ):
         fake_config_content = '{"version": 1, "cert_configs": {"workload": {"cert_path": "/tmp/mock_cert.pem", "key_path": "/tmp/mock_key.pem"}}}'
-        mock_has_default_client_cert_source.return_value = True
         mock_get_client_ssl_credentials.return_value = (
             True,
             PUBLIC_CERT_BYTES,
@@ -633,9 +631,16 @@ class TestSslCredentials(object):
             {
                 environment_vars.GOOGLE_API_CERTIFICATE_CONFIG: "fake_config_path.json",
             },
-        ), mock.patch("builtins.open", mock.mock_open(read_data=fake_config_content)):
-            # Ensure GOOGLE_API_USE_CLIENT_CERTIFICATE is not present in the environment
+        ), mock.patch(
+            "builtins.open", mock.mock_open(read_data=fake_config_content)
+        ), mock.patch(
+            "os.path.exists", return_value=True
+        ):
+            # Ensure mTLS explicit flags are not present in the environment
             os.environ.pop(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, None)
+            os.environ.pop(
+                environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE, None
+            )
             ssl_credentials = google.auth.transport.grpc.SslCredentials()
 
         assert ssl_credentials.ssl_credentials is not None

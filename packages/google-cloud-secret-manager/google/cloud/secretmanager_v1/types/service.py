@@ -29,6 +29,8 @@ __protobuf__ = proto.module(
         "ListSecretsResponse",
         "CreateSecretRequest",
         "AddSecretVersionRequest",
+        "EnableManagedRotationRequest",
+        "RotateSecretRequest",
         "GetSecretRequest",
         "ListSecretVersionsRequest",
         "ListSecretVersionsResponse",
@@ -189,6 +191,89 @@ class AddSecretVersionRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=resources.SecretPayload,
+    )
+
+
+class EnableManagedRotationRequest(proto.Message):
+    r"""Request message for
+    [SecretManagerService.EnableManagedRotation][google.cloud.secretmanager.v1.SecretManagerService.EnableManagedRotation].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the
+            [Secret][google.cloud.secretmanager.v1.Secret] to associate
+            with the
+            [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
+            in the format ``projects/*/secrets/*`` or
+            ``projects/*/locations/*/secrets/*``.
+        cloud_sql_single_user_credentials (google.cloud.secretmanager_v1.types.EnableManagedRotationRequest.CloudSQLSingleUserCredentials):
+            Credentials required for Cloud SQL DB for
+            Single user Managed Rotation.
+
+            This field is a member of `oneof`_ ``credentials``.
+    """
+
+    class CloudSQLSingleUserCredentials(proto.Message):
+        r"""These are the credentials required for Cloud SQL DB for
+        Single user Managed Rotation.
+
+        Attributes:
+            instance_id (str):
+                Required. Instance ID of the Cloud SQL
+                instance.
+            username (str):
+                Required. Username of the Cloud SQL instance.
+            password (str):
+                Optional. Password of the Cloud SQL instance.
+                If this is not provided, a random password will
+                be generated.
+        """
+
+        instance_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        username: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        password: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    cloud_sql_single_user_credentials: CloudSQLSingleUserCredentials = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="credentials",
+        message=CloudSQLSingleUserCredentials,
+    )
+
+
+class RotateSecretRequest(proto.Message):
+    r"""Request message for
+    [SecretManagerService.RotateSecret][google.cloud.secretmanager.v1.SecretManagerService.RotateSecret].
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the
+            [Secret][google.cloud.secretmanager.v1.Secret] to associate
+            with the
+            [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
+            in the format ``projects/*/secrets/*`` or
+            ``projects/*/locations/*/secrets/*``.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

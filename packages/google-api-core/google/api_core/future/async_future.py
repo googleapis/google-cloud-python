@@ -16,9 +16,7 @@
 
 import asyncio
 
-from google.api_core import exceptions
-from google.api_core import retry
-from google.api_core import retry_async
+from google.api_core import exceptions, retry, retry_async
 from google.api_core.future import base
 
 
@@ -101,7 +99,7 @@ class AsyncFuture(base.Future):
             await retry_(self._done_or_raise)()
         except exceptions.RetryError:
             raise asyncio.TimeoutError(
-                "Operation did not complete within the designated " "timeout."
+                "Operation did not complete within the designated timeout."
             )
 
     async def result(self, timeout=None):

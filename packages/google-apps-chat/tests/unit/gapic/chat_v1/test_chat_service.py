@@ -69,6 +69,7 @@ from google.apps.chat_v1.types import (
     action_status,
     annotation,
     attachment,
+    audience,
     availability,
     contextual_addon,
     deletion_metadata,
@@ -973,7 +974,14 @@ def test_chat_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1020,7 +1028,14 @@ def test_chat_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -2116,6 +2131,9 @@ def test_list_messages_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, message.Message) for i in results)
@@ -2204,6 +2222,8 @@ async def test_list_messages_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2636,6 +2656,9 @@ def test_list_memberships_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, membership.Membership) for i in results)
@@ -2724,6 +2747,8 @@ async def test_list_memberships_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2801,6 +2826,7 @@ def test_get_membership(request_type, transport: str = "grpc"):
             name="name_value",
             state=membership.Membership.MembershipState.JOINED,
             role=membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=membership.Membership.Affiliation.INTERNAL,
         )
         response = client.get_membership(request)
 
@@ -2815,6 +2841,7 @@ def test_get_membership(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == membership.Membership.MembershipState.JOINED
     assert response.role == membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == membership.Membership.Affiliation.INTERNAL
 
 
 def test_get_membership_non_empty_request_with_auto_populated_field():
@@ -2949,6 +2976,7 @@ async def test_get_membership_async(request_type, transport: str = "grpc_asyncio
                 name="name_value",
                 state=membership.Membership.MembershipState.JOINED,
                 role=membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=membership.Membership.Affiliation.INTERNAL,
             )
         )
         response = await client.get_membership(request)
@@ -2964,6 +2992,7 @@ async def test_get_membership_async(request_type, transport: str = "grpc_asyncio
     assert response.name == "name_value"
     assert response.state == membership.Membership.MembershipState.JOINED
     assert response.role == membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == membership.Membership.Affiliation.INTERNAL
 
 
 def test_get_membership_field_headers():
@@ -4946,6 +4975,9 @@ def test_list_spaces_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, space.Space) for i in results)
@@ -5034,6 +5066,8 @@ async def test_list_spaces_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5322,6 +5356,9 @@ def test_search_spaces_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, space.Space) for i in results)
@@ -5410,6 +5447,8 @@ async def test_search_spaces_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7809,6 +7848,9 @@ def test_find_group_chats_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, space.Space) for i in results)
@@ -7897,6 +7939,8 @@ async def test_find_group_chats_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7976,6 +8020,7 @@ def test_create_membership(request_type, transport: str = "grpc"):
             name="name_value",
             state=gc_membership.Membership.MembershipState.JOINED,
             role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=gc_membership.Membership.Affiliation.INTERNAL,
         )
         response = client.create_membership(request)
 
@@ -7990,6 +8035,7 @@ def test_create_membership(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == gc_membership.Membership.MembershipState.JOINED
     assert response.role == gc_membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == gc_membership.Membership.Affiliation.INTERNAL
 
 
 def test_create_membership_non_empty_request_with_auto_populated_field():
@@ -8130,6 +8176,7 @@ async def test_create_membership_async(request_type, transport: str = "grpc_asyn
                 name="name_value",
                 state=gc_membership.Membership.MembershipState.JOINED,
                 role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=gc_membership.Membership.Affiliation.INTERNAL,
             )
         )
         response = await client.create_membership(request)
@@ -8145,6 +8192,7 @@ async def test_create_membership_async(request_type, transport: str = "grpc_asyn
     assert response.name == "name_value"
     assert response.state == gc_membership.Membership.MembershipState.JOINED
     assert response.role == gc_membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == gc_membership.Membership.Affiliation.INTERNAL
 
 
 def test_create_membership_field_headers():
@@ -8334,6 +8382,7 @@ def test_update_membership(request_type, transport: str = "grpc"):
             name="name_value",
             state=gc_membership.Membership.MembershipState.JOINED,
             role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=gc_membership.Membership.Affiliation.INTERNAL,
         )
         response = client.update_membership(request)
 
@@ -8348,6 +8397,7 @@ def test_update_membership(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == gc_membership.Membership.MembershipState.JOINED
     assert response.role == gc_membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == gc_membership.Membership.Affiliation.INTERNAL
 
 
 def test_update_membership_non_empty_request_with_auto_populated_field():
@@ -8484,6 +8534,7 @@ async def test_update_membership_async(request_type, transport: str = "grpc_asyn
                 name="name_value",
                 state=gc_membership.Membership.MembershipState.JOINED,
                 role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=gc_membership.Membership.Affiliation.INTERNAL,
             )
         )
         response = await client.update_membership(request)
@@ -8499,6 +8550,7 @@ async def test_update_membership_async(request_type, transport: str = "grpc_asyn
     assert response.name == "name_value"
     assert response.state == gc_membership.Membership.MembershipState.JOINED
     assert response.role == gc_membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == gc_membership.Membership.Affiliation.INTERNAL
 
 
 def test_update_membership_field_headers():
@@ -8688,6 +8740,7 @@ def test_delete_membership(request_type, transport: str = "grpc"):
             name="name_value",
             state=membership.Membership.MembershipState.JOINED,
             role=membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=membership.Membership.Affiliation.INTERNAL,
         )
         response = client.delete_membership(request)
 
@@ -8702,6 +8755,7 @@ def test_delete_membership(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == membership.Membership.MembershipState.JOINED
     assert response.role == membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == membership.Membership.Affiliation.INTERNAL
 
 
 def test_delete_membership_non_empty_request_with_auto_populated_field():
@@ -8842,6 +8896,7 @@ async def test_delete_membership_async(request_type, transport: str = "grpc_asyn
                 name="name_value",
                 state=membership.Membership.MembershipState.JOINED,
                 role=membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=membership.Membership.Affiliation.INTERNAL,
             )
         )
         response = await client.delete_membership(request)
@@ -8857,6 +8912,7 @@ async def test_delete_membership_async(request_type, transport: str = "grpc_asyn
     assert response.name == "name_value"
     assert response.state == membership.Membership.MembershipState.JOINED
     assert response.role == membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == membership.Membership.Affiliation.INTERNAL
 
 
 def test_delete_membership_field_headers():
@@ -9721,6 +9777,9 @@ def test_list_reactions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, reaction.Reaction) for i in results)
@@ -9809,6 +9868,8 @@ async def test_list_reactions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11038,6 +11099,9 @@ def test_list_custom_emojis_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, reaction.CustomEmoji) for i in results)
@@ -11130,6 +11194,8 @@ async def test_list_custom_emojis_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14725,6 +14791,9 @@ def test_list_space_events_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, space_event.SpaceEvent) for i in results)
@@ -14817,6 +14886,8 @@ async def test_list_space_events_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -16989,6 +17060,9 @@ def test_list_sections_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, section.Section) for i in results)
@@ -17077,6 +17151,8 @@ async def test_list_sections_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -17765,6 +17841,9 @@ def test_list_section_items_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, section.SectionItem) for i in results)
@@ -17857,6 +17936,8 @@ async def test_list_section_items_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -18712,6 +18793,9 @@ def test_list_messages_rest_pager(transport: str = "rest"):
 
         pager = client.list_messages(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, message.Message) for i in results)
@@ -18975,6 +19059,9 @@ def test_list_memberships_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "spaces/sample1"}
 
         pager = client.list_memberships(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -20102,6 +20189,9 @@ def test_list_spaces_rest_pager(transport: str = "rest"):
 
         pager = client.list_spaces(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, space.Space) for i in results)
@@ -20310,6 +20400,9 @@ def test_search_spaces_rest_pager(transport: str = "rest"):
         sample_request = {}
 
         pager = client.search_spaces(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -21494,6 +21587,9 @@ def test_find_group_chats_rest_pager(transport: str = "rest"):
 
         pager = client.find_group_chats(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, space.Space) for i in results)
@@ -22505,6 +22601,9 @@ def test_list_reactions_rest_pager(transport: str = "rest"):
 
         pager = client.list_reactions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, reaction.Reaction) for i in results)
@@ -23131,6 +23230,9 @@ def test_list_custom_emojis_rest_pager(transport: str = "rest"):
         sample_request = {}
 
         pager = client.list_custom_emojis(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -25053,6 +25155,9 @@ def test_list_space_events_rest_pager(transport: str = "rest"):
 
         pager = client.list_space_events(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, space_event.SpaceEvent) for i in results)
@@ -26241,6 +26346,9 @@ def test_list_sections_rest_pager(transport: str = "rest"):
 
         pager = client.list_sections(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, section.Section) for i in results)
@@ -26621,6 +26729,9 @@ def test_list_section_items_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "users/sample1/sections/sample2"}
 
         pager = client.list_section_items(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -28047,6 +28158,7 @@ async def test_get_membership_empty_call_grpc_asyncio():
                 name="name_value",
                 state=membership.Membership.MembershipState.JOINED,
                 role=membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=membership.Membership.Affiliation.INTERNAL,
             )
         )
         await client.get_membership(request=None)
@@ -28541,6 +28653,7 @@ async def test_create_membership_empty_call_grpc_asyncio():
                 name="name_value",
                 state=gc_membership.Membership.MembershipState.JOINED,
                 role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=gc_membership.Membership.Affiliation.INTERNAL,
             )
         )
         await client.create_membership(request=None)
@@ -28571,6 +28684,7 @@ async def test_update_membership_empty_call_grpc_asyncio():
                 name="name_value",
                 state=gc_membership.Membership.MembershipState.JOINED,
                 role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=gc_membership.Membership.Affiliation.INTERNAL,
             )
         )
         await client.update_membership(request=None)
@@ -28601,6 +28715,7 @@ async def test_delete_membership_empty_call_grpc_asyncio():
                 name="name_value",
                 state=membership.Membership.MembershipState.JOINED,
                 role=membership.Membership.MembershipRole.ROLE_MEMBER,
+                affiliation=membership.Membership.Affiliation.INTERNAL,
             )
         )
         await client.delete_membership(request=None)
@@ -29768,7 +29883,16 @@ def test_create_message_rest_call_success(request_type):
                 "joined_direct_human_user_count": 3185,
                 "joined_group_count": 1933,
             },
-            "access_settings": {"access_state": 1, "audience": "audience_value"},
+            "access_settings": {
+                "access_state": 1,
+                "audience": "audience_value",
+                "access_permission_settings": {
+                    "discover_space_setting": {
+                        "principals": [{"audience": {"name": "name_value"}}]
+                    },
+                    "join_space_setting": {},
+                },
+            },
             "customer": "customer_value",
             "space_uri": "space_uri_value",
             "predefined_permission_settings": 1,
@@ -30327,6 +30451,7 @@ def test_get_membership_rest_call_success(request_type):
             name="name_value",
             state=membership.Membership.MembershipState.JOINED,
             role=membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=membership.Membership.Affiliation.INTERNAL,
         )
 
         # Wrap the value into a proper Response obj
@@ -30346,6 +30471,7 @@ def test_get_membership_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.state == membership.Membership.MembershipState.JOINED
     assert response.role == membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == membership.Membership.Affiliation.INTERNAL
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -30991,7 +31117,16 @@ def test_update_message_rest_call_success(request_type):
                 "joined_direct_human_user_count": 3185,
                 "joined_group_count": 1933,
             },
-            "access_settings": {"access_state": 1, "audience": "audience_value"},
+            "access_settings": {
+                "access_state": 1,
+                "audience": "audience_value",
+                "access_permission_settings": {
+                    "discover_space_setting": {
+                        "principals": [{"audience": {"name": "name_value"}}]
+                    },
+                    "join_space_setting": {},
+                },
+            },
             "customer": "customer_value",
             "space_uri": "space_uri_value",
             "predefined_permission_settings": 1,
@@ -32088,7 +32223,16 @@ def test_create_space_rest_call_success(request_type):
             "joined_direct_human_user_count": 3185,
             "joined_group_count": 1933,
         },
-        "access_settings": {"access_state": 1, "audience": "audience_value"},
+        "access_settings": {
+            "access_state": 1,
+            "audience": "audience_value",
+            "access_permission_settings": {
+                "discover_space_setting": {
+                    "principals": [{"audience": {"name": "name_value"}}]
+                },
+                "join_space_setting": {},
+            },
+        },
         "customer": "customer_value",
         "space_uri": "space_uri_value",
         "predefined_permission_settings": 1,
@@ -32505,7 +32649,16 @@ def test_update_space_rest_call_success(request_type):
             "joined_direct_human_user_count": 3185,
             "joined_group_count": 1933,
         },
-        "access_settings": {"access_state": 1, "audience": "audience_value"},
+        "access_settings": {
+            "access_state": 1,
+            "audience": "audience_value",
+            "access_permission_settings": {
+                "discover_space_setting": {
+                    "principals": [{"audience": {"name": "name_value"}}]
+                },
+                "join_space_setting": {},
+            },
+        },
         "customer": "customer_value",
         "space_uri": "space_uri_value",
         "predefined_permission_settings": 1,
@@ -33283,6 +33436,7 @@ def test_create_membership_rest_call_success(request_type):
         "group_member": {"name": "name_value"},
         "create_time": {"seconds": 751, "nanos": 543},
         "delete_time": {},
+        "affiliation": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -33360,6 +33514,7 @@ def test_create_membership_rest_call_success(request_type):
             name="name_value",
             state=gc_membership.Membership.MembershipState.JOINED,
             role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=gc_membership.Membership.Affiliation.INTERNAL,
         )
 
         # Wrap the value into a proper Response obj
@@ -33379,6 +33534,7 @@ def test_create_membership_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.state == gc_membership.Membership.MembershipState.JOINED
     assert response.role == gc_membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == gc_membership.Membership.Affiliation.INTERNAL
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -33500,6 +33656,7 @@ def test_update_membership_rest_call_success(request_type):
         "group_member": {"name": "name_value"},
         "create_time": {"seconds": 751, "nanos": 543},
         "delete_time": {},
+        "affiliation": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -33577,6 +33734,7 @@ def test_update_membership_rest_call_success(request_type):
             name="name_value",
             state=gc_membership.Membership.MembershipState.JOINED,
             role=gc_membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=gc_membership.Membership.Affiliation.INTERNAL,
         )
 
         # Wrap the value into a proper Response obj
@@ -33596,6 +33754,7 @@ def test_update_membership_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.state == gc_membership.Membership.MembershipState.JOINED
     assert response.role == gc_membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == gc_membership.Membership.Affiliation.INTERNAL
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -33712,6 +33871,7 @@ def test_delete_membership_rest_call_success(request_type):
             name="name_value",
             state=membership.Membership.MembershipState.JOINED,
             role=membership.Membership.MembershipRole.ROLE_MEMBER,
+            affiliation=membership.Membership.Affiliation.INTERNAL,
         )
 
         # Wrap the value into a proper Response obj
@@ -33731,6 +33891,7 @@ def test_delete_membership_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.state == membership.Membership.MembershipState.JOINED
     assert response.role == membership.Membership.MembershipRole.ROLE_MEMBER
+    assert response.affiliation == membership.Membership.Affiliation.INTERNAL
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

@@ -28,17 +28,24 @@ import unittest
 # https://github.com/google/importlab/issues/25
 import nox
 
-BLACK_VERSION = "black==23.7.0"
 RUFF_VERSION = "ruff==0.14.14"
-BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
-# Black and flake8 clash on the syntax for ignoring flake8's F401 in this file.
-BLACK_EXCLUDES = ["--exclude", "^/google/api_core/operations_v1/__init__.py"]
+LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 SUPPORTED_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
 
 
 # Error if a python version is missing
@@ -52,25 +59,36 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
-    session.install(".")
+    session.install("flake8", RUFF_VERSION)
+
     session.run(
-        "black",
+        "ruff",
+        "format",
         "--check",
-        *BLACK_EXCLUDES,
-        *BLACK_PATHS,
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
     )
+
     session.run("flake8", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """Run black.
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
 
-    Format code to uniform standard.
-    """
-    session.install(BLACK_VERSION)
-    session.run("black", *BLACK_EXCLUDES, *BLACK_PATHS)
+    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
+    session.install(RUFF_VERSION)
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -90,7 +108,7 @@ def format(session):
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
 
     # 3. Run Ruff to format code
@@ -99,7 +117,7 @@ def format(session):
         "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
 
 
@@ -289,50 +307,27 @@ def default(
 
 @nox.session(python=ALL_PYTHON)
 @nox.parametrize(
-    ["install_grpc", "install_async_rest", "python_versions", "legacy_proto"],
+    ["install_grpc", "install_async_rest", "python_versions"],
     [
-        (True, False, None, None),  # Run unit tests with grpcio installed
-        (False, False, None, None),  # Run unit tests without grpcio installed
+        (True, False, None),  # Run unit tests with grpcio installed
+        (False, False, None),  # Run unit tests without grpcio installed
         (
             True,
             True,
-            None,
             None,
         ),  # Run unit tests with grpcio and async rest installed
-        # TODO: Remove once we stop support for protobuf 4.x.
-        (
-            True,
-            False,
-            ["3.10", "3.11"],
-            4,
-        ),  # Run proto4 tests with grpcio/grpcio-gcp installed
     ],
 )
-def unit(
-    session, install_grpc, install_async_rest, python_versions=None, legacy_proto=None
-):
+def unit(session, install_grpc, install_async_rest, python_versions=None):
     """Run the unit test suite with the given configuration parameters.
 
     If `python_versions` is provided, the test suite only runs when the Python version (xx.yy) is
     one of the values in `python_versions`.
-
-    If `legacy_proto` is provided, this test suite will explicitly install the proto library at
-    that major version. Only a few values are supported at any one time; the intent is to test
-    deprecated but noyet abandoned versions.
     """
 
     if python_versions and session.python not in python_versions:
         session.log(f"Skipping session for Python {session.python}")
         session.skip()
-
-    match legacy_proto:
-        case 4:
-            # Pin protobuf to a 4.x version to ensure coverage for the legacy code path.
-            session.install("protobuf>=4.25.8,<5.0.0")
-        case None | False:
-            pass
-        case _:
-            assert False, f"Unknown legacy_proto: {legacy_proto}"
 
     default(
         session=session,
@@ -370,7 +365,7 @@ def mypy(session):
         "types-requests",
         "types-protobuf",
     )
-    session.run("mypy", "google", "tests")
+    session.run("mypy", f"--config-file={MYPY_CONFIG_FILE}", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

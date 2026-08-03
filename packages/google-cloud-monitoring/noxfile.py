@@ -36,16 +36,24 @@ ALL_PYTHON = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-# TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
-# Switch this to Python 3.15 alpha1
-# https://peps.python.org/pep-0790/
-PREVIEW_PYTHON_VERSION = "3.14"
+PREVIEW_PYTHON_VERSION = "3.15"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
 
 if (CURRENT_DIRECTORY / "testing").exists():
     LOWER_BOUND_CONSTRAINTS_FILE = (
@@ -108,6 +116,7 @@ def mypy(session):
     session.install(".")
     session.run(
         "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
         "-p",
         "google",
         # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)
@@ -568,7 +577,7 @@ def prerelease_deps(session, protobuf_implementation):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=PREVIEW_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],

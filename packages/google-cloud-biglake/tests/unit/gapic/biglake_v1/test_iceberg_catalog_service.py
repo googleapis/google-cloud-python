@@ -1010,7 +1010,14 @@ def test_iceberg_catalog_service_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1057,7 +1064,14 @@ def test_iceberg_catalog_service_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1835,6 +1849,7 @@ def test_list_iceberg_catalogs_non_empty_request_with_auto_populated_field():
     request = iceberg_rest_catalog.ListIcebergCatalogsRequest(
         parent="parent_value",
         page_token="page_token_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1850,6 +1865,7 @@ def test_list_iceberg_catalogs_non_empty_request_with_auto_populated_field():
         request_msg = iceberg_rest_catalog.ListIcebergCatalogsRequest(
             parent="parent_value",
             page_token="page_token_value",
+            filter="filter_value",
         )
         assert args[0] == request_msg
 
@@ -2183,6 +2199,9 @@ def test_list_iceberg_catalogs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, iceberg_rest_catalog.IcebergCatalog) for i in results)
@@ -2275,6 +2294,8 @@ async def test_list_iceberg_catalogs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3758,6 +3779,7 @@ def test_list_iceberg_catalogs_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "filter",
             "page_size",
             "page_token",
             "view",
@@ -3822,6 +3844,7 @@ def test_list_iceberg_catalogs_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "filter",
                 "pageSize",
                 "pageToken",
                 "view",
@@ -3943,6 +3966,9 @@ def test_list_iceberg_catalogs_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1"}
 
         pager = client.list_iceberg_catalogs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -5328,6 +5354,11 @@ def test_update_iceberg_catalog_rest_call_success(request_type):
                 "aws_region": "aws_region_value",
                 "aws_role_arn": "aws_role_arn_value",
             },
+            "snowflake_catalog_info": {
+                "account_identifier": "account_identifier_value",
+                "warehouse": "warehouse_value",
+                "snowflake_role": "snowflake_role_value",
+            },
             "secret_name": "secret_name_value",
             "service_directory_name": "service_directory_name_value",
             "refresh_options": {
@@ -5615,6 +5646,11 @@ def test_create_iceberg_catalog_rest_call_success(request_type):
                 "warehouse": "warehouse_value",
                 "aws_region": "aws_region_value",
                 "aws_role_arn": "aws_role_arn_value",
+            },
+            "snowflake_catalog_info": {
+                "account_identifier": "account_identifier_value",
+                "warehouse": "warehouse_value",
+                "snowflake_role": "snowflake_role_value",
             },
             "secret_name": "secret_name_value",
             "service_directory_name": "service_directory_name_value",

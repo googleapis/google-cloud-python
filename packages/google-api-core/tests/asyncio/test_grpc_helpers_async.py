@@ -17,8 +17,9 @@ try:
     from unittest.mock import AsyncMock  # pragma: NO COVER  # noqa: F401
 except ImportError:  # pragma: NO COVER
     import mock  # type: ignore
-from ..helpers import warn_deprecated_credentials_file
 import pytest  # noqa: I202
+
+from ..helpers import warn_deprecated_credentials_file
 
 try:
     import grpc
@@ -31,9 +32,9 @@ if grpc is None:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
 
-from google.api_core import exceptions
-from google.api_core import grpc_helpers_async
 import google.auth.credentials
+
+from google.api_core import exceptions, grpc_helpers_async
 
 
 class RpcErrorImpl(grpc.RpcError, grpc.Call):

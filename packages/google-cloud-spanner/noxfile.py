@@ -36,6 +36,7 @@ ALL_PYTHON: List[str] = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
@@ -214,29 +215,15 @@ def install_unittest_dependencies(session, *constraints):
 @nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
-    ["python", "upb", "cpp"],
+    ["python", "upb"],
 )
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
-
-    # TODO(https://github.com/googleapis/synthtool/issues/1976):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if protobuf_implementation == "cpp":
-        session.install("protobuf<4")
 
     # Run py.test against the unit tests.
     args = [
@@ -260,6 +247,7 @@ def unit(session, protobuf_implementation):
         *args,
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+            "SPANNER_DISABLE_AFE_SERVER_TIMING": "true",
         },
     )
 
@@ -333,8 +321,6 @@ def install_systemtest_dependencies(session, *constraints):
         ("python", "POSTGRESQL"),
         ("upb", "GOOGLE_STANDARD_SQL"),
         ("upb", "POSTGRESQL"),
-        ("cpp", "GOOGLE_STANDARD_SQL"),
-        ("cpp", "POSTGRESQL"),
     ],
 )
 def system(session, protobuf_implementation, database_dialect):
@@ -362,14 +348,6 @@ def system(session, protobuf_implementation, database_dialect):
             "Only run system tests on real Spanner with one protobuf implementation to speed up the build"
         )
 
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
-
     # Install pyopenssl for mTLS testing.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
         session.install("pyopenssl")
@@ -381,12 +359,6 @@ def system(session, protobuf_implementation, database_dialect):
         session.skip("System tests were not found")
 
     install_systemtest_dependencies(session, "-c", constraints_path)
-
-    # TODO(https://github.com/googleapis/synthtool/issues/1976):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if protobuf_implementation == "cpp":
-        session.install("protobuf<4")
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -561,20 +533,10 @@ def docfx(session):
         ("python", "POSTGRESQL"),
         ("upb", "GOOGLE_STANDARD_SQL"),
         ("upb", "POSTGRESQL"),
-        ("cpp", "GOOGLE_STANDARD_SQL"),
-        ("cpp", "POSTGRESQL"),
     ],
 )
 def prerelease_deps(session, protobuf_implementation, database_dialect):
     """Run all tests with prerelease versions of dependencies installed."""
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
     session.install("-e", ".[all, tests, tracing]")
@@ -648,6 +610,7 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
             "SPANNER_DATABASE_DIALECT": database_dialect,
             "SKIP_BACKUP_TESTS": "true",
+            "SPANNER_DISABLE_AFE_SERVER_TIMING": "true",
         },
     )
 
@@ -846,5 +809,6 @@ def core_deps_from_source(session, protobuf_implementation):
         "tests/unit",
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+            "SPANNER_DISABLE_AFE_SERVER_TIMING": "true",
         },
     )

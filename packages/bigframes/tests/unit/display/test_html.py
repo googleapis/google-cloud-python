@@ -203,19 +203,20 @@ def test_repr_mimebundle_head():
     )
 
     # Mock _get_obj_metadata
-    with patch("bigframes.display.html._get_obj_metadata", return_value=(False, False)):
-        # Mock create_html_representation and create_text_representation
-        with patch(
+    with (
+        patch("bigframes.display.html._get_obj_metadata", return_value=(False, False)),
+        patch(
             "bigframes.display.html.create_html_representation", return_value="<html>"
-        ) as mock_create_html:
-            with patch(
-                "bigframes.display.plaintext.create_text_representation",
-                return_value="text",
-            ) as mock_create_text:
-                bundle = bf_html.repr_mimebundle_head(mock_df)
+        ) as mock_create_html,
+        patch(
+            "bigframes.display.plaintext.create_text_representation",
+            return_value="text",
+        ) as mock_create_text,
+    ):
+        bundle = bf_html.repr_mimebundle_head(mock_df)
 
-                assert bundle == {"text/html": "<html>", "text/plain": "text"}
-                mock_df._prepare_display_df.assert_called_once()
-                mock_df._block.retrieve_repr_request_results.assert_called_once()
-                mock_create_html.assert_called_once()
-                mock_create_text.assert_called_once()
+        assert bundle == {"text/html": "<html>", "text/plain": "text"}
+        mock_df._prepare_display_df.assert_called_once()
+        mock_df._block.retrieve_repr_request_results.assert_called_once()
+        mock_create_html.assert_called_once()
+        mock_create_text.assert_called_once()

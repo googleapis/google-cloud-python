@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-devicesandservices-health/#history
 
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-devicesandservices-health-v0.1.0...google-devicesandservices-health-v0.1.1) (2026-07-13)
+
+
+### Features
+
+* update googleapis and regenerate ([#17678](https://github.com/googleapis/google-cloud-python/issues/17678)) ([670917c](https://github.com/googleapis/google-cloud-python/commit/670917c9cff5b93983bb75790170716e917b72bb))
+
 ## [0.1.0](https://github.com/googleapis/google-cloud-python/compare/google-devicesandservices-health-v0.0.0...google-devicesandservices-health-v0.1.0) (2026-06-08)
 
 

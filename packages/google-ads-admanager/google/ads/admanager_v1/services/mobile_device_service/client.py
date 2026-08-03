@@ -776,7 +776,7 @@ class MobileDeviceServiceClient(metaclass=MobileDeviceServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> mobile_device_messages.MobileDevice:
-        r"""API to retrieve a ``MobileDevice`` object.
+        r"""Retrieves a ``MobileDevice`` object.
 
         .. code-block:: python
 
@@ -883,7 +883,7 @@ class MobileDeviceServiceClient(metaclass=MobileDeviceServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListMobileDevicesPager:
-        r"""API to retrieve a list of ``MobileDevice`` objects.
+        r"""Lists ``MobileDevice`` objects.
 
         .. code-block:: python
 
@@ -1135,8 +1135,6 @@ class MobileDeviceServiceClient(metaclass=MobileDeviceServiceClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("MobileDeviceServiceClient",)

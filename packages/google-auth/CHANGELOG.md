@@ -4,6 +4,39 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.56.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.1...google-auth-v2.56.2) (2026-07-21)
+
+
+### Bug Fixes
+
+* **auth:** centralize cert discovery logic and steps ([#17696](https://github.com/googleapis/google-cloud-python/issues/17696)) ([edc0423](https://github.com/googleapis/google-cloud-python/commit/edc0423e57dd06bef3a93802642a074ab8b7bc5d))
+* **auth:** exit early when agent cert config is outside well-known directory ([#17762](https://github.com/googleapis/google-cloud-python/issues/17762)) ([61e795a](https://github.com/googleapis/google-cloud-python/commit/61e795a8299afec863487776c8a679adbb2911ab))
+* **transport:** propagate mTLS adapter to auth session and fix connection leaks ([#17689](https://github.com/googleapis/google-cloud-python/issues/17689)) ([8289d32](https://github.com/googleapis/google-cloud-python/commit/8289d328f9a1eb2abb766644e4f6748198679c80))
+* update _SERVICE_ACCOUNT_EMAIL_PATTERN to require .gserviceaccount.com    suffix   ([#17748](https://github.com/googleapis/google-cloud-python/issues/17748)) ([b60bb04](https://github.com/googleapis/google-cloud-python/commit/b60bb04a73eb35b15320c54bc3493132e6ba5706))
+
+## [2.56.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.0...google-auth-v2.56.1) (2026-07-17)
+
+
+### Bug Fixes
+
+* disable RAB lookup for Domain-Wide Delegation ([#17763](https://github.com/googleapis/google-cloud-python/issues/17763)) ([00eb128](https://github.com/googleapis/google-cloud-python/commit/00eb1284fb6081cd37b747d09366568490a6d9ad)), closes [#17703](https://github.com/googleapis/google-cloud-python/issues/17703)
+
+## [2.56.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.55.2...google-auth-v2.56.0) (2026-07-13)
+
+
+### Features
+
+* **auth:** Implement python mtls helpers ([#17495](https://github.com/googleapis/google-cloud-python/issues/17495)) ([e7baed1](https://github.com/googleapis/google-cloud-python/commit/e7baed1a79677ca85f4dad7918a2f3e50a4fb9f2))
+
+
+### Bug Fixes
+
+* **google-auth:** add aiohttp bound for Python 3.14 ([#17654](https://github.com/googleapis/google-cloud-python/issues/17654)) ([b2ec761](https://github.com/googleapis/google-cloud-python/commit/b2ec76170d0550dc45e1b88cd66515e6dd9475cc))
+* **google-auth:** add bounds for urllib3 and packaging dependencies ([#17647](https://github.com/googleapis/google-cloud-python/issues/17647)) ([e9c6265](https://github.com/googleapis/google-cloud-python/commit/e9c626515efbcd5afefe1f6be40d0be068dac64f))
+* **google-auth:** add cryptography bound for Python 3.14 ([#17649](https://github.com/googleapis/google-cloud-python/issues/17649)) ([e9ca4c4](https://github.com/googleapis/google-cloud-python/commit/e9ca4c43029cffe1cc7386797a6477477fca218b))
+* **google-auth:** add gRPC extra and clean up obsolete TODOs ([#17644](https://github.com/googleapis/google-cloud-python/issues/17644)) ([6da41e8](https://github.com/googleapis/google-cloud-python/commit/6da41e83afd96e4719fc99a20c8fc6336de7da58)), closes [#1735](https://github.com/googleapis/google-cloud-python/issues/1735) [#1736](https://github.com/googleapis/google-cloud-python/issues/1736) [#1739](https://github.com/googleapis/google-cloud-python/issues/1739)
+* **google-auth:** raise rsa extra lower bound to 4.0 ([#17652](https://github.com/googleapis/google-cloud-python/issues/17652)) ([4087828](https://github.com/googleapis/google-cloud-python/commit/40878283c3fd8838439880b0d0eece5692b3e325))
+
 ## [2.55.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.55.1...google-auth-v2.55.2) (2026-07-07)
 
 

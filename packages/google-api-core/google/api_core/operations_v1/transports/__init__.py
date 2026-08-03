@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from typing import cast, Dict, Tuple
+from typing import Dict, Tuple, cast
 
 from .base import OperationsTransport
 from .rest import OperationsRestTransport

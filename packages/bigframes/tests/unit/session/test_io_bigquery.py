@@ -172,7 +172,7 @@ def test_add_and_trim_labels_length_limit_met():
     for _ in range(52):
         df.head()
 
-    io_bq.add_and_trim_labels(job_config=job_config)
+    io_bq.add_and_trim_labels(job_config=job_config, session=df._session)
     assert job_config.labels is not None
     assert len(job_config.labels) == 56
     assert "dataframe-max" not in job_config.labels.values()
@@ -218,6 +218,7 @@ def test_start_query_with_job_labels_length_limit_met(
         timeout=timeout,
         metrics=None,
         publisher=bigframes.core.events.Publisher(),
+        session=df._session,
     )
 
     assert job_config.labels is not None
