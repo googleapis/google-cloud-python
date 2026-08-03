@@ -319,9 +319,19 @@ if [[ "$TRIGGER_ADHOC" == "true" ]]; then
     source ci/adhoc/adhoc_test_runner.sh
 
     echo "Deduplicating packages..."
-    # Portable deduplication avoiding 'declare -A' (compatible with older Bash)
-    COMBINED=$(printf "%s\n" "${PACKAGES_TO_TEST[@]}" $ADHOC_PACKAGES | sort -u | grep -v '^$' || true)
-    PACKAGES_TO_TEST=($COMBINED)
+    # Deduplication using Associative Arrays (Requires Bash 4+)
+    declare -A unique_packages
+    for pkg in "${PACKAGES_TO_TEST[@]}"; do
+        unique_packages["$pkg"]=1
+    done
+    for pkg in $ADHOC_PACKAGES; do
+        unique_packages["$pkg"]=1
+    done
+
+    # Remove empty string key if any
+    unset 'unique_packages[""]'
+
+    PACKAGES_TO_TEST=("${!unique_packages[@]}")
 
     echo "Combined packages to test: ${PACKAGES_TO_TEST[*]}"
 fi
