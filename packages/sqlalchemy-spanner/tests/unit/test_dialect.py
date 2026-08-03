@@ -84,3 +84,17 @@ class TestSpannerDialect(fixtures.TestBase):
         assert ("public", "my_table") in res
         index_info = res[("public", "my_table")][0]
         eq_(index_info["column_sorting"], {})
+
+    def test_max_size_exported(self):
+        """Test MAX_SIZE export and int_from_size helper behavior."""
+        from google.cloud.sqlalchemy_spanner import MAX_SIZE
+        from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import (
+            _max_size,
+            int_from_size,
+        )
+
+        eq_(MAX_SIZE, 2621440)
+        eq_(_max_size, MAX_SIZE)
+        eq_(SpannerDialect.max_size, MAX_SIZE)
+        eq_(int_from_size("MAX"), 2621440)
+        eq_(int_from_size("100"), 100)

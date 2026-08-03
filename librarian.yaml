@@ -74,7 +74,7 @@ default:
     library_type: GAPIC_AUTO
 libraries:
   - name: bigframes
-    version: 2.46.0
+    version: 2.47.0
     python:
       library_type: INTEGRATION
   - name: bigquery-magics
@@ -372,9 +372,6 @@ libraries:
     python:
       metadata_name_override: apigeeconnect
       default_version: v1
-  - name: google-cloud-apigee-registry
-    version: 0.10.1
-    skip_generate: true
   - name: google-cloud-apihub
     version: 0.7.0
     apis:
@@ -562,7 +559,7 @@ libraries:
     python:
       default_version: v1beta
   - name: google-cloud-bigquery
-    version: 3.42.2
+    version: 3.42.3
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: bigquery
