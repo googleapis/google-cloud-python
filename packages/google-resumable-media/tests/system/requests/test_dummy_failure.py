@@ -16,6 +16,7 @@
 """
 Temporary dummy test to verify ad-hoc testing failure reporting.
 This file is for experimentation/prototyping only and will be removed before merge.
+We are using this to test packages that have legit changes (i.e. they would show up in `package_diff` naturally AND would have failing tests.
 """
 
 

@@ -18,7 +18,7 @@
 # we must touch a file in one of those paths to wake it up.
 #
 # This file is GAPIC_AUTO, and this specific file is NOT one of the 5 tracked files (setup.py, etc.)
-# in system.sh, so this change will NOT trigger tests for google-cloud-speech itself.
+# in system.sh, so this change will NOT launch google-cloud-speech's tests.
 #
 # If this ad-hoc testing prototype proves successful, we will update the internal Kokoro
 # JobConfigs to watch 'ci/adhoc/.*' instead, eliminating the need for this workaround.
