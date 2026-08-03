@@ -1,5 +1,5 @@
 {
-  "packages/bigframes": "2.46.0",
+  "packages/bigframes": "2.47.0",
   "packages/google-cloud-bigquery": "3.42.3",
   "packages/google-crc32c": "1.8.0",
   "packages/pandas-gbq": "0.35.0"
