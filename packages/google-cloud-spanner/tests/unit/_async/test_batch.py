@@ -25,8 +25,8 @@ from google.cloud.spanner_v1 import (
     RequestOptions,
     TransactionOptions,
 )
-from google.cloud.spanner_v1._helpers import _make_value_pb, _make_list_value_pb
 from google.cloud.spanner_v1._async.batch import Batch, MutationGroups, _BatchBase
+from google.cloud.spanner_v1._helpers import _make_list_value_pb, _make_value_pb
 from google.cloud.spanner_v1.keyset import KeySet
 
 TABLE_NAME = "citizens"
