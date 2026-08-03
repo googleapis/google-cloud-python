@@ -32,8 +32,10 @@ from bigframes.testing import utils as test_utils
 def use_ibis_compiler():
     original_setting = bpd.options.experiments.sql_compiler
     bpd.options.experiments.sql_compiler = "legacy"
-    yield
-    bpd.options.experiments.sql_compiler = original_setting
+    try:
+        yield
+    finally:
+        bpd.options.experiments.sql_compiler = original_setting
 
 
 def _create_mock_obj_ref_df(session, uris, name="image", connection=None):
