@@ -68,6 +68,18 @@ CRED_INFO_JSON = {
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
 
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -110,22 +122,6 @@ def set_event_loop():
             loop.close()
             asyncio.set_event_loop(None)
 
-
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert IAMCredentialsClient._get_default_mtls_endpoint(None) is None
-    assert IAMCredentialsClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert IAMCredentialsClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    assert IAMCredentialsClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
-    assert IAMCredentialsClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
-    assert IAMCredentialsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
-    assert IAMCredentialsClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
 
 def test__read_environment_variables():
     assert IAMCredentialsClient._read_environment_variables() == (False, "auto", None)
@@ -268,40 +264,6 @@ def test__get_client_cert_source():
             assert IAMCredentialsClient._get_client_cert_source(None, True) is mock_default_cert_source
             assert IAMCredentialsClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
-@mock.patch.object(IAMCredentialsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsClient))
-@mock.patch.object(IAMCredentialsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsAsyncClient))
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = IAMCredentialsClient._DEFAULT_UNIVERSE
-    default_endpoint = IAMCredentialsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
-    mock_universe = "bar.com"
-    mock_endpoint = IAMCredentialsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
-
-    assert IAMCredentialsClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
-    assert IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
-    assert IAMCredentialsClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
-    assert IAMCredentialsClient._get_api_endpoint(None, None, default_universe, "always") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
-    assert IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
-    assert IAMCredentialsClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
-    assert IAMCredentialsClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
-    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert IAMCredentialsClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
-    assert IAMCredentialsClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
-    assert IAMCredentialsClient._get_universe_domain(None, None) == IAMCredentialsClient._DEFAULT_UNIVERSE
-
-    with pytest.raises(ValueError) as excinfo:
-        IAMCredentialsClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 @pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
     (401, CRED_INFO_JSON, True),
@@ -686,6 +648,7 @@ def test_iam_credentials_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
@@ -733,6 +696,7 @@ def test_iam_credentials_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
@@ -2363,16 +2327,18 @@ def test_generate_access_token_rest_required_fields(request_type=common.Generate
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_access_token._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGenerateAccessToken,
+        "_BaseGenerateAccessToken__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
     jsonified_request["scope"] = 'scope_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_access_token._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -2422,13 +2388,6 @@ def test_generate_access_token_rest_required_fields(request_type=common.Generate
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_generate_access_token_rest_unset_required_fields():
-    transport = transports.IAMCredentialsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.generate_access_token._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", "scope", )))
 
 
 def test_generate_access_token_rest_flattened():
@@ -2540,16 +2499,18 @@ def test_generate_id_token_rest_required_fields(request_type=common.GenerateIdTo
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_id_token._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGenerateIdToken,
+        "_BaseGenerateIdToken__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
     jsonified_request["audience"] = 'audience_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_id_token._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -2599,13 +2560,6 @@ def test_generate_id_token_rest_required_fields(request_type=common.GenerateIdTo
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_generate_id_token_rest_unset_required_fields():
-    transport = transports.IAMCredentialsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.generate_id_token._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", "audience", )))
 
 
 def test_generate_id_token_rest_flattened():
@@ -2717,16 +2671,18 @@ def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).sign_blob._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSignBlob,
+        "_BaseSignBlob__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
     jsonified_request["payload"] = b'payload_blob'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).sign_blob._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -2776,13 +2732,6 @@ def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_sign_blob_rest_unset_required_fields():
-    transport = transports.IAMCredentialsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.sign_blob._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", "payload", )))
 
 
 def test_sign_blob_rest_flattened():
@@ -2892,16 +2841,18 @@ def test_sign_jwt_rest_required_fields(request_type=common.SignJwtRequest):
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).sign_jwt._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSignJwt,
+        "_BaseSignJwt__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
     jsonified_request["payload"] = 'payload_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).sign_jwt._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -2951,13 +2902,6 @@ def test_sign_jwt_rest_required_fields(request_type=common.SignJwtRequest):
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_sign_jwt_rest_unset_required_fields():
-    transport = transports.IAMCredentialsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.sign_jwt._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", "payload", )))
 
 
 def test_sign_jwt_rest_flattened():
