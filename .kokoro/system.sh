@@ -18,8 +18,6 @@
 # or zero if all commands in the pipeline exit successfully.
 set -eo pipefail
 
-echo "=== STARTING SYSTEM.SH ==="
-
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
 
