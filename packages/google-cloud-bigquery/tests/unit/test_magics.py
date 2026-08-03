@@ -142,9 +142,9 @@ QUERY_RESULTS_RESOURCE = {
 }
 
 
-def test_context_with_default_credentials():
-    """When Application Default Credentials are set, the context credentials
-    will be created the first time it is called
+def test_context_resolves_unset_credentials_and_project():
+    """When context credentials and project are unset (None), accessing them
+    resolves them from Application Default Credentials.
     """
     magics.context._credentials = None
     magics.context._project = None
