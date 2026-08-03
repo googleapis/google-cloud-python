@@ -119,6 +119,20 @@ def test_invoke_wrapped_method_with_metadata_as_none():
     assert len(metadata) == 1
 
 
+def test_invoke_wrapped_method_no_client_info_with_custom_metadata():
+    method = mock.Mock(spec=["__call__"])
+
+    wrapped_method = google.api_core.gapic_v1.method.wrap_method(
+        method, client_info=None
+    )
+
+    wrapped_method(mock.sentinel.request, metadata=[("custom-header", "value")])
+
+    method.assert_called_once_with(
+        mock.sentinel.request, metadata=[("custom-header", "value")]
+    )
+
+
 def test_extract_metrics_header_duplicate_tokens():
     metadata = [
         ("x-goog-api-client", "token1 token2"),
