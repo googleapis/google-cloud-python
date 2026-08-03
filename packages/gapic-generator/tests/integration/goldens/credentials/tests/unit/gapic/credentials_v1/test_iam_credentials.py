@@ -2327,16 +2327,18 @@ def test_generate_access_token_rest_required_fields(request_type=common.Generate
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_access_token._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGenerateAccessToken,
+        "_BaseGenerateAccessToken__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
     jsonified_request["scope"] = 'scope_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_access_token._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -2386,13 +2388,6 @@ def test_generate_access_token_rest_required_fields(request_type=common.Generate
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_generate_access_token_rest_unset_required_fields():
-    transport = transports.IAMCredentialsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.generate_access_token._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", "scope", )))
 
 
 def test_generate_access_token_rest_flattened():
@@ -2504,16 +2499,18 @@ def test_generate_id_token_rest_required_fields(request_type=common.GenerateIdTo
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_id_token._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGenerateIdToken,
+        "_BaseGenerateIdToken__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
     jsonified_request["audience"] = 'audience_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_id_token._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -2563,13 +2560,6 @@ def test_generate_id_token_rest_required_fields(request_type=common.GenerateIdTo
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_generate_id_token_rest_unset_required_fields():
-    transport = transports.IAMCredentialsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.generate_id_token._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", "audience", )))
 
 
 def test_generate_id_token_rest_flattened():
@@ -2681,16 +2671,18 @@ def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).sign_blob._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSignBlob,
+        "_BaseSignBlob__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
     jsonified_request["payload"] = b'payload_blob'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).sign_blob._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -2740,13 +2732,6 @@ def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_sign_blob_rest_unset_required_fields():
-    transport = transports.IAMCredentialsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.sign_blob._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", "payload", )))
 
 
 def test_sign_blob_rest_flattened():
@@ -2856,16 +2841,18 @@ def test_sign_jwt_rest_required_fields(request_type=common.SignJwtRequest):
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).sign_jwt._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSignJwt,
+        "_BaseSignJwt__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
     jsonified_request["payload"] = 'payload_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).sign_jwt._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -2915,13 +2902,6 @@ def test_sign_jwt_rest_required_fields(request_type=common.SignJwtRequest):
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_sign_jwt_rest_unset_required_fields():
-    transport = transports.IAMCredentialsRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.sign_jwt._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", "payload", )))
 
 
 def test_sign_jwt_rest_flattened():
