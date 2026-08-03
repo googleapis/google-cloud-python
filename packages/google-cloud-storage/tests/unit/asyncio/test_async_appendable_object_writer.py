@@ -645,6 +645,7 @@ class TestAsyncAppendableObjectWriter:
         assert res == resource
         assert writer.persisted_size == 999
         assert mock_appendable_writer["mock_stream"].send.await_count == 2
+        assert mock_appendable_writer["mock_stream"].recv.await_count == 2
         assert not writer._is_stream_open
 
     @pytest.mark.asyncio
@@ -664,7 +665,12 @@ class TestAsyncAppendableObjectWriter:
         ].recv.return_value = storage_type.BidiWriteObjectResponse(resource=resource)
 
         res = await writer.finalize(retry_policy=custom_policy)
+
         assert res == resource
+        assert writer.persisted_size == 999
+        assert mock_appendable_writer["mock_stream"].send.await_count == 1
+        assert mock_appendable_writer["mock_stream"].recv.await_count == 1
+        assert not writer._is_stream_open
 
     @pytest.mark.asyncio
     async def test_close_with_finalize_and_custom_retry_policy(
@@ -674,14 +680,23 @@ class TestAsyncAppendableObjectWriter:
 
         writer = self._make_one(mock_appendable_writer["mock_client"])
         writer._is_stream_open = True
-        writer.finalize = AsyncMock()
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
 
-        custom_policy = AsyncRetry(predicate=lambda exc: False)
-        await writer.close(finalize_on_close=True, retry_policy=custom_policy)
-        writer.finalize.assert_awaited_once_with(
-            full_object_checksum=None,
-            retry_policy=custom_policy,
+        custom_policy = AsyncRetry(
+            predicate=lambda exc: isinstance(exc, exceptions.InternalServerError)
         )
+        resource = storage_type.Object(size=999)
+        mock_appendable_writer[
+            "mock_stream"
+        ].recv.return_value = storage_type.BidiWriteObjectResponse(resource=resource)
+
+        res = await writer.close(finalize_on_close=True, retry_policy=custom_policy)
+
+        assert res == resource
+        assert writer.persisted_size == 999
+        assert mock_appendable_writer["mock_stream"].send.await_count == 1
+        assert mock_appendable_writer["mock_stream"].recv.await_count == 1
+        assert not writer._is_stream_open
 
     @pytest.mark.asyncio
     async def test_close_retry_on_transient_error(self, mock_appendable_writer):
@@ -700,6 +715,7 @@ class TestAsyncAppendableObjectWriter:
         assert res == resource
         assert writer.persisted_size == 999
         assert mock_appendable_writer["mock_stream"].send.await_count == 2
+        assert mock_appendable_writer["mock_stream"].recv.await_count == 2
         assert not writer._is_stream_open
 
     @pytest.mark.asyncio
@@ -727,9 +743,11 @@ class TestAsyncAppendableObjectWriter:
         assert res == resource
         assert writer.persisted_size == 999
         assert mock_appendable_writer["mock_stream"].send.await_count == 2
+        assert mock_appendable_writer["mock_stream"].recv.await_count == 2
         assert writer._routing_token == "rt1"
         assert writer.write_handle.handle == b"h1"
         writer.open.assert_awaited_once()
+        assert not writer._is_stream_open
 
     @pytest.mark.asyncio
     async def test_close_retry_on_redirect_error(self, mock_appendable_writer):
@@ -758,3 +776,4 @@ class TestAsyncAppendableObjectWriter:
         assert writer._routing_token == "rt2"
         assert writer.write_handle.handle == b"h2"
         writer.open.assert_awaited_once()
+        assert not writer._is_stream_open

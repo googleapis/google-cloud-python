@@ -620,6 +620,7 @@ class AsyncAppendableObjectWriter:
         retry_policy = self._merge_retry_policy(retry_policy)
 
         attempt_count = 0
+        expected_offset = self.offset
 
         async def _do_close():
             nonlocal attempt_count
@@ -629,13 +630,12 @@ class AsyncAppendableObjectWriter:
                 logger.info(
                     f"Re-opening the stream for close retry attempt: {attempt_count}"
                 )
-                expected_offset = self.offset
                 self._is_stream_open = False
                 await self.open()
                 if (
                     self.offset is not None
                     and expected_offset is not None
-                    and self.offset < expected_offset
+                    and self.offset != expected_offset
                 ):
                     raise exceptions.InternalServerError(
                         f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
@@ -712,6 +712,7 @@ class AsyncAppendableObjectWriter:
         retry_policy = self._merge_retry_policy(retry_policy)
 
         attempt_count = 0
+        expected_offset = self.offset
 
         async def _do_finalize():
             nonlocal attempt_count
@@ -721,13 +722,12 @@ class AsyncAppendableObjectWriter:
                 logger.info(
                     f"Re-opening the stream for finalize retry attempt: {attempt_count}"
                 )
-                expected_offset = self.offset
                 self._is_stream_open = False
                 await self.open()
                 if (
                     self.offset is not None
                     and expected_offset is not None
-                    and self.offset < expected_offset
+                    and self.offset != expected_offset
                 ):
                     raise exceptions.InternalServerError(
                         f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
