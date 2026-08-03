@@ -142,11 +142,12 @@ QUERY_RESULTS_RESOURCE = {
 }
 
 
-def test_context_with_default_credentials(monkeypatch):
-    """When Application Default Credentials are set, the context credentials
-    will be created the first time it is called
+def test_context_resolves_unset_credentials_and_project():
+    """When context credentials and project are unset (None), accessing them
+    resolves them from Application Default Credentials.
     """
-    monkeypatch.setattr(magics, "context", magics.Context())
+    magics.context._credentials = None
+    magics.context._project = None
     assert magics.context._credentials is None
     assert magics.context._project is None
 
@@ -170,7 +171,9 @@ def test_context_with_default_connection(monkeypatch):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
-    monkeypatch.setattr(magics, "context", magics.Context())
+    magics.context._credentials = None
+    magics.context._project = None
+    magics.context._connection = None
 
     default_credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
