@@ -428,3 +428,52 @@ def test_to_dataframe_mid_stream_failure(mut, class_under_test, mock_gapic_clien
 
         with pytest.raises(RuntimeError, match="Stream format changed mid-stream"):
             it.to_dataframe()
+
+
+def test_to_arrow_delegates_to_pandas_gbq_when_installed(mut):
+    mock_parser = mock.Mock()
+    mock_message = mock.Mock()
+    page = mut.ReadRowsPage(mock_parser, mock_message)
+    expected_batch = pyarrow.RecordBatch.from_arrays(
+        [pyarrow.array([100])], names=["id"]
+    )
+
+    mock_arrow_module = mock.Mock()
+    mock_arrow_module.from_read_rows_response.return_value = expected_batch
+
+    mock_pandas_gbq = mock.Mock()
+    mock_pandas_gbq.arrow = mock_arrow_module
+
+    with mock.patch.dict(
+        "sys.modules",
+        {"pandas_gbq": mock_pandas_gbq, "pandas_gbq.arrow": mock_arrow_module},
+    ):
+        with pytest.warns(
+            PendingDeprecationWarning,
+            match="google-cloud-bigquery-storage is deprecated",
+        ):
+            actual_batch = page.to_arrow()
+
+    assert actual_batch == expected_batch
+    mock_arrow_module.from_read_rows_response.assert_called_once_with(
+        mock_message, arrow_schema=mock_parser._schema
+    )
+
+
+def test_to_arrow_falls_back_when_pandas_gbq_uninstalled(mut):
+    mock_parser = mock.Mock()
+    mock_message = mock.Mock()
+    expected_batch = pyarrow.RecordBatch.from_arrays(
+        [pyarrow.array([200])], names=["id"]
+    )
+    mock_parser.to_arrow.return_value = expected_batch
+    with mock.patch.dict("sys.modules", {"pandas_gbq": None, "pandas_gbq.arrow": None}):
+        page = mut.ReadRowsPage(mock_parser, mock_message)
+        with pytest.warns(
+            PendingDeprecationWarning,
+            match="google-cloud-bigquery-storage is deprecated",
+        ):
+            actual_batch = page.to_arrow()
+
+    assert actual_batch == expected_batch
+    mock_parser.to_arrow.assert_called_once_with(mock_message)

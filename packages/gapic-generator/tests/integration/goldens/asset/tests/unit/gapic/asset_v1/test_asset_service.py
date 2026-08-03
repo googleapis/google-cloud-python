@@ -132,22 +132,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert AssetServiceClient._get_default_mtls_endpoint(None) is None
-    assert AssetServiceClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert AssetServiceClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    assert AssetServiceClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
-    assert AssetServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
-    assert AssetServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
-    assert AssetServiceClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
-
 def test__read_environment_variables():
     assert AssetServiceClient._read_environment_variables() == (False, "auto", None)
 
@@ -289,40 +273,6 @@ def test__get_client_cert_source():
             assert AssetServiceClient._get_client_cert_source(None, True) is mock_default_cert_source
             assert AssetServiceClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
-@mock.patch.object(AssetServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceClient))
-@mock.patch.object(AssetServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceAsyncClient))
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = AssetServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
-    mock_universe = "bar.com"
-    mock_endpoint = AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
-
-    assert AssetServiceClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
-    assert AssetServiceClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == AssetServiceClient.DEFAULT_MTLS_ENDPOINT
-    assert AssetServiceClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
-    assert AssetServiceClient._get_api_endpoint(None, None, default_universe, "always") == AssetServiceClient.DEFAULT_MTLS_ENDPOINT
-    assert AssetServiceClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == AssetServiceClient.DEFAULT_MTLS_ENDPOINT
-    assert AssetServiceClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
-    assert AssetServiceClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        AssetServiceClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
-    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert AssetServiceClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
-    assert AssetServiceClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
-    assert AssetServiceClient._get_universe_domain(None, None) == AssetServiceClient._DEFAULT_UNIVERSE
-
-    with pytest.raises(ValueError) as excinfo:
-        AssetServiceClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 @pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
     (401, CRED_INFO_JSON, True),
@@ -9208,15 +9158,17 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_assets._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseExportAssets,
+        "_BaseExportAssets__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_assets._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -9261,13 +9213,6 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_export_assets_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.export_assets._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("parent", "outputConfig", )))
 
 
 def test_list_assets_rest_use_cached_wrapped_rpc():
@@ -9318,17 +9263,20 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_assets._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListAssets,
+        "_BaseListAssets__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_assets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_types", "content_type", "page_size", "page_token", "read_time", "relationship_types", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("assetTypes", "contentType", "pageSize", "pageToken", "readTime", "relationshipTypes", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -9375,13 +9323,6 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_assets_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_assets._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("assetTypes", "contentType", "pageSize", "pageToken", "readTime", "relationshipTypes", )) & set(("parent", )))
 
 
 def test_list_assets_rest_flattened():
@@ -9551,17 +9492,20 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_assets_history._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseBatchGetAssetsHistory,
+        "_BaseBatchGetAssetsHistory__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_assets_history._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_names", "content_type", "read_time_window", "relationship_types", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("assetNames", "contentType", "readTimeWindow", "relationshipTypes", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -9608,13 +9552,6 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_batch_get_assets_history_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.batch_get_assets_history._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("assetNames", "contentType", "readTimeWindow", "relationshipTypes", )) & set(("parent", )))
 
 
 def test_create_feed_rest_use_cached_wrapped_rpc():
@@ -9666,16 +9603,18 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_feed._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateFeed,
+        "_BaseCreateFeed__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["feedId"] = 'feed_id_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_feed._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -9725,13 +9664,6 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_feed_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_feed._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("parent", "feedId", "feed", )))
 
 
 def test_create_feed_rest_flattened():
@@ -9836,15 +9768,17 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_feed._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetFeed,
+        "_BaseGetFeed__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_feed._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -9891,13 +9825,6 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_feed_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_feed._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_feed_rest_flattened():
@@ -10002,15 +9929,17 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_feeds._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListFeeds,
+        "_BaseListFeeds__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_feeds._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -10057,13 +9986,6 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_feeds_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_feeds._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("parent", )))
 
 
 def test_list_feeds_rest_flattened():
@@ -10167,13 +10089,15 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_feed._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateFeed,
+        "_BaseUpdateFeed__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_feed._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
@@ -10219,13 +10143,6 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_feed_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.update_feed._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("feed", "updateMask", )))
 
 
 def test_update_feed_rest_flattened():
@@ -10330,15 +10247,17 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_feed._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteFeed,
+        "_BaseDeleteFeed__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_feed._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -10382,13 +10301,6 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_feed_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_feed._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_delete_feed_rest_flattened():
@@ -10491,17 +10403,20 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_resources._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSearchAllResources,
+        "_BaseSearchAllResources__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["scope"] = 'scope_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_resources._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_types", "order_by", "page_size", "page_token", "query", "read_mask", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", "readMask", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -10548,13 +10463,6 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_search_all_resources_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.search_all_resources._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", "readMask", )) & set(("scope", )))
 
 
 def test_search_all_resources_rest_flattened():
@@ -10728,17 +10636,20 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_iam_policies._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSearchAllIamPolicies,
+        "_BaseSearchAllIamPolicies__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["scope"] = 'scope_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_iam_policies._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_types", "order_by", "page_size", "page_token", "query", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -10785,13 +10696,6 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_search_all_iam_policies_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.search_all_iam_policies._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", )) & set(("scope", )))
 
 
 def test_search_all_iam_policies_rest_flattened():
@@ -10962,15 +10866,18 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_iam_policy._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAnalyzeIamPolicy,
+        "_BaseAnalyzeIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_iam_policy._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("analysis_query", "execution_timeout", "saved_analysis_query", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("analysisQuery", "executionTimeout", "savedAnalysisQuery", ))
 
     # verify required fields with non-default values are left alone
 
@@ -11015,13 +10922,6 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_analyze_iam_policy_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.analyze_iam_policy._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("analysisQuery", "executionTimeout", "savedAnalysisQuery", )) & set(("analysisQuery", )))
 
 
 def test_analyze_iam_policy_longrunning_rest_use_cached_wrapped_rpc():
@@ -11075,13 +10975,15 @@ def test_analyze_iam_policy_longrunning_rest_required_fields(request_type=asset_
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_iam_policy_longrunning._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAnalyzeIamPolicyLongrunning,
+        "_BaseAnalyzeIamPolicyLongrunning__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_iam_policy_longrunning._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
@@ -11124,13 +11026,6 @@ def test_analyze_iam_policy_longrunning_rest_required_fields(request_type=asset_
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_analyze_iam_policy_longrunning_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.analyze_iam_policy_longrunning._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("analysisQuery", "outputConfig", )))
 
 
 def test_analyze_move_rest_use_cached_wrapped_rpc():
@@ -11183,7 +11078,12 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
     # verify fields with default values are dropped
     assert "destinationParent" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_move._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAnalyzeMove,
+        "_BaseAnalyzeMove__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -11193,10 +11093,8 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
     jsonified_request["resource"] = 'resource_value'
     jsonified_request["destinationParent"] = 'destination_parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_move._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("destination_parent", "view", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("destinationParent", "view", ))
 
     # verify required fields with non-default values are left alone
     assert "resource" in jsonified_request
@@ -11251,13 +11149,6 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
             assert sorted(expected_params) == sorted(actual_params)
 
 
-def test_analyze_move_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.analyze_move._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("destinationParent", "view", )) & set(("resource", "destinationParent", )))
-
-
 def test_query_assets_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -11306,15 +11197,17 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).query_assets._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseQueryAssets,
+        "_BaseQueryAssets__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).query_assets._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -11362,13 +11255,6 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_query_assets_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.query_assets._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("parent", )))
 
 
 def test_create_saved_query_rest_use_cached_wrapped_rpc():
@@ -11421,7 +11307,12 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
     # verify fields with default values are dropped
     assert "savedQueryId" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_saved_query._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateSavedQuery,
+        "_BaseCreateSavedQuery__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -11431,10 +11322,8 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["savedQueryId"] = 'saved_query_id_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_saved_query._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("saved_query_id", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("savedQueryId", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -11488,13 +11377,6 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_saved_query_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_saved_query._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("savedQueryId", )) & set(("parent", "savedQuery", "savedQueryId", )))
 
 
 def test_create_saved_query_rest_flattened():
@@ -11603,15 +11485,17 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_saved_query._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetSavedQuery,
+        "_BaseGetSavedQuery__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_saved_query._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -11658,13 +11542,6 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_saved_query_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_saved_query._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_saved_query_rest_flattened():
@@ -11769,17 +11646,20 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_saved_queries._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListSavedQueries,
+        "_BaseListSavedQueries__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_saved_queries._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("filter", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("filter", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -11826,13 +11706,6 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_saved_queries_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_saved_queries._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("filter", "pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_saved_queries_rest_flattened():
@@ -12001,15 +11874,18 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_saved_query._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateSavedQuery,
+        "_BaseUpdateSavedQuery__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_saved_query._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask", ))
 
     # verify required fields with non-default values are left alone
 
@@ -12055,13 +11931,6 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_saved_query_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.update_saved_query._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask", )) & set(("savedQuery", "updateMask", )))
 
 
 def test_update_saved_query_rest_flattened():
@@ -12168,15 +12037,17 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_saved_query._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteSavedQuery,
+        "_BaseDeleteSavedQuery__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_saved_query._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -12220,13 +12091,6 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_saved_query_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_saved_query._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_delete_saved_query_rest_flattened():
@@ -12331,7 +12195,12 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
     # verify fields with default values are dropped
     assert "names" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_effective_iam_policies._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseBatchGetEffectiveIamPolicies,
+        "_BaseBatchGetEffectiveIamPolicies__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -12341,10 +12210,8 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
     jsonified_request["scope"] = 'scope_value'
     jsonified_request["names"] = 'names_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_effective_iam_policies._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("names", ))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -12399,13 +12266,6 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
             assert sorted(expected_params) == sorted(actual_params)
 
 
-def test_batch_get_effective_iam_policies_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.batch_get_effective_iam_policies._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("names", )) & set(("scope", "names", )))
-
-
 def test_analyze_org_policies_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -12456,7 +12316,12 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
     # verify fields with default values are dropped
     assert "constraint" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policies._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAnalyzeOrgPolicies,
+        "_BaseAnalyzeOrgPolicies__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -12466,10 +12331,8 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
     jsonified_request["scope"] = 'scope_value'
     jsonified_request["constraint"] = 'constraint_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policies._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("constraint", "filter", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -12522,13 +12385,6 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_analyze_org_policies_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.analyze_org_policies._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
 
 
 def test_analyze_org_policies_rest_flattened():
@@ -12704,7 +12560,12 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
     # verify fields with default values are dropped
     assert "constraint" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_containers._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAnalyzeOrgPolicyGovernedContainers,
+        "_BaseAnalyzeOrgPolicyGovernedContainers__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -12714,10 +12575,8 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
     jsonified_request["scope"] = 'scope_value'
     jsonified_request["constraint"] = 'constraint_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_containers._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("constraint", "filter", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -12770,13 +12629,6 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_analyze_org_policy_governed_containers_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.analyze_org_policy_governed_containers._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
 
 
 def test_analyze_org_policy_governed_containers_rest_flattened():
@@ -12952,7 +12804,12 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
     # verify fields with default values are dropped
     assert "constraint" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_assets._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAnalyzeOrgPolicyGovernedAssets,
+        "_BaseAnalyzeOrgPolicyGovernedAssets__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -12962,10 +12819,8 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
     jsonified_request["scope"] = 'scope_value'
     jsonified_request["constraint"] = 'constraint_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_assets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("constraint", "filter", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -13018,13 +12873,6 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_analyze_org_policy_governed_assets_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.analyze_org_policy_governed_assets._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
 
 
 def test_analyze_org_policy_governed_assets_rest_flattened():
