@@ -53,8 +53,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ServiceControllerRestInterceptor:
@@ -205,7 +204,8 @@ class ServiceControllerRestStub:
 class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
     """REST backend synchronous transport for ServiceController.
 
-    `Google Service Control API </service-control/overview>`__
+    `Google Service Control
+    API <https://cloud.google.com/service-control/overview>`__
 
     Lets clients check and report operations against a `managed
     service <https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService>`__.

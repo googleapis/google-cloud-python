@@ -759,7 +759,7 @@ class OperatingSystemServiceClient(metaclass=OperatingSystemServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operating_system_messages.OperatingSystem:
-        r"""API to retrieve a ``OperatingSystem`` object.
+        r"""Retrieves a ``OperatingSystem`` object.
 
         .. code-block:: python
 
@@ -869,7 +869,7 @@ class OperatingSystemServiceClient(metaclass=OperatingSystemServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListOperatingSystemsPager:
-        r"""API to retrieve a list of ``OperatingSystem`` objects.
+        r"""Lists ``OperatingSystem`` objects.
 
         .. code-block:: python
 
@@ -1123,8 +1123,6 @@ class OperatingSystemServiceClient(metaclass=OperatingSystemServiceClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("OperatingSystemServiceClient",)

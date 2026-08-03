@@ -104,6 +104,11 @@ class Test_get_cloud_region(unittest.TestCase):
 
         return _get_cloud_region(*args, **kw)
 
+    @unittest.skipUnless(
+        hasattr(_helpers, "GoogleCloudResourceDetector")
+        and _helpers.GoogleCloudResourceDetector is not None,
+        "opentelemetry-resourcedetector-gcp not installed",
+    )
     @mock.patch("google.cloud.spanner_v1._helpers.GoogleCloudResourceDetector.detect")
     def test_get_location_with_region(self, mock_detect):
         """Test that _get_cloud_region returns the region when detected."""
@@ -115,6 +120,11 @@ class Test_get_cloud_region(unittest.TestCase):
         location = self._callFUT()
         self.assertEqual(location, "us-central1")
 
+    @unittest.skipUnless(
+        hasattr(_helpers, "GoogleCloudResourceDetector")
+        and _helpers.GoogleCloudResourceDetector is not None,
+        "opentelemetry-resourcedetector-gcp not installed",
+    )
     @mock.patch("google.cloud.spanner_v1._helpers.GoogleCloudResourceDetector.detect")
     def test_get_location_without_region(self, mock_detect):
         """Test that _get_cloud_region returns 'global' when no region is detected."""
@@ -124,6 +134,11 @@ class Test_get_cloud_region(unittest.TestCase):
         location = self._callFUT()
         self.assertEqual(location, "global")
 
+    @unittest.skipUnless(
+        hasattr(_helpers, "GoogleCloudResourceDetector")
+        and _helpers.GoogleCloudResourceDetector is not None,
+        "opentelemetry-resourcedetector-gcp not installed",
+    )
     @mock.patch("google.cloud.spanner_v1._helpers.GoogleCloudResourceDetector.detect")
     def test_get_location_with_exception(self, mock_detect):
         """Test that _get_cloud_region returns 'global' and logs a warning on exception."""
@@ -853,6 +868,7 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.protobuf.struct_pb2 import Value
 
         from google.cloud.spanner_v1 import Type, TypeCode
+        from google.cloud.spanner_v1.data_types import JsonObject
 
         VALUE = {"id": 27863, "Name": "Anamika"}
         str_repr = json.dumps(VALUE, sort_keys=True, separators=(",", ":"))
@@ -869,7 +885,9 @@ class Test_parse_value_pb(unittest.TestCase):
         field_type = Type(code=TypeCode.JSON)
         value_pb = Value(string_value=str_repr)
 
-        self.assertEqual(self._callFUT(value_pb, field_type, field_name), {})
+        self.assertEqual(
+            self._callFUT(value_pb, field_type, field_name), JsonObject(None)
+        )
 
     def test_w_unknown_type(self):
         from google.protobuf.struct_pb2 import Value

@@ -891,6 +891,35 @@ class HiveMetastoreServiceGrpcAsyncIOTransport(HiveMetastoreServiceTransport):
             )
         return self._stubs["list_partitions"]
 
+    @property
+    def failover_hive_catalog(
+        self,
+    ) -> Callable[
+        [hive_metastore.FailoverHiveCatalogRequest],
+        Awaitable[hive_metastore.FailoverHiveCatalogResponse],
+    ]:
+        r"""Return a callable for the failover hive catalog method over gRPC.
+
+        Failover the catalog to a new primary replica region.
+
+        Returns:
+            Callable[[~.FailoverHiveCatalogRequest],
+                    Awaitable[~.FailoverHiveCatalogResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "failover_hive_catalog" not in self._stubs:
+            self._stubs["failover_hive_catalog"] = self._logged_channel.unary_unary(
+                "/google.cloud.biglake.hive.v1beta.HiveMetastoreService/FailoverHiveCatalog",
+                request_serializer=hive_metastore.FailoverHiveCatalogRequest.serialize,
+                response_deserializer=hive_metastore.FailoverHiveCatalogResponse.deserialize,
+            )
+        return self._stubs["failover_hive_catalog"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -986,6 +1015,11 @@ class HiveMetastoreServiceGrpcAsyncIOTransport(HiveMetastoreServiceTransport):
             ),
             self.list_partitions: self._wrap_method(
                 self.list_partitions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.failover_hive_catalog: self._wrap_method(
+                self.failover_hive_catalog,
                 default_timeout=None,
                 client_info=client_info,
             ),

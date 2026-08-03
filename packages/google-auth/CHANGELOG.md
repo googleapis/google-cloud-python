@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.56.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.1...google-auth-v2.56.2) (2026-07-21)
+
+
+### Bug Fixes
+
+* **auth:** centralize cert discovery logic and steps ([#17696](https://github.com/googleapis/google-cloud-python/issues/17696)) ([edc0423](https://github.com/googleapis/google-cloud-python/commit/edc0423e57dd06bef3a93802642a074ab8b7bc5d))
+* **auth:** exit early when agent cert config is outside well-known directory ([#17762](https://github.com/googleapis/google-cloud-python/issues/17762)) ([61e795a](https://github.com/googleapis/google-cloud-python/commit/61e795a8299afec863487776c8a679adbb2911ab))
+* **transport:** propagate mTLS adapter to auth session and fix connection leaks ([#17689](https://github.com/googleapis/google-cloud-python/issues/17689)) ([8289d32](https://github.com/googleapis/google-cloud-python/commit/8289d328f9a1eb2abb766644e4f6748198679c80))
+* update _SERVICE_ACCOUNT_EMAIL_PATTERN to require .gserviceaccount.com    suffix   ([#17748](https://github.com/googleapis/google-cloud-python/issues/17748)) ([b60bb04](https://github.com/googleapis/google-cloud-python/commit/b60bb04a73eb35b15320c54bc3493132e6ba5706))
+
 ## [2.56.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.0...google-auth-v2.56.1) (2026-07-17)
 
 

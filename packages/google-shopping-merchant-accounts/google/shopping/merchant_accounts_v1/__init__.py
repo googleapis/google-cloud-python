@@ -23,6 +23,65 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.shopping.merchant_accounts_v1.services.account_issue_service",
+    "google.shopping.merchant_accounts_v1.services.account_relationships_service",
+    "google.shopping.merchant_accounts_v1.services.account_services_service",
+    "google.shopping.merchant_accounts_v1.services.accounts_service",
+    "google.shopping.merchant_accounts_v1.services.autofeed_settings_service",
+    "google.shopping.merchant_accounts_v1.services.automatic_improvements_service",
+    "google.shopping.merchant_accounts_v1.services.business_identity_service",
+    "google.shopping.merchant_accounts_v1.services.business_info_service",
+    "google.shopping.merchant_accounts_v1.services.checkout_settings_service",
+    "google.shopping.merchant_accounts_v1.services.developer_registration_service",
+    "google.shopping.merchant_accounts_v1.services.email_preferences_service",
+    "google.shopping.merchant_accounts_v1.services.gbp_accounts_service",
+    "google.shopping.merchant_accounts_v1.services.homepage_service",
+    "google.shopping.merchant_accounts_v1.services.lfp_providers_service",
+    "google.shopping.merchant_accounts_v1.services.omnichannel_settings_service",
+    "google.shopping.merchant_accounts_v1.services.online_return_policy_service",
+    "google.shopping.merchant_accounts_v1.services.programs_service",
+    "google.shopping.merchant_accounts_v1.services.regions_service",
+    "google.shopping.merchant_accounts_v1.services.shipping_settings_service",
+    "google.shopping.merchant_accounts_v1.services.terms_of_service_agreement_state_service",
+    "google.shopping.merchant_accounts_v1.services.terms_of_service_service",
+    "google.shopping.merchant_accounts_v1.services.user_service",
+    "google.shopping.merchant_accounts_v1.types.accessright",
+    "google.shopping.merchant_accounts_v1.types.accountissue",
+    "google.shopping.merchant_accounts_v1.types.accountrelationships",
+    "google.shopping.merchant_accounts_v1.types.accounts",
+    "google.shopping.merchant_accounts_v1.types.accountservices",
+    "google.shopping.merchant_accounts_v1.types.autofeedsettings",
+    "google.shopping.merchant_accounts_v1.types.automaticimprovements",
+    "google.shopping.merchant_accounts_v1.types.businessidentity",
+    "google.shopping.merchant_accounts_v1.types.businessinfo",
+    "google.shopping.merchant_accounts_v1.types.checkoutsettings",
+    "google.shopping.merchant_accounts_v1.types.customerservice",
+    "google.shopping.merchant_accounts_v1.types.developerregistration",
+    "google.shopping.merchant_accounts_v1.types.emailpreferences",
+    "google.shopping.merchant_accounts_v1.types.gbpaccounts",
+    "google.shopping.merchant_accounts_v1.types.homepage",
+    "google.shopping.merchant_accounts_v1.types.lfpproviders",
+    "google.shopping.merchant_accounts_v1.types.omnichannelsettings",
+    "google.shopping.merchant_accounts_v1.types.online_return_policy",
+    "google.shopping.merchant_accounts_v1.types.phoneverificationstate",
+    "google.shopping.merchant_accounts_v1.types.programs",
+    "google.shopping.merchant_accounts_v1.types.regions",
+    "google.shopping.merchant_accounts_v1.types.shippingsettings",
+    "google.shopping.merchant_accounts_v1.types.termsofservice",
+    "google.shopping.merchant_accounts_v1.types.termsofserviceagreementstate",
+    "google.shopping.merchant_accounts_v1.types.termsofservicekind",
+    "google.shopping.merchant_accounts_v1.types.user",
+    "google.shopping.merchant_accounts_v1.types.verificationmailsettings",
+}
+
+
 from .services.account_issue_service import (
     AccountIssueServiceAsyncClient,
     AccountIssueServiceClient,

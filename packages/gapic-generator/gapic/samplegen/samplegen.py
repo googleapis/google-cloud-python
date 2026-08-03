@@ -318,6 +318,7 @@ class Validator:
         sample["client_name"] = (
             service.async_client_name if is_async else service.client_name
         )
+        sample["client_method_name"] = rpc.client_method_name
 
         # the MessageType of the request object passed to the rpc e.g., `ListRequest`
         sample["request_type"] = rpc.input

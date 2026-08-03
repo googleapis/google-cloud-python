@@ -68,6 +68,7 @@ def create_job_configs_labels(
         job_configs_labels = dict(job_configs_labels)
 
     if api_methods and "bigframes-api" not in job_configs_labels:
+        api_methods = list(api_methods)
         job_configs_labels["bigframes-api"] = api_methods[0]
         del api_methods[0]
 

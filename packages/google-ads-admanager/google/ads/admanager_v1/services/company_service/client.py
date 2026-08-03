@@ -805,7 +805,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> company_messages.Company:
-        r"""API to retrieve a ``Company`` object.
+        r"""Retrieves a ``Company`` object.
 
         .. code-block:: python
 
@@ -910,7 +910,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListCompaniesPager:
-        r"""API to retrieve a list of ``Company`` objects.
+        r"""Lists ``Company`` objects.
 
         .. code-block:: python
 
@@ -1162,8 +1162,6 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("CompanyServiceClient",)

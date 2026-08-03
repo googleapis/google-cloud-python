@@ -23,6 +23,25 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.network_security_v1beta1.services.dns_threat_detector_service",
+    "google.cloud.network_security_v1beta1.services.network_security",
+    "google.cloud.network_security_v1beta1.types.authorization_policy",
+    "google.cloud.network_security_v1beta1.types.client_tls_policy",
+    "google.cloud.network_security_v1beta1.types.common",
+    "google.cloud.network_security_v1beta1.types.dns_threat_detector",
+    "google.cloud.network_security_v1beta1.types.network_security",
+    "google.cloud.network_security_v1beta1.types.server_tls_policy",
+    "google.cloud.network_security_v1beta1.types.tls",
+}
+
+
 from .services.dns_threat_detector_service import (
     DnsThreatDetectorServiceAsyncClient,
     DnsThreatDetectorServiceClient,
