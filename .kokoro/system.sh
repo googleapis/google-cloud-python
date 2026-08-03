@@ -18,6 +18,8 @@
 # or zero if all commands in the pipeline exit successfully.
 set -eo pipefail
 
+echo "=== STARTING SYSTEM.SH ==="
+
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
 
@@ -362,8 +364,8 @@ export system_test_script PROJECT_ROOT KOKORO_GFILE_DIR
 # Stream package names to xargs for parallel execution
 # -P "$MAX_JOBS" controls concurrency
 # -I {} replaces {} with the package name
-printf '%s\n' "${PACKAGES_TO_TEST[@]}" \
-  | xargs -n 1 -P "$MAX_JOBS" \
+printf '%s\0' "${PACKAGES_TO_TEST[@]}" \
+  | xargs -0 -n 1 -P "$MAX_JOBS" \
     bash -c '
       pkg="$0"
 
