@@ -206,6 +206,7 @@ def shared_instance(
 
     if _helpers.CREATE_INSTANCE:
         from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
+
         create_time = str(int(time.time()))
         labels = {"python-spanner-systests": "true", "created": create_time}
 
@@ -220,7 +221,9 @@ def shared_instance(
                 edition=spanner_instance_admin.Instance.Edition.ENTERPRISE_PLUS,
             ),
         )
-        created_op = _helpers.retry_429_503(spanner_client.instance_admin_api.create_instance)(request=request)
+        created_op = _helpers.retry_429_503(
+            spanner_client.instance_admin_api.create_instance
+        )(request=request)
         created_op.result(instance_operation_timeout)  # block until completion
 
         instance = spanner_client.instance(

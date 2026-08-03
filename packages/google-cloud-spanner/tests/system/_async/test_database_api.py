@@ -88,16 +88,21 @@ async def test_db_batch_insert_then_db_snapshot_read(shared_database):
 
 
 @pytest.mark.asyncio
-async def test_db_batch_send_and_ack(not_emulator, spanner_client, database_dialect, shared_instance):
+async def test_db_batch_send_and_ack(
+    not_emulator, spanner_client, database_dialect, shared_instance
+):
     import uuid
-    from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
+
+    from google.api_core.exceptions import GoogleAPIError, MethodNotImplemented
+
     from google.cloud.spanner_admin_database_v1 import DatabaseDialect
-    from google.api_core.exceptions import MethodNotImplemented, GoogleAPIError
 
     db_name = f"test-db-{uuid.uuid4().hex[:8]}"
     queue_name = f"test_queue_{uuid.uuid4().hex[:8]}"
 
-    test_database = await shared_instance.database(db_name, database_dialect=database_dialect)
+    test_database = await shared_instance.database(
+        db_name, database_dialect=database_dialect
+    )
     operation = await test_database.create()
     operation.result(300)
 
@@ -121,7 +126,14 @@ async def test_db_batch_send_and_ack(not_emulator, spanner_client, database_dial
         except MethodNotImplemented as e:
             pytest.skip(f"Queues are not implemented yet: {e}")
         except GoogleAPIError as e:
-            if getattr(e, 'code', None) == 501 or (getattr(e, 'grpc_status_code', None) and e.grpc_status_code.name == 'UNIMPLEMENTED') or "UNIMPLEMENTED" in str(e):
+            if (
+                getattr(e, "code", None) == 501
+                or (
+                    getattr(e, "grpc_status_code", None)
+                    and e.grpc_status_code.name == "UNIMPLEMENTED"
+                )
+                or "UNIMPLEMENTED" in str(e)
+            ):
                 pytest.skip(f"Queues are not implemented yet: {e}")
             raise
 
@@ -132,7 +144,7 @@ async def test_db_batch_send_and_ack(not_emulator, spanner_client, database_dial
                 key=(2,),
                 payload="Hello, Queues!",
             )
-            
+
         print("Acking message in queue...")
         async with test_database.batch() as batch:
             batch.ack(

@@ -567,11 +567,14 @@ def test_db_batch_insert_then_db_snapshot_read(shared_database):
     sd._check_rows_data(from_snap)
 
 
-def test_db_batch_send_and_ack(not_emulator, spanner_client, database_dialect, shared_instance):
+def test_db_batch_send_and_ack(
+    not_emulator, spanner_client, database_dialect, shared_instance
+):
     import uuid
-    from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
+
+    from google.api_core.exceptions import GoogleAPIError, MethodNotImplemented
+
     from google.cloud.spanner_admin_database_v1 import DatabaseDialect
-    from google.api_core.exceptions import MethodNotImplemented, GoogleAPIError
 
     db_id = f"test-db-{uuid.uuid4().hex[:8]}"
     queue_name = f"test_queue_{uuid.uuid4().hex[:8]}"
@@ -600,7 +603,12 @@ def test_db_batch_send_and_ack(not_emulator, spanner_client, database_dialect, s
         except MethodNotImplemented as e:
             pytest.skip(f"Queues are not implemented yet: {e}")
         except GoogleAPIError as e:
-            if getattr(e, 'code', None) == 501 or getattr(e, 'grpc_status_code', None) and e.grpc_status_code.name == 'UNIMPLEMENTED' or "UNIMPLEMENTED" in str(e):
+            if (
+                getattr(e, "code", None) == 501
+                or getattr(e, "grpc_status_code", None)
+                and e.grpc_status_code.name == "UNIMPLEMENTED"
+                or "UNIMPLEMENTED" in str(e)
+            ):
                 pytest.skip(f"Queues are not implemented yet: {e}")
             raise
         print("Queue created successfully.")
@@ -614,7 +622,7 @@ def test_db_batch_send_and_ack(not_emulator, spanner_client, database_dialect, s
                 payload="Hello, Queues!",
             )
         print("Send successful.")
-            
+
         print("Acking message in queue...")
         with test_database.batch() as batch:
             batch.ack(

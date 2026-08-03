@@ -35,10 +35,10 @@ from google.cloud.spanner_v1 import (
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _augment_errors_with_request_id,
+    _make_list_value_pb,
+    _make_value_pb,
     _metadata_with_request_id,
     _metadata_with_request_id_and_req_id,
-    _make_value_pb,
-    _make_list_value_pb,
 )
 from google.cloud.spanner_v1.batch import Batch, MutationGroups, _BatchBase
 from google.cloud.spanner_v1.keyset import KeySet
