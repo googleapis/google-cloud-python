@@ -324,14 +324,11 @@ if [[ "$TRIGGER_ADHOC" == "true" ]]; then
     # Deduplication using Associative Arrays (Requires Bash 4+)
     declare -A unique_packages
     for pkg in "${PACKAGES_TO_TEST[@]}"; do
-        unique_packages["$pkg"]=1
+        [[ -n "$pkg" ]] && unique_packages["$pkg"]=1
     done
     for pkg in $ADHOC_PACKAGES; do
-        unique_packages["$pkg"]=1
+        [[ -n "$pkg" ]] && unique_packages["$pkg"]=1
     done
-
-    # Remove empty string key if any
-    unset 'unique_packages[""]'
 
     PACKAGES_TO_TEST=("${!unique_packages[@]}")
 

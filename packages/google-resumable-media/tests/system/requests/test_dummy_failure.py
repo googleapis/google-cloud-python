@@ -20,7 +20,6 @@ We are using this to test packages that have legit changes (i.e. they would show
 """
 
 
-
 def test_intentional_failure():
     """Intentional failure to verify CI output formatting."""
     assert False, "Intentional failure to verify ad-hoc testing behavior"
