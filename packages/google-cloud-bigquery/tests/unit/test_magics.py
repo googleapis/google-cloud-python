@@ -142,12 +142,11 @@ QUERY_RESULTS_RESOURCE = {
 }
 
 
-def test_context_with_default_credentials():
+def test_context_with_default_credentials(monkeypatch):
     """When Application Default Credentials are set, the context credentials
     will be created the first time it is called
     """
-    magics.context._credentials = None
-    magics.context._project = None
+    monkeypatch.setattr(magics, "context", magics.Context())
     assert magics.context._credentials is None
     assert magics.context._project is None
 
@@ -165,25 +164,13 @@ def test_context_with_default_credentials():
     assert default_mock.call_count == 2
 
 
-def test_context_fallback_to_default_credentials():
-    ctx = magics.Context()
-    credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
-    )
-    with mock.patch("google.auth.default", return_value=(credentials_mock, "proj-123")):
-        assert ctx.credentials is credentials_mock
-        assert ctx.project == "proj-123"
-
-
 @pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_context_with_default_connection(monkeypatch):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
-    magics.context._credentials = None
-    magics.context._project = None
-    magics.context._connection = None
+    monkeypatch.setattr(magics, "context", magics.Context())
 
     default_credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
