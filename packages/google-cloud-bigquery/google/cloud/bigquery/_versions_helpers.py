@@ -16,7 +16,6 @@
 from typing import Any
 
 import packaging.version
-
 from google.cloud.bigquery import exceptions
 
 _MIN_PYARROW_VERSION = packaging.version.Version("3.0.0")
@@ -257,7 +256,7 @@ class PandasGBQVersions:
 
     @property
     def installed_version(self) -> packaging.version.Version:
-        """Return the parsed version of pandas-gbq"""
+        """Return the parsed version of pandas-gbq."""
         if self._installed_version is not None:
             return self._installed_version
 

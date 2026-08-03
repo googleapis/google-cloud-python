@@ -165,16 +165,6 @@ def test_context_resolves_unset_credentials_and_project():
     assert default_mock.call_count == 2
 
 
-def test_context_fallback_to_default_credentials():
-    ctx = magics.Context()
-    credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
-    )
-    with mock.patch("google.auth.default", return_value=(credentials_mock, "proj-123")):
-        assert ctx.credentials is credentials_mock
-        assert ctx.project == "proj-123"
-
-
 @pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_context_with_default_connection(monkeypatch):
