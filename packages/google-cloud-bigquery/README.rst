@@ -33,9 +33,9 @@ For higher-level data analysis and DataFrame operations, consider using one of t
    * - Library
      - Description
      - Documentation
-   * - `BigQuery DataFrames (bigframes) <https://cloud.google.com/python/docs/reference/bigframes/latest>`_
+   * - `BigQuery DataFrames (bigframes) <https://dataframes.bigquery.dev/>`_
      - Flexible pandas-like and scikit-learn-like API powered by BigQuery engine for large-scale data analysis and ML.
-     - `BigFrames Docs <https://cloud.google.com/python/docs/reference/bigframes/latest>`_
+     - `BigFrames Docs <https://dataframes.bigquery.dev/>`_
    * - `pandas-gbq <https://pandas-gbq.readthedocs.io/>`_
      - Convenient integration allowing pandas DataFrames to load from and write to BigQuery.
      - `pandas-gbq Docs <https://pandas-gbq.readthedocs.io/>`_
