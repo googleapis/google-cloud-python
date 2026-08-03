@@ -16,6 +16,7 @@ from gapic.schema import wrappers
 
 import gc
 import json
+import uuid
 import weakref
 import proto
 import pytest
@@ -149,8 +150,9 @@ def test_routing_parameter_key(field, path_template, expected):
 
 
 def test_routing_parameter_cache_does_not_retain_instance():
+    unique_id = f"id_{uuid.uuid4().hex}"
     param = wrappers.RoutingParameter(
-        "table_name", "{project_id=projects/*}/instances/*/**"
+        f"table_name_{unique_id}", f"{{{unique_id}=projects/*}}/instances/*/**"
     )
     _ = param.to_regex()
     _ = param.key
