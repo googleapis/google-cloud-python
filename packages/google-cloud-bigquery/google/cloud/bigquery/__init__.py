@@ -31,6 +31,9 @@ import sys
 import warnings
 
 from google.cloud.bigquery import version as bigquery_version
+
+__version__ = bigquery_version.__version__
+
 from google.cloud.bigquery._helpers import _parse_version_to_tuple
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.dataset import AccessEntry
