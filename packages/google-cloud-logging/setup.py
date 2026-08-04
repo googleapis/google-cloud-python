@@ -46,7 +46,7 @@ dependencies = [
     # Exclude incompatible versions of `google-auth`
     # See https://github.com/googleapis/google-cloud-python/issues/12364
     "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
-    "google-cloud-appengine-logging>=0.1.3, <2.0.0",
+    "google-cloud-appengine-logging>=1.6.1, <2.0.0",
     "google-cloud-audit-log >= 0.3.2, < 1.0.0",
     "google-cloud-core >= 2.0.0, <3.0.0",
     "grpc-google-iam-v1 >=0.14.2, <1.0.0",

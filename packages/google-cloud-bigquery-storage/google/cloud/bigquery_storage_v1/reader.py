@@ -18,6 +18,7 @@ import collections
 import io
 import json
 import time
+import warnings
 
 try:
     import fastavro
@@ -572,6 +573,25 @@ class ReadRowsPage(object):
             pyarrow.RecordBatch:
                 Rows from the message, as an Arrow record batch.
         """
+        warnings.warn(
+            "Retrieving Arrow record batches directly via google-cloud-bigquery-storage is deprecated. "
+            "Please use 'pandas_gbq.arrow.from_read_rows_response' or install 'pandas-gbq'.",
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
+        try:
+            import pandas_gbq.arrow  # type: ignore[import-not-found]
+
+            if hasattr(pandas_gbq.arrow, "from_read_rows_response"):
+                if hasattr(self._stream_parser, "_parse_arrow_schema"):
+                    self._stream_parser._parse_arrow_schema()
+                arrow_schema = getattr(self._stream_parser, "_schema", None)
+                return pandas_gbq.arrow.from_read_rows_response(
+                    self._message, arrow_schema=arrow_schema
+                )
+        except ImportError:
+            pass
+
         return self._stream_parser.to_arrow(self._message)
 
     def to_dataframe(self, dtypes=None):

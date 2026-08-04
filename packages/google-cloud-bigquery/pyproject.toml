@@ -59,7 +59,7 @@ Repository = "https://github.com/googleapis/python-bigquery"
 # moved back to optional due to bloat.  See
 # https://github.com/googleapis/python-bigquery/issues/1196 for more background.
 bqstorage = [
-  "google-cloud-bigquery-storage >= 2.18.0, < 3.0.0",
+  "google-cloud-bigquery-storage >= 2.29.0, < 3.0.0",
   # Due to an issue in pip's dependency resolver, the `grpc` extra is not
   # installed, even though `google-cloud-bigquery-storage` specifies it
   # as `google-api-core[grpc]`. We thus need to explicitly specify it here.
@@ -91,8 +91,8 @@ opentelemetry = [
   "opentelemetry-instrumentation >= 0.20b0",
 ]
 bigquery_v2 = [
-  "proto-plus >= 1.22.3, < 2.0.0",
-  "protobuf >= 3.20.2, < 7.0.0, != 4.21.0, != 4.21.1, != 4.21.2, != 4.21.3, != 4.21.4, != 4.21.5", # For the legacy proto-based types.
+  "proto-plus >= 1.26.1, < 2.0.0",
+  "protobuf >= 6.33.5, < 8.0.0", # For the legacy proto-based types.
 ]
 all = [
   "google-cloud-bigquery[bqstorage,pandas,ipywidgets,geopandas,ipython,matplotlib,tqdm,opentelemetry,bigquery_v2]",
