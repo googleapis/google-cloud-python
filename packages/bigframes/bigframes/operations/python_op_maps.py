@@ -69,6 +69,15 @@ PYTHON_TO_BIGFRAMES = {
     ## str
     str.upper: string_ops.upper_op,
     str.lower: string_ops.lower_op,
+    str.isalnum: string_ops.isalnum_op,
+    str.isalpha: string_ops.isalpha_op,
+    str.isdecimal: string_ops.isdecimal_op,
+    str.isdigit: string_ops.isdigit_op,
+    str.isnumeric: string_ops.isnumeric_op,
+    str.isspace: string_ops.isspace_op,
+    str.islower: string_ops.islower_op,
+    str.isupper: string_ops.isupper_op,
+    str.capitalize: string_ops.capitalize_op,
     ## builtins
     len: string_ops.len_op,
     abs: numeric_ops.abs_op,
@@ -86,3 +95,32 @@ def python_callable_to_op(obj) -> Optional[bigframes.operations.RowOp]:
     if obj in PYTHON_TO_BIGFRAMES:
         return PYTHON_TO_BIGFRAMES[obj]
     return None
+
+
+SERIES_METHOD_TO_OP = {
+    "abs": numeric_ops.abs_op,
+    "sqrt": numeric_ops.sqrt_op,
+    "sin": numeric_ops.sin_op,
+    "cos": numeric_ops.cos_op,
+    "tan": numeric_ops.tan_op,
+    "log": numeric_ops.ln_op,
+    "log10": numeric_ops.log10_op,
+    "exp": numeric_ops.exp_op,
+    "floor": numeric_ops.floor_op,
+    "ceil": numeric_ops.ceil_op,
+    "isnull": generic_ops.isnull_op,
+    "isna": generic_ops.isnull_op,
+    "notnull": generic_ops.notnull_op,
+    "notna": generic_ops.notnull_op,
+    "upper": string_ops.upper_op,
+    "lower": string_ops.lower_op,
+    "isalnum": string_ops.isalnum_op,
+    "isalpha": string_ops.isalpha_op,
+    "isdecimal": string_ops.isdecimal_op,
+    "isdigit": string_ops.isdigit_op,
+    "isnumeric": string_ops.isnumeric_op,
+    "isspace": string_ops.isspace_op,
+    "islower": string_ops.islower_op,
+    "isupper": string_ops.isupper_op,
+    "capitalize": string_ops.capitalize_op,
+}

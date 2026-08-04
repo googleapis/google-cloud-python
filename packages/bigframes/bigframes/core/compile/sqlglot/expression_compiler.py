@@ -48,6 +48,10 @@ class ExpressionCompiler:
         sge.LT,
         sge.EQ,
         sge.NEQ,
+        sge.Like,
+        sge.RegexpLike,
+        sge.In,
+        sge.Between,
         # Logical operations
         sge.And,
         sge.Or,

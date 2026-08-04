@@ -23,12 +23,10 @@ except ImportError:
     pytest.skip("No GRPC", allow_module_level=True)
 
 
-from google.api_core import exceptions
-from google.api_core import retry
-from google.api_core import timeout
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.method
 import google.api_core.page_iterator
+from google.api_core import exceptions, retry, timeout
 
 
 def _utcnow_monotonic():

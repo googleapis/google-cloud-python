@@ -363,14 +363,6 @@ def contains_regex_op_impl(x: ibis_types.Value, op: ops.StrContainsRegexOp):
     return typing.cast(ibis_types.StringValue, x).re_search(op.pat)
 
 
-@scalar_op_compiler.register_unary_op(ops.StrGetOp, pass_op=True)
-def strget_op_impl(x: ibis_types.Value, op: ops.StrGetOp):
-    substr = typing.cast(
-        ibis_types.StringValue, typing.cast(ibis_types.StringValue, x)[op.i]
-    )
-    return substr.nullif(ibis_types.literal(""))
-
-
 @scalar_op_compiler.register_unary_op(ops.StrPadOp, pass_op=True)
 def strpad_op_impl(x: ibis_types.Value, op: ops.StrPadOp):
     str_val = typing.cast(ibis_types.StringValue, x)
@@ -1059,13 +1051,39 @@ def array_to_string_op_impl(x: ibis_types.Value, op: ops.ArrayToStringOp):
     return typing.cast(ibis_types.ArrayValue, x).join(op.delimiter)
 
 
-@scalar_op_compiler.register_unary_op(ops.ArrayIndexOp, pass_op=True)
-def array_index_op_impl(x: ibis_types.Value, op: ops.ArrayIndexOp):
-    res = typing.cast(ibis_types.ArrayValue, x)[op.index]
-    if x.type().is_string():
+@scalar_op_compiler.register_unary_op(ops.GetItemOp, pass_op=True)
+def getitem_op_impl(x: ibis_types.Value, op: ops.GetItemOp):
+    if x.type().is_struct():
+        struct_value = typing.cast(ibis_types.StructValue, x)
+        if isinstance(op.key, str):
+            name = op.key
+        else:
+            name = struct_value.names[op.key]
+        result = struct_value[name]
+        return result.cast(result.type()(nullable=True)).name(name)
+    elif x.type().is_array():
+        key = typing.cast(int, op.key)
+        res = typing.cast(ibis_types.ArrayValue, x)[key]
+        return res
+    elif x.type().is_string():
+        key = typing.cast(int, op.key)
+        res = typing.cast(ibis_types.StringValue, x)[key]
         return _null_or_value(res, res != ibis_types.literal(""))
     else:
-        return res
+        raise TypeError(f"Cannot subscript input of type {x.type()}")
+
+
+@scalar_op_compiler.register_binary_op(ops.DynamicGetItemOp)
+def dynamic_getitem_op_impl(left: ibis_types.Value, right: ibis_types.Value):
+    if left.type().is_array():
+        int_right = typing.cast(ibis_types.IntegerValue, right)
+        return typing.cast(ibis_types.ArrayValue, left)[int_right]
+    elif left.type().is_string():
+        scalar_right = typing.cast(ibis_types.IntegerScalar, right)
+        res = typing.cast(ibis_types.StringValue, left)[scalar_right]
+        return _null_or_value(res, res != ibis_types.literal(""))
+    else:
+        raise TypeError(f"Cannot dynamically subscript input of type {left.type()}")
 
 
 @scalar_op_compiler.register_unary_op(ops.ArraySliceOp, pass_op=True)

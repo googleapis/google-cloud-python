@@ -29,9 +29,9 @@ from importlib import metadata
 # https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
 # Older Python versions safely ignore this variable.
 __lazy_modules__ = {
-    "google.iam.credentials_v1.services.iam_credentials",
-    "google.iam.credentials_v1.types.common",
-    "google.iam.credentials_v1.types.iamcredentials",
+"google.iam.credentials_v1.services.iam_credentials",
+"google.iam.credentials_v1.types.common",
+"google.iam.credentials_v1.types.iamcredentials",
 }
 
 

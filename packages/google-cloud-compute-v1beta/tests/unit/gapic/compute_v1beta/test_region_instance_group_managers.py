@@ -980,7 +980,14 @@ def test_region_instance_group_managers_client_get_mtls_endpoint_and_cert_source
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1027,7 +1034,14 @@ def test_region_instance_group_managers_client_get_mtls_endpoint_and_cert_source
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -5226,6 +5240,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.InstanceGroupManager) for i in results)
@@ -5518,6 +5535,9 @@ def test_list_errors_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_errors(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -5816,6 +5836,9 @@ def test_list_managed_instances_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_managed_instances(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -6116,6 +6139,9 @@ def test_list_per_instance_configs_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_per_instance_configs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -13296,6 +13322,7 @@ def test_apply_updates_to_instances_rest_call_success(request_type):
     }
     request_init["region_instance_group_managers_apply_updates_request_resource"] = {
         "all_instances": True,
+        "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
         "instances": ["instances_value1", "instances_value2"],
         "minimal_action": "minimal_action_value",
         "most_disruptive_allowed_action": "most_disruptive_allowed_action_value",
@@ -14766,6 +14793,7 @@ def test_insert_rest_call_success(request_type):
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "restarting_in_place": 2013,
             "resuming": 874,
             "starting": 876,
             "stopping": 884,
@@ -14897,6 +14925,7 @@ def test_insert_rest_call_success(request_type):
         "target_stopped_size": 2047,
         "target_suspended_size": 2251,
         "update_policy": {
+            "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
             "max_unavailable": {},
@@ -15776,6 +15805,7 @@ def test_patch_rest_call_success(request_type):
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "restarting_in_place": 2013,
             "resuming": 874,
             "starting": 876,
             "stopping": 884,
@@ -15907,6 +15937,7 @@ def test_patch_rest_call_success(request_type):
         "target_stopped_size": 2047,
         "target_suspended_size": 2251,
         "update_policy": {
+            "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
             "max_unavailable": {},
@@ -19295,6 +19326,7 @@ def test_update_rest_call_success(request_type):
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "restarting_in_place": 2013,
             "resuming": 874,
             "starting": 876,
             "stopping": 884,
@@ -19426,6 +19458,7 @@ def test_update_rest_call_success(request_type):
         "target_stopped_size": 2047,
         "target_suspended_size": 2251,
         "update_policy": {
+            "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
             "max_unavailable": {},

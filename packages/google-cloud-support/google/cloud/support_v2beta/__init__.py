@@ -23,6 +23,35 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.support_v2beta.services.case_attachment_service",
+    "google.cloud.support_v2beta.services.case_service",
+    "google.cloud.support_v2beta.services.comment_service",
+    "google.cloud.support_v2beta.services.feed_service",
+    "google.cloud.support_v2beta.services.support_event_subscription_service",
+    "google.cloud.support_v2beta.types.actor",
+    "google.cloud.support_v2beta.types.attachment",
+    "google.cloud.support_v2beta.types.attachment_service",
+    "google.cloud.support_v2beta.types.case",
+    "google.cloud.support_v2beta.types.case_service",
+    "google.cloud.support_v2beta.types.comment",
+    "google.cloud.support_v2beta.types.comment_service",
+    "google.cloud.support_v2beta.types.content",
+    "google.cloud.support_v2beta.types.email_message",
+    "google.cloud.support_v2beta.types.escalation",
+    "google.cloud.support_v2beta.types.feed_item",
+    "google.cloud.support_v2beta.types.feed_service",
+    "google.cloud.support_v2beta.types.support_event_subscription",
+    "google.cloud.support_v2beta.types.support_event_subscription_service",
+}
+
+
 from .services.case_attachment_service import (
     CaseAttachmentServiceAsyncClient,
     CaseAttachmentServiceClient,
@@ -30,6 +59,10 @@ from .services.case_attachment_service import (
 from .services.case_service import CaseServiceAsyncClient, CaseServiceClient
 from .services.comment_service import CommentServiceAsyncClient, CommentServiceClient
 from .services.feed_service import FeedServiceAsyncClient, FeedServiceClient
+from .services.support_event_subscription_service import (
+    SupportEventSubscriptionServiceAsyncClient,
+    SupportEventSubscriptionServiceClient,
+)
 from .types.actor import Actor
 from .types.attachment import Attachment
 from .types.attachment_service import (
@@ -63,6 +96,17 @@ from .types.email_message import EmailMessage
 from .types.escalation import Escalation
 from .types.feed_item import FeedItem
 from .types.feed_service import ShowFeedRequest, ShowFeedResponse
+from .types.support_event_subscription import SupportEventSubscription
+from .types.support_event_subscription_service import (
+    CreateSupportEventSubscriptionRequest,
+    DeleteSupportEventSubscriptionRequest,
+    ExpungeSupportEventSubscriptionRequest,
+    GetSupportEventSubscriptionRequest,
+    ListSupportEventSubscriptionsRequest,
+    ListSupportEventSubscriptionsResponse,
+    UndeleteSupportEventSubscriptionRequest,
+    UpdateSupportEventSubscriptionRequest,
+)
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
@@ -152,6 +196,7 @@ __all__ = (
     "CaseServiceAsyncClient",
     "CommentServiceAsyncClient",
     "FeedServiceAsyncClient",
+    "SupportEventSubscriptionServiceAsyncClient",
     "Actor",
     "Attachment",
     "Case",
@@ -163,20 +208,26 @@ __all__ = (
     "CommentServiceClient",
     "CreateCaseRequest",
     "CreateCommentRequest",
+    "CreateSupportEventSubscriptionRequest",
+    "DeleteSupportEventSubscriptionRequest",
     "EmailMessage",
     "EscalateCaseRequest",
     "Escalation",
+    "ExpungeSupportEventSubscriptionRequest",
     "FeedItem",
     "FeedServiceClient",
     "GetAttachmentRequest",
     "GetCaseRequest",
     "GetCommentRequest",
+    "GetSupportEventSubscriptionRequest",
     "ListAttachmentsRequest",
     "ListAttachmentsResponse",
     "ListCasesRequest",
     "ListCasesResponse",
     "ListCommentsRequest",
     "ListCommentsResponse",
+    "ListSupportEventSubscriptionsRequest",
+    "ListSupportEventSubscriptionsResponse",
     "Product",
     "ProductLine",
     "SearchCaseClassificationsRequest",
@@ -185,6 +236,10 @@ __all__ = (
     "SearchCasesResponse",
     "ShowFeedRequest",
     "ShowFeedResponse",
+    "SupportEventSubscription",
+    "SupportEventSubscriptionServiceClient",
     "TextContent",
+    "UndeleteSupportEventSubscriptionRequest",
     "UpdateCaseRequest",
+    "UpdateSupportEventSubscriptionRequest",
 )

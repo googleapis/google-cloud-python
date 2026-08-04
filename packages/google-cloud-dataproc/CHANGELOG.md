@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.29.0...google-cloud-dataproc-v5.30.0) (2026-07-07)
+
+
+### Features
+
+* update googleapis and regenerate ([#17635](https://github.com/googleapis/google-cloud-python/issues/17635)) ([9638879](https://github.com/googleapis/google-cloud-python/commit/96388796440b226440f885c04ce565782b1d9190))
+
 ## [5.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.28.0...google-cloud-dataproc-v5.29.0) (2026-06-25)
 
 

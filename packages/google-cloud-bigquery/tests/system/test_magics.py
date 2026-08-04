@@ -15,9 +15,10 @@
 """System tests for Jupyter/IPython connector."""
 
 import re
+import time
 
-import pytest
 import psutil
+import pytest
 
 from . import helpers
 
@@ -71,8 +72,16 @@ def test_bigquery_magic(ipython_interactive):
         with io.capture_output() as captured:
             result = ip.run_cell_magic("bigquery", "--use_rest_api", sql)
 
-    conn_end = current_process.net_connections()
-    conn_count_end = len(conn_end)
+    import gc
+
+    gc.collect()
+
+    for _ in range(30):  # Wait up to 3 seconds
+        conn_end = current_process.net_connections()
+        conn_count_end = len(conn_end)
+        if conn_count_end <= conn_count_start:
+            break
+        time.sleep(0.1)
 
     lines = re.split("\n|\r", captured.stdout)
     # Removes blanks & terminal code (result of display clearing)

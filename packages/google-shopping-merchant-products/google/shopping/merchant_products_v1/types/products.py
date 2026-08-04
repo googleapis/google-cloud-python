@@ -137,6 +137,13 @@ class Product(proto.Message):
         automated_discounts (google.shopping.merchant_products_v1.types.AutomatedDiscounts):
             Output only. The automated discounts
             information for the product.
+        archived (bool):
+            Output only. Determines whether the product is
+            `archived <https://support.google.com/merchants/answer/11909930>`__.
+
+            To archive or restore your product, visit Merchant Center
+            products page. Learn also more about `offer
+            visibility <https://support.google.com/merchants/answer/12488713>`__.
     """
 
     name: str = proto.Field(
@@ -191,6 +198,10 @@ class Product(proto.Message):
         proto.MESSAGE,
         number=12,
         message=products_common.AutomatedDiscounts,
+    )
+    archived: bool = proto.Field(
+        proto.BOOL,
+        number=14,
     )
 
 

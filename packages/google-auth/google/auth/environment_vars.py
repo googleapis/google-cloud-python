@@ -133,3 +133,6 @@ GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES = (
     "GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES"
 )
 """Environment variable to prevent agent token sharing for GCP services."""
+
+GOOGLE_API_USE_MTLS_ENDPOINT = "GOOGLE_API_USE_MTLS_ENDPOINT"
+"""Environment variable controlling whether to use mTLS endpoint or not."""

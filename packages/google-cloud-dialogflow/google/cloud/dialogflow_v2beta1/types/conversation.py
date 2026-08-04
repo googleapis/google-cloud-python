@@ -1658,6 +1658,9 @@ class SearchKnowledgeDebugInfo(proto.Message):
             search knowledge.
         service_latency (google.cloud.dialogflow_v2beta1.types.ServiceLatency):
             The latency of the service.
+        ces_debug_info (google.protobuf.struct_pb2.Struct):
+            Optional. Debug info from the Customer
+            Engagement Suite (CES) execution.
     """
 
     class SearchKnowledgeBehavior(proto.Message):
@@ -1709,6 +1712,11 @@ class SearchKnowledgeDebugInfo(proto.Message):
         proto.MESSAGE,
         number=4,
         message=participant.ServiceLatency,
+    )
+    ces_debug_info: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=struct_pb2.Struct,
     )
 
 

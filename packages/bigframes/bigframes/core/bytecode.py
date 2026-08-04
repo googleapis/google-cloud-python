@@ -31,6 +31,7 @@ _BINARY_OP_MAP = {
     "//": operator.floordiv,
     "%": operator.mod,
     "**": operator.pow,
+    "[]": operator.getitem,
 }
 
 _COMPARE_OP_MAP = {
@@ -86,18 +87,26 @@ _JUMP_IF_TRUE_OPNAMES = {
     "POP_JUMP_BACKWARD_IF_TRUE",
 }
 
+_JUMP_IF_NONE_OPNAMES = {
+    "POP_JUMP_IF_NONE",
+    "POP_JUMP_FORWARD_IF_NONE",
+    "POP_JUMP_BACKWARD_IF_NONE",
+}
+
+_JUMP_IF_NOT_NONE_OPNAMES = {
+    "POP_JUMP_IF_NOT_NONE",
+    "POP_JUMP_FORWARD_IF_NOT_NONE",
+    "POP_JUMP_BACKWARD_IF_NOT_NONE",
+}
+
 _CONDITIONAL_JUMP_OPNAMES = (
     _JUMP_IF_FALSE_OPNAMES
     | _JUMP_IF_TRUE_OPNAMES
+    | _JUMP_IF_NONE_OPNAMES
+    | _JUMP_IF_NOT_NONE_OPNAMES
     | {
         "JUMP_IF_FALSE_OR_POP",
         "JUMP_IF_TRUE_OR_POP",
-        "POP_JUMP_IF_NONE",
-        "POP_JUMP_IF_NOT_NONE",
-        "POP_JUMP_FORWARD_IF_NONE",
-        "POP_JUMP_FORWARD_IF_NOT_NONE",
-        "POP_JUMP_BACKWARD_IF_NONE",
-        "POP_JUMP_BACKWARD_IF_NOT_NONE",
     }
 )
 
@@ -423,7 +432,10 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                         and (inst.arg & 1)
                     )
                     if is_method_lookup:
-                        if isinstance(target, py_exprs.Module):
+                        if isinstance(target, py_exprs.Module) or (
+                            isinstance(target, py_exprs.PyObject)
+                            and isinstance(target.value, type)
+                        ):
                             stack.append(_NULL)
                         else:
                             stack.append(target)
@@ -441,6 +453,66 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                             (val,),
                         )
                     )
+
+                case "FORMAT_SIMPLE":
+                    if not stack:
+                        raise ValueError("Stack is empty")
+                    value = stack.pop()
+                    stack.append(py_exprs.Call(py_exprs.PyObject(str), (value,)))
+
+                case "CONVERT_VALUE":
+                    flags = inst.arg
+                    assert flags is not None
+                    value = stack.pop()
+                    if flags == 1:
+                        stack.append(py_exprs.Call(py_exprs.PyObject(str), (value,)))
+                    else:
+                        raise NotImplementedError(
+                            "repr() and ascii() conversions are not supported"
+                        )
+
+                case "FORMAT_VALUE":
+                    flags = inst.arg
+                    assert flags is not None
+                    if (flags & 0x04) == 0x04:
+                        stack.pop()
+                        raise NotImplementedError(
+                            "Formatting with specifier is not supported"
+                        )
+
+                    value = stack.pop()
+                    conversion = flags & 0x03
+                    if conversion == 0 or conversion == 1:
+                        stack.append(py_exprs.Call(py_exprs.PyObject(str), (value,)))
+                    else:
+                        raise NotImplementedError(
+                            "repr() and ascii() conversions are not supported"
+                        )
+
+                case "FORMAT_WITH_SPEC":
+                    raise NotImplementedError(
+                        "Formatting with specifier is not supported"
+                    )
+
+                case "BUILD_STRING":
+                    count = inst.arg
+                    assert count is not None
+                    if len(stack) < count:
+                        raise ValueError(
+                            "Stack has fewer elements than BUILD_STRING count"
+                        )
+
+                    if count == 0:
+                        stack.append(py_exprs.PyObject(""))
+                    else:
+                        strings = [stack.pop() for _ in range(count)][::-1]
+                        result = strings[0]
+                        for s in strings[1:]:
+                            result = py_exprs.Call(
+                                py_exprs.PyObject(operator.add),
+                                (result, s),
+                            )
+                        stack.append(result)
 
                 case "COPY":
                     idx = inst.arg
@@ -508,6 +580,18 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                         )
                     )
 
+                case "BINARY_SUBSCR":
+                    if len(stack) < 2:
+                        raise ValueError("Stack has < 2 elements")
+                    key = stack.pop()
+                    container = stack.pop()
+                    stack.append(
+                        py_exprs.Call(
+                            py_exprs.PyObject(operator.getitem),
+                            (container, key),
+                        )
+                    )
+
                 case name if name in _OLD_BINARY_OP_MAP:
                     if len(stack) < 2:
                         raise ValueError("Stack has < 2 elements")
@@ -519,6 +603,42 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                             (left, right),
                         )
                     )
+
+                case "IS_OP":
+                    if len(stack) < 2:
+                        raise ValueError("Stack has < 2 elements")
+                    right = stack.pop()
+                    left = stack.pop()
+                    invert = inst.arg
+
+                    def is_none_const(expr) -> bool:
+                        if isinstance(expr, py_exprs.PyObject) and expr.value is None:
+                            return True
+                        if (
+                            isinstance(expr, expression.ScalarConstantExpression)
+                            and expr.value is None
+                        ):
+                            return True
+                        return False
+
+                    if is_none_const(right):
+                        op = (
+                            generic_ops.isnull_op
+                            if not invert
+                            else generic_ops.notnull_op
+                        )
+                        stack.append(py_exprs.Call(py_exprs.PyObject(op), (left,)))
+                    elif is_none_const(left):
+                        op = (
+                            generic_ops.isnull_op
+                            if not invert
+                            else generic_ops.notnull_op
+                        )
+                        stack.append(py_exprs.Call(py_exprs.PyObject(op), (right,)))
+                    else:
+                        raise NotImplementedError(
+                            "Identity comparison (is/is not) is only supported for None"
+                        )
 
                 case "COMPARE_OP":
                     if len(stack) < 2:
@@ -575,17 +695,28 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                     if len(stack) < num_args:
                         raise ValueError(f"Stack has fewer than {num_args} elements")
                     args = [stack.pop() for _ in range(num_args)][::-1]
-                    if len(stack) >= 2 and stack[-2] == _NULL:
-                        stack[-1], stack[-2] = stack[-2], stack[-1]
-                    if stack and stack[-1] == _NULL:
-                        stack.pop()
-                    elif (
-                        stack
-                        and stack[-1] != _NULL
-                        and isinstance(stack[-1], expression.Expression)
-                    ):
-                        self_arg = stack.pop()
-                        args = [self_arg] + args
+
+                    is_method_call = False
+                    if opname == "CALL" or opname == "CALL_METHOD":
+                        if len(stack) >= 2 and stack[-2] == _NULL:
+                            stack[-1], stack[-2] = stack[-2], stack[-1]
+                        if stack and stack[-1] == _NULL:
+                            stack.pop()
+                            is_method_call = False
+                        else:
+                            is_method_call = True
+                    elif opname == "CALL_FUNCTION":
+                        is_method_call = False
+
+                    if is_method_call:
+                        if (
+                            stack
+                            and stack[-1] != _NULL
+                            and isinstance(stack[-1], expression.Expression)
+                        ):
+                            self_arg = stack.pop()
+                            args = [self_arg] + args
+
                     if not stack:
                         raise ValueError("Stack is empty")
                     callable_expr = stack.pop()
@@ -699,6 +830,53 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                             edge_conditions[(offset, next_offset)] = py_exprs.Call(
                                 py_exprs.PyObject(operator.and_),
                                 (reach_cond, not_cond_expr),
+                            )
+                            edge_stacks[(offset, next_offset)] = stack.copy()
+                    jumped = True
+                    break
+
+                case name if (
+                    name in _JUMP_IF_NONE_OPNAMES or name in _JUMP_IF_NOT_NONE_OPNAMES
+                ):
+                    if not stack:
+                        raise ValueError("Stack is empty")
+                    cond_expr = stack.pop()
+                    cond_bool = py_exprs.Call(
+                        py_exprs.PyObject(generic_ops.isnull_op),
+                        (cond_expr,),
+                    )
+
+                    dest = inst.argval
+                    next_offset = next_offsets.get(inst.offset)
+
+                    if opname in _JUMP_IF_NONE_OPNAMES:
+                        not_cond_bool = py_exprs.Call(
+                            py_exprs.PyObject(operator.not_), (cond_bool,)
+                        )
+                        edge_conditions[(offset, dest)] = py_exprs.Call(
+                            py_exprs.PyObject(operator.and_),
+                            (reach_cond, cond_bool),
+                        )
+                        edge_stacks[(offset, dest)] = stack.copy()
+                        if next_offset is not None:
+                            edge_conditions[(offset, next_offset)] = py_exprs.Call(
+                                py_exprs.PyObject(operator.and_),
+                                (reach_cond, not_cond_bool),
+                            )
+                            edge_stacks[(offset, next_offset)] = stack.copy()
+                    else:  # opname in _JUMP_IF_NOT_NONE_OPNAMES
+                        not_cond_bool = py_exprs.Call(
+                            py_exprs.PyObject(operator.not_), (cond_bool,)
+                        )
+                        edge_conditions[(offset, dest)] = py_exprs.Call(
+                            py_exprs.PyObject(operator.and_),
+                            (reach_cond, not_cond_bool),
+                        )
+                        edge_stacks[(offset, dest)] = stack.copy()
+                        if next_offset is not None:
+                            edge_conditions[(offset, next_offset)] = py_exprs.Call(
+                                py_exprs.PyObject(operator.and_),
+                                (reach_cond, cond_bool),
                             )
                             edge_stacks[(offset, next_offset)] = stack.copy()
                     jumped = True

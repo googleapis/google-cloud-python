@@ -23,6 +23,18 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.modelarmor_v1.services.model_armor",
+    "google.cloud.modelarmor_v1.types.service",
+}
+
+
 from .services.model_armor import ModelArmorAsyncClient, ModelArmorClient
 from .types.service import (
     AiPlatformFloorSetting,
@@ -45,6 +57,7 @@ from .types.service import (
     MaliciousUriFilterResult,
     MaliciousUriFilterSettings,
     MessageItem,
+    Modality,
     MultiLanguageDetectionMetadata,
     PiAndJailbreakFilterResult,
     PiAndJailbreakFilterSettings,
@@ -59,12 +72,15 @@ from .types.service import (
     SanitizeUserPromptResponse,
     SdpAdvancedConfig,
     SdpBasicConfig,
+    SdpContentLocation,
     SdpDeidentifyResult,
     SdpFilterResult,
     SdpFilterSettings,
     SdpFinding,
     SdpFindingLikelihood,
+    SdpImageFindingLocation,
     SdpInspectResult,
+    SdpRedactResult,
     StreamingMode,
     Template,
     UpdateFloorSettingRequest,
@@ -178,6 +194,7 @@ __all__ = (
     "MaliciousUriFilterResult",
     "MaliciousUriFilterSettings",
     "MessageItem",
+    "Modality",
     "ModelArmorClient",
     "MultiLanguageDetectionMetadata",
     "PiAndJailbreakFilterResult",
@@ -193,12 +210,15 @@ __all__ = (
     "SanitizeUserPromptResponse",
     "SdpAdvancedConfig",
     "SdpBasicConfig",
+    "SdpContentLocation",
     "SdpDeidentifyResult",
     "SdpFilterResult",
     "SdpFilterSettings",
     "SdpFinding",
     "SdpFindingLikelihood",
+    "SdpImageFindingLocation",
     "SdpInspectResult",
+    "SdpRedactResult",
     "StreamingMode",
     "Template",
     "UpdateFloorSettingRequest",

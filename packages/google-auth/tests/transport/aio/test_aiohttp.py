@@ -20,6 +20,7 @@ import pytest  # type: ignore
 import pytest_asyncio  # type: ignore
 
 from google.auth import exceptions
+from google.auth.aio import _helpers as _helpers_async
 import google.auth.aio.transport.aiohttp as auth_aiohttp
 
 try:
@@ -234,7 +235,10 @@ class TestRequest:
         assert cloned_connector._limit == 42
         assert cloned_connector._limit_per_host == 12
         assert cloned_connector._force_close is True
-        assert cloned_connector._local_addr == ("127.0.0.2", 0)
+        assert _helpers_async._get_local_addr(cloned_connector) == (
+            "127.0.0.2",
+            0,
+        )
 
         # Verify session-level configuration
         assert cloned._session._trust_env is True

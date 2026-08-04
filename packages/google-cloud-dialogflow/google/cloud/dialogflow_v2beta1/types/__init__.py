@@ -342,6 +342,8 @@ from .sip_trunk import (
     GetSipTrunkRequest,
     ListSipTrunksRequest,
     ListSipTrunksResponse,
+    ProbeDetails,
+    SipHostname,
     SipTrunk,
     UpdateSipTrunkRequest,
 )
@@ -657,6 +659,8 @@ __all__ = (
     "GetSipTrunkRequest",
     "ListSipTrunksRequest",
     "ListSipTrunksResponse",
+    "ProbeDetails",
+    "SipHostname",
     "SipTrunk",
     "UpdateSipTrunkRequest",
     "CreateToolRequest",

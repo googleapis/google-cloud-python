@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.40.0...google-cloud-bigtable-v2.41.0) (2026-07-16)
+
+
+### Features
+
+* **bigtable:** support materialized views in the data client ([#17676](https://github.com/googleapis/google-cloud-python/issues/17676)) ([2c3c213](https://github.com/googleapis/google-cloud-python/commit/2c3c213998b3f3aa1cf490dfbf824d160544b732))
+
 ## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.39.0...google-cloud-bigtable-v2.40.0) (2026-06-25)
 
 

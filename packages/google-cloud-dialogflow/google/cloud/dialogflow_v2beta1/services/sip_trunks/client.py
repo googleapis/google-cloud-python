@@ -761,6 +761,7 @@ class SipTrunksClient(metaclass=SipTrunksClientMeta):
                 # Initialize request argument(s)
                 sip_trunk = dialogflow_v2beta1.SipTrunk()
                 sip_trunk.expected_hostname = ['expected_hostname_value1', 'expected_hostname_value2']
+                sip_trunk.peer_hostnames.peer_hostname = "peer_hostname_value"
 
                 request = dialogflow_v2beta1.CreateSipTrunkRequest(
                     parent="parent_value",
@@ -1214,6 +1215,7 @@ class SipTrunksClient(metaclass=SipTrunksClientMeta):
                 # Initialize request argument(s)
                 sip_trunk = dialogflow_v2beta1.SipTrunk()
                 sip_trunk.expected_hostname = ['expected_hostname_value1', 'expected_hostname_value2']
+                sip_trunk.peer_hostnames.peer_hostname = "peer_hostname_value"
 
                 request = dialogflow_v2beta1.UpdateSipTrunkRequest(
                     sip_trunk=sip_trunk,
@@ -1636,8 +1638,6 @@ class SipTrunksClient(metaclass=SipTrunksClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("SipTrunksClient",)

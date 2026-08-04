@@ -23,6 +23,33 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.talent_v4.services.company_service",
+    "google.cloud.talent_v4.services.completion",
+    "google.cloud.talent_v4.services.event_service",
+    "google.cloud.talent_v4.services.job_service",
+    "google.cloud.talent_v4.services.tenant_service",
+    "google.cloud.talent_v4.types.common",
+    "google.cloud.talent_v4.types.company",
+    "google.cloud.talent_v4.types.company_service",
+    "google.cloud.talent_v4.types.completion_service",
+    "google.cloud.talent_v4.types.event",
+    "google.cloud.talent_v4.types.event_service",
+    "google.cloud.talent_v4.types.filters",
+    "google.cloud.talent_v4.types.histogram",
+    "google.cloud.talent_v4.types.job",
+    "google.cloud.talent_v4.types.job_service",
+    "google.cloud.talent_v4.types.tenant",
+    "google.cloud.talent_v4.types.tenant_service",
+}
+
+
 from .services.company_service import CompanyServiceAsyncClient, CompanyServiceClient
 from .services.completion import CompletionAsyncClient, CompletionClient
 from .services.event_service import EventServiceAsyncClient, EventServiceClient

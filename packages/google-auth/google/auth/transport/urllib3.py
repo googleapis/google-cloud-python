@@ -188,11 +188,7 @@ def _make_mutual_tls_http(cert, key):
             key_path,
             passphrase,
         ):
-            password = (
-                passphrase.decode("utf-8")
-                if isinstance(passphrase, bytes)
-                else passphrase
-            )
+            password = passphrase
             ctx.load_cert_chain(
                 certfile=cert_path,
                 keyfile=key_path,
@@ -339,6 +335,11 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 If the callback is None, application default SSL credentials
                 will be used.
 
+        .. warning::
+            Calling this method mutates the underlying `urllib3.PoolManager`.
+            It is not thread-safe to call this explicitly while other
+            threads are making requests.
+
         Returns:
             True if the channel is mutual TLS and False otherwise.
 
@@ -371,9 +372,15 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
+        old_http = self.http
+
         self.http = new_http
         self._is_mtls = new_is_mtls
         self._request.http = new_http
+
+        if old_http is not None and old_http is not new_http:
+            getattr(old_http, "clear", getattr(old_http, "close", lambda: None))()
+
         if new_is_mtls:
             self._cached_cert = cert
         else:
@@ -495,7 +502,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
     def __del__(self):
         if hasattr(self, "http") and self.http is not None:
-            self.http.clear()
+            getattr(self.http, "clear", getattr(self.http, "close", lambda: None))()
 
     @property
     def headers(self):

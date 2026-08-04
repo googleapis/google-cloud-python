@@ -738,6 +738,160 @@
         }
       }
     },
+    "FindingsRefinementService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "FindingsRefinementServiceClient",
+          "rpcs": {
+            "ComputeAllFindingsRefinementActivities": {
+              "methods": [
+                "compute_all_findings_refinement_activities"
+              ]
+            },
+            "ComputeFindingsRefinementActivity": {
+              "methods": [
+                "compute_findings_refinement_activity"
+              ]
+            },
+            "CreateFindingsRefinement": {
+              "methods": [
+                "create_findings_refinement"
+              ]
+            },
+            "GetFindingsRefinement": {
+              "methods": [
+                "get_findings_refinement"
+              ]
+            },
+            "GetFindingsRefinementDeployment": {
+              "methods": [
+                "get_findings_refinement_deployment"
+              ]
+            },
+            "ListAllFindingsRefinementDeployments": {
+              "methods": [
+                "list_all_findings_refinement_deployments"
+              ]
+            },
+            "ListFindingsRefinements": {
+              "methods": [
+                "list_findings_refinements"
+              ]
+            },
+            "UpdateFindingsRefinement": {
+              "methods": [
+                "update_findings_refinement"
+              ]
+            },
+            "UpdateFindingsRefinementDeployment": {
+              "methods": [
+                "update_findings_refinement_deployment"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "FindingsRefinementServiceAsyncClient",
+          "rpcs": {
+            "ComputeAllFindingsRefinementActivities": {
+              "methods": [
+                "compute_all_findings_refinement_activities"
+              ]
+            },
+            "ComputeFindingsRefinementActivity": {
+              "methods": [
+                "compute_findings_refinement_activity"
+              ]
+            },
+            "CreateFindingsRefinement": {
+              "methods": [
+                "create_findings_refinement"
+              ]
+            },
+            "GetFindingsRefinement": {
+              "methods": [
+                "get_findings_refinement"
+              ]
+            },
+            "GetFindingsRefinementDeployment": {
+              "methods": [
+                "get_findings_refinement_deployment"
+              ]
+            },
+            "ListAllFindingsRefinementDeployments": {
+              "methods": [
+                "list_all_findings_refinement_deployments"
+              ]
+            },
+            "ListFindingsRefinements": {
+              "methods": [
+                "list_findings_refinements"
+              ]
+            },
+            "UpdateFindingsRefinement": {
+              "methods": [
+                "update_findings_refinement"
+              ]
+            },
+            "UpdateFindingsRefinementDeployment": {
+              "methods": [
+                "update_findings_refinement_deployment"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "FindingsRefinementServiceClient",
+          "rpcs": {
+            "ComputeAllFindingsRefinementActivities": {
+              "methods": [
+                "compute_all_findings_refinement_activities"
+              ]
+            },
+            "ComputeFindingsRefinementActivity": {
+              "methods": [
+                "compute_findings_refinement_activity"
+              ]
+            },
+            "CreateFindingsRefinement": {
+              "methods": [
+                "create_findings_refinement"
+              ]
+            },
+            "GetFindingsRefinement": {
+              "methods": [
+                "get_findings_refinement"
+              ]
+            },
+            "GetFindingsRefinementDeployment": {
+              "methods": [
+                "get_findings_refinement_deployment"
+              ]
+            },
+            "ListAllFindingsRefinementDeployments": {
+              "methods": [
+                "list_all_findings_refinement_deployments"
+              ]
+            },
+            "ListFindingsRefinements": {
+              "methods": [
+                "list_findings_refinements"
+              ]
+            },
+            "UpdateFindingsRefinement": {
+              "methods": [
+                "update_findings_refinement"
+              ]
+            },
+            "UpdateFindingsRefinementDeployment": {
+              "methods": [
+                "update_findings_refinement_deployment"
+              ]
+            }
+          }
+        }
+      }
+    },
     "InstanceService": {
       "clients": {
         "grpc": {

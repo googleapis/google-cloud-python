@@ -91,6 +91,7 @@ from google.cloud.dataproc_v1.types.batches import (
 )
 from google.cloud.dataproc_v1.types.clusters import (
     AcceleratorConfig,
+    AttachedDiskConfig,
     AutoscalingConfig,
     AuxiliaryNodeGroup,
     AuxiliaryServicesConfig,
@@ -277,6 +278,7 @@ __all__ = (
     "SparkRBatch",
     "SparkSqlBatch",
     "AcceleratorConfig",
+    "AttachedDiskConfig",
     "AutoscalingConfig",
     "AuxiliaryNodeGroup",
     "AuxiliaryServicesConfig",

@@ -40,6 +40,7 @@ from .batches import (
 )
 from .clusters import (
     AcceleratorConfig,
+    AttachedDiskConfig,
     AutoscalingConfig,
     AuxiliaryNodeGroup,
     AuxiliaryServicesConfig,
@@ -210,6 +211,7 @@ __all__ = (
     "SparkRBatch",
     "SparkSqlBatch",
     "AcceleratorConfig",
+    "AttachedDiskConfig",
     "AutoscalingConfig",
     "AuxiliaryNodeGroup",
     "AuxiliaryServicesConfig",

@@ -138,7 +138,7 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
     @pytest.mark.asyncio
     async def test__clone(self):
         http = mock.create_autospec(
-            aiohttp.ClientSession, instance=True, _auto_decompress=False
+            aiohttp.ClientSession, instance=True, auto_decompress=False
         )
         http._connector = mock.Mock(spec=aiohttp.TCPConnector)
         http._connector.closed = False
@@ -158,12 +158,13 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
         http._json_serialize = mock.sentinel.json_serialize
 
         request = aiohttp_requests.Request(http)
-        with mock.patch(
-            "aiohttp.ClientSession", autospec=True
-        ) as session_mock, mock.patch.object(
-            aiohttp.TCPConnector, "__init__", autospec=True, return_value=None
-        ) as connector_init_mock:
-            session_mock.return_value._auto_decompress = False
+        with (
+            mock.patch("aiohttp.ClientSession", autospec=True) as session_mock,
+            mock.patch.object(
+                aiohttp.TCPConnector, "__init__", autospec=True, return_value=None
+            ) as connector_init_mock,
+        ):
+            session_mock.return_value.auto_decompress = False
             cloned = request._clone()
 
         assert isinstance(cloned, aiohttp_requests.Request)
@@ -204,7 +205,7 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
     @pytest.mark.asyncio
     async def test__clone_custom_connector(self):
         http = mock.create_autospec(
-            aiohttp.ClientSession, instance=True, _auto_decompress=False
+            aiohttp.ClientSession, instance=True, auto_decompress=False
         )
         http._connector = mock.Mock()
         http._connector.closed = False
@@ -218,7 +219,7 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
     @pytest.mark.asyncio
     async def test_close(self):
         http = mock.create_autospec(
-            aiohttp.ClientSession, instance=True, _auto_decompress=False
+            aiohttp.ClientSession, instance=True, auto_decompress=False
         )
         http.close = mock.AsyncMock()
         request = aiohttp_requests.Request(http)
@@ -234,7 +235,7 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
     @pytest.mark.asyncio
     async def test_request_call_closed(self):
         http = mock.create_autospec(
-            aiohttp.ClientSession, instance=True, _auto_decompress=False
+            aiohttp.ClientSession, instance=True, auto_decompress=False
         )
         request = aiohttp_requests.Request(http)
         await request.close()
@@ -255,7 +256,7 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
     @pytest.mark.asyncio
     async def test__clone_closed_connector(self):
         http = mock.create_autospec(
-            aiohttp.ClientSession, instance=True, _auto_decompress=False
+            aiohttp.ClientSession, instance=True, auto_decompress=False
         )
         http._connector = mock.Mock()
         http._connector.closed = True
@@ -269,7 +270,7 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
 
         request = aiohttp_requests.Request(http)
         with mock.patch("aiohttp.ClientSession", autospec=True) as session_mock:
-            session_mock.return_value._auto_decompress = False
+            session_mock.return_value.auto_decompress = False
             cloned = request._clone()
 
         assert isinstance(cloned, aiohttp_requests.Request)
@@ -283,7 +284,7 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
             return
 
         http = mock.create_autospec(
-            aiohttp.ClientSession, instance=True, _auto_decompress=False
+            aiohttp.ClientSession, instance=True, auto_decompress=False
         )
         http._connector = mock.Mock(spec=UnixConnector)
         http._connector.closed = False
@@ -298,7 +299,7 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
 
         request = aiohttp_requests.Request(http)
         with mock.patch("aiohttp.ClientSession", autospec=True) as session_mock:
-            session_mock.return_value._auto_decompress = False
+            session_mock.return_value.auto_decompress = False
             cloned = request._clone()
 
         assert isinstance(cloned, aiohttp_requests.Request)
@@ -312,7 +313,7 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
             return
 
         http = mock.create_autospec(
-            aiohttp.ClientSession, instance=True, _auto_decompress=False
+            aiohttp.ClientSession, instance=True, auto_decompress=False
         )
         http._connector = mock.Mock(spec=UnixConnector)
         http._connector.closed = False
@@ -328,12 +329,13 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
         http._json_serialize = None
 
         request = aiohttp_requests.Request(http)
-        with mock.patch(
-            "aiohttp.ClientSession", autospec=True
-        ) as session_mock, mock.patch.object(
-            UnixConnector, "__init__", autospec=True, return_value=None
-        ) as connector_init_mock:
-            session_mock.return_value._auto_decompress = False
+        with (
+            mock.patch("aiohttp.ClientSession", autospec=True) as session_mock,
+            mock.patch.object(
+                UnixConnector, "__init__", autospec=True, return_value=None
+            ) as connector_init_mock,
+        ):
+            session_mock.return_value.auto_decompress = False
             cloned = request._clone()
 
         assert isinstance(cloned, aiohttp_requests.Request)

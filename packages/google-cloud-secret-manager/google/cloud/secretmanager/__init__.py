@@ -43,6 +43,7 @@ from google.cloud.secretmanager_v1.types.service import (
     DeleteSecretRequest,
     DestroySecretVersionRequest,
     DisableSecretVersionRequest,
+    EnableManagedRotationRequest,
     EnableSecretVersionRequest,
     GetSecretRequest,
     GetSecretVersionRequest,
@@ -50,6 +51,7 @@ from google.cloud.secretmanager_v1.types.service import (
     ListSecretsResponse,
     ListSecretVersionsRequest,
     ListSecretVersionsResponse,
+    RotateSecretRequest,
     UpdateSecretRequest,
 )
 
@@ -72,6 +74,7 @@ __all__ = (
     "DeleteSecretRequest",
     "DestroySecretVersionRequest",
     "DisableSecretVersionRequest",
+    "EnableManagedRotationRequest",
     "EnableSecretVersionRequest",
     "GetSecretRequest",
     "GetSecretVersionRequest",
@@ -79,5 +82,6 @@ __all__ = (
     "ListSecretsResponse",
     "ListSecretVersionsRequest",
     "ListSecretVersionsResponse",
+    "RotateSecretRequest",
     "UpdateSecretRequest",
 )

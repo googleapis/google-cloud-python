@@ -21,8 +21,10 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock  # type: ignore
 
-import pytest
 from typing import Any, List
+
+import pytest
+
 from ...helpers import warn_deprecated_credentials_file
 
 try:
@@ -53,9 +55,10 @@ from google.rpc import status_pb2  # type: ignore
 try:
     import aiohttp  # noqa: F401
     import google.auth.aio.transport
-    from google.auth.aio.transport.sessions import AsyncAuthorizedSession
-    from google.api_core.operations_v1 import AsyncOperationsRestClient
     from google.auth.aio import credentials as ga_credentials_async
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession
+
+    from google.api_core.operations_v1 import AsyncOperationsRestClient
 
     GOOGLE_AUTH_AIO_INSTALLED = True
 except ImportError:
@@ -1195,11 +1198,14 @@ def test_operations_base_transport():
 
 def test_operations_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.api_core.operations_v1.transports.OperationsTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.api_core.operations_v1.transports.OperationsTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         with warn_deprecated_credentials_file():
@@ -1217,9 +1223,12 @@ def test_operations_base_transport_with_credentials_file():
 
 def test_operations_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.api_core.operations_v1.transports.OperationsTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.api_core.operations_v1.transports.OperationsTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transports.OperationsTransport()

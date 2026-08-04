@@ -248,7 +248,7 @@ class Request(transport.Request):
                     limit=getattr(orig_connector, "_limit", 100),
                     limit_per_host=getattr(orig_connector, "_limit_per_host", 0),
                     force_close=getattr(orig_connector, "_force_close", False),
-                    local_addr=getattr(orig_connector, "_local_addr", None),
+                    local_addr=_helpers_async._get_local_addr(orig_connector),
                 )
             elif getattr(aiohttp, "UnixConnector", None) and isinstance(
                 orig_connector, getattr(aiohttp, "UnixConnector")

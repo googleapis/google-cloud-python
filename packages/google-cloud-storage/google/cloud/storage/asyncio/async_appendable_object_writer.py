@@ -386,6 +386,7 @@ class AsyncAppendableObjectWriter:
         data: bytes,
         retry_policy: Optional[AsyncRetry] = None,
         metadata: Optional[List[Tuple[str, str]]] = None,
+        enable_checksum: bool = True,
     ) -> None:
         """Appends data to the Appendable object with automatic retries.
 
@@ -405,6 +406,9 @@ class AsyncAppendableObjectWriter:
 
         :type metadata: List[Tuple[str, str]]
         :param metadata: (Optional) The metadata to be sent with the request.
+
+        :type enable_checksum: bool
+        :param enable_checksum: (Optional) If True, calculates and checks checksums for each chunk. Defaults to True.
 
         :raises ValueError: If the stream is not open.
         """
@@ -487,7 +491,12 @@ class AsyncAppendableObjectWriter:
             return generator()
 
         # State initialization
-        write_state = _WriteState(_MAX_CHUNK_SIZE_BYTES, buffer, self.flush_interval)
+        write_state = _WriteState(
+            _MAX_CHUNK_SIZE_BYTES,
+            buffer,
+            self.flush_interval,
+            enable_checksum=enable_checksum,
+        )
         write_state.write_handle = self.write_handle
         write_state.persisted_size = self.persisted_size
         # offset is set during `open()` call.
@@ -547,12 +556,30 @@ class AsyncAppendableObjectWriter:
         self.bytes_appended_since_last_flush = 0
         return self.persisted_size
 
-    async def close(self, finalize_on_close=False) -> Union[int, _storage_v2.Object]:
+    async def close(
+        self,
+        finalize_on_close=False,
+        full_object_checksum: Optional[int] = None,
+    ) -> Union[int, _storage_v2.Object]:
         """Closes the underlying bidi-gRPC stream.
 
         :type finalize_on_close: bool
         :param finalize_on_close: Finalizes the Appendable Object. No more data
           can be appended.
+        :type full_object_checksum: int
+        :param full_object_checksum: (Optional) This should be the CRC32C checksum of
+            the entire contents of the object as a 32-bit integer.
+            Used only when finalize_on_close is True.
+
+            It can be obtained by running:
+
+            .. code-block:: python
+
+                import google_crc32c
+
+                data = b"Hello, world!"
+                crc32c_int = google_crc32c.value(data)
+                print(crc32c_int)
 
         rtype: Union[int, _storage_v2.Object]
         returns: Updated `self.persisted_size` by default after closing the
@@ -561,20 +588,32 @@ class AsyncAppendableObjectWriter:
 
         :raises ValueError: If the stream is not open (i.e., `open()` has not
             been called).
+        :raises ValueError: If full_object_checksum is provided but
+            finalize_on_close is False.
+        :raises google.api_core.exceptions.InvalidArgument: If the provided
+            full_object_checksum does not match the checksum computed by the
+            server.
 
         """
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before close().")
 
+        if full_object_checksum is not None and not finalize_on_close:
+            raise ValueError(
+                "full_object_checksum can only be provided when finalize_on_close is True."
+            )
+
         if finalize_on_close:
-            return await self.finalize()
+            return await self.finalize(full_object_checksum=full_object_checksum)
 
         await self.write_obj_stream.close()
 
         self._is_stream_open = False
         return self.persisted_size
 
-    async def finalize(self) -> _storage_v2.Object:
+    async def finalize(
+        self, full_object_checksum: Optional[int] = None
+    ) -> _storage_v2.Object:
         """Finalizes the Appendable Object.
 
         Note: Once finalized no more data can be appended.
@@ -585,26 +624,58 @@ class AsyncAppendableObjectWriter:
         However if `.finalize()` is called no more data can be appended to the
         object.
 
+        :type full_object_checksum: int
+        :param full_object_checksum: (Optional) This should be the CRC32C checksum of
+            the entire contents of the object as a 32-bit integer.
+
+            It can be obtained by running:
+
+            .. code-block:: python
+
+                import google_crc32c
+
+                data = b"Hello, world!"
+                crc32c_int = google_crc32c.value(data)
+                print(crc32c_int)
+
         rtype: google.cloud.storage_v2.types.Object
         returns: The finalized object resource.
 
         :raises ValueError: If the stream is not open (i.e., `open()` has not
             been called).
+        :raises google.api_core.exceptions.InvalidArgument: If the provided
+            full_object_checksum does not match the checksum computed by the
+            server.
         """
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before finalize().")
 
-        await self.write_obj_stream.send(
-            _storage_v2.BidiWriteObjectRequest(finish_write=True)
-        )
-        response = await self.write_obj_stream.recv()
-        self.object_resource = response.resource
-        self.persisted_size = self.object_resource.size
-        await self.write_obj_stream.close()
+        if full_object_checksum is None:
+            finalize_req = _storage_v2.BidiWriteObjectRequest(finish_write=True)
+        elif isinstance(full_object_checksum, bool) or not isinstance(
+            full_object_checksum, int
+        ):
+            raise TypeError("full_object_checksum must be an integer.")
+        elif not (0 <= full_object_checksum <= 0xFFFFFFFF):
+            raise ValueError("full_object_checksum must be a 32-bit unsigned integer.")
+        else:
+            finalize_req = _storage_v2.BidiWriteObjectRequest(
+                finish_write=True,
+                object_checksums=_storage_v2.ObjectChecksums(
+                    crc32c=full_object_checksum
+                ),
+            )
 
-        self._is_stream_open = False
-        self.offset = None
-        return self.object_resource
+        try:
+            await self.write_obj_stream.send(finalize_req)
+            response = await self.write_obj_stream.recv()
+            self.object_resource = response.resource
+            self.persisted_size = self.object_resource.size
+            return self.object_resource
+        finally:
+            await self.write_obj_stream.close()
+            self._is_stream_open = False
+            self.offset = None
 
     @property
     def is_stream_open(self) -> bool:

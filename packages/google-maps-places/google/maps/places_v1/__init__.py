@@ -23,6 +23,36 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.maps.places_v1.services.places",
+    "google.maps.places_v1.types.address_descriptor",
+    "google.maps.places_v1.types.attribution",
+    "google.maps.places_v1.types.content_block",
+    "google.maps.places_v1.types.contextual_content",
+    "google.maps.places_v1.types.ev_charging",
+    "google.maps.places_v1.types.fuel_options",
+    "google.maps.places_v1.types.geometry",
+    "google.maps.places_v1.types.photo",
+    "google.maps.places_v1.types.place",
+    "google.maps.places_v1.types.places_service",
+    "google.maps.places_v1.types.polyline",
+    "google.maps.places_v1.types.price_range",
+    "google.maps.places_v1.types.reference",
+    "google.maps.places_v1.types.review",
+    "google.maps.places_v1.types.route_modifiers",
+    "google.maps.places_v1.types.routing_preference",
+    "google.maps.places_v1.types.routing_summary",
+    "google.maps.places_v1.types.transit",
+    "google.maps.places_v1.types.travel_mode",
+}
+
+
 from .services.places import PlacesAsyncClient, PlacesClient
 from .types.address_descriptor import AddressDescriptor
 from .types.attribution import AuthorAttribution

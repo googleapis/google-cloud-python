@@ -18,10 +18,13 @@ from typing import Generator
 import numpy as np
 import pandas as pd
 import pandas.testing
+import pyarrow as pa
 import pytest
 
 import bigframes
+import bigframes.core.global_session
 import bigframes.pandas as bpd
+from bigframes.core.bytecode import py_to_expression
 from bigframes.testing.utils import (
     assert_frame_equal,
     assert_series_equal,
@@ -37,7 +40,7 @@ DATA_DIR = CURRENT_DIR.parent / "data"
 
 @pytest.fixture(scope="module", autouse=True)
 def session() -> Generator[bigframes.Session, None, None]:
-    import bigframes.core.global_session
+    # import inline to allow polars importorskip to happen first
     from bigframes.testing import polars_session
 
     with bpd.option_context("experiments.enable_python_transpiler", True):
@@ -451,3 +454,308 @@ def test_local_series_apply_w_compare_chain(scalars_df_index, scalars_pandas_df_
     pd_result = scalars_pandas_df_index["int64_col"].dropna().apply(compare_chain)
 
     assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_dataframe_apply_axis_1_with_integer_subscript(
+    scalars_df_index, scalars_pandas_df_index
+):
+    columns = ["int64_too", "int64_col"]
+    bf_df = scalars_df_index[columns].rename(columns={"int64_too": 0, "int64_col": 1})
+    pd_df = scalars_pandas_df_index[columns].rename(
+        columns={"int64_too": 0, "int64_col": 1}
+    )
+
+    def foo(input):
+        return input[0] + input[1]
+
+    bf_result = bf_df.apply(foo, axis=1).to_pandas()
+    pd_result = pd_df.apply(foo, axis=1).astype("Int64")
+
+    assert_series_equal(bf_result, pd_result)
+
+
+def test_dataframe_apply_axis_1_with_invalid_subscript_raises(
+    scalars_df_index,
+):
+    columns = ["int64_too", "int64_col"]
+
+    def foo_invalid_label(input):
+        return input["non_existent_column"]
+
+    with pytest.raises(KeyError, match="non_existent_column"):
+        scalars_df_index[columns].apply(foo_invalid_label, axis=1)
+
+
+def test_series_map_with_struct_subscript(session):
+    # Struct setup
+    struct_pa_type = pa.struct([("str_field", pa.string()), ("int_field", pa.int64())])
+    pd_struct_series = pd.Series(
+        pa.array([{"str_field": "hello", "int_field": 1}], struct_pa_type),
+        dtype=pd.ArrowDtype(struct_pa_type),
+    )
+    bf_struct_series = bpd.Series(pd_struct_series, session=session)
+
+    # Struct subscripting in UDF
+    def get_struct_val(x):
+        return x["str_field"]
+
+    bf_struct_res = bf_struct_series.map(get_struct_val).to_pandas()
+    pd_struct_res: pd.Series = pd_struct_series.map(get_struct_val)
+    assert_series_equal(bf_struct_res, pd_struct_res, check_dtype=False)
+
+
+def test_series_map_with_array_subscript(session):
+    # Array setup
+    array_pa_type = pa.list_(pa.int64())
+    pd_array_series = pd.Series(
+        pa.array([[10, 20]], array_pa_type),
+        dtype=pd.ArrowDtype(array_pa_type),
+    )
+    bf_array_series = bpd.Series(pd_array_series, session=session)
+
+    # Array subscripting in UDF
+    def get_array_val(x):
+        return x[1]
+
+    bf_array_res = bf_array_series.map(get_array_val).to_pandas()
+    pd_array_res: pd.Series = pd_array_series.map(get_array_val)
+    assert_series_equal(bf_array_res, pd_array_res, check_dtype=False)
+
+
+def test_series_map_with_string_subscript(session):
+    # String setup
+    pd_string_series = pd.Series(["hello", "world"])
+    bf_string_series = bpd.Series(pd_string_series, session=session)
+
+    # String subscripting in UDF
+    def get_string_val(x):
+        return x[1]
+
+    bf_string_res = bf_string_series.map(get_string_val).to_pandas()
+    pd_string_res = pd_string_series.map(get_string_val)  # type: ignore
+    assert_series_equal(bf_string_res, pd_string_res, check_dtype=False)
+
+
+def test_dataframe_apply_axis_1_with_dynamic_subscript_raises(
+    scalars_df_index,
+):
+    columns = ["int64_too", "int64_col"]
+
+    def foo_dynamic(input):
+        return input[input[0]]
+
+    with pytest.raises(
+        NotImplementedError, match="Dynamic column lookup is not supported"
+    ):
+        scalars_df_index[columns].apply(foo_dynamic, axis=1)
+
+
+def test_dataframe_apply_axis_1_with_dynamic_array_subscript(session):
+    array_pa_type = pa.list_(pa.int64())
+    pd_df = pd.DataFrame(
+        {
+            "array_col": pd.Series(
+                pa.array([[10, 20], [30, 40, 50], [60]], array_pa_type),
+                dtype=pd.ArrowDtype(array_pa_type),
+            ),
+            "index_col": pd.Series([1, 2, 0], dtype="Int64"),
+        }
+    )
+    bf_df = bpd.DataFrame(pd_df, session=session)
+
+    def foo(row):
+        return row["array_col"][row["index_col"]]
+
+    bf_result = bf_df.apply(foo, axis=1).to_pandas()
+    pd_result = pd_df.apply(foo, axis=1).astype("Int64")
+
+    assert_series_equal(bf_result, pd_result)
+
+
+def test_series_apply_fstrings(session):
+    pd_series = pd.Series(["apple", "banana", None], dtype="string")
+    bf_series = bpd.Series(pd_series, session=session)
+
+    def format_udf(x):
+        if x is None:
+            return "Null value"
+        return f"Fruit: {x}!"
+
+    bf_result = bf_series.apply(format_udf).to_pandas()
+    pd_result = pd.Series(
+        ["Fruit: apple!", "Fruit: banana!", "Null value"], dtype="string"
+    )
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_series_apply_nullity_jumps(session):
+    pd_series = pd.Series([10, None, 20], dtype="Int64")
+    bf_series = bpd.Series(pd_series, session=session)
+
+    def nullity_udf(x):
+        if x is None:
+            return "Absent"
+        if x is not None:
+            return "Present"
+        return "Unknown"
+
+    bf_result = bf_series.apply(nullity_udf).to_pandas()
+    pd_result = pd.Series(["Present", "Absent", "Present"], dtype="string")
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_series_apply_string_ops(session):
+    pd_series = pd.Series(["hello world", "BigFrames", "123a"], dtype="string")
+    bf_series = bpd.Series(pd_series, session=session)
+
+    def str_udf(x):
+        if x is None:
+            return None
+        return x.upper() + " " + x.lower() + " " + str.upper(x) + " " + x.capitalize()
+
+    bf_result = bf_series.apply(str_udf).to_pandas()
+    pd_result = pd.Series(
+        [
+            "HELLO WORLD hello world HELLO WORLD Hello world",
+            "BIGFRAMES bigframes BIGFRAMES Bigframes",
+            "123A 123a 123A 123a",
+        ],
+        dtype="string",
+    )
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_series_apply_string_predicates(session):
+    pd_series = pd.Series(
+        ["hello world", "abc123", "123", "HELLO!", None], dtype="string"
+    )
+    bf_series = bpd.Series(pd_series, session=session)
+
+    def predicates_udf(x):
+        if x is None:
+            return None
+        return f"{x.islower()}_{x.isupper()}"
+
+    bf_result = bf_series.apply(predicates_udf).to_pandas()
+    pd_result = pd.Series(
+        ["True_False", "True_False", "False_False", "False_True", None], dtype="string"
+    )
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_fstring_multiple_placeholders(session):
+    pd_series = pd.Series(["apple", "banana"], dtype="string")
+    bf_series = bpd.Series(pd_series, session=session)
+
+    def multiple_placeholders(x):
+        return f"{x} and {x.upper()}!"
+
+    bf_res = bf_series.apply(multiple_placeholders).to_pandas()
+    pd_res = pd.Series(["apple and APPLE!", "banana and BANANA!"], dtype="string")
+    assert_series_equal(bf_res, pd_res, check_dtype=False)
+
+
+def test_fstring_empty(session):
+    pd_series = pd.Series(["apple", "banana"], dtype="string")
+    bf_series = bpd.Series(pd_series, session=session)
+
+    def empty_fstring(x):
+        return ""
+
+    bf_res = bf_series.apply(empty_fstring).to_pandas()
+    pd_res = pd.Series(["", ""], dtype="string")
+    assert_series_equal(bf_res, pd_res, check_dtype=False)
+
+
+def test_fstring_consecutive_placeholders(session):
+    pd_series = pd.Series(["apple", "banana"], dtype="string")
+    bf_series = bpd.Series(pd_series, session=session)
+
+    def consecutive_placeholders(x):
+        return f"{x}{x.upper()}"
+
+    bf_res = bf_series.apply(consecutive_placeholders).to_pandas()
+    pd_res = pd.Series(["appleAPPLE", "bananaBANANA"], dtype="string")
+    assert_series_equal(bf_res, pd_res, check_dtype=False)
+
+
+def test_fstring_with_specifier_raises():
+    def format_with_spec(x):
+        return f"{x:2d}"
+
+    with pytest.raises(
+        NotImplementedError, match="Formatting with specifier is not supported"
+    ):
+        py_to_expression(format_with_spec)
+
+
+def test_fstring_with_repr_raises():
+    def format_with_repr(x):
+        return f"{x!r}"
+
+    with pytest.raises(
+        NotImplementedError,
+        match="repr\\(\\) and ascii\\(\\) conversions are not supported",
+    ):
+        py_to_expression(format_with_repr)
+
+
+def test_fstring_with_ascii_raises():
+    def format_with_ascii(x):
+        return f"{x!a}"
+
+    with pytest.raises(
+        NotImplementedError,
+        match="repr\\(\\) and ascii\\(\\) conversions are not supported",
+    ):
+        py_to_expression(format_with_ascii)
+
+
+def test_identity_unsupported_raises():
+    def is_true_udf(x):
+        return x is True
+
+    with pytest.raises(
+        NotImplementedError,
+        match="Identity comparison \\(is/is not\\) is only supported for None",
+    ):
+        py_to_expression(is_true_udf)
+
+
+def test_fstring_int_input(session):
+    pd_int_series = pd.Series([10, 20, None], dtype="Int64")
+    bf_int_series = bpd.Series(pd_int_series, session=session)
+    bf_res_int = bf_int_series.apply(lambda x: f"val: {x}").to_pandas()
+    pd_res_int = pd.Series(["val: 10", "val: 20", None], dtype="string")
+    assert_series_equal(bf_res_int, pd_res_int, check_dtype=False)
+
+
+def test_fstring_float_input(session):
+    pd_float_series = pd.Series([1.5, 2.75], dtype="Float64")
+    bf_float_series = bpd.Series(pd_float_series, session=session)
+    bf_res_float = bf_float_series.apply(lambda x: f"val: {x}").to_pandas()
+    pd_res_float = pd.Series(["val: 1.5", "val: 2.75"], dtype="string")
+    assert_series_equal(bf_res_float, pd_res_float, check_dtype=False)
+
+
+def test_fstring_bool_input(session):
+    pd_bool_series = pd.Series([True, False], dtype="boolean")
+    bf_bool_series = bpd.Series(pd_bool_series, session=session)
+    bf_res_bool = bf_bool_series.apply(lambda x: f"val: {x}").to_pandas()
+    pd_res_bool = pd.Series(["val: True", "val: False"], dtype="string")
+    assert_series_equal(bf_res_bool, pd_res_bool, check_dtype=False)
+
+
+def test_fstring_list_input_raises(session):
+    array_pa_type = pa.list_(pa.int64())
+    pd_series = pd.Series(
+        pa.array([[10, 20]], array_pa_type),
+        dtype=pd.ArrowDtype(array_pa_type),
+    )
+    bf_series = bpd.Series(pd_series, session=session)
+
+    def udf_with_list(x):
+        return f"list: {x}"
+
+    with pytest.raises((TypeError, ValueError)):
+        bf_series.apply(udf_with_list)

@@ -45,16 +45,16 @@ class BigframesBigQuerySeriesAccessor(core_accessor.BigQuerySeriesAccessor[T, S]
         return cast(S, bf_series)
 
     @property
-    def ai(self) -> BigframesAiSeriesAccessor[T, S]:
-        return BigframesAiSeriesAccessor(self._obj)
-
-    @property
     def aead(self) -> BigframesAeadSeriesAccessor[T, S]:
         return BigframesAeadSeriesAccessor(self._obj)
 
+    @property
+    def ai(self) -> BigframesAiSeriesAccessor[T, S]:
+        return BigframesAiSeriesAccessor(self._obj)
+
 
 @log_adapter.class_logger
-class BigframesAiSeriesAccessor(core_accessor.AiSeriesAccessor[T, S]):
+class BigframesAeadSeriesAccessor(core_accessor.AeadSeriesAccessor[T, S]):
     def __init__(self, bf_obj: S):
         super().__init__(bf_obj)
 
@@ -71,7 +71,7 @@ class BigframesAiSeriesAccessor(core_accessor.AiSeriesAccessor[T, S]):
 
 
 @log_adapter.class_logger
-class BigframesAeadSeriesAccessor(core_accessor.AeadSeriesAccessor[T, S]):
+class BigframesAiSeriesAccessor(core_accessor.AiSeriesAccessor[T, S]):
     def __init__(self, bf_obj: S):
         super().__init__(bf_obj)
 

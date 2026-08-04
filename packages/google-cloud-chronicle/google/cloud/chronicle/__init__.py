@@ -58,6 +58,12 @@ from google.cloud.chronicle_v1.services.featured_content_native_dashboard_servic
 from google.cloud.chronicle_v1.services.featured_content_native_dashboard_service.client import (
     FeaturedContentNativeDashboardServiceClient,
 )
+from google.cloud.chronicle_v1.services.findings_refinement_service.async_client import (
+    FindingsRefinementServiceAsyncClient,
+)
+from google.cloud.chronicle_v1.services.findings_refinement_service.client import (
+    FindingsRefinementServiceClient,
+)
 from google.cloud.chronicle_v1.services.instance_service.async_client import (
     InstanceServiceAsyncClient,
 )
@@ -203,6 +209,28 @@ from google.cloud.chronicle_v1.types.featured_content_native_dashboard import (
     ListFeaturedContentNativeDashboardsRequest,
     ListFeaturedContentNativeDashboardsResponse,
 )
+from google.cloud.chronicle_v1.types.findings_refinement import (
+    ComputeAllFindingsRefinementActivitiesRequest,
+    ComputeAllFindingsRefinementActivitiesResponse,
+    ComputeFindingsRefinementActivityRequest,
+    ComputeFindingsRefinementActivityResponse,
+    CreateFindingsRefinementRequest,
+    DetectionExclusionActivity,
+    DetectionExclusionApplication,
+    FindingsRefinement,
+    FindingsRefinementActivity,
+    FindingsRefinementDeployment,
+    FindingsRefinementType,
+    GetFindingsRefinementDeploymentRequest,
+    GetFindingsRefinementRequest,
+    ListAllFindingsRefinementDeploymentsRequest,
+    ListAllFindingsRefinementDeploymentsResponse,
+    ListFindingsRefinementsRequest,
+    ListFindingsRefinementsResponse,
+    OutcomeFilter,
+    UpdateFindingsRefinementDeploymentRequest,
+    UpdateFindingsRefinementRequest,
+)
 from google.cloud.chronicle_v1.types.instance import GetInstanceRequest, Instance
 from google.cloud.chronicle_v1.types.native_dashboard import (
     AddChartRequest,
@@ -302,6 +330,8 @@ __all__ = (
     "EntityServiceAsyncClient",
     "FeaturedContentNativeDashboardServiceClient",
     "FeaturedContentNativeDashboardServiceAsyncClient",
+    "FindingsRefinementServiceClient",
+    "FindingsRefinementServiceAsyncClient",
     "InstanceServiceClient",
     "InstanceServiceAsyncClient",
     "NativeDashboardServiceClient",
@@ -413,6 +443,26 @@ __all__ = (
     "InstallFeaturedContentNativeDashboardResponse",
     "ListFeaturedContentNativeDashboardsRequest",
     "ListFeaturedContentNativeDashboardsResponse",
+    "ComputeAllFindingsRefinementActivitiesRequest",
+    "ComputeAllFindingsRefinementActivitiesResponse",
+    "ComputeFindingsRefinementActivityRequest",
+    "ComputeFindingsRefinementActivityResponse",
+    "CreateFindingsRefinementRequest",
+    "DetectionExclusionActivity",
+    "DetectionExclusionApplication",
+    "FindingsRefinement",
+    "FindingsRefinementActivity",
+    "FindingsRefinementDeployment",
+    "GetFindingsRefinementDeploymentRequest",
+    "GetFindingsRefinementRequest",
+    "ListAllFindingsRefinementDeploymentsRequest",
+    "ListAllFindingsRefinementDeploymentsResponse",
+    "ListFindingsRefinementsRequest",
+    "ListFindingsRefinementsResponse",
+    "OutcomeFilter",
+    "UpdateFindingsRefinementDeploymentRequest",
+    "UpdateFindingsRefinementRequest",
+    "FindingsRefinementType",
     "GetInstanceRequest",
     "Instance",
     "AddChartRequest",

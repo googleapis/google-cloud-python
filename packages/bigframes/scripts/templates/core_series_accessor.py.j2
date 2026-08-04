@@ -20,7 +20,7 @@ from typing import (
 
 from bigframes import series, session
 from bigframes.core import col, sentinels
-from bigframes.extensions.core import abstract_series_accessor, series_tvf_mixins
+from bigframes.extensions.core import abstract_series_accessor, series_mixins
 
 T = TypeVar("T")
 S = TypeVar("S")
@@ -28,7 +28,7 @@ S = TypeVar("S")
 
 {% for ns in namespaces %}
 {% if ns.class_name == "AiSeriesAccessor" %}
-class {{ ns.class_name }}(series_tvf_mixins.AITVFMixin[T, S]):
+class {{ ns.class_name }}(series_mixins.AIMixin[T, S]):
 {% else %}
 class {{ ns.class_name }}(abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]):
 {% endif %}

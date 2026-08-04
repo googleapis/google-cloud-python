@@ -192,14 +192,13 @@ class AsyncAuthorizedSession:
                     ) = await mtls.get_client_cert_and_key(client_cert_callback)
 
                     if is_mtls:
-                        ssl_context = await mtls._run_in_executor(
-                            mtls.make_client_cert_ssl_context, cert, key
-                        )
-
                         # Re-create the auth request with the new SSL context
                         if AIOHTTP_INSTALLED and isinstance(
                             self._auth_request, AiohttpRequest
                         ):
+                            ssl_context = await mtls._run_in_executor(
+                                mtls.make_client_cert_ssl_context, cert, key
+                            )
                             connector = aiohttp.TCPConnector(ssl=ssl_context)
                             new_session = aiohttp.ClientSession(connector=connector)
 

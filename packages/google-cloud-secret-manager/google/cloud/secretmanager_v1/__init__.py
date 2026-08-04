@@ -23,6 +23,19 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.secretmanager_v1.services.secret_manager_service",
+    "google.cloud.secretmanager_v1.types.resources",
+    "google.cloud.secretmanager_v1.types.service",
+}
+
+
 from .services.secret_manager_service import (
     SecretManagerServiceAsyncClient,
     SecretManagerServiceClient,
@@ -46,6 +59,7 @@ from .types.service import (
     DeleteSecretRequest,
     DestroySecretVersionRequest,
     DisableSecretVersionRequest,
+    EnableManagedRotationRequest,
     EnableSecretVersionRequest,
     GetSecretRequest,
     GetSecretVersionRequest,
@@ -53,6 +67,7 @@ from .types.service import (
     ListSecretsResponse,
     ListSecretVersionsRequest,
     ListSecretVersionsResponse,
+    RotateSecretRequest,
     UpdateSecretRequest,
 )
 
@@ -150,6 +165,7 @@ __all__ = (
     "DeleteSecretRequest",
     "DestroySecretVersionRequest",
     "DisableSecretVersionRequest",
+    "EnableManagedRotationRequest",
     "EnableSecretVersionRequest",
     "GetSecretRequest",
     "GetSecretVersionRequest",
@@ -159,6 +175,7 @@ __all__ = (
     "ListSecretsResponse",
     "Replication",
     "ReplicationStatus",
+    "RotateSecretRequest",
     "Rotation",
     "Secret",
     "SecretManagerServiceClient",

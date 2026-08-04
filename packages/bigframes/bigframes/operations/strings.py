@@ -172,7 +172,7 @@ class StringMethods(Generic[T]):
         return self.contains(pat=adj_pat, case=case, flags=flags)
 
     def get(self, i: int) -> T:
-        return self._data._apply_unary_op(ops.StrGetOp(i=i))
+        return self._data._apply_unary_op(ops.GetItemOp(key=i))
 
     def pad(self, width, side="left", fillchar=" ") -> T:
         return self._data._apply_unary_op(

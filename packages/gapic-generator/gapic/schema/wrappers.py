@@ -30,7 +30,6 @@ Documentation is consistently at ``{thing}.meta.doc``.
 import collections
 import copy
 import dataclasses
-import functools
 import json
 import keyword
 import re
@@ -1289,14 +1288,14 @@ class RoutingParameter:
         """
         return re.compile(f"^{self._convert_to_regex(path_template)}$")
 
-    # Use caching to avoid repeated computation
-    @functools.cache
-    def to_regex(self) -> Pattern:
+    @utils.cached_property
+    def _regex(self) -> Pattern:
         return self._to_regex(self.path_template)
 
-    @property
-    # Use caching to avoid repeated computation
-    @functools.cache
+    def to_regex(self) -> Pattern:
+        return self._regex
+
+    @utils.cached_property
     def key(self) -> Union[str, None]:
         if self.path_template == "":
             return self.field

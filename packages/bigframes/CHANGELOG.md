@@ -4,6 +4,66 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.47.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.46.0...bigframes-v2.47.0) (2026-08-03)
+
+
+### Features
+
+* **bigframes:** add ai.embed and ai.similarity to bigquery accessor ([#17927](https://github.com/googleapis/google-cloud-python/issues/17927)) ([2d1372b](https://github.com/googleapis/google-cloud-python/commit/2d1372b25b871aaebba0296f516dbbdd9ef43a37))
+
+
+### Bug Fixes
+
+* **bigframes:** fix mypy errors in _magics.py related to get_ipython ([#17979](https://github.com/googleapis/google-cloud-python/issues/17979)) ([24d955e](https://github.com/googleapis/google-cloud-python/commit/24d955e7573acf5e2941f9d10b342b171d9def24))
+* bump brace-expansion from 5.0.6 to 5.0.7 in /packages/bigframes/bigframes/display/table_widget_angular ([#17794](https://github.com/googleapis/google-cloud-python/issues/17794)) ([2df1bb5](https://github.com/googleapis/google-cloud-python/commit/2df1bb5cb53906bfc41de92c10fdb5a8920ce36f))
+* bump fast-uri from 3.1.1 to 3.1.4 in /packages/bigframes/bigframes/display/table_widget_angular ([#17828](https://github.com/googleapis/google-cloud-python/issues/17828)) ([8ce495a](https://github.com/googleapis/google-cloud-python/commit/8ce495ab51d35cc56332f27589ce33b035215abf))
+* bump hono from 4.12.16 to 4.12.31 in /packages/bigframes/bigframes/display/table_widget_angular ([#17829](https://github.com/googleapis/google-cloud-python/issues/17829)) ([6d6fa39](https://github.com/googleapis/google-cloud-python/commit/6d6fa399b1578dd6c0ed7b2284b35f6bb0922da8))
+* bump immutable from 5.1.7 to 5.1.9 in /packages/bigframes/bigframes/display/table_widget_angular ([#17830](https://github.com/googleapis/google-cloud-python/issues/17830)) ([6abb1da](https://github.com/googleapis/google-cloud-python/commit/6abb1da519e7d4acdbdd531982530047fdafe854))
+* bump postcss from 8.5.14 to 8.5.23 in /packages/bigframes/bigframes/display/table_widget_angular ([#17908](https://github.com/googleapis/google-cloud-python/issues/17908)) ([e68eb8f](https://github.com/googleapis/google-cloud-python/commit/e68eb8ff03948b4a694aca465b69543ae0be6c27))
+* bump tar from 7.5.16 to 7.5.20 in /packages/bigframes/bigframes/display/table_widget_angular ([#17793](https://github.com/googleapis/google-cloud-python/issues/17793)) ([3502d41](https://github.com/googleapis/google-cloud-python/commit/3502d4183d9864e4310b3daf063ec90be9969e25))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [2.46.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.45.0...bigframes-v2.46.0) (2026-07-16)
+
+
+### Features
+
+* **bigframes:** Support groupby.agg/transform with udf transpiler ([#17613](https://github.com/googleapis/google-cloud-python/issues/17613)) ([cae94f9](https://github.com/googleapis/google-cloud-python/commit/cae94f99121d7708671a35acf82616cfe378cccb))
+* **bigframes:** support offset-based column access via iloc ([#17367](https://github.com/googleapis/google-cloud-python/issues/17367)) ([4253fab](https://github.com/googleapis/google-cloud-python/commit/4253fab07ccdb2b94e247f8dade793828754b88b))
+
+
+### Bug Fixes
+
+* **bigframes:** Fix sqlglot backend regressions ([#17655](https://github.com/googleapis/google-cloud-python/issues/17655)) ([91f93bc](https://github.com/googleapis/google-cloud-python/commit/91f93bcd7b71b6cea62f506ed684500cec1eb6bb))
+* bump gradio from 6.15.0 to 6.15.1 in /packages/bigframes ([#17712](https://github.com/googleapis/google-cloud-python/issues/17712)) ([a85d59f](https://github.com/googleapis/google-cloud-python/commit/a85d59f39998d94cbac8d5e98547f18b3cc5e5be))
+* bump mistune from 3.2.1 to 3.3.0 in /packages/bigframes ([#17694](https://github.com/googleapis/google-cloud-python/issues/17694)) ([e5f7fef](https://github.com/googleapis/google-cloud-python/commit/e5f7fef31c2bbe5f559f4c79fdaf4ebcf6e1bd3f))
+* bump soupsieve from 2.7 to 2.8.4 in /packages/bigframes ([#17695](https://github.com/googleapis/google-cloud-python/issues/17695)) ([635da34](https://github.com/googleapis/google-cloud-python/commit/635da3453b2ba78b8abea43c554a055257f33aa1))
+* bump transformers from 5.3.0 to 5.5.0 in /packages/bigframes ([#17700](https://github.com/googleapis/google-cloud-python/issues/17700)) ([4b049c4](https://github.com/googleapis/google-cloud-python/commit/4b049c4eb8dc1ec91320b55fe515c339cd448af3))
+* emit bracketed inline array syntax for scalar subquery expressions ([#17716](https://github.com/googleapis/google-cloud-python/issues/17716)) ([ce5fd50](https://github.com/googleapis/google-cloud-python/commit/ce5fd500b68c16f56ea8066d8a6fa4b0b8d92081))
+
+
+### Documentation
+
+* make landing page quickstart runnable ([fc423c8](https://github.com/googleapis/google-cloud-python/commit/fc423c809cc80168f45fee795d5db5dc7a571fb1))
+* make landing page quickstart runnable ([#17687](https://github.com/googleapis/google-cloud-python/issues/17687)) ([fc423c8](https://github.com/googleapis/google-cloud-python/commit/fc423c809cc80168f45fee795d5db5dc7a571fb1))
+
+## [2.45.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.44.0...bigframes-v2.45.0) (2026-07-08)
+
+
+### Features
+
+* **bigframes:** add ai.classify, ai.score, ai.if_ to the df bq accessor ([#17569](https://github.com/googleapis/google-cloud-python/issues/17569)) ([4f94be8](https://github.com/googleapis/google-cloud-python/commit/4f94be8f01971380f0fb5b433ab33d7b4cb7176d))
+* **bigframes:** Enable local udf execution ([#17588](https://github.com/googleapis/google-cloud-python/issues/17588)) ([b8ed34c](https://github.com/googleapis/google-cloud-python/commit/b8ed34cc05101c58ef285822d86298cd0f56613c))
+* **bigframes:** UDF transpiler handles some control flow ([#17558](https://github.com/googleapis/google-cloud-python/issues/17558)) ([a8cbde3](https://github.com/googleapis/google-cloud-python/commit/a8cbde39199f838a43ebc8b938ad722595655abd))
+* support gemini-3.x models ([#17615](https://github.com/googleapis/google-cloud-python/issues/17615)) ([5d0efa3](https://github.com/googleapis/google-cloud-python/commit/5d0efa3cb86568a33a5b3097f30733d39fcbef66))
+
+
+### Bug Fixes
+
+* bump gdal from 3.13.0 to 3.13.1 in /packages/bigframes ([#17609](https://github.com/googleapis/google-cloud-python/issues/17609)) ([0f4bfed](https://github.com/googleapis/google-cloud-python/commit/0f4bfed4685a362f6487cd4cb02ead3c0dde85c9))
+* bump gradio from 5.39.0 to 6.15.0 in /packages/bigframes ([#17619](https://github.com/googleapis/google-cloud-python/issues/17619)) ([bddda6a](https://github.com/googleapis/google-cloud-python/commit/bddda6a11a9c9bcce2d9e8b665b63d47f49f894f))
+* bump transformers from 4.54.1 to 5.3.0 in /packages/bigframes ([#17610](https://github.com/googleapis/google-cloud-python/issues/17610)) ([10eca3f](https://github.com/googleapis/google-cloud-python/commit/10eca3f4b6578c9451b06cdb2889561563fa8d0d))
+
 ## [2.44.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.43.0...bigframes-v2.44.0) (2026-06-25)
 
 

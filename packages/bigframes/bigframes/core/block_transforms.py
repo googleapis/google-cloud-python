@@ -27,22 +27,26 @@ import bigframes.core.blocks as blocks
 import bigframes.core.bytecode as bytecode
 import bigframes.core.expression as ex
 import bigframes.core.ordering as ordering
-import bigframes.core.window_spec as windows
+import bigframes.core.window_spec as window_specs
 import bigframes.dtypes as dtypes
+import bigframes.functions
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
+from bigframes._config import options
 from bigframes.core import agg_expressions, py_expressions
 
 
-def apply_to_block_rows(
-    func: Callable, block: blocks.Block, *args, **kwargs
-) -> blocks.Block:
-    """
-    Apply the given function to each row of the block.
-
-    The function is applied to each row of the block, and the result is returned
-    as a new block with the same index.
-    """
+def compile_udf(
+    block: blocks.Block,
+    func: Callable,
+    args: tuple = (),
+    kwargs: dict | None = None,
+    col_series_args: typing.Mapping[str, str] | None = None,
+    window_spec: Optional[window_specs.WindowSpec] = None,
+) -> ex.Expression:
+    """Compile a python function to a BigFrames expression in the context of a block."""
+    if kwargs is None:
+        kwargs = {}
     expr = bytecode._compile_bytecode_to_py_expr(func)
     sig = inspect.signature(func)
 
@@ -54,17 +58,77 @@ def apply_to_block_rows(
     for name, value in bound_params.items():
         bindings[name] = ex.const(value)
 
-    expr = py_expressions.resolve_py_exprs(
-        expr,
-        series_arg=next(iter(sig.parameters.keys())),
-        series_attrs={
-            label: col_id
-            for label in block.column_labels
-            if (col_id := block.resolve_label_exact(label)) is not None
-        },
-    )
-    expr = expr.bind_variables(bindings)
+    series_arg = next(iter(sig.parameters.keys()))
 
+    if col_series_args is not None:
+        expr = py_expressions.resolve_py_exprs(
+            expr,
+            series_arg=series_arg,
+            col_series_args=col_series_args,
+            window_spec=window_spec,
+        )
+    else:
+        series_attrs: dict = {}
+        for i, (col_id, label) in enumerate(
+            zip(block.value_columns, block.column_labels)
+        ):
+            series_attrs[i] = col_id
+            if label is not None:
+                series_attrs[label] = col_id
+
+        expr = py_expressions.resolve_py_exprs(
+            expr,
+            series_arg=series_arg,
+            series_attrs=series_attrs,
+            window_spec=window_spec,
+        )
+
+    expr = expr.bind_variables(bindings)
+    return expr
+
+
+def is_transpiler_eligible(func: typing.Any) -> bool:
+    """Return True if func is eligible for Python transpilation."""
+    return (
+        options.experiments.enable_python_transpiler
+        and callable(func)
+        and not isinstance(func, bigframes.functions.Udf)
+    )
+
+
+def compile_column_udf(
+    block: blocks.Block,
+    func: Callable,
+    column_id: str,
+    args: tuple = (),
+    kwargs: dict | None = None,
+    window_spec: Optional[window_specs.WindowSpec] = None,
+) -> tuple[ex.Expression, str]:
+    """Compile a column-wise python UDF in block context and return (expr, name)."""
+    sig = inspect.signature(func)
+    series_arg = next(iter(sig.parameters.keys()))
+    expr = compile_udf(
+        block,
+        func,
+        args=args,
+        kwargs=kwargs,
+        col_series_args={series_arg: column_id},
+        window_spec=window_spec,
+    )
+    name = getattr(func, "__name__", "<lambda>")
+    return expr, name
+
+
+def apply_to_block_rows(
+    func: Callable, block: blocks.Block, *args, **kwargs
+) -> blocks.Block:
+    """
+    Apply the given function to each row of the block.
+
+    The function is applied to each row of the block, and the result is returned
+    as a new block with the same index.
+    """
+    expr = compile_udf(block, func, args, kwargs)
     return block.project_exprs([expr], labels=[None], drop=True)
 
 
@@ -107,13 +171,13 @@ def indicate_duplicates(
         agg_expressions.NullaryAggregation(
             agg_ops.RowNumberOp(),
         ),
-        window=windows.unbound(grouping_keys=tuple(columns)),
+        window=window_specs.unbound(grouping_keys=tuple(columns)),
     )
     count = agg_expressions.WindowExpression(
         agg_expressions.NullaryAggregation(
             agg_ops.SizeOp(),
         ),
-        window=windows.unbound(grouping_keys=tuple(columns)),
+        window=window_specs.unbound(grouping_keys=tuple(columns)),
     )
 
     if keep == "first":
@@ -147,7 +211,7 @@ def quantile(
     dropna: bool = False,
 ) -> blocks.Block:
     # TODO: handle windowing and more interpolation methods
-    window = windows.unbound(
+    window = window_specs.unbound(
         grouping_keys=tuple(grouping_column_ids),
     )
     quantile_cols = []
@@ -248,8 +312,8 @@ def _interpolate_column(
     if interpolate_method not in ["linear", "nearest", "ffill"]:
         raise ValueError("interpolate method not supported")
     window_ordering = (ordering.OrderingExpression(ex.deref(x_values)),)
-    backwards_window = windows.rows(end=0, ordering=window_ordering)
-    forwards_window = windows.rows(start=0, ordering=window_ordering)
+    backwards_window = window_specs.rows(end=0, ordering=window_ordering)
+    forwards_window = window_specs.rows(start=0, ordering=window_ordering)
 
     # Note, this method may
     block, notnull = block.apply_unary_op(column, ops.notnull_op)
@@ -401,7 +465,7 @@ def value_counts(
     )
     count_id = block.value_columns[0]
     if normalize:
-        unbound_window = windows.unbound(grouping_keys=tuple(grouping_keys))
+        unbound_window = window_specs.unbound(grouping_keys=tuple(grouping_keys))
         block, total_count_id = block.apply_window_op(
             count_id, agg_ops.sum_op, unbound_window
         )
@@ -429,7 +493,7 @@ def pct_change(block: blocks.Block, periods: int = 1) -> blocks.Block:
     column_labels = block.column_labels
 
     # Window framing clause is not allowed for analytic function lag.
-    window_spec = windows.unbound()
+    window_spec = window_specs.unbound()
 
     original_columns = block.value_columns
     exprs = []
@@ -484,9 +548,9 @@ def rank(
         )
         window_op = agg_ops.dense_rank_op if method == "dense" else agg_ops.count_op
         window_spec = (
-            windows.unbound(grouping_keys=grouping_cols, ordering=window_ordering)
+            window_specs.unbound(grouping_keys=grouping_cols, ordering=window_ordering)
             if method == "dense"
-            else windows.rows(
+            else window_specs.rows(
                 end=0, ordering=window_ordering, grouping_keys=grouping_cols
             )
         )
@@ -498,7 +562,7 @@ def rank(
                 result_expr,
                 agg_expressions.WindowExpression(
                     agg_expressions.UnaryAggregation(agg_ops.max_op, result_expr),
-                    windows.unbound(grouping_keys=grouping_cols),
+                    window_specs.unbound(grouping_keys=grouping_cols),
                 ),
             )
         # Step 2: Apply aggregate to groups of like input values.
@@ -511,7 +575,7 @@ def rank(
             }[method]
             result_expr = agg_expressions.WindowExpression(
                 agg_expressions.UnaryAggregation(agg_op, result_expr),
-                windows.unbound(grouping_keys=(col, *grouping_cols)),
+                window_specs.unbound(grouping_keys=(col, *grouping_cols)),
             )
         # Pandas masks all values where any grouping column is null
         # Note: we use pd.NA instead of float('nan')
@@ -612,7 +676,7 @@ def nsmallest(
         block, counter = block.apply_window_op(
             column_ids[0],
             agg_ops.rank_op,
-            window_spec=windows.unbound(ordering=tuple(order_refs)),
+            window_spec=window_specs.unbound(ordering=tuple(order_refs)),
         )
         block, condition = block.project_expr(ops.le_op.as_expr(counter, ex.const(n)))
         block = block.filter_by_id(condition)
@@ -642,7 +706,7 @@ def nlargest(
         block, counter = block.apply_window_op(
             column_ids[0],
             agg_ops.rank_op,
-            window_spec=windows.unbound(ordering=tuple(order_refs)),
+            window_spec=window_specs.unbound(ordering=tuple(order_refs)),
         )
         block, condition = block.project_expr(ops.le_op.as_expr(counter, ex.const(n)))
         block = block.filter_by_id(condition)
@@ -913,7 +977,7 @@ def _idx_extrema(
                 for idx_col in original_block.index_columns
             ],
         ]
-        window_spec = windows.unbound(ordering=tuple(order_refs))
+        window_spec = window_specs.unbound(ordering=tuple(order_refs))
         idx_col = original_block.index_columns[0]
         block, result_col = block.apply_window_op(
             idx_col, agg_ops.first_op, window_spec
