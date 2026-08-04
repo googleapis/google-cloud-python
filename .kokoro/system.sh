@@ -287,30 +287,33 @@ if [[ -n "${KOKORO_GITHUB_PULL_REQUEST_NUMBER}" ]]; then
     if [[ -n "${GITHUB_TOKEN:-${GH_TOKEN}}" ]]; then
         headers+=(-H "Authorization: token ${GITHUB_TOKEN:-${GH_TOKEN}}")
     fi
-    # Hardened curl call with || true to prevent script termination if network fails
-    LABELS_JSON=$(curl -s "${headers[@]}" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels" || echo "[]")
-
-    # Use jq to parse github labels (works as long as jq is available in python-multi image).
-    IS_ADHOC=$(echo "$LABELS_JSON" | jq -r 'if type == "array" then any(.name == "test:adhoc") else false end' 2>/dev/null)
-
-
-    if [[ "$IS_ADHOC" == "true" ]]; then
-        TRIGGER_ADHOC="true"
-        echo "Adhoc test label 'test:adhoc' found!"
+    # Fetch PR labels from GitHub API, handling connection failures gracefully
+    if ! LABELS_JSON=$(curl -s "${headers[@]}" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels"); then
+        echo "==============================================================="
+        echo "WARNING: Failed to connect to GitHub API!"
+        echo "Ad-hoc tests will NOT be triggered."
+        echo "==============================================================="
     else
-        if [[ "$LABELS_JSON" != "["* ]]; then
-            API_ERR_MSG=$(echo "$LABELS_JSON" | jq -r '.message // "Unknown error"' 2>/dev/null)
-            echo "================================================================"
-            echo "WARNING: Failed to fetch PR labels from GitHub API!"
-            echo "Error Message: $API_ERR_MSG"
-            echo "This might be due to API Rate Limiting."
-            echo "Ad-hoc tests will NOT be triggered."
-            echo "================================================================"
+        # Use jq to parse github labels (works as long as jq is available in python-multi image).
+        IS_ADHOC=$(echo "$LABELS_JSON" | jq -r 'if type == "array" then any(.name == "test:adhoc") else false end' 2>/dev/null)
+
+        if [[ "$IS_ADHOC" == "true" ]]; then
+            TRIGGER_ADHOC="true"
+            echo "Adhoc test label 'test:adhoc' found!"
         else
-            echo "Adhoc test label 'test:adhoc' not found."
+            if [[ "$LABELS_JSON" != "["* ]]; then
+                API_ERR_MSG=$(echo "$LABELS_JSON" | jq -r '.message // "Unknown error"' 2>/dev/null)
+                echo "==============================================================="
+                echo "WARNING: Failed to fetch PR labels from GitHub API!"
+                echo "Error Message: $API_ERR_MSG"
+                echo "This might be due to API Rate Limiting."
+                echo "Ad-hoc tests will NOT be triggered."
+                echo "==============================================================="
+            else
+                echo "Adhoc test label 'test:adhoc' not found."
+            fi
         fi
     fi
-
 fi
 
 if [[ "$TRIGGER_ADHOC" == "true" ]]; then
@@ -358,7 +361,7 @@ export system_test_script PROJECT_ROOT KOKORO_GFILE_DIR
 # Stream package names to xargs for parallel execution
 # -P "$MAX_JOBS" controls concurrency
 # -I {} replaces {} with the package name
-printf '%s\0' "${PACKAGES_TO_TEST[@]}" \
+[ ${#PACKAGES_TO_TEST[@]} -eq 0 ] || printf '%s\0' "${PACKAGES_TO_TEST[@]}" \
   | xargs -0 -n 1 -P "$MAX_JOBS" \
     bash -c '
       pkg="$0"

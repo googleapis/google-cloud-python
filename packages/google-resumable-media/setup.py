@@ -16,6 +16,7 @@ import os
 
 import setuptools
 
+
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
