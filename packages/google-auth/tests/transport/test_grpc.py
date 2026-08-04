@@ -649,3 +649,77 @@ class TestSslCredentials(object):
         mock_ssl_channel_credentials.assert_called_once_with(
             certificate_chain=PUBLIC_CERT_BYTES, private_key=PRIVATE_KEY_BYTES
         )
+
+
+
+import collections
+
+@mock.patch("google.auth.transport.grpc._ReplayableIterator")
+def test_interceptor_uses_factory_if_callable():
+    interceptor = _grpc._MTLSCallInterceptor()
+
+    # 1. Standard list/iterator (no factory)
+    call_no_factory = _grpc._RetryableStreamResponseIterator(
+        continuation=mock.Mock(),
+        client_call_details=mock.Mock(),
+        request_or_iterator=[b"1", b"2"],
+        interceptor=interceptor,
+        is_client_stream=True,
+    )
+    assert call_no_factory._uses_factory is False
+    assert call_no_factory._payload is not None
+
+    # 2. Factory pattern applied
+    generator_factory = lambda: (x for x in [b"1", b"2"])
+    call_factory = _grpc._RetryableStreamResponseIterator(
+        continuation=mock.Mock(return_value=mock.Mock(spec=grpc.Call)),
+        client_call_details=mock.Mock(),
+        request_or_iterator=generator_factory,
+        interceptor=interceptor,
+        is_client_stream=True,
+    )
+    assert call_factory._uses_factory is True
+    assert call_factory._payload is None
+
+@mock.patch("google.auth.transport.grpc._MTLSCallInterceptor._should_retry")
+def test_factory_infinite_replay_on_error(mock_should_retry):
+    interceptor = _grpc._MTLSCallInterceptor()
+    interceptor._wrapper = mock.Mock()
+    interceptor._wrapper._cached_cert = "cert"
+
+    mock_should_retry.side_effect = [True, False] # Retry once
+
+    # A mock call that raises RpcError on the first next()
+    mock_inner_call1 = mock.Mock(spec=grpc.Call)
+    mock_err = grpc.RpcError()
+    mock_err.code = lambda: grpc.StatusCode.UNAUTHENTICATED
+    mock_inner_call1.__next__ = mock.Mock(side_effect=mock_err)
+
+    mock_inner_call2 = mock.Mock(spec=grpc.Call)
+    mock_inner_call2.__next__ = mock.Mock(return_value=b"SUCCESS")
+
+    continuation = mock.Mock(side_effect=[mock_inner_call1, mock_inner_call2])
+
+    factory_calls = 0
+    def factory():
+        nonlocal factory_calls
+        factory_calls += 1
+        return (x for x in [b"A"])
+
+    stream = _grpc._RetryableStreamResponseIterator(
+        continuation=continuation,
+        client_call_details=mock.Mock(),
+        request_or_iterator=factory,
+        interceptor=interceptor,
+        is_client_stream=True,
+    )
+
+    # Trigger the error which causes the retry
+    result = next(stream)
+
+    # 1. We got the successful result from the second call
+    assert result == b"SUCCESS"
+    # 2. The factory was requested exactly twice! (zero memory buffer used)
+    assert factory_calls == 2
+    # 3. The wrapper's refresh logic was triggered
+    interceptor._wrapper.refresh_logic.assert_called_once_with(1)
