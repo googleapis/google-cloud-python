@@ -17,18 +17,20 @@
 
 import json
 import pytest
+import os
 import re
 
 from unittest import mock
 
-from google.protobuf import descriptor_pb2
+import google.auth.transport.mtls
 
 from google.cloud.storagebatchoperations_v1._compat import transcode_request
-from google.cloud.storagebatchoperations_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint
+from google.cloud.storagebatchoperations_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert
 from google.cloud.storagebatchoperations_v1._compat import setup_request_id
 
 from google.auth.exceptions import MutualTLSChannelError
 from google.api_core.universe import EmptyUniverseError
+from google.protobuf import descriptor_pb2
 
 
 def test_get_universe_domain():
@@ -225,6 +227,19 @@ def test_get_api_endpoint(
             )
             == expected
         )
+
+
+def test_should_use_client_cert_fallback_env():
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}, clear=True):
+        assert should_use_client_cert() is True
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}, clear=True):
+        assert should_use_client_cert() is False
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "invalid"}, clear=True):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError, match="Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"):
+                should_use_client_cert()
 
 
 class MockRequest:

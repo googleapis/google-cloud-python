@@ -247,7 +247,6 @@ def unit(session, protobuf_implementation):
         *args,
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-            "SPANNER_DISABLE_AFE_SERVER_TIMING": "true",
         },
     )
 
@@ -610,7 +609,6 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
             "SPANNER_DATABASE_DIALECT": database_dialect,
             "SKIP_BACKUP_TESTS": "true",
-            "SPANNER_DISABLE_AFE_SERVER_TIMING": "true",
         },
     )
 
@@ -809,6 +807,5 @@ def core_deps_from_source(session, protobuf_implementation):
         "tests/unit",
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-            "SPANNER_DISABLE_AFE_SERVER_TIMING": "true",
         },
     )
