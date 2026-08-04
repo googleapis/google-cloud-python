@@ -161,8 +161,6 @@ reap_parallel_results() {
     fi
   done
 
-
-
   if [ "$failed_count" -gt 0 ]; then
     echo "=================================================="
     echo "@FAILED - DETAILED LOGS FOR FAILED PACKAGES"
