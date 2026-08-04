@@ -32,11 +32,10 @@ def reset_metrics_singletons(monkeypatch):
     # Reset singletons and env var before test to avoid state pollution
     monkeypatch.setenv("SPANNER_DISABLE_BUILTIN_METRICS", "true")
     monkeypatch.setenv("SPANNER_DISABLE_AFE_SERVER_TIMING", "true")
-    _helpers.ENABLE_AFE_SERVER_TIMING = False
+    monkeypatch.setattr(_helpers, "ENABLE_AFE_SERVER_TIMING", False)
     SpannerMetricsTracerFactory._metrics_tracer_factory = None
     SpannerMetricsTracerFactory._current_metrics_tracer_ctx.set(None)
     yield
     # Reset singletons after test to ensure no leakage
-    _helpers.ENABLE_AFE_SERVER_TIMING = False
     SpannerMetricsTracerFactory._metrics_tracer_factory = None
     SpannerMetricsTracerFactory._current_metrics_tracer_ctx.set(None)
