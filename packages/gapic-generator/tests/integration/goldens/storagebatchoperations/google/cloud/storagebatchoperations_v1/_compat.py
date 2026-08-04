@@ -15,20 +15,36 @@
 #
 """A compatibility module for older versions of google-api-core."""
 
+import os
 import json
 import uuid
 
 from typing import Any, Dict, List, Optional, Tuple
 from typing import Union
 
+import google.protobuf.message
+
 from google.api_core import path_template
+from google.api_core.universe import EmptyUniverseError
+from google.auth.exceptions import MutualTLSChannelError
 from google.protobuf import json_format
 from urllib.parse import urlparse, urlunparse
 
-from google.auth.exceptions import MutualTLSChannelError
-from google.api_core.universe import EmptyUniverseError
-
-import google.protobuf.message
+try:
+    # note: `#type: ignore` is added because the return type for `should_use_client_cert`
+    # is different than that of the fallback implementation below. This will be removed once
+    # we bump the minimum supported version of google-auth.
+    from google.auth.transport.mtls import should_use_client_cert  # type: ignore
+except ImportError:  # pragma: NO COVER
+    def should_use_client_cert():
+        """Returns whether client certificate should be used for mTLS."""
+        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+        if use_client_cert not in ("true", "false"):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
+                " either `true` or `false`"
+            )
+        return use_client_cert == "true"
 
 DEFAULT_UNIVERSE = "googleapis.com"
 
