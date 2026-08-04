@@ -3,7 +3,7 @@ def {{ func_name }}(*args):
     args = args + (None,) * ({{ max_args }} - len(args))
     {% for impl in impls %}
     # Try matching impl {{ loop.index0 }}
-    {% if impl.uses_any1 %}
+    {% if impl.requires_generic_types %}
     any1_val = None
     {% endif %}
     match_ok = True
@@ -53,7 +53,7 @@ def {{ func_name }}(*args):
         {% endif %}
     {% endfor %}
     if match_ok:
-        {% set return_type_yaml = impl.return %}
+        {% set return_type_yaml = impl.return_type %}
         {% if return_type_yaml == "any1" %}
         return any1_val
         {% elif return_type_yaml.startswith("list<") and return_type_yaml.endswith(">") %}

@@ -26,10 +26,10 @@ version = "1.37.1"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     # Ensure that the lower bounds of these dependencies match what we have in the
-    # templated setup.py.j2: https://github.com/googleapis/gapic-generator-python/blob/main/gapic/templates/setup.py.j2
+    # templated setup.py.j2: https://github.com/googleapis/google-cloud-python/blob/main/packages/gapic-generator/gapic/templates/setup.py.j2
     "click >= 6.7",
     "google-api-core[grpc] >= 2.25.0, < 3.0.0",
-    "googleapis-common-protos >= 1.55.0, < 2.0.0",
+    "googleapis-common-protos >= 1.69.2, < 2.0.0",
     "grpcio >= 1.59.0, < 2.0.0",
     # 2.11.0 is required which adds the `default` argument to `jinja-filters.map()`
     # https://jinja.palletsprojects.com/en/3.0.x/templates/#jinja-filters.map

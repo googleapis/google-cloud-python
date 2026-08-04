@@ -361,18 +361,6 @@
         }
       ]
     },
-    "packages/google-cloud-apigee-registry": {
-      "component": "google-cloud-apigee-registry",
-      "extra-files": [
-        "google/cloud/apigee_registry/gapic_version.py",
-        "google/cloud/apigee_registry_v1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.cloud.apigeeregistry.v1.json",
-          "type": "json"
-        }
-      ]
-    },
     "packages/google-cloud-apihub": {
       "component": "google-cloud-apihub",
       "extra-files": [
@@ -664,9 +652,6 @@
           "type": "json"
         }
       ]
-    },
-    "packages/google-cloud-bigquery": {
-      "component": "google-cloud-bigquery"
     },
     "packages/google-cloud-bigquery-analyticshub": {
       "component": "google-cloud-bigquery-analyticshub",
