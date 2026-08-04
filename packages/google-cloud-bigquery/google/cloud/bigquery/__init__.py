@@ -248,9 +248,9 @@ def load_ipython_extension(ipython):
         )
 
 try:
-    from importlib import metadata
+    import importlib.metadata
 
-    _grpc_ver_str = metadata.version("grpcio")
+    _grpc_ver_str = importlib.metadata.version("grpcio")
     _grpc_parts = []
     for _p in _grpc_ver_str.split("."):
         try:
