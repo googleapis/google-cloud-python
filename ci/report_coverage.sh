@@ -45,7 +45,7 @@ if [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
     modified_packages=$(for dir in ${PACKAGE_DIRS}; do ls -d ${dir}/*/ 2>/dev/null; done | cut -d/ -f1,2 | sort -u)
 elif [[ "${BUILD_TYPE}" == "presubmit" ]]; then
     # Presubmit build: evaluate coverage only for packages modified relative to the target branch
-    modified_packages=$(git diff --name-only "origin/${TARGET_BRANCH}" -- ${PACKAGE_DIRS} 2>/dev/null | cut -d/ -f1,2 | sort -u)
+    modified_packages=$(git diff --name-only "origin/${TARGET_BRANCH}..." -- ${PACKAGE_DIRS} 2>/dev/null | cut -d/ -f1,2 | sort -u)
 else
     # Continuous build (post-merge on main): evaluate coverage for packages modified in the last commit
     modified_packages=$(git diff --name-only HEAD~1 -- ${PACKAGE_DIRS} 2>/dev/null | cut -d/ -f1,2 | sort -u)

@@ -54,9 +54,9 @@ elif [[ ${BUILD_TYPE} == "presubmit" ]]; then
     # For presubmit build, we want to know the difference from the
     # common commit in the target branch.
     if [ -n "${TARGET_BRANCH}" ]; then
-        git fetch origin "${TARGET_BRANCH}" --depth=1 || true
+        git fetch origin "${TARGET_BRANCH}" --deepen=200 || true
     fi
-    GIT_DIFF_ARG="origin/${TARGET_BRANCH}"
+    GIT_DIFF_ARG="origin/${TARGET_BRANCH}..."
 
 elif [[ ${BUILD_TYPE} == "continuous" ]]; then
     # For continuous build, we want to know the difference in the last
