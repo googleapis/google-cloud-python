@@ -550,4 +550,3 @@ def _parse_version_to_tuple(version_string):
         else:
             break
     return tuple(parts)
-
