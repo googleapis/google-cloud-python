@@ -21,20 +21,16 @@ version of the ``db`` API (hence ``ndb``).
 .. autodata:: __all__
 """
 
+from google.cloud.ndb import utils
 from google.cloud.ndb import version
+
 
 try:
     import warnings
     import importlib.metadata
 
     _grpc_ver_str = importlib.metadata.version("grpcio")
-    _grpc_parts = []
-    for _p in _grpc_ver_str.split("."):
-        try:
-            _grpc_parts.append(int(_p))
-        except ValueError:
-            break
-    if tuple(_grpc_parts) < (1, 83, 0):
+    if utils._parse_version_to_tuple(_grpc_ver_str) < (1, 83, 0):
         warnings.warn(
             "grpcio < 1.83.0 does not support Post-Quantum Cryptography (PQC). "
             "Support for non-PQC environments is deprecated. In October 2026, "
