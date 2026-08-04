@@ -290,28 +290,27 @@ if [[ -n "${KOKORO_GITHUB_PULL_REQUEST_NUMBER}" ]]; then
     # Hardened curl call with || true to prevent script termination if network fails
     LABELS_JSON=$(curl -s "${headers[@]}" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels" || echo "[]")
 
-    # For this prototype:
-    # we use a small inline Python snippet here because parsing JSON in pure Bash is difficult/error-prone,
-    # and we cannot guarantee that tools like 'jq' or 'gh' are installed in the test environment.
-    # Python and its built-in 'json' module are guaranteed to be available in this repository.
-    IS_ADHOC=$(python3 -c "
-import json
-import sys
-try:
-    labels = json.loads(sys.argv[1])
-    if isinstance(labels, list):
-        if any(isinstance(l, dict) and l.get('name') == 'test:adhoc' for l in labels):
-            print('true')
-except Exception:
-    pass
-" "$LABELS_JSON")
+    # Use jq to parse github labels (works as long as jq is available in python-multi image).
+    IS_ADHOC=$(echo "$LABELS_JSON" | jq -r 'if type == "array" then any(.name == "test:adhoc") else false end' 2>/dev/null)
+
 
     if [[ "$IS_ADHOC" == "true" ]]; then
         TRIGGER_ADHOC="true"
         echo "Adhoc test label 'test:adhoc' found!"
     else
-        echo "Adhoc test label not found or error occurred."
+        if [[ "$LABELS_JSON" != "["* ]]; then
+            API_ERR_MSG=$(echo "$LABELS_JSON" | jq -r '.message // "Unknown error"' 2>/dev/null)
+            echo "================================================================"
+            echo "WARNING: Failed to fetch PR labels from GitHub API!"
+            echo "Error Message: $API_ERR_MSG"
+            echo "This might be due to API Rate Limiting."
+            echo "Ad-hoc tests will NOT be triggered."
+            echo "================================================================"
+        else
+            echo "Adhoc test label 'test:adhoc' not found."
+        fi
     fi
+
 fi
 
 if [[ "$TRIGGER_ADHOC" == "true" ]]; then
