@@ -1223,4 +1223,3 @@ def test__parse_version_to_tuple():
     assert _parse_version_to_tuple("1.83.1rc1") == (1, 83, 1)
     assert _parse_version_to_tuple("1.83.0dev0") == (1, 83, 0)
     assert _parse_version_to_tuple("2.0") == (2, 0)
-

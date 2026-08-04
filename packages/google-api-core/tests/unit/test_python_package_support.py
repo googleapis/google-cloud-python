@@ -132,10 +132,18 @@ def test_check_dependency_versions_with_custom_warnings(mock_warn):
 
     assert mock_warn.call_count == 2
     mock_warn.assert_any_call(
-        "my-consumer", "pkg1", "1.0.0", recommended_version="2.0.0", message_template=None
+        "my-consumer",
+        "pkg1",
+        "1.0.0",
+        recommended_version="2.0.0",
+        message_template=None,
     )
     mock_warn.assert_any_call(
-        "my-consumer", "pkg2", "2.0.0", recommended_version="3.0.0", message_template=None
+        "my-consumer",
+        "pkg2",
+        "2.0.0",
+        recommended_version="3.0.0",
+        message_template=None,
     )
 
 
@@ -148,9 +156,16 @@ def test_check_dependency_versions_default(mock_warn):
 
     assert mock_warn.call_count == 2
     mock_warn.assert_any_call(
-        "my-consumer", "google.protobuf", "6.33.5", recommended_version="6.x", message_template=None
+        "my-consumer",
+        "google.protobuf",
+        "6.33.5",
+        recommended_version="6.x",
+        message_template=None,
     )
     mock_warn.assert_any_call(
-        "my-consumer", "grpcio", "1.83.0", recommended_version="1.83.x", message_template=PQC_GRPC_WARNING_TEMPLATE
+        "my-consumer",
+        "grpcio",
+        "1.83.0",
+        recommended_version="1.83.x",
+        message_template=PQC_GRPC_WARNING_TEMPLATE,
     )
-

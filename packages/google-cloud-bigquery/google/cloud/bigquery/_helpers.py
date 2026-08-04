@@ -1122,4 +1122,3 @@ def _parse_version_to_tuple(version_string: str) -> Tuple[int, ...]:
         else:
             break
     return tuple(parts)
-
