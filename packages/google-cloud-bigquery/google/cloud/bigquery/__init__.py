@@ -30,6 +30,29 @@ The main concepts with this API are:
 import sys
 import warnings
 
+try:
+    import importlib.metadata
+
+    _grpc_ver_str = importlib.metadata.version("grpcio")
+    _grpc_parts = []
+    for _p in _grpc_ver_str.split("."):
+        try:
+            _grpc_parts.append(int(_p))
+        except ValueError:
+            break
+    if tuple(_grpc_parts) < (1, 83, 0):
+        warnings.warn(
+            "grpcio < 1.83.0 does not support Post-Quantum Cryptography (PQC). "
+            "Support for non-PQC environments is deprecated. In October 2026, "
+            "Google Cloud Python client libraries will raise their minimum requirements "
+            "(including google-api-core and grpcio) to enforce grpcio >= 1.83.0. "
+            "For more details on Google Cloud's post-quantum security migration, visit: "
+            "https://cloud.google.com/security/resources/post-quantum-cryptography",
+            FutureWarning,
+        )
+except Exception:
+    pass
+
 from google.cloud.bigquery import version as bigquery_version
 
 __version__ = bigquery_version.__version__
@@ -247,25 +270,3 @@ def load_ipython_extension(ipython):
             _cell_magic, magic_kind="cell", magic_name="bigquery"
         )
 
-try:
-    import importlib.metadata
-
-    _grpc_ver_str = importlib.metadata.version("grpcio")
-    _grpc_parts = []
-    for _p in _grpc_ver_str.split("."):
-        try:
-            _grpc_parts.append(int(_p))
-        except ValueError:
-            break
-    if tuple(_grpc_parts) < (1, 83, 0):
-        warnings.warn(
-            "grpcio < 1.83.0 does not support Post-Quantum Cryptography (PQC). "
-            "Support for non-PQC environments is deprecated. In October 2026, "
-            "Google Cloud Python client libraries will raise their minimum requirements "
-            "(including google-api-core and grpcio) to enforce grpcio >= 1.83.0. "
-            "For more details on Google Cloud's post-quantum security migration, visit: "
-            "https://cloud.google.com/security/resources/post-quantum-cryptography",
-            FutureWarning,
-        )
-except Exception:
-    pass
