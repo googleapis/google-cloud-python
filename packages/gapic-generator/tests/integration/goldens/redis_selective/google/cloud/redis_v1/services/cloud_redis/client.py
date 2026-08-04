@@ -30,7 +30,6 @@ from google.api_core import gapic_v1
 from google.cloud.redis_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, get_client_cert_source
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
-
 from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore

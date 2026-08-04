@@ -32,7 +32,6 @@ from google.cloud.storagebatchoperations_v1._compat import get_universe_domain, 
 from google.cloud.storagebatchoperations_v1._compat import setup_request_id
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
-
 from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
