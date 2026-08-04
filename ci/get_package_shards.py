@@ -227,7 +227,13 @@ if __name__ == "__main__":
     shards_json = json.dumps(shards)
     print(shards_json)
 
+    all_paths = []
+    for paths in packages.values():
+        all_paths.extend(paths)
+    packages_str = " ".join(all_paths)
+
     github_output = os.environ.get("GITHUB_OUTPUT")
     if github_output:
         with open(github_output, "a") as f:
             f.write(f"matrix={shards_json}\n")
+            f.write(f"packages={packages_str}\n")

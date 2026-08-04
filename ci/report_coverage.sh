@@ -26,21 +26,14 @@ MAX_JOBS=$(nproc)
 
 mkdir -p "${LOG_DIR}"
 
-if [ ! -d "${RESULTS_DIR}" ]; then
-    echo "Error: No coverage results found in ${RESULTS_DIR}."
-    exit 1
-fi
-
-# Unzip any zipped coverage results
-find "$RESULTS_DIR" -type f -name '*.zip' -print0 | xargs -0 -P "${MAX_JOBS}" -I {} unzip -q -o {} -d "$RESULTS_DIR"
-
-# Identify modified packages
 BUILD_TYPE="${BUILD_TYPE:-presubmit}"
 TARGET_BRANCH="${TARGET_BRANCH:-main}"
-
 PACKAGE_DIRS="${PACKAGE_DIRS:-packages preview-packages}"
 
-if [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
+if [ "${PACKAGE_LIST+set}" = "set" ]; then
+    # If pre-determined package list is set, use it
+    modified_packages="${PACKAGE_LIST}"
+elif [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
     # Test all packages mode: evaluate coverage for every package in the repository
     modified_packages=$(for dir in ${PACKAGE_DIRS}; do ls -d ${dir}/*/ 2>/dev/null; done | cut -d/ -f1,2 | sort -u)
 elif [[ "${BUILD_TYPE}" == "presubmit" ]]; then
@@ -50,6 +43,21 @@ else
     # Continuous build (post-merge on main): evaluate coverage for packages modified in the last commit
     modified_packages=$(git diff --name-only HEAD~1 -- ${PACKAGE_DIRS} 2>/dev/null | cut -d/ -f1,2 | sort -u)
 fi
+
+if [ -z "${modified_packages}" ]; then
+    echo "============================================================"
+    echo "No modified packages to evaluate coverage for."
+    echo "============================================================"
+    exit 0
+fi
+
+if [ ! -d "${RESULTS_DIR}" ]; then
+    echo "Error: No coverage results found in ${RESULTS_DIR}."
+    exit 1
+fi
+
+# Unzip any zipped coverage results
+find "$RESULTS_DIR" -type f -name '*.zip' -print0 | xargs -0 -P "${MAX_JOBS}" -I {} unzip -q -o {} -d "$RESULTS_DIR"
 
 # Function to report coverage for a single package
 report_package_coverage() {
