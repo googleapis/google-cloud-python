@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.42.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.3...google-cloud-bigquery-v3.42.4) (2026-08-04)
+
+
+### Bug Fixes
+
+* **bigquery:** Fix bigquery socket leak ([#17953](https://github.com/googleapis/google-cloud-python/issues/17953)) ([8c26b38](https://github.com/googleapis/google-cloud-python/commit/8c26b38a7ab4b5c543f479705c4a231fffffcfcc))
+
 ## [3.42.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.2...google-cloud-bigquery-v3.42.3) (2026-07-30)
 
 
