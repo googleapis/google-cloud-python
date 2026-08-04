@@ -16,10 +16,8 @@
 # Script to determine ad-hoc packages to test.
 # This script is intended to be sourced from main test scripts.
 #
-# Ensure we are in the project root if called directly,
-# but usually this is sourced and CWD is already project root.
-# For safety, we can use script location but if sourced $0 might be the parent script.
-# Let's assume CWD is project root as per system.sh behavior.
+# Precondition: This script assumes it is sourced from the project root (as set by system.sh).
+
 
 ADHOC_DIR="ci/adhoc"
 STANDALONE_LIST="${ADHOC_DIR}/.standalone_package_list.txt"
