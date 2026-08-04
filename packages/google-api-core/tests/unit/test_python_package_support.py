@@ -50,6 +50,9 @@ def test_parse_version_to_tuple_prerelease():
     assert parse_version_to_tuple("1.83.1rc1") == (1, 83, 1)
     assert parse_version_to_tuple("1.83.0dev0") == (1, 83, 0)
     assert parse_version_to_tuple("6.33.5b2") == (6, 33, 5)
+    assert parse_version_to_tuple("1.83.0.dev0") == (1, 83, 0)
+    assert parse_version_to_tuple("1.83.dev0") == (1, 83)
+    assert parse_version_to_tuple("dev0") == ()
 
 
 @patch("google.api_core._python_package_support._get_distribution_and_import_packages")
