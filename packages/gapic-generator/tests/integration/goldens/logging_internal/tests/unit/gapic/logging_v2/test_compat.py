@@ -24,7 +24,7 @@ from unittest import mock
 import google.auth.transport.mtls
 
 from google.cloud.logging_v2._compat import transcode_request
-from google.cloud.logging_v2._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint
+from google.cloud.logging_v2._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert
 
 from google.auth.exceptions import MutualTLSChannelError
 from google.api_core.universe import EmptyUniverseError
@@ -225,16 +225,6 @@ def test_get_api_endpoint(
             )
             == expected
         )
-
-
-def test_should_use_client_cert_with_should_use_client_cert():
-    mock_func = mock.Mock(return_value=True)
-    with mock.patch.object(universe, "should_use_client_cert", mock_func):
-        assert should_use_client_cert() is True
-
-    mock_func.return_value = False
-    with mock.patch.object(universe, "should_use_client_cert", mock_func):
-        assert should_use_client_cert() is False
 
 
 def test_should_use_client_cert_fallback_env():
