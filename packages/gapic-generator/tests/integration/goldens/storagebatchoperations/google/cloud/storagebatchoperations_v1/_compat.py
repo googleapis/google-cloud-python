@@ -35,8 +35,8 @@ try:
     # is different than that of the fallback implementation below. This will be removed once
     # we bump the minimum supported version of google-auth.
     from google.auth.transport.mtls import should_use_client_cert  # type: ignore
-except ImportError:  # pragma: no cover
-    def should_use_client_cert() -> bool: # type: ignore
+except ImportError:  # pragma: NO COVER
+    def should_use_client_cert():
         """Returns whether client certificate should be used for mTLS."""
         use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
         if use_client_cert not in ("true", "false"):
