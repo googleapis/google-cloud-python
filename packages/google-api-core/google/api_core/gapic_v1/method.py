@@ -63,7 +63,7 @@ def _deduplicate_metadata_tokens(*headers: str | None) -> str:
     Given one or more metadata payload strings, create a combined
     string with deduplicated tokens, while preserving token order.
 
-    Inputs are expecte to contain a set of metadata tokens separated by spaces
+    Inputs are expected to contain a set of metadata tokens separated by spaces
     Example: `gl-python/3.14.0 grpc/1.76.0 gax/2.29.0 gapic/3.8.0 pb/6.33.4`
 
     Args:
