@@ -1106,29 +1106,3 @@ def _isinstance_or_raise(
 
     msg = f"Pass {value} as a '{dtype}'{or_none}. Got {type(value)}."
     raise TypeError(msg)
-
-
-def _parse_version_to_tuple(version_string: str) -> Tuple[int, ...]:
-    """Safely converts a semantic version string to a comparable tuple of integers.
-
-    Example: "6.33.5" -> (6, 33, 5), "1.83.1rc1" -> (1, 83, 1)
-    Parses leading digits of each component to correctly handle pre-releases.
-
-    Args:
-        version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
-
-    Returns:
-        Tuple of integers for the parsed version string.
-    """
-    parts = []
-    for part in version_string.split("."):
-        digits = ""
-        for c in part:
-            if not c.isdigit():
-                break
-            digits += c
-        if digits:
-            parts.append(int(digits))
-        else:
-            break
-    return tuple(parts)
