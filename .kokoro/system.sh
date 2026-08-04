@@ -161,6 +161,8 @@ reap_parallel_results() {
     fi
   done
 
+
+
   if [ "$failed_count" -gt 0 ]; then
     echo "=================================================="
     echo "@FAILED - DETAILED LOGS FOR FAILED PACKAGES"
@@ -183,6 +185,7 @@ reap_parallel_results() {
           cat "$LOG_DIR/$pkg.log"
         else
           echo "Warning: No log file found for failed package $pkg"
+
         fi
         echo ""
       fi
@@ -276,6 +279,60 @@ for path in `find 'packages' \
   fi
 done
 
+# --- Ad-hoc Testing Integration ---
+TRIGGER_ADHOC="false"
+if [[ -n "${KOKORO_GITHUB_PULL_REQUEST_NUMBER}" ]]; then
+    echo "Checking for adhoc test label on PR #${KOKORO_GITHUB_PULL_REQUEST_NUMBER}..."
+    headers=(-H "User-Agent: Kokoro")
+    if [[ -n "${GITHUB_TOKEN:-${GH_TOKEN}}" ]]; then
+        headers+=(-H "Authorization: token ${GITHUB_TOKEN:-${GH_TOKEN}}")
+    fi
+    # Hardened curl call with || true to prevent script termination if network fails
+    LABELS_JSON=$(curl -s "${headers[@]}" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels" || echo "[]")
+
+    # Use jq to parse github labels (works as long as jq is available in python-multi image).
+    IS_ADHOC=$(echo "$LABELS_JSON" | jq -r 'if type == "array" then any(.name == "test:adhoc") else false end' 2>/dev/null)
+
+
+    if [[ "$IS_ADHOC" == "true" ]]; then
+        TRIGGER_ADHOC="true"
+        echo "Adhoc test label 'test:adhoc' found!"
+    else
+        if [[ "$LABELS_JSON" != "["* ]]; then
+            API_ERR_MSG=$(echo "$LABELS_JSON" | jq -r '.message // "Unknown error"' 2>/dev/null)
+            echo "================================================================"
+            echo "WARNING: Failed to fetch PR labels from GitHub API!"
+            echo "Error Message: $API_ERR_MSG"
+            echo "This might be due to API Rate Limiting."
+            echo "Ad-hoc tests will NOT be triggered."
+            echo "================================================================"
+        else
+            echo "Adhoc test label 'test:adhoc' not found."
+        fi
+    fi
+
+fi
+
+if [[ "$TRIGGER_ADHOC" == "true" ]]; then
+    echo "Running ad-hoc package selection..."
+    source ci/adhoc/adhoc_test_runner.sh
+
+    echo "Deduplicating packages..."
+    # Deduplication using Associative Arrays (Requires Bash 4+)
+    declare -A unique_packages
+    for pkg in "${PACKAGES_TO_TEST[@]}"; do
+        [[ -n "$pkg" ]] && unique_packages["$pkg"]=1
+    done
+    for pkg in $ADHOC_PACKAGES; do
+        [[ -n "$pkg" ]] && unique_packages["$pkg"]=1
+    done
+
+    PACKAGES_TO_TEST=("${!unique_packages[@]}")
+
+    echo "Combined packages to test: ${PACKAGES_TO_TEST[*]}"
+fi
+# --- End Ad-hoc Testing Integration ---
+
 # Parallel Execution Logic
 MAX_JOBS=${MAX_JOBS:-4}
 
@@ -301,18 +358,20 @@ export system_test_script PROJECT_ROOT KOKORO_GFILE_DIR
 # Stream package names to xargs for parallel execution
 # -P "$MAX_JOBS" controls concurrency
 # -I {} replaces {} with the package name
-printf '%s\n' "${PACKAGES_TO_TEST[@]}" \
-  | xargs -n 1 -P "$MAX_JOBS" \
+printf '%s\0' "${PACKAGES_TO_TEST[@]}" \
+  | xargs -0 -n 1 -P "$MAX_JOBS" \
     bash -c '
       pkg="$0"
+
       # Determine log location: prefer Sponge artifacts directory if available
       if [ -n "$KOKORO_ARTIFACTS_DIR" ]; then
         pkg_log_dir="$KOKORO_ARTIFACTS_DIR/$pkg"
-        mkdir -p "$pkg_log_dir" || { touch "$LOG_DIR/$pkg.failed"; exit 1; }
+        mkdir -p "$pkg_log_dir" || { echo "Failed to mkdir $pkg_log_dir"; touch "$LOG_DIR/$pkg.failed"; exit 1; }
         log_file="$pkg_log_dir/sponge_log.log"
       else
         log_file="$LOG_DIR/$pkg.log"
       fi
+      echo "Log file for $pkg: $log_file"
 
       # Run test; if it fails, create a .failed file to signal failure to the reaper
       run_package_test "$pkg" > "$log_file" 2>&1 || touch "$LOG_DIR/$pkg.failed"
