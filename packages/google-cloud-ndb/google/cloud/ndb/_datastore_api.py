@@ -451,7 +451,7 @@ def delete(key, options):
         yield batch.delete(key)
 
     if use_global_cache:
-        if lock:
+        if lock is not None:
             if transaction:
 
                 def callback():
