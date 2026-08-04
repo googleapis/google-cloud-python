@@ -246,3 +246,16 @@ def test_installed_pandas_version_returns_parsed_version():
     assert version.major == 1
     assert version.minor == 1
     assert version.micro == 0
+
+
+def test__parse_version_to_tuple():
+    from google.cloud.bigquery._versions_helpers import _parse_version_to_tuple
+
+    assert _parse_version_to_tuple("1.83.0") == (1, 83, 0)
+    assert _parse_version_to_tuple("1.83.1rc1") == (1, 83, 1)
+    assert _parse_version_to_tuple("1.83.0dev0") == (1, 83, 0)
+    assert _parse_version_to_tuple("2.0") == (2, 0)
+    assert _parse_version_to_tuple("1.83.0.dev0") == (1, 83, 0)
+    assert _parse_version_to_tuple("1.83.dev0") == (1, 83)
+    assert _parse_version_to_tuple("dev0") == ()
+    assert _parse_version_to_tuple("1.83.1rc1.post2") == (1, 83, 1)

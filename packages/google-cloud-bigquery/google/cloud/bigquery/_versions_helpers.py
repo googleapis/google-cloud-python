@@ -13,7 +13,7 @@
 # limitations under the License.
 """Shared helper functions for verifying versions of installed modules."""
 
-from typing import Any
+from typing import Any, Tuple
 
 import packaging.version
 
@@ -247,3 +247,29 @@ SUPPORTS_RANGE_PYARROW = (
     and PYARROW_VERSIONS.try_import() is not None
     and PYARROW_VERSIONS.installed_version >= _MIN_PYARROW_VERSION_RANGE
 )
+
+
+def _parse_version_to_tuple(version_string: str) -> Tuple[int, ...]:
+    """Safely converts a semantic version string to a comparable tuple of integers.
+
+    Example: "6.33.5" -> (6, 33, 5), "1.83.1rc1" -> (1, 83, 1)
+    Parses leading digits of each component to correctly handle pre-releases.
+
+    Args:
+        version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
+
+    Returns:
+        Tuple of integers for the parsed version string.
+    """
+    parts = []
+    for part in version_string.split("."):
+        digits = ""
+        for c in part:
+            if not c.isdigit():
+                break
+            digits += c
+        if digits:
+            parts.append(int(digits))
+        if not digits or digits != part:
+            break
+    return tuple(parts)
