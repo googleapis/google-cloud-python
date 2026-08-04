@@ -150,11 +150,19 @@ class AgentGateway(proto.Message):
             resource_uri (str):
                 Optional. A supported Google Cloud networking
                 proxy in the Project and Location
+            resource_uris (MutableSequence[str]):
+                Optional. List of supported Google Cloud networking proxies
+                in the Project and Location. resource_uris is mutually
+                exclusive with resource_uri.
         """
 
         resource_uri: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        resource_uris: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
         )
 
     class NetworkConfig(proto.Message):

@@ -23,6 +23,31 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.channel_v1.services.cloud_channel_reports_service",
+    "google.cloud.channel_v1.services.cloud_channel_service",
+    "google.cloud.channel_v1.types.billing_accounts",
+    "google.cloud.channel_v1.types.channel_partner_links",
+    "google.cloud.channel_v1.types.common",
+    "google.cloud.channel_v1.types.customers",
+    "google.cloud.channel_v1.types.entitlement_changes",
+    "google.cloud.channel_v1.types.entitlements",
+    "google.cloud.channel_v1.types.offers",
+    "google.cloud.channel_v1.types.operations",
+    "google.cloud.channel_v1.types.products",
+    "google.cloud.channel_v1.types.reports_service",
+    "google.cloud.channel_v1.types.repricing",
+    "google.cloud.channel_v1.types.service",
+    "google.cloud.channel_v1.types.subscriber_event",
+}
+
+
 from .services.cloud_channel_reports_service import (
     CloudChannelReportsServiceAsyncClient,
     CloudChannelReportsServiceClient,

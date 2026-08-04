@@ -69,6 +69,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.ads.admanager_v1.services.private_auction_deal_service import pagers
 from google.ads.admanager_v1.types import (
     deal_buyer_permission_type_enum,
+    non_guaranteed_deal_priority,
     private_auction_deal_messages,
     private_auction_deal_service,
     private_marketplace_enums,
@@ -1184,7 +1185,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> private_auction_deal_messages.PrivateAuctionDeal:
-        r"""API to retrieve a ``PrivateAuctionDeal`` object.
+        r"""Retrieves a ``PrivateAuctionDeal`` object.
 
         .. code-block:: python
 
@@ -1294,7 +1295,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListPrivateAuctionDealsPager:
-        r"""API to retrieve a list of ``PrivateAuctionDeal`` objects.
+        r"""Lists ``PrivateAuctionDeal`` objects.
 
         .. code-block:: python
 
@@ -1427,7 +1428,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> private_auction_deal_messages.PrivateAuctionDeal:
-        r"""API to create a ``PrivateAuctionDeal`` object.
+        r"""Creates a ``PrivateAuctionDeal`` object.
 
         .. code-block:: python
 
@@ -1551,7 +1552,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> private_auction_deal_messages.PrivateAuctionDeal:
-        r"""API to update a ``PrivateAuctionDeal`` object.
+        r"""Updates a ``PrivateAuctionDeal`` object.
 
         .. code-block:: python
 
@@ -1804,8 +1805,6 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("PrivateAuctionDealServiceClient",)

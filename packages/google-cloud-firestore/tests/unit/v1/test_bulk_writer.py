@@ -759,6 +759,46 @@ class _BaseBulkWriterTests:
                 option=ExistsOption(exists=True),
             )
 
+    def test_basebulkwriter_reentrancy_empty_deque_retry(self):
+        # See https://github.com/googleapis/google-cloud-python/issues/16138
+        import bisect
+        import datetime
+
+        from google.cloud.firestore_v1.bulk_writer import (
+            BulkWriterCreateOperation,
+            OperationRetry,
+        )
+
+        client = self._make_client()
+        bw = _make_no_send_bulk_writer(client)
+
+        ref1 = _get_document_reference(client, id="doc1")
+        ref2 = _get_document_reference(client, id="doc2")
+        data = {"field": "value"}
+
+        # Put ref1 in current operations to trigger a document path collision
+        # and subsequent flush/enqueue when we create ref1 again.
+        bw.create(ref1, data)
+
+        run_at = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(
+            seconds=1
+        )
+
+        retry1 = OperationRetry(
+            operation=BulkWriterCreateOperation(reference=ref1, document_data=data),
+            run_at=run_at,
+        )
+        retry2 = OperationRetry(
+            operation=BulkWriterCreateOperation(reference=ref2, document_data=data),
+            run_at=run_at,
+        )
+
+        bisect.insort(bw._retries, retry1)
+        bisect.insort(bw._retries, retry2)
+
+        # This should not raise IndexError: pop from an empty deque due to re-entrant scheduling
+        bw._schedule_ready_retries()
+
 
 class TestSyncBulkWriter(_SyncClientMixin, _BaseBulkWriterTests):
     """All BulkWriters are opaquely async, but this one simulates a BulkWriter

@@ -23,6 +23,28 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.video.stitcher_v1.services.video_stitcher_service",
+    "google.cloud.video.stitcher_v1.types.ad_tag_details",
+    "google.cloud.video.stitcher_v1.types.cdn_keys",
+    "google.cloud.video.stitcher_v1.types.companions",
+    "google.cloud.video.stitcher_v1.types.events",
+    "google.cloud.video.stitcher_v1.types.fetch_options",
+    "google.cloud.video.stitcher_v1.types.live_configs",
+    "google.cloud.video.stitcher_v1.types.sessions",
+    "google.cloud.video.stitcher_v1.types.slates",
+    "google.cloud.video.stitcher_v1.types.stitch_details",
+    "google.cloud.video.stitcher_v1.types.video_stitcher_service",
+    "google.cloud.video.stitcher_v1.types.vod_configs",
+}
+
+
 from .services.video_stitcher_service import (
     VideoStitcherServiceAsyncClient,
     VideoStitcherServiceClient,

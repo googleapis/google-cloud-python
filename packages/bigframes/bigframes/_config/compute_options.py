@@ -168,26 +168,6 @@ class ComputeOptions:
         int | None: Number of rows, if set.
     """
 
-    semantic_ops_confirmation_threshold: Optional[int] = 0
-    """
-    Deprecated.
-
-    .. deprecated:: 1.42.0
-        Semantic operators are deprecated. Please use the functions in
-        :mod:`bigframes.bigquery.ai` instead.
-
-    """
-
-    semantic_ops_threshold_autofail = False
-    """
-    Deprecated.
-
-    .. deprecated:: 1.42.0
-        Semantic operators are deprecated. Please use the functions in
-        :mod:`bigframes.bigquery.ai` instead.
-
-    """
-
     def assign_extra_query_labels(self, **kwargs: Any) -> None:
         """
         Assigns additional custom labels for query configuration. The method updates the

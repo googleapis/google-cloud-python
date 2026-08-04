@@ -23,6 +23,22 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.maps.addressvalidation_v1.services.address_validation",
+    "google.maps.addressvalidation_v1.types.address",
+    "google.maps.addressvalidation_v1.types.address_validation_service",
+    "google.maps.addressvalidation_v1.types.geocode",
+    "google.maps.addressvalidation_v1.types.metadata_",
+    "google.maps.addressvalidation_v1.types.usps_data",
+}
+
+
 from .services.address_validation import (
     AddressValidationAsyncClient,
     AddressValidationClient,
