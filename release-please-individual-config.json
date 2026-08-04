@@ -13,6 +13,17 @@
     },
     "packages/pandas-gbq": {
       "component": "pandas-gbq"
+    },
+    "preview-packages/google-cloud-compute": {
+      "package-name": "google-cloud-compute",
+      "versioning": "prerelease",
+      "prerelease": true,
+      "prerelease-type": "preview",
+      "extra-files": [
+        "google/cloud/compute/gapic_version.py",
+        "google/cloud/compute_v1/gapic_version.py"
+      ],
+      "draft-pull-request": true
     }
   },
   "release-type": "python-librarian",
