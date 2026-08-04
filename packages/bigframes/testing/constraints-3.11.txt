@@ -145,7 +145,7 @@ gitdb==4.0.12
 GitPython==3.1.45
 glob2==0.7
 google==2.0.3
-google-ai-generativelanguage==0.6.15
+google-ai-generativelanguage==0.6.17
 google-api-core==2.25.1
 google-api-python-client==2.177.0
 google-auth==2.38.0
@@ -180,7 +180,7 @@ groovy==0.1.2
 grpc-google-iam-v1==0.14.2
 grpc-interceptor==0.15.4
 grpcio==1.74.0
-grpcio-status==1.71.2
+grpcio-status==1.72.1
 grpclib==0.4.8
 gspread==6.2.1
 gspread-dataframe==4.0.0
@@ -401,7 +401,7 @@ prompt_toolkit==3.0.51
 propcache==0.3.2
 prophet==1.1.7
 proto-plus==1.26.1
-protobuf==5.29.5
+protobuf==6.33.5
 psutil==5.9.5
 psycopg2==2.9.10
 psygnal==0.14.0

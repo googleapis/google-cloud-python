@@ -55,7 +55,7 @@ setuptools.setup(
     platforms="Posix; MacOS X; Windows",
     include_package_data=True,
     install_requires=(
-        "google-auth >= 2.1.0",
+        "google-auth >= 2.14.1, < 3.0.0",
         "click>=7.0.0",
         "packaging>=22.0",
     ),

@@ -778,6 +778,13 @@ class Test_RangeQueryParameter(unittest.TestCase):
         self.assertEqual(param.start, "2016-08-11")
         self.assertIs(param.end, None)
 
+    def test_ctor_does_not_print_to_stdout(self):
+        # Regression test for a stray debug print() in __init__ that wrote the
+        # range element type to stdout on every construction.
+        with mock.patch("builtins.print") as mock_print:
+            self._make_one(range_element_type="DATE", start="2016-08-11")
+        mock_print.assert_not_called()
+
     def test_ctor_w_datetime_query_parameter_type_str(self):
         from google.cloud.bigquery.query import RangeQueryParameterType
 
