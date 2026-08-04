@@ -73,7 +73,6 @@ def parse_version_to_tuple(version_string: str) -> ParsedVersion:
     return tuple(parts)
 
 
-
 def get_dependency_version(
     dependency_name: str,
 ) -> DependencyVersion:
