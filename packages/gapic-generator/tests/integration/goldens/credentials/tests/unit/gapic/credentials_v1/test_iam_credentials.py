@@ -123,20 +123,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_client_cert_source():
-    mock_provided_cert_source = mock.Mock()
-    mock_default_cert_source = mock.Mock()
-
-    assert IAMCredentialsClient._get_client_cert_source(None, False) is None
-    assert IAMCredentialsClient._get_client_cert_source(mock_provided_cert_source, False) is None
-    assert IAMCredentialsClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
-
-    with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
-        with mock.patch('google.auth.transport.mtls.default_client_cert_source', return_value=mock_default_cert_source):
-            assert IAMCredentialsClient._get_client_cert_source(None, True) is mock_default_cert_source
-            assert IAMCredentialsClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
-
-
 @pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
     (401, CRED_INFO_JSON, True),
     (403, CRED_INFO_JSON, True),

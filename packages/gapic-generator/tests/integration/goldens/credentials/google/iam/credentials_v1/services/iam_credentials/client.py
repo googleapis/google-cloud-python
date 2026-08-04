@@ -27,10 +27,10 @@ from google.iam.credentials_v1 import gapic_version as package_version
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.iam.credentials_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert
+from google.iam.credentials_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, get_client_cert_source
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
-from google.auth.transport import mtls                            # type: ignore
+
 from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
@@ -268,12 +268,9 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
 
         # Figure out the client cert source to use.
-        client_cert_source = None
-        if use_client_cert:
-            if client_options.client_cert_source:
-                client_cert_source = client_options.client_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
+        client_cert_source = get_client_cert_source(
+            client_options.client_cert_source, use_client_cert
+        )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -305,25 +302,6 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
         return use_client_cert, use_mtls_endpoint, universe_domain_env
-
-    @staticmethod
-    def _get_client_cert_source(provided_cert_source, use_cert_flag):
-        """Return the client cert source to be used by the client.
-
-        Args:
-            provided_cert_source (bytes): The client certificate source provided.
-            use_cert_flag (bool): A flag indicating whether to use the client certificate.
-
-        Returns:
-            bytes or None: The client cert source to be used by the client.
-        """
-        client_cert_source = None
-        if use_cert_flag:
-            if provided_cert_source:
-                client_cert_source = provided_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
-        return client_cert_source
 
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
@@ -448,7 +426,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = IAMCredentialsClient._read_environment_variables()
-        self._client_cert_source = IAMCredentialsClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
+        self._client_cert_source = get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
         self._universe_domain = get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint: str = ""  # updated below, depending on `transport`
 

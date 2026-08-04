@@ -24,7 +24,7 @@ from unittest import mock
 import google.auth.transport.mtls
 
 from google.iam.credentials_v1._compat import transcode_request
-from google.iam.credentials_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert
+from google.iam.credentials_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, get_client_cert_source
 
 from google.auth.exceptions import MutualTLSChannelError
 from google.api_core.universe import EmptyUniverseError
@@ -411,3 +411,17 @@ def test_transcode_request_proto_plus_wrapper():
 
     transcoded, _, _ = transcode_request(http_options, mock_proto_plus)
     assert transcoded["uri"] == "/v1/test/proto-plus-field"
+
+
+def test_get_client_cert_source():
+    mock_provided_cert_source = mock.Mock()
+    mock_default_cert_source = mock.Mock()
+
+    assert get_client_cert_source(None, False) is None
+    assert get_client_cert_source(mock_provided_cert_source, False) is None
+    assert get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
+
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert get_client_cert_source(None, True) is mock_default_cert_source
+            assert get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
