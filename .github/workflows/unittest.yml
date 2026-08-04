@@ -140,7 +140,7 @@ jobs:
           echo "All unit tests passed or were skipped"
 
   cover:
-    if: always() && !cancelled() && needs.all-tests.result == 'success'
+    if: always() && !cancelled() && needs.all-tests.result == 'success' && needs.unit.result != 'skipped'
     runs-on: ubuntu-latest
     needs:
         - all-tests
