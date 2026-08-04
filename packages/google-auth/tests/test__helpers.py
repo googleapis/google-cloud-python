@@ -697,3 +697,11 @@ class TestUtcFromTimestamp:
         with pytest.raises((OverflowError, OSError, ValueError)):
             # Large enough to fail on most systems (Year 300,000+)
             _helpers.utcfromtimestamp(9999999999999)
+
+
+def test_parse_version_to_tuple():
+    assert _helpers._parse_version_to_tuple("1.83.0") == (1, 83, 0)
+    assert _helpers._parse_version_to_tuple("1.83.1rc1") == (1, 83, 1)
+    assert _helpers._parse_version_to_tuple("1.83.0dev0") == (1, 83, 0)
+    assert _helpers._parse_version_to_tuple("2.0") == (2, 0)
+

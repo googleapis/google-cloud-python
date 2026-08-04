@@ -88,7 +88,7 @@ else:   # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "6.33.5" -> (6, 33, 5)
+            Example: "6.33.5" -> (6, 33, 5), "1.83.1rc1" -> (1, 83, 1)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -97,12 +97,14 @@ else:   # pragma: NO COVER
             """
             parts = []
             for part in version_string.split("."):
-                try:
-                    parts.append(int(part))
-                except ValueError:
-                    # If it's a non-numeric part (e.g., '1.0.0b1' -> 'b1'), stop here.
-                    # This is a simplification compared to 'packaging.parse_version', but sufficient
-                    # for comparing strictly numeric semantic versions.
+                digits = ""
+                for c in part:
+                    if not c.isdigit():
+                        break
+                    digits += c
+                if digits:
+                    parts.append(int(digits))
+                else:
                     break
             return tuple(parts)
 

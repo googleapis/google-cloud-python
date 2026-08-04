@@ -45,6 +45,14 @@ def test_get_dependency_version(mocker, version_string_to_test):
     assert get_dependency_version("not-a-package") == DependencyVersion(None, "--")
 
 
+def test_parse_version_to_tuple_prerelease():
+    """Test parse_version_to_tuple with pre-release versions."""
+    assert parse_version_to_tuple("1.83.1rc1") == (1, 83, 1)
+    assert parse_version_to_tuple("1.83.0dev0") == (1, 83, 0)
+    assert parse_version_to_tuple("6.33.5b2") == (6, 33, 5)
+
+
+
 @patch("google.api_core._python_package_support._get_distribution_and_import_packages")
 @patch("google.api_core._python_package_support.get_dependency_version")
 def test_warn_deprecation_for_versions_less_than(mock_get_version, mock_get_packages):
