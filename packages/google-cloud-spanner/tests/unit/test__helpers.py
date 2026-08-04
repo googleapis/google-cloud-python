@@ -868,6 +868,7 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.protobuf.struct_pb2 import Value
 
         from google.cloud.spanner_v1 import Type, TypeCode
+        from google.cloud.spanner_v1.data_types import JsonObject
 
         VALUE = {"id": 27863, "Name": "Anamika"}
         str_repr = json.dumps(VALUE, sort_keys=True, separators=(",", ":"))
@@ -884,7 +885,9 @@ class Test_parse_value_pb(unittest.TestCase):
         field_type = Type(code=TypeCode.JSON)
         value_pb = Value(string_value=str_repr)
 
-        self.assertEqual(self._callFUT(value_pb, field_type, field_name), {})
+        self.assertEqual(
+            self._callFUT(value_pb, field_type, field_name), JsonObject(None)
+        )
 
     def test_w_unknown_type(self):
         from google.protobuf.struct_pb2 import Value

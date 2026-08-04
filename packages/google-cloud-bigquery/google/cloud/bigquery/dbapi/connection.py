@@ -78,10 +78,14 @@ class Connection(object):
         """
         self._closed = True
 
-        if self._owns_client:
+        for cursor_ in list(self._cursors_created):
+            if not cursor_._closed:
+                cursor_.close()
+
+        if self._owns_client and self._client is not None:
             self._client.close()
 
-        if self._owns_bqstorage_client:
+        if self._owns_bqstorage_client and self._bqstorage_client is not None:
             # There is no close() on the BQ Storage client itself.
             transport = self._bqstorage_client.transport
             transport.close()
@@ -94,10 +98,6 @@ class Connection(object):
             channel = getattr(transport, "_grpc_channel", None)
             if channel is not None:
                 channel.close()
-
-        for cursor_ in self._cursors_created:
-            if not cursor_._closed:
-                cursor_.close()
 
     def commit(self):
         """No-op, but for consistency raise an error if connection is closed."""

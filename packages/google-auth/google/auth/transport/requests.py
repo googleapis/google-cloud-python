@@ -652,7 +652,7 @@ class AuthorizedSession(requests.Session):
                     "mtls.sandbox.googleapis.com",
                 ]
                 use_mtls = self.is_mtls and any(
-                    [prefix in url for prefix in MTLS_URL_PREFIXES]
+                    prefix in url for prefix in MTLS_URL_PREFIXES
                 )
                 if use_mtls:
                     (
