@@ -19,6 +19,8 @@ from __future__ import absolute_import
 import concurrent.futures
 import logging
 import threading
+import collections
+import time
 
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
@@ -582,12 +584,20 @@ class _ReplayableIteratorReader(object):
 
                 if self._parent._can_replay:
                     self._parent._buffer.append(val)
-                    if len(self._parent._buffer) > self._parent._max_items:
+                    if len(self._parent._buffer) > getattr(
+                        self._parent, "_max_items", 10000
+                    ):
                         self._parent._buffer.clear()
                         self._parent._can_replay = False
 
                 self._read_index += 1
                 return val
+
+
+_ClientCallDetails = collections.namedtuple(
+    "_ClientCallDetails",
+    ("method", "timeout", "metadata", "credentials", "wait_for_ready"),
+)
 
 
 class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
@@ -605,7 +615,6 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
         self._source_request = request_or_iterator
         self._interceptor = interceptor
 
-        # New Factory Pattern for infinite streaming replays
         self._uses_factory = is_client_stream and callable(request_or_iterator)
         self._payload = (
             None
@@ -619,8 +628,12 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
 
         self._retry_count = 0
         self._lock = threading.RLock()
-        self._retry_event = threading.Event()
-        self._retry_event.set()  # Set initially since call is active
+
+        timeout = getattr(self._client_call_details, "timeout", None)
+        self._initial_timeout = timeout if isinstance(timeout, (int, float)) else None
+        self._start_time = time.monotonic() if self._initial_timeout else None
+
+        self._completion_event = threading.Event()
         self._done_callbacks = []
 
         self._start_call()
@@ -640,15 +653,28 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
                     iter(self._payload) if self._is_client_stream else self._payload
                 )
 
-            self._target_future = self._continuation(self._client_call_details, payload)
+            call_details = self._client_call_details
+            if self._start_time and self._initial_timeout:
+                elapsed = time.monotonic() - self._start_time
+                remaining = self._initial_timeout - elapsed
+                if remaining <= 0:
+                    raise grpc.RpcError("Deadline Exceeded during retry resolution.")
+                call_details = _ClientCallDetails(
+                    method=call_details.method,
+                    timeout=remaining,
+                    metadata=call_details.metadata,
+                    credentials=call_details.credentials,
+                    wait_for_ready=call_details.wait_for_ready,
+                )
 
-            # Re-apply any standing callbacks onto the new core future
-            for callback in self._done_callbacks:
-                self._target_future.add_done_callback(callback)
-
+            self._target_future = self._continuation(call_details, payload)
             self._target_future.add_done_callback(self._on_inner_future_done)
 
     def _on_inner_future_done(self, inner_future):
+        with self._lock:
+            if self._target_future is not inner_future:
+                return
+
         exc = inner_future.exception()
         if isinstance(exc, grpc.RpcError):
             status_code = exc.code()
@@ -666,55 +692,78 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
                     if getattr(self._interceptor, "_wrapper", None):
                         self._interceptor._wrapper.refresh_logic(1)
 
-                    self._retry_event.clear()
                     self._retry_count += 1
                     self._start_call()
-                    self._retry_event.set()
                 return
 
-        # If zero-retry refresh logic is needed (buffer exhausted, etc)
-        if isinstance(exc, grpc.RpcError) and getattr(
-            self._interceptor, "_wrapper", None
-        ):
-            if self._interceptor._should_retry(
-                exc.code(), 0, getattr(self, "_attempt_cert", None)
-            ):
-                self._interceptor._wrapper.refresh_logic(1)
-
-    def result(self, timeout=None):
-        while True:
-            self._retry_event.wait(timeout)
-            with self._lock:
-                current_future = self._target_future
-                # It is possible the event was cleared right here. If so, loop.
-                if not self._retry_event.is_set():
-                    continue
-
-            try:
-                return current_future.result(timeout=timeout)
-            except grpc.RpcError as e:
-                # If race conditions allowed the RpcError to bubble before the callback cleared the event:
+            if getattr(self._interceptor, "_wrapper", None):
                 if self._interceptor._should_retry(
-                    e.code(), self._retry_count, getattr(self, "_attempt_cert", None)
+                    status_code, 0, getattr(self, "_attempt_cert", None)
                 ):
-                    # Loop and wait for the async callback to finish rotating the certs
-                    continue
-                raise
+                    self._interceptor._wrapper.refresh_logic(1)
+
+        with self._lock:
+            self._completion_event.set()
+            callbacks_to_fire = list(self._done_callbacks)
+
+        for fn in callbacks_to_fire:
+            try:
+                fn(self)
+            except Exception:
+                pass
 
     def add_done_callback(self, fn):
         with self._lock:
+            if self._completion_event.is_set():
+                fire_now = True
+            else:
+                self._done_callbacks.append(fn)
+                fire_now = False
 
-            def custom_callback(f):
-                if not self._retry_event.is_set():
-                    return
-                with self._lock:
-                    if self._target_future is not f:
-                        return
-
+        if fire_now:
+            try:
                 fn(self)
+            except Exception:
+                pass
 
-            self._done_callbacks.append(custom_callback)
-            self._target_future.add_done_callback(custom_callback)
+    def result(self, timeout=None):
+        if not self._completion_event.wait(timeout):
+            raise grpc.FutureTimeoutError()
+        with self._lock:
+            current_future = self._target_future
+        return current_future.result()
+
+    def exception(self, timeout=None):
+        if not self._completion_event.wait(timeout):
+            raise grpc.FutureTimeoutError()
+        with self._lock:
+            return self._target_future.exception()
+
+    def traceback(self, timeout=None):
+        if not self._completion_event.wait(timeout):
+            raise grpc.FutureTimeoutError()
+        with self._lock:
+            return self._target_future.traceback()
+
+    def initial_metadata(self):
+        self._completion_event.wait()
+        with self._lock:
+            return self._target_future.initial_metadata()
+
+    def trailing_metadata(self):
+        self._completion_event.wait()
+        with self._lock:
+            return self._target_future.trailing_metadata()
+
+    def code(self):
+        self._completion_event.wait()
+        with self._lock:
+            return self._target_future.code()
+
+    def details(self):
+        self._completion_event.wait()
+        with self._lock:
+            return self._target_future.details()
 
     def cancel(self):
         with self._lock:
@@ -730,37 +779,19 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
 
     def done(self):
         with self._lock:
-            return self._target_future.done()
+            return self._completion_event.is_set()
 
-    def exception(self, timeout=None):
-        self._retry_event.wait(timeout)
+    def is_active(self):
         with self._lock:
-            return self._target_future.exception(timeout=timeout)
+            return self._target_future.is_active()
 
-    def traceback(self, timeout=None):
-        self._retry_event.wait(timeout)
+    def time_remaining(self):
         with self._lock:
-            return self._target_future.traceback(timeout=timeout)
+            return self._target_future.time_remaining()
 
-    def initial_metadata(self):
-        self._retry_event.wait()
+    def add_callback(self, callback):
         with self._lock:
-            return self._target_future.initial_metadata()
-
-    def trailing_metadata(self):
-        self._retry_event.wait()
-        with self._lock:
-            return self._target_future.trailing_metadata()
-
-    def code(self):
-        self._retry_event.wait()
-        with self._lock:
-            return self._target_future.code()
-
-    def details(self):
-        self._retry_event.wait()
-        with self._lock:
-            return self._target_future.details()
+            return self._target_future.add_callback(callback)
 
 
 class _RetryableStreamResponseIterator(grpc.Call):
@@ -792,8 +823,13 @@ class _RetryableStreamResponseIterator(grpc.Call):
         self._retry_count = 0
         self._yielded_any_response = False
         self._lock = threading.RLock()
+
+        timeout = getattr(self._client_call_details, "timeout", None)
+        self._initial_timeout = timeout if isinstance(timeout, (int, float)) else None
+        self._start_time = time.monotonic() if self._initial_timeout else None
+
+        self._is_completed = False
         self._done_callbacks = []
-        self._ignore_done_callbacks = False
 
         self._start_call()
 
@@ -811,29 +847,62 @@ class _RetryableStreamResponseIterator(grpc.Call):
                     iter(self._payload) if self._is_client_stream else self._payload
                 )
 
-            self._call = self._continuation(self._client_call_details, payload)
+            call_details = self._client_call_details
+            if self._start_time and self._initial_timeout:
+                elapsed = time.monotonic() - self._start_time
+                remaining = self._initial_timeout - elapsed
+                if remaining <= 0:
+                    raise grpc.RpcError("Deadline Exceeded during retry resolution.")
+                call_details = _ClientCallDetails(
+                    method=call_details.method,
+                    timeout=remaining,
+                    metadata=call_details.metadata,
+                    credentials=call_details.credentials,
+                    wait_for_ready=call_details.wait_for_ready,
+                )
 
-            for callback in self._done_callbacks:
-                self._call.add_done_callback(callback)
-
+            self._call = self._continuation(call_details, payload)
             self._call.add_done_callback(self._on_inner_call_done)
+
+    def _trigger_callbacks(self):
+        with self._lock:
+            if self._is_completed:
+                return
+            self._is_completed = True
+            callbacks = list(self._done_callbacks)
+
+        for fn in callbacks:
+            try:
+                fn(self)
+            except Exception:
+                pass
 
     def _on_inner_call_done(self, inner_call):
         with self._lock:
-            if self._ignore_done_callbacks:
+            if self._call is not inner_call:
                 return
+        self._trigger_callbacks()
 
     def __iter__(self):
         return self
 
     def __next__(self):
         while True:
+            with self._lock:
+                current_call = self._call
+
             try:
-                response = next(self._call)
+                response = next(current_call)
                 self._yielded_any_response = True
                 return response
+            except StopIteration:
+                self._trigger_callbacks()
+                raise
             except grpc.RpcError as e:
-                status_code = e.code()
+                status_code = getattr(e, "code", lambda: None)()
+                with self._lock:
+                    if self._call is not current_call:
+                        continue
 
                 can_replay = (
                     True
@@ -856,10 +925,8 @@ class _RetryableStreamResponseIterator(grpc.Call):
                         if getattr(self._interceptor, "_wrapper", None):
                             self._interceptor._wrapper.refresh_logic(1)
 
-                        self._ignore_done_callbacks = True
                         self._retry_count += 1
                         self._start_call()
-                        self._ignore_done_callbacks = False
                     continue
                 else:
                     if getattr(self._interceptor, "_wrapper", None):
@@ -867,19 +934,22 @@ class _RetryableStreamResponseIterator(grpc.Call):
                             status_code, 0, getattr(self, "_attempt_cert", None)
                         ):
                             self._interceptor._wrapper.refresh_logic(1)
+                    self._trigger_callbacks()
                     raise e
 
     def add_done_callback(self, fn):
         with self._lock:
+            if getattr(self, "_is_completed", False):
+                fire_now = True
+            else:
+                self._done_callbacks.append(fn)
+                fire_now = False
 
-            def custom_callback(c):
-                with self._lock:
-                    if self._ignore_done_callbacks or self._call is not c:
-                        return
+        if fire_now:
+            try:
                 fn(self)
-
-            self._done_callbacks.append(custom_callback)
-            self._call.add_done_callback(custom_callback)
+            except Exception:
+                pass
 
     def cancel(self):
         with self._lock:
@@ -895,7 +965,7 @@ class _RetryableStreamResponseIterator(grpc.Call):
 
     def done(self):
         with self._lock:
-            return self._call.done()
+            return getattr(self, "_is_completed", False)
 
     def initial_metadata(self):
         with self._lock:
