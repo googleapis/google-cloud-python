@@ -22,7 +22,7 @@ if they are not already set.
 """
 
 import uuid
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Union
 
 import google.protobuf.message
 
