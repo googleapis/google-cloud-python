@@ -50,7 +50,6 @@ except ImportError:  # pragma: NO COVER
             )
         return use_client_cert == "true"
 
-DEFAULT_UNIVERSE = "googleapis.com"
 
 try:
     from google.api_core.universe import get_default_mtls_endpoint
@@ -224,7 +223,7 @@ def setup_request_id(
 {% endif %}
 
 try:
-    from google.api_core.rest_helpers import transcode_request
+    from google.api_core.rest_helpers import transcode_request # type: ignore
 except ImportError:  # pragma: NO COVER
     def transcode_request(
         http_options: List[Dict[str, str]],
