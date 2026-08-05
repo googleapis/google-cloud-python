@@ -47,6 +47,7 @@ except ImportError:  # pragma: NO COVER
             raise ValueError(
                 "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
                 " either `true` or `false`"
+            )
         return use_client_cert == "true"
 
 
