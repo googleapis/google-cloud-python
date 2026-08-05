@@ -25,6 +25,7 @@ _MIN_PANDAS_VERSION = packaging.version.Version("1.1.0")
 
 _MIN_PANDAS_VERSION_RANGE = packaging.version.Version("1.5.0")
 _MIN_PYARROW_VERSION_RANGE = packaging.version.Version("10.0.1")
+_MIN_PANDAS_GBQ_DELEGATION_VERSION = packaging.version.Version("1.0.0")
 
 
 class PyarrowVersions:
@@ -271,25 +272,26 @@ class PandasGBQVersions:
         return self._installed_version
 
     @property
-    def delegation_api_version(self) -> int:
-        """Return the delegation API version of pandas-gbq if installed, otherwise 0."""
+    def delegation_api_version(self) -> packaging.version.Version:
+        """Return the delegation API version of pandas-gbq if installed, otherwise 0.0.0."""
         if self._delegation_api_version is not None:
             return self._delegation_api_version
 
         try:
             import pandas_gbq  # type: ignore
 
-            self._delegation_api_version = int(
-                getattr(pandas_gbq, "_internal_delegation_api_version", 0)
+            raw_version = getattr(
+                pandas_gbq, "_internal_delegation_api_version", "0.0.0"
             )
+            self._delegation_api_version = packaging.version.parse(str(raw_version))
         except Exception:
-            self._delegation_api_version = 0
+            self._delegation_api_version = packaging.version.parse("0.0.0")
         return self._delegation_api_version
 
     @property
     def is_delegation_supported(self) -> bool:
-        """True if the installed pandas-gbq version supports query delegation API (version >= 1)."""
-        return self.delegation_api_version >= 1
+        """True if the installed pandas-gbq version supports query delegation API."""
+        return self.delegation_api_version >= _MIN_PANDAS_GBQ_DELEGATION_VERSION
 
 
 PANDAS_GBQ_VERSIONS = PandasGBQVersions()
