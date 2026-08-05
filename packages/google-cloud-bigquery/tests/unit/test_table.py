@@ -5736,28 +5736,32 @@ class TestRowIterator(unittest.TestCase):
         mock_client = _mock_client()
         mock_client._connection = mock.Mock(_client_info=mock_client_info)
 
-        with mock.patch(
-            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
-            new_callable=mock.PropertyMock,
-            return_value=True,
-        ):
-            with mock.patch(
+        with (
+            mock.patch(
+                "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
+                new_callable=mock.PropertyMock,
+                return_value=True,
+            ),
+            mock.patch(
                 "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
                 False,
-            ):
-                with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
-                    row_iterator = self._make_one_from_data(
-                        (("name", "STRING"),), (("foo",),)
-                    )
-                    row_iterator.client = mock_client
-                    df = row_iterator.to_dataframe(
-                        progress_bar_type="tqdm", timeout=5.0
-                    )
-                    self.assertIsInstance(df, pandas.DataFrame)
-                    self.assertEqual(
-                        mock_client_info.user_agent,
-                        "gl-python/3.10.0 pandas-gbq/1.0.0",
-                    )
+            ),
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
+        ):
+            row_iterator = self._make_one_from_data(
+                (("name", "STRING"),), (("foo",),)
+            )
+            row_iterator.client = mock_client
+
+            df = row_iterator.to_dataframe(
+                progress_bar_type="tqdm", timeout=5.0
+            )
+
+            self.assertIsInstance(df, pandas.DataFrame)
+            self.assertEqual(
+                mock_client_info.user_agent,
+                "gl-python/3.10.0 pandas-gbq/1.0.0",
+            )
 
     def test_to_dataframe_delegated_does_not_duplicate_user_agent(self):
         pytest.importorskip("db_dtypes")
@@ -5771,28 +5775,32 @@ class TestRowIterator(unittest.TestCase):
         mock_client = _mock_client()
         mock_client._connection = mock.Mock(_client_info=mock_client_info)
 
-        with mock.patch(
-            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
-            new_callable=mock.PropertyMock,
-            return_value=True,
-        ):
-            with mock.patch(
+        with (
+            mock.patch(
+                "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
+                new_callable=mock.PropertyMock,
+                return_value=True,
+            ),
+            mock.patch(
                 "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
                 False,
-            ):
-                with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
-                    row_iterator = self._make_one_from_data(
-                        (("name", "STRING"),), (("foo",),)
-                    )
-                    row_iterator.client = mock_client
-                    df = row_iterator.to_dataframe(
-                        progress_bar_type="tqdm", timeout=5.0
-                    )
-                    self.assertIsInstance(df, pandas.DataFrame)
-                    self.assertEqual(
-                        mock_client_info.user_agent,
-                        "gl-python/3.10.0 pandas-gbq/1.0.0",
-                    )
+            ),
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
+        ):
+            row_iterator = self._make_one_from_data(
+                (("name", "STRING"),), (("foo",),)
+            )
+            row_iterator.client = mock_client
+
+            df = row_iterator.to_dataframe(
+                progress_bar_type="tqdm", timeout=5.0
+            )
+
+            self.assertIsInstance(df, pandas.DataFrame)
+            self.assertEqual(
+                mock_client_info.user_agent,
+                "gl-python/3.10.0 pandas-gbq/1.0.0",
+            )
 
     def test_to_dataframe_delegated_when_client_info_is_none(self):
         pytest.importorskip("db_dtypes")
@@ -5803,24 +5811,28 @@ class TestRowIterator(unittest.TestCase):
         mock_client = _mock_client()
         mock_client._connection = mock.Mock(_client_info=None)
 
-        with mock.patch(
-            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
-            new_callable=mock.PropertyMock,
-            return_value=True,
-        ):
-            with mock.patch(
+        with (
+            mock.patch(
+                "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
+                new_callable=mock.PropertyMock,
+                return_value=True,
+            ),
+            mock.patch(
                 "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
                 False,
-            ):
-                with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
-                    row_iterator = self._make_one_from_data(
-                        (("name", "STRING"),), (("foo",),)
-                    )
-                    row_iterator.client = mock_client
-                    df = row_iterator.to_dataframe(
-                        progress_bar_type="tqdm", timeout=5.0
-                    )
-                    self.assertIsInstance(df, pandas.DataFrame)
+            ),
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
+        ):
+            row_iterator = self._make_one_from_data(
+                (("name", "STRING"),), (("foo",),)
+            )
+            row_iterator.client = mock_client
+
+            df = row_iterator.to_dataframe(
+                progress_bar_type="tqdm", timeout=5.0
+            )
+
+            self.assertIsInstance(df, pandas.DataFrame)
 
     def test_to_dataframe_delegated_when_user_agent_is_none(self):
         pytest.importorskip("db_dtypes")
@@ -5834,28 +5846,32 @@ class TestRowIterator(unittest.TestCase):
         mock_client = _mock_client()
         mock_client._connection = mock.Mock(_client_info=mock_client_info)
 
-        with mock.patch(
-            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
-            new_callable=mock.PropertyMock,
-            return_value=True,
-        ):
-            with mock.patch(
+        with (
+            mock.patch(
+                "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
+                new_callable=mock.PropertyMock,
+                return_value=True,
+            ),
+            mock.patch(
                 "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
                 False,
-            ):
-                with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
-                    row_iterator = self._make_one_from_data(
-                        (("name", "STRING"),), (("foo",),)
-                    )
-                    row_iterator.client = mock_client
-                    df = row_iterator.to_dataframe(
-                        progress_bar_type="tqdm", timeout=5.0
-                    )
-                    self.assertIsInstance(df, pandas.DataFrame)
-                    self.assertEqual(
-                        mock_client_info.user_agent,
-                        "pandas-gbq/1.0.0",
-                    )
+            ),
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
+        ):
+            row_iterator = self._make_one_from_data(
+                (("name", "STRING"),), (("foo",),)
+            )
+            row_iterator.client = mock_client
+
+            df = row_iterator.to_dataframe(
+                progress_bar_type="tqdm", timeout=5.0
+            )
+
+            self.assertIsInstance(df, pandas.DataFrame)
+            self.assertEqual(
+                mock_client_info.user_agent,
+                "pandas-gbq/1.0.0",
+            )
 
     def test_to_dataframe_delegated_false_does_not_update_user_agent(self):
         pytest.importorskip("db_dtypes")
@@ -5867,73 +5883,81 @@ class TestRowIterator(unittest.TestCase):
         mock_client = _mock_client()
         mock_client._connection = mock.Mock(_client_info=mock_client_info)
 
-        with mock.patch(
-            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
-            new_callable=mock.PropertyMock,
-            return_value=False,
-        ):
-            with mock.patch(
+        with (
+            mock.patch(
+                "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
+                new_callable=mock.PropertyMock,
+                return_value=False,
+            ),
+            mock.patch(
                 "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
                 False,
-            ):
-                row_iterator = self._make_one_from_data(
-                    (("name", "STRING"),), (("foo",),)
-                )
-                row_iterator.client = mock_client
-                df = row_iterator.to_dataframe(progress_bar_type="tqdm", timeout=5.0)
-                self.assertIsInstance(df, pandas.DataFrame)
-                self.assertEqual(
-                    mock_client_info.user_agent,
-                    "gl-python/3.10.0",
-                )
+            ),
+        ):
+            row_iterator = self._make_one_from_data(
+                (("name", "STRING"),), (("foo",),)
+            )
+            row_iterator.client = mock_client
+
+            df = row_iterator.to_dataframe(progress_bar_type="tqdm", timeout=5.0)
+
+            self.assertIsInstance(df, pandas.DataFrame)
+            self.assertEqual(
+                mock_client_info.user_agent,
+                "gl-python/3.10.0",
+            )
 
     def test_to_geodataframe_updates_user_agent(self):
         pytest.importorskip("geopandas")
+        pyarrow = pytest.importorskip("pyarrow")
         row_iterator = self._make_one_from_data(
             (("name", "STRING"), ("geog", "GEOGRAPHY")),
             (("foo", "Point(0 0)"),),
         )
         mock_client_info = mock.Mock(user_agent="test-agent")
         row_iterator.client._connection = mock.Mock(_client_info=mock_client_info)
+        batch = pyarrow.RecordBatch.from_arrays(
+            [pyarrow.array(["foo"]), pyarrow.array(["Point(0 0)"])],
+            names=["name", "geog"],
+        )
 
-        with mock.patch(
-            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
-            new_callable=mock.PropertyMock,
-            return_value=True,
+        with (
+            mock.patch(
+                "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
+                new_callable=mock.PropertyMock,
+                return_value=True,
+            ),
+            mock.patch.object(row_iterator, "to_arrow", return_value=batch),
         ):
-            with mock.patch.object(row_iterator, "to_arrow") as mock_to_arrow:
-                import pyarrow as pa
+            _ = row_iterator.to_geodataframe(create_bqstorage_client=False)
 
-                mock_to_arrow.return_value = pa.RecordBatch.from_arrays(
-                    [pa.array(["foo"]), pa.array(["Point(0 0)"])],
-                    names=["name", "geog"],
-                )
-                _ = row_iterator.to_geodataframe(create_bqstorage_client=False)
-                self.assertIn("pandas-gbq/", mock_client_info.user_agent)
+            self.assertIn("pandas-gbq/", mock_client_info.user_agent)
 
     def test_to_geodataframe_delegated_false_does_not_update_user_agent(self):
         pytest.importorskip("geopandas")
+        pyarrow = pytest.importorskip("pyarrow")
         row_iterator = self._make_one_from_data(
             (("name", "STRING"), ("geog", "GEOGRAPHY")),
             (("foo", "Point(0 0)"),),
         )
         mock_client_info = mock.Mock(user_agent="test-agent")
         row_iterator.client._connection = mock.Mock(_client_info=mock_client_info)
+        batch = pyarrow.RecordBatch.from_arrays(
+            [pyarrow.array(["foo"]), pyarrow.array(["Point(0 0)"])],
+            names=["name", "geog"],
+        )
 
-        with mock.patch(
-            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
-            new_callable=mock.PropertyMock,
-            return_value=False,
+        with (
+            mock.patch(
+                "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
+                new_callable=mock.PropertyMock,
+                return_value=False,
+            ),
+            mock.patch.object(row_iterator, "to_arrow", return_value=batch),
         ):
-            with mock.patch.object(row_iterator, "to_arrow") as mock_to_arrow:
-                import pyarrow as pa
+            _ = row_iterator.to_geodataframe(create_bqstorage_client=False)
 
-                mock_to_arrow.return_value = pa.RecordBatch.from_arrays(
-                    [pa.array(["foo"]), pa.array(["Point(0 0)"])],
-                    names=["name", "geog"],
-                )
-                _ = row_iterator.to_geodataframe(create_bqstorage_client=False)
-                self.assertEqual(mock_client_info.user_agent, "test-agent")
+            self.assertEqual(mock_client_info.user_agent, "test-agent")
 
 
 class TestPartitionRange(unittest.TestCase):
