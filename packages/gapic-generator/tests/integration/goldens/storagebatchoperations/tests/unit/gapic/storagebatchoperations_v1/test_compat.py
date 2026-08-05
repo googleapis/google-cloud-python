@@ -260,9 +260,29 @@ class MockProtoRequest:
         return hasattr(self, key)
 
 
+class MockProtoPlusRequest:
+    def __init__(self, **kwargs):
+        self._pb = MockProtoRequest(**kwargs)
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+    def __contains__(self, key):
+        return hasattr(self, key)
+
+
 class MockValueErrorRequest:
     def HasField(self, key):
         raise ValueError("Mismatched field")
+
+    def __contains__(self, key):
+        return hasattr(self, key)
+
+
+class MockProtoPlusValueErrorRequest:
+    def __init__(self, **kwargs):
+        self._pb = MockValueErrorRequest()
+        for k, v in kwargs.items():
+            setattr(self, k, v)
 
     def __contains__(self, key):
         return hasattr(self, key)
@@ -274,14 +294,21 @@ UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
     [
         (MockRequest(), True, "uuid"),
         (MockRequest(request_id="already_set"), True, "already_set"),
+        (MockRequest(request_id=""), True, ""),
         (MockRequest(request_id=""), False, "uuid"),
         (MockRequest(request_id="already_set"), False, "already_set"),
         (MockProtoRequest(), True, "uuid"),
         (MockProtoRequest(request_id="already_set"), True, "already_set"),
+        (MockProtoRequest(request_id=""), True, ""),
+        (MockProtoPlusRequest(), True, "uuid"),
+        (MockProtoPlusRequest(request_id="already_set"), True, "already_set"),
+        (MockProtoPlusRequest(request_id=""), True, ""),
         (MockValueErrorRequest(), True, "uuid"),
+        (MockProtoPlusValueErrorRequest(), True, "uuid"),
         ({}, True, "uuid"),
         ({"request_id": None}, True, "uuid"),
         ({"request_id": "already_set"}, True, "already_set"),
+        ({"request_id": ""}, True, ""),
         ({"request_id": ""}, False, "uuid"),
         ({"request_id": None}, False, "uuid"),
         ({"request_id": "already_set"}, False, "already_set"),
@@ -290,14 +317,21 @@ UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
     ids=[
         "proto3_optional_not_in_request",
         "proto3_optional_already_in_request",
+        "proto3_optional_explicit_empty",
         "non_proto3_optional_empty",
         "non_proto3_optional_already_set",
         "proto3_optional_not_in_request_proto",
         "proto3_optional_already_in_request_proto",
+        "proto3_optional_explicit_empty_proto",
+        "proto3_optional_not_in_request_proto_plus",
+        "proto3_optional_already_in_request_proto_plus",
+        "proto3_optional_explicit_empty_proto_plus",
         "value_error_fallback",
+        "proto3_optional_value_error_fallback_proto_plus",
         "dict_proto3_optional_not_in_request",
         "dict_proto3_optional_value_none",
         "dict_proto3_optional_already_in_request",
+        "dict_proto3_optional_explicit_empty",
         "dict_non_proto3_optional_empty",
         "dict_non_proto3_optional_value_none",
         "dict_non_proto3_optional_already_set",

@@ -22,8 +22,6 @@ import uuid
 from typing import Any, Dict, List, Optional, Tuple
 from typing import Union
 
-import google.protobuf.message
-
 from google.api_core import path_template
 from google.api_core.universe import EmptyUniverseError
 from google.auth.exceptions import MutualTLSChannelError
@@ -165,7 +163,7 @@ def get_universe_domain(
 
 
 def setup_request_id(
-    request: Union[google.protobuf.message.Message, dict, None],
+    request: Union[Any, dict, None],
     field_name: str,
     is_proto3_optional: bool,
 ) -> None:
@@ -179,7 +177,7 @@ def setup_request_id(
     resources).
 
     Args:
-        request (Union[google.protobuf.message.Message, dict]): The
+        request (Union[Any, dict, None]): The
             request object.
         field_name (str): The name of the field to populate.
         is_proto3_optional (bool): Whether the field is proto3 optional.
@@ -187,26 +185,34 @@ def setup_request_id(
     if request is None:
         return
 
+    should_populate = False
     if isinstance(request, dict):
         if is_proto3_optional:
-            if field_name not in request or request[field_name] is None:
-                request[field_name] = str(uuid.uuid4())
-        elif not request.get(field_name):
-            request[field_name] = str(uuid.uuid4())
-        return
-
-    if is_proto3_optional:
-        try:
-            # Pure protobuf messages
-            if not request.HasField(field_name):
-                setattr(request, field_name, str(uuid.uuid4()))
-        except (AttributeError, ValueError):
-            # Proto-plus messages or other objects
-            if not getattr(request, field_name, None):
-                setattr(request, field_name, str(uuid.uuid4()))
+            should_populate = field_name not in request or request[field_name] is None
+        else:
+            should_populate = not request.get(field_name)
     else:
-        if not getattr(request, field_name, None):
-            setattr(request, field_name, str(uuid.uuid4()))
+        is_proto_plus = hasattr(request, "_pb") and hasattr(request._pb, "HasField")
+        if is_proto3_optional:
+            if is_proto_plus:
+                try:
+                    should_populate = not request._pb.HasField(field_name)
+                except ValueError:
+                    should_populate = getattr(request, field_name, None) is None
+            else:
+                try:
+                    should_populate = not request.HasField(field_name)
+                except (AttributeError, ValueError):
+                    should_populate = getattr(request, field_name, None) is None
+        else:
+            should_populate = not getattr(request, field_name, None)
+
+    if should_populate:
+        generated_id = str(uuid.uuid4())
+        if isinstance(request, dict):
+            request[field_name] = generated_id
+        else:
+            setattr(request, field_name, generated_id)
 
 
 def transcode_request(
