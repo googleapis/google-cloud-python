@@ -260,7 +260,7 @@ class ComponentReflectionTestExtra(_ComponentReflectionTestExtra):
         eq_(
             dict(
                 (col["name"], col["nullable"])
-                for col in inspect(connection).get_columns("t")
+                for col in inspect(connection).get_columns("t_nullable_reflection")
             ),
             {"a": True, "b": False},
         )
@@ -274,7 +274,7 @@ class ComponentReflectionTestExtra(_ComponentReflectionTestExtra):
         t.create(connection)
         connection.connection.commit()
 
-        return [c["type"] for c in inspect(connection).get_columns("t")]
+        return [c["type"] for c in inspect(connection).get_columns("t_type_round_trip")]
 
     @testing.requires.table_reflection
     def test_numeric_reflection(self, connection, metadata):
