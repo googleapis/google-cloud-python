@@ -212,33 +212,21 @@ def setup_request_id(
             # Auto-populate if the key is missing, None, or falsy (e.g., empty string '').
             should_populate = not request.get(field_name)
     else:
-        # Case 2: Object request (proto-plus wrapper, pure protobuf message, or mock/dict-like object).
-        pb_msg = getattr(request, "_pb", None)
-        is_proto_plus = pb_msg is not None and hasattr(pb_msg, "HasField")
+        # Case 2: Object request (proto-plus wrapper or pure protobuf message).
         if is_proto3_optional:
-            if is_proto_plus and pb_msg is not None:
-                # Case 2a: Proto-plus message with explicit presence.
-                # `proto.Message` instances wrap an underlying C++/Python protobuf message in `._pb`.
-                # We check `pb_msg.HasField(field_name)` to determine if the field was set by the user.
-                try:
-                    should_populate = not pb_msg.HasField(field_name)
-                except ValueError:
-                    # `HasField` raises ValueError if the field does not support presence (e.g., non-optional field).
-                    # Fall back to checking if the attribute value is explicitly None.
-                    should_populate = getattr(request, field_name, None) is None
-            else:
-                # Case 2b: Pure protobuf message or custom object with explicit presence.
-                try:
-                    should_populate = not request.HasField(field_name)
-                except (AttributeError, ValueError):
-                    # Fall back for objects/mocks that do not implement `HasField` or where `HasField` fails.
-                    should_populate = getattr(request, field_name, None) is None
+            # Extract the protobuf from proto-plus if wrapped.
+            pure_pb: google.protobuf.message.Message = getattr(request, "_pb", request)
+            try:
+                should_populate = not pure_pb.HasField(field_name)
+            except (AttributeError, ValueError):
+                # Fall back if `HasField` fails or is unsupported.
+                should_populate = getattr(pure_pb, field_name, None) is None
         else:
-            # Case 2c: Object request without explicit presence (`is_proto3_optional=False`).
+            # Case 2b: Object request without explicit presence (`is_proto3_optional=False`).
             # Auto-populate if the field value is falsy (None or empty string '').
-            should_populate = not getattr(request, field_name, None)
+            should_populate = not bool(getattr(request, field_name, False))
 
-    # Consolidate mutation to a single, clean DRY block.
+    # If the field was found to be empty, set random id
     if should_populate:
         generated_id = str(uuid.uuid4())
         if isinstance(request, dict):

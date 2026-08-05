@@ -247,9 +247,6 @@ class MockRequest:
         for k, v in kwargs.items():
             setattr(self, k, v)
 
-    def __contains__(self, key):
-        return hasattr(self, key)
-
 
 class MockProtoRequest:
     def __init__(self, **kwargs):
@@ -266,16 +263,10 @@ class MockProtoPlusRequest:
         for k, v in kwargs.items():
             setattr(self, k, v)
 
-    def __contains__(self, key):
-        return hasattr(self, key)
-
 
 class MockValueErrorRequest:
     def HasField(self, key):
         raise ValueError("Mismatched field")
-
-    def __contains__(self, key):
-        return hasattr(self, key)
 
 
 class MockProtoPlusValueErrorRequest:
@@ -283,9 +274,6 @@ class MockProtoPlusValueErrorRequest:
         self._pb = MockValueErrorRequest()
         for k, v in kwargs.items():
             setattr(self, k, v)
-
-    def __contains__(self, key):
-        return hasattr(self, key)
 
 UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
 
