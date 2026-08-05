@@ -66,8 +66,11 @@ def test_clean_bytecode(mock_rmtree, mock_remove, mock_walk):
 def test_find_module_from_package_resolves():
     """Verifies resolving of packages to modules if helper is exported."""
     with patch(
-        "importlib.metadata.packages_distributions",
-        return_value={"google-cloud-storage": ["google.cloud.storage"]},
+        "importlib.metadata.files",
+        return_value=["google/cloud/storage/__init__.py"],
+    ), patch(
+        "importlib.util.find_spec", 
+        return_value=True
     ):
         res = find_module_from_package("google-cloud-storage")
         assert res == "google.cloud.storage"
