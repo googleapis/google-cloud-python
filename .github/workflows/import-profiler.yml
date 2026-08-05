@@ -55,7 +55,7 @@ jobs:
         packages_to_test=""
         for pkg in $modified_packages; do
           if [ -d "$pkg" ]; then
-            if [ $((idx % TOTAL_SHARDS)) -eq SHARD_INDEX ]; then
+            if [ "$((idx % TOTAL_SHARDS))" -eq "${SHARD_INDEX}" ]; then
               packages_to_test="$packages_to_test $pkg"
             fi
             idx=$((idx + 1))
