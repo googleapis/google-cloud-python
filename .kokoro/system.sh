@@ -314,8 +314,13 @@ printf '%s\n' "${PACKAGES_TO_TEST[@]}" \
         log_file="$LOG_DIR/$pkg.log"
       fi
 
-      # Run test; if it fails, create a .failed file to signal failure to the reaper
-      run_package_test "$pkg" > "$log_file" 2>&1 || touch "$LOG_DIR/$pkg.failed"
+      printf "%s %-15s %s\n" "STARTING" "[in parallel]" "$pkg"
+      if run_package_test "$pkg" > "$log_file" 2>&1; then
+        printf "%s %-15s %s\n" "FINISHED" "[passed]" "$pkg"
+      else
+        printf "%s %-15s %s\n" "FINISHED" "[failed]" "$pkg"
+        touch "$LOG_DIR/$pkg.failed"
+      fi
     '
 
 reap_parallel_results || RETVAL=1
