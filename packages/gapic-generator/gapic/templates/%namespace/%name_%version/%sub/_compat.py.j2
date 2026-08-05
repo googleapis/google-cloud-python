@@ -52,8 +52,8 @@ except ImportError:  # pragma: NO COVER
 
 
 {# TODO(https://github.com/googleapis/google-cloud-python/issues/17883):
-Defer to google.auth.transport.mtls.should_use_mtls_endpoint to parse
-GOOGLE_API_USE_MTLS_ENDPOINT when available in minimum supported google-auth. #}
+Defer to google.auth.transport.mtls.should_use_mtls_endpoint (available in google-auth >= 2.56.0)
+to parse GOOGLE_API_USE_MTLS_ENDPOINT when available in minimum supported google-auth. #}
 def read_environment_variables():
     """Returns the environment variables used by the client.
 
