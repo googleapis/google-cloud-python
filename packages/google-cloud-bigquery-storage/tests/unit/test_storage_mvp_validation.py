@@ -90,7 +90,7 @@ def _create_read_session(schema=_TEST_SCHEMA):
     )
 
 
-def test_storage_mvp_direct_pandas_gbq_arrow_contract():
+def test_from_read_rows_response_decodes_serialized_record_batch():
     expected_batch = _create_sample_batch()
     response = _create_read_rows_response(expected_batch)
 
@@ -101,7 +101,7 @@ def test_storage_mvp_direct_pandas_gbq_arrow_contract():
     assert actual_batch.equals(expected_batch)
 
 
-def test_storage_mvp_direct_pandas_gbq_arrow_empty_response():
+def test_from_read_rows_response_handles_empty_response():
     response = _create_read_rows_response(record_batch=None)
 
     actual_batch = pandas_gbq.arrow.from_read_rows_response(
@@ -112,22 +112,27 @@ def test_storage_mvp_direct_pandas_gbq_arrow_empty_response():
     assert actual_batch.schema == _TEST_SCHEMA
 
 
-def test_storage_mvp_read_rows_page_dual_environment_equivalence():
+def test_read_rows_page_to_arrow_delegates_when_pandas_gbq_installed():
     expected_batch = _create_sample_batch()
     response = _create_read_rows_response(expected_batch)
+    stream_parser = reader._ArrowStreamParser(_create_read_session(_TEST_SCHEMA))
+    page = reader.ReadRowsPage(stream_parser, response)
 
-    # Environment A: With pandas-gbq installed (Delegated Pathway)
-    stream_parser_a = reader._ArrowStreamParser(_create_read_session(_TEST_SCHEMA))
-    page_a = reader.ReadRowsPage(stream_parser_a, response)
     with pytest.warns(
         PendingDeprecationWarning,
         match="google-cloud-bigquery-storage is deprecated",
     ):
-        batch_delegated = page_a.to_arrow()
+        actual_batch = page.to_arrow()
 
-    # Environment B: Without pandas-gbq (Legacy Fallback Pathway)
-    stream_parser_b = reader._ArrowStreamParser(_create_read_session(_TEST_SCHEMA))
-    page_b = reader.ReadRowsPage(stream_parser_b, response)
+    assert actual_batch.equals(expected_batch)
+
+
+def test_read_rows_page_to_arrow_falls_back_when_pandas_gbq_uninstalled():
+    expected_batch = _create_sample_batch()
+    response = _create_read_rows_response(expected_batch)
+    stream_parser = reader._ArrowStreamParser(_create_read_session(_TEST_SCHEMA))
+    page = reader.ReadRowsPage(stream_parser, response)
+
     with (
         mock.patch.dict("sys.modules", {"pandas_gbq": None, "pandas_gbq.arrow": None}),
         pytest.warns(
@@ -135,48 +140,54 @@ def test_storage_mvp_read_rows_page_dual_environment_equivalence():
             match="google-cloud-bigquery-storage is deprecated",
         ),
     ):
-        batch_fallback = page_b.to_arrow()
+        actual_batch = page.to_arrow()
 
-    assert batch_delegated.equals(expected_batch)
-    assert batch_fallback.equals(expected_batch)
-    assert batch_delegated.equals(batch_fallback)
+    assert actual_batch.equals(expected_batch)
 
 
-def test_storage_mvp_read_rows_page_empty_dual_environment_equivalence():
+def test_read_rows_page_to_arrow_empty_batch_delegates_when_pandas_gbq_installed():
     empty_batch = _create_sample_batch(rows=[])
     response = _create_read_rows_response(record_batch=empty_batch)
+    stream_parser = reader._ArrowStreamParser(_create_read_session(_TEST_SCHEMA))
+    page = reader.ReadRowsPage(stream_parser, response)
 
-    # Environment A: With pandas-gbq installed
-    stream_parser_a = reader._ArrowStreamParser(_create_read_session(_TEST_SCHEMA))
-    page_a = reader.ReadRowsPage(stream_parser_a, response)
-    with pytest.warns(PendingDeprecationWarning):
-        batch_delegated = page_a.to_arrow()
+    with pytest.warns(
+        PendingDeprecationWarning,
+        match="google-cloud-bigquery-storage is deprecated",
+    ):
+        actual_batch = page.to_arrow()
 
-    # Environment B: Without pandas-gbq installed
-    stream_parser_b = reader._ArrowStreamParser(_create_read_session(_TEST_SCHEMA))
-    page_b = reader.ReadRowsPage(stream_parser_b, response)
+    assert actual_batch.num_rows == 0
+    assert actual_batch.schema == _TEST_SCHEMA
+
+
+def test_read_rows_page_to_arrow_empty_batch_falls_back_when_pandas_gbq_uninstalled():
+    empty_batch = _create_sample_batch(rows=[])
+    response = _create_read_rows_response(record_batch=empty_batch)
+    stream_parser = reader._ArrowStreamParser(_create_read_session(_TEST_SCHEMA))
+    page = reader.ReadRowsPage(stream_parser, response)
+
     with (
         mock.patch.dict("sys.modules", {"pandas_gbq": None, "pandas_gbq.arrow": None}),
-        pytest.warns(PendingDeprecationWarning),
+        pytest.warns(
+            PendingDeprecationWarning,
+            match="google-cloud-bigquery-storage is deprecated",
+        ),
     ):
-        batch_fallback = page_b.to_arrow()
+        actual_batch = page.to_arrow()
 
-    assert batch_delegated.num_rows == 0
-    assert batch_fallback.num_rows == 0
-    assert batch_delegated.schema == _TEST_SCHEMA
-    assert batch_fallback.schema == _TEST_SCHEMA
+    assert actual_batch.num_rows == 0
+    assert actual_batch.schema == _TEST_SCHEMA
 
 
-def test_storage_mvp_stream_to_arrow_end_to_end():
+def test_read_rows_stream_to_arrow_concatenates_multiple_batches():
     batch1 = _create_sample_batch()
     batch2 = _create_sample_batch()
     response1 = _create_read_rows_response(batch1)
     response2 = _create_read_rows_response(batch2)
     read_session = _create_read_session(_TEST_SCHEMA)
-
     gapic_client = mock.Mock()
     gapic_client.read_rows.return_value = iter([response1, response2])
-
     read_rows_stream = reader.ReadRowsStream(
         gapic_client,
         "projects/p/locations/l/sessions/s/streams/str1",
@@ -184,7 +195,10 @@ def test_storage_mvp_stream_to_arrow_end_to_end():
         {},
     )
 
-    with pytest.warns(PendingDeprecationWarning):
+    with pytest.warns(
+        PendingDeprecationWarning,
+        match="google-cloud-bigquery-storage is deprecated",
+    ):
         table = read_rows_stream.to_arrow(read_session=read_session)
 
     assert table.num_rows == batch1.num_rows + batch2.num_rows
