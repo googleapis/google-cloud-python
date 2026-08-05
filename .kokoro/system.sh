@@ -275,11 +275,13 @@ for path in `find 'packages' \
   # Join states with a comma
   state_str=$(IFS=, ; echo "${states[*]}")
 
+  commit_hash="${KOKORO_GITHUB_PULL_REQUEST_COMMIT:-HEAD}"
+
   if [[ ${#states[@]} -gt 0 ]]; then
-      echo "[checking] ${package_name}:${KOKORO_GITHUB_PULL_REQUEST_COMMIT:-HEAD}, state: ${state_str}"
+      printf "TEST %-20s %-40s %s\n" "[${state_str}]" "${package_name}" "${commit_hash}"
       PACKAGES_TO_TEST+=("$package_name")
   else
-      echo "[checking] ${package_name}:${KOKORO_GITHUB_PULL_REQUEST_COMMIT:-HEAD}, state: skipped (no changes)"
+      printf "SKIP %-20s %-40s %s\n" "[no_changes]" "${package_name}" "${commit_hash}"
   fi
 done
 
