@@ -48,28 +48,45 @@ def setup_request_id(
     if request is None:
         return
 
+    # 1. Evaluate whether the field is considered "unset" and needs population.
+    #
+    # According to AIP-4235, optional request ID fields must be populated
+    # if and only if they have explicit presence (`is_proto3_optional=True`)
+    # and were not set by the user (i.e. unset). Explicitly provided empty
+    # strings ('') must be preserved when `is_proto3_optional=True`.
     should_populate = False
     if isinstance(request, dict):
         if is_proto3_optional:
+            # AIP-4235: For dictionaries with optional fields, only populate
+            # if the key is missing or the value is explicitly None.
             should_populate = field_name not in request or request[field_name] is None
         else:
+            # For non-optional dict fields, populate on any missing or falsy value.
             should_populate = not request.get(field_name)
     else:
+        # Check if this is a proto-plus wrapper object containing an underlying
+        # protobuf message (`._pb`).
         is_proto_plus = hasattr(request, "_pb") and hasattr(request._pb, "HasField")
         if is_proto3_optional:
             if is_proto_plus:
                 try:
+                    # Ask the underlying protobuf message if the field was explicitly set.
                     should_populate = not request._pb.HasField(field_name)
                 except ValueError:
+                    # Fallback for non-optional fields or non-presence primitives.
                     should_populate = getattr(request, field_name, None) is None
             else:
                 try:
+                    # For pure protobuf messages, use HasField directly.
                     should_populate = not request.HasField(field_name)
                 except (AttributeError, ValueError):
+                    # For standard Python objects or mocks, only populate if strictly None.
                     should_populate = getattr(request, field_name, None) is None
         else:
+            # For non-optional fields on objects, populate on any falsy value (None or "").
             should_populate = not getattr(request, field_name, None)
 
+    # 2. Consolidate mutation to a single, clean DRY block.
     if should_populate:
         generated_id = str(uuid.uuid4())
         if isinstance(request, dict):
