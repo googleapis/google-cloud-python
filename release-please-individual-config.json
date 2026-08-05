@@ -5,6 +5,20 @@
     "packages/bigframes": {
       "component": "bigframes"
     },
+    "packages/google-cloud-bigtable": {
+      "component": "google-cloud-bigtable",
+      "extra-files": [
+        "google/cloud/bigtable/gapic_version.py",
+        "google/cloud/bigtable_admin/gapic_version.py",
+        "google/cloud/bigtable_admin_v2/gapic_version.py",
+        "google/cloud/bigtable_v2/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.bigtable.admin.v2.json",
+          "type": "json"
+        }
+      ]
+    },
     "packages/google-crc32c": {
       "component": "google-crc32c"
     },
@@ -21,6 +35,9 @@
         "google/cloud/compute_v1/gapic_version.py"
       ],
       "draft-pull-request": true
+    },
+    "packages/sqlalchemy-spanner": {
+      "component": "sqlalchemy-spanner"
     }
   },
   "release-type": "python-librarian",
