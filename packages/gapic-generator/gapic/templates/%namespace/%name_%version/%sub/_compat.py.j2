@@ -17,11 +17,15 @@ import os
 import json
 {% if has_auto_populated_fields %}
 import uuid
+import google.protobuf.message
 {% endif %}
 
 from typing import Any, Dict, List, Optional, Tuple
 {% if has_auto_populated_fields %}
-from typing import Union
+from typing import TYPE_CHECKING, Union
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    import proto  # type: ignore[import-untyped]
 {% endif %}
 
 from google.api_core import path_template
@@ -166,7 +170,7 @@ def get_universe_domain(
 {% if has_auto_populated_fields %}
 
 def setup_request_id(
-    request: Union[Any, dict, None],
+    request: Union[google.protobuf.message.Message, "proto.Message", dict, None],
     field_name: str,
     is_proto3_optional: bool,
 ) -> None:
@@ -180,15 +184,19 @@ def setup_request_id(
     resources).
 
     Args:
-        request (Union[Any, dict, None]): The
-            request object.
-        field_name (str): The name of the field to populate.
-        is_proto3_optional (bool): Whether the field is proto3 optional.
+        request (Union[google.protobuf.message.Message, proto.Message, dict, None]): The
+            request object or dictionary.
+        field_name (str): The name of the field to populate (e.g., "request_id").
+        is_proto3_optional (bool): Whether the field supports explicit presence
+            (defined with `optional` in proto3 syntax). When True, empty strings ("")
+            are preserved as explicit user input per AIP-4235, and UUID auto-population
+            occurs only if the field is unset. When False, any empty or falsy value is
+            populated with a UUID.
     """
     if request is None:
         return
 
-    # 1. Evaluate whether the field is considered "unset" and needs population.
+    # Evaluate whether the field is considered "unset" and needs auto-population.
     #
     # According to AIP-4235, optional request ID fields must be populated
     # if and only if they have explicit presence (`is_proto3_optional=True`)
@@ -197,36 +205,43 @@ def setup_request_id(
     should_populate = False
     if isinstance(request, dict):
         if is_proto3_optional:
-            # AIP-4235: For dictionaries with optional fields, only populate
-            # if the key is missing or the value is explicitly None.
+            # Case 1a: Dictionary request with explicit presence (`is_proto3_optional=True`).
+            # Per AIP-4235, auto-populate only if the key is completely missing from
+            # the dictionary or its value is explicitly set to None.
+            # An explicit empty string ('') must NOT be overwritten.
             should_populate = field_name not in request or request[field_name] is None
         else:
-            # For non-optional dict fields, populate on any missing or falsy value.
+            # Case 1b: Dictionary request without explicit presence (`is_proto3_optional=False`).
+            # Auto-populate if the key is missing, None, or falsy (e.g., empty string '').
             should_populate = not request.get(field_name)
     else:
-        # Check if this is a proto-plus wrapper object containing an underlying
-        # protobuf message (`._pb`).
-        is_proto_plus = hasattr(request, "_pb") and hasattr(request._pb, "HasField")
+        # Case 2: Object request (proto-plus wrapper, pure protobuf message, or mock/dict-like object).
+        pb_msg = getattr(request, "_pb", None)
+        is_proto_plus = pb_msg is not None and hasattr(pb_msg, "HasField")
         if is_proto3_optional:
-            if is_proto_plus:
+            if is_proto_plus and pb_msg is not None:
+                # Case 2a: Proto-plus message with explicit presence.
+                # `proto.Message` instances wrap an underlying C++/Python protobuf message in `._pb`.
+                # We check `pb_msg.HasField(field_name)` to determine if the field was set by the user.
                 try:
-                    # Ask the underlying protobuf message if the field was explicitly set.
-                    should_populate = not request._pb.HasField(field_name)
+                    should_populate = not pb_msg.HasField(field_name)
                 except ValueError:
-                    # Fallback for non-optional fields or non-presence primitives.
+                    # `HasField` raises ValueError if the field does not support presence (e.g., non-optional field).
+                    # Fall back to checking if the attribute value is explicitly None.
                     should_populate = getattr(request, field_name, None) is None
             else:
+                # Case 2b: Pure protobuf message or custom object with explicit presence.
                 try:
-                    # For pure protobuf messages, use HasField directly.
                     should_populate = not request.HasField(field_name)
                 except (AttributeError, ValueError):
-                    # For standard Python objects or mocks, only populate if strictly None.
+                    # Fall back for objects/mocks that do not implement `HasField` or where `HasField` fails.
                     should_populate = getattr(request, field_name, None) is None
         else:
-            # For non-optional fields on objects, populate on any falsy value (None or "").
+            # Case 2c: Object request without explicit presence (`is_proto3_optional=False`).
+            # Auto-populate if the field value is falsy (None or empty string '').
             should_populate = not getattr(request, field_name, None)
 
-    # 2. Consolidate mutation to a single, clean DRY block.
+    # Consolidate mutation to a single, clean DRY block.
     if should_populate:
         generated_id = str(uuid.uuid4())
         if isinstance(request, dict):
