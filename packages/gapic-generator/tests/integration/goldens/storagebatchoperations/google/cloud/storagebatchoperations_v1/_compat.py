@@ -19,7 +19,7 @@ import os
 import json
 import uuid
 
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from typing import Union
 
 import google.protobuf.message
