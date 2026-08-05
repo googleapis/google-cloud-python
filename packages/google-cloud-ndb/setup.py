@@ -40,7 +40,7 @@ def main():
     with io.open(readme_filename, encoding="utf-8") as readme_file:
         readme = readme_file.read()
     dependencies = [
-        "google-api-core[grpc] >= 2.25.0, <3.0.0",
+        "google-api-core[grpc] >= 2.28.0, <3.0.0",
         "google-cloud-datastore >= 2.21.0, < 3.0.0",
         "protobuf >= 6.33.5, < 8.0.0",
         "pymemcache >= 2.1.0, < 5.0.0",
