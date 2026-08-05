@@ -18,7 +18,7 @@ import pathlib
 import nox
 
 DEFAULT_PYTHON_VERSION = "3.14"
-UNIT_TEST_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 # Path to the centralized mypy configuration file at the repository root.
 # Search upwards to support running nox from both monorepo packages and integration test goldens.
@@ -166,7 +166,7 @@ def unit(session):
     # Re-enable 3.11, 3.12, and 3.13 after environment verification.
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16176):
     # Track 3.14 compatibility as upstream dependencies stabilize.
-    _skip_python_session(session, ["3.11", "3.12", "3.13", "3.14"])
+    _skip_python_session(session, ["3.11", "3.12", "3.13", "3.14", "3.15"])
     session.install("-r", "requirements.txt")
     session.install("pytest", "pytest-cov")
     session.run(
