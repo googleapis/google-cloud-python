@@ -5748,14 +5748,10 @@ class TestRowIterator(unittest.TestCase):
             ),
             mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
         ):
-            row_iterator = self._make_one_from_data(
-                (("name", "STRING"),), (("foo",),)
-            )
+            row_iterator = self._make_one_from_data((("name", "STRING"),), (("foo",),))
             row_iterator.client = mock_client
 
-            df = row_iterator.to_dataframe(
-                progress_bar_type="tqdm", timeout=5.0
-            )
+            df = row_iterator.to_dataframe(progress_bar_type="tqdm", timeout=5.0)
 
             self.assertIsInstance(df, pandas.DataFrame)
             self.assertEqual(
@@ -5787,14 +5783,10 @@ class TestRowIterator(unittest.TestCase):
             ),
             mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
         ):
-            row_iterator = self._make_one_from_data(
-                (("name", "STRING"),), (("foo",),)
-            )
+            row_iterator = self._make_one_from_data((("name", "STRING"),), (("foo",),))
             row_iterator.client = mock_client
 
-            df = row_iterator.to_dataframe(
-                progress_bar_type="tqdm", timeout=5.0
-            )
+            df = row_iterator.to_dataframe(progress_bar_type="tqdm", timeout=5.0)
 
             self.assertIsInstance(df, pandas.DataFrame)
             self.assertEqual(
@@ -5823,14 +5815,10 @@ class TestRowIterator(unittest.TestCase):
             ),
             mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
         ):
-            row_iterator = self._make_one_from_data(
-                (("name", "STRING"),), (("foo",),)
-            )
+            row_iterator = self._make_one_from_data((("name", "STRING"),), (("foo",),))
             row_iterator.client = mock_client
 
-            df = row_iterator.to_dataframe(
-                progress_bar_type="tqdm", timeout=5.0
-            )
+            df = row_iterator.to_dataframe(progress_bar_type="tqdm", timeout=5.0)
 
             self.assertIsInstance(df, pandas.DataFrame)
 
@@ -5858,14 +5846,10 @@ class TestRowIterator(unittest.TestCase):
             ),
             mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
         ):
-            row_iterator = self._make_one_from_data(
-                (("name", "STRING"),), (("foo",),)
-            )
+            row_iterator = self._make_one_from_data((("name", "STRING"),), (("foo",),))
             row_iterator.client = mock_client
 
-            df = row_iterator.to_dataframe(
-                progress_bar_type="tqdm", timeout=5.0
-            )
+            df = row_iterator.to_dataframe(progress_bar_type="tqdm", timeout=5.0)
 
             self.assertIsInstance(df, pandas.DataFrame)
             self.assertEqual(
@@ -5894,9 +5878,7 @@ class TestRowIterator(unittest.TestCase):
                 False,
             ),
         ):
-            row_iterator = self._make_one_from_data(
-                (("name", "STRING"),), (("foo",),)
-            )
+            row_iterator = self._make_one_from_data((("name", "STRING"),), (("foo",),))
             row_iterator.client = mock_client
 
             df = row_iterator.to_dataframe(progress_bar_type="tqdm", timeout=5.0)
