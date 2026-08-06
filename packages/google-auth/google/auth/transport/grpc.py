@@ -33,11 +33,10 @@ except ImportError as caught_exc:  # pragma: NO COVER
 
 
 try:
-    import importlib.metadata
     import warnings
 
-    _grpc_ver_str = importlib.metadata.version("grpcio")
-    if _helpers._parse_version_to_tuple(_grpc_ver_str) < (1, 83, 0):
+    _grpc_ver_str = getattr(grpc, "__version__", None)
+    if _grpc_ver_str and _helpers._parse_version_to_tuple(_grpc_ver_str) < (1, 83, 0):
         warnings.warn(
             "grpcio < 1.83.0 does not support Post-Quantum Cryptography (PQC). "
             "Support for non-PQC environments is deprecated. In October 2026, "
