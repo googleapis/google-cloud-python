@@ -514,7 +514,7 @@ def query_and_wait(
     # Some API parameters aren't supported by the jobs.query API. In these
     # cases, fallback to a jobs.insert call.
     if not _supported_by_jobs_query(request_body):
-        iterator = _wait_or_cancel(
+        return _wait_or_cancel(
             query_jobs_insert(
                 client=client,
                 query=query,
@@ -533,11 +533,9 @@ def query_and_wait(
             retry=retry,
             page_size=page_size,
             max_results=max_results,
+            query_results_format=query_results_format,
             callback=callback,
         )
-        if query_results_format is not None:
-            iterator._query_results_format = query_results_format
-        return iterator
 
     path = _to_query_path(project)
 
@@ -601,18 +599,16 @@ def query_and_wait(
             # remaining pages) by waiting for the query to finish and calling
             # client._list_rows_from_query_results directly. Need to update
             # RowIterator to fetch destination table via the job ID if needed.
-            iterator = _wait_or_cancel(
+            return _wait_or_cancel(
                 _to_query_job(client, query, job_config, response),
                 api_timeout=api_timeout,
                 wait_timeout=wait_timeout,
                 retry=retry,
                 page_size=page_size,
                 max_results=max_results,
+                query_results_format=query_results_format,
                 callback=callback,
             )
-            if query_results_format is not None:
-                iterator._query_results_format = query_results_format
-            return iterator
 
         if "dryRun" not in request_body:
             callback(
@@ -706,6 +702,7 @@ def _wait_or_cancel(
     page_size: Optional[int],
     max_results: Optional[int],
     *,
+    query_results_format: Optional[str] = None,
     callback: Callable = lambda _: None,
 ) -> table.RowIterator:
     """Wait for a job to complete and return the results.
@@ -750,6 +747,7 @@ def _wait_or_cancel(
                     ended=job.ended,
                 )
             )
+        query_results._query_results_format = query_results_format
         return query_results
     except Exception:
         # Attempt to cancel the job since we can't return the results.
