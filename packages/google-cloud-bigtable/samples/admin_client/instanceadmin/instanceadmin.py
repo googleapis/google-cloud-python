@@ -23,6 +23,7 @@ Prerequisites:
 import argparse
 
 from google.api_core.exceptions import NotFound
+
 from google.cloud import bigtable_admin_v2
 
 
@@ -40,7 +41,6 @@ def run_instance_operations(project_id, instance_id, cluster_id):
     # [END bigtable_check_instance_exists]
 
     # [START bigtable_create_prod_instance]
-    cluster_path = client.cluster_path(project_id, instance_id, cluster_id)
     cluster = bigtable_admin_v2.Cluster(
         location=client.common_location_path(project_id, "us-central1-f"),
         serve_nodes=1,

@@ -21,10 +21,10 @@ Prerequisites:
 """
 
 import argparse
-import datetime
+
+from google.protobuf import duration_pb2
 
 from google.cloud import bigtable_admin_v2
-from google.protobuf import duration_pb2
 
 from ..utils import create_table_cm
 

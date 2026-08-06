@@ -146,9 +146,7 @@ def write_aggregate(table):
                         value=32304,
                         timestamp_micros=time.time_ns() // 1000,
                     )
-                    batcher.append(
-                        RowMutationEntry(row_key.encode("utf-8"), [reading])
-                    )
+                    batcher.append(RowMutationEntry(row_key.encode("utf-8"), [reading]))
             except MutationsExceptionGroup as e:
                 for sub_exception in e.exceptions:
                     failed_entry: RowMutationEntry = sub_exception.entry
