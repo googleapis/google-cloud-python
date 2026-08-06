@@ -76,8 +76,9 @@ def setup_request_id(
             # Auto-populate if the key is missing, None, or falsy (e.g., empty string '').
             should_populate = not request.get(field_name)
     else:
-        # Case 2: Object request (proto-plus wrapper or pure protobuf message).
         if is_proto3_optional:
+            # Case 2a: Proto request with explicit presence (`is_proto3_optional=True`)
+            # (proto-plus wrapper or pure protobuf message).
             # Extract the protobuf from proto-plus if wrapped.
             pure_pb: google.protobuf.message.Message = getattr(request, "_pb", request)
             try:
@@ -86,7 +87,7 @@ def setup_request_id(
                 # Fall back if `HasField` fails or is unsupported.
                 should_populate = getattr(pure_pb, field_name, None) is None
         else:
-            # Case 2b: Object request without explicit presence (`is_proto3_optional=False`).
+            # Case 2b: Proto request without explicit presence (`is_proto3_optional=False`).
             # Auto-populate if the field value is falsy (None or empty string '').
             should_populate = not bool(getattr(request, field_name, False))
 
