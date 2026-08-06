@@ -609,7 +609,10 @@ def get_client_ssl_credentials(
     """
 
     # 1.  Attempt to retrieve X.509 Workload cert and key.
-    cert, key = _get_workload_cert_and_key(certificate_config_path)
+    try:
+        cert, key = _get_workload_cert_and_key(certificate_config_path)
+    except exceptions.ClientCertError:
+        cert, key = None, None
     if cert and key:
         return True, cert, key, None
 
@@ -784,10 +787,11 @@ def check_parameters_for_unauthorized_response(cached_cert):
     Returns:
         bytes: The client callback cert bytes.
         bytes: The client callback key bytes.
+        bytes/str: The passphrase for the key.
         str: The base64-encoded SHA256 cached fingerprint.
         str: The base64-encoded SHA256 current cert fingerprint.
     """
-    call_cert_bytes, call_key_bytes = call_client_cert_callback()
+    call_cert_bytes, call_key_bytes, passphrase = call_client_cert_callback()
     cert_obj = _agent_identity_utils.parse_certificate(call_cert_bytes)
     current_cert_fingerprint = _agent_identity_utils.calculate_certificate_fingerprint(
         cert_obj
@@ -798,12 +802,18 @@ def check_parameters_for_unauthorized_response(cached_cert):
         )
     else:
         cached_fingerprint = current_cert_fingerprint
-    return call_cert_bytes, call_key_bytes, cached_fingerprint, current_cert_fingerprint
+    return (
+        call_cert_bytes,
+        call_key_bytes,
+        passphrase,
+        cached_fingerprint,
+        current_cert_fingerprint,
+    )
 
 
 def call_client_cert_callback():
-    """Calls the client cert callback and returns the certificate and key."""
+    """Calls the client cert callback and returns the certificate, key, and passphrase."""
     _, cert_bytes, key_bytes, passphrase = get_client_ssl_credentials(
         generate_encrypted_key=True
     )
-    return cert_bytes, key_bytes
+    return cert_bytes, key_bytes, passphrase
