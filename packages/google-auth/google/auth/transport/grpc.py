@@ -388,7 +388,6 @@ class _MTLSCallInterceptor(
     def __init__(self):
         self._wrapper = None
         self._max_retries = 2  # Set your desired limit here
-        self._executor = concurrent.futures.ThreadPoolExecutor(max_workers=5)
 
     def _should_retry(self, code, retry_count, attempt_cert):
         if code != grpc.StatusCode.UNAUTHENTICATED or not self._wrapper:
@@ -640,6 +639,7 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
 
         self._completion_event = threading.Event()
         self._done_callbacks = []
+        self._terminal_exception = None
 
         self._start_call()
 
@@ -693,16 +693,16 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
             if can_replay and self._interceptor._should_retry(
                 status_code, self._retry_count, getattr(self, "_attempt_cert", None)
             ):
-                with self._lock:
-                    if getattr(self._interceptor, "_wrapper", None):
-                        self._interceptor._wrapper.refresh_logic(1)
+                if getattr(self._interceptor, "_wrapper", None):
+                    self._interceptor._wrapper.refresh_logic(1)
 
+                with self._lock:
                     self._retry_count += 1
-                    try:
-                        self._start_call()
-                        return
-                    except Exception:
-                        pass
+                try:
+                    self._start_call()
+                    return
+                except Exception as e:
+                    self._terminal_exception = e
 
             if getattr(self._interceptor, "_wrapper", None):
                 if self._interceptor._should_retry(
@@ -738,6 +738,8 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
         if not self._completion_event.wait(timeout):
             raise grpc.FutureTimeoutError()
         with self._lock:
+            if self._terminal_exception is not None:
+                raise self._terminal_exception
             current_future = self._target_future
         return current_future.result()
 
@@ -745,32 +747,44 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
         if not self._completion_event.wait(timeout):
             raise grpc.FutureTimeoutError()
         with self._lock:
+            if self._terminal_exception is not None:
+                return self._terminal_exception
             return self._target_future.exception()
 
     def traceback(self, timeout=None):
         if not self._completion_event.wait(timeout):
             raise grpc.FutureTimeoutError()
         with self._lock:
+            if self._terminal_exception is not None:
+                return self._terminal_exception.__traceback__
             return self._target_future.traceback()
 
     def initial_metadata(self):
         self._completion_event.wait()
         with self._lock:
+            if self._terminal_exception is not None:
+                return None
             return self._target_future.initial_metadata()
 
     def trailing_metadata(self):
         self._completion_event.wait()
         with self._lock:
+            if self._terminal_exception is not None:
+                return None
             return self._target_future.trailing_metadata()
 
     def code(self):
         self._completion_event.wait()
         with self._lock:
+            if hasattr(self._terminal_exception, "code"):
+                return self._terminal_exception.code()
             return self._target_future.code()
 
     def details(self):
         self._completion_event.wait()
         with self._lock:
+            if hasattr(self._terminal_exception, "details"):
+                return self._terminal_exception.details()
             return self._target_future.details()
 
     def cancel(self):
@@ -929,10 +943,10 @@ class _RetryableStreamResponseIterator(grpc.Call):
                         getattr(self, "_attempt_cert", None),
                     )
                 ):
-                    with self._lock:
-                        if getattr(self._interceptor, "_wrapper", None):
-                            self._interceptor._wrapper.refresh_logic(1)
+                    if getattr(self._interceptor, "_wrapper", None):
+                        self._interceptor._wrapper.refresh_logic(1)
 
+                    with self._lock:
                         self._retry_count += 1
                         try:
                             self._start_call()
