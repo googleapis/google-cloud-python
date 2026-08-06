@@ -91,10 +91,11 @@ def _create_read_session(schema=_TEST_SCHEMA):
 
 
 def test_from_read_rows_response_decodes_serialized_record_batch():
+    pandas_gbq_arrow = pytest.importorskip("pandas_gbq.arrow")
     expected_batch = _create_sample_batch()
     response = _create_read_rows_response(expected_batch)
 
-    actual_batch = pandas_gbq.arrow.from_read_rows_response(
+    actual_batch = pandas_gbq_arrow.from_read_rows_response(
         response, arrow_schema=_TEST_SCHEMA
     )
 
