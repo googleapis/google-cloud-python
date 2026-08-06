@@ -5780,6 +5780,7 @@ class TestRowIterator(unittest.TestCase):
             ),
         ):
             with warnings.catch_warnings(record=True) as record:
+                warnings.simplefilter("always")
                 row_iterator.to_geodataframe(create_bqstorage_client=False)
 
         deprecation_warnings = [
