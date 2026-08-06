@@ -655,7 +655,7 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
     def _start_call(self):
         self._attempt_cert = (
             self._interceptor._wrapper._cached_cert
-            if getattr(self._interceptor, "_wrapper", None)
+            if self._interceptor._wrapper
             else None
         )
 
@@ -689,6 +689,17 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
             if self._target_future is not inner_future:
                 return
 
+        if inner_future.cancelled():
+            with self._lock:
+                self._completion_event.set()
+                callbacks_to_fire = list(self._done_callbacks)
+            for fn in callbacks_to_fire:
+                try:
+                    fn(self)
+                except Exception as e:
+                    _LOGGER.warning("Callback failed: %s", e)
+            return
+
         exc = inner_future.exception()
         if isinstance(exc, grpc.RpcError):
             status_code = exc.code()
@@ -713,9 +724,9 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
                 except Exception as e:
                     self._terminal_exception = e
 
-            if getattr(self._interceptor, "_wrapper", None):
+            if self._interceptor._wrapper:
                 if self._interceptor._should_retry(
-                    status_code, 0, getattr(self, "_attempt_cert", None)
+                    status_code, 0, self._attempt_cert
                 ):
                     self._interceptor._wrapper.refresh_logic(1)
 
@@ -1000,7 +1011,7 @@ class _RetryableStreamResponseIterator(grpc.Call):
 
     def done(self):
         with self._lock:
-            return getattr(self, "_is_completed", False)
+            return self._is_completed
 
     def initial_metadata(self):
         with self._lock:
