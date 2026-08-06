@@ -30,6 +30,7 @@ from google.api_core import gapic_v1
 from google.cloud.redis_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, get_client_cert_source
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
+from google.auth.transport import mtls                            # type: ignore
 from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
@@ -295,9 +296,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
 
         # Figure out the client cert source to use.
-        client_cert_source = get_client_cert_source(
-            client_options.client_cert_source
-        )
+        client_cert_source = None
+        if use_client_cert:
+            if client_options.client_cert_source:
+                client_cert_source = client_options.client_cert_source
+            elif mtls.has_default_client_cert_source():
+                client_cert_source = mtls.default_client_cert_source()
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
