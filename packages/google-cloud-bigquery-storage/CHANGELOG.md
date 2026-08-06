@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.39.0...google-cloud-bigquery-storage-v2.40.0) (2026-08-06)
+
+
+### Features
+
+* delegate ReadRowsPage.to_arrow to pandas_gbq.arrow ([#17938](https://github.com/googleapis/google-cloud-python/issues/17938)) ([aedc66f](https://github.com/googleapis/google-cloud-python/commit/aedc66fe757079ea5343fa1438504689c3bf73e7))
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+
 ## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.38.0...google-cloud-bigquery-storage-v2.39.0) (2026-06-02)
 
 
