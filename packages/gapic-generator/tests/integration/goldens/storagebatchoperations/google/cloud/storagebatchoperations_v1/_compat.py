@@ -51,7 +51,7 @@ def read_environment_variables():
     """Returns the environment variables used by the client.
 
     Returns:
-        Tuple[bool, str, bool]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
+        Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
         GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
 
     Raises:
@@ -68,9 +68,7 @@ def read_environment_variables():
             "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`,"
             " `auto` or `always`"
         )
-    else:
-        use_mtls = use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and use_client_cert)
-    return use_client_cert, use_mtls, universe_domain_env
+    return use_client_cert, use_mtls_endpoint, universe_domain_env
 
 
 DEFAULT_UNIVERSE = "googleapis.com"
