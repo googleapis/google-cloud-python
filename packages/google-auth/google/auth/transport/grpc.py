@@ -491,6 +491,11 @@ class _MTLSRefreshingChannel(grpc.Channel):
                         pass
                     self._channel.subscribe(callback)
 
+                try:
+                    old_channel.close()
+                except Exception:
+                    pass
+
     def unary_unary(self, method, *args, **kwargs):
         # Always return a callable from the CURRENT channel
         return self._channel.unary_unary(method, *args, **kwargs)
@@ -693,8 +698,11 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
                         self._interceptor._wrapper.refresh_logic(1)
 
                     self._retry_count += 1
-                    self._start_call()
-                return
+                    try:
+                        self._start_call()
+                        return
+                    except Exception:
+                        pass
 
             if getattr(self._interceptor, "_wrapper", None):
                 if self._interceptor._should_retry(
@@ -926,7 +934,11 @@ class _RetryableStreamResponseIterator(grpc.Call):
                             self._interceptor._wrapper.refresh_logic(1)
 
                         self._retry_count += 1
-                        self._start_call()
+                        try:
+                            self._start_call()
+                        except Exception as timeout_e:
+                            self._trigger_callbacks()
+                            raise timeout_e
                     continue
                 else:
                     if getattr(self._interceptor, "_wrapper", None):

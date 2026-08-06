@@ -757,3 +757,78 @@ def test_factory_infinite_replay_on_error(mock_should_retry):
     responses = list(stream)
     assert responses == [b"SUCCESS"]
     assert factory_calls == 2
+
+
+@mock.patch("google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response")
+@mock.patch("google.auth.transport.grpc.secure_authorized_channel")
+def test_refresh_logic_closes_old_channel(mock_secure_channel, mock_check_params):
+    import google.auth.transport.grpc as transport_grpc
+
+    mock_check_params.return_value = ("cert", "cert", "old_fp", "new_fp")
+    old_channel = mock.Mock()
+    new_channel = mock.Mock()
+    mock_secure_channel.return_value = new_channel
+
+    subscriber = mock.Mock()
+
+    refreshing_channel = transport_grpc._MTLSRefreshingChannel(
+        target="example.com:443",
+        factory_args={},
+        initial_channel=old_channel,
+        initial_cert="cert",
+    )
+    refreshing_channel.subscribe(subscriber)
+
+    refreshing_channel.refresh_logic(1)
+
+    old_channel.unsubscribe.assert_called_once_with(subscriber)
+    new_channel.subscribe.assert_called_once_with(subscriber)
+    old_channel.close.assert_called_once()
+
+
+@mock.patch("google.auth.transport.grpc._MTLSCallInterceptor._should_retry")
+def test_unary_response_future_deadline_exceeded_on_retry(mock_should_retry):
+    import google.auth.transport.grpc as transport_grpc
+
+    interceptor = transport_grpc._MTLSCallInterceptor()
+    interceptor._wrapper = mock.Mock()
+    interceptor._wrapper._cached_cert = "cert"
+    mock_should_retry.return_value = True
+
+    mock_err = transport_grpc.grpc.RpcError()
+    mock_err.code = lambda: transport_grpc.grpc.StatusCode.UNAUTHENTICATED
+
+    inner_future = mock.Mock()
+    inner_future.exception = lambda: mock_err
+    inner_future.result = mock.Mock(side_effect=mock_err)
+
+    callbacks_fired = []
+
+    def callback(f):
+        callbacks_fired.append(f)
+
+    call_details = mock.Mock()
+    call_details.timeout = 0.001  # very short timeout
+
+    # Simulating initial call
+    future = transport_grpc._RetryableUnaryResponseFuture(
+        continuation=lambda cd, pl: inner_future,
+        client_call_details=call_details,
+        request_or_iterator=b"request",
+        interceptor=interceptor,
+        is_client_stream=False,
+    )
+    future.add_done_callback(callback)
+
+    # Allow time to elapse so remaining timeout <= 0
+    time.sleep(0.01)
+
+    # Trigger inner future completion
+    future._on_inner_future_done(inner_future)
+
+    # Verify future is marked done and does not hang
+    assert future.done() is True
+    assert len(callbacks_fired) == 1
+    with pytest.raises(transport_grpc.grpc.RpcError):
+        future.result(timeout=1)
+
