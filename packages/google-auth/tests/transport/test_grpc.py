@@ -759,12 +759,14 @@ def test_factory_infinite_replay_on_error(mock_should_retry):
     assert factory_calls == 2
 
 
+@mock.patch("google.auth.transport._mtls_helper.decrypt_private_key")
 @mock.patch("google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response")
 @mock.patch("google.auth.transport.grpc.secure_authorized_channel")
-def test_refresh_logic_closes_old_channel(mock_secure_channel, mock_check_params):
+def test_refresh_logic_closes_old_channel(mock_secure_channel, mock_check_params, mock_decrypt):
     import google.auth.transport.grpc as transport_grpc
 
-    mock_check_params.return_value = ("cert", "cert", "old_fp", "new_fp")
+    mock_check_params.return_value = ("cert", "cert", "passphrase", "old_fp", "new_fp")
+    mock_decrypt.return_value = b"decrypted_key"
     old_channel = mock.Mock()
     new_channel = mock.Mock()
     mock_secure_channel.return_value = new_channel

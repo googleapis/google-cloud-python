@@ -407,6 +407,7 @@ class _MTLSCallInterceptor(
         (
             _,
             _,
+            _,
             cached_fp,
             current_fp,
         ) = _mtls_helper.check_parameters_for_unauthorized_response(attempt_cert)
@@ -458,8 +459,9 @@ class _MTLSRefreshingChannel(grpc.Channel):
         with self._lock:
             # Re-check inside lock to prevent race conditions
             (
-                _,
-                _,
+                call_cert_bytes,
+                call_key_bytes,
+                passphrase,
                 cached_fp,
                 current_fp,
             ) = _mtls_helper.check_parameters_for_unauthorized_response(
@@ -470,18 +472,23 @@ class _MTLSRefreshingChannel(grpc.Channel):
                     "Wrapper: Refreshing mTLS channel. Retry count: %d", count
                 )
                 old_channel = self._channel
-                client_cert_callback = self._factory_args.get("client_cert_callback")
-                if client_cert_callback:
-                    cert, _ = client_cert_callback()
-                    self._cached_cert = cert
-                else:
-                    try:
-                        creds = _mtls_helper.get_client_ssl_credentials()
-                        self._cached_cert = creds[1]
-                    except Exception:
-                        pass
+                
+                # Consume the exact credential bytes fetched during the fingerprint check
+                self._cached_cert = call_cert_bytes
 
-                self._channel = secure_authorized_channel(**self._factory_args)
+                # Support encrypted keys
+                if passphrase is not None:
+                    call_key_bytes = _mtls_helper.decrypt_private_key(call_key_bytes, passphrase)
+                
+                # The factory args must use the new credentials exactly to build the rotation channel
+                factory_args = self._factory_args.copy()
+                factory_args["client_cert_callback"] = None
+                factory_args["ssl_credentials"] = grpc.ssl_channel_credentials(
+                    certificate_chain=call_cert_bytes,
+                    private_key=call_key_bytes,
+                )
+
+                self._channel = secure_authorized_channel(**factory_args)
 
                 for callback in self._subscribers:
                     try:
