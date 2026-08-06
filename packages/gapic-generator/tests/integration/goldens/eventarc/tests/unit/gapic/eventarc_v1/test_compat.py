@@ -417,11 +417,17 @@ def test_get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
 
-    assert get_client_cert_source(None, False) is None
-    assert get_client_cert_source(mock_provided_cert_source, False) is None
-    assert get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        assert get_client_cert_source(None) is None
+        assert get_client_cert_source(mock_provided_cert_source) is None
 
-    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
-        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
-            assert get_client_cert_source(None, True) is mock_default_cert_source
-            assert get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        assert get_client_cert_source(mock_provided_cert_source) == mock_provided_cert_source
+
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+                assert get_client_cert_source(None) is mock_default_cert_source
+                assert get_client_cert_source(mock_provided_cert_source) is mock_provided_cert_source
+
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
+            assert get_client_cert_source(None) is None

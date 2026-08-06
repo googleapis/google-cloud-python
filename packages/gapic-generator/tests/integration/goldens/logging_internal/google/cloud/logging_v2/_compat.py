@@ -45,23 +45,18 @@ except ImportError:  # pragma: NO COVER
         return use_client_cert == "true"
 
 
-def get_client_cert_source(provided_cert_source, use_cert_flag):
+def get_client_cert_source(provided_cert_source):
     """Return the client cert source to be used by the client.
 
     Args:
         provided_cert_source (bytes): The client certificate source provided.
-        use_cert_flag (bool): A flag indicating whether to use the client certificate.
-
     Returns:
         bytes or None: The client cert source to be used by the client.
     """
-    client_cert_source = None
-    if use_cert_flag:
-        if provided_cert_source:
-            client_cert_source = provided_cert_source
-        elif mtls.has_default_client_cert_source():
-            client_cert_source = mtls.default_client_cert_source()
-    return client_cert_source
+    if should_use_client_cert():
+        return provided_cert_source or (
+            mtls.default_client_cert_source() if mtls.has_default_client_cert_source() else None
+        )
 
 
 DEFAULT_UNIVERSE = "googleapis.com"

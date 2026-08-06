@@ -259,7 +259,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         # Figure out the client cert source to use.
         client_cert_source = get_client_cert_source(
-            client_options.client_cert_source, use_client_cert
+            client_options.client_cert_source
         )
 
         # Figure out which api endpoint to use.
@@ -413,7 +413,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = MetricsServiceV2Client._read_environment_variables()
-        self._client_cert_source = get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
+        self._client_cert_source = get_client_cert_source(self._client_options.client_cert_source)
         self._universe_domain = get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint: str = ""  # updated below, depending on `transport`
 
