@@ -60,10 +60,7 @@ extras = {
         "pandas-gbq>=0.35.1",
     ],
     "fastavro": ["fastavro>=1.1.0"],
-    "pyarrow": [
-        "pyarrow>=3.0.0",
-        "pandas-gbq>=0.35.1",
-    ],
+    "pyarrow": ["pyarrow>=3.0.0"],
 }
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-storage"
 
