@@ -48,6 +48,35 @@ except ImportError:  # pragma: NO COVER
             )
         return use_client_cert == "true"
 
+<<<<<<< HEAD
+=======
+
+def read_environment_variables():
+    """Returns the environment variables used by the client.
+
+    Returns:
+        Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
+        GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
+
+    Raises:
+        ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
+            any of ["true", "false"].
+        google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
+            is not any of ["auto", "never", "always"].
+    """
+    use_client_cert = should_use_client_cert()
+    use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
+    universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+    if use_mtls_endpoint not in ("auto", "never", "always"):
+        raise MutualTLSChannelError(
+            "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`,"
+            " `auto` or `always`"
+        )
+    return use_client_cert, use_mtls_endpoint, universe_domain_env
+
+
+DEFAULT_UNIVERSE = "googleapis.com"
+>>>>>>> main
 
 try:
     from google.api_core.universe import get_default_mtls_endpoint
