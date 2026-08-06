@@ -146,6 +146,7 @@ def test_read_rows_page_to_arrow_falls_back_when_pandas_gbq_uninstalled():
 
 
 def test_read_rows_page_to_arrow_empty_batch_delegates_when_pandas_gbq_installed():
+    pytest.importorskip("pandas_gbq")
     empty_batch = _create_sample_batch(rows=[])
     response = _create_read_rows_response(record_batch=empty_batch)
     stream_parser = reader._ArrowStreamParser(_create_read_session(_TEST_SCHEMA))
