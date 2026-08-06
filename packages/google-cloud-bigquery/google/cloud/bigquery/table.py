@@ -2303,26 +2303,18 @@ class RowIterator(HTTPIterator):
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
 
-        options = [
-            ("grpc.max_receive_message_length", 128 * 1024 * 1024),
-            ("grpc.keepalive_time_ms", 30000),
-        ]
-
-        if bqstorage_client is None:
-            if self.client is None:
-                raise ValueError("RowIterator client is None.")
-            bqstorage_client = self.client._ensure_bqstorage_client()
-            if bqstorage_client is None:
-                raise ValueError(
-                    "The google-cloud-bigquery-storage library is required to read Arrow results."
-                )
-
         offset = 0
         pa_schema = None
+        total_rows = self.total_rows
+        job_complete = False
 
         if self._first_page_response:
             first_page = self._first_page_response
             self._first_page_response = None
+
+            job_complete = bool(first_page.get("jobComplete", False))
+            if job_complete:
+                total_rows = int(first_page["totalRows"])
 
             arrow_schema_json = first_page.get("arrowSchema")
             if isinstance(arrow_schema_json, dict):
@@ -2346,6 +2338,23 @@ class RowIterator(HTTPIterator):
                     )
                     offset += batch.num_rows
                     yield batch
+
+        if job_complete and offset >= total_rows:
+            return
+
+        options = [
+            ("grpc.max_receive_message_length", 128 * 1024 * 1024),
+            ("grpc.keepalive_time_ms", 30000),
+        ]
+
+        if bqstorage_client is None:
+            if self.client is None:
+                raise ValueError("RowIterator client is None.")
+            bqstorage_client = self.client._ensure_bqstorage_client()
+            if bqstorage_client is None:
+                raise ValueError(
+                    "The google-cloud-bigquery-storage library is required to read Arrow results."
+                )
 
         project = self._project or (self.client.project if self.client else None)
         location = self._location or (self.client.location if self.client else None)
