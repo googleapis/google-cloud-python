@@ -16,6 +16,7 @@
 
 from __future__ import absolute_import
 
+import base64
 import copy
 import datetime
 import functools
@@ -1925,6 +1926,7 @@ class RowIterator(HTTPIterator):
         created: Optional[datetime.datetime] = None,
         started: Optional[datetime.datetime] = None,
         ended: Optional[datetime.datetime] = None,
+        query_results_format: Optional[str] = None,
     ):
         super(RowIterator, self).__init__(
             client,
@@ -1958,6 +1960,29 @@ class RowIterator(HTTPIterator):
         self._job_created = created
         self._job_started = started
         self._job_ended = ended
+        self._query_results_format = query_results_format
+
+    @property
+    def pages(self):
+        if self._query_results_format == "ARROW":
+            raise ValueError(
+                "Cannot iterate over non-arrow results when queryResultsFormat is ARROW. Use to_arrow_iterable() or to_arrow() instead."
+            )
+        return super().pages
+
+    def __iter__(self):
+        if self._query_results_format == "ARROW":
+            raise ValueError(
+                "Cannot iterate over non-arrow results when queryResultsFormat is ARROW. Use to_arrow_iterable() or to_arrow() instead."
+            )
+        return super().__iter__()
+
+    def __next__(self):
+        if self._query_results_format == "ARROW":
+            raise ValueError(
+                "Cannot iterate over non-arrow results when queryResultsFormat is ARROW. Use to_arrow_iterable() or to_arrow() instead."
+            )
+        return super().__next__()
 
     @property
     def _billing_project(self) -> Optional[str]:
@@ -2239,6 +2264,12 @@ class RowIterator(HTTPIterator):
 
         .. versionadded:: 2.31.0
         """
+        if self._query_results_format == "ARROW":
+            return self._download_arrow_from_job_id(
+                bqstorage_client=bqstorage_client,
+                timeout=timeout,
+            )
+
         self._maybe_warn_max_results(bqstorage_client)
 
         bqstorage_download = functools.partial(
@@ -2263,6 +2294,87 @@ class RowIterator(HTTPIterator):
             tabledata_list_download,
             bqstorage_client=bqstorage_client,
         )
+
+    def _download_arrow_from_job_id(
+        self,
+        bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
+        timeout: Optional[float] = None,
+    ) -> Iterator["pyarrow.RecordBatch"]:
+        if pyarrow is None:
+            raise ValueError(_NO_PYARROW_ERROR)
+
+        owns_bqstorage_client = False
+        if bqstorage_client is None:
+            if self.client is None:
+                raise ValueError("RowIterator client is None.")
+            bqstorage_client = self.client._ensure_bqstorage_client()
+            if bqstorage_client is None:
+                raise ValueError(
+                    "The google-cloud-bigquery-storage library is required to read Arrow results."
+                )
+            owns_bqstorage_client = True
+
+        try:
+            offset = 0
+            pa_schema = None
+
+            if self._first_page_response:
+                first_page = self._first_page_response
+                self._first_page_response = None
+
+                arrow_schema_json = first_page.get("arrowSchema")
+                if isinstance(arrow_schema_json, dict):
+                    schema_bytes = arrow_schema_json.get("serializedSchema")
+                    if schema_bytes:
+                        if isinstance(schema_bytes, str):
+                            schema_bytes = base64.b64decode(schema_bytes)
+                        pa_schema = pyarrow.ipc.read_schema(
+                            pyarrow.py_buffer(schema_bytes)
+                        )
+
+                arrow_batch_json = first_page.get("arrowRecordBatch")
+                if isinstance(arrow_batch_json, dict) and pa_schema is not None:
+                    batch_bytes = arrow_batch_json.get("serializedRecordBatch")
+                    if batch_bytes:
+                        if isinstance(batch_bytes, str):
+                            batch_bytes = base64.b64decode(batch_bytes)
+                        batch = pyarrow.ipc.read_record_batch(
+                            pyarrow.py_buffer(batch_bytes),
+                            pa_schema,
+                        )
+                        offset += batch.num_rows
+                        yield batch
+
+            project = self._project or (self.client.project if self.client else None)
+            location = self._location or (self.client.location if self.client else None)
+            stream_name = (
+                f"projects/{project}/locations/{location}/jobs/{self._job_id}/streams/_default"
+            )
+            reader = bqstorage_client.read_rows(
+                stream_name, offset=offset, timeout=timeout
+            )
+            for response in reader:
+                if (
+                    response.arrow_schema
+                    and response.arrow_schema.serialized_schema
+                    and pa_schema is None
+                ):
+                    pa_schema = pyarrow.ipc.read_schema(
+                        pyarrow.py_buffer(response.arrow_schema.serialized_schema)
+                    )
+                if (
+                    response.arrow_record_batch
+                    and response.arrow_record_batch.serialized_record_batch
+                    and pa_schema is not None
+                ):
+                    batch = pyarrow.ipc.read_record_batch(
+                        pyarrow.py_buffer(response.arrow_record_batch.serialized_record_batch),
+                        pa_schema,
+                    )
+                    yield batch
+        finally:
+            if owns_bqstorage_client and bqstorage_client is not None:
+                bqstorage_client._transport.close()  # type: ignore[union-attr]
 
     # If changing the signature of this method, make sure to apply the same
     # changes to job.QueryJob.to_arrow()
@@ -2376,7 +2488,7 @@ class RowIterator(HTTPIterator):
                 # but mypy cannot infer this correlation. We ignore the union-attr error here.
                 bqstorage_client._transport.close()  # type: ignore[union-attr]
 
-        if record_batches and bqstorage_client is not None:
+        if record_batches and (bqstorage_client is not None or self._query_results_format == "ARROW"):
             return pyarrow.Table.from_batches(record_batches)
         else:
             # No records (not record_batches), use schema based on BigQuery schema
@@ -3073,17 +3185,41 @@ class _EmptyRowIterator(RowIterator):
     """
 
     def __init__(
-        self, client=None, api_request=None, path=None, schema=(), *args, **kwargs
+        self, client=None, api_request=None, path=None, schema=(), *args, query_results_format: Optional[str] = None, **kwargs
     ):
         super().__init__(
             client=client,
             api_request=api_request,
             path=path,
             schema=schema,
+            query_results_format=query_results_format,
             *args,
             **kwargs,
         )
         self._total_rows = 0
+        self._query_results_format = query_results_format
+
+    @property
+    def pages(self):
+        if self._query_results_format == "ARROW":
+            raise ValueError(
+                "Cannot iterate over non-arrow results when queryResultsFormat is ARROW. Use to_arrow_iterable() or to_arrow() instead."
+            )
+        return super().pages
+
+    def __iter__(self):
+        if self._query_results_format == "ARROW":
+            raise ValueError(
+                "Cannot iterate over non-arrow results when queryResultsFormat is ARROW. Use to_arrow_iterable() or to_arrow() instead."
+            )
+        return iter(())
+
+    def __next__(self):
+        if self._query_results_format == "ARROW":
+            raise ValueError(
+                "Cannot iterate over non-arrow results when queryResultsFormat is ARROW. Use to_arrow_iterable() or to_arrow() instead."
+            )
+        raise StopIteration
 
     def to_arrow(
         self,
@@ -3266,10 +3402,9 @@ class _EmptyRowIterator(RowIterator):
         Returns:
             An iterator yielding a single empty :class:`~pyarrow.RecordBatch`.
         """
+        if pyarrow is None:
+            raise ValueError(_NO_PYARROW_ERROR)
         return iter((pyarrow.record_batch([]),))
-
-    def __iter__(self):
-        return iter(())
 
 
 class PartitionRange(object):

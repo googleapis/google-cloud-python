@@ -430,6 +430,7 @@ def query_and_wait(
     job_retry: Optional[retries.Retry],
     page_size: Optional[int] = None,
     max_results: Optional[int] = None,
+    query_results_format: Optional[str] = None,
     callback: Callable = lambda _: None,
 ) -> table.RowIterator:
     """Run the query, wait for it to finish, and return the results.
@@ -475,6 +476,8 @@ def query_and_wait(
             request. Non-positive values are ignored.
         max_results (Optional[int]):
             The maximum total number of rows from this request.
+        query_results_format (Optional[str]):
+            The format for query results (e.g. "ARROW").
         callback (Callable):
             A callback function used by bigframes to report query progress.
 
@@ -499,11 +502,13 @@ def query_and_wait(
     request_body = _to_query_request(
         query=query, job_config=job_config, location=location, timeout=api_timeout
     )
+    if query_results_format is not None:
+        request_body["queryResultsFormat"] = query_results_format
 
     # Some API parameters aren't supported by the jobs.query API. In these
     # cases, fallback to a jobs.insert call.
     if not _supported_by_jobs_query(request_body):
-        return _wait_or_cancel(
+        iterator = _wait_or_cancel(
             query_jobs_insert(
                 client=client,
                 query=query,
@@ -524,6 +529,9 @@ def query_and_wait(
             max_results=max_results,
             callback=callback,
         )
+        if query_results_format is not None:
+            iterator._query_results_format = query_results_format
+        return iterator
 
     path = _to_query_path(project)
 
@@ -587,7 +595,7 @@ def query_and_wait(
             # remaining pages) by waiting for the query to finish and calling
             # client._list_rows_from_query_results directly. Need to update
             # RowIterator to fetch destination table via the job ID if needed.
-            return _wait_or_cancel(
+            iterator = _wait_or_cancel(
                 _to_query_job(client, query, job_config, response),
                 api_timeout=api_timeout,
                 wait_timeout=wait_timeout,
@@ -596,6 +604,9 @@ def query_and_wait(
                 max_results=max_results,
                 callback=callback,
             )
+            if query_results_format is not None:
+                iterator._query_results_format = query_results_format
+            return iterator
 
         if "dryRun" not in request_body:
             callback(
@@ -633,6 +644,7 @@ def query_and_wait(
             created=query_results.created,
             started=query_results.started,
             ended=query_results.ended,
+            query_results_format=query_results_format,
         )
 
     if job_retry is not None:
@@ -673,6 +685,7 @@ def _supported_by_jobs_query(request_body: Dict[str, Any]) -> bool:
         "jobTimeoutMs",
         "reservation",
         "maxSlots",
+        "queryResultsFormat",
     }
 
     unsupported_keys = request_keys - keys_allowlist
