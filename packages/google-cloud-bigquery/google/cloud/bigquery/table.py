@@ -21,9 +21,8 @@ import datetime
 import functools
 import operator
 import typing
-from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple, Union, Sequence
-
 import warnings
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tuple, Union
 
 try:
     import pandas  # type: ignore
@@ -56,30 +55,33 @@ else:
     _read_wkt = wkt.loads
 
 import google.api_core.exceptions
-from google.api_core.page_iterator import HTTPIterator
-
 import google.cloud._helpers  # type: ignore
-from google.cloud.bigquery import _helpers
-from google.cloud.bigquery import _pandas_helpers
-from google.cloud.bigquery import _versions_helpers
+from google.api_core.page_iterator import HTTPIterator
+from google.cloud.bigquery import (
+    _helpers,
+    _pandas_helpers,
+    _string_references,
+    _versions_helpers,
+    external_config,
+)
 from google.cloud.bigquery import exceptions as bq_exceptions
+from google.cloud.bigquery import schema as _schema
 from google.cloud.bigquery._tqdm_helpers import get_progress_bar
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery.enums import DefaultPandasDTypes
 from google.cloud.bigquery.external_config import ExternalConfig
-from google.cloud.bigquery import schema as _schema
-from google.cloud.bigquery.schema import _build_schema_resource
-from google.cloud.bigquery.schema import _parse_schema_resource
-from google.cloud.bigquery.schema import _to_schema_fields
-from google.cloud.bigquery import external_config
-from google.cloud.bigquery import _string_references
+from google.cloud.bigquery.schema import (
+    _build_schema_resource,
+    _parse_schema_resource,
+    _to_schema_fields,
+)
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     # Unconditionally import optional dependencies again to tell pytype that
     # they are not None, avoiding false "no attribute" errors.
+    import geopandas  # type: ignore
     import pandas
     import pyarrow
-    import geopandas  # type: ignore
     from google.cloud import bigquery_storage  # type: ignore
     from google.cloud.bigquery.dataset import DatasetReference
 
@@ -108,6 +110,17 @@ _RANGE_PYARROW_WARNING = (
     "Unable to represent RANGE schema as struct using pandas ArrowDtype. Using "
     "`object` instead. To use ArrowDtype, use pandas >= 1.5 and "
     "pyarrow >= 10.0.1."
+)
+
+_TO_DATAFRAME_DEPRECATED = (
+    "Retrieving DataFrames via core SDK conversion methods is deprecated. "
+    "For direct, optimized access, please call 'pandas_gbq.read_gbq()' directly."
+)
+
+_TO_ARROW_DEPRECATED = (
+    "Retrieving PyArrow Tables via core SDK conversion methods is deprecated. "
+    "For direct, optimized access, please call 'pandas_gbq.arrow.read_bigquery_table()' "
+    "or 'pandas_gbq.arrow.read_bigquery_query()' directly."
 )
 
 # How many of the total rows need to be downloaded already for us to skip
@@ -2316,6 +2329,12 @@ class RowIterator(HTTPIterator):
 
         .. versionadded:: 1.17.0
         """
+        warnings.warn(
+            _TO_ARROW_DEPRECATED,
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
+
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
 
@@ -2709,6 +2728,12 @@ class RowIterator(HTTPIterator):
                 is not supported dtype.
 
         """
+        warnings.warn(
+            _TO_DATAFRAME_DEPRECATED,
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
+
         _pandas_helpers.verify_pandas_imports()
 
         if geography_as_object and shapely is None:
@@ -2801,12 +2826,18 @@ class RowIterator(HTTPIterator):
             create_bqstorage_client = False
             bqstorage_client = None
 
-        record_batch = self.to_arrow(
-            progress_bar_type=progress_bar_type,
-            bqstorage_client=bqstorage_client,
-            create_bqstorage_client=create_bqstorage_client,
-            timeout=timeout,
-        )
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                "ignore",
+                category=PendingDeprecationWarning,
+                message="Retrieving PyArrow Tables.*",
+            )
+            record_batch = self.to_arrow(
+                progress_bar_type=progress_bar_type,
+                bqstorage_client=bqstorage_client,
+                create_bqstorage_client=create_bqstorage_client,
+                timeout=timeout,
+            )
 
         # Default date dtype is `db_dtypes.DateDtype()` that could cause out of bounds error,
         # when pyarrow converts date values to nanosecond precision. To avoid the error, we
@@ -3068,6 +3099,11 @@ class _EmptyRowIterator(RowIterator):
         """
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
+        warnings.warn(
+            _TO_ARROW_DEPRECATED,
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
         return pyarrow.Table.from_arrays(())
 
     def to_dataframe(
@@ -3114,6 +3150,11 @@ class _EmptyRowIterator(RowIterator):
         Returns:
             pandas.DataFrame: An empty :class:`~pandas.DataFrame`.
         """
+        warnings.warn(
+            _TO_DATAFRAME_DEPRECATED,
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
         _pandas_helpers.verify_pandas_imports()
         return pandas.DataFrame()
 
