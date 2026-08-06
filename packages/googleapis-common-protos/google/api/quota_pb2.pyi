@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -25,7 +25,7 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Quota(_message.Message):
-    __slots__ = ("limits", "metric_rules")
+    __slots__ = ()
     LIMITS_FIELD_NUMBER: _ClassVar[int]
     METRIC_RULES_FIELD_NUMBER: _ClassVar[int]
     limits: _containers.RepeatedCompositeFieldContainer[QuotaLimit]
@@ -37,9 +37,9 @@ class Quota(_message.Message):
     ) -> None: ...
 
 class MetricRule(_message.Message):
-    __slots__ = ("selector", "metric_costs")
+    __slots__ = ()
     class MetricCostsEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ()
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -59,20 +59,9 @@ class MetricRule(_message.Message):
     ) -> None: ...
 
 class QuotaLimit(_message.Message):
-    __slots__ = (
-        "name",
-        "description",
-        "default_limit",
-        "max_limit",
-        "free_tier",
-        "duration",
-        "metric",
-        "unit",
-        "values",
-        "display_name",
-    )
+    __slots__ = ()
     class ValuesEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ()
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str

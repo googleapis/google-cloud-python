@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -33,7 +33,7 @@ from google.iam.v1 import policy_pb2 as _policy_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class SetIamPolicyRequest(_message.Message):
-    __slots__ = ("resource", "policy", "update_mask")
+    __slots__ = ()
     RESOURCE_FIELD_NUMBER: _ClassVar[int]
     POLICY_FIELD_NUMBER: _ClassVar[int]
     UPDATE_MASK_FIELD_NUMBER: _ClassVar[int]
@@ -48,7 +48,7 @@ class SetIamPolicyRequest(_message.Message):
     ) -> None: ...
 
 class GetIamPolicyRequest(_message.Message):
-    __slots__ = ("resource", "options")
+    __slots__ = ()
     RESOURCE_FIELD_NUMBER: _ClassVar[int]
     OPTIONS_FIELD_NUMBER: _ClassVar[int]
     resource: str
@@ -60,7 +60,7 @@ class GetIamPolicyRequest(_message.Message):
     ) -> None: ...
 
 class TestIamPermissionsRequest(_message.Message):
-    __slots__ = ("resource", "permissions")
+    __slots__ = ()
     RESOURCE_FIELD_NUMBER: _ClassVar[int]
     PERMISSIONS_FIELD_NUMBER: _ClassVar[int]
     resource: str
@@ -72,7 +72,7 @@ class TestIamPermissionsRequest(_message.Message):
     ) -> None: ...
 
 class TestIamPermissionsResponse(_message.Message):
-    __slots__ = ("permissions",)
+    __slots__ = ()
     PERMISSIONS_FIELD_NUMBER: _ClassVar[int]
     permissions: _containers.RepeatedScalarFieldContainer[str]
     def __init__(self, permissions: _Optional[_Iterable[str]] = ...) -> None: ...

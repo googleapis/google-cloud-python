@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -27,7 +27,7 @@ from google.api import policy_pb2 as _policy_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Control(_message.Message):
-    __slots__ = ("environment", "method_policies")
+    __slots__ = ()
     ENVIRONMENT_FIELD_NUMBER: _ClassVar[int]
     METHOD_POLICIES_FIELD_NUMBER: _ClassVar[int]
     environment: str

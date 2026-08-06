@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -38,7 +38,7 @@ REMOVED: ChangeType
 MODIFIED: ChangeType
 
 class ConfigChange(_message.Message):
-    __slots__ = ("element", "old_value", "new_value", "change_type", "advices")
+    __slots__ = ()
     ELEMENT_FIELD_NUMBER: _ClassVar[int]
     OLD_VALUE_FIELD_NUMBER: _ClassVar[int]
     NEW_VALUE_FIELD_NUMBER: _ClassVar[int]
@@ -59,7 +59,7 @@ class ConfigChange(_message.Message):
     ) -> None: ...
 
 class Advice(_message.Message):
-    __slots__ = ("description",)
+    __slots__ = ()
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     description: str
     def __init__(self, description: _Optional[str] = ...) -> None: ...

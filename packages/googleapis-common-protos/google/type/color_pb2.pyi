@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -24,7 +24,7 @@ from google.protobuf import wrappers_pb2 as _wrappers_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Color(_message.Message):
-    __slots__ = ("red", "green", "blue", "alpha")
+    __slots__ = ()
     RED_FIELD_NUMBER: _ClassVar[int]
     GREEN_FIELD_NUMBER: _ClassVar[int]
     BLUE_FIELD_NUMBER: _ClassVar[int]

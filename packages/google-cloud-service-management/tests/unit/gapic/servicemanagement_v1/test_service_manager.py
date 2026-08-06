@@ -10707,6 +10707,7 @@ def test_create_service_config_rest_call_success(request_type):
                             }
                         ],
                         "syntax": 1,
+                        "edition": "edition_value",
                     }
                 ],
                 "options": {},
@@ -10714,6 +10715,7 @@ def test_create_service_config_rest_call_success(request_type):
                 "source_context": {"file_name": "file_name_value"},
                 "mixins": [{"name": "name_value", "root": "root_value"}],
                 "syntax": 1,
+                "edition": "edition_value",
             }
         ],
         "types": [

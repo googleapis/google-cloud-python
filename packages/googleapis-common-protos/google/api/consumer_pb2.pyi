@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -26,7 +26,7 @@ from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ProjectProperties(_message.Message):
-    __slots__ = ("properties",)
+    __slots__ = ()
     PROPERTIES_FIELD_NUMBER: _ClassVar[int]
     properties: _containers.RepeatedCompositeFieldContainer[Property]
     def __init__(
@@ -34,7 +34,7 @@ class ProjectProperties(_message.Message):
     ) -> None: ...
 
 class Property(_message.Message):
-    __slots__ = ("name", "type", "description")
+    __slots__ = ()
     class PropertyType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         UNSPECIFIED: _ClassVar[Property.PropertyType]

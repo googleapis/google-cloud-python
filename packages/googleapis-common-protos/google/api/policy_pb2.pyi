@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -30,7 +30,7 @@ METHOD_POLICY_FIELD_NUMBER: _ClassVar[int]
 method_policy: _descriptor.FieldDescriptor
 
 class FieldPolicy(_message.Message):
-    __slots__ = ("selector", "resource_permission", "resource_type")
+    __slots__ = ()
     SELECTOR_FIELD_NUMBER: _ClassVar[int]
     RESOURCE_PERMISSION_FIELD_NUMBER: _ClassVar[int]
     RESOURCE_TYPE_FIELD_NUMBER: _ClassVar[int]
@@ -45,7 +45,7 @@ class FieldPolicy(_message.Message):
     ) -> None: ...
 
 class MethodPolicy(_message.Message):
-    __slots__ = ("selector", "request_policies")
+    __slots__ = ()
     SELECTOR_FIELD_NUMBER: _ClassVar[int]
     REQUEST_POLICIES_FIELD_NUMBER: _ClassVar[int]
     selector: str

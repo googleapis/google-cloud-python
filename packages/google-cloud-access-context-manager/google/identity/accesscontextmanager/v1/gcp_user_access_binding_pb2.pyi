@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
 from typing import Optional as _Optional
 
 from google.api import field_behavior_pb2 as _field_behavior_pb2
@@ -25,7 +25,7 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class GcpUserAccessBinding(_message.Message):
-    __slots__ = ("name", "group_key", "access_levels")
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     GROUP_KEY_FIELD_NUMBER: _ClassVar[int]
     ACCESS_LEVELS_FIELD_NUMBER: _ClassVar[int]

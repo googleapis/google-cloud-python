@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -47,34 +47,7 @@ from google.api import usage_pb2 as _usage_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Service(_message.Message):
-    __slots__ = (
-        "name",
-        "title",
-        "producer_project_id",
-        "id",
-        "apis",
-        "types",
-        "enums",
-        "documentation",
-        "backend",
-        "http",
-        "quota",
-        "authentication",
-        "context",
-        "usage",
-        "endpoints",
-        "control",
-        "logs",
-        "metrics",
-        "monitored_resources",
-        "billing",
-        "logging",
-        "monitoring",
-        "system_parameters",
-        "source_info",
-        "publishing",
-        "config_version",
-    )
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     TITLE_FIELD_NUMBER: _ClassVar[int]
     PRODUCER_PROJECT_ID_FIELD_NUMBER: _ClassVar[int]

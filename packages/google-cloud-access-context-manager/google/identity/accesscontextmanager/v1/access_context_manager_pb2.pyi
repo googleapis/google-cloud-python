@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -57,7 +57,7 @@ AS_DEFINED: LevelFormat
 CEL: LevelFormat
 
 class ListAccessPoliciesRequest(_message.Message):
-    __slots__ = ("parent", "page_size", "page_token")
+    __slots__ = ()
     PARENT_FIELD_NUMBER: _ClassVar[int]
     PAGE_SIZE_FIELD_NUMBER: _ClassVar[int]
     PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
@@ -72,7 +72,7 @@ class ListAccessPoliciesRequest(_message.Message):
     ) -> None: ...
 
 class ListAccessPoliciesResponse(_message.Message):
-    __slots__ = ("access_policies", "next_page_token")
+    __slots__ = ()
     ACCESS_POLICIES_FIELD_NUMBER: _ClassVar[int]
     NEXT_PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
     access_policies: _containers.RepeatedCompositeFieldContainer[
@@ -88,13 +88,13 @@ class ListAccessPoliciesResponse(_message.Message):
     ) -> None: ...
 
 class GetAccessPolicyRequest(_message.Message):
-    __slots__ = ("name",)
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     name: str
     def __init__(self, name: _Optional[str] = ...) -> None: ...
 
 class UpdateAccessPolicyRequest(_message.Message):
-    __slots__ = ("policy", "update_mask")
+    __slots__ = ()
     POLICY_FIELD_NUMBER: _ClassVar[int]
     UPDATE_MASK_FIELD_NUMBER: _ClassVar[int]
     policy: _access_policy_pb2.AccessPolicy
@@ -106,13 +106,13 @@ class UpdateAccessPolicyRequest(_message.Message):
     ) -> None: ...
 
 class DeleteAccessPolicyRequest(_message.Message):
-    __slots__ = ("name",)
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     name: str
     def __init__(self, name: _Optional[str] = ...) -> None: ...
 
 class ListAccessLevelsRequest(_message.Message):
-    __slots__ = ("parent", "page_size", "page_token", "access_level_format")
+    __slots__ = ()
     PARENT_FIELD_NUMBER: _ClassVar[int]
     PAGE_SIZE_FIELD_NUMBER: _ClassVar[int]
     PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
@@ -130,7 +130,7 @@ class ListAccessLevelsRequest(_message.Message):
     ) -> None: ...
 
 class ListAccessLevelsResponse(_message.Message):
-    __slots__ = ("access_levels", "next_page_token")
+    __slots__ = ()
     ACCESS_LEVELS_FIELD_NUMBER: _ClassVar[int]
     NEXT_PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
     access_levels: _containers.RepeatedCompositeFieldContainer[
@@ -146,7 +146,7 @@ class ListAccessLevelsResponse(_message.Message):
     ) -> None: ...
 
 class GetAccessLevelRequest(_message.Message):
-    __slots__ = ("name", "access_level_format")
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     ACCESS_LEVEL_FORMAT_FIELD_NUMBER: _ClassVar[int]
     name: str
@@ -158,7 +158,7 @@ class GetAccessLevelRequest(_message.Message):
     ) -> None: ...
 
 class CreateAccessLevelRequest(_message.Message):
-    __slots__ = ("parent", "access_level")
+    __slots__ = ()
     PARENT_FIELD_NUMBER: _ClassVar[int]
     ACCESS_LEVEL_FIELD_NUMBER: _ClassVar[int]
     parent: str
@@ -170,7 +170,7 @@ class CreateAccessLevelRequest(_message.Message):
     ) -> None: ...
 
 class UpdateAccessLevelRequest(_message.Message):
-    __slots__ = ("access_level", "update_mask")
+    __slots__ = ()
     ACCESS_LEVEL_FIELD_NUMBER: _ClassVar[int]
     UPDATE_MASK_FIELD_NUMBER: _ClassVar[int]
     access_level: _access_level_pb2.AccessLevel
@@ -182,13 +182,13 @@ class UpdateAccessLevelRequest(_message.Message):
     ) -> None: ...
 
 class DeleteAccessLevelRequest(_message.Message):
-    __slots__ = ("name",)
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     name: str
     def __init__(self, name: _Optional[str] = ...) -> None: ...
 
 class ReplaceAccessLevelsRequest(_message.Message):
-    __slots__ = ("parent", "access_levels", "etag")
+    __slots__ = ()
     PARENT_FIELD_NUMBER: _ClassVar[int]
     ACCESS_LEVELS_FIELD_NUMBER: _ClassVar[int]
     ETAG_FIELD_NUMBER: _ClassVar[int]
@@ -207,7 +207,7 @@ class ReplaceAccessLevelsRequest(_message.Message):
     ) -> None: ...
 
 class ReplaceAccessLevelsResponse(_message.Message):
-    __slots__ = ("access_levels",)
+    __slots__ = ()
     ACCESS_LEVELS_FIELD_NUMBER: _ClassVar[int]
     access_levels: _containers.RepeatedCompositeFieldContainer[
         _access_level_pb2.AccessLevel
@@ -220,7 +220,7 @@ class ReplaceAccessLevelsResponse(_message.Message):
     ) -> None: ...
 
 class ListServicePerimetersRequest(_message.Message):
-    __slots__ = ("parent", "page_size", "page_token")
+    __slots__ = ()
     PARENT_FIELD_NUMBER: _ClassVar[int]
     PAGE_SIZE_FIELD_NUMBER: _ClassVar[int]
     PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
@@ -235,7 +235,7 @@ class ListServicePerimetersRequest(_message.Message):
     ) -> None: ...
 
 class ListServicePerimetersResponse(_message.Message):
-    __slots__ = ("service_perimeters", "next_page_token")
+    __slots__ = ()
     SERVICE_PERIMETERS_FIELD_NUMBER: _ClassVar[int]
     NEXT_PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
     service_perimeters: _containers.RepeatedCompositeFieldContainer[
@@ -251,13 +251,13 @@ class ListServicePerimetersResponse(_message.Message):
     ) -> None: ...
 
 class GetServicePerimeterRequest(_message.Message):
-    __slots__ = ("name",)
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     name: str
     def __init__(self, name: _Optional[str] = ...) -> None: ...
 
 class CreateServicePerimeterRequest(_message.Message):
-    __slots__ = ("parent", "service_perimeter")
+    __slots__ = ()
     PARENT_FIELD_NUMBER: _ClassVar[int]
     SERVICE_PERIMETER_FIELD_NUMBER: _ClassVar[int]
     parent: str
@@ -271,7 +271,7 @@ class CreateServicePerimeterRequest(_message.Message):
     ) -> None: ...
 
 class UpdateServicePerimeterRequest(_message.Message):
-    __slots__ = ("service_perimeter", "update_mask")
+    __slots__ = ()
     SERVICE_PERIMETER_FIELD_NUMBER: _ClassVar[int]
     UPDATE_MASK_FIELD_NUMBER: _ClassVar[int]
     service_perimeter: _service_perimeter_pb2.ServicePerimeter
@@ -285,13 +285,13 @@ class UpdateServicePerimeterRequest(_message.Message):
     ) -> None: ...
 
 class DeleteServicePerimeterRequest(_message.Message):
-    __slots__ = ("name",)
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     name: str
     def __init__(self, name: _Optional[str] = ...) -> None: ...
 
 class ReplaceServicePerimetersRequest(_message.Message):
-    __slots__ = ("parent", "service_perimeters", "etag")
+    __slots__ = ()
     PARENT_FIELD_NUMBER: _ClassVar[int]
     SERVICE_PERIMETERS_FIELD_NUMBER: _ClassVar[int]
     ETAG_FIELD_NUMBER: _ClassVar[int]
@@ -310,7 +310,7 @@ class ReplaceServicePerimetersRequest(_message.Message):
     ) -> None: ...
 
 class ReplaceServicePerimetersResponse(_message.Message):
-    __slots__ = ("service_perimeters",)
+    __slots__ = ()
     SERVICE_PERIMETERS_FIELD_NUMBER: _ClassVar[int]
     service_perimeters: _containers.RepeatedCompositeFieldContainer[
         _service_perimeter_pb2.ServicePerimeter
@@ -323,7 +323,7 @@ class ReplaceServicePerimetersResponse(_message.Message):
     ) -> None: ...
 
 class CommitServicePerimetersRequest(_message.Message):
-    __slots__ = ("parent", "etag")
+    __slots__ = ()
     PARENT_FIELD_NUMBER: _ClassVar[int]
     ETAG_FIELD_NUMBER: _ClassVar[int]
     parent: str
@@ -333,7 +333,7 @@ class CommitServicePerimetersRequest(_message.Message):
     ) -> None: ...
 
 class CommitServicePerimetersResponse(_message.Message):
-    __slots__ = ("service_perimeters",)
+    __slots__ = ()
     SERVICE_PERIMETERS_FIELD_NUMBER: _ClassVar[int]
     service_perimeters: _containers.RepeatedCompositeFieldContainer[
         _service_perimeter_pb2.ServicePerimeter
@@ -346,7 +346,7 @@ class CommitServicePerimetersResponse(_message.Message):
     ) -> None: ...
 
 class ListGcpUserAccessBindingsRequest(_message.Message):
-    __slots__ = ("parent", "page_size", "page_token")
+    __slots__ = ()
     PARENT_FIELD_NUMBER: _ClassVar[int]
     PAGE_SIZE_FIELD_NUMBER: _ClassVar[int]
     PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
@@ -361,7 +361,7 @@ class ListGcpUserAccessBindingsRequest(_message.Message):
     ) -> None: ...
 
 class ListGcpUserAccessBindingsResponse(_message.Message):
-    __slots__ = ("gcp_user_access_bindings", "next_page_token")
+    __slots__ = ()
     GCP_USER_ACCESS_BINDINGS_FIELD_NUMBER: _ClassVar[int]
     NEXT_PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
     gcp_user_access_bindings: _containers.RepeatedCompositeFieldContainer[
@@ -379,13 +379,13 @@ class ListGcpUserAccessBindingsResponse(_message.Message):
     ) -> None: ...
 
 class GetGcpUserAccessBindingRequest(_message.Message):
-    __slots__ = ("name",)
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     name: str
     def __init__(self, name: _Optional[str] = ...) -> None: ...
 
 class CreateGcpUserAccessBindingRequest(_message.Message):
-    __slots__ = ("parent", "gcp_user_access_binding")
+    __slots__ = ()
     PARENT_FIELD_NUMBER: _ClassVar[int]
     GCP_USER_ACCESS_BINDING_FIELD_NUMBER: _ClassVar[int]
     parent: str
@@ -399,7 +399,7 @@ class CreateGcpUserAccessBindingRequest(_message.Message):
     ) -> None: ...
 
 class UpdateGcpUserAccessBindingRequest(_message.Message):
-    __slots__ = ("gcp_user_access_binding", "update_mask")
+    __slots__ = ()
     GCP_USER_ACCESS_BINDING_FIELD_NUMBER: _ClassVar[int]
     UPDATE_MASK_FIELD_NUMBER: _ClassVar[int]
     gcp_user_access_binding: _gcp_user_access_binding_pb2.GcpUserAccessBinding
@@ -413,7 +413,7 @@ class UpdateGcpUserAccessBindingRequest(_message.Message):
     ) -> None: ...
 
 class DeleteGcpUserAccessBindingRequest(_message.Message):
-    __slots__ = ("name",)
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     name: str
     def __init__(self, name: _Optional[str] = ...) -> None: ...

@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -30,19 +31,7 @@ from google.api import launch_stage_pb2 as _launch_stage_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class MetricDescriptor(_message.Message):
-    __slots__ = (
-        "name",
-        "type",
-        "labels",
-        "metric_kind",
-        "value_type",
-        "unit",
-        "description",
-        "display_name",
-        "metadata",
-        "launch_stage",
-        "monitored_resource_types",
-    )
+    __slots__ = ()
     class MetricKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         METRIC_KIND_UNSPECIFIED: _ClassVar[MetricDescriptor.MetricKind]
@@ -72,12 +61,7 @@ class MetricDescriptor(_message.Message):
     DISTRIBUTION: MetricDescriptor.ValueType
     MONEY: MetricDescriptor.ValueType
     class MetricDescriptorMetadata(_message.Message):
-        __slots__ = (
-            "launch_stage",
-            "sample_period",
-            "ingest_delay",
-            "time_series_resource_hierarchy_level",
-        )
+        __slots__ = ()
         class TimeSeriesResourceHierarchyLevel(
             int, metaclass=_enum_type_wrapper.EnumTypeWrapper
         ):
@@ -120,8 +104,12 @@ class MetricDescriptor(_message.Message):
         def __init__(
             self,
             launch_stage: _Optional[_Union[_launch_stage_pb2.LaunchStage, str]] = ...,
-            sample_period: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...,
-            ingest_delay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...,
+            sample_period: _Optional[
+                _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+            ] = ...,
+            ingest_delay: _Optional[
+                _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+            ] = ...,
             time_series_resource_hierarchy_level: _Optional[
                 _Iterable[
                     _Union[
@@ -174,9 +162,9 @@ class MetricDescriptor(_message.Message):
     ) -> None: ...
 
 class Metric(_message.Message):
-    __slots__ = ("type", "labels")
+    __slots__ = ()
     class LabelsEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ()
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str

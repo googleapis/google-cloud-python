@@ -23,7 +23,7 @@ from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class LabelDescriptor(_message.Message):
-    __slots__ = ("key", "value_type", "description")
+    __slots__ = ()
     class ValueType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         STRING: _ClassVar[LabelDescriptor.ValueType]

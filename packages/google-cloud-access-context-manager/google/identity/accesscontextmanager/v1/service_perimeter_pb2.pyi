@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -28,17 +29,7 @@ from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ServicePerimeter(_message.Message):
-    __slots__ = (
-        "name",
-        "title",
-        "description",
-        "create_time",
-        "update_time",
-        "perimeter_type",
-        "status",
-        "spec",
-        "use_explicit_dry_run_spec",
-    )
+    __slots__ = ()
     class PerimeterType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         PERIMETER_TYPE_REGULAR: _ClassVar[ServicePerimeter.PerimeterType]
@@ -69,23 +60,20 @@ class ServicePerimeter(_message.Message):
         name: _Optional[str] = ...,
         title: _Optional[str] = ...,
         description: _Optional[str] = ...,
-        create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-        update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        create_time: _Optional[
+            _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+        ] = ...,
+        update_time: _Optional[
+            _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+        ] = ...,
         perimeter_type: _Optional[_Union[ServicePerimeter.PerimeterType, str]] = ...,
         status: _Optional[_Union[ServicePerimeterConfig, _Mapping]] = ...,
         spec: _Optional[_Union[ServicePerimeterConfig, _Mapping]] = ...,
-        use_explicit_dry_run_spec: bool = ...,
+        use_explicit_dry_run_spec: _Optional[bool] = ...,
     ) -> None: ...
 
 class ServicePerimeterConfig(_message.Message):
-    __slots__ = (
-        "resources",
-        "access_levels",
-        "restricted_services",
-        "vpc_accessible_services",
-        "ingress_policies",
-        "egress_policies",
-    )
+    __slots__ = ()
     class IdentityType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         IDENTITY_TYPE_UNSPECIFIED: _ClassVar[ServicePerimeterConfig.IdentityType]
@@ -98,19 +86,19 @@ class ServicePerimeterConfig(_message.Message):
     ANY_USER_ACCOUNT: ServicePerimeterConfig.IdentityType
     ANY_SERVICE_ACCOUNT: ServicePerimeterConfig.IdentityType
     class VpcAccessibleServices(_message.Message):
-        __slots__ = ("enable_restriction", "allowed_services")
+        __slots__ = ()
         ENABLE_RESTRICTION_FIELD_NUMBER: _ClassVar[int]
         ALLOWED_SERVICES_FIELD_NUMBER: _ClassVar[int]
         enable_restriction: bool
         allowed_services: _containers.RepeatedScalarFieldContainer[str]
         def __init__(
             self,
-            enable_restriction: bool = ...,
+            enable_restriction: _Optional[bool] = ...,
             allowed_services: _Optional[_Iterable[str]] = ...,
         ) -> None: ...
 
     class MethodSelector(_message.Message):
-        __slots__ = ("method", "permission")
+        __slots__ = ()
         METHOD_FIELD_NUMBER: _ClassVar[int]
         PERMISSION_FIELD_NUMBER: _ClassVar[int]
         method: str
@@ -120,7 +108,7 @@ class ServicePerimeterConfig(_message.Message):
         ) -> None: ...
 
     class ApiOperation(_message.Message):
-        __slots__ = ("service_name", "method_selectors")
+        __slots__ = ()
         SERVICE_NAME_FIELD_NUMBER: _ClassVar[int]
         METHOD_SELECTORS_FIELD_NUMBER: _ClassVar[int]
         service_name: str
@@ -136,7 +124,7 @@ class ServicePerimeterConfig(_message.Message):
         ) -> None: ...
 
     class IngressSource(_message.Message):
-        __slots__ = ("access_level", "resource")
+        __slots__ = ()
         ACCESS_LEVEL_FIELD_NUMBER: _ClassVar[int]
         RESOURCE_FIELD_NUMBER: _ClassVar[int]
         access_level: str
@@ -146,7 +134,7 @@ class ServicePerimeterConfig(_message.Message):
         ) -> None: ...
 
     class IngressFrom(_message.Message):
-        __slots__ = ("sources", "identities", "identity_type")
+        __slots__ = ()
         SOURCES_FIELD_NUMBER: _ClassVar[int]
         IDENTITIES_FIELD_NUMBER: _ClassVar[int]
         IDENTITY_TYPE_FIELD_NUMBER: _ClassVar[int]
@@ -167,7 +155,7 @@ class ServicePerimeterConfig(_message.Message):
         ) -> None: ...
 
     class IngressTo(_message.Message):
-        __slots__ = ("operations", "resources")
+        __slots__ = ()
         OPERATIONS_FIELD_NUMBER: _ClassVar[int]
         RESOURCES_FIELD_NUMBER: _ClassVar[int]
         operations: _containers.RepeatedCompositeFieldContainer[
@@ -183,7 +171,7 @@ class ServicePerimeterConfig(_message.Message):
         ) -> None: ...
 
     class IngressPolicy(_message.Message):
-        __slots__ = ("ingress_from", "ingress_to")
+        __slots__ = ()
         INGRESS_FROM_FIELD_NUMBER: _ClassVar[int]
         INGRESS_TO_FIELD_NUMBER: _ClassVar[int]
         ingress_from: ServicePerimeterConfig.IngressFrom
@@ -199,7 +187,7 @@ class ServicePerimeterConfig(_message.Message):
         ) -> None: ...
 
     class EgressFrom(_message.Message):
-        __slots__ = ("identities", "identity_type")
+        __slots__ = ()
         IDENTITIES_FIELD_NUMBER: _ClassVar[int]
         IDENTITY_TYPE_FIELD_NUMBER: _ClassVar[int]
         identities: _containers.RepeatedScalarFieldContainer[str]
@@ -213,7 +201,7 @@ class ServicePerimeterConfig(_message.Message):
         ) -> None: ...
 
     class EgressTo(_message.Message):
-        __slots__ = ("resources", "operations", "external_resources")
+        __slots__ = ()
         RESOURCES_FIELD_NUMBER: _ClassVar[int]
         OPERATIONS_FIELD_NUMBER: _ClassVar[int]
         EXTERNAL_RESOURCES_FIELD_NUMBER: _ClassVar[int]
@@ -232,7 +220,7 @@ class ServicePerimeterConfig(_message.Message):
         ) -> None: ...
 
     class EgressPolicy(_message.Message):
-        __slots__ = ("egress_from", "egress_to")
+        __slots__ = ()
         EGRESS_FROM_FIELD_NUMBER: _ClassVar[int]
         EGRESS_TO_FIELD_NUMBER: _ClassVar[int]
         egress_from: ServicePerimeterConfig.EgressFrom

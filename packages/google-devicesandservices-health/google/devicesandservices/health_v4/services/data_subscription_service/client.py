@@ -921,10 +921,9 @@ class DataSubscriptionServiceClient(metaclass=DataSubscriptionServiceClientMeta)
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.devicesandservices.health_v4.types.Subscriber`
-                -- Resource Messages -- A subscriber receives
-                notifications from Google Health API.
+                The result type for the operation will be :class:`google.devicesandservices.health_v4.types.Subscriber` -- Resource Messages --
+                   A subscriber receives notifications from Google
+                   Health API.
 
         """
         # Create or coerce a protobuf request object.
@@ -1216,10 +1215,9 @@ class DataSubscriptionServiceClient(metaclass=DataSubscriptionServiceClientMeta)
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.devicesandservices.health_v4.types.Subscriber`
-                -- Resource Messages -- A subscriber receives
-                notifications from Google Health API.
+                The result type for the operation will be :class:`google.devicesandservices.health_v4.types.Subscriber` -- Resource Messages --
+                   A subscriber receives notifications from Google
+                   Health API.
 
         """
         # Create or coerce a protobuf request object.

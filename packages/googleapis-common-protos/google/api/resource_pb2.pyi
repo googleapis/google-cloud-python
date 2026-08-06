@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -32,15 +32,7 @@ RESOURCE_FIELD_NUMBER: _ClassVar[int]
 resource: _descriptor.FieldDescriptor
 
 class ResourceDescriptor(_message.Message):
-    __slots__ = (
-        "type",
-        "pattern",
-        "name_field",
-        "history",
-        "plural",
-        "singular",
-        "style",
-    )
+    __slots__ = ()
     class History(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         HISTORY_UNSPECIFIED: _ClassVar[ResourceDescriptor.History]
@@ -83,7 +75,7 @@ class ResourceDescriptor(_message.Message):
     ) -> None: ...
 
 class ResourceReference(_message.Message):
-    __slots__ = ("type", "child_type")
+    __slots__ = ()
     TYPE_FIELD_NUMBER: _ClassVar[int]
     CHILD_TYPE_FIELD_NUMBER: _ClassVar[int]
     type: str
