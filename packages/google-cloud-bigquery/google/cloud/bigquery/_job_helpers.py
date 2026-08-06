@@ -475,10 +475,10 @@ def query_and_wait(
         page_size (Optional[int]):
             The maximum number of rows in each page of results from this
             request. Non-positive values are ignored.
-        max_results (Optional[int]):
-            The maximum total number of rows from this request.
         query_results_format (Optional[str]):
-            The format for query results (e.g. "ARROW").
+            [Beta] The format for query results (e.g. "ARROW").
+        compression_codec (Optional[str]):
+            [Beta] Compression codec for Arrow serialization (e.g. "LZ4_FRAME").
         callback (Callable):
             A callback function used by bigframes to report query progress.
 

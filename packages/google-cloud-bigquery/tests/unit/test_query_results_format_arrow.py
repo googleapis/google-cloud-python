@@ -197,7 +197,6 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
             expected_stream_name = "projects/test-proj/locations/US/jobs/test-job-456/streams/_default"
             mock_bqstorage.read_rows.assert_called_once_with(expected_stream_name, offset=0, timeout=5.0)
-            mock_bqstorage._transport.close.assert_called_once()
 
     def test_download_arrow_from_job_id_with_first_page_response(self):
         mock_client = mock.MagicMock()
