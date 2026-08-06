@@ -520,3 +520,17 @@ replacements:
           bigquery_storage_v1alpha/types_\n\n
       Changelog
     count: 1
+  - paths: [
+      packages/google-cloud-bigquery-storage/noxfile.py,
+    ]
+    before: |
+      # Install all test dependencies, then install this package in-place.\n
+          constraints_path = str\(
+    after: |
+      # Install all test dependencies, then install this package in-place.
+
+          if session.python == "3.15":
+              session.skip("Skipping 3.15 until wheels are available for pyarrow.")
+
+          constraints_path = str(
+    count: 1
