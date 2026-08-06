@@ -802,7 +802,13 @@ def check_parameters_for_unauthorized_response(cached_cert):
         )
     else:
         cached_fingerprint = current_cert_fingerprint
-    return call_cert_bytes, call_key_bytes, passphrase, cached_fingerprint, current_cert_fingerprint
+    return (
+        call_cert_bytes,
+        call_key_bytes,
+        passphrase,
+        cached_fingerprint,
+        current_cert_fingerprint,
+    )
 
 
 def call_client_cert_callback():

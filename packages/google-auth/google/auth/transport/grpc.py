@@ -472,14 +472,16 @@ class _MTLSRefreshingChannel(grpc.Channel):
                     "Wrapper: Refreshing mTLS channel. Retry count: %d", count
                 )
                 old_channel = self._channel
-                
+
                 # Consume the exact credential bytes fetched during the fingerprint check
                 self._cached_cert = call_cert_bytes
 
                 # Support encrypted keys
                 if passphrase is not None:
-                    call_key_bytes = _mtls_helper.decrypt_private_key(call_key_bytes, passphrase)
-                
+                    call_key_bytes = _mtls_helper.decrypt_private_key(
+                        call_key_bytes, passphrase
+                    )
+
                 # The factory args must use the new credentials exactly to build the rotation channel
                 factory_args = self._factory_args.copy()
                 factory_args["client_cert_callback"] = None

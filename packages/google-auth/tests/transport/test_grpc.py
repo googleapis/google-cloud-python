@@ -760,9 +760,13 @@ def test_factory_infinite_replay_on_error(mock_should_retry):
 
 
 @mock.patch("google.auth.transport._mtls_helper.decrypt_private_key")
-@mock.patch("google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response")
+@mock.patch(
+    "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+)
 @mock.patch("google.auth.transport.grpc.secure_authorized_channel")
-def test_refresh_logic_closes_old_channel(mock_secure_channel, mock_check_params, mock_decrypt):
+def test_refresh_logic_closes_old_channel(
+    mock_secure_channel, mock_check_params, mock_decrypt
+):
     import google.auth.transport.grpc as transport_grpc
 
     mock_check_params.return_value = ("cert", "cert", "passphrase", "old_fp", "new_fp")
@@ -833,4 +837,3 @@ def test_unary_response_future_deadline_exceeded_on_retry(mock_should_retry):
     assert len(callbacks_fired) == 1
     with pytest.raises(transport_grpc.grpc.RpcError):
         future.result(timeout=1)
-
