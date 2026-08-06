@@ -3649,6 +3649,7 @@ class Client(ClientWithProject):
         job_retry: retries.Retry = DEFAULT_JOB_RETRY,
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
+        query_results_format: Optional[str] = None,
     ) -> RowIterator:
         """Run the query, wait for it to finish, and return the results.
 
@@ -3696,6 +3697,8 @@ class Client(ClientWithProject):
                 by this parameter.
             max_results (Optional[int]):
                 The maximum total number of rows from this request.
+            query_results_format (Optional[str]):
+                The format for query results (e.g. "ARROW").
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -3726,6 +3729,7 @@ class Client(ClientWithProject):
             job_retry=job_retry,
             page_size=page_size,
             max_results=max_results,
+            query_results_format=query_results_format,
         )
 
     def _query_and_wait_bigframes(
@@ -3741,6 +3745,7 @@ class Client(ClientWithProject):
         job_retry: retries.Retry = DEFAULT_JOB_RETRY,
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
+        query_results_format: Optional[str] = None,
         callback: Callable = lambda _: None,
     ) -> RowIterator:
         """See query_and_wait.
@@ -3773,6 +3778,7 @@ class Client(ClientWithProject):
             job_retry=job_retry,
             page_size=page_size,
             max_results=max_results,
+            query_results_format=query_results_format,
             callback=callback,
         )
 
