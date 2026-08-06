@@ -2342,11 +2342,6 @@ class RowIterator(HTTPIterator):
         if job_complete and offset >= total_rows:
             return
 
-        options = [
-            ("grpc.max_receive_message_length", 128 * 1024 * 1024),
-            ("grpc.keepalive_time_ms", 30000),
-        ]
-
         if bqstorage_client is None:
             if self.client is None:
                 raise ValueError("RowIterator client is None.")
