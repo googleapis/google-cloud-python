@@ -1133,7 +1133,7 @@ class ExistsOption(WriteOption):
 
 def make_retry_timeout_kwargs(
     retry: retries.Retry | retries.AsyncRetry | object | None, timeout: float | None
-) -> dict:
+) -> dict[str, Any]:
     """Helper fo API methods which take optional 'retry' / 'timeout' args."""
     kwargs = {}
 

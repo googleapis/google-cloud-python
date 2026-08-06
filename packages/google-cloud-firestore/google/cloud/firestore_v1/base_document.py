@@ -22,10 +22,11 @@ from typing import (
     Any,
     Awaitable,
     Dict,
+    Generic,
     Iterable,
     Optional,
-    Tuple,
-    Union,
+    TypeVar,
+    overload,
 )
 
 from google.api_core import retry as retries
@@ -34,20 +35,36 @@ from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import field_path as field_path_module
 from google.cloud.firestore_v1.types import common
 
-# Types needed only for Type Hints
 if TYPE_CHECKING:  # pragma: NO COVER
     import datetime
+    from collections.abc import AsyncIterable, Callable
 
-    from google.cloud.firestore_v1.types import Document, firestore, write
+    from google.protobuf.timestamp_pb2 import Timestamp
+
+    from google.cloud.firestore_v1.async_batch import AsyncWriteBatch
+    from google.cloud.firestore_v1.async_client import AsyncClient
+    from google.cloud.firestore_v1.batch import WriteBatch
+    from google.cloud.firestore_v1.client import Client
+    from google.cloud.firestore_v1.types import (
+        Document,
+        firestore,
+        write,
+    )
+    from google.cloud.firestore_v1.watch import Watch
+
+    Self = TypeVar("Self", bound="BaseDocumentReference")
+    C = TypeVar("C", AsyncClient, Client)
+else:
+    C = TypeVar("C")
 
 
-class BaseDocumentReference(object):
+class BaseDocumentReference(Generic[C]):
     """A reference to a document in a Firestore database.
 
     The document may already exist or can be created by this class.
 
     Args:
-        path (Tuple[str, ...]): The components in the document path.
+        path (tuple[str, ...]): The components in the document path.
             This is a series of strings representing each collection and
             sub-collection ID, as well as the document IDs for any documents
             that contain a sub-collection (as well as the base document).
@@ -68,16 +85,16 @@ class BaseDocumentReference(object):
 
     _document_path_internal = None
 
-    def __init__(self, *path, **kwargs) -> None:
+    def __init__(self, *path: str, **kwargs: C | None) -> None:
         _helpers.verify_path(path, is_collection=False)
         self._path = path
-        self._client = kwargs.pop("client", None)
+        self._client: C | None = kwargs.pop("client", None)
         if kwargs:
             raise TypeError(
                 "Received unexpected arguments", kwargs, "Only `client` is supported"
             )
 
-    def __copy__(self):
+    def __copy__(self: Self) -> Self:
         """Shallow copy the instance.
 
         We leave the client "as-is" but tuple-unpack the path.
@@ -89,7 +106,7 @@ class BaseDocumentReference(object):
         result._document_path_internal = self._document_path_internal
         return result
 
-    def __deepcopy__(self, unused_memo):
+    def __deepcopy__(self: Self, unused_memo: object) -> Self:
         """Deep copy the instance.
 
         This isn't a true deep copy, wee leave the client "as-is" but
@@ -100,14 +117,14 @@ class BaseDocumentReference(object):
         """
         return self.__copy__()
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         """Equality check against another instance.
 
         Args:
-            other (Any): A value to compare against.
+            other (object): A value to compare against.
 
         Returns:
-            Union[bool, NotImplementedType]: Indicating if the values are
+            bool | NotImplementedType: Indicating if the values are
             equal.
         """
         if isinstance(other, self.__class__):
@@ -115,17 +132,17 @@ class BaseDocumentReference(object):
         else:
             return NotImplemented
 
-    def __hash__(self):
-        return hash(self._path) + hash(self._client)
+    def __hash__(self) -> int:
+        return hash((self._path, self._client))
 
-    def __ne__(self, other):
+    def __ne__(self, other) -> bool:
         """Inequality check against another instance.
 
         Args:
-            other (Any): A value to compare against.
+            other (object): A value to compare against.
 
         Returns:
-            Union[bool, NotImplementedType]: Indicating if the values are
+            bool | NotImplementedType: Indicating if the values are
             not equal.
         """
         if isinstance(other, self.__class__):
@@ -134,7 +151,7 @@ class BaseDocumentReference(object):
             return NotImplemented
 
     @property
-    def path(self):
+    def path(self) -> str:
         """Database-relative for this document.
 
         Returns:
@@ -143,7 +160,7 @@ class BaseDocumentReference(object):
         return "/".join(self._path)
 
     @property
-    def _document_path(self):
+    def _document_path(self) -> str:
         """Create and cache the full path for this document.
 
         Of the form:
@@ -165,7 +182,7 @@ class BaseDocumentReference(object):
         return self._document_path_internal
 
     @property
-    def id(self):
+    def id(self) -> str:
         """The document identifier (within its collection).
 
         Returns:
@@ -174,7 +191,7 @@ class BaseDocumentReference(object):
         return self._path[-1]
 
     @property
-    def parent(self):
+    def parent(self: Self) -> Self:
         """Collection that owns the current document.
 
         Returns:
@@ -182,9 +199,11 @@ class BaseDocumentReference(object):
             The parent collection.
         """
         parent_path = self._path[:-1]
+        if self._client is None:
+            raise ValueError("A collection reference requires a `client`.")
         return self._client.collection(*parent_path)
 
-    def collection(self, collection_id: str):
+    def collection(self: Self, collection_id: str) -> Self:
         """Create a sub-collection underneath the current document.
 
         Args:
@@ -196,14 +215,36 @@ class BaseDocumentReference(object):
             The child collection.
         """
         child_path = self._path + (collection_id,)
+        if self._client is None:
+            raise ValueError("A collection reference requires a `client`.")
         return self._client.collection(*child_path)
+
+    @overload
+    def _prep_create(
+        self: "BaseDocumentReference[AsyncClient]",
+        document_data: dict,
+        retry: retries.AsyncRetry | None | object = None,
+        timeout: float | None = None,
+    ) -> tuple[AsyncWriteBatch, dict[str, Any]]:
+        pass
+
+    @overload
+    def _prep_create(
+        self: "BaseDocumentReference[Client]",
+        document_data: dict,
+        retry: retries.Retry | None | object = None,
+        timeout: float | None = None,
+    ) -> tuple[WriteBatch, dict[str, Any]]:
+        pass
 
     def _prep_create(
         self,
         document_data: dict,
         retry: retries.Retry | retries.AsyncRetry | None | object = None,
         timeout: float | None = None,
-    ) -> Tuple[Any, dict]:
+    ) -> tuple[AsyncWriteBatch | WriteBatch, dict[str, Any]]:
+        if self._client is None:
+            raise ValueError("A batch requires a `client`.")
         batch = self._client.batch()
         batch.create(self, document_data)
         kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
@@ -218,13 +259,35 @@ class BaseDocumentReference(object):
     ) -> write.WriteResult | Awaitable[write.WriteResult]:
         raise NotImplementedError
 
+    @overload
+    def _prep_set(
+        self: "BaseDocumentReference[AsyncClient]",
+        document_data: dict,
+        merge: bool = False,
+        retry: retries.AsyncRetry | None | object = None,
+        timeout: float | None = None,
+    ) -> tuple[AsyncWriteBatch, dict[str, Any]]:
+        pass
+
+    @overload
+    def _prep_set(
+        self: "BaseDocumentReference[Client]",
+        document_data: dict,
+        merge: bool = False,
+        retry: retries.Retry | None | object = None,
+        timeout: float | None = None,
+    ) -> tuple[WriteBatch, dict[str, Any]]:
+        pass
+
     def _prep_set(
         self,
         document_data: dict,
         merge: bool = False,
         retry: retries.Retry | retries.AsyncRetry | None | object = None,
         timeout: float | None = None,
-    ) -> Tuple[Any, dict]:
+    ) -> tuple[AsyncWriteBatch | WriteBatch, dict[str, Any]]:
+        if self._client is None:
+            raise ValueError("A batch requires a `client`.")
         batch = self._client.batch()
         batch.set(self, document_data, merge=merge)
         kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
@@ -237,8 +300,28 @@ class BaseDocumentReference(object):
         merge: bool = False,
         retry: retries.Retry | retries.AsyncRetry | None | object = None,
         timeout: float | None = None,
-    ):
+    ) -> write.WriteResult | Awaitable[write.WriteResult]:
         raise NotImplementedError
+
+    @overload
+    def _prep_update(
+        self: "BaseDocumentReference[AsyncClient]",
+        field_updates: dict,
+        option: _helpers.WriteOption | None = None,
+        retry: retries.AsyncRetry | None | object = None,
+        timeout: float | None = None,
+    ) -> tuple[AsyncWriteBatch, dict[str, Any]]:
+        pass
+
+    @overload
+    def _prep_update(
+        self: "BaseDocumentReference[Client]",
+        field_updates: dict,
+        option: _helpers.WriteOption | None = None,
+        retry: retries.Retry | None | object = None,
+        timeout: float | None = None,
+    ) -> tuple[WriteBatch, dict[str, Any]]:
+        pass
 
     def _prep_update(
         self,
@@ -246,7 +329,9 @@ class BaseDocumentReference(object):
         option: _helpers.WriteOption | None = None,
         retry: retries.Retry | retries.AsyncRetry | None | object = None,
         timeout: float | None = None,
-    ) -> Tuple[Any, dict]:
+    ) -> tuple[AsyncWriteBatch | WriteBatch, dict[str, Any]]:
+        if self._client is None:
+            raise ValueError("A batch requires a `client`.")
         batch = self._client.batch()
         batch.update(self, field_updates, option=option)
         kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
@@ -259,7 +344,7 @@ class BaseDocumentReference(object):
         option: _helpers.WriteOption | None = None,
         retry: retries.Retry | retries.AsyncRetry | None | object = None,
         timeout: float | None = None,
-    ):
+    ) -> write.WriteResult | Awaitable[write.WriteResult]:
         raise NotImplementedError
 
     def _prep_delete(
@@ -267,9 +352,11 @@ class BaseDocumentReference(object):
         option: _helpers.WriteOption | None = None,
         retry: retries.Retry | retries.AsyncRetry | None | object = None,
         timeout: float | None = None,
-    ) -> Tuple[dict, dict]:
+    ) -> tuple[dict[str, object], dict[str, object]]:
         """Shared setup for async/sync :meth:`delete`."""
         write_pb = _helpers.pb_for_delete(self._document_path, option)
+        if self._client is None:
+            raise ValueError("A deletion requires a `client`.")
         request = {
             "database": self._client._database_string,
             "writes": [write_pb],
@@ -284,7 +371,7 @@ class BaseDocumentReference(object):
         option: _helpers.WriteOption | None = None,
         retry: retries.Retry | retries.AsyncRetry | None | object = None,
         timeout: float | None = None,
-    ):
+    ) -> Timestamp | Awaitable[Timestamp]:
         raise NotImplementedError
 
     def _prep_batch_get(
@@ -294,7 +381,7 @@ class BaseDocumentReference(object):
         retry: retries.Retry | retries.AsyncRetry | None | object = None,
         timeout: float | None = None,
         read_time: datetime.datetime | None = None,
-    ) -> Tuple[dict, dict]:
+    ) -> tuple[dict, dict[str, Any]]:
         """Shared setup for async/sync :meth:`get`."""
         if isinstance(field_paths, str):
             raise ValueError("'field_paths' must be a sequence of paths, not a string.")
@@ -304,6 +391,8 @@ class BaseDocumentReference(object):
         else:
             mask = None
 
+        if self._client is None:
+            raise ValueError("A get requires a `client`.")
         request = {
             "database": self._client._database_string,
             "documents": [self._document_path],
@@ -333,9 +422,9 @@ class BaseDocumentReference(object):
         retry: retries.Retry | retries.AsyncRetry | None | object = None,
         timeout: float | None = None,
         read_time: datetime.datetime | None = None,
-    ) -> Tuple[dict, dict]:
+    ) -> tuple[dict, dict]:
         """Shared setup for async/sync :meth:`collections`."""
-        request = {
+        request: dict[str, str | int | None | datetime.datetime] = {
             "parent": self._document_path,
             "page_size": page_size,
         }
@@ -346,16 +435,16 @@ class BaseDocumentReference(object):
         return request, kwargs
 
     def collections(
-        self,
+        self: Self,
         page_size: int | None = None,
         retry: retries.Retry | retries.AsyncRetry | None | object = None,
         timeout: float | None = None,
         *,
         read_time: datetime.datetime | None = None,
-    ):
+    ) -> Iterable[Self] | AsyncIterable[Self]:
         raise NotImplementedError
 
-    def on_snapshot(self, callback):
+    def on_snapshot(self, callback: Callable[[DocumentSnapshot], None]) -> Watch:
         raise NotImplementedError
 
 
@@ -512,7 +601,7 @@ class DocumentSnapshot(object):
         nested_data = field_path_module.get_nested_value(field_path, self._data)
         return copy.deepcopy(nested_data)
 
-    def to_dict(self) -> Union[Dict[str, Any], None]:
+    def to_dict(self) -> Dict[str, Any] | None:
         """Retrieve the data contained in this snapshot.
 
         A copy is returned since the data may contain mutable values,
@@ -531,7 +620,7 @@ class DocumentSnapshot(object):
         return _helpers.document_snapshot_to_protobuf(self)
 
 
-def _get_document_path(client, path: Tuple[str]) -> str:
+def _get_document_path(client: C, path: tuple[str, ...]) -> str:
     """Convert a path tuple into a full path string.
 
     Of the form:
@@ -543,7 +632,7 @@ def _get_document_path(client, path: Tuple[str]) -> str:
         client (:class:`~google.cloud.firestore_v1.client.Client`):
             The client that holds configuration details and a GAPIC client
             object.
-        path (Tuple[str, ...]): The components in a document path.
+        path (tuple[str, ...]): The components in a document path.
 
     Returns:
         str: The fully-qualified document path.
