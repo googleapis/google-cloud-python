@@ -113,6 +113,7 @@ def test_from_read_rows_response_handles_empty_response():
 
 
 def test_read_rows_page_to_arrow_delegates_when_pandas_gbq_installed():
+    pytest.importorskip("pandas_gbq")
     expected_batch = _create_sample_batch()
     response = _create_read_rows_response(expected_batch)
     stream_parser = reader._ArrowStreamParser(_create_read_session(_TEST_SCHEMA))
