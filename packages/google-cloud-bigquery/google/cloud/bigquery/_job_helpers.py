@@ -431,6 +431,7 @@ def query_and_wait(
     page_size: Optional[int] = None,
     max_results: Optional[int] = None,
     query_results_format: Optional[str] = None,
+    compression_codec: Optional[str] = None,
     callback: Callable = lambda _: None,
 ) -> table.RowIterator:
     """Run the query, wait for it to finish, and return the results.
@@ -504,6 +505,11 @@ def query_and_wait(
     )
     if query_results_format is not None:
         request_body["queryResultsFormat"] = query_results_format
+    if compression_codec is not None:
+        request_body.setdefault("formatOptions", {})
+        request_body["formatOptions"]["arrowSerializationOptions"] = {
+            "bufferCompression": compression_codec
+        }
 
     # Some API parameters aren't supported by the jobs.query API. In these
     # cases, fallback to a jobs.insert call.
