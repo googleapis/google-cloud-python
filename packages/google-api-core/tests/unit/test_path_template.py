@@ -64,6 +64,29 @@ from google.api_core import path_template
             {"name": "parent/child/object"},
             "/v1/a/parent/child/object",
         ],
+        # Encoding / Metacharacters in positional and named params
+        ["/v1/*", ["..?$httpMethod=DELETE#"], {}, "/v1/..%3F%24httpMethod%3DDELETE%23"],
+        ["/v1/**", ["path/../with/?and#"], {}, "/v1/path/../with/%3Fand%23"],
+        [
+            "/v1/{name}",
+            [],
+            {"name": "..?$httpMethod=DELETE#"},
+            "/v1/..%3F%24httpMethod%3DDELETE%23",
+        ],
+        [
+            "/v1/{name=**}",
+            [],
+            {"name": "path/../with/?and#"},
+            "/v1/path/../with/%3Fand%23",
+        ],
+        [
+            "/v3/{session=projects/*/locations/*/agents/*/sessions/*}:detectIntent",
+            [],
+            {
+                "session": "projects/cx/locations/global/agents/a1/sessions/..?$httpMethod=DELETE#"
+            },
+            "/v3/projects/cx/locations/global/agents/a1/sessions/..%3F%24httpMethod%3DDELETE%23:detectIntent",
+        ],
     ],
 )
 def test_expand_success(tmpl, args, kwargs, expected_result):
@@ -651,3 +674,223 @@ def helper_test_transcode(http_options_list, expected_result_list):
     if expected_result_list[2]:
         expected_result["body"] = expected_result_list[2]
     return (http_options, expected_result)
+
+
+@pytest.mark.parametrize(
+    "tmpl, args, kwargs, expected_err_match",
+    [
+        # Positional * with . or ..
+        [
+            "/v1/*",
+            ["."],
+            {},
+            "Invalid value \\. for positional variable\\.",
+        ],
+        [
+            "/v1/*",
+            [".."],
+            {},
+            "Invalid value \\.\\. for positional variable\\.",
+        ],
+        # Named matching * with . or ..
+        [
+            "/compute/v1/projects/{project}/regions/{region}/addresses",
+            [],
+            {"project": "my-project", "region": ".."},
+            "Invalid value \\.\\. for region\\.",
+        ],
+        [
+            "/compute/v1/projects/{project}/regions/{region}/addresses",
+            [],
+            {"project": "my-project", "region": "."},
+            "Invalid value \\. for region\\.",
+        ],
+        # Sub-template named matching * with . or ..
+        [
+            "/v2/{parent=projects/*/locations/*}/content:inspect",
+            [],
+            {"parent": "projects/my-project/locations/.."},
+            "Invalid value projects/my-project/locations/\\.\\. for parent\\.",
+        ],
+        [
+            "/v2/{parent=projects/*/locations/*}/content:inspect",
+            [],
+            {"parent": "projects/my-project/locations/."},
+            "Invalid value projects/my-project/locations/\\. for parent\\.",
+        ],
+        # Non-matching values with path traversal (bypass prevention)
+        [
+            "/v2/{parent=projects/*/locations/*}/content:inspect",
+            [],
+            {"parent": "projects/.."},
+            "Invalid value projects/\\.\\. for parent\\.",
+        ],
+        [
+            "/v1/{name}",
+            [],
+            {"name": "projects/.."},
+            "Invalid value projects/\\.\\. for name\\.",
+        ],
+    ],
+)
+def test_path_traversal_dots_validation_star(tmpl, args, kwargs, expected_err_match):
+    with pytest.raises(ValueError, match=expected_err_match):
+        path_template.expand(tmpl, *args, **kwargs)
+
+
+@pytest.mark.parametrize(
+    "name_val, expected_path",
+    [
+        (
+            "projects/my-project/monitoredResourceDescriptors/instance/my-instance/..",
+            "/v3/projects/my-project/monitoredResourceDescriptors/instance/my-instance/..",
+        ),
+        (
+            "projects/my-project/monitoredResourceDescriptors/instance/my-instance/.",
+            "/v3/projects/my-project/monitoredResourceDescriptors/instance/my-instance/.",
+        ),
+        (
+            "projects/my-project/monitoredResourceDescriptors/a/b/c/d/e/../../../..",
+            "/v3/projects/my-project/monitoredResourceDescriptors/a/b/c/d/e/../../../..",
+        ),
+    ],
+)
+def test_path_traversal_dots_validation_double_star_valid(name_val, expected_path):
+    assert (
+        path_template.expand(
+            "/v3/{name=projects/*/monitoredResourceDescriptors/**}",
+            name=name_val,
+        )
+        == expected_path
+    )
+
+
+@pytest.mark.parametrize(
+    "name_val",
+    [
+        "projects/my-project/monitoredResourceDescriptors/.",
+        "projects/my-project/monitoredResourceDescriptors/instance/my-instance/../..",
+        "projects/my-project/monitoredResourceDescriptors/instance/../my-instance/..",
+        "projects/my-project/monitoredResourceDescriptors/..",
+        "projects/my-project/monitoredResourceDescriptors/instance/../..",
+        "projects/my-project/monitoredResourceDescriptors/a/b/../../../c/d/e/..",
+        "projects/my-project/monitoredResourceDescriptors/instance//..",
+    ],
+)
+def test_path_traversal_dots_validation_double_star_invalid(name_val):
+    with pytest.raises(ValueError, match=r"Invalid value .* for name\."):
+        path_template.expand(
+            "/v3/{name=projects/*/monitoredResourceDescriptors/**}",
+            name=name_val,
+        )
+
+
+@pytest.mark.parametrize(
+    "tmpl, kwargs, expected_result",
+    [
+        ["/v1/{name}", {"name": "abc-._~"}, "/v1/abc-._~"],
+        ["/v1/{name=**}", {"name": "abc-._~/"}, "/v1/abc-._~/"],
+        ["/v1/{name}", {"name": "a/b"}, "/v1/a/b"],
+        ["/v1/{name}", {"name": "a$b?c=d#e f"}, "/v1/a%24b%3Fc%3Dd%23e%20f"],
+    ],
+)
+def test_percent_encoding_unreserved_characters(tmpl, kwargs, expected_result):
+    result = path_template.expand(tmpl, **kwargs)
+    assert result == expected_result
+    # For single-segment with '/', validate should fail because '/' is preserved
+    if "/" in kwargs.get("name", "") and tmpl == "/v1/{name}":
+        assert not path_template.validate(tmpl, result)
+
+
+@pytest.mark.parametrize(
+    "tmpl, args, kwargs, expected_err_match",
+    [
+        ("/v1/**", [".."], {}, r"Invalid value .* for positional variable\."),
+        ("/v1/{name=**}", [], {"name": ".."}, r"Invalid value .* for name\."),
+    ],
+)
+def test_path_traversal_dots_validation_bare_double_star(
+    tmpl, args, kwargs, expected_err_match
+):
+    with pytest.raises(ValueError, match=expected_err_match):
+        path_template.expand(tmpl, *args, **kwargs)
+
+
+@pytest.mark.parametrize(
+    "template_str, expected_pattern, expected_wildcards",
+    [
+        (
+            "projects/{project}/locations/{location}",
+            "projects/([^/]+)/locations/([^/]+)",
+            ("*", "*"),
+        ),
+        ("projects/{project=**}", "projects/(.+)", ("**",)),
+        ("projects/{project=locations/*}", "projects/locations/([^/]+)", ("*",)),
+        ("projects/*/locations/**", "projects/([^/]+)/locations/(.+)", ("*", "**")),
+        ("projects/abc", "projects/abc", ()),
+        ("projects/my-project", r"projects/my\-project", ()),
+        (
+            r"my-test/{id}/v1.0?abc+def-g|h()\\",
+            r"my\-test/([^/]+)/v1\.0\?abc\+def\-g\|h\(\)\\\\",
+            ("*",),
+        ),
+    ],
+)
+def test_build_capture_pattern(template_str, expected_pattern, expected_wildcards):
+    pattern, wildcards = path_template._build_capture_pattern(template_str)
+    assert pattern.pattern == expected_pattern
+    assert wildcards == expected_wildcards
+
+
+@pytest.mark.parametrize(
+    "val, expected_valid",
+    [
+        ("a/b/c", True),
+        ("a/../b", True),
+        ("a/b/c/d/e/../../../..", True),
+        ("a/b/../..", False),
+        ("a/b/../../..", False),
+        ("", False),
+        (".", False),
+        ("..", False),
+        ("", False),
+        ("/", False),
+        ("//", False),
+        ("a/../../b", False),
+        ("../..", False),
+        ("instance//..", False),
+        ("instance/my-instance///../..", False),
+    ],
+)
+def test_validate_multi_segment_value(val, expected_valid):
+    result = path_template._validate_multi_segment_value(val)
+    assert result == expected_valid
+
+
+@pytest.mark.parametrize(
+    "val, template_str, expect_error",
+    [
+        ("api", None, False),
+        ("api", "*", False),
+        (".", None, True),
+        ("..", None, True),
+        (".", "*", True),
+        ("..", "*", True),
+        ("", "*", False),
+        ("api/v1", "**", False),
+        (".", "**", True),
+        ("..", "**", True),
+        ("", "**", True),
+        ("projects/my-proj/locations/us-central1", "projects/*/locations/*", False),
+        ("projects/my-proj/locations/.", "projects/*/locations/*", True),
+        ("projects/my-proj/locations/..", "projects/*/locations/*", True),
+        ("projects/../locations/us-central1", "projects/*/locations/*", True),
+    ],
+)
+def test_extract_and_validate_wildcards(val, template_str, expect_error):
+    if expect_error:
+        with pytest.raises(ValueError):
+            path_template._extract_and_validate_wildcards(val, template_str)
+    else:
+        # Should not raise any exception
+        path_template._extract_and_validate_wildcards(val, template_str)

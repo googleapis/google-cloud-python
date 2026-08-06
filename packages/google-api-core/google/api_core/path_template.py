@@ -28,6 +28,7 @@ from __future__ import unicode_literals
 import copy
 import functools
 import re
+import urllib.parse
 from collections import deque
 
 # Regular expression for extracting variable parts from a path template.
@@ -62,6 +63,190 @@ _SINGLE_SEGMENT_PATTERN = r"([^/]+)"
 _MULTI_SEGMENT_PATTERN = r"(.+)"
 
 
+class _PathValidationFailed(Exception):
+    """Internal exception used when an invalid path is encountered."""
+
+
+def _validate_multi_segment_value(val: str) -> bool:
+    """Validate a multi-segment wildcard value.
+
+    This function implements the dot and double-dot traversal validation rule
+    for values matching '**'. It splits the value by '/' into segments and
+    simulates path traversal:
+    - '.' segments do not modify the segment count.
+    - '..' segments decrease the leftover segment count by 1.
+    - Any other segments increase the leftover segment count by 1.
+
+    Validation fails if:
+    - Path traversal overflows to the left (leftover segment count drops below 0),
+      meaning it would traverse out of the multi-segment value boundaries.
+    - No segments remain after executing all path traversal commands (leftover
+      segment count is 0), meaning the entire value is consumed.
+
+    Examples:
+        >>> _validate_multi_segment_value("instance/my-instance")
+        True
+        >>> _validate_multi_segment_value("instance/my-instance/..")
+        True
+        >>> _validate_multi_segment_value("instance/../..")
+        False
+
+    Args:
+        val (str): The value matched to the '**' wildcard to validate.
+
+    Returns:
+        bool: True if the value is valid and does not violate traversal boundaries,
+            False otherwise.
+    """
+    if val in ("", ".", ".."):
+        return False
+
+    segments = val.split("/")
+    leftover_segments = 0
+    unseen_segments = len(segments)
+
+    for segment in segments:
+        unseen_segments -= 1
+        if segment == "..":
+            leftover_segments -= 1
+        elif segment not in (".", ""):
+            leftover_segments += 1
+
+        if leftover_segments < 0:
+            return False
+        if leftover_segments > unseen_segments:
+            return True
+
+    return leftover_segments > 0
+
+
+@functools.lru_cache(maxsize=1024)
+def _build_capture_pattern(template_str: str) -> tuple[re.Pattern, tuple[str, ...]]:
+    """Build a regex pattern to capture wildcard matches from a template.
+
+    This function parses a template string containing positional/named
+    wildcards ('*' or '**'), compiles it into a regular expression, and
+    records the order and types of all wildcards to allow extracting
+    sub-segments for individual validation.
+
+    Args:
+        template_str (str): The template string (e.g. "projects/*/locations/*").
+
+    Returns:
+        tuple[re.Pattern, tuple[str, ...]]: A tuple containing:
+            - The compiled regex pattern string with capture groups.
+            - A list of wildcard type strings ('*' or '**') in matching order.
+    """
+    wildcard_types = []
+    parts = []
+    last_idx = 0
+    for match in _VARIABLE_RE.finditer(template_str):
+        literal = template_str[last_idx : match.start()]
+        parts.append(re.escape(literal))
+
+        positional = match.group("positional")
+        template = match.group("template")
+
+        if positional == "*":
+            wildcard_types.append("*")
+            replaced = _SINGLE_SEGMENT_PATTERN
+        elif positional == "**":
+            wildcard_types.append("**")
+            replaced = _MULTI_SEGMENT_PATTERN
+        elif not template or template == "*":
+            wildcard_types.append("*")
+            replaced = _SINGLE_SEGMENT_PATTERN
+        elif template == "**":
+            wildcard_types.append("**")
+            replaced = _MULTI_SEGMENT_PATTERN
+        else:
+            sub_pattern, sub_types = _build_capture_pattern(template)
+            wildcard_types.extend(sub_types)
+            replaced = sub_pattern.pattern
+
+        parts.append(replaced)
+        last_idx = match.end()
+    literal = template_str[last_idx:]
+    parts.append(re.escape(literal))
+
+    pattern = "".join(parts)
+    return re.compile(pattern), tuple(wildcard_types)
+
+
+def _extract_and_validate_wildcards(
+    val: str, template_str: str | None, property_name: str | None = None
+) -> None:
+    """Extract and validate wildcard variables against path traversal rules.
+
+    This function attempts to structurally match the variable's value against
+    its template. If the value structurally matches, it extracts the substrings
+    corresponding to the individual wildcards and enforces safety constraints:
+    - Single-segment matches ('*') must not be exactly '.' or '..' because
+      this breaks the URI routing contract and leads to path traversal.
+    - Multi-segment matches ('**') are checked using _validate_multi_segment_value
+      to ensure path traversal commands do not consume the entire value or
+      escape the starting boundaries of the matched parameter.
+
+    If the value does not structurally match the template, this function allows
+    it to pass through without error. This delegates the rejection of the malformed
+    string to the standard routing mechanisms (like `validate()`) to ensure that
+    `additional_bindings` are evaluated correctly.
+
+    Examples:
+        >>> _extract_and_validate_wildcards("us-central1", None, "region")
+        None
+        >>> _extract_and_validate_wildcards("..", None, "region")
+        ValueError("Invalid value .. for region.")
+        >>> _extract_and_validate_wildcards(
+        ...     "projects/my-proj/locations/.", "projects/*/locations/*", "parent"
+        ... )
+        ValueError("Invalid value projects/my-proj/locations/. for parent.")
+
+    Args:
+        val (str): The raw string value to validate.
+        template_str (str): The template string of the variable (e.g. 'projects/*/locations/*').
+        property_name (str | None): The name of the property being validated, used
+            to construct descriptive error messages.
+
+    Raises:
+        ValueError: If a wildcard within a structurally valid value violates path traversal rules.
+    """
+    try:
+        if template_str is None or template_str == "*":
+            # Single-segment templates (None or "*") cannot match exactly "." or ".."
+            # and cannot have multi-segment paths resolving to 0 segments.
+            #
+            # Empty strings pose no traversal security risk here.
+            if val and not _validate_multi_segment_value(val):
+                raise _PathValidationFailed()
+        elif template_str == "**":
+            # Multi-segment templates ("**") must represent at least one valid,
+            # non-escaped segment.
+            if not _validate_multi_segment_value(val):
+                raise _PathValidationFailed()
+        else:
+            # Compile the sub-template into a regex capture pattern
+            # to isolate and validate individual wildcard values.
+            pattern, wildcard_types = _build_capture_pattern(template_str)
+
+            m = pattern.fullmatch(val)
+            if m is not None:
+                # Validate each wildcard value within its matched boundaries,
+                # preventing traversals from escaping their structural positions.
+                for captured_val in m.groups():
+                    if not _validate_multi_segment_value(captured_val):
+                        raise _PathValidationFailed()
+            else:
+                # For values that don't match the pattern, ensure the value doesn't
+                # resolve to 0 segments (e.g. "projects/..").
+                if val and not _validate_multi_segment_value(val):
+                    raise _PathValidationFailed()
+    except _PathValidationFailed:
+        raise ValueError(
+            f"Invalid value {val} for {property_name or 'positional variable'}."
+        )
+
+
 def _expand_variable_match(positional_vars, named_vars, match):
     """Expand a matched variable with its value.
 
@@ -81,9 +266,13 @@ def _expand_variable_match(positional_vars, named_vars, match):
     """
     positional = match.group("positional")
     name = match.group("name")
+    template = match.group("template")
+
     if name is not None:
         try:
-            return str(named_vars[name])
+            val = str(named_vars[name])
+            _extract_and_validate_wildcards(val, template, name)
+            return urllib.parse.quote(val, safe="/")
         except KeyError:
             raise ValueError(
                 "Named variable '{}' not specified and needed by template "
@@ -91,7 +280,9 @@ def _expand_variable_match(positional_vars, named_vars, match):
             )
     elif positional is not None:
         try:
-            return str(positional_vars.pop(0))
+            val = str(positional_vars.pop(0))
+            _extract_and_validate_wildcards(val, positional, None)
+            return urllib.parse.quote(val, safe="/")
         except IndexError:
             raise ValueError(
                 "Positional variable not specified and needed by template "
