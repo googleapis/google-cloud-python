@@ -133,8 +133,11 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
         http = mock.create_autospec(
             aiohttp.ClientSession, instance=True, auto_decompress=False
         )
+        mock_response = mock.AsyncMock()
+        http.request = mock.AsyncMock(return_value=mock_response)
         request = aiohttp_requests.Request(http)
         await request(url="http://example.com", method="GET", timeout=5)
+        assert http.request.call_args[1]["timeout"] == 5
 
     @pytest.mark.asyncio
     async def test__clone(self):
