@@ -653,6 +653,9 @@
         }
       ]
     },
+    "packages/google-cloud-bigquery": {
+      "component": "google-cloud-bigquery"
+    },
     "packages/google-cloud-bigquery-analyticshub": {
       "component": "google-cloud-bigquery-analyticshub",
       "extra-files": [
@@ -812,20 +815,6 @@
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.storage.v1beta2.json",
-          "type": "json"
-        }
-      ]
-    },
-    "packages/google-cloud-bigtable": {
-      "component": "google-cloud-bigtable",
-      "extra-files": [
-        "google/cloud/bigtable/gapic_version.py",
-        "google/cloud/bigtable_admin/gapic_version.py",
-        "google/cloud/bigtable_admin_v2/gapic_version.py",
-        "google/cloud/bigtable_v2/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.bigtable.admin.v2.json",
           "type": "json"
         }
       ]
@@ -3913,9 +3902,6 @@
     },
     "packages/sqlalchemy-bigquery": {
       "component": "sqlalchemy-bigquery"
-    },
-    "packages/sqlalchemy-spanner": {
-      "component": "sqlalchemy-spanner"
     }
   },
   "release-type": "python-librarian"

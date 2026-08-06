@@ -223,7 +223,8 @@ class BaseMarshal:
         # annotation. We need to do the conversion based on the `value`
         # field's type.
         if isinstance(value, dict) and (
-            proto_type.DESCRIPTOR.has_options
+            hasattr(proto_type, "DESCRIPTOR")
+            and proto_type.DESCRIPTOR.has_options
             and proto_type.DESCRIPTOR.GetOptions().map_entry
         ):
             recursive_type = type(proto_type().value)
