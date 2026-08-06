@@ -536,7 +536,7 @@ class TestAuthorizedHttp(object):
         with mock.patch.object(
             google.auth.transport._mtls_helper,
             "call_client_cert_callback",
-            return_value=(new_cert, new_key),
+            return_value=(new_cert, new_key, None),
         ) as mock_callback:
             # non-mTLS endpoint is used
             result = authed_http.urlopen("GET", "http://example.googleapis.com")
@@ -584,7 +584,7 @@ class TestAuthorizedHttp(object):
         with mock.patch.object(
             google.auth.transport._mtls_helper,
             "check_parameters_for_unauthorized_response",
-            return_value=(new_cert, new_key, "old_fingerprint", "new_fingerprint"),
+            return_value=(new_cert, new_key, None, "old_fingerprint", "new_fingerprint"),
         ) as mock_check_params:
             with mock.patch.object(
                 authed_http,
