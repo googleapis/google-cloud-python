@@ -412,6 +412,10 @@ class Credentials(external_account.Credentials):
 
     def _get_cert_bytes(self):
         cert_path, _ = self._get_mtls_cert_and_key_paths()
+        if cert_path is None:
+            raise exceptions.ClientCertError(
+                "Workload certificate configuration could not be found or does not contain workload certificate paths."
+            )
         return _mtls_helper._read_cert_file(cert_path)
 
     def _mtls_required(self):

@@ -515,6 +515,53 @@ class TestGetWorkloadCertAndKey(object):
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path", autospec=True
     )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._read_cert_and_key_files", autospec=True
+    )
+    @mock.patch("os.path.exists", autospec=True)
+    def test_no_workload_fallback_to_home(
+        self,
+        mock_path_exists,
+        mock_read_cert_and_key_files,
+        mock_get_cert_config_path,
+        mock_load_json_file,
+    ):
+        ecp_path = "/etc/gcloud/certificate_config.json"
+        home_path = os.path.expanduser("~/.config/gcloud/certificate_config.json")
+        mock_get_cert_config_path.return_value = ecp_path
+
+        def exists_side_effect(path):
+            if path == home_path:
+                return True
+            return False
+
+        mock_path_exists.side_effect = exists_side_effect
+
+        def load_json_side_effect(path):
+            if path == ecp_path:
+                return {"cert_configs": {"pkcs11": {}}}
+            elif path == home_path:
+                return {
+                    "cert_configs": {
+                        "workload": {"cert_path": "cert/path", "key_path": "key/path"}
+                    }
+                }
+            return {}
+
+        mock_load_json_file.side_effect = load_json_side_effect
+        mock_read_cert_and_key_files.return_value = (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+
+        actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key(None)
+        assert actual_cert == pytest.public_cert_bytes
+        assert actual_key == pytest.private_key_bytes
+
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path", autospec=True
+    )
     @mock.patch("os.path.exists", autospec=True)
     def test_no_cert_file(
         self, mock_path_exists, mock_get_cert_config_path, mock_load_json_file
