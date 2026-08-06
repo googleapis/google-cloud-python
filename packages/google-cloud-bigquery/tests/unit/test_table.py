@@ -5761,6 +5761,34 @@ class TestRowIterator(unittest.TestCase):
         ]
         self.assertEqual(len(arrow_warnings), 0)
 
+    def test_to_geodataframe_does_not_emit_deprecation_warning(self):
+        pytest.importorskip("pandas")
+        mock_geopandas = mock.Mock()
+        mock_shapely = mock.Mock()
+        row_iterator = self._make_one_from_data(
+            (("name", "STRING"), ("geo", "GEOGRAPHY")),
+            (("foo", "POINT(1 2)"),),
+        )
+
+        with (
+            mock.patch("google.cloud.bigquery.table.geopandas", mock_geopandas),
+            mock.patch("google.cloud.bigquery.table.shapely", mock_shapely),
+            mock.patch(
+                "google.cloud.bigquery.table._read_wkt",
+                lambda x: x,
+                create=True,
+            ),
+        ):
+            with warnings.catch_warnings(record=True) as record:
+                row_iterator.to_geodataframe(create_bqstorage_client=False)
+
+        deprecation_warnings = [
+            w
+            for w in record
+            if issubclass(w.category, (PendingDeprecationWarning, DeprecationWarning))
+        ]
+        self.assertEqual(len(deprecation_warnings), 0)
+
 
 class TestPartitionRange(unittest.TestCase):
     def _get_target_class(self):

@@ -3040,18 +3040,24 @@ class RowIterator(HTTPIterator):
                 "one to use to create a GeoDataFrame"
             )
 
-        df = self.to_dataframe(
-            bqstorage_client,
-            dtypes,
-            progress_bar_type,
-            create_bqstorage_client,
-            geography_as_object=True,
-            bool_dtype=bool_dtype,
-            int_dtype=int_dtype,
-            float_dtype=float_dtype,
-            string_dtype=string_dtype,
-            timeout=timeout,
-        )
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                "ignore",
+                category=PendingDeprecationWarning,
+                message="Retrieving DataFrames via core SDK conversion methods is deprecated.*",
+            )
+            df = self.to_dataframe(
+                bqstorage_client,
+                dtypes,
+                progress_bar_type,
+                create_bqstorage_client,
+                geography_as_object=True,
+                bool_dtype=bool_dtype,
+                int_dtype=int_dtype,
+                float_dtype=float_dtype,
+                string_dtype=string_dtype,
+                timeout=timeout,
+            )
 
         return geopandas.GeoDataFrame(
             df, crs=_COORDINATE_REFERENCE_SYSTEM, geometry=geography_column
