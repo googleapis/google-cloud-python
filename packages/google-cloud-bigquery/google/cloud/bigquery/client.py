@@ -3666,6 +3666,7 @@ class Client(ClientWithProject):
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
         query_results_format: Optional[str] = None,
+        compression_codec: Optional[str] = None,
     ) -> RowIterator:
         """Run the query, wait for it to finish, and return the results.
 
@@ -3746,6 +3747,7 @@ class Client(ClientWithProject):
             page_size=page_size,
             max_results=max_results,
             query_results_format=query_results_format,
+            compression_codec=compression_codec,
         )
 
     def _query_and_wait_bigframes(
@@ -3762,6 +3764,7 @@ class Client(ClientWithProject):
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
         query_results_format: Optional[str] = None,
+        compression_codec: Optional[str] = None,
         callback: Callable = lambda _: None,
     ) -> RowIterator:
         """See query_and_wait.
@@ -3795,6 +3798,7 @@ class Client(ClientWithProject):
             page_size=page_size,
             max_results=max_results,
             query_results_format=query_results_format,
+            compression_codec=compression_codec,
             callback=callback,
         )
 

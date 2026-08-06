@@ -51,6 +51,36 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         self.assertIn("queryResultsFormat", call_args.kwargs["data"])
         self.assertEqual(call_args.kwargs["data"]["queryResultsFormat"], "ARROW")
 
+    def test_job_helpers_query_and_wait_sets_compression_codec(self):
+        client = mock.MagicMock(spec=Client)
+        client._call_api.return_value = {
+            "jobReference": {"projectId": "p", "jobId": "j", "location": "us"},
+            "jobComplete": True,
+            "rows": [],
+            "schema": {"fields": []},
+        }
+
+        _job_helpers.query_and_wait(
+            client=client,
+            query="SELECT 1",
+            project="p",
+            location="us",
+            job_config=None,
+            retry=None,
+            job_retry=None,
+            query_results_format="ARROW",
+            compression_codec="LZ4_FRAME",
+        )
+
+        call_args = client._call_api.call_args
+        self.assertIn("formatOptions", call_args.kwargs["data"])
+        self.assertEqual(
+            call_args.kwargs["data"]["formatOptions"]["arrowSerializationOptions"][
+                "bufferCompression"
+            ],
+            "LZ4_FRAME",
+        )
+
     def test_job_helpers_query_and_wait_fallback_preserves_query_results_format(self):
         client = mock.MagicMock(spec=Client)
         unsupported_body = {"unsupportedKey": "val"}
