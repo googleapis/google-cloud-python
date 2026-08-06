@@ -42,8 +42,6 @@ except ImportError:  # pragma: NO COVER
             )
         return use_client_cert == "true"
 
-<<<<<<< HEAD
-=======
 
 def read_environment_variables():
     """Returns the environment variables used by the client.
@@ -70,7 +68,6 @@ def read_environment_variables():
 
 
 DEFAULT_UNIVERSE = "googleapis.com"
->>>>>>> main
 
 try:
     from google.api_core.universe import get_default_mtls_endpoint
