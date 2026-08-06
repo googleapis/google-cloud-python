@@ -40,6 +40,7 @@ try:
     # we bump the minimum supported version of google-auth.
     from google.auth.transport.mtls import should_use_client_cert  # type: ignore
 except ImportError:  # pragma: NO COVER
+    {# The fallback implementation for `should_use_client_cert` can be removed once the minimum version of `google-auth` is bumped to 2.56.0 in `setup.py.j2`. #}
     def should_use_client_cert():
         """Returns whether client certificate should be used for mTLS."""
         use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
@@ -51,7 +52,6 @@ except ImportError:  # pragma: NO COVER
         return use_client_cert == "true"
 
 
-{# TODO(https://github.com/googleapis/google-cloud-python/issues/17883):
 Defer to google.auth.transport.mtls.should_use_mtls_endpoint (available in google-auth >= 2.56.0)
 to parse GOOGLE_API_USE_MTLS_ENDPOINT when available in minimum supported google-auth. #}
 def read_environment_variables():
@@ -83,6 +83,7 @@ DEFAULT_UNIVERSE = "googleapis.com"
 try:
     from google.api_core.universe import get_default_mtls_endpoint
 except ImportError:  # pragma: NO COVER
+    {# The fallback implementation for `get_default_mtls_endpoint` can be removed once the minimum version of `google-api-core` is bumped to 2.33.0 in `setup.py.j2`. #}
     def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
@@ -133,6 +134,7 @@ except ImportError:  # pragma: NO COVER
 try:
     from google.api_core.universe import get_api_endpoint
 except ImportError:  # pragma: NO COVER
+    {# The fallback implementation for `get_api_endpoint` can be removed once the minimum version of `google-api-core` is bumped to 2.33.0 in `setup.py.j2`. #}
     def get_api_endpoint(
         api_override: Optional[str],
         universe_domain: str,
@@ -178,6 +180,7 @@ except ImportError:  # pragma: NO COVER
 try:
     from google.api_core.universe import get_universe_domain
 except ImportError:  # pragma: NO COVER
+    {# The fallback implementation for `get_universe_domain` can be removed once the minimum version of `google-api-core` is bumped to 2.33.0 in `setup.py.j2`. #}
     def get_universe_domain(
         *potential_universes: Optional[str],
         default_universe: str,
@@ -213,6 +216,7 @@ try:
         # Fall back to the local compatibility implementation for older versions.
         raise ImportError
 except ImportError:  # pragma: NO COVER
+    {# The fallback implementation for `setup_request_id` can be removed once the minimum version of `google-api-core` is bumped to 2.34.0 in `setup.py.j2`. #}
     def setup_request_id(
         request: Union[google.protobuf.message.Message, "proto.Message", dict, None],
         field_name: str,
@@ -286,6 +290,7 @@ except ImportError:  # pragma: NO COVER
 try:
     from google.api_core.rest_helpers import transcode_request # type: ignore
 except ImportError:  # pragma: NO COVER
+    {# The fallback implementation for `transcode_request` can be removed once the minimum version of `google-api-core` is bumped to 2.34.0 in `setup.py.j2`. #}
     def transcode_request(
         http_options: List[Dict[str, str]],
         request: Any,

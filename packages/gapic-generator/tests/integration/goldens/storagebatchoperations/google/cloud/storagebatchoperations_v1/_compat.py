@@ -49,6 +49,8 @@ except ImportError:  # pragma: NO COVER
         return use_client_cert == "true"
 
 
+Defer to google.auth.transport.mtls.should_use_mtls_endpoint (available in google-auth >= 2.56.0)
+to parse GOOGLE_API_USE_MTLS_ENDPOINT when available in minimum supported google-auth. #}
 def read_environment_variables():
     """Returns the environment variables used by the client.
 
