@@ -216,14 +216,9 @@ class TestBigtableDataClient:
             use_emulator=False,
         ):
             mock_called.assert_called_once_with(
-                project_id=expected_project,
                 credentials=expected_credentials,
                 client_options=expected_options,
             )
-
-    def test_metrics_exporter_init_implicit_project(self):
-        with self._make_client(use_emulator=False) as client:
-            assert client._metrics.handlers[0]._exporter.project_id == client.project
 
     @mock.patch(
         "google.cloud.bigtable.data._async.client.BigtableMetricsExporter",

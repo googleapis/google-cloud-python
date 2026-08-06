@@ -245,15 +245,9 @@ class TestBigtableDataClientAsync:
             use_emulator=False,
         ):
             mock_called.assert_called_once_with(
-                project_id=expected_project,
                 credentials=expected_credentials,
                 client_options=expected_options,
             )
-
-    @CrossSync.pytest
-    async def test_metrics_exporter_init_implicit_project(self):
-        async with self._make_client(use_emulator=False) as client:
-            assert client._metrics.handlers[0]._exporter.project_id == client.project
 
     @CrossSync.pytest
     @mock.patch(

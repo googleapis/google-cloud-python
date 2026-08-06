@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 
+from collections import defaultdict
 import logging
 import time
 
@@ -136,18 +137,13 @@ class BigtableMetricsExporter(MetricExporter):
     We must use a custom exporter because the public one doesn't support writing to internal
     metrics like `bigtable.googleapis.com/internal/client/`
 
-    Each GoogleCloudMetricsHandler will maintain its own exporter instance associated with the
-    project_id it is configured with.
-
-    Args:
-        project_id: GCP project id to associate metrics with
+    Each GoogleCloudMetricsHandler will maintain its own exporter instance.
     """
 
-    def __init__(self, project_id: str, *client_args, **client_kwargs):
+    def __init__(self, *client_args, **client_kwargs):
         super().__init__()
         self.client = MetricServiceClient(*client_args, **client_kwargs)
         self.prefix = "bigtable.googleapis.com/internal/client"
-        self.project_id = project_id
 
     def export(
         self, metrics_data: MetricsData, timeout_millis: float = 10_000, **kwargs
@@ -158,19 +154,26 @@ class BigtableMetricsExporter(MetricExporter):
         """
         deadline = time.monotonic() + (timeout_millis / 1000)
         metric_kind = MetricDescriptor.MetricKind.CUMULATIVE
-        all_series: list[TimeSeries] = []
+        series_by_project: dict[str, list[TimeSeries]] = defaultdict(list)
         # process each metric from OTel format into Cloud Monitoring format
         for resource_metric in metrics_data.resource_metrics:
             for scope_metric in resource_metric.scope_metrics:
                 for metric in scope_metric.metrics:
                     for data_point in metric.data.data_points:
                         if data_point.attributes:
+                            project_id = data_point.attributes.get(
+                                "resource_project", ""
+                            )
+                            if not project_id:
+                                _LOGGER.warning(
+                                    "Missing resource_project attribute for metric %s",
+                                    metric.name,
+                                )
+                                continue
                             monitored_resource = MonitoredResource(
                                 type="bigtable_client_raw",
                                 labels={
-                                    "project_id": data_point.attributes.get(
-                                        "resource_project", ""
-                                    ),
+                                    "project_id": project_id,
                                     "instance": data_point.attributes.get(
                                         "resource_instance", ""
                                     ),
@@ -209,15 +212,16 @@ class BigtableMetricsExporter(MetricExporter):
                                 ),
                                 unit=metric.unit,
                             )
-                            all_series.append(series)
+                            series_by_project[project_id].append(series)
         # send all metrics to Cloud Monitoring
         try:
-            _LOGGER.debug(
-                "Exporting %d time series to Cloud Monitoring for project %s",
-                len(all_series),
-                self.project_id,
-            )
-            self._batch_write(all_series, deadline)
+            for project_id, series_list in series_by_project.items():
+                _LOGGER.debug(
+                    "Exporting %d time series to Cloud Monitoring for project %s",
+                    len(series_list),
+                    project_id,
+                )
+                self._batch_write(project_id, series_list, deadline)
             return MetricExportResult.SUCCESS
         except Exception as e:
             _LOGGER.warning(
@@ -226,13 +230,18 @@ class BigtableMetricsExporter(MetricExporter):
             return MetricExportResult.FAILURE
 
     def _batch_write(
-        self, series: list[TimeSeries], deadline=None, max_batch_size=200
+        self,
+        project_id: str,
+        series: list[TimeSeries],
+        deadline=None,
+        max_batch_size=200,
     ) -> None:
         """
         Adapted from CloudMonitoringMetricsExporter
         https://github.com/GoogleCloudPlatform/opentelemetry-operations-python/blob/3668dfe7ce3b80dd01f42af72428de957b58b316/opentelemetry-exporter-gcp-monitoring/src/opentelemetry/exporter/cloud_monitoring/__init__.py#L82
 
         Args:
+            project_id: GCP project ID to write metrics to
             series: list of TimeSeries to write. Will be split into batches if necessary
             deadline: designates the time.time() at which to stop writing. If None, uses API default
             max_batch_size: maximum number of time series to write at once.
@@ -250,7 +259,7 @@ class BigtableMetricsExporter(MetricExporter):
             batch = series[write_ind : write_ind + max_batch_size]
             self.client.create_service_time_series(
                 CreateTimeSeriesRequest(
-                    name=f"projects/{self.project_id}",
+                    name=f"projects/{project_id}",
                     time_series=batch,
                 ),
                 timeout=timeout,
@@ -258,7 +267,7 @@ class BigtableMetricsExporter(MetricExporter):
             _LOGGER.debug(
                 "Successfully wrote batch of %d time series to projects/%s",
                 len(batch),
-                self.project_id,
+                project_id,
             )
             write_ind += max_batch_size
 

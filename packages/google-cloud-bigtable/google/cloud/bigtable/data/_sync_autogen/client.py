@@ -211,7 +211,6 @@ class BigtableDataClient(ClientWithProject):
         else:
             try:
                 exporter = BigtableMetricsExporter(
-                    project_id=self.project,
                     credentials=credentials,
                     client_options=client_options,
                 )

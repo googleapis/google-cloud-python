@@ -48,7 +48,7 @@ class TestGoogleCloudMetricsHandler:
     def test_ctor_defaults(self, mock_auth):
         from google.cloud.bigtable import __version__ as CLIENT_VERSION
 
-        expected_exporter = BigtableMetricsExporter("project")
+        expected_exporter = BigtableMetricsExporter()
         with mock.patch.object(
             GoogleCloudMetricsHandler, "_generate_client_uid"
         ) as uid_mock:
@@ -64,7 +64,7 @@ class TestGoogleCloudMetricsHandler:
     def test_ctor_explicit(self, mock_auth):
         expected_version = "my_version"
         expected_uid = "my_uid"
-        expected_exporter = BigtableMetricsExporter("project")
+        expected_exporter = BigtableMetricsExporter()
         handler = self._make_one(
             expected_exporter,
             client_uid=expected_uid,
@@ -133,22 +133,18 @@ class TestBigtableMetricsExporter:
     def test_ctor_defaults(self):
         from google.cloud.monitoring_v3 import MetricServiceClient
 
-        expected_project = "custom"
-        instance = self._make_one(expected_project)
-        assert instance.project_id == expected_project
+        instance = self._make_one()
         assert instance.prefix == "bigtable.googleapis.com/internal/client"
         assert isinstance(instance.client, MetricServiceClient)
 
     def test_ctor_mocks(self):
-        expected_project = "custom"
         with mock.patch(
             "google.cloud.monitoring_v3.MetricServiceClient.__init__",
             return_value=None,
         ) as mock_client:
             args = [mock.Mock(), object()]
             kwargs = {"a": "b"}
-            instance = self._make_one(expected_project, *args, **kwargs)
-            assert instance.project_id == expected_project
+            instance = self._make_one(*args, **kwargs)
             assert instance.prefix == "bigtable.googleapis.com/internal/client"
             mock_client.assert_called_once_with(*args, **kwargs)
 
@@ -161,7 +157,7 @@ class TestBigtableMetricsExporter:
     )
     def test__to_point_w_number(self, value, expected_field):
         """Test that NumberDataPoint is converted to a Point correctly."""
-        instance = self._make_one("project")
+        instance = self._make_one()
         expected_start_time_nanos = 100
         expected_end_time_nanos = 200
         dp = NumberDataPoint(
@@ -182,7 +178,7 @@ class TestBigtableMetricsExporter:
 
     def test__to_point_w_histogram(self):
         """Test that HistogramDataPoint is converted to a Point correctly."""
-        instance = self._make_one("project")
+        instance = self._make_one()
         expected_start_time_nanos = 100
         expected_end_time_nanos = 200
         expected_count = 10
@@ -220,7 +216,7 @@ class TestBigtableMetricsExporter:
 
     def test__to_point_w_histogram_zero_count(self):
         """Test that HistogramDataPoint with zero count is converted to a Point correctly."""
-        instance = self._make_one("project")
+        instance = self._make_one()
         dp = HistogramDataPoint(
             attributes={},
             start_time_unix_nano=100,
@@ -252,15 +248,16 @@ class TestBigtableMetricsExporter:
         self, num_series, batch_size, expected_calls, expected_batch_sizes
     ):
         """Test that _batch_write splits series into batches correctly."""
-        instance = self._make_one("project")
+        instance = self._make_one()
         instance.client = mock.Mock()
         series = [TimeSeries() for _ in range(num_series)]
-        instance._batch_write(series, max_batch_size=batch_size)
+        instance._batch_write("project", series, max_batch_size=batch_size)
         assert instance.client.create_service_time_series.call_count == expected_calls
         for i, call in enumerate(
             instance.client.create_service_time_series.call_args_list
         ):
             call_args, _ = call
+            assert call_args[0].name == "projects/project"
             assert len(call_args[0].time_series) == expected_batch_sizes[i]
 
     def test__batch_write_with_deadline(self):
@@ -269,12 +266,12 @@ class TestBigtableMetricsExporter:
 
         from google.api_core import gapic_v1
 
-        instance = self._make_one("project")
+        instance = self._make_one()
         instance.client = mock.Mock()
         series = [TimeSeries() for _ in range(10)]
         # test with deadline
         deadline = time.monotonic() + 10
-        instance._batch_write(series, deadline=deadline)
+        instance._batch_write("project", series, deadline=deadline)
         (
             call_args,
             call_kwargs,
@@ -283,7 +280,7 @@ class TestBigtableMetricsExporter:
         assert 9 < call_kwargs["timeout"] < 10
         # test without deadline
         instance.client.create_service_time_series.reset_mock()
-        instance._batch_write(series, deadline=None)
+        instance._batch_write("project", series, deadline=None)
         (
             call_args,
             call_kwargs,
@@ -294,7 +291,7 @@ class TestBigtableMetricsExporter:
     def test_export(self):
         """Test that export correctly converts metrics and calls _batch_write."""
         project_id = "project"
-        instance = self._make_one(project_id)
+        instance = self._make_one()
         instance._batch_write = mock.Mock()
         # create mock metrics data
         expected_value = 123
@@ -334,7 +331,8 @@ class TestBigtableMetricsExporter:
         instance._batch_write.assert_called_once()
         # check the TimeSeries passed to _batch_write
         call_args, call_kwargs = instance._batch_write.call_args_list[0]
-        series_list = call_args[0]
+        assert call_args[0] == project_id
+        series_list = call_args[1]
         assert len(series_list) == 1
         series = series_list[0]
         assert series.metric.type == f"{instance.prefix}/operation_latencies"
@@ -352,7 +350,7 @@ class TestBigtableMetricsExporter:
 
     def test_export_no_attributes(self):
         """Test that export skips data points with no attributes."""
-        instance = self._make_one("project")
+        instance = self._make_one()
         instance._batch_write = mock.Mock()
         data_point = NumberDataPoint(
             attributes={}, start_time_unix_nano=100, time_unix_nano=200, value=123
@@ -376,18 +374,17 @@ class TestBigtableMetricsExporter:
         metrics_data = MetricsData(resource_metrics=[resource_metric])
         result = instance.export(metrics_data)
         assert result == MetricExportResult.SUCCESS
-        instance._batch_write.assert_called_once()
-        series_list = instance._batch_write.call_args[0][0]
-        assert len(series_list) == 0
+        instance._batch_write.assert_not_called()
 
     def test_exception_in_export(self):
         """
         make sure exceptions don't raise
         """
-        instance = self._make_one("project")
+        instance = self._make_one()
         instance._batch_write = mock.Mock(side_effect=Exception("test"))
         # create mock metrics data with one valid data point
         attributes = {
+            "resource_project": "project",
             "resource_instance": "instance1",
             "resource_cluster": "cluster1",
             "resource_table": "table1",
