@@ -26,20 +26,26 @@ from google.cloud.ndb import version
 
 
 try:
-    import warnings
-    import importlib.metadata
+    from google.api_core._python_package_support import (
+        warn_deprecation_for_versions_less_than,
+    )
 
-    _grpc_ver_str = importlib.metadata.version("grpcio")
-    if utils._parse_version_to_tuple(_grpc_ver_str) < (1, 83, 0):
-        warnings.warn(
-            "grpcio < 1.83.0 does not support Post-Quantum Cryptography (PQC). "
-            "Support for non-PQC environments is deprecated. In October 2026, "
-            "Google Cloud Python client libraries will raise their minimum requirements "
-            "(including google-api-core) to enforce grpcio >= 1.83.0. "
-            "For more details on Google Cloud's post-quantum security migration, visit: "
-            "https://cloud.google.com/security/resources/post-quantum-cryptography",
-            FutureWarning,
-        )
+    _PQC_GRPC_WARNING_TEMPLATE = (
+        "Package {consumer_package} depends on {dependency_package}, currently installed at version {version_used_string}. "
+        "grpcio < 1.83.0 does not support Post-Quantum Cryptography (PQC). "
+        "Support for non-PQC environments is deprecated. In October 2026, "
+        "Google Cloud Python client libraries will raise their minimum requirements "
+        "(including google-api-core) to enforce grpcio >= 1.83.0. "
+        "For more details on Google Cloud's post-quantum security migration, visit: "
+        "https://cloud.google.com/security/resources/post-quantum-cryptography"
+    )
+
+    warn_deprecation_for_versions_less_than(
+        "google.cloud.ndb",
+        "grpcio",
+        "1.83.0",
+        message_template=_PQC_GRPC_WARNING_TEMPLATE,
+    )
 except Exception:
     pass
 

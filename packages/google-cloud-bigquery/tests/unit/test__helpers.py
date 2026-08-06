@@ -1214,12 +1214,3 @@ class Test__isinstance_or_raise:
     def test__invalid_isinstance_or_raise(self, value, dtype, none_allowed, expected):
         with expected:
             _isinstance_or_raise(value, dtype, none_allowed=none_allowed)
-
-
-def test__parse_version_to_tuple():
-    from google.cloud.bigquery._helpers import _parse_version_to_tuple
-
-    assert _parse_version_to_tuple("1.83.0") == (1, 83, 0)
-    assert _parse_version_to_tuple("1.83.1rc1") == (1, 83, 1)
-    assert _parse_version_to_tuple("1.83.0dev0") == (1, 83, 0)
-    assert _parse_version_to_tuple("2.0") == (2, 0)
