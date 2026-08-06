@@ -102,9 +102,10 @@ def test_from_read_rows_response_decodes_serialized_record_batch():
 
 
 def test_from_read_rows_response_handles_empty_response():
+    pandas_gbq_arrow = pytest.importorskip("pandas_gbq.arrow")
     response = _create_read_rows_response(record_batch=None)
 
-    actual_batch = pandas_gbq.arrow.from_read_rows_response(
+    actual_batch = pandas_gbq_arrow.from_read_rows_response(
         response, arrow_schema=_TEST_SCHEMA
     )
 
