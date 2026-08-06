@@ -18,10 +18,10 @@ import datetime
 import decimal
 from unittest import mock
 
-from google.cloud.bigquery_storage import types
-from google.cloud.bigquery_storage_v1 import reader
 import pandas_gbq.arrow
 import pytest
+from google.cloud.bigquery_storage import types
+from google.cloud.bigquery_storage_v1 import reader
 
 pyarrow = pytest.importorskip("pyarrow")
 
