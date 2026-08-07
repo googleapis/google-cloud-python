@@ -42,7 +42,7 @@ if [[ -n "$RESET_EPOCH" ]]; then
         RESET_HUMAN=$(date -d "@$RESET_EPOCH" "+%Y-%m-%d %H:%M:%S UTC")
         echo "x-ratelimit-reset: $RESET_HUMAN ($RESET_EPOCH)" 
     else
-        echo "DEBUG: X-RateLimit-Reset: $RESET_EPOCH"
+        echo "x-ratelimit-reset: $RESET_EPOCH"
     fi
 fi
 echo "---------------------------------------------------------------"
