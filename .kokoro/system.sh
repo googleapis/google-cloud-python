@@ -283,7 +283,6 @@ done
 TRIGGER_ADHOC="false"
 if [[ -n "${KOKORO_GITHUB_PULL_REQUEST_NUMBER}" ]]; then
     echo "Checking for adhoc test label on PR #${KOKORO_GITHUB_PULL_REQUEST_NUMBER}..."
-    # Simple, unauthenticated call to check labels
     # Simple, unauthenticated call to check labels (capturing headers for rate limit debugging)
     CURL_OUTPUT=$(curl -s -i -H "User-Agent: Kokoro-AdHoc-Checker" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels")
 
