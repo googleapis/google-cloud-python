@@ -283,12 +283,8 @@ done
 TRIGGER_ADHOC="false"
 if [[ -n "${KOKORO_GITHUB_PULL_REQUEST_NUMBER}" ]]; then
     echo "Checking for adhoc test label on PR #${KOKORO_GITHUB_PULL_REQUEST_NUMBER}..."
-    headers=(-H "User-Agent: Kokoro")
-    if [[ -n "${GITHUB_TOKEN:-${GH_TOKEN}}" ]]; then
-        headers+=(-H "Authorization: token ${GITHUB_TOKEN:-${GH_TOKEN}}")
-    fi
-    # Fetch PR labels from GitHub API, handling connection failures gracefully
-    if ! LABELS_JSON=$(curl -s "${headers[@]}" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels"); then
+    # Simple, unauthenticated call to check labels
+    if ! LABELS_JSON=$(curl -s -H "User-Agent: Kokoro-AdHoc-Checker" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels"); then
         echo "==============================================================="
         echo "WARNING: Failed to connect to GitHub API!"
         echo "Ad-hoc tests will NOT be triggered."
