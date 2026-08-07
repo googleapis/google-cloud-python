@@ -110,8 +110,6 @@ from google.cloud.bigtable_v2.types.bigtable import (
     SampleRowKeysRequest,
 )
 
-_LOGGER = logging.getLogger(__name__)
-
 if CrossSync.is_async:
     from grpc.aio import insecure_channel
 
@@ -167,6 +165,8 @@ if TYPE_CHECKING:
 
 
 __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen.client"
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @CrossSync.convert_class(

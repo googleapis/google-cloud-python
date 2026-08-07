@@ -115,8 +115,6 @@ from google.cloud.bigtable_v2.types.bigtable import (
     SampleRowKeysRequest,
 )
 
-_LOGGER = logging.getLogger(__name__)
-
 if TYPE_CHECKING:
     from google.cloud.bigtable.data._helpers import RowKeySamples, ShardedQuery
     from google.cloud.bigtable.data._sync_autogen.mutations_batcher import (
@@ -125,6 +123,7 @@ if TYPE_CHECKING:
     from google.cloud.bigtable.data.execute_query._sync_autogen.execute_query_iterator import (
         ExecuteQueryIterator,
     )
+_LOGGER = logging.getLogger(__name__)
 
 
 @CrossSync._Sync_Impl.add_mapping_decorator("DataClient")
@@ -206,19 +205,16 @@ class BigtableDataClient(ClientWithProject):
         if self._emulator_host is None:
             try:
                 exporter = BigtableMetricsExporter(
-                    credentials=credentials,
-                    client_options=client_options,
+                    credentials=credentials, client_options=client_options
                 )
                 handlers.append(
                     GoogleCloudMetricsHandler(
-                        exporter=exporter,
-                        client_version=self._client_version(),
+                        exporter=exporter, client_version=self._client_version()
                     )
                 )
             except Exception as e:
                 _LOGGER.warning(
-                    "Failed to initialize Google Cloud Metrics Exporter: %s. "
-                    "Client-side metrics will be disabled.",
+                    "Failed to initialize Google Cloud Metrics Exporter: %s. Client-side metrics will be disabled.",
                     e,
                 )
         self._metrics = BigtableClientSideMetricsController(handlers=handlers)

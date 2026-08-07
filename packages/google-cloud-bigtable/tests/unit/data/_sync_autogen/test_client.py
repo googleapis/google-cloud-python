@@ -116,9 +116,7 @@ class TestBigtableDataClient:
         expected_project = "project-id"
         expected_credentials = AnonymousCredentials()
         client = self._make_client(
-            project="project-id",
-            credentials=expected_credentials,
-            use_emulator=False,
+            project="project-id", credentials=expected_credentials, use_emulator=False
         )
         CrossSync._Sync_Impl.yield_to_event_loop()
         assert client.project == expected_project
@@ -216,8 +214,7 @@ class TestBigtableDataClient:
             use_emulator=False,
         ):
             mock_called.assert_called_once_with(
-                credentials=expected_credentials,
-                client_options=expected_options,
+                credentials=expected_credentials, client_options=expected_options
             )
 
     @mock.patch(
