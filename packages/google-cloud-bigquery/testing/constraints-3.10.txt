@@ -14,7 +14,7 @@ pandas-gbq==0.26.1
 db-dtypes==1.0.4
 ipywidgets==7.7.1
 ipykernel==6.2.0
-geopandas==0.9.0
+geopandas==1.1.2
 Shapely==1.8.4
 ipython==7.23.1
 bigquery-magics==0.6.0
