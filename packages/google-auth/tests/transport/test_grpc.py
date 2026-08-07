@@ -26,9 +26,19 @@ from google.auth import exceptions
 from google.auth import transport
 from google.oauth2 import service_account
 
+
+def unwrap(ch):
+    if isinstance(ch, mock.Mock) or isinstance(ch, mock.MagicMock):
+        return ch
+    if hasattr(ch, "_channel"):
+        return unwrap(ch._channel)
+    return ch
+
+
 try:
     # pylint: disable=ungrouped-imports
     import grpc  # type: ignore
+
     import google.auth.transport.grpc
 
     HAS_GRPC = True
@@ -227,7 +237,7 @@ class TestSecureAuthorizedChannel(object):
             composite_channel_credentials.return_value,
             options=mock.sentinel.options,
         )
-        assert channel == secure_channel.return_value
+        assert unwrap(channel) == secure_channel.return_value
 
     @mock.patch("google.auth.transport.grpc.SslCredentials", autospec=True)
     def test_secure_authorized_channel_adc_without_client_cert_env(
@@ -273,7 +283,7 @@ class TestSecureAuthorizedChannel(object):
             composite_channel_credentials.return_value,
             options=mock.sentinel.options,
         )
-        assert channel == secure_channel.return_value
+        assert unwrap(channel) == secure_channel.return_value
 
     def test_secure_authorized_channel_explicit_ssl(
         self,
@@ -678,3 +688,152 @@ class TestSslCredentials(object):
         mock_ssl_channel_credentials.assert_called_once_with(
             certificate_chain=PUBLIC_CERT_BYTES, private_key=PRIVATE_KEY_BYTES
         )
+
+
+@mock.patch("google.auth.transport.grpc._ReplayableIterator")
+def test_interceptor_uses_factory_if_callable(mock_replayable):
+    import google.auth.transport.grpc as transport_grpc
+
+    interceptor = transport_grpc._MTLSCallInterceptor()
+
+    call_no_factory = transport_grpc._RetryableStreamResponseIterator(
+        continuation=mock.Mock(),
+        client_call_details=mock.Mock(),
+        request_or_iterator=[b"1", b"2"],
+        interceptor=interceptor,
+        is_client_stream=True,
+    )
+    assert call_no_factory._uses_factory is False
+    assert call_no_factory._payload is not None
+
+    def generator_factory():
+        return (x for x in [b"1", b"2"])
+
+    call_factory = transport_grpc._RetryableStreamResponseIterator(
+        continuation=mock.Mock(),
+        client_call_details=mock.Mock(),
+        request_or_iterator=generator_factory,
+        interceptor=interceptor,
+        is_client_stream=True,
+    )
+    assert call_factory._uses_factory is True
+    assert call_factory._payload is None
+
+
+@mock.patch("google.auth.transport.grpc._MTLSCallInterceptor._should_retry")
+def test_factory_infinite_replay_on_error(mock_should_retry):
+    import google.auth.transport.grpc as transport_grpc
+
+    interceptor = transport_grpc._MTLSCallInterceptor()
+    interceptor._wrapper = mock.Mock()
+    interceptor._wrapper._cached_cert = "cert"
+    mock_should_retry.side_effect = [True, False]
+
+    mock_inner_call1 = mock.Mock()
+    mock_err = transport_grpc.grpc.RpcError()
+    mock_err.code = lambda: transport_grpc.grpc.StatusCode.UNAUTHENTICATED
+    mock_inner_call1.__next__ = mock.Mock(side_effect=mock_err)
+
+    mock_inner_call2 = mock.Mock()
+    mock_inner_call2.__next__ = mock.Mock(side_effect=[b"SUCCESS", StopIteration])
+
+    continuation = mock.Mock(side_effect=[mock_inner_call1, mock_inner_call2])
+
+    factory_calls = 0
+
+    def factory():
+        nonlocal factory_calls
+        factory_calls += 1
+        return (x for x in [b"A"])
+
+    stream = transport_grpc._RetryableStreamResponseIterator(
+        continuation=continuation,
+        client_call_details=mock.Mock(),
+        request_or_iterator=factory,
+        interceptor=interceptor,
+        is_client_stream=True,
+    )
+
+    responses = list(stream)
+    assert responses == [b"SUCCESS"]
+    assert factory_calls == 2
+
+
+@mock.patch("google.auth.transport._mtls_helper.decrypt_private_key")
+@mock.patch(
+    "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+)
+@mock.patch("google.auth.transport.grpc.secure_authorized_channel")
+def test_refresh_logic_closes_old_channel(
+    mock_secure_channel, mock_check_params, mock_decrypt
+):
+    import google.auth.transport.grpc as transport_grpc
+
+    mock_check_params.return_value = ("cert", "cert", "passphrase", "old_fp", "new_fp")
+    mock_decrypt.return_value = b"decrypted_key"
+    old_channel = mock.Mock()
+    new_channel = mock.Mock()
+    mock_secure_channel.return_value = new_channel
+
+    subscriber = mock.Mock()
+
+    refreshing_channel = transport_grpc._MTLSRefreshingChannel(
+        target="example.com:443",
+        factory_args={},
+        initial_channel=old_channel,
+        initial_cert="cert",
+    )
+    refreshing_channel.subscribe(subscriber)
+
+    refreshing_channel.refresh_logic(1)
+
+    old_channel.unsubscribe.assert_called_once_with(subscriber)
+    new_channel.subscribe.assert_called_once_with(subscriber)
+    old_channel.close.assert_called_once()
+
+
+@mock.patch("google.auth.transport.grpc._MTLSCallInterceptor._should_retry")
+def test_unary_response_future_deadline_exceeded_on_retry(mock_should_retry):
+    import google.auth.transport.grpc as transport_grpc
+
+    interceptor = transport_grpc._MTLSCallInterceptor()
+    interceptor._wrapper = mock.Mock()
+    interceptor._wrapper._cached_cert = "cert"
+    mock_should_retry.return_value = True
+
+    mock_err = transport_grpc.grpc.RpcError()
+    mock_err.code = lambda: transport_grpc.grpc.StatusCode.UNAUTHENTICATED
+
+    inner_future = mock.Mock()
+    inner_future.exception = lambda: mock_err
+    inner_future.result = mock.Mock(side_effect=mock_err)
+
+    callbacks_fired = []
+
+    def callback(f):
+        callbacks_fired.append(f)
+
+    call_details = mock.Mock()
+    call_details.timeout = 0.001  # very short timeout
+
+    # Simulating initial call
+    future = transport_grpc._RetryableUnaryResponseFuture(
+        continuation=lambda cd, pl: inner_future,
+        client_call_details=call_details,
+        request_or_iterator=b"request",
+        interceptor=interceptor,
+        is_client_stream=False,
+    )
+    future.add_done_callback(callback)
+
+    # Allow time to elapse so remaining timeout <= 0
+    time.sleep(0.01)
+
+    # Trigger inner future completion
+    future._on_inner_future_done(inner_future)
+
+    # Verify future is marked done and does not hang
+    assert future.done() is True
+    assert len(callbacks_fired) == 1
+    with pytest.raises(transport_grpc.grpc.RpcError):
+        future.result(timeout=1)
