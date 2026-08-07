@@ -64,6 +64,26 @@ class ExpressionCompiler:
     @compile_expression.register
     def _(
         self,
+        expression: ex.ParameterExpression,
+        bindings: typing.Dict[str, ibis_types.Value],
+    ) -> ibis_types.Value:
+        import bigframes.core.compile.ibis_types as ibis_types_mod
+
+        ibis_type = ibis_types_mod.bigframes_dtype_to_ibis_dtype(expression.dtype)
+        p = bigframes_vendored.ibis.param(ibis_type)
+
+        # Record the mapping from Ibis auto-generated parameter name to user's parameter name
+        from bigframes.session.productionize import _state as prod_state
+
+        if prod_state.active and prod_state.pipeline is not None:
+            counter = p.op().counter
+            prod_state.pipeline.recorded_params[f"param_{counter}"] = expression.name
+
+        return p
+
+    @compile_expression.register
+    def _(
+        self,
         expression: ex.DerefOp,
         bindings: typing.Dict[str, ibis_types.Value],
     ) -> ibis_types.Value:

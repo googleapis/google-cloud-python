@@ -688,6 +688,9 @@ class SQLGlotCompiler(abc.ABC):
     def visit_Alias(self, op, *, arg, name):
         return arg
 
+    def visit_ScalarParameter(self, op, *, dtype, counter):
+        return sge.Parameter(this=sge.to_identifier(f"param_{counter}"))
+
     def visit_Literal(self, op, *, value, dtype):
         """Compile a literal value.
 

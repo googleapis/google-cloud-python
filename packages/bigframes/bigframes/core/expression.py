@@ -32,9 +32,9 @@ if typing.TYPE_CHECKING:
     import bigframes.operations
 
 
-def const(
-    value: typing.Hashable, dtype: dtypes.ExpressionType = None
-) -> ScalarConstantExpression:
+def const(value: typing.Hashable, dtype: dtypes.ExpressionType = None) -> Expression:
+    if isinstance(value, Parameter):
+        return ParameterExpression(value.name, value.dtype)
     return ScalarConstantExpression(value, dtype or dtypes.infer_literal_type(value))
 
 
@@ -531,3 +531,65 @@ def bind_schema_fields(
 
 
 RefOrConstant = Union[DerefOp, ScalarConstantExpression]
+
+
+@dataclasses.dataclass(frozen=True)
+class Parameter:
+    """Represents a named parameter in a productionized pipeline."""
+
+    name: str
+    dtype: dtypes.ExpressionType
+
+
+@dataclasses.dataclass(frozen=True)
+class ParameterExpression(Expression):
+    """An expression representing a query parameter."""
+
+    name: str
+    dtype: dtypes.ExpressionType
+
+    @property
+    def is_const(self) -> bool:
+        return True
+
+    @property
+    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
+        return ()
+
+    @property
+    def nullable(self) -> bool:
+        return True
+
+    @property
+    def is_resolved(self) -> bool:
+        return True
+
+    @property
+    def output_type(self) -> dtypes.ExpressionType:
+        return self.dtype
+
+    def bind_variables(
+        self,
+        bindings: Mapping[Hashable, Expression],
+        allow_partial_bindings: bool = False,
+    ) -> Expression:
+        return self
+
+    def bind_refs(
+        self,
+        bindings: Mapping[ids.ColumnId, Expression],
+        allow_partial_bindings: bool = False,
+    ) -> ParameterExpression:
+        return self
+
+    @property
+    def is_bijective(self) -> bool:
+        return True
+
+    def __eq__(self, other):
+        if not isinstance(other, ParameterExpression):
+            return False
+        return self.name == other.name and self.dtype == other.dtype
+
+    def transform_children(self, t: Callable[[Expression], Expression]) -> Expression:
+        return self

@@ -114,6 +114,7 @@ from bigframes.pandas.io.api import (
     read_parquet,
     read_pickle,
 )
+from bigframes.session.productionize import parameter, productionize
 
 try:
     import resource
@@ -525,6 +526,8 @@ __all__ = [
     "close_session",
     "reset_session",
     "udf",
+    "parameter",
+    "productionize",
 ]
 
 _module = sys.modules[__name__]
