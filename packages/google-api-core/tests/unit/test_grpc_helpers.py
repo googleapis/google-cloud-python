@@ -463,6 +463,7 @@ def test_create_channel_implicit_with_default_host(
 
     google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
     if _SUPPORTS_SUPPRESS_METRICS:
+        # Installed google-auth supports suppress_metrics_header parameter
         auth_metadata_plugin.assert_called_once_with(
             mock.sentinel.credentials,
             mock.sentinel.Request,
@@ -470,6 +471,7 @@ def test_create_channel_implicit_with_default_host(
             suppress_metrics_header=True,
         )
     else:
+        # Older google-auth raises TypeError on call 1, triggering fallback call 2
         assert auth_metadata_plugin.call_count == 2
         auth_metadata_plugin.assert_called_with(
             mock.sentinel.credentials,
