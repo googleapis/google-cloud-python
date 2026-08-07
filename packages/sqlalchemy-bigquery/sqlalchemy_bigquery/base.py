@@ -21,6 +21,7 @@
 
 import datetime
 from decimal import Decimal
+import inspect
 import operator
 import random
 import re
@@ -29,7 +30,8 @@ import uuid
 from google import auth
 import google.api_core.exceptions
 from google.api_core.exceptions import NotFound
-from google.cloud.bigquery import ConnectionProperty, QueryJobConfig, dbapi
+from google.cloud.bigquery import ConnectionProperty, ExternalConfig, QueryJobConfig, dbapi
+from google.cloud.bigquery.external_config import HivePartitioningOptions
 from google.cloud.bigquery.table import (
     RangePartitioning,
     TableReference,
@@ -652,6 +654,9 @@ class BigQueryDDLCompiler(DDLCompiler):
         "expiration_timestamp": datetime.datetime,
         "require_partition_filter": bool,
         "default_rounding_mode": str,
+        "format": str,
+        "hive_partition_uri_prefix": str,
+        "require_hive_partition_filter": bool,
     }
 
     # BigQuery has no support for foreign keys.
@@ -675,6 +680,20 @@ class BigQueryDDLCompiler(DDLCompiler):
                 colspec, process_string_literal(column.comment)
             )
         return colspec
+
+    def create_table_suffix(self, table):
+        """
+        Generate the suffix for external tables with hive partitioning.
+
+        For external tables with hive partitioning, BigQuery requires
+        'WITH PARTITION COLUMNS' after the column definitions.
+
+        """
+        bq_opts = table.dialect_options["bigquery"]
+        if external_config := bq_opts.get("external_data_configuration"):
+            if external_config.hive_partitioning is not None:
+                return "WITH PARTITION COLUMNS"
+        return ""
 
     def post_create_table(self, table):
         """
@@ -756,6 +775,34 @@ class BigQueryDDLCompiler(DDLCompiler):
             description = bq_opts.get("description", table.comment)
             self._validate_option_value_type("description", description)
             options["description"] = description
+
+        if external_config := bq_opts.get("external_data_configuration"):
+            self._raise_for_type(
+                "external_data_configuration", external_config, ExternalConfig
+            )
+            if not isinstance(external_config.source_uris, (list, str)):
+                raise TypeError(
+                    "External table source_uris must be a list of strings"
+                    " (or a single string for Bigtable)"
+                )
+            options["format"] = external_config.source_format
+            options["uris"] = external_config.source_uris
+            if partitioning := external_config.hive_partitioning:
+                self._raise_for_type(
+                    "external_data_configuration.hive_partitioning",
+                    partitioning,
+                    HivePartitioningOptions,
+                )
+                options["hive_partition_uri_prefix"] = partitioning.source_uri_prefix
+                options[
+                    "require_hive_partition_filter"
+                ] = partitioning.require_partition_filter
+            for name, _ in inspect.getmembers_static(
+                external_config.options, lambda m: isinstance(m, property)
+            ):
+                value = getattr(external_config.options, name)
+                if value is not None:
+                    options[name] = value
 
         for option in self.option_datatype_mapping:
             if option in bq_opts:
@@ -983,6 +1030,7 @@ class BigQueryDDLCompiler(DDLCompiler):
             float: lambda x: x,
             bool: lambda x: "true" if x else "false",
             datetime.datetime: lambda x: BQTimestamp.process_timestamp_literal(x),
+            list: lambda x: f'[{", ".join([self._process_option_value(item) for item in x])}]',
         }
 
         if (option_cast := option_casting.get(type(value))) is not None:
