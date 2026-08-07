@@ -100,7 +100,8 @@ case ${TEST_TYPE} in
         if [ -f setup.py ] || [ -f pyproject.toml ]; then
             PACKAGE_NAME=$(basename $(pwd))
 
-            # TODO: Remove this skip once Python 3.15 is officially released and upstream binary wheels
+            # TODO(https://github.com/googleapis/google-cloud-python/issues/18035):
+            # Remove this skip once Python 3.15 is officially released and upstream binary wheels
             # (e.g. numpy, pyarrow, pandas, geopandas, pikepdf) are published on PyPI.
             # Packages with heavy C/Rust dependencies attempt full source compilation on pre-release Python,
             # taking 5-10+ minutes before failing due to unreleased CPython 3.15 C-API changes.
