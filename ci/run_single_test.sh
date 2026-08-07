@@ -105,19 +105,21 @@ case ${TEST_TYPE} in
             # (e.g. numpy, pyarrow, pandas, geopandas, pikepdf) are published on PyPI.
             # Packages with heavy C/Rust dependencies attempt full source compilation on pre-release Python,
             # taking 5-10+ minutes before failing due to unreleased CPython 3.15 C-API changes.
-            UNSUPPORTED_PRE_RELEASE_PACKAGES=(
-                "bigframes"
-                "pandas-gbq"
-                "google-cloud-documentai-toolbox"
-                "db-dtypes"
-                "bigquery-magics"
-            )
-            for unsupported in "${UNSUPPORTED_PRE_RELEASE_PACKAGES[@]}"; do
-                if [ "${PACKAGE_NAME}" = "${unsupported}" ]; then
-                    echo "WARNING: Skipping import_profile for ${PACKAGE_NAME}: package has heavy C/Rust dependencies not yet supported on pre-release Python ${PY_VERSION}."
-                    exit 0
-                fi
-            done
+            if [[ "${PY_VERSION}" == "3.15"* ]]; then
+                UNSUPPORTED_PRE_RELEASE_PACKAGES=(
+                    "bigframes"
+                    "pandas-gbq"
+                    "google-cloud-documentai-toolbox"
+                    "db-dtypes"
+                    "bigquery-magics"
+                )
+                for unsupported in "${UNSUPPORTED_PRE_RELEASE_PACKAGES[@]}"; do
+                    if [ "${PACKAGE_NAME}" = "${unsupported}" ]; then
+                        echo "WARNING: Skipping import_profile for ${PACKAGE_NAME}: package has heavy C/Rust dependencies not yet supported on pre-release Python ${PY_VERSION}."
+                        exit 0
+                    fi
+                done
+            fi
 
             echo "Creating temporary virtualenv for import profile..."
             python3 -m venv .venv-profiler
@@ -145,7 +147,13 @@ case ${TEST_TYPE} in
                             cd "${WORKTREE_DIR}/${REPO_PREFIX}"
                             if [ -f setup.py ] || [ -f pyproject.toml ]; then
                                 if pip install -e . ; then
+                                    echo "INFO: Successfully installed baseline dependencies for ${PACKAGE_NAME}."
                                     python "${PROFILER_SCRIPT}" --package "${PACKAGE_NAME}" --iterations 11 --csv "${BASELINE_CSV}"
+                                    if [ $? -eq 0 ]; then
+                                        echo "INFO: Successfully ran baseline profiler for ${PACKAGE_NAME}."
+                                    fi
+                                elif [[ "${PY_VERSION}" != "3.15"* ]]; then
+                                    exit 1
                                 fi
                             fi
                         )
@@ -158,18 +166,27 @@ case ${TEST_TYPE} in
                 fi
             fi
             
-            # TODO: Clean up this fallback once Python 3.15 is officially released and upstream binary wheels are available on PyPI.
+            # TODO(https://github.com/googleapis/google-cloud-python/issues/18035):
+            # Clean up this fallback once Python 3.15 is officially released and upstream binary wheels are available on PyPI.
             # On pre-release Python versions, packages with complex C/Rust dependencies (e.g. bigframes) fail during pip install due to missing pre-built wheels.
             if ! pip install -e . ; then
-                echo "WARNING: Could not install dependencies for ${PACKAGE_NAME} on Python ${PY_VERSION} (missing pre-built binary wheels for pre-release Python). Skipping import_profile."
-                retval=0
+                if [[ "${PY_VERSION}" == "3.15"* ]]; then
+                    echo "WARNING: Could not install dependencies for ${PACKAGE_NAME} on Python ${PY_VERSION} (missing pre-built binary wheels for pre-release Python). Skipping import_profile."
+                    retval=0
+                else
+                    retval=1
+                fi
             else
+                echo "INFO: Successfully installed dependencies for ${PACKAGE_NAME} on Python ${PY_VERSION}."
                 if [ -f "${BASELINE_CSV}" ]; then
                     python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000 --diff-baseline "${BASELINE_CSV}" --diff-threshold 100
                 else
                     python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000
                 fi
                 retval=$?
+                if [ $retval -eq 0 ]; then
+                    echo "INFO: Successfully completed import_profile for ${PACKAGE_NAME}."
+                fi
             fi
             deactivate
             rm -rf .venv-profiler
