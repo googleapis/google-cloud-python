@@ -43,11 +43,19 @@ def test_create_channel_otel_installed_and_enabled(monkeypatch, clean_sys_module
     """Verify that create_channel wraps the channel with OTel interceptor when installed and enabled."""
 
     # Mock opentelemetry.instrumentation.grpc
+    mock_otel = mock.Mock()
+    mock_otel_instrumentation = mock.Mock()
     mock_otel_grpc = mock.Mock()
     mock_interceptor = mock.Mock()
     mock_otel_grpc.client_interceptor.return_value = mock_interceptor
     mock_otel_grpc.intercept_channel.side_effect = lambda ch, inc: f"wrapped_{ch}"
 
+    # Link them
+    mock_otel.instrumentation = mock_otel_instrumentation
+    mock_otel_instrumentation.grpc = mock_otel_grpc
+
+    sys.modules["opentelemetry"] = mock_otel
+    sys.modules["opentelemetry.instrumentation"] = mock_otel_instrumentation
     sys.modules["opentelemetry.instrumentation.grpc"] = mock_otel_grpc
 
     # Enable tracing

@@ -35,17 +35,17 @@ from typing import (
 )
 
 import google.protobuf
+from google.api_core import _feature_gating_helpers, gapic_v1
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
 from google.cloud.secretmanager_v1 import gapic_version as package_version
+from google.oauth2 import service_account  # type: ignore
+from opentelemetry import trace
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -59,6 +59,8 @@ try:
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
+tracer = trace.get_tracer(__name__)
+
 _LOGGER = std_logging.getLogger(__name__)
 
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
@@ -68,7 +70,6 @@ import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-
 from google.cloud.secretmanager_v1.services.secret_manager_service import pagers
 from google.cloud.secretmanager_v1.types import resources, service
 
@@ -1871,13 +1872,31 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # Validate the universe domain.
         self._validate_universe_domain()
 
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
+        is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
+            env_var="GOOGLE_CLOUD_PYTHON_TRACING_ENABLED",
+            feature_key="tracer_provider",
+            configuration=self._client_options,
         )
+
+        # Send the request.
+        if is_tracing_enabled:
+            with tracer.start_as_current_span("SecretManagerServiceClient.access_secret_version") as span:
+                span.set_attribute("gcp.secretmanager.secret.name", request.name)
+                response = rpc(
+                    request,
+                    retry=retry,
+                    timeout=timeout,
+                    metadata=metadata,
+                )
+        else:
+            response = rpc(
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
+
+        return response
 
         # Done; return the response.
         return response
