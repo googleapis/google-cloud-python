@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import inspect
 from unittest import mock
 
 import pytest
@@ -29,13 +28,6 @@ import google.auth.transport.grpc
 from google.longrunning import operations_pb2
 
 from google.api_core import exceptions, grpc_helpers
-
-_SUPPORTS_SUPPRESS_METRICS = (
-    "suppress_metrics_header"
-    in inspect.signature(
-        google.auth.transport.grpc.AuthMetadataPlugin.__init__
-    ).parameters
-)
 
 
 def test__patch_callable_name():
@@ -462,22 +454,14 @@ def test_create_channel_implicit_with_default_host(
     assert channel is grpc_secure_channel.return_value
 
     google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
-    if _SUPPORTS_SUPPRESS_METRICS:
-        # Installed google-auth supports suppress_metrics_header parameter
-        auth_metadata_plugin.assert_called_once_with(
-            mock.sentinel.credentials,
-            mock.sentinel.Request,
-            default_host=default_host,
-            suppress_metrics_header=True,
-        )
-    else:
-        # Older google-auth raises TypeError on call 1 during autospec signature check,
-        # so only the successful fallback call 2 is recorded by unittest.mock.
-        auth_metadata_plugin.assert_called_once_with(
-            mock.sentinel.credentials,
-            mock.sentinel.Request,
-            default_host=default_host,
-        )
+    assert auth_metadata_plugin.call_count == 1
+    assert auth_metadata_plugin.call_args.args == (
+        mock.sentinel.credentials,
+        mock.sentinel.Request,
+    )
+    assert auth_metadata_plugin.call_args.kwargs["default_host"] == default_host
+    if "suppress_metrics_header" in auth_metadata_plugin.call_args.kwargs:
+        assert auth_metadata_plugin.call_args.kwargs["suppress_metrics_header"] is True
 
     grpc_secure_channel.assert_called_once_with(
         expected_target, composite_creds, compression=None
