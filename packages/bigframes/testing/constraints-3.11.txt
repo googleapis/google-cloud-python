@@ -91,7 +91,7 @@ dbus-python==1.2.18
 debugpy==1.8.15
 decorator==4.4.2
 defusedxml==0.7.1
-diffusers==0.34.0
+diffusers==0.38.0
 dill==0.3.8
 distributed==2025.5.0
 distributed-ucxx-cu12==0.44.0
