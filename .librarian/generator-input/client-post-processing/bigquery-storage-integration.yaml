@@ -464,8 +464,13 @@ replacements:
   - paths: [
       packages/google-cloud-bigquery-storage/docs/index.rst,
     ]
-    before: '(?s)This package includes clients for multiple versions.*'
+    before: '(?s)\.\. include:: multiprocessing\.rst\n\n+API Reference\n-------------.*'
     after: |
+      .. include:: README.rst
+
+      .. include:: multiprocessing.rst
+
+
       Example Usage
       -------------
 
