@@ -396,11 +396,10 @@ def create_channel(
     if is_tracing_enabled:
         try:
             import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
-
             interceptor = otel_grpc.client_interceptor()
             channel = otel_grpc.intercept_channel(channel, interceptor)
         except ImportError:
-            # Soft dependency missing, fail open
+            # If grpc dependency is missing, this should simply NOOP and fail open rather than failing import.
             pass
 
     return channel

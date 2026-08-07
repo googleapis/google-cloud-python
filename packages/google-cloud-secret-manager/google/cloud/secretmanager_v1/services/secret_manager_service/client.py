@@ -42,10 +42,9 @@ from google.api_core import retry as retries
 
 try:
     from google.api_core import _feature_gating_helpers
-
-    HAVE_FEATURE_GATING = True
+    HAS_FEATURE_GATING = True
 except ImportError:
-    HAVE_FEATURE_GATING = False
+    HAS_FEATURE_GATING = False
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
@@ -55,10 +54,9 @@ from google.oauth2 import service_account  # type: ignore
 
 try:
     from opentelemetry import trace
-
-    HAVE_OTEL = True
+    HAS_OTEL = True
 except ImportError:
-    HAVE_OTEL = False
+    HAS_OTEL = False
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -72,7 +70,7 @@ try:
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
-if HAVE_OTEL:
+if HAS_OTEL:
     tracer = trace.get_tracer(__name__)
 else:
     tracer = None  # type: ignore[assignment]
@@ -1888,7 +1886,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # Validate the universe domain.
         self._validate_universe_domain()
 
-        if HAVE_FEATURE_GATING:
+        if HAS_FEATURE_GATING:
             is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
                 env_var="GOOGLE_CLOUD_PYTHON_TRACING_ENABLED",
                 feature_key="tracer_provider",
@@ -1898,7 +1896,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
             is_tracing_enabled = False
 
         # Send the request.
-        if is_tracing_enabled and HAVE_OTEL and tracer:
+        if is_tracing_enabled and HAS_OTEL and tracer:
             with tracer.start_as_current_span(
                 "SecretManagerServiceClient.access_secret_version"
             ) as span:

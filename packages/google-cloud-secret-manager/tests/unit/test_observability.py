@@ -18,8 +18,8 @@ import pytest
 from google.auth import credentials as ga_credentials
 from google.cloud import secretmanager_v1
 from google.cloud.secretmanager_v1.services.secret_manager_service.client import (
-    HAVE_FEATURE_GATING,
-    HAVE_OTEL,
+    HAS_FEATURE_GATING,
+    HAS_OTEL,
 )
 from google.cloud.secretmanager_v1.types import service
 
@@ -48,7 +48,7 @@ def setup_otel():
 
 
 @pytest.mark.skipif(
-    not HAVE_FEATURE_GATING or not HAVE_OTEL,
+    not HAS_FEATURE_GATING or not HAS_OTEL,
     reason="Requires feature gating and OpenTelemetry",
 )
 def test_access_secret_version_custom_span(setup_otel, monkeypatch):
@@ -100,7 +100,7 @@ def test_access_secret_version_custom_span(setup_otel, monkeypatch):
 
 
 @pytest.mark.skipif(
-    not HAVE_FEATURE_GATING or not HAVE_OTEL,
+    not HAS_FEATURE_GATING or not HAS_OTEL,
     reason="Requires feature gating and OpenTelemetry",
 )
 def test_access_secret_version_custom_span_disabled(setup_otel, monkeypatch):

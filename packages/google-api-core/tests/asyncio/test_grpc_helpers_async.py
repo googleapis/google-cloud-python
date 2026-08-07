@@ -421,6 +421,8 @@ def test_create_channel_implicit_with_default_host(
 
     google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
 
+    # Suppressing metrics header prevents duplicate x-goog-api-client headers.
+    # We try both assertions to support older versions of google-auth.
     try:
         auth_metadata_plugin.assert_called_once_with(
             mock.sentinel.credentials,

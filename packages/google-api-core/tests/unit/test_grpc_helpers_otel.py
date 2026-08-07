@@ -22,20 +22,21 @@ import pytest
 try:
     from google.api_core import grpc_helpers
 
-    HAVE_GRPC_HELPERS = True
+    HAS_GRPC_HELPERS = True
 except ImportError:
-    HAVE_GRPC_HELPERS = False
+    HAS_GRPC_HELPERS = False
 
 
 # Removed clean_sys_modules fixture as it causes issues in no-grpc environments
 # when tests are collected.
 
 
-@pytest.mark.skipif(not HAVE_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
+@pytest.mark.skipif(not HAS_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
 def test_create_channel_otel_installed_and_enabled(monkeypatch):
     """Verify that create_channel wraps the channel with OTel interceptor when installed and enabled."""
 
-    # Mock opentelemetry.instrumentation.grpc
+    # Build a hierarchy of mocks to simulate the nested OpenTelemetry modules.
+    # This allows us to test code that imports these modules without needing them installed.
     mock_otel = mock.Mock()
     mock_otel_instrumentation = mock.Mock()
     mock_otel_grpc = mock.Mock()
@@ -43,9 +44,12 @@ def test_create_channel_otel_installed_and_enabled(monkeypatch):
     mock_otel_grpc.client_interceptor.return_value = mock_interceptor
     mock_otel_grpc.intercept_channel.side_effect = lambda ch, inc: f"wrapped_{ch}"
 
-    # Link them
+    # Link the mocks together to match the package structure (opentelemetry.instrumentation.grpc)
     mock_otel.instrumentation = mock_otel_instrumentation
     mock_otel_instrumentation.grpc = mock_otel_grpc
+
+    # Inject the mocks into sys.modules so Python's import system uses them.
+    # monkeypatch ensures these changes are reverted after the test finishes.
     monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
     monkeypatch.setitem(
         sys.modules, "opentelemetry.instrumentation", mock_otel_instrumentation
@@ -82,7 +86,7 @@ def test_create_channel_otel_installed_and_enabled(monkeypatch):
             assert channel == f"wrapped_{mock_channel}"
 
 
-@pytest.mark.skipif(not HAVE_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
+@pytest.mark.skipif(not HAS_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
 def test_create_channel_otel_installed_but_disabled(monkeypatch):
     """Verify that create_channel does NOT wrap the channel if tracing is disabled."""
 
@@ -114,7 +118,7 @@ def test_create_channel_otel_installed_but_disabled(monkeypatch):
             assert channel == mock_channel
 
 
-@pytest.mark.skipif(not HAVE_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
+@pytest.mark.skipif(not HAS_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
 def test_create_channel_otel_not_installed_fails_open(monkeypatch):
     """Verify that create_channel fails open if OTel is not installed, even if enabled."""
 
