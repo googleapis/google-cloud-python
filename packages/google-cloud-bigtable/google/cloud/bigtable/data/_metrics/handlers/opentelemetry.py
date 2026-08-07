@@ -181,6 +181,7 @@ class OpenTelemetryMetricsHandler(MetricsHandler):
           - operation_latencies
           - retry_count
           - first_response_latencies
+          - throttling_latencies
         """
         labels = {
             "method": op.op_type.value,
@@ -204,6 +205,13 @@ class OpenTelemetryMetricsHandler(MetricsHandler):
         # only record completed attempts if there were retries
         if op.completed_attempts:
             self.otel.retry_count.add(len(op.completed_attempts) - 1, labels)
+        if (
+            op.op_type == OperationType.BULK_MUTATE_ROWS
+            and op.flow_throttling_time_ns > 0
+        ):
+            self.otel.throttling_latencies.record(
+                op.flow_throttling_time_ns / NS_TO_MS, labels
+            )
 
     def on_attempt_complete(
         self, attempt: CompletedAttemptMetric, op: ActiveOperationMetric
@@ -214,7 +222,6 @@ class OpenTelemetryMetricsHandler(MetricsHandler):
           - server_latencies
           - connectivity_error_count
           - application_latencies
-          - throttling_latencies
         """
         labels = {
             "method": op.op_type.value,
@@ -229,13 +236,8 @@ class OpenTelemetryMetricsHandler(MetricsHandler):
             attempt.duration_ns / NS_TO_MS,
             {"streaming": is_streaming, "status": status, **labels},
         )
-        flow_throttling = (
-            op.flow_throttling_time_ns / NS_TO_MS if op.flow_throttling_time_ns else 0
-        )
-        self.otel.throttling_latencies.record(flow_throttling, labels)
         self.otel.application_latencies.record(
-            (attempt.application_blocking_time_ns + attempt.backoff_before_attempt_ns)
-            / NS_TO_MS,
+            attempt.application_blocking_time_ns / NS_TO_MS,
             labels,
         )
         if attempt.gfe_latency_ns is not None:
