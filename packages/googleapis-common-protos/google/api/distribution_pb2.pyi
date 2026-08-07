@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -27,17 +28,9 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Distribution(_message.Message):
-    __slots__ = (
-        "count",
-        "mean",
-        "sum_of_squared_deviation",
-        "range",
-        "bucket_options",
-        "bucket_counts",
-        "exemplars",
-    )
+    __slots__ = ()
     class Range(_message.Message):
-        __slots__ = ("min", "max")
+        __slots__ = ()
         MIN_FIELD_NUMBER: _ClassVar[int]
         MAX_FIELD_NUMBER: _ClassVar[int]
         min: float
@@ -47,9 +40,9 @@ class Distribution(_message.Message):
         ) -> None: ...
 
     class BucketOptions(_message.Message):
-        __slots__ = ("linear_buckets", "exponential_buckets", "explicit_buckets")
+        __slots__ = ()
         class Linear(_message.Message):
-            __slots__ = ("num_finite_buckets", "width", "offset")
+            __slots__ = ()
             NUM_FINITE_BUCKETS_FIELD_NUMBER: _ClassVar[int]
             WIDTH_FIELD_NUMBER: _ClassVar[int]
             OFFSET_FIELD_NUMBER: _ClassVar[int]
@@ -64,7 +57,7 @@ class Distribution(_message.Message):
             ) -> None: ...
 
         class Exponential(_message.Message):
-            __slots__ = ("num_finite_buckets", "growth_factor", "scale")
+            __slots__ = ()
             NUM_FINITE_BUCKETS_FIELD_NUMBER: _ClassVar[int]
             GROWTH_FACTOR_FIELD_NUMBER: _ClassVar[int]
             SCALE_FIELD_NUMBER: _ClassVar[int]
@@ -79,7 +72,7 @@ class Distribution(_message.Message):
             ) -> None: ...
 
         class Explicit(_message.Message):
-            __slots__ = ("bounds",)
+            __slots__ = ()
             BOUNDS_FIELD_NUMBER: _ClassVar[int]
             bounds: _containers.RepeatedScalarFieldContainer[float]
             def __init__(self, bounds: _Optional[_Iterable[float]] = ...) -> None: ...
@@ -104,7 +97,7 @@ class Distribution(_message.Message):
         ) -> None: ...
 
     class Exemplar(_message.Message):
-        __slots__ = ("value", "timestamp", "attachments")
+        __slots__ = ()
         VALUE_FIELD_NUMBER: _ClassVar[int]
         TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
         ATTACHMENTS_FIELD_NUMBER: _ClassVar[int]
@@ -114,7 +107,9 @@ class Distribution(_message.Message):
         def __init__(
             self,
             value: _Optional[float] = ...,
-            timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            timestamp: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
             attachments: _Optional[_Iterable[_Union[_any_pb2.Any, _Mapping]]] = ...,
         ) -> None: ...
 

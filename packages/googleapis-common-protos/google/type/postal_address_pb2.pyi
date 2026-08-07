@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
 from typing import Optional as _Optional
 
 from google.protobuf import descriptor as _descriptor
@@ -23,19 +23,7 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class PostalAddress(_message.Message):
-    __slots__ = (
-        "revision",
-        "region_code",
-        "language_code",
-        "postal_code",
-        "sorting_code",
-        "administrative_area",
-        "locality",
-        "sublocality",
-        "address_lines",
-        "recipients",
-        "organization",
-    )
+    __slots__ = ()
     REVISION_FIELD_NUMBER: _ClassVar[int]
     REGION_CODE_FIELD_NUMBER: _ClassVar[int]
     LANGUAGE_CODE_FIELD_NUMBER: _ClassVar[int]

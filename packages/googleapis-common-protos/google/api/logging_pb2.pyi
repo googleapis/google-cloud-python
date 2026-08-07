@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -25,9 +25,9 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Logging(_message.Message):
-    __slots__ = ("producer_destinations", "consumer_destinations")
+    __slots__ = ()
     class LoggingDestination(_message.Message):
-        __slots__ = ("monitored_resource", "logs")
+        __slots__ = ()
         MONITORED_RESOURCE_FIELD_NUMBER: _ClassVar[int]
         LOGS_FIELD_NUMBER: _ClassVar[int]
         monitored_resource: str

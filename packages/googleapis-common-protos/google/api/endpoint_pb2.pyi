@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
 from typing import Optional as _Optional
 
 from google.protobuf import descriptor as _descriptor
@@ -23,7 +23,7 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Endpoint(_message.Message):
-    __slots__ = ("name", "aliases", "target", "allow_cors")
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     ALIASES_FIELD_NUMBER: _ClassVar[int]
     TARGET_FIELD_NUMBER: _ClassVar[int]
@@ -37,5 +37,5 @@ class Endpoint(_message.Message):
         name: _Optional[str] = ...,
         aliases: _Optional[_Iterable[str]] = ...,
         target: _Optional[str] = ...,
-        allow_cors: bool = ...,
+        allow_cors: _Optional[bool] = ...,
     ) -> None: ...

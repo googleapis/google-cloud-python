@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -26,9 +27,9 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ErrorInfo(_message.Message):
-    __slots__ = ("reason", "domain", "metadata")
+    __slots__ = ()
     class MetadataEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ()
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -51,15 +52,18 @@ class ErrorInfo(_message.Message):
     ) -> None: ...
 
 class RetryInfo(_message.Message):
-    __slots__ = ("retry_delay",)
+    __slots__ = ()
     RETRY_DELAY_FIELD_NUMBER: _ClassVar[int]
     retry_delay: _duration_pb2.Duration
     def __init__(
-        self, retry_delay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...
+        self,
+        retry_delay: _Optional[
+            _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+        ] = ...,
     ) -> None: ...
 
 class DebugInfo(_message.Message):
-    __slots__ = ("stack_entries", "detail")
+    __slots__ = ()
     STACK_ENTRIES_FIELD_NUMBER: _ClassVar[int]
     DETAIL_FIELD_NUMBER: _ClassVar[int]
     stack_entries: _containers.RepeatedScalarFieldContainer[str]
@@ -71,20 +75,11 @@ class DebugInfo(_message.Message):
     ) -> None: ...
 
 class QuotaFailure(_message.Message):
-    __slots__ = ("violations",)
+    __slots__ = ()
     class Violation(_message.Message):
-        __slots__ = (
-            "subject",
-            "description",
-            "api_service",
-            "quota_metric",
-            "quota_id",
-            "quota_dimensions",
-            "quota_value",
-            "future_quota_value",
-        )
+        __slots__ = ()
         class QuotaDimensionsEntry(_message.Message):
-            __slots__ = ("key", "value")
+            __slots__ = ()
             KEY_FIELD_NUMBER: _ClassVar[int]
             VALUE_FIELD_NUMBER: _ClassVar[int]
             key: str
@@ -131,9 +126,9 @@ class QuotaFailure(_message.Message):
     ) -> None: ...
 
 class PreconditionFailure(_message.Message):
-    __slots__ = ("violations",)
+    __slots__ = ()
     class Violation(_message.Message):
-        __slots__ = ("type", "subject", "description")
+        __slots__ = ()
         TYPE_FIELD_NUMBER: _ClassVar[int]
         SUBJECT_FIELD_NUMBER: _ClassVar[int]
         DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
@@ -159,9 +154,9 @@ class PreconditionFailure(_message.Message):
     ) -> None: ...
 
 class BadRequest(_message.Message):
-    __slots__ = ("field_violations",)
+    __slots__ = ()
     class FieldViolation(_message.Message):
-        __slots__ = ("field", "description", "reason", "localized_message")
+        __slots__ = ()
         FIELD_FIELD_NUMBER: _ClassVar[int]
         DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
         REASON_FIELD_NUMBER: _ClassVar[int]
@@ -190,7 +185,7 @@ class BadRequest(_message.Message):
     ) -> None: ...
 
 class RequestInfo(_message.Message):
-    __slots__ = ("request_id", "serving_data")
+    __slots__ = ()
     REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
     SERVING_DATA_FIELD_NUMBER: _ClassVar[int]
     request_id: str
@@ -200,7 +195,7 @@ class RequestInfo(_message.Message):
     ) -> None: ...
 
 class ResourceInfo(_message.Message):
-    __slots__ = ("resource_type", "resource_name", "owner", "description")
+    __slots__ = ()
     RESOURCE_TYPE_FIELD_NUMBER: _ClassVar[int]
     RESOURCE_NAME_FIELD_NUMBER: _ClassVar[int]
     OWNER_FIELD_NUMBER: _ClassVar[int]
@@ -218,9 +213,9 @@ class ResourceInfo(_message.Message):
     ) -> None: ...
 
 class Help(_message.Message):
-    __slots__ = ("links",)
+    __slots__ = ()
     class Link(_message.Message):
-        __slots__ = ("description", "url")
+        __slots__ = ()
         DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
         URL_FIELD_NUMBER: _ClassVar[int]
         description: str
@@ -236,7 +231,7 @@ class Help(_message.Message):
     ) -> None: ...
 
 class LocalizedMessage(_message.Message):
-    __slots__ = ("locale", "message")
+    __slots__ = ()
     LOCALE_FIELD_NUMBER: _ClassVar[int]
     MESSAGE_FIELD_NUMBER: _ClassVar[int]
     locale: str

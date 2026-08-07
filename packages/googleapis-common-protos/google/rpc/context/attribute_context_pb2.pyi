@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -29,20 +30,11 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class AttributeContext(_message.Message):
-    __slots__ = (
-        "origin",
-        "source",
-        "destination",
-        "request",
-        "response",
-        "resource",
-        "api",
-        "extensions",
-    )
+    __slots__ = ()
     class Peer(_message.Message):
-        __slots__ = ("ip", "port", "labels", "principal", "region_code")
+        __slots__ = ()
         class LabelsEntry(_message.Message):
-            __slots__ = ("key", "value")
+            __slots__ = ()
             KEY_FIELD_NUMBER: _ClassVar[int]
             VALUE_FIELD_NUMBER: _ClassVar[int]
             key: str
@@ -71,7 +63,7 @@ class AttributeContext(_message.Message):
         ) -> None: ...
 
     class Api(_message.Message):
-        __slots__ = ("service", "operation", "protocol", "version")
+        __slots__ = ()
         SERVICE_FIELD_NUMBER: _ClassVar[int]
         OPERATION_FIELD_NUMBER: _ClassVar[int]
         PROTOCOL_FIELD_NUMBER: _ClassVar[int]
@@ -89,7 +81,7 @@ class AttributeContext(_message.Message):
         ) -> None: ...
 
     class Auth(_message.Message):
-        __slots__ = ("principal", "audiences", "presenter", "claims", "access_levels")
+        __slots__ = ()
         PRINCIPAL_FIELD_NUMBER: _ClassVar[int]
         AUDIENCES_FIELD_NUMBER: _ClassVar[int]
         PRESENTER_FIELD_NUMBER: _ClassVar[int]
@@ -110,23 +102,9 @@ class AttributeContext(_message.Message):
         ) -> None: ...
 
     class Request(_message.Message):
-        __slots__ = (
-            "id",
-            "method",
-            "headers",
-            "path",
-            "host",
-            "scheme",
-            "query",
-            "time",
-            "size",
-            "protocol",
-            "reason",
-            "auth",
-            "origin",
-        )
+        __slots__ = ()
         class HeadersEntry(_message.Message):
-            __slots__ = ("key", "value")
+            __slots__ = ()
             KEY_FIELD_NUMBER: _ClassVar[int]
             VALUE_FIELD_NUMBER: _ClassVar[int]
             key: str
@@ -170,7 +148,9 @@ class AttributeContext(_message.Message):
             host: _Optional[str] = ...,
             scheme: _Optional[str] = ...,
             query: _Optional[str] = ...,
-            time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
             size: _Optional[int] = ...,
             protocol: _Optional[str] = ...,
             reason: _Optional[str] = ...,
@@ -179,9 +159,9 @@ class AttributeContext(_message.Message):
         ) -> None: ...
 
     class Response(_message.Message):
-        __slots__ = ("code", "size", "headers", "time", "backend_latency")
+        __slots__ = ()
         class HeadersEntry(_message.Message):
-            __slots__ = ("key", "value")
+            __slots__ = ()
             KEY_FIELD_NUMBER: _ClassVar[int]
             VALUE_FIELD_NUMBER: _ClassVar[int]
             key: str
@@ -205,27 +185,18 @@ class AttributeContext(_message.Message):
             code: _Optional[int] = ...,
             size: _Optional[int] = ...,
             headers: _Optional[_Mapping[str, str]] = ...,
-            time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            backend_latency: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...,
+            time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            backend_latency: _Optional[
+                _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+            ] = ...,
         ) -> None: ...
 
     class Resource(_message.Message):
-        __slots__ = (
-            "service",
-            "name",
-            "type",
-            "labels",
-            "uid",
-            "annotations",
-            "display_name",
-            "create_time",
-            "update_time",
-            "delete_time",
-            "etag",
-            "location",
-        )
+        __slots__ = ()
         class LabelsEntry(_message.Message):
-            __slots__ = ("key", "value")
+            __slots__ = ()
             KEY_FIELD_NUMBER: _ClassVar[int]
             VALUE_FIELD_NUMBER: _ClassVar[int]
             key: str
@@ -235,7 +206,7 @@ class AttributeContext(_message.Message):
             ) -> None: ...
 
         class AnnotationsEntry(_message.Message):
-            __slots__ = ("key", "value")
+            __slots__ = ()
             KEY_FIELD_NUMBER: _ClassVar[int]
             VALUE_FIELD_NUMBER: _ClassVar[int]
             key: str
@@ -277,9 +248,15 @@ class AttributeContext(_message.Message):
             uid: _Optional[str] = ...,
             annotations: _Optional[_Mapping[str, str]] = ...,
             display_name: _Optional[str] = ...,
-            create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            delete_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            create_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            update_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            delete_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
             etag: _Optional[str] = ...,
             location: _Optional[str] = ...,
         ) -> None: ...

@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -28,7 +28,7 @@ ROUTING_FIELD_NUMBER: _ClassVar[int]
 routing: _descriptor.FieldDescriptor
 
 class RoutingRule(_message.Message):
-    __slots__ = ("routing_parameters",)
+    __slots__ = ()
     ROUTING_PARAMETERS_FIELD_NUMBER: _ClassVar[int]
     routing_parameters: _containers.RepeatedCompositeFieldContainer[RoutingParameter]
     def __init__(
@@ -39,7 +39,7 @@ class RoutingRule(_message.Message):
     ) -> None: ...
 
 class RoutingParameter(_message.Message):
-    __slots__ = ("field", "path_template")
+    __slots__ = ()
     FIELD_FIELD_NUMBER: _ClassVar[int]
     PATH_TEMPLATE_FIELD_NUMBER: _ClassVar[int]
     field: str

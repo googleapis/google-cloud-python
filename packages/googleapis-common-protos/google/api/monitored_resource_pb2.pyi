@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -29,14 +29,7 @@ from google.api import launch_stage_pb2 as _launch_stage_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class MonitoredResourceDescriptor(_message.Message):
-    __slots__ = (
-        "name",
-        "type",
-        "display_name",
-        "description",
-        "labels",
-        "launch_stage",
-    )
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
@@ -62,9 +55,9 @@ class MonitoredResourceDescriptor(_message.Message):
     ) -> None: ...
 
 class MonitoredResource(_message.Message):
-    __slots__ = ("type", "labels")
+    __slots__ = ()
     class LabelsEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ()
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -82,9 +75,9 @@ class MonitoredResource(_message.Message):
     ) -> None: ...
 
 class MonitoredResourceMetadata(_message.Message):
-    __slots__ = ("system_labels", "user_labels")
+    __slots__ = ()
     class UserLabelsEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ()
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str

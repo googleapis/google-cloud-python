@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -24,13 +24,7 @@ from google.protobuf import struct_pb2 as _struct_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class AuditContext(_message.Message):
-    __slots__ = (
-        "audit_log",
-        "scrubbed_request",
-        "scrubbed_response",
-        "scrubbed_response_item_count",
-        "target_resource",
-    )
+    __slots__ = ()
     AUDIT_LOG_FIELD_NUMBER: _ClassVar[int]
     SCRUBBED_REQUEST_FIELD_NUMBER: _ClassVar[int]
     SCRUBBED_RESPONSE_FIELD_NUMBER: _ClassVar[int]

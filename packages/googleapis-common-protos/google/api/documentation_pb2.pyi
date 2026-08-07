@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -25,14 +25,7 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Documentation(_message.Message):
-    __slots__ = (
-        "summary",
-        "pages",
-        "rules",
-        "documentation_root_url",
-        "service_root_url",
-        "overview",
-    )
+    __slots__ = ()
     SUMMARY_FIELD_NUMBER: _ClassVar[int]
     PAGES_FIELD_NUMBER: _ClassVar[int]
     RULES_FIELD_NUMBER: _ClassVar[int]
@@ -56,7 +49,7 @@ class Documentation(_message.Message):
     ) -> None: ...
 
 class DocumentationRule(_message.Message):
-    __slots__ = ("selector", "description", "deprecation_description")
+    __slots__ = ()
     SELECTOR_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     DEPRECATION_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
@@ -71,7 +64,7 @@ class DocumentationRule(_message.Message):
     ) -> None: ...
 
 class Page(_message.Message):
-    __slots__ = ("name", "content", "subpages")
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     CONTENT_FIELD_NUMBER: _ClassVar[int]
     SUBPAGES_FIELD_NUMBER: _ClassVar[int]

@@ -21,7 +21,7 @@ from google.protobuf import message as _message
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Fraction(_message.Message):
-    __slots__ = ("numerator", "denominator")
+    __slots__ = ()
     NUMERATOR_FIELD_NUMBER: _ClassVar[int]
     DENOMINATOR_FIELD_NUMBER: _ClassVar[int]
     numerator: int

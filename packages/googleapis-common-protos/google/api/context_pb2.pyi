@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -25,7 +25,7 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Context(_message.Message):
-    __slots__ = ("rules",)
+    __slots__ = ()
     RULES_FIELD_NUMBER: _ClassVar[int]
     rules: _containers.RepeatedCompositeFieldContainer[ContextRule]
     def __init__(
@@ -33,13 +33,7 @@ class Context(_message.Message):
     ) -> None: ...
 
 class ContextRule(_message.Message):
-    __slots__ = (
-        "selector",
-        "requested",
-        "provided",
-        "allowed_request_extensions",
-        "allowed_response_extensions",
-    )
+    __slots__ = ()
     SELECTOR_FIELD_NUMBER: _ClassVar[int]
     REQUESTED_FIELD_NUMBER: _ClassVar[int]
     PROVIDED_FIELD_NUMBER: _ClassVar[int]

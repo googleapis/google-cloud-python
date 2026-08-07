@@ -21,7 +21,7 @@ from google.protobuf import message as _message
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class LocalizedText(_message.Message):
-    __slots__ = ("text", "language_code")
+    __slots__ = ()
     TEXT_FIELD_NUMBER: _ClassVar[int]
     LANGUAGE_CODE_FIELD_NUMBER: _ClassVar[int]
     text: str

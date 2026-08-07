@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -26,7 +26,7 @@ from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Backend(_message.Message):
-    __slots__ = ("rules",)
+    __slots__ = ()
     RULES_FIELD_NUMBER: _ClassVar[int]
     rules: _containers.RepeatedCompositeFieldContainer[BackendRule]
     def __init__(
@@ -34,19 +34,7 @@ class Backend(_message.Message):
     ) -> None: ...
 
 class BackendRule(_message.Message):
-    __slots__ = (
-        "selector",
-        "address",
-        "deadline",
-        "min_deadline",
-        "operation_deadline",
-        "path_translation",
-        "jwt_audience",
-        "disable_auth",
-        "protocol",
-        "overrides_by_request_protocol",
-        "load_balancing_policy",
-    )
+    __slots__ = ()
     class PathTranslation(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         PATH_TRANSLATION_UNSPECIFIED: _ClassVar[BackendRule.PathTranslation]
@@ -57,7 +45,7 @@ class BackendRule(_message.Message):
     CONSTANT_ADDRESS: BackendRule.PathTranslation
     APPEND_PATH_TO_ADDRESS: BackendRule.PathTranslation
     class OverridesByRequestProtocolEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ()
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -99,7 +87,7 @@ class BackendRule(_message.Message):
         operation_deadline: _Optional[float] = ...,
         path_translation: _Optional[_Union[BackendRule.PathTranslation, str]] = ...,
         jwt_audience: _Optional[str] = ...,
-        disable_auth: bool = ...,
+        disable_auth: _Optional[bool] = ...,
         protocol: _Optional[str] = ...,
         overrides_by_request_protocol: _Optional[_Mapping[str, BackendRule]] = ...,
         load_balancing_policy: _Optional[str] = ...,

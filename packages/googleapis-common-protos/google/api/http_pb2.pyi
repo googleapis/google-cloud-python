@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -25,7 +25,7 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Http(_message.Message):
-    __slots__ = ("rules", "fully_decode_reserved_expansion")
+    __slots__ = ()
     RULES_FIELD_NUMBER: _ClassVar[int]
     FULLY_DECODE_RESERVED_EXPANSION_FIELD_NUMBER: _ClassVar[int]
     rules: _containers.RepeatedCompositeFieldContainer[HttpRule]
@@ -33,22 +33,11 @@ class Http(_message.Message):
     def __init__(
         self,
         rules: _Optional[_Iterable[_Union[HttpRule, _Mapping]]] = ...,
-        fully_decode_reserved_expansion: bool = ...,
+        fully_decode_reserved_expansion: _Optional[bool] = ...,
     ) -> None: ...
 
 class HttpRule(_message.Message):
-    __slots__ = (
-        "selector",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "patch",
-        "custom",
-        "body",
-        "response_body",
-        "additional_bindings",
-    )
+    __slots__ = ()
     SELECTOR_FIELD_NUMBER: _ClassVar[int]
     GET_FIELD_NUMBER: _ClassVar[int]
     PUT_FIELD_NUMBER: _ClassVar[int]
@@ -84,7 +73,7 @@ class HttpRule(_message.Message):
     ) -> None: ...
 
 class CustomHttpPattern(_message.Message):
-    __slots__ = ("kind", "path")
+    __slots__ = ()
     KIND_FIELD_NUMBER: _ClassVar[int]
     PATH_FIELD_NUMBER: _ClassVar[int]
     kind: str

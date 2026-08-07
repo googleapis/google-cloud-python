@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -25,7 +25,7 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class HttpRequest(_message.Message):
-    __slots__ = ("method", "uri", "headers", "body")
+    __slots__ = ()
     METHOD_FIELD_NUMBER: _ClassVar[int]
     URI_FIELD_NUMBER: _ClassVar[int]
     HEADERS_FIELD_NUMBER: _ClassVar[int]
@@ -43,7 +43,7 @@ class HttpRequest(_message.Message):
     ) -> None: ...
 
 class HttpResponse(_message.Message):
-    __slots__ = ("status", "reason", "headers", "body")
+    __slots__ = ()
     STATUS_FIELD_NUMBER: _ClassVar[int]
     REASON_FIELD_NUMBER: _ClassVar[int]
     HEADERS_FIELD_NUMBER: _ClassVar[int]
@@ -61,7 +61,7 @@ class HttpResponse(_message.Message):
     ) -> None: ...
 
 class HttpHeader(_message.Message):
-    __slots__ = ("key", "value")
+    __slots__ = ()
     KEY_FIELD_NUMBER: _ClassVar[int]
     VALUE_FIELD_NUMBER: _ClassVar[int]
     key: str

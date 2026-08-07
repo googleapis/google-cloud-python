@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -33,15 +34,7 @@ from google.identity.accesscontextmanager.type import (
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class AccessLevel(_message.Message):
-    __slots__ = (
-        "name",
-        "title",
-        "description",
-        "basic",
-        "custom",
-        "create_time",
-        "update_time",
-    )
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     TITLE_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
@@ -63,12 +56,16 @@ class AccessLevel(_message.Message):
         description: _Optional[str] = ...,
         basic: _Optional[_Union[BasicLevel, _Mapping]] = ...,
         custom: _Optional[_Union[CustomLevel, _Mapping]] = ...,
-        create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-        update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        create_time: _Optional[
+            _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+        ] = ...,
+        update_time: _Optional[
+            _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+        ] = ...,
     ) -> None: ...
 
 class BasicLevel(_message.Message):
-    __slots__ = ("conditions", "combining_function")
+    __slots__ = ()
     class ConditionCombiningFunction(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         AND: _ClassVar[BasicLevel.ConditionCombiningFunction]
@@ -89,14 +86,7 @@ class BasicLevel(_message.Message):
     ) -> None: ...
 
 class Condition(_message.Message):
-    __slots__ = (
-        "ip_subnetworks",
-        "device_policy",
-        "required_access_levels",
-        "negate",
-        "members",
-        "regions",
-    )
+    __slots__ = ()
     IP_SUBNETWORKS_FIELD_NUMBER: _ClassVar[int]
     DEVICE_POLICY_FIELD_NUMBER: _ClassVar[int]
     REQUIRED_ACCESS_LEVELS_FIELD_NUMBER: _ClassVar[int]
@@ -114,13 +104,13 @@ class Condition(_message.Message):
         ip_subnetworks: _Optional[_Iterable[str]] = ...,
         device_policy: _Optional[_Union[DevicePolicy, _Mapping]] = ...,
         required_access_levels: _Optional[_Iterable[str]] = ...,
-        negate: bool = ...,
+        negate: _Optional[bool] = ...,
         members: _Optional[_Iterable[str]] = ...,
         regions: _Optional[_Iterable[str]] = ...,
     ) -> None: ...
 
 class CustomLevel(_message.Message):
-    __slots__ = ("expr",)
+    __slots__ = ()
     EXPR_FIELD_NUMBER: _ClassVar[int]
     expr: _expr_pb2.Expr
     def __init__(
@@ -128,14 +118,7 @@ class CustomLevel(_message.Message):
     ) -> None: ...
 
 class DevicePolicy(_message.Message):
-    __slots__ = (
-        "require_screenlock",
-        "allowed_encryption_statuses",
-        "os_constraints",
-        "allowed_device_management_levels",
-        "require_admin_approval",
-        "require_corp_owned",
-    )
+    __slots__ = ()
     REQUIRE_SCREENLOCK_FIELD_NUMBER: _ClassVar[int]
     ALLOWED_ENCRYPTION_STATUSES_FIELD_NUMBER: _ClassVar[int]
     OS_CONSTRAINTS_FIELD_NUMBER: _ClassVar[int]
@@ -154,7 +137,7 @@ class DevicePolicy(_message.Message):
     require_corp_owned: bool
     def __init__(
         self,
-        require_screenlock: bool = ...,
+        require_screenlock: _Optional[bool] = ...,
         allowed_encryption_statuses: _Optional[
             _Iterable[_Union[_device_resources_pb2.DeviceEncryptionStatus, str]]
         ] = ...,
@@ -162,12 +145,12 @@ class DevicePolicy(_message.Message):
         allowed_device_management_levels: _Optional[
             _Iterable[_Union[_device_resources_pb2.DeviceManagementLevel, str]]
         ] = ...,
-        require_admin_approval: bool = ...,
-        require_corp_owned: bool = ...,
+        require_admin_approval: _Optional[bool] = ...,
+        require_corp_owned: _Optional[bool] = ...,
     ) -> None: ...
 
 class OsConstraint(_message.Message):
-    __slots__ = ("os_type", "minimum_version", "require_verified_chrome_os")
+    __slots__ = ()
     OS_TYPE_FIELD_NUMBER: _ClassVar[int]
     MINIMUM_VERSION_FIELD_NUMBER: _ClassVar[int]
     REQUIRE_VERIFIED_CHROME_OS_FIELD_NUMBER: _ClassVar[int]
@@ -178,5 +161,5 @@ class OsConstraint(_message.Message):
         self,
         os_type: _Optional[_Union[_device_resources_pb2.OsType, str]] = ...,
         minimum_version: _Optional[str] = ...,
-        require_verified_chrome_os: bool = ...,
+        require_verified_chrome_os: _Optional[bool] = ...,
     ) -> None: ...

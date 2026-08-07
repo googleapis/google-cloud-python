@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -38,7 +38,7 @@ API_VISIBILITY_FIELD_NUMBER: _ClassVar[int]
 api_visibility: _descriptor.FieldDescriptor
 
 class Visibility(_message.Message):
-    __slots__ = ("rules",)
+    __slots__ = ()
     RULES_FIELD_NUMBER: _ClassVar[int]
     rules: _containers.RepeatedCompositeFieldContainer[VisibilityRule]
     def __init__(
@@ -46,7 +46,7 @@ class Visibility(_message.Message):
     ) -> None: ...
 
 class VisibilityRule(_message.Message):
-    __slots__ = ("selector", "restriction")
+    __slots__ = ()
     SELECTOR_FIELD_NUMBER: _ClassVar[int]
     RESTRICTION_FIELD_NUMBER: _ClassVar[int]
     selector: str

@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -30,32 +31,7 @@ from google.rpc import status_pb2 as _status_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class BigQueryAuditMetadata(_message.Message):
-    __slots__ = (
-        "job_insertion",
-        "job_change",
-        "job_deletion",
-        "dataset_creation",
-        "dataset_change",
-        "dataset_deletion",
-        "table_creation",
-        "table_change",
-        "table_deletion",
-        "table_data_read",
-        "table_data_change",
-        "model_deletion",
-        "model_creation",
-        "model_metadata_change",
-        "model_data_change",
-        "model_data_read",
-        "routine_creation",
-        "routine_change",
-        "routine_deletion",
-        "row_access_policy_creation",
-        "row_access_policy_change",
-        "row_access_policy_deletion",
-        "unlink_dataset",
-        "first_party_app_metadata",
-    )
+    __slots__ = ()
     class CreateDisposition(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         CREATE_DISPOSITION_UNSPECIFIED: _ClassVar[
@@ -180,7 +156,7 @@ class BigQueryAuditMetadata(_message.Message):
     EXPORT_DATA: BigQueryAuditMetadata.QueryStatementType
     CALL: BigQueryAuditMetadata.QueryStatementType
     class JobInsertion(_message.Message):
-        __slots__ = ("job", "reason")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.JobInsertion.Reason]
@@ -203,7 +179,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class JobChange(_message.Message):
-        __slots__ = ("before", "after", "job")
+        __slots__ = ()
         BEFORE_FIELD_NUMBER: _ClassVar[int]
         AFTER_FIELD_NUMBER: _ClassVar[int]
         JOB_FIELD_NUMBER: _ClassVar[int]
@@ -218,7 +194,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class JobDeletion(_message.Message):
-        __slots__ = ("job_name", "reason")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.JobDeletion.Reason]
@@ -239,7 +215,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class DatasetCreation(_message.Message):
-        __slots__ = ("dataset", "reason", "job_name")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.DatasetCreation.Reason]
@@ -265,7 +241,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class DatasetChange(_message.Message):
-        __slots__ = ("dataset", "reason", "job_name")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.DatasetChange.Reason]
@@ -293,7 +269,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class DatasetDeletion(_message.Message):
-        __slots__ = ("reason", "job_name")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.DatasetDeletion.Reason]
@@ -316,7 +292,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class TableCreation(_message.Message):
-        __slots__ = ("table", "reason", "job_name")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableCreation.Reason]
@@ -344,7 +320,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class ModelCreation(_message.Message):
-        __slots__ = ("model", "reason", "job_name")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.ModelCreation.Reason]
@@ -368,7 +344,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class RoutineCreation(_message.Message):
-        __slots__ = ("routine", "reason", "job_name")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.RoutineCreation.Reason]
@@ -396,15 +372,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class TableDataRead(_message.Message):
-        __slots__ = (
-            "fields",
-            "fields_truncated",
-            "policy_tags",
-            "policy_tags_truncated",
-            "reason",
-            "job_name",
-            "session_name",
-        )
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableDataRead.Reason]
@@ -445,9 +413,9 @@ class BigQueryAuditMetadata(_message.Message):
         def __init__(
             self,
             fields: _Optional[_Iterable[str]] = ...,
-            fields_truncated: bool = ...,
+            fields_truncated: _Optional[bool] = ...,
             policy_tags: _Optional[_Iterable[str]] = ...,
-            policy_tags_truncated: bool = ...,
+            policy_tags_truncated: _Optional[bool] = ...,
             reason: _Optional[
                 _Union[BigQueryAuditMetadata.TableDataRead.Reason, str]
             ] = ...,
@@ -456,7 +424,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class TableChange(_message.Message):
-        __slots__ = ("table", "truncated", "reason", "job_name")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableChange.Reason]
@@ -479,7 +447,7 @@ class BigQueryAuditMetadata(_message.Message):
         def __init__(
             self,
             table: _Optional[_Union[BigQueryAuditMetadata.Table, _Mapping]] = ...,
-            truncated: bool = ...,
+            truncated: _Optional[bool] = ...,
             reason: _Optional[
                 _Union[BigQueryAuditMetadata.TableChange.Reason, str]
             ] = ...,
@@ -487,7 +455,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class ModelMetadataChange(_message.Message):
-        __slots__ = ("model", "reason", "job_name")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[
@@ -517,7 +485,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class RoutineChange(_message.Message):
-        __slots__ = ("routine", "reason", "job_name")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.RoutineChange.Reason]
@@ -545,14 +513,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class TableDataChange(_message.Message):
-        __slots__ = (
-            "deleted_rows_count",
-            "inserted_rows_count",
-            "truncated",
-            "reason",
-            "job_name",
-            "stream_name",
-        )
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableDataChange.Reason]
@@ -584,7 +545,7 @@ class BigQueryAuditMetadata(_message.Message):
             self,
             deleted_rows_count: _Optional[int] = ...,
             inserted_rows_count: _Optional[int] = ...,
-            truncated: bool = ...,
+            truncated: _Optional[bool] = ...,
             reason: _Optional[
                 _Union[BigQueryAuditMetadata.TableDataChange.Reason, str]
             ] = ...,
@@ -593,7 +554,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class ModelDataChange(_message.Message):
-        __slots__ = ("reason", "job_name")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.ModelDataChange.Reason]
@@ -614,7 +575,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class ModelDataRead(_message.Message):
-        __slots__ = ("reason", "job_name")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.ModelDataRead.Reason]
@@ -635,7 +596,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class TableDeletion(_message.Message):
-        __slots__ = ("reason", "job_name")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableDeletion.Reason]
@@ -660,7 +621,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class ModelDeletion(_message.Message):
-        __slots__ = ("reason", "job_name")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.ModelDeletion.Reason]
@@ -685,7 +646,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class RoutineDeletion(_message.Message):
-        __slots__ = ("routine", "reason", "job_name")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.RoutineDeletion.Reason]
@@ -713,7 +674,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class RowAccessPolicyCreation(_message.Message):
-        __slots__ = ("row_access_policy", "job_name")
+        __slots__ = ()
         ROW_ACCESS_POLICY_FIELD_NUMBER: _ClassVar[int]
         JOB_NAME_FIELD_NUMBER: _ClassVar[int]
         row_access_policy: BigQueryAuditMetadata.RowAccessPolicy
@@ -727,7 +688,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class RowAccessPolicyChange(_message.Message):
-        __slots__ = ("row_access_policy", "job_name")
+        __slots__ = ()
         ROW_ACCESS_POLICY_FIELD_NUMBER: _ClassVar[int]
         JOB_NAME_FIELD_NUMBER: _ClassVar[int]
         row_access_policy: BigQueryAuditMetadata.RowAccessPolicy
@@ -741,11 +702,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class RowAccessPolicyDeletion(_message.Message):
-        __slots__ = (
-            "row_access_policies",
-            "job_name",
-            "all_row_access_policies_dropped",
-        )
+        __slots__ = ()
         ROW_ACCESS_POLICIES_FIELD_NUMBER: _ClassVar[int]
         JOB_NAME_FIELD_NUMBER: _ClassVar[int]
         ALL_ROW_ACCESS_POLICIES_DROPPED_FIELD_NUMBER: _ClassVar[int]
@@ -760,11 +717,11 @@ class BigQueryAuditMetadata(_message.Message):
                 _Iterable[_Union[BigQueryAuditMetadata.RowAccessPolicy, _Mapping]]
             ] = ...,
             job_name: _Optional[str] = ...,
-            all_row_access_policies_dropped: bool = ...,
+            all_row_access_policies_dropped: _Optional[bool] = ...,
         ) -> None: ...
 
     class UnlinkDataset(_message.Message):
-        __slots__ = ("linked_dataset", "source_dataset", "reason")
+        __slots__ = ()
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.UnlinkDataset.Reason]
@@ -788,7 +745,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class Job(_message.Message):
-        __slots__ = ("job_name", "job_config", "job_status", "job_stats")
+        __slots__ = ()
         JOB_NAME_FIELD_NUMBER: _ClassVar[int]
         JOB_CONFIG_FIELD_NUMBER: _ClassVar[int]
         JOB_STATUS_FIELD_NUMBER: _ClassVar[int]
@@ -812,14 +769,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class JobConfig(_message.Message):
-        __slots__ = (
-            "type",
-            "query_config",
-            "load_config",
-            "extract_config",
-            "table_copy_config",
-            "labels",
-        )
+        __slots__ = ()
         class Type(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             TYPE_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.JobConfig.Type]
@@ -834,18 +784,7 @@ class BigQueryAuditMetadata(_message.Message):
         EXPORT: BigQueryAuditMetadata.JobConfig.Type
         IMPORT: BigQueryAuditMetadata.JobConfig.Type
         class Query(_message.Message):
-            __slots__ = (
-                "query",
-                "query_truncated",
-                "destination_table",
-                "create_disposition",
-                "write_disposition",
-                "default_dataset",
-                "table_definitions",
-                "priority",
-                "destination_table_encryption",
-                "statement_type",
-            )
+            __slots__ = ()
             class Priority(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
                 __slots__ = ()
                 PRIORITY_UNSPECIFIED: _ClassVar[
@@ -884,7 +823,7 @@ class BigQueryAuditMetadata(_message.Message):
             def __init__(
                 self,
                 query: _Optional[str] = ...,
-                query_truncated: bool = ...,
+                query_truncated: _Optional[bool] = ...,
                 destination_table: _Optional[str] = ...,
                 create_disposition: _Optional[
                     _Union[BigQueryAuditMetadata.CreateDisposition, str]
@@ -908,16 +847,7 @@ class BigQueryAuditMetadata(_message.Message):
             ) -> None: ...
 
         class Load(_message.Message):
-            __slots__ = (
-                "source_uris",
-                "source_uris_truncated",
-                "schema_json",
-                "schema_json_truncated",
-                "destination_table",
-                "create_disposition",
-                "write_disposition",
-                "destination_table_encryption",
-            )
+            __slots__ = ()
             SOURCE_URIS_FIELD_NUMBER: _ClassVar[int]
             SOURCE_URIS_TRUNCATED_FIELD_NUMBER: _ClassVar[int]
             SCHEMA_JSON_FIELD_NUMBER: _ClassVar[int]
@@ -937,9 +867,9 @@ class BigQueryAuditMetadata(_message.Message):
             def __init__(
                 self,
                 source_uris: _Optional[_Iterable[str]] = ...,
-                source_uris_truncated: bool = ...,
+                source_uris_truncated: _Optional[bool] = ...,
                 schema_json: _Optional[str] = ...,
-                schema_json_truncated: bool = ...,
+                schema_json_truncated: _Optional[bool] = ...,
                 destination_table: _Optional[str] = ...,
                 create_disposition: _Optional[
                     _Union[BigQueryAuditMetadata.CreateDisposition, str]
@@ -953,12 +883,7 @@ class BigQueryAuditMetadata(_message.Message):
             ) -> None: ...
 
         class Extract(_message.Message):
-            __slots__ = (
-                "destination_uris",
-                "destination_uris_truncated",
-                "source_table",
-                "source_model",
-            )
+            __slots__ = ()
             DESTINATION_URIS_FIELD_NUMBER: _ClassVar[int]
             DESTINATION_URIS_TRUNCATED_FIELD_NUMBER: _ClassVar[int]
             SOURCE_TABLE_FIELD_NUMBER: _ClassVar[int]
@@ -970,22 +895,13 @@ class BigQueryAuditMetadata(_message.Message):
             def __init__(
                 self,
                 destination_uris: _Optional[_Iterable[str]] = ...,
-                destination_uris_truncated: bool = ...,
+                destination_uris_truncated: _Optional[bool] = ...,
                 source_table: _Optional[str] = ...,
                 source_model: _Optional[str] = ...,
             ) -> None: ...
 
         class TableCopy(_message.Message):
-            __slots__ = (
-                "source_tables",
-                "source_tables_truncated",
-                "destination_table",
-                "create_disposition",
-                "write_disposition",
-                "destination_table_encryption",
-                "operation_type",
-                "destination_expiration_time",
-            )
+            __slots__ = ()
             SOURCE_TABLES_FIELD_NUMBER: _ClassVar[int]
             SOURCE_TABLES_TRUNCATED_FIELD_NUMBER: _ClassVar[int]
             DESTINATION_TABLE_FIELD_NUMBER: _ClassVar[int]
@@ -1005,7 +921,7 @@ class BigQueryAuditMetadata(_message.Message):
             def __init__(
                 self,
                 source_tables: _Optional[_Iterable[str]] = ...,
-                source_tables_truncated: bool = ...,
+                source_tables_truncated: _Optional[bool] = ...,
                 destination_table: _Optional[str] = ...,
                 create_disposition: _Optional[
                     _Union[BigQueryAuditMetadata.CreateDisposition, str]
@@ -1020,12 +936,12 @@ class BigQueryAuditMetadata(_message.Message):
                     _Union[BigQueryAuditMetadata.OperationType, str]
                 ] = ...,
                 destination_expiration_time: _Optional[
-                    _Union[_timestamp_pb2.Timestamp, _Mapping]
+                    _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
                 ] = ...,
             ) -> None: ...
 
         class LabelsEntry(_message.Message):
-            __slots__ = ("key", "value")
+            __slots__ = ()
             KEY_FIELD_NUMBER: _ClassVar[int]
             VALUE_FIELD_NUMBER: _ClassVar[int]
             key: str
@@ -1065,7 +981,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class TableDefinition(_message.Message):
-        __slots__ = ("name", "source_uris")
+        __slots__ = ()
         NAME_FIELD_NUMBER: _ClassVar[int]
         SOURCE_URIS_FIELD_NUMBER: _ClassVar[int]
         name: str
@@ -1077,7 +993,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class JobStatus(_message.Message):
-        __slots__ = ("job_state", "error_result", "errors")
+        __slots__ = ()
         JOB_STATE_FIELD_NUMBER: _ClassVar[int]
         ERROR_RESULT_FIELD_NUMBER: _ClassVar[int]
         ERRORS_FIELD_NUMBER: _ClassVar[int]
@@ -1092,29 +1008,9 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class JobStats(_message.Message):
-        __slots__ = (
-            "create_time",
-            "start_time",
-            "end_time",
-            "query_stats",
-            "load_stats",
-            "extract_stats",
-            "total_slot_ms",
-            "reservation_usage",
-            "reservation",
-            "parent_job_name",
-        )
+        __slots__ = ()
         class Query(_message.Message):
-            __slots__ = (
-                "total_processed_bytes",
-                "total_billed_bytes",
-                "billing_tier",
-                "referenced_tables",
-                "referenced_views",
-                "referenced_routines",
-                "output_row_count",
-                "cache_hit",
-            )
+            __slots__ = ()
             TOTAL_PROCESSED_BYTES_FIELD_NUMBER: _ClassVar[int]
             TOTAL_BILLED_BYTES_FIELD_NUMBER: _ClassVar[int]
             BILLING_TIER_FIELD_NUMBER: _ClassVar[int]
@@ -1140,23 +1036,23 @@ class BigQueryAuditMetadata(_message.Message):
                 referenced_views: _Optional[_Iterable[str]] = ...,
                 referenced_routines: _Optional[_Iterable[str]] = ...,
                 output_row_count: _Optional[int] = ...,
-                cache_hit: bool = ...,
+                cache_hit: _Optional[bool] = ...,
             ) -> None: ...
 
         class Load(_message.Message):
-            __slots__ = ("total_output_bytes",)
+            __slots__ = ()
             TOTAL_OUTPUT_BYTES_FIELD_NUMBER: _ClassVar[int]
             total_output_bytes: int
             def __init__(self, total_output_bytes: _Optional[int] = ...) -> None: ...
 
         class Extract(_message.Message):
-            __slots__ = ("total_input_bytes",)
+            __slots__ = ()
             TOTAL_INPUT_BYTES_FIELD_NUMBER: _ClassVar[int]
             total_input_bytes: int
             def __init__(self, total_input_bytes: _Optional[int] = ...) -> None: ...
 
         class ReservationResourceUsage(_message.Message):
-            __slots__ = ("name", "slot_ms")
+            __slots__ = ()
             NAME_FIELD_NUMBER: _ClassVar[int]
             SLOT_MS_FIELD_NUMBER: _ClassVar[int]
             name: str
@@ -1189,9 +1085,15 @@ class BigQueryAuditMetadata(_message.Message):
         parent_job_name: str
         def __init__(
             self,
-            create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            start_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            end_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            create_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            start_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            end_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
             query_stats: _Optional[
                 _Union[BigQueryAuditMetadata.JobStats.Query, _Mapping]
             ] = ...,
@@ -1215,18 +1117,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class Table(_message.Message):
-        __slots__ = (
-            "table_name",
-            "table_info",
-            "schema_json",
-            "schema_json_truncated",
-            "view",
-            "expire_time",
-            "create_time",
-            "update_time",
-            "truncate_time",
-            "encryption",
-        )
+        __slots__ = ()
         TABLE_NAME_FIELD_NUMBER: _ClassVar[int]
         TABLE_INFO_FIELD_NUMBER: _ClassVar[int]
         SCHEMA_JSON_FIELD_NUMBER: _ClassVar[int]
@@ -1254,28 +1145,29 @@ class BigQueryAuditMetadata(_message.Message):
                 _Union[BigQueryAuditMetadata.EntityInfo, _Mapping]
             ] = ...,
             schema_json: _Optional[str] = ...,
-            schema_json_truncated: bool = ...,
+            schema_json_truncated: _Optional[bool] = ...,
             view: _Optional[
                 _Union[BigQueryAuditMetadata.TableViewDefinition, _Mapping]
             ] = ...,
-            expire_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            truncate_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            expire_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            create_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            update_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            truncate_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
             encryption: _Optional[
                 _Union[BigQueryAuditMetadata.EncryptionInfo, _Mapping]
             ] = ...,
         ) -> None: ...
 
     class Model(_message.Message):
-        __slots__ = (
-            "model_name",
-            "model_info",
-            "expire_time",
-            "create_time",
-            "update_time",
-            "encryption",
-        )
+        __slots__ = ()
         MODEL_NAME_FIELD_NUMBER: _ClassVar[int]
         MODEL_INFO_FIELD_NUMBER: _ClassVar[int]
         EXPIRE_TIME_FIELD_NUMBER: _ClassVar[int]
@@ -1294,16 +1186,22 @@ class BigQueryAuditMetadata(_message.Message):
             model_info: _Optional[
                 _Union[BigQueryAuditMetadata.EntityInfo, _Mapping]
             ] = ...,
-            expire_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            expire_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            create_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            update_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
             encryption: _Optional[
                 _Union[BigQueryAuditMetadata.EncryptionInfo, _Mapping]
             ] = ...,
         ) -> None: ...
 
     class Routine(_message.Message):
-        __slots__ = ("routine_name", "create_time", "update_time")
+        __slots__ = ()
         ROUTINE_NAME_FIELD_NUMBER: _ClassVar[int]
         CREATE_TIME_FIELD_NUMBER: _ClassVar[int]
         UPDATE_TIME_FIELD_NUMBER: _ClassVar[int]
@@ -1313,14 +1211,18 @@ class BigQueryAuditMetadata(_message.Message):
         def __init__(
             self,
             routine_name: _Optional[str] = ...,
-            create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            create_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            update_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
         ) -> None: ...
 
     class EntityInfo(_message.Message):
-        __slots__ = ("friendly_name", "description", "labels")
+        __slots__ = ()
         class LabelsEntry(_message.Message):
-            __slots__ = ("key", "value")
+            __slots__ = ()
             KEY_FIELD_NUMBER: _ClassVar[int]
             VALUE_FIELD_NUMBER: _ClassVar[int]
             key: str
@@ -1343,26 +1245,17 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class TableViewDefinition(_message.Message):
-        __slots__ = ("query", "query_truncated")
+        __slots__ = ()
         QUERY_FIELD_NUMBER: _ClassVar[int]
         QUERY_TRUNCATED_FIELD_NUMBER: _ClassVar[int]
         query: str
         query_truncated: bool
         def __init__(
-            self, query: _Optional[str] = ..., query_truncated: bool = ...
+            self, query: _Optional[str] = ..., query_truncated: _Optional[bool] = ...
         ) -> None: ...
 
     class Dataset(_message.Message):
-        __slots__ = (
-            "dataset_name",
-            "dataset_info",
-            "create_time",
-            "update_time",
-            "acl",
-            "default_table_expire_duration",
-            "default_encryption",
-            "default_collation",
-        )
+        __slots__ = ()
         DATASET_NAME_FIELD_NUMBER: _ClassVar[int]
         DATASET_INFO_FIELD_NUMBER: _ClassVar[int]
         CREATE_TIME_FIELD_NUMBER: _ClassVar[int]
@@ -1385,11 +1278,15 @@ class BigQueryAuditMetadata(_message.Message):
             dataset_info: _Optional[
                 _Union[BigQueryAuditMetadata.EntityInfo, _Mapping]
             ] = ...,
-            create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            create_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            update_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
             acl: _Optional[_Union[BigQueryAuditMetadata.BigQueryAcl, _Mapping]] = ...,
             default_table_expire_duration: _Optional[
-                _Union[_duration_pb2.Duration, _Mapping]
+                _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
             ] = ...,
             default_encryption: _Optional[
                 _Union[BigQueryAuditMetadata.EncryptionInfo, _Mapping]
@@ -1398,7 +1295,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class BigQueryAcl(_message.Message):
-        __slots__ = ("policy", "authorized_views")
+        __slots__ = ()
         POLICY_FIELD_NUMBER: _ClassVar[int]
         AUTHORIZED_VIEWS_FIELD_NUMBER: _ClassVar[int]
         policy: _policy_pb2.Policy
@@ -1410,19 +1307,19 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class EncryptionInfo(_message.Message):
-        __slots__ = ("kms_key_name",)
+        __slots__ = ()
         KMS_KEY_NAME_FIELD_NUMBER: _ClassVar[int]
         kms_key_name: str
         def __init__(self, kms_key_name: _Optional[str] = ...) -> None: ...
 
     class RowAccessPolicy(_message.Message):
-        __slots__ = ("row_access_policy_name",)
+        __slots__ = ()
         ROW_ACCESS_POLICY_NAME_FIELD_NUMBER: _ClassVar[int]
         row_access_policy_name: str
         def __init__(self, row_access_policy_name: _Optional[str] = ...) -> None: ...
 
     class FirstPartyAppMetadata(_message.Message):
-        __slots__ = ("sheets_metadata",)
+        __slots__ = ()
         SHEETS_METADATA_FIELD_NUMBER: _ClassVar[int]
         sheets_metadata: BigQueryAuditMetadata.SheetsMetadata
         def __init__(
@@ -1433,7 +1330,7 @@ class BigQueryAuditMetadata(_message.Message):
         ) -> None: ...
 
     class SheetsMetadata(_message.Message):
-        __slots__ = ("doc_id",)
+        __slots__ = ()
         DOC_ID_FIELD_NUMBER: _ClassVar[int]
         doc_id: str
         def __init__(self, doc_id: _Optional[str] = ...) -> None: ...

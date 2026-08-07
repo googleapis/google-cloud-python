@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -25,7 +25,7 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Usage(_message.Message):
-    __slots__ = ("requirements", "rules", "producer_notification_channel")
+    __slots__ = ()
     REQUIREMENTS_FIELD_NUMBER: _ClassVar[int]
     RULES_FIELD_NUMBER: _ClassVar[int]
     PRODUCER_NOTIFICATION_CHANNEL_FIELD_NUMBER: _ClassVar[int]
@@ -40,7 +40,7 @@ class Usage(_message.Message):
     ) -> None: ...
 
 class UsageRule(_message.Message):
-    __slots__ = ("selector", "allow_unregistered_calls", "skip_service_control")
+    __slots__ = ()
     SELECTOR_FIELD_NUMBER: _ClassVar[int]
     ALLOW_UNREGISTERED_CALLS_FIELD_NUMBER: _ClassVar[int]
     SKIP_SERVICE_CONTROL_FIELD_NUMBER: _ClassVar[int]
@@ -50,6 +50,6 @@ class UsageRule(_message.Message):
     def __init__(
         self,
         selector: _Optional[str] = ...,
-        allow_unregistered_calls: bool = ...,
-        skip_service_control: bool = ...,
+        allow_unregistered_calls: _Optional[bool] = ...,
+        skip_service_control: _Optional[bool] = ...,
     ) -> None: ...

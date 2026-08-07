@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -80,7 +81,7 @@ API_VERSION_FIELD_NUMBER: _ClassVar[int]
 api_version: _descriptor.FieldDescriptor
 
 class CommonLanguageSettings(_message.Message):
-    __slots__ = ("reference_docs_uri", "destinations", "selective_gapic_generation")
+    __slots__ = ()
     REFERENCE_DOCS_URI_FIELD_NUMBER: _ClassVar[int]
     DESTINATIONS_FIELD_NUMBER: _ClassVar[int]
     SELECTIVE_GAPIC_GENERATION_FIELD_NUMBER: _ClassVar[int]
@@ -97,19 +98,7 @@ class CommonLanguageSettings(_message.Message):
     ) -> None: ...
 
 class ClientLibrarySettings(_message.Message):
-    __slots__ = (
-        "version",
-        "launch_stage",
-        "rest_numeric_enums",
-        "java_settings",
-        "cpp_settings",
-        "php_settings",
-        "python_settings",
-        "node_settings",
-        "dotnet_settings",
-        "ruby_settings",
-        "go_settings",
-    )
+    __slots__ = ()
     VERSION_FIELD_NUMBER: _ClassVar[int]
     LAUNCH_STAGE_FIELD_NUMBER: _ClassVar[int]
     REST_NUMERIC_ENUMS_FIELD_NUMBER: _ClassVar[int]
@@ -136,7 +125,7 @@ class ClientLibrarySettings(_message.Message):
         self,
         version: _Optional[str] = ...,
         launch_stage: _Optional[_Union[_launch_stage_pb2.LaunchStage, str]] = ...,
-        rest_numeric_enums: bool = ...,
+        rest_numeric_enums: _Optional[bool] = ...,
         java_settings: _Optional[_Union[JavaSettings, _Mapping]] = ...,
         cpp_settings: _Optional[_Union[CppSettings, _Mapping]] = ...,
         php_settings: _Optional[_Union[PhpSettings, _Mapping]] = ...,
@@ -148,19 +137,7 @@ class ClientLibrarySettings(_message.Message):
     ) -> None: ...
 
 class Publishing(_message.Message):
-    __slots__ = (
-        "method_settings",
-        "new_issue_uri",
-        "documentation_uri",
-        "api_short_name",
-        "github_label",
-        "codeowner_github_teams",
-        "doc_tag_prefix",
-        "organization",
-        "library_settings",
-        "proto_reference_documentation_uri",
-        "rest_reference_documentation_uri",
-    )
+    __slots__ = ()
     METHOD_SETTINGS_FIELD_NUMBER: _ClassVar[int]
     NEW_ISSUE_URI_FIELD_NUMBER: _ClassVar[int]
     DOCUMENTATION_URI_FIELD_NUMBER: _ClassVar[int]
@@ -201,9 +178,9 @@ class Publishing(_message.Message):
     ) -> None: ...
 
 class JavaSettings(_message.Message):
-    __slots__ = ("library_package", "service_class_names", "common")
+    __slots__ = ()
     class ServiceClassNamesEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ()
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -226,7 +203,7 @@ class JavaSettings(_message.Message):
     ) -> None: ...
 
 class CppSettings(_message.Message):
-    __slots__ = ("common",)
+    __slots__ = ()
     COMMON_FIELD_NUMBER: _ClassVar[int]
     common: CommonLanguageSettings
     def __init__(
@@ -234,7 +211,7 @@ class CppSettings(_message.Message):
     ) -> None: ...
 
 class PhpSettings(_message.Message):
-    __slots__ = ("common", "library_package")
+    __slots__ = ()
     COMMON_FIELD_NUMBER: _ClassVar[int]
     LIBRARY_PACKAGE_FIELD_NUMBER: _ClassVar[int]
     common: CommonLanguageSettings
@@ -246,13 +223,9 @@ class PhpSettings(_message.Message):
     ) -> None: ...
 
 class PythonSettings(_message.Message):
-    __slots__ = ("common", "experimental_features")
+    __slots__ = ()
     class ExperimentalFeatures(_message.Message):
-        __slots__ = (
-            "rest_async_io_enabled",
-            "protobuf_pythonic_types_enabled",
-            "unversioned_package_disabled",
-        )
+        __slots__ = ()
         REST_ASYNC_IO_ENABLED_FIELD_NUMBER: _ClassVar[int]
         PROTOBUF_PYTHONIC_TYPES_ENABLED_FIELD_NUMBER: _ClassVar[int]
         UNVERSIONED_PACKAGE_DISABLED_FIELD_NUMBER: _ClassVar[int]
@@ -261,9 +234,9 @@ class PythonSettings(_message.Message):
         unversioned_package_disabled: bool
         def __init__(
             self,
-            rest_async_io_enabled: bool = ...,
-            protobuf_pythonic_types_enabled: bool = ...,
-            unversioned_package_disabled: bool = ...,
+            rest_async_io_enabled: _Optional[bool] = ...,
+            protobuf_pythonic_types_enabled: _Optional[bool] = ...,
+            unversioned_package_disabled: _Optional[bool] = ...,
         ) -> None: ...
 
     COMMON_FIELD_NUMBER: _ClassVar[int]
@@ -279,7 +252,7 @@ class PythonSettings(_message.Message):
     ) -> None: ...
 
 class NodeSettings(_message.Message):
-    __slots__ = ("common",)
+    __slots__ = ()
     COMMON_FIELD_NUMBER: _ClassVar[int]
     common: CommonLanguageSettings
     def __init__(
@@ -287,16 +260,9 @@ class NodeSettings(_message.Message):
     ) -> None: ...
 
 class DotnetSettings(_message.Message):
-    __slots__ = (
-        "common",
-        "renamed_services",
-        "renamed_resources",
-        "ignored_resources",
-        "forced_namespace_aliases",
-        "handwritten_signatures",
-    )
+    __slots__ = ()
     class RenamedServicesEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ()
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -306,7 +272,7 @@ class DotnetSettings(_message.Message):
         ) -> None: ...
 
     class RenamedResourcesEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ()
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -338,7 +304,7 @@ class DotnetSettings(_message.Message):
     ) -> None: ...
 
 class RubySettings(_message.Message):
-    __slots__ = ("common",)
+    __slots__ = ()
     COMMON_FIELD_NUMBER: _ClassVar[int]
     common: CommonLanguageSettings
     def __init__(
@@ -346,9 +312,9 @@ class RubySettings(_message.Message):
     ) -> None: ...
 
 class GoSettings(_message.Message):
-    __slots__ = ("common", "renamed_services")
+    __slots__ = ()
     class RenamedServicesEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ()
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -368,14 +334,9 @@ class GoSettings(_message.Message):
     ) -> None: ...
 
 class MethodSettings(_message.Message):
-    __slots__ = ("selector", "long_running", "auto_populated_fields", "batching")
+    __slots__ = ()
     class LongRunning(_message.Message):
-        __slots__ = (
-            "initial_poll_delay",
-            "poll_delay_multiplier",
-            "max_poll_delay",
-            "total_poll_timeout",
-        )
+        __slots__ = ()
         INITIAL_POLL_DELAY_FIELD_NUMBER: _ClassVar[int]
         POLL_DELAY_MULTIPLIER_FIELD_NUMBER: _ClassVar[int]
         MAX_POLL_DELAY_FIELD_NUMBER: _ClassVar[int]
@@ -387,12 +348,14 @@ class MethodSettings(_message.Message):
         def __init__(
             self,
             initial_poll_delay: _Optional[
-                _Union[_duration_pb2.Duration, _Mapping]
+                _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
             ] = ...,
             poll_delay_multiplier: _Optional[float] = ...,
-            max_poll_delay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...,
+            max_poll_delay: _Optional[
+                _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+            ] = ...,
             total_poll_timeout: _Optional[
-                _Union[_duration_pb2.Duration, _Mapping]
+                _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
             ] = ...,
         ) -> None: ...
 
@@ -413,7 +376,7 @@ class MethodSettings(_message.Message):
     ) -> None: ...
 
 class SelectiveGapicGeneration(_message.Message):
-    __slots__ = ("methods", "generate_omitted_as_internal")
+    __slots__ = ()
     METHODS_FIELD_NUMBER: _ClassVar[int]
     GENERATE_OMITTED_AS_INTERNAL_FIELD_NUMBER: _ClassVar[int]
     methods: _containers.RepeatedScalarFieldContainer[str]
@@ -421,11 +384,11 @@ class SelectiveGapicGeneration(_message.Message):
     def __init__(
         self,
         methods: _Optional[_Iterable[str]] = ...,
-        generate_omitted_as_internal: bool = ...,
+        generate_omitted_as_internal: _Optional[bool] = ...,
     ) -> None: ...
 
 class BatchingConfigProto(_message.Message):
-    __slots__ = ("thresholds", "batch_descriptor")
+    __slots__ = ()
     THRESHOLDS_FIELD_NUMBER: _ClassVar[int]
     BATCH_DESCRIPTOR_FIELD_NUMBER: _ClassVar[int]
     thresholds: BatchingSettingsProto
@@ -437,16 +400,7 @@ class BatchingConfigProto(_message.Message):
     ) -> None: ...
 
 class BatchingSettingsProto(_message.Message):
-    __slots__ = (
-        "element_count_threshold",
-        "request_byte_threshold",
-        "delay_threshold",
-        "element_count_limit",
-        "request_byte_limit",
-        "flow_control_element_limit",
-        "flow_control_byte_limit",
-        "flow_control_limit_exceeded_behavior",
-    )
+    __slots__ = ()
     ELEMENT_COUNT_THRESHOLD_FIELD_NUMBER: _ClassVar[int]
     REQUEST_BYTE_THRESHOLD_FIELD_NUMBER: _ClassVar[int]
     DELAY_THRESHOLD_FIELD_NUMBER: _ClassVar[int]
@@ -467,7 +421,9 @@ class BatchingSettingsProto(_message.Message):
         self,
         element_count_threshold: _Optional[int] = ...,
         request_byte_threshold: _Optional[int] = ...,
-        delay_threshold: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...,
+        delay_threshold: _Optional[
+            _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+        ] = ...,
         element_count_limit: _Optional[int] = ...,
         request_byte_limit: _Optional[int] = ...,
         flow_control_element_limit: _Optional[int] = ...,
@@ -478,7 +434,7 @@ class BatchingSettingsProto(_message.Message):
     ) -> None: ...
 
 class BatchingDescriptorProto(_message.Message):
-    __slots__ = ("batched_field", "discriminator_fields", "subresponse_field")
+    __slots__ = ()
     BATCHED_FIELD_FIELD_NUMBER: _ClassVar[int]
     DISCRIMINATOR_FIELDS_FIELD_NUMBER: _ClassVar[int]
     SUBRESPONSE_FIELD_FIELD_NUMBER: _ClassVar[int]

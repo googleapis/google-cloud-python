@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -31,23 +31,7 @@ from google.rpc.context import attribute_context_pb2 as _attribute_context_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class AuditLog(_message.Message):
-    __slots__ = (
-        "service_name",
-        "method_name",
-        "resource_name",
-        "resource_location",
-        "resource_original_state",
-        "num_response_items",
-        "status",
-        "authentication_info",
-        "authorization_info",
-        "policy_violation_info",
-        "request_metadata",
-        "request",
-        "response",
-        "metadata",
-        "service_data",
-    )
+    __slots__ = ()
     SERVICE_NAME_FIELD_NUMBER: _ClassVar[int]
     METHOD_NAME_FIELD_NUMBER: _ClassVar[int]
     RESOURCE_NAME_FIELD_NUMBER: _ClassVar[int]
@@ -100,14 +84,7 @@ class AuditLog(_message.Message):
     ) -> None: ...
 
 class AuthenticationInfo(_message.Message):
-    __slots__ = (
-        "principal_email",
-        "authority_selector",
-        "third_party_principal",
-        "service_account_key_name",
-        "service_account_delegation_info",
-        "principal_subject",
-    )
+    __slots__ = ()
     PRINCIPAL_EMAIL_FIELD_NUMBER: _ClassVar[int]
     AUTHORITY_SELECTOR_FIELD_NUMBER: _ClassVar[int]
     THIRD_PARTY_PRINCIPAL_FIELD_NUMBER: _ClassVar[int]
@@ -135,13 +112,7 @@ class AuthenticationInfo(_message.Message):
     ) -> None: ...
 
 class AuthorizationInfo(_message.Message):
-    __slots__ = (
-        "resource",
-        "permission",
-        "granted",
-        "resource_attributes",
-        "permission_type",
-    )
+    __slots__ = ()
     class PermissionType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         PERMISSION_TYPE_UNSPECIFIED: _ClassVar[AuthorizationInfo.PermissionType]
@@ -169,7 +140,7 @@ class AuthorizationInfo(_message.Message):
         self,
         resource: _Optional[str] = ...,
         permission: _Optional[str] = ...,
-        granted: bool = ...,
+        granted: _Optional[bool] = ...,
         resource_attributes: _Optional[
             _Union[_attribute_context_pb2.AttributeContext.Resource, _Mapping]
         ] = ...,
@@ -177,13 +148,7 @@ class AuthorizationInfo(_message.Message):
     ) -> None: ...
 
 class RequestMetadata(_message.Message):
-    __slots__ = (
-        "caller_ip",
-        "caller_supplied_user_agent",
-        "caller_network",
-        "request_attributes",
-        "destination_attributes",
-    )
+    __slots__ = ()
     CALLER_IP_FIELD_NUMBER: _ClassVar[int]
     CALLER_SUPPLIED_USER_AGENT_FIELD_NUMBER: _ClassVar[int]
     CALLER_NETWORK_FIELD_NUMBER: _ClassVar[int]
@@ -208,7 +173,7 @@ class RequestMetadata(_message.Message):
     ) -> None: ...
 
 class ResourceLocation(_message.Message):
-    __slots__ = ("current_locations", "original_locations")
+    __slots__ = ()
     CURRENT_LOCATIONS_FIELD_NUMBER: _ClassVar[int]
     ORIGINAL_LOCATIONS_FIELD_NUMBER: _ClassVar[int]
     current_locations: _containers.RepeatedScalarFieldContainer[str]
@@ -220,9 +185,9 @@ class ResourceLocation(_message.Message):
     ) -> None: ...
 
 class ServiceAccountDelegationInfo(_message.Message):
-    __slots__ = ("principal_subject", "first_party_principal", "third_party_principal")
+    __slots__ = ()
     class FirstPartyPrincipal(_message.Message):
-        __slots__ = ("principal_email", "service_metadata")
+        __slots__ = ()
         PRINCIPAL_EMAIL_FIELD_NUMBER: _ClassVar[int]
         SERVICE_METADATA_FIELD_NUMBER: _ClassVar[int]
         principal_email: str
@@ -234,7 +199,7 @@ class ServiceAccountDelegationInfo(_message.Message):
         ) -> None: ...
 
     class ThirdPartyPrincipal(_message.Message):
-        __slots__ = ("third_party_claims",)
+        __slots__ = ()
         THIRD_PARTY_CLAIMS_FIELD_NUMBER: _ClassVar[int]
         third_party_claims: _struct_pb2.Struct
         def __init__(
@@ -260,7 +225,7 @@ class ServiceAccountDelegationInfo(_message.Message):
     ) -> None: ...
 
 class PolicyViolationInfo(_message.Message):
-    __slots__ = ("org_policy_violation_info",)
+    __slots__ = ()
     ORG_POLICY_VIOLATION_INFO_FIELD_NUMBER: _ClassVar[int]
     org_policy_violation_info: OrgPolicyViolationInfo
     def __init__(
@@ -271,9 +236,9 @@ class PolicyViolationInfo(_message.Message):
     ) -> None: ...
 
 class OrgPolicyViolationInfo(_message.Message):
-    __slots__ = ("payload", "resource_type", "resource_tags", "violation_info")
+    __slots__ = ()
     class ResourceTagsEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ()
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -299,7 +264,7 @@ class OrgPolicyViolationInfo(_message.Message):
     ) -> None: ...
 
 class ViolationInfo(_message.Message):
-    __slots__ = ("constraint", "error_message", "checked_value", "policy_type")
+    __slots__ = ()
     class PolicyType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         POLICY_TYPE_UNSPECIFIED: _ClassVar[ViolationInfo.PolicyType]

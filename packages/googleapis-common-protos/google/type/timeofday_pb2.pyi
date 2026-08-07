@@ -21,7 +21,7 @@ from google.protobuf import message as _message
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class TimeOfDay(_message.Message):
-    __slots__ = ("hours", "minutes", "seconds", "nanos")
+    __slots__ = ()
     HOURS_FIELD_NUMBER: _ClassVar[int]
     MINUTES_FIELD_NUMBER: _ClassVar[int]
     SECONDS_FIELD_NUMBER: _ClassVar[int]

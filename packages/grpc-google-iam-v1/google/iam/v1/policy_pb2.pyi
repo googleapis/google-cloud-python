@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -27,7 +27,7 @@ from google.type import expr_pb2 as _expr_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Policy(_message.Message):
-    __slots__ = ("version", "bindings", "audit_configs", "etag")
+    __slots__ = ()
     VERSION_FIELD_NUMBER: _ClassVar[int]
     BINDINGS_FIELD_NUMBER: _ClassVar[int]
     AUDIT_CONFIGS_FIELD_NUMBER: _ClassVar[int]
@@ -45,7 +45,7 @@ class Policy(_message.Message):
     ) -> None: ...
 
 class Binding(_message.Message):
-    __slots__ = ("role", "members", "condition")
+    __slots__ = ()
     ROLE_FIELD_NUMBER: _ClassVar[int]
     MEMBERS_FIELD_NUMBER: _ClassVar[int]
     CONDITION_FIELD_NUMBER: _ClassVar[int]
@@ -60,7 +60,7 @@ class Binding(_message.Message):
     ) -> None: ...
 
 class AuditConfig(_message.Message):
-    __slots__ = ("service", "audit_log_configs")
+    __slots__ = ()
     SERVICE_FIELD_NUMBER: _ClassVar[int]
     AUDIT_LOG_CONFIGS_FIELD_NUMBER: _ClassVar[int]
     service: str
@@ -72,7 +72,7 @@ class AuditConfig(_message.Message):
     ) -> None: ...
 
 class AuditLogConfig(_message.Message):
-    __slots__ = ("log_type", "exempted_members")
+    __slots__ = ()
     class LogType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         LOG_TYPE_UNSPECIFIED: _ClassVar[AuditLogConfig.LogType]
@@ -95,7 +95,7 @@ class AuditLogConfig(_message.Message):
     ) -> None: ...
 
 class PolicyDelta(_message.Message):
-    __slots__ = ("binding_deltas", "audit_config_deltas")
+    __slots__ = ()
     BINDING_DELTAS_FIELD_NUMBER: _ClassVar[int]
     AUDIT_CONFIG_DELTAS_FIELD_NUMBER: _ClassVar[int]
     binding_deltas: _containers.RepeatedCompositeFieldContainer[BindingDelta]
@@ -109,7 +109,7 @@ class PolicyDelta(_message.Message):
     ) -> None: ...
 
 class BindingDelta(_message.Message):
-    __slots__ = ("action", "role", "member", "condition")
+    __slots__ = ()
     class Action(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         ACTION_UNSPECIFIED: _ClassVar[BindingDelta.Action]
@@ -136,7 +136,7 @@ class BindingDelta(_message.Message):
     ) -> None: ...
 
 class AuditConfigDelta(_message.Message):
-    __slots__ = ("action", "service", "exempted_member", "log_type")
+    __slots__ = ()
     class Action(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         ACTION_UNSPECIFIED: _ClassVar[AuditConfigDelta.Action]

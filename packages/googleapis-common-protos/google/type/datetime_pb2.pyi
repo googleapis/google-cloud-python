@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -24,17 +25,7 @@ from google.protobuf import message as _message
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DateTime(_message.Message):
-    __slots__ = (
-        "year",
-        "month",
-        "day",
-        "hours",
-        "minutes",
-        "seconds",
-        "nanos",
-        "utc_offset",
-        "time_zone",
-    )
+    __slots__ = ()
     YEAR_FIELD_NUMBER: _ClassVar[int]
     MONTH_FIELD_NUMBER: _ClassVar[int]
     DAY_FIELD_NUMBER: _ClassVar[int]
@@ -62,12 +53,14 @@ class DateTime(_message.Message):
         minutes: _Optional[int] = ...,
         seconds: _Optional[int] = ...,
         nanos: _Optional[int] = ...,
-        utc_offset: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...,
+        utc_offset: _Optional[
+            _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+        ] = ...,
         time_zone: _Optional[_Union[TimeZone, _Mapping]] = ...,
     ) -> None: ...
 
 class TimeZone(_message.Message):
-    __slots__ = ("id", "version")
+    __slots__ = ()
     ID_FIELD_NUMBER: _ClassVar[int]
     VERSION_FIELD_NUMBER: _ClassVar[int]
     id: str

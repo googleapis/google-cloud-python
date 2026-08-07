@@ -21,7 +21,7 @@ from google.protobuf import message as _message
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Expr(_message.Message):
-    __slots__ = ("expression", "title", "description", "location")
+    __slots__ = ()
     EXPRESSION_FIELD_NUMBER: _ClassVar[int]
     TITLE_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]

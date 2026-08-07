@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -29,7 +29,7 @@ from google.api import client_pb2 as _client_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ListLocationsRequest(_message.Message):
-    __slots__ = ("name", "filter", "page_size", "page_token")
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     FILTER_FIELD_NUMBER: _ClassVar[int]
     PAGE_SIZE_FIELD_NUMBER: _ClassVar[int]
@@ -47,7 +47,7 @@ class ListLocationsRequest(_message.Message):
     ) -> None: ...
 
 class ListLocationsResponse(_message.Message):
-    __slots__ = ("locations", "next_page_token")
+    __slots__ = ()
     LOCATIONS_FIELD_NUMBER: _ClassVar[int]
     NEXT_PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
     locations: _containers.RepeatedCompositeFieldContainer[Location]
@@ -59,15 +59,15 @@ class ListLocationsResponse(_message.Message):
     ) -> None: ...
 
 class GetLocationRequest(_message.Message):
-    __slots__ = ("name",)
+    __slots__ = ()
     NAME_FIELD_NUMBER: _ClassVar[int]
     name: str
     def __init__(self, name: _Optional[str] = ...) -> None: ...
 
 class Location(_message.Message):
-    __slots__ = ("name", "location_id", "display_name", "labels", "metadata")
+    __slots__ = ()
     class LabelsEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ()
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str

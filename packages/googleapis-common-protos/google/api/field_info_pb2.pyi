@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -29,7 +29,7 @@ FIELD_INFO_FIELD_NUMBER: _ClassVar[int]
 field_info: _descriptor.FieldDescriptor
 
 class FieldInfo(_message.Message):
-    __slots__ = ("format", "referenced_types")
+    __slots__ = ()
     class Format(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         FORMAT_UNSPECIFIED: _ClassVar[FieldInfo.Format]
@@ -54,7 +54,7 @@ class FieldInfo(_message.Message):
     ) -> None: ...
 
 class TypeReference(_message.Message):
-    __slots__ = ("type_name",)
+    __slots__ = ()
     TYPE_NAME_FIELD_NUMBER: _ClassVar[int]
     type_name: str
     def __init__(self, type_name: _Optional[str] = ...) -> None: ...
