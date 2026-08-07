@@ -32,7 +32,16 @@ if grpc is None:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
 
+import inspect
 import google.auth.credentials
+import google.auth.transport.grpc
+
+_SUPPORTS_SUPPRESS_METRICS = (
+    "suppress_metrics_header"
+    in inspect.signature(
+        google.auth.transport.grpc.AuthMetadataPlugin.__init__
+    ).parameters
+)
 
 from google.api_core import exceptions, grpc_helpers_async
 
@@ -421,18 +430,15 @@ def test_create_channel_implicit_with_default_host(
     assert channel is grpc_secure_channel.return_value
 
     google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
-    # AuthMetadataPlugin can be called once (if installed google-auth supports
-    # suppress_metrics_header) or twice (if older google-auth raises TypeError
-    # on call 1 and falls back to call 2 without suppress_metrics_header).
-    assert auth_metadata_plugin.call_count in (1, 2)
-    try:
-        auth_metadata_plugin.assert_called_with(
+    if _SUPPORTS_SUPPRESS_METRICS:
+        auth_metadata_plugin.assert_called_once_with(
             mock.sentinel.credentials,
             mock.sentinel.Request,
             default_host=default_host,
             suppress_metrics_header=True,
         )
-    except AssertionError:
+    else:
+        assert auth_metadata_plugin.call_count == 2
         auth_metadata_plugin.assert_called_with(
             mock.sentinel.credentials,
             mock.sentinel.Request,
