@@ -273,32 +273,28 @@ class BigtableDataClientAsync(ClientWithProject):
                 "is the default."
             )
         self._is_closed = CrossSync.Event()
-        if os.getenv("BIGTABLE_EMULATOR_HOST"):
-            self._metrics_handler = OpenTelemetryMetricsHandler(
-                client_version=self._client_version(),
-            )
-        else:
+        handlers: list[MetricsHandler] = []
+        if self._emulator_host is None:
             try:
                 # create a metrics exporter using the same client configuration
                 exporter = BigtableMetricsExporter(
                     credentials=credentials,
                     client_options=client_options,
                 )
-                self._metrics_handler = GoogleCloudMetricsHandler(
-                    exporter=exporter,
-                    client_version=self._client_version(),
+                handlers.append(
+                    GoogleCloudMetricsHandler(
+                        exporter=exporter,
+                        client_version=self._client_version(),
+                    )
                 )
             except Exception as e:
                 _LOGGER.warning(
                     "Failed to initialize Google Cloud Metrics Exporter: %s. "
-                    "Falling back to local OpenTelemetry metrics handler.",
+                    "Client-side metrics will be disabled.",
                     e,
                 )
-                self._metrics_handler = OpenTelemetryMetricsHandler(
-                    client_version=self._client_version(),
-                )
         self._metrics = BigtableClientSideMetricsController(
-            handlers=[self._metrics_handler]
+            handlers=handlers
         )
         self.transport = cast(TransportType, self._gapic_client.transport)
         # keep track of active instances to for warmup on channel refresh

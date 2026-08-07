@@ -259,13 +259,8 @@ class TestBigtableDataClientAsync:
         side_effect=Exception("Auth error"),
     )
     async def test_metrics_exporter_init_error_fallback(self, mock_sync, mock_async):
-        from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
-            OpenTelemetryMetricsHandler,
-        )
-
         async with self._make_client(use_emulator=False) as client:
-            assert isinstance(client._metrics.handlers[0], OpenTelemetryMetricsHandler)
-            assert getattr(client._metrics.handlers[0], "_exporter", None) is None
+            assert len(client._metrics.handlers) == 0
 
     @CrossSync.pytest
     @mock.patch("google.cloud.bigtable.data._async.client.BigtableMetricsExporter")
@@ -1342,11 +1337,10 @@ class TestTableAsync:
         assert instance_key in client._active_instances
         assert client._instance_owners[instance_key] == {id(table)}
         assert isinstance(client._metrics, BigtableClientSideMetricsController)
-        assert len(client._metrics.handlers) == 1
         if use_emulator:
-            assert isinstance(client._metrics.handlers[0], OpenTelemetryMetricsHandler)
-            assert getattr(client._metrics.handlers[0], "_exporter", None) is None
+            assert len(client._metrics.handlers) == 0
         else:
+            assert len(client._metrics.handlers) == 1
             assert isinstance(client._metrics.handlers[0], GoogleCloudMetricsHandler)
             assert isinstance(
                 client._metrics.handlers[0]._exporter, BigtableMetricsExporter
@@ -1737,11 +1731,10 @@ class TestAuthorizedViewsAsync(CrossSync.TestTable):
         assert instance_key in client._active_instances
         assert client._instance_owners[instance_key] == {id(view)}
         assert isinstance(client._metrics, BigtableClientSideMetricsController)
-        assert len(client._metrics.handlers) == 1
         if use_emulator:
-            assert isinstance(client._metrics.handlers[0], OpenTelemetryMetricsHandler)
-            assert getattr(client._metrics.handlers[0], "_exporter", None) is None
+            assert len(client._metrics.handlers) == 0
         else:
+            assert len(client._metrics.handlers) == 1
             assert isinstance(client._metrics.handlers[0], GoogleCloudMetricsHandler)
             assert isinstance(
                 client._metrics.handlers[0]._exporter, BigtableMetricsExporter
@@ -1864,11 +1857,10 @@ class TestMaterializedViewsAsync(CrossSync.TestTable):
         assert instance_key in client._active_instances
         assert client._instance_owners[instance_key] == {id(view)}
         assert isinstance(client._metrics, BigtableClientSideMetricsController)
-        assert len(client._metrics.handlers) == 1
         if use_emulator:
-            assert isinstance(client._metrics.handlers[0], OpenTelemetryMetricsHandler)
-            assert getattr(client._metrics.handlers[0], "_exporter", None) is None
+            assert len(client._metrics.handlers) == 0
         else:
+            assert len(client._metrics.handlers) == 1
             assert isinstance(client._metrics.handlers[0], GoogleCloudMetricsHandler)
             assert isinstance(
                 client._metrics.handlers[0]._exporter, BigtableMetricsExporter

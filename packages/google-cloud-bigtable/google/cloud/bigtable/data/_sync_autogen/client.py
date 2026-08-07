@@ -204,31 +204,27 @@ class BigtableDataClient(ClientWithProject):
                 f"The configured universe domain ({self.universe_domain}) does not match the universe domain found in the credentials ({self._credentials.universe_domain}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
             )
         self._is_closed = CrossSync._Sync_Impl.Event()
-        if os.getenv("BIGTABLE_EMULATOR_HOST"):
-            self._metrics_handler = OpenTelemetryMetricsHandler(
-                client_version=self._client_version()
-            )
-        else:
+        handlers: list[MetricsHandler] = []
+        if self._emulator_host is None:
             try:
                 exporter = BigtableMetricsExporter(
                     credentials=credentials,
                     client_options=client_options,
                 )
-                self._metrics_handler = GoogleCloudMetricsHandler(
-                    exporter=exporter,
-                    client_version=self._client_version(),
+                handlers.append(
+                    GoogleCloudMetricsHandler(
+                        exporter=exporter,
+                        client_version=self._client_version(),
+                    )
                 )
             except Exception as e:
                 _LOGGER.warning(
                     "Failed to initialize Google Cloud Metrics Exporter: %s. "
-                    "Falling back to local OpenTelemetry metrics handler.",
+                    "Client-side metrics will be disabled.",
                     e,
                 )
-                self._metrics_handler = OpenTelemetryMetricsHandler(
-                    client_version=self._client_version(),
-                )
         self._metrics = BigtableClientSideMetricsController(
-            handlers=[self._metrics_handler]
+            handlers=handlers
         )
         self.transport = cast(TransportType, self._gapic_client.transport)
         self._active_instances: Set[_WarmedInstanceKey] = set()
