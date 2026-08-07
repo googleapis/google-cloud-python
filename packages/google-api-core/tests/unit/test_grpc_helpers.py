@@ -471,9 +471,9 @@ def test_create_channel_implicit_with_default_host(
             suppress_metrics_header=True,
         )
     else:
-        # Older google-auth raises TypeError on call 1, triggering fallback call 2
-        assert auth_metadata_plugin.call_count == 2
-        auth_metadata_plugin.assert_called_with(
+        # Older google-auth raises TypeError on call 1 during autospec signature check,
+        # so only the successful fallback call 2 is recorded by unittest.mock.
+        auth_metadata_plugin.assert_called_once_with(
             mock.sentinel.credentials,
             mock.sentinel.Request,
             default_host=default_host,
