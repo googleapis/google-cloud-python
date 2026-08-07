@@ -459,6 +459,7 @@ def test_create_channel_implicit_with_default_host(
         mock.sentinel.Request,
     )
     assert auth_metadata_plugin.call_args.kwargs["default_host"] == default_host
+    # google-auth >= 2.56.3 supports suppress_metrics_header; older versions omit it during fallback
     if "suppress_metrics_header" in auth_metadata_plugin.call_args.kwargs:
         assert auth_metadata_plugin.call_args.kwargs["suppress_metrics_header"] is True
 
