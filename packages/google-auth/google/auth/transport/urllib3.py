@@ -350,12 +350,25 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         """
         use_client_cert = transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
+            # Dynamically disabling mTLS on an active session is unsafe in concurrent
+            # environments and can cause a zombie state mismatch where mTLS connection
+            # pools remain attached while auth checks believe mTLS is disabled.
+            if getattr(self, "_is_mtls", False):
+                raise exceptions.MutualTLSChannelError(
+                    "Cannot disable mTLS on an active session. A new AuthorizedHttp must be created."
+                )
             return False
 
         try:
             found_cert_key, cert, key = transport._mtls_helper.get_client_cert_and_key(
                 client_cert_callback
             )
+
+            # Prevent mid-lifecycle transition from mTLS-enabled to mTLS-disabled state.
+            if getattr(self, "_is_mtls", False) and not found_cert_key:
+                raise exceptions.MutualTLSChannelError(
+                    "Cannot disable mTLS on an active session. A new AuthorizedHttp must be created."
+                )
 
             if found_cert_key:
                 new_http = _make_mutual_tls_http(cert, key)

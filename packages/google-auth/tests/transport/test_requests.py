@@ -1025,22 +1025,54 @@ class TestAuthorizedSession(object):
 
         assert auth_session.is_mtls
 
-        # 2. Subsequent call returns no client certificate (disabled)
+        # 2. Subsequent call returns no client certificate (disabled) -> raises MutualTLSChannelError
         with mock.patch(
             "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
         ) as mock_get_client_cert_and_key:
             mock_get_client_cert_and_key.return_value = (False, None, None)
 
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                with mock.patch.dict(
+                    os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+                ):
+                    auth_session.configure_mtls_channel()
+
+        # 3. Verify mTLS state and MutualTlsAdapter are preserved
+        assert auth_session.is_mtls
+        assert isinstance(
+            auth_session.adapters["https://"],
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+
+    def test_configure_mtls_channel_subsequent_env_disabled(self):
+        # 1. Setup successful mTLS configuration
+        mock_callback = mock.Mock()
+        mock_callback.return_value = (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+        auth_session = google.auth.transport.requests.AuthorizedSession(
+            credentials=mock.Mock()
+        )
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            auth_session.configure_mtls_channel(mock_callback)
+
+        assert auth_session.is_mtls
+
+        # 2. Subsequent call with mTLS disabled via env var -> raises MutualTLSChannelError
+        with pytest.raises(exceptions.MutualTLSChannelError):
             with mock.patch.dict(
-                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "false"}
             ):
                 auth_session.configure_mtls_channel()
 
-        # 3. Verify mTLS is disabled and standard HTTPAdapter is restored
-        assert not auth_session.is_mtls
+        # 3. Verify mTLS state and MutualTlsAdapter are preserved
+        assert auth_session.is_mtls
         assert isinstance(
             auth_session.adapters["https://"],
-            requests.adapters.HTTPAdapter,
+            google.auth.transport.requests._MutualTlsAdapter,
         )
 
 
