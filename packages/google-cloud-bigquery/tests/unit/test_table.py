@@ -4165,7 +4165,12 @@ class TestRowIterator(unittest.TestCase):
                     continue
                 self.assertIn(
                     warning.category,
-                    [UserWarning, DeprecationWarning, tqdm.TqdmExperimentalWarning],
+                    [
+                        UserWarning,
+                        DeprecationWarning,
+                        PendingDeprecationWarning,
+                        tqdm.TqdmExperimentalWarning,
+                    ],
                 )
 
     def test_to_dataframe_w_empty_results(self):
