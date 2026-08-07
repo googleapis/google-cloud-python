@@ -178,7 +178,7 @@ class TestMetrics(SystemTestRunner):
     @pytest.fixture(scope="session")
     def table(self, client, table_id, instance_id, handler):
         with client.get_table(instance_id, table_id) as table:
-            table._metrics.handlers = [handler]
+            table.client._metrics.handlers = [handler]
             yield table
 
     @pytest.fixture(scope="session")
@@ -188,7 +188,7 @@ class TestMetrics(SystemTestRunner):
         with client.get_authorized_view(
             instance_id, table_id, authorized_view_id
         ) as table:
-            table._metrics.add_handler(handler)
+            table.client._metrics.add_handler(handler)
             yield table
 
     def test_read_rows(self, table, temp_rows, handler, cluster_config):

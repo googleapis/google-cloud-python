@@ -217,7 +217,7 @@ class TestMetricsAsync(SystemTestRunner):
     async def table(self, client, table_id, instance_id, handler):
         async with client.get_table(instance_id, table_id) as table:
             # override handlers with custom test object
-            table._metrics.handlers = [handler]
+            table.client._metrics.handlers = [handler]
             yield table
 
     @CrossSync.convert
@@ -228,7 +228,7 @@ class TestMetricsAsync(SystemTestRunner):
         async with client.get_authorized_view(
             instance_id, table_id, authorized_view_id
         ) as table:
-            table._metrics.add_handler(handler)
+            table.client._metrics.add_handler(handler)
             yield table
 
     @CrossSync.pytest

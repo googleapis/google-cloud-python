@@ -276,7 +276,7 @@ class BigtableDataClientAsync(ClientWithProject):
             try:
                 # create a metrics exporter using the same client configuration
                 exporter = BigtableMetricsExporter(
-                    credentials=credentials,
+                    credentials=self._credentials,
                     client_options=client_options,
                 )
                 handlers.append(

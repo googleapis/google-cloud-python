@@ -1153,6 +1153,8 @@ class TestSystem(SystemTestRunner):
 
     @pytest.fixture(scope="session")
     def metrics_client(self, client):
+        if client._emulator_host is not None:
+            pytest.skip("Metrics export disabled when running against emulator")
         yield client._metrics.handlers[0]._exporter.client
 
     @pytest.mark.order("last")

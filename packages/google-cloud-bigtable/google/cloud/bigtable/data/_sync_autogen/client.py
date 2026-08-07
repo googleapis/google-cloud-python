@@ -205,7 +205,7 @@ class BigtableDataClient(ClientWithProject):
         if self._emulator_host is None:
             try:
                 exporter = BigtableMetricsExporter(
-                    credentials=credentials, client_options=client_options
+                    credentials=self._credentials, client_options=client_options
                 )
                 handlers.append(
                     GoogleCloudMetricsHandler(
