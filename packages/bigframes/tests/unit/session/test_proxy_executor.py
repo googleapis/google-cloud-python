@@ -44,6 +44,7 @@ def mock_executor():
 def test_execute_legacy_routes_to_ibis(mock_executor, monkeypatch):
     array_value = mock.Mock(spec=bigframes.core.ArrayValue)
     execution_spec = mock.Mock(spec=bigframes.session.execution_spec.ExecutionSpec)
+    execution_spec.with_bq_labels.return_value = execution_spec
 
     mock_executor._ibis_executor = mock.Mock()
     mock_executor._sqlglot_executor = mock.Mock()
@@ -51,6 +52,9 @@ def test_execute_legacy_routes_to_ibis(mock_executor, monkeypatch):
     monkeypatch.setattr(bigframes.options.experiments, "sql_compiler", "legacy")
     mock_executor.execute(array_value, execution_spec)
 
+    execution_spec.with_bq_labels.assert_called_once_with(
+        {"bigframes-compiler": "ibis"}
+    )
     mock_executor._ibis_executor.execute.assert_called_once_with(
         array_value, execution_spec
     )
