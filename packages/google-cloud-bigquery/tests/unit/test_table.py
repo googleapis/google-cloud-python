@@ -2517,7 +2517,7 @@ class Test_EmptyRowIterator(unittest.TestCase):
 
         with pytest.warns(
             PendingDeprecationWarning,
-            match="Retrieving PyArrow Tables via core SDK conversion methods is deprecated",
+            match="Retrieving PyArrow Tables via google-cloud-bigquery is deprecated",
         ):
             row_iterator.to_arrow()
 
@@ -2527,7 +2527,7 @@ class Test_EmptyRowIterator(unittest.TestCase):
 
         with pytest.warns(
             PendingDeprecationWarning,
-            match="Retrieving DataFrames via core SDK conversion methods is deprecated",
+            match="Retrieving DataFrames via google-cloud-bigquery is deprecated",
         ):
             row_iterator.to_dataframe()
 
@@ -5742,7 +5742,7 @@ class TestRowIterator(unittest.TestCase):
 
         with pytest.warns(
             PendingDeprecationWarning,
-            match="Retrieving PyArrow Tables via core SDK conversion methods is deprecated",
+            match="Retrieving PyArrow Tables via google-cloud-bigquery is deprecated",
         ):
             row_iterator.to_arrow(create_bqstorage_client=False)
 
@@ -5752,7 +5752,7 @@ class TestRowIterator(unittest.TestCase):
 
         with pytest.warns(
             PendingDeprecationWarning,
-            match="Retrieving DataFrames via core SDK conversion methods is deprecated",
+            match="Retrieving DataFrames via google-cloud-bigquery is deprecated",
         ) as record:
             row_iterator.to_dataframe(create_bqstorage_client=False)
 

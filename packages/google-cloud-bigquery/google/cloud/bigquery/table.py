@@ -113,12 +113,12 @@ _RANGE_PYARROW_WARNING = (
 )
 
 _TO_DATAFRAME_DEPRECATED = (
-    "Retrieving DataFrames via core SDK conversion methods is deprecated. "
+    "Retrieving DataFrames via google-cloud-bigquery is deprecated. "
     "For direct, optimized access, please call 'pandas_gbq.read_gbq()' directly."
 )
 
 _TO_ARROW_DEPRECATED = (
-    "Retrieving PyArrow Tables via core SDK conversion methods is deprecated. "
+    "Retrieving PyArrow Tables via google-cloud-bigquery is deprecated. "
     "For direct, optimized access, please call 'pandas_gbq.arrow.read_bigquery_table()' "
     "or 'pandas_gbq.arrow.read_bigquery_query()' directly."
 )
@@ -3044,7 +3044,7 @@ class RowIterator(HTTPIterator):
             warnings.filterwarnings(
                 "ignore",
                 category=PendingDeprecationWarning,
-                message="Retrieving DataFrames via core SDK conversion methods is deprecated.*",
+                message="Retrieving DataFrames via google-cloud-bigquery is deprecated.*",
             )
             df = self.to_dataframe(
                 bqstorage_client,
