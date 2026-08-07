@@ -33,7 +33,6 @@ if grpc is None:  # pragma: NO COVER
 
 
 import google.auth.credentials
-
 from google.api_core import exceptions, grpc_helpers_async
 
 
@@ -421,9 +420,20 @@ def test_create_channel_implicit_with_default_host(
     assert channel is grpc_secure_channel.return_value
 
     google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
-    auth_metadata_plugin.assert_called_once_with(
-        mock.sentinel.credentials, mock.sentinel.Request, default_host=default_host
-    )
+
+    # Suppressing metrics header prevents duplicate x-goog-api-client headers.
+    # We try both assertions to support older versions of google-auth.
+    try:
+        auth_metadata_plugin.assert_called_once_with(
+            mock.sentinel.credentials,
+            mock.sentinel.Request,
+            default_host=default_host,
+            suppress_metrics_header=True,
+        )
+    except AssertionError:
+        auth_metadata_plugin.assert_called_once_with(
+            mock.sentinel.credentials, mock.sentinel.Request, default_host=default_host
+        )
     grpc_secure_channel.assert_called_once_with(
         expected_target, composite_creds, compression=None
     )

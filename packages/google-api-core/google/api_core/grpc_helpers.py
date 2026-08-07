@@ -25,8 +25,7 @@ import google.auth.transport.grpc
 import google.auth.transport.requests
 import google.protobuf
 import grpc
-
-from google.api_core import exceptions, general_helpers
+from google.api_core import _feature_gating_helpers, exceptions, general_helpers
 
 # The list of gRPC Callable interfaces that return iterators.
 _STREAM_WRAP_CLASSES = (grpc.UnaryStreamMultiCallable, grpc.StreamStreamMultiCallable)
@@ -384,9 +383,26 @@ def create_channel(
     if attempt_direct_path:
         target = _modify_target_for_direct_path(target)
 
-    return grpc.secure_channel(
+    channel = grpc.secure_channel(
         target, composite_credentials, compression=compression, **kwargs
     )
+
+    is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
+        env_var="GOOGLE_CLOUD_PYTHON_TRACING_ENABLED",
+        feature_key="tracer_provider",
+        configuration=None,
+    )
+
+    if is_tracing_enabled:
+        try:
+            import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
+            interceptor = otel_grpc.client_interceptor()
+            channel = otel_grpc.intercept_channel(channel, interceptor)
+        except ImportError:
+            # If grpc dependency is missing, this should simply NOOP and fail open rather than failing import.
+            pass
+
+    return channel
 
 
 def _modify_target_for_direct_path(target: str) -> str:
