@@ -284,9 +284,36 @@ TRIGGER_ADHOC="false"
 if [[ -n "${KOKORO_GITHUB_PULL_REQUEST_NUMBER}" ]]; then
     echo "Checking for adhoc test label on PR #${KOKORO_GITHUB_PULL_REQUEST_NUMBER}..."
     # Simple, unauthenticated call to check labels
-    if ! LABELS_JSON=$(curl -s -H "User-Agent: Kokoro-AdHoc-Checker" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels"); then
+    # Simple, unauthenticated call to check labels (capturing headers for rate limit debugging)
+    CURL_OUTPUT=$(curl -s -i -H "User-Agent: Kokoro-AdHoc-Checker" "https://api.github.com/repos/googleapis/google-cloud-python/issues/${KOKORO_GITHUB_PULL_REQUEST_NUMBER}/labels")
+
+    # Separate headers and body
+    # Using awk to find the blank line separating headers from body
+    HEADERS=$(echo "$CURL_OUTPUT" | awk 'BEGIN{RS="\r\n\r\n"} NR==1')
+    LABELS_JSON=$(echo "$CURL_OUTPUT" | awk 'BEGIN{RS="\r\n\r\n"} NR==2')
+
+    # --- DEBUGGING: Extract and print Rate Limit Headers ---
+    echo "---------------------------------------------------------------"
+    echo "DEBUG: GitHub API Rate Limit Status:"
+    echo "$HEADERS" | grep -i "^x-ratelimit-limit:" | tr -d '\r'
+    echo "$HEADERS" | grep -i "^x-ratelimit-remaining:" | tr -d '\r'
+    echo "$HEADERS" | grep -i "^x-ratelimit-used:" | tr -d '\r'
+
+    # Convert reset time to human-readable if date is available, otherwise show raw
+    RESET_EPOCH=$(echo "$HEADERS" | grep -i "^x-ratelimit-reset:" | awk '{print $2}' | tr -d '\r')
+    if [[ -n "$RESET_EPOCH" ]]; then
+        if date -d "@$RESET_EPOCH" >/dev/null 2>&1; then
+            RESET_HUMAN=$(date -d "@$RESET_EPOCH" "+%Y-%m-%d %H:%M:%S UTC")
+            echo "DEBUG: X-RateLimit-Reset: $RESET_HUMAN ($RESET_EPOCH)"
+        else
+            echo "DEBUG: X-RateLimit-Reset: $RESET_EPOCH"
+        fi
+    fi
+    echo "---------------------------------------------------------------"
+
+    if [[ -z "$LABELS_JSON" ]] || [[ "$HEADERS" == *"HTTP/1.1 4"* ]] || [[ "$HEADERS" == *"HTTP/1.1 5"* ]]; then
         echo "==============================================================="
-        echo "WARNING: Failed to connect to GitHub API!"
+        echo "WARNING: Failed to fetch labels or received error from GitHub API!"
         echo "Ad-hoc tests will NOT be triggered."
         echo "==============================================================="
     else
