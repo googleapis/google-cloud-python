@@ -24,7 +24,6 @@ except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
 import google.auth.credentials
-import google.auth.transport.grpc
 from google.longrunning import operations_pb2
 
 from google.api_core import exceptions, grpc_helpers
