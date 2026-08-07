@@ -28,14 +28,20 @@ from google.api import client_pb2 as _client_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class ListLocationsRequest(_message.Message):
-    __slots__ = ("name", "filter", "page_size", "page_token")
+class GetLocationRequest(_message.Message):
+    __slots__ = ["name"]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    name: str
+    def __init__(self, name: _Optional[str] = ...) -> None: ...
+
+class ListLocationsRequest(_message.Message):
+    __slots__ = ["filter", "name", "page_size", "page_token"]
     FILTER_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
     PAGE_SIZE_FIELD_NUMBER: _ClassVar[int]
     PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
-    name: str
     filter: str
+    name: str
     page_size: int
     page_token: str
     def __init__(
@@ -47,7 +53,7 @@ class ListLocationsRequest(_message.Message):
     ) -> None: ...
 
 class ListLocationsResponse(_message.Message):
-    __slots__ = ("locations", "next_page_token")
+    __slots__ = ["locations", "next_page_token"]
     LOCATIONS_FIELD_NUMBER: _ClassVar[int]
     NEXT_PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
     locations: _containers.RepeatedCompositeFieldContainer[Location]
@@ -58,16 +64,10 @@ class ListLocationsResponse(_message.Message):
         next_page_token: _Optional[str] = ...,
     ) -> None: ...
 
-class GetLocationRequest(_message.Message):
-    __slots__ = ("name",)
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    name: str
-    def __init__(self, name: _Optional[str] = ...) -> None: ...
-
 class Location(_message.Message):
-    __slots__ = ("name", "location_id", "display_name", "labels", "metadata")
+    __slots__ = ["display_name", "labels", "location_id", "metadata", "name"]
     class LabelsEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ["key", "value"]
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -76,16 +76,16 @@ class Location(_message.Message):
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
 
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
     LABELS_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     METADATA_FIELD_NUMBER: _ClassVar[int]
-    name: str
-    location_id: str
+    NAME_FIELD_NUMBER: _ClassVar[int]
     display_name: str
     labels: _containers.ScalarMap[str, str]
+    location_id: str
     metadata: _any_pb2.Any
+    name: str
     def __init__(
         self,
         name: _Optional[str] = ...,

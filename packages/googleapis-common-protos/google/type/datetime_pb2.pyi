@@ -24,35 +24,35 @@ from google.protobuf import message as _message
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DateTime(_message.Message):
-    __slots__ = (
-        "year",
-        "month",
+    __slots__ = [
         "day",
         "hours",
         "minutes",
-        "seconds",
+        "month",
         "nanos",
-        "utc_offset",
+        "seconds",
         "time_zone",
-    )
-    YEAR_FIELD_NUMBER: _ClassVar[int]
-    MONTH_FIELD_NUMBER: _ClassVar[int]
+        "utc_offset",
+        "year",
+    ]
     DAY_FIELD_NUMBER: _ClassVar[int]
     HOURS_FIELD_NUMBER: _ClassVar[int]
     MINUTES_FIELD_NUMBER: _ClassVar[int]
-    SECONDS_FIELD_NUMBER: _ClassVar[int]
+    MONTH_FIELD_NUMBER: _ClassVar[int]
     NANOS_FIELD_NUMBER: _ClassVar[int]
-    UTC_OFFSET_FIELD_NUMBER: _ClassVar[int]
+    SECONDS_FIELD_NUMBER: _ClassVar[int]
     TIME_ZONE_FIELD_NUMBER: _ClassVar[int]
-    year: int
-    month: int
+    UTC_OFFSET_FIELD_NUMBER: _ClassVar[int]
+    YEAR_FIELD_NUMBER: _ClassVar[int]
     day: int
     hours: int
     minutes: int
-    seconds: int
+    month: int
     nanos: int
-    utc_offset: _duration_pb2.Duration
+    seconds: int
     time_zone: TimeZone
+    utc_offset: _duration_pb2.Duration
+    year: int
     def __init__(
         self,
         year: _Optional[int] = ...,
@@ -67,7 +67,7 @@ class DateTime(_message.Message):
     ) -> None: ...
 
 class TimeZone(_message.Message):
-    __slots__ = ("id", "version")
+    __slots__ = ["id", "version"]
     ID_FIELD_NUMBER: _ClassVar[int]
     VERSION_FIELD_NUMBER: _ClassVar[int]
     id: str

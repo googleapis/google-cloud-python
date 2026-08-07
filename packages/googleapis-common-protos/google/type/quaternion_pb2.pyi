@@ -21,15 +21,15 @@ from google.protobuf import message as _message
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Quaternion(_message.Message):
-    __slots__ = ("x", "y", "z", "w")
+    __slots__ = ["w", "x", "y", "z"]
+    W_FIELD_NUMBER: _ClassVar[int]
     X_FIELD_NUMBER: _ClassVar[int]
     Y_FIELD_NUMBER: _ClassVar[int]
     Z_FIELD_NUMBER: _ClassVar[int]
-    W_FIELD_NUMBER: _ClassVar[int]
+    w: float
     x: float
     y: float
     z: float
-    w: float
     def __init__(
         self,
         x: _Optional[float] = ...,

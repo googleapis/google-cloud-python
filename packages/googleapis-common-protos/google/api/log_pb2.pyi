@@ -27,15 +27,15 @@ from google.api import label_pb2 as _label_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class LogDescriptor(_message.Message):
-    __slots__ = ("name", "labels", "description", "display_name")
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    LABELS_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["description", "display_name", "labels", "name"]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
-    name: str
-    labels: _containers.RepeatedCompositeFieldContainer[_label_pb2.LabelDescriptor]
+    LABELS_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
     description: str
     display_name: str
+    labels: _containers.RepeatedCompositeFieldContainer[_label_pb2.LabelDescriptor]
+    name: str
     def __init__(
         self,
         name: _Optional[str] = ...,

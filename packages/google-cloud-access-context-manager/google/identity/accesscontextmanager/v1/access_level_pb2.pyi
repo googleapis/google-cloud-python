@@ -33,28 +33,28 @@ from google.identity.accesscontextmanager.type import (
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class AccessLevel(_message.Message):
-    __slots__ = (
+    __slots__ = [
+        "basic",
+        "create_time",
+        "custom",
+        "description",
         "name",
         "title",
-        "description",
-        "basic",
-        "custom",
-        "create_time",
         "update_time",
-    )
+    ]
+    BASIC_FIELD_NUMBER: _ClassVar[int]
+    CREATE_TIME_FIELD_NUMBER: _ClassVar[int]
+    CUSTOM_FIELD_NUMBER: _ClassVar[int]
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TITLE_FIELD_NUMBER: _ClassVar[int]
-    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
-    BASIC_FIELD_NUMBER: _ClassVar[int]
-    CUSTOM_FIELD_NUMBER: _ClassVar[int]
-    CREATE_TIME_FIELD_NUMBER: _ClassVar[int]
     UPDATE_TIME_FIELD_NUMBER: _ClassVar[int]
+    basic: BasicLevel
+    create_time: _timestamp_pb2.Timestamp
+    custom: CustomLevel
+    description: str
     name: str
     title: str
-    description: str
-    basic: BasicLevel
-    custom: CustomLevel
-    create_time: _timestamp_pb2.Timestamp
     update_time: _timestamp_pb2.Timestamp
     def __init__(
         self,
@@ -68,18 +68,16 @@ class AccessLevel(_message.Message):
     ) -> None: ...
 
 class BasicLevel(_message.Message):
-    __slots__ = ("conditions", "combining_function")
+    __slots__ = ["combining_function", "conditions"]
     class ConditionCombiningFunction(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        AND: _ClassVar[BasicLevel.ConditionCombiningFunction]
-        OR: _ClassVar[BasicLevel.ConditionCombiningFunction]
+        __slots__ = []
 
     AND: BasicLevel.ConditionCombiningFunction
-    OR: BasicLevel.ConditionCombiningFunction
-    CONDITIONS_FIELD_NUMBER: _ClassVar[int]
     COMBINING_FUNCTION_FIELD_NUMBER: _ClassVar[int]
-    conditions: _containers.RepeatedCompositeFieldContainer[Condition]
+    CONDITIONS_FIELD_NUMBER: _ClassVar[int]
+    OR: BasicLevel.ConditionCombiningFunction
     combining_function: BasicLevel.ConditionCombiningFunction
+    conditions: _containers.RepeatedCompositeFieldContainer[Condition]
     def __init__(
         self,
         conditions: _Optional[_Iterable[_Union[Condition, _Mapping]]] = ...,
@@ -89,26 +87,26 @@ class BasicLevel(_message.Message):
     ) -> None: ...
 
 class Condition(_message.Message):
-    __slots__ = (
-        "ip_subnetworks",
+    __slots__ = [
         "device_policy",
-        "required_access_levels",
-        "negate",
+        "ip_subnetworks",
         "members",
+        "negate",
         "regions",
-    )
-    IP_SUBNETWORKS_FIELD_NUMBER: _ClassVar[int]
+        "required_access_levels",
+    ]
     DEVICE_POLICY_FIELD_NUMBER: _ClassVar[int]
-    REQUIRED_ACCESS_LEVELS_FIELD_NUMBER: _ClassVar[int]
-    NEGATE_FIELD_NUMBER: _ClassVar[int]
+    IP_SUBNETWORKS_FIELD_NUMBER: _ClassVar[int]
     MEMBERS_FIELD_NUMBER: _ClassVar[int]
+    NEGATE_FIELD_NUMBER: _ClassVar[int]
     REGIONS_FIELD_NUMBER: _ClassVar[int]
-    ip_subnetworks: _containers.RepeatedScalarFieldContainer[str]
+    REQUIRED_ACCESS_LEVELS_FIELD_NUMBER: _ClassVar[int]
     device_policy: DevicePolicy
-    required_access_levels: _containers.RepeatedScalarFieldContainer[str]
-    negate: bool
+    ip_subnetworks: _containers.RepeatedScalarFieldContainer[str]
     members: _containers.RepeatedScalarFieldContainer[str]
+    negate: bool
     regions: _containers.RepeatedScalarFieldContainer[str]
+    required_access_levels: _containers.RepeatedScalarFieldContainer[str]
     def __init__(
         self,
         ip_subnetworks: _Optional[_Iterable[str]] = ...,
@@ -120,7 +118,7 @@ class Condition(_message.Message):
     ) -> None: ...
 
 class CustomLevel(_message.Message):
-    __slots__ = ("expr",)
+    __slots__ = ["expr"]
     EXPR_FIELD_NUMBER: _ClassVar[int]
     expr: _expr_pb2.Expr
     def __init__(
@@ -128,30 +126,30 @@ class CustomLevel(_message.Message):
     ) -> None: ...
 
 class DevicePolicy(_message.Message):
-    __slots__ = (
-        "require_screenlock",
+    __slots__ = [
+        "allowed_device_management_levels",
         "allowed_encryption_statuses",
         "os_constraints",
-        "allowed_device_management_levels",
         "require_admin_approval",
         "require_corp_owned",
-    )
-    REQUIRE_SCREENLOCK_FIELD_NUMBER: _ClassVar[int]
+        "require_screenlock",
+    ]
+    ALLOWED_DEVICE_MANAGEMENT_LEVELS_FIELD_NUMBER: _ClassVar[int]
     ALLOWED_ENCRYPTION_STATUSES_FIELD_NUMBER: _ClassVar[int]
     OS_CONSTRAINTS_FIELD_NUMBER: _ClassVar[int]
-    ALLOWED_DEVICE_MANAGEMENT_LEVELS_FIELD_NUMBER: _ClassVar[int]
     REQUIRE_ADMIN_APPROVAL_FIELD_NUMBER: _ClassVar[int]
     REQUIRE_CORP_OWNED_FIELD_NUMBER: _ClassVar[int]
-    require_screenlock: bool
+    REQUIRE_SCREENLOCK_FIELD_NUMBER: _ClassVar[int]
+    allowed_device_management_levels: _containers.RepeatedScalarFieldContainer[
+        _device_resources_pb2.DeviceManagementLevel
+    ]
     allowed_encryption_statuses: _containers.RepeatedScalarFieldContainer[
         _device_resources_pb2.DeviceEncryptionStatus
     ]
     os_constraints: _containers.RepeatedCompositeFieldContainer[OsConstraint]
-    allowed_device_management_levels: _containers.RepeatedScalarFieldContainer[
-        _device_resources_pb2.DeviceManagementLevel
-    ]
     require_admin_approval: bool
     require_corp_owned: bool
+    require_screenlock: bool
     def __init__(
         self,
         require_screenlock: bool = ...,
@@ -167,12 +165,12 @@ class DevicePolicy(_message.Message):
     ) -> None: ...
 
 class OsConstraint(_message.Message):
-    __slots__ = ("os_type", "minimum_version", "require_verified_chrome_os")
-    OS_TYPE_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["minimum_version", "os_type", "require_verified_chrome_os"]
     MINIMUM_VERSION_FIELD_NUMBER: _ClassVar[int]
+    OS_TYPE_FIELD_NUMBER: _ClassVar[int]
     REQUIRE_VERIFIED_CHROME_OS_FIELD_NUMBER: _ClassVar[int]
-    os_type: _device_resources_pb2.OsType
     minimum_version: str
+    os_type: _device_resources_pb2.OsType
     require_verified_chrome_os: bool
     def __init__(
         self,

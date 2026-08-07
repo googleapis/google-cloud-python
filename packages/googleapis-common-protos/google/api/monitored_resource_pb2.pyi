@@ -28,27 +28,47 @@ from google.api import launch_stage_pb2 as _launch_stage_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class MonitoredResource(_message.Message):
+    __slots__ = ["labels", "type"]
+    class LabelsEntry(_message.Message):
+        __slots__ = ["key", "value"]
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: str
+        def __init__(
+            self, key: _Optional[str] = ..., value: _Optional[str] = ...
+        ) -> None: ...
+
+    LABELS_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    labels: _containers.ScalarMap[str, str]
+    type: str
+    def __init__(
+        self, type: _Optional[str] = ..., labels: _Optional[_Mapping[str, str]] = ...
+    ) -> None: ...
+
 class MonitoredResourceDescriptor(_message.Message):
-    __slots__ = (
-        "name",
-        "type",
-        "display_name",
+    __slots__ = [
         "description",
+        "display_name",
         "labels",
         "launch_stage",
-    )
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    TYPE_FIELD_NUMBER: _ClassVar[int]
-    DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
+        "name",
+        "type",
+    ]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
     LABELS_FIELD_NUMBER: _ClassVar[int]
     LAUNCH_STAGE_FIELD_NUMBER: _ClassVar[int]
-    name: str
-    type: str
-    display_name: str
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
     description: str
+    display_name: str
     labels: _containers.RepeatedCompositeFieldContainer[_label_pb2.LabelDescriptor]
     launch_stage: _launch_stage_pb2.LaunchStage
+    name: str
+    type: str
     def __init__(
         self,
         name: _Optional[str] = ...,
@@ -61,30 +81,10 @@ class MonitoredResourceDescriptor(_message.Message):
         launch_stage: _Optional[_Union[_launch_stage_pb2.LaunchStage, str]] = ...,
     ) -> None: ...
 
-class MonitoredResource(_message.Message):
-    __slots__ = ("type", "labels")
-    class LabelsEntry(_message.Message):
-        __slots__ = ("key", "value")
-        KEY_FIELD_NUMBER: _ClassVar[int]
-        VALUE_FIELD_NUMBER: _ClassVar[int]
-        key: str
-        value: str
-        def __init__(
-            self, key: _Optional[str] = ..., value: _Optional[str] = ...
-        ) -> None: ...
-
-    TYPE_FIELD_NUMBER: _ClassVar[int]
-    LABELS_FIELD_NUMBER: _ClassVar[int]
-    type: str
-    labels: _containers.ScalarMap[str, str]
-    def __init__(
-        self, type: _Optional[str] = ..., labels: _Optional[_Mapping[str, str]] = ...
-    ) -> None: ...
-
 class MonitoredResourceMetadata(_message.Message):
-    __slots__ = ("system_labels", "user_labels")
+    __slots__ = ["system_labels", "user_labels"]
     class UserLabelsEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ["key", "value"]
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str

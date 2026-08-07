@@ -26,7 +26,7 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class HttpBody(_message.Message):
-    __slots__ = ("content_type", "data", "extensions")
+    __slots__ = ["content_type", "data", "extensions"]
     CONTENT_TYPE_FIELD_NUMBER: _ClassVar[int]
     DATA_FIELD_NUMBER: _ClassVar[int]
     EXTENSIONS_FIELD_NUMBER: _ClassVar[int]

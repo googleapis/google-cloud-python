@@ -23,32 +23,30 @@ from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 
-DESCRIPTOR: _descriptor.FileDescriptor
-
-class ChangeType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = ()
-    CHANGE_TYPE_UNSPECIFIED: _ClassVar[ChangeType]
-    ADDED: _ClassVar[ChangeType]
-    REMOVED: _ClassVar[ChangeType]
-    MODIFIED: _ClassVar[ChangeType]
-
-CHANGE_TYPE_UNSPECIFIED: ChangeType
 ADDED: ChangeType
-REMOVED: ChangeType
+CHANGE_TYPE_UNSPECIFIED: ChangeType
+DESCRIPTOR: _descriptor.FileDescriptor
 MODIFIED: ChangeType
+REMOVED: ChangeType
+
+class Advice(_message.Message):
+    __slots__ = ["description"]
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    description: str
+    def __init__(self, description: _Optional[str] = ...) -> None: ...
 
 class ConfigChange(_message.Message):
-    __slots__ = ("element", "old_value", "new_value", "change_type", "advices")
-    ELEMENT_FIELD_NUMBER: _ClassVar[int]
-    OLD_VALUE_FIELD_NUMBER: _ClassVar[int]
-    NEW_VALUE_FIELD_NUMBER: _ClassVar[int]
-    CHANGE_TYPE_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["advices", "change_type", "element", "new_value", "old_value"]
     ADVICES_FIELD_NUMBER: _ClassVar[int]
-    element: str
-    old_value: str
-    new_value: str
-    change_type: ChangeType
+    CHANGE_TYPE_FIELD_NUMBER: _ClassVar[int]
+    ELEMENT_FIELD_NUMBER: _ClassVar[int]
+    NEW_VALUE_FIELD_NUMBER: _ClassVar[int]
+    OLD_VALUE_FIELD_NUMBER: _ClassVar[int]
     advices: _containers.RepeatedCompositeFieldContainer[Advice]
+    change_type: ChangeType
+    element: str
+    new_value: str
+    old_value: str
     def __init__(
         self,
         element: _Optional[str] = ...,
@@ -58,8 +56,5 @@ class ConfigChange(_message.Message):
         advices: _Optional[_Iterable[_Union[Advice, _Mapping]]] = ...,
     ) -> None: ...
 
-class Advice(_message.Message):
-    __slots__ = ("description",)
-    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
-    description: str
-    def __init__(self, description: _Optional[str] = ...) -> None: ...
+class ChangeType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = []

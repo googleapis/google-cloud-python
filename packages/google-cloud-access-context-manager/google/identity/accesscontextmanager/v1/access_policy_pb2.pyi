@@ -27,29 +27,29 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class AccessPolicy(_message.Message):
-    __slots__ = (
+    __slots__ = [
+        "create_time",
+        "etag",
         "name",
         "parent",
-        "title",
         "scopes",
-        "create_time",
+        "title",
         "update_time",
-        "etag",
-    )
+    ]
+    CREATE_TIME_FIELD_NUMBER: _ClassVar[int]
+    ETAG_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     PARENT_FIELD_NUMBER: _ClassVar[int]
-    TITLE_FIELD_NUMBER: _ClassVar[int]
     SCOPES_FIELD_NUMBER: _ClassVar[int]
-    CREATE_TIME_FIELD_NUMBER: _ClassVar[int]
+    TITLE_FIELD_NUMBER: _ClassVar[int]
     UPDATE_TIME_FIELD_NUMBER: _ClassVar[int]
-    ETAG_FIELD_NUMBER: _ClassVar[int]
+    create_time: _timestamp_pb2.Timestamp
+    etag: str
     name: str
     parent: str
-    title: str
     scopes: _containers.RepeatedScalarFieldContainer[str]
-    create_time: _timestamp_pb2.Timestamp
+    title: str
     update_time: _timestamp_pb2.Timestamp
-    etag: str
     def __init__(
         self,
         name: _Optional[str] = ...,

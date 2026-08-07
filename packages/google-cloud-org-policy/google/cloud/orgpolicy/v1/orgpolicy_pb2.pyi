@@ -27,42 +27,45 @@ from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Policy(_message.Message):
-    __slots__ = (
-        "version",
+    __slots__ = [
+        "boolean_policy",
         "constraint",
         "etag",
-        "update_time",
         "list_policy",
-        "boolean_policy",
         "restore_default",
-    )
+        "update_time",
+        "version",
+    ]
+    class BooleanPolicy(_message.Message):
+        __slots__ = ["enforced"]
+        ENFORCED_FIELD_NUMBER: _ClassVar[int]
+        enforced: bool
+        def __init__(self, enforced: bool = ...) -> None: ...
+
     class ListPolicy(_message.Message):
-        __slots__ = (
+        __slots__ = [
+            "all_values",
             "allowed_values",
             "denied_values",
-            "all_values",
-            "suggested_value",
             "inherit_from_parent",
-        )
+            "suggested_value",
+        ]
         class AllValues(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-            __slots__ = ()
-            ALL_VALUES_UNSPECIFIED: _ClassVar[Policy.ListPolicy.AllValues]
-            ALLOW: _ClassVar[Policy.ListPolicy.AllValues]
-            DENY: _ClassVar[Policy.ListPolicy.AllValues]
+            __slots__ = []
 
-        ALL_VALUES_UNSPECIFIED: Policy.ListPolicy.AllValues
         ALLOW: Policy.ListPolicy.AllValues
-        DENY: Policy.ListPolicy.AllValues
         ALLOWED_VALUES_FIELD_NUMBER: _ClassVar[int]
-        DENIED_VALUES_FIELD_NUMBER: _ClassVar[int]
         ALL_VALUES_FIELD_NUMBER: _ClassVar[int]
-        SUGGESTED_VALUE_FIELD_NUMBER: _ClassVar[int]
+        ALL_VALUES_UNSPECIFIED: Policy.ListPolicy.AllValues
+        DENIED_VALUES_FIELD_NUMBER: _ClassVar[int]
+        DENY: Policy.ListPolicy.AllValues
         INHERIT_FROM_PARENT_FIELD_NUMBER: _ClassVar[int]
+        SUGGESTED_VALUE_FIELD_NUMBER: _ClassVar[int]
+        all_values: Policy.ListPolicy.AllValues
         allowed_values: _containers.RepeatedScalarFieldContainer[str]
         denied_values: _containers.RepeatedScalarFieldContainer[str]
-        all_values: Policy.ListPolicy.AllValues
-        suggested_value: str
         inherit_from_parent: bool
+        suggested_value: str
         def __init__(
             self,
             allowed_values: _Optional[_Iterable[str]] = ...,
@@ -72,30 +75,24 @@ class Policy(_message.Message):
             inherit_from_parent: bool = ...,
         ) -> None: ...
 
-    class BooleanPolicy(_message.Message):
-        __slots__ = ("enforced",)
-        ENFORCED_FIELD_NUMBER: _ClassVar[int]
-        enforced: bool
-        def __init__(self, enforced: bool = ...) -> None: ...
-
     class RestoreDefault(_message.Message):
-        __slots__ = ()
+        __slots__ = []
         def __init__(self) -> None: ...
 
-    VERSION_FIELD_NUMBER: _ClassVar[int]
+    BOOLEAN_POLICY_FIELD_NUMBER: _ClassVar[int]
     CONSTRAINT_FIELD_NUMBER: _ClassVar[int]
     ETAG_FIELD_NUMBER: _ClassVar[int]
-    UPDATE_TIME_FIELD_NUMBER: _ClassVar[int]
     LIST_POLICY_FIELD_NUMBER: _ClassVar[int]
-    BOOLEAN_POLICY_FIELD_NUMBER: _ClassVar[int]
     RESTORE_DEFAULT_FIELD_NUMBER: _ClassVar[int]
-    version: int
+    UPDATE_TIME_FIELD_NUMBER: _ClassVar[int]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
+    boolean_policy: Policy.BooleanPolicy
     constraint: str
     etag: bytes
-    update_time: _timestamp_pb2.Timestamp
     list_policy: Policy.ListPolicy
-    boolean_policy: Policy.BooleanPolicy
     restore_default: Policy.RestoreDefault
+    update_time: _timestamp_pb2.Timestamp
+    version: int
     def __init__(
         self,
         version: _Optional[int] = ...,

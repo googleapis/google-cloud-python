@@ -24,15 +24,15 @@ from google.protobuf import wrappers_pb2 as _wrappers_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Color(_message.Message):
-    __slots__ = ("red", "green", "blue", "alpha")
-    RED_FIELD_NUMBER: _ClassVar[int]
-    GREEN_FIELD_NUMBER: _ClassVar[int]
-    BLUE_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["alpha", "blue", "green", "red"]
     ALPHA_FIELD_NUMBER: _ClassVar[int]
-    red: float
-    green: float
-    blue: float
+    BLUE_FIELD_NUMBER: _ClassVar[int]
+    GREEN_FIELD_NUMBER: _ClassVar[int]
+    RED_FIELD_NUMBER: _ClassVar[int]
     alpha: _wrappers_pb2.FloatValue
+    blue: float
+    green: float
+    red: float
     def __init__(
         self,
         red: _Optional[float] = ...,

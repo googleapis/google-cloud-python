@@ -24,12 +24,22 @@ from google.protobuf.internal import containers as _containers
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class CustomHttpPattern(_message.Message):
+    __slots__ = ["kind", "path"]
+    KIND_FIELD_NUMBER: _ClassVar[int]
+    PATH_FIELD_NUMBER: _ClassVar[int]
+    kind: str
+    path: str
+    def __init__(
+        self, kind: _Optional[str] = ..., path: _Optional[str] = ...
+    ) -> None: ...
+
 class Http(_message.Message):
-    __slots__ = ("rules", "fully_decode_reserved_expansion")
-    RULES_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["fully_decode_reserved_expansion", "rules"]
     FULLY_DECODE_RESERVED_EXPANSION_FIELD_NUMBER: _ClassVar[int]
-    rules: _containers.RepeatedCompositeFieldContainer[HttpRule]
+    RULES_FIELD_NUMBER: _ClassVar[int]
     fully_decode_reserved_expansion: bool
+    rules: _containers.RepeatedCompositeFieldContainer[HttpRule]
     def __init__(
         self,
         rules: _Optional[_Iterable[_Union[HttpRule, _Mapping]]] = ...,
@@ -37,38 +47,38 @@ class Http(_message.Message):
     ) -> None: ...
 
 class HttpRule(_message.Message):
-    __slots__ = (
-        "selector",
-        "get",
-        "put",
-        "post",
-        "delete",
-        "patch",
-        "custom",
-        "body",
-        "response_body",
+    __slots__ = [
         "additional_bindings",
-    )
-    SELECTOR_FIELD_NUMBER: _ClassVar[int]
-    GET_FIELD_NUMBER: _ClassVar[int]
-    PUT_FIELD_NUMBER: _ClassVar[int]
-    POST_FIELD_NUMBER: _ClassVar[int]
-    DELETE_FIELD_NUMBER: _ClassVar[int]
-    PATCH_FIELD_NUMBER: _ClassVar[int]
-    CUSTOM_FIELD_NUMBER: _ClassVar[int]
-    BODY_FIELD_NUMBER: _ClassVar[int]
-    RESPONSE_BODY_FIELD_NUMBER: _ClassVar[int]
+        "body",
+        "custom",
+        "delete",
+        "get",
+        "patch",
+        "post",
+        "put",
+        "response_body",
+        "selector",
+    ]
     ADDITIONAL_BINDINGS_FIELD_NUMBER: _ClassVar[int]
-    selector: str
-    get: str
-    put: str
-    post: str
-    delete: str
-    patch: str
-    custom: CustomHttpPattern
-    body: str
-    response_body: str
+    BODY_FIELD_NUMBER: _ClassVar[int]
+    CUSTOM_FIELD_NUMBER: _ClassVar[int]
+    DELETE_FIELD_NUMBER: _ClassVar[int]
+    GET_FIELD_NUMBER: _ClassVar[int]
+    PATCH_FIELD_NUMBER: _ClassVar[int]
+    POST_FIELD_NUMBER: _ClassVar[int]
+    PUT_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_BODY_FIELD_NUMBER: _ClassVar[int]
+    SELECTOR_FIELD_NUMBER: _ClassVar[int]
     additional_bindings: _containers.RepeatedCompositeFieldContainer[HttpRule]
+    body: str
+    custom: CustomHttpPattern
+    delete: str
+    get: str
+    patch: str
+    post: str
+    put: str
+    response_body: str
+    selector: str
     def __init__(
         self,
         selector: _Optional[str] = ...,
@@ -81,14 +91,4 @@ class HttpRule(_message.Message):
         body: _Optional[str] = ...,
         response_body: _Optional[str] = ...,
         additional_bindings: _Optional[_Iterable[_Union[HttpRule, _Mapping]]] = ...,
-    ) -> None: ...
-
-class CustomHttpPattern(_message.Message):
-    __slots__ = ("kind", "path")
-    KIND_FIELD_NUMBER: _ClassVar[int]
-    PATH_FIELD_NUMBER: _ClassVar[int]
-    kind: str
-    path: str
-    def __init__(
-        self, kind: _Optional[str] = ..., path: _Optional[str] = ...
     ) -> None: ...

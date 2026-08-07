@@ -21,13 +21,13 @@ from google.protobuf import message as _message
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Date(_message.Message):
-    __slots__ = ("year", "month", "day")
-    YEAR_FIELD_NUMBER: _ClassVar[int]
-    MONTH_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["day", "month", "year"]
     DAY_FIELD_NUMBER: _ClassVar[int]
-    year: int
-    month: int
+    MONTH_FIELD_NUMBER: _ClassVar[int]
+    YEAR_FIELD_NUMBER: _ClassVar[int]
     day: int
+    month: int
+    year: int
     def __init__(
         self,
         year: _Optional[int] = ...,

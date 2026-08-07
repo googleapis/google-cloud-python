@@ -26,7 +26,7 @@ from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ProjectProperties(_message.Message):
-    __slots__ = ("properties",)
+    __slots__ = ["properties"]
     PROPERTIES_FIELD_NUMBER: _ClassVar[int]
     properties: _containers.RepeatedCompositeFieldContainer[Property]
     def __init__(
@@ -34,26 +34,21 @@ class ProjectProperties(_message.Message):
     ) -> None: ...
 
 class Property(_message.Message):
-    __slots__ = ("name", "type", "description")
+    __slots__ = ["description", "name", "type"]
     class PropertyType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        UNSPECIFIED: _ClassVar[Property.PropertyType]
-        INT64: _ClassVar[Property.PropertyType]
-        BOOL: _ClassVar[Property.PropertyType]
-        STRING: _ClassVar[Property.PropertyType]
-        DOUBLE: _ClassVar[Property.PropertyType]
+        __slots__ = []
 
-    UNSPECIFIED: Property.PropertyType
-    INT64: Property.PropertyType
     BOOL: Property.PropertyType
-    STRING: Property.PropertyType
-    DOUBLE: Property.PropertyType
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    TYPE_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    DOUBLE: Property.PropertyType
+    INT64: Property.PropertyType
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    STRING: Property.PropertyType
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    UNSPECIFIED: Property.PropertyType
+    description: str
     name: str
     type: Property.PropertyType
-    description: str
     def __init__(
         self,
         name: _Optional[str] = ...,

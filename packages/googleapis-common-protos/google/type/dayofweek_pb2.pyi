@@ -17,24 +17,15 @@ from typing import ClassVar as _ClassVar
 from google.protobuf import descriptor as _descriptor
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 
-DESCRIPTOR: _descriptor.FileDescriptor
-
-class DayOfWeek(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = ()
-    DAY_OF_WEEK_UNSPECIFIED: _ClassVar[DayOfWeek]
-    MONDAY: _ClassVar[DayOfWeek]
-    TUESDAY: _ClassVar[DayOfWeek]
-    WEDNESDAY: _ClassVar[DayOfWeek]
-    THURSDAY: _ClassVar[DayOfWeek]
-    FRIDAY: _ClassVar[DayOfWeek]
-    SATURDAY: _ClassVar[DayOfWeek]
-    SUNDAY: _ClassVar[DayOfWeek]
-
 DAY_OF_WEEK_UNSPECIFIED: DayOfWeek
-MONDAY: DayOfWeek
-TUESDAY: DayOfWeek
-WEDNESDAY: DayOfWeek
-THURSDAY: DayOfWeek
+DESCRIPTOR: _descriptor.FileDescriptor
 FRIDAY: DayOfWeek
+MONDAY: DayOfWeek
 SATURDAY: DayOfWeek
 SUNDAY: DayOfWeek
+THURSDAY: DayOfWeek
+TUESDAY: DayOfWeek
+WEDNESDAY: DayOfWeek
+
+class DayOfWeek(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = []

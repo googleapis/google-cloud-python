@@ -25,13 +25,13 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Billing(_message.Message):
-    __slots__ = ("consumer_destinations",)
+    __slots__ = ["consumer_destinations"]
     class BillingDestination(_message.Message):
-        __slots__ = ("monitored_resource", "metrics")
-        MONITORED_RESOURCE_FIELD_NUMBER: _ClassVar[int]
+        __slots__ = ["metrics", "monitored_resource"]
         METRICS_FIELD_NUMBER: _ClassVar[int]
-        monitored_resource: str
+        MONITORED_RESOURCE_FIELD_NUMBER: _ClassVar[int]
         metrics: _containers.RepeatedScalarFieldContainer[str]
+        monitored_resource: str
         def __init__(
             self,
             monitored_resource: _Optional[str] = ...,

@@ -21,13 +21,13 @@ from google.protobuf import message as _message
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Money(_message.Message):
-    __slots__ = ("currency_code", "units", "nanos")
+    __slots__ = ["currency_code", "nanos", "units"]
     CURRENCY_CODE_FIELD_NUMBER: _ClassVar[int]
-    UNITS_FIELD_NUMBER: _ClassVar[int]
     NANOS_FIELD_NUMBER: _ClassVar[int]
+    UNITS_FIELD_NUMBER: _ClassVar[int]
     currency_code: str
-    units: int
     nanos: int
+    units: int
     def __init__(
         self,
         currency_code: _Optional[str] = ...,

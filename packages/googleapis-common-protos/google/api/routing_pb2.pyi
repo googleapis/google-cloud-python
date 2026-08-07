@@ -27,8 +27,18 @@ DESCRIPTOR: _descriptor.FileDescriptor
 ROUTING_FIELD_NUMBER: _ClassVar[int]
 routing: _descriptor.FieldDescriptor
 
+class RoutingParameter(_message.Message):
+    __slots__ = ["field", "path_template"]
+    FIELD_FIELD_NUMBER: _ClassVar[int]
+    PATH_TEMPLATE_FIELD_NUMBER: _ClassVar[int]
+    field: str
+    path_template: str
+    def __init__(
+        self, field: _Optional[str] = ..., path_template: _Optional[str] = ...
+    ) -> None: ...
+
 class RoutingRule(_message.Message):
-    __slots__ = ("routing_parameters",)
+    __slots__ = ["routing_parameters"]
     ROUTING_PARAMETERS_FIELD_NUMBER: _ClassVar[int]
     routing_parameters: _containers.RepeatedCompositeFieldContainer[RoutingParameter]
     def __init__(
@@ -36,14 +46,4 @@ class RoutingRule(_message.Message):
         routing_parameters: _Optional[
             _Iterable[_Union[RoutingParameter, _Mapping]]
         ] = ...,
-    ) -> None: ...
-
-class RoutingParameter(_message.Message):
-    __slots__ = ("field", "path_template")
-    FIELD_FIELD_NUMBER: _ClassVar[int]
-    PATH_TEMPLATE_FIELD_NUMBER: _ClassVar[int]
-    field: str
-    path_template: str
-    def __init__(
-        self, field: _Optional[str] = ..., path_template: _Optional[str] = ...
     ) -> None: ...

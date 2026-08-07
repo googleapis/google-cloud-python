@@ -25,25 +25,25 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Logging(_message.Message):
-    __slots__ = ("producer_destinations", "consumer_destinations")
+    __slots__ = ["consumer_destinations", "producer_destinations"]
     class LoggingDestination(_message.Message):
-        __slots__ = ("monitored_resource", "logs")
-        MONITORED_RESOURCE_FIELD_NUMBER: _ClassVar[int]
+        __slots__ = ["logs", "monitored_resource"]
         LOGS_FIELD_NUMBER: _ClassVar[int]
-        monitored_resource: str
+        MONITORED_RESOURCE_FIELD_NUMBER: _ClassVar[int]
         logs: _containers.RepeatedScalarFieldContainer[str]
+        monitored_resource: str
         def __init__(
             self,
             monitored_resource: _Optional[str] = ...,
             logs: _Optional[_Iterable[str]] = ...,
         ) -> None: ...
 
-    PRODUCER_DESTINATIONS_FIELD_NUMBER: _ClassVar[int]
     CONSUMER_DESTINATIONS_FIELD_NUMBER: _ClassVar[int]
-    producer_destinations: _containers.RepeatedCompositeFieldContainer[
+    PRODUCER_DESTINATIONS_FIELD_NUMBER: _ClassVar[int]
+    consumer_destinations: _containers.RepeatedCompositeFieldContainer[
         Logging.LoggingDestination
     ]
-    consumer_destinations: _containers.RepeatedCompositeFieldContainer[
+    producer_destinations: _containers.RepeatedCompositeFieldContainer[
         Logging.LoggingDestination
     ]
     def __init__(

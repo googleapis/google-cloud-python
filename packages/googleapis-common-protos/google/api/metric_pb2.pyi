@@ -29,91 +29,77 @@ from google.api import launch_stage_pb2 as _launch_stage_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class Metric(_message.Message):
+    __slots__ = ["labels", "type"]
+    class LabelsEntry(_message.Message):
+        __slots__ = ["key", "value"]
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: str
+        def __init__(
+            self, key: _Optional[str] = ..., value: _Optional[str] = ...
+        ) -> None: ...
+
+    LABELS_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    labels: _containers.ScalarMap[str, str]
+    type: str
+    def __init__(
+        self, type: _Optional[str] = ..., labels: _Optional[_Mapping[str, str]] = ...
+    ) -> None: ...
+
 class MetricDescriptor(_message.Message):
-    __slots__ = (
-        "name",
-        "type",
-        "labels",
-        "metric_kind",
-        "value_type",
-        "unit",
+    __slots__ = [
         "description",
         "display_name",
-        "metadata",
+        "labels",
         "launch_stage",
+        "metadata",
+        "metric_kind",
         "monitored_resource_types",
-    )
+        "name",
+        "type",
+        "unit",
+        "value_type",
+    ]
     class MetricKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        METRIC_KIND_UNSPECIFIED: _ClassVar[MetricDescriptor.MetricKind]
-        GAUGE: _ClassVar[MetricDescriptor.MetricKind]
-        DELTA: _ClassVar[MetricDescriptor.MetricKind]
-        CUMULATIVE: _ClassVar[MetricDescriptor.MetricKind]
+        __slots__ = []
 
-    METRIC_KIND_UNSPECIFIED: MetricDescriptor.MetricKind
-    GAUGE: MetricDescriptor.MetricKind
-    DELTA: MetricDescriptor.MetricKind
-    CUMULATIVE: MetricDescriptor.MetricKind
     class ValueType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        VALUE_TYPE_UNSPECIFIED: _ClassVar[MetricDescriptor.ValueType]
-        BOOL: _ClassVar[MetricDescriptor.ValueType]
-        INT64: _ClassVar[MetricDescriptor.ValueType]
-        DOUBLE: _ClassVar[MetricDescriptor.ValueType]
-        STRING: _ClassVar[MetricDescriptor.ValueType]
-        DISTRIBUTION: _ClassVar[MetricDescriptor.ValueType]
-        MONEY: _ClassVar[MetricDescriptor.ValueType]
+        __slots__ = []
 
-    VALUE_TYPE_UNSPECIFIED: MetricDescriptor.ValueType
-    BOOL: MetricDescriptor.ValueType
-    INT64: MetricDescriptor.ValueType
-    DOUBLE: MetricDescriptor.ValueType
-    STRING: MetricDescriptor.ValueType
-    DISTRIBUTION: MetricDescriptor.ValueType
-    MONEY: MetricDescriptor.ValueType
     class MetricDescriptorMetadata(_message.Message):
-        __slots__ = (
+        __slots__ = [
+            "ingest_delay",
             "launch_stage",
             "sample_period",
-            "ingest_delay",
             "time_series_resource_hierarchy_level",
-        )
+        ]
         class TimeSeriesResourceHierarchyLevel(
             int, metaclass=_enum_type_wrapper.EnumTypeWrapper
         ):
-            __slots__ = ()
-            TIME_SERIES_RESOURCE_HIERARCHY_LEVEL_UNSPECIFIED: _ClassVar[
-                MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
-            ]
-            PROJECT: _ClassVar[
-                MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
-            ]
-            ORGANIZATION: _ClassVar[
-                MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
-            ]
-            FOLDER: _ClassVar[
-                MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
-            ]
+            __slots__ = []
 
-        TIME_SERIES_RESOURCE_HIERARCHY_LEVEL_UNSPECIFIED: (
+        FOLDER: (
+            MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
+        )
+        INGEST_DELAY_FIELD_NUMBER: _ClassVar[int]
+        LAUNCH_STAGE_FIELD_NUMBER: _ClassVar[int]
+        ORGANIZATION: (
             MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
         )
         PROJECT: (
             MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
         )
-        ORGANIZATION: (
-            MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
-        )
-        FOLDER: (
-            MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
-        )
-        LAUNCH_STAGE_FIELD_NUMBER: _ClassVar[int]
         SAMPLE_PERIOD_FIELD_NUMBER: _ClassVar[int]
-        INGEST_DELAY_FIELD_NUMBER: _ClassVar[int]
         TIME_SERIES_RESOURCE_HIERARCHY_LEVEL_FIELD_NUMBER: _ClassVar[int]
+        TIME_SERIES_RESOURCE_HIERARCHY_LEVEL_UNSPECIFIED: (
+            MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
+        )
+        ingest_delay: _duration_pb2.Duration
         launch_stage: _launch_stage_pb2.LaunchStage
         sample_period: _duration_pb2.Duration
-        ingest_delay: _duration_pb2.Duration
         time_series_resource_hierarchy_level: _containers.RepeatedScalarFieldContainer[
             MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
         ]
@@ -132,28 +118,39 @@ class MetricDescriptor(_message.Message):
             ] = ...,
         ) -> None: ...
 
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    TYPE_FIELD_NUMBER: _ClassVar[int]
-    LABELS_FIELD_NUMBER: _ClassVar[int]
-    METRIC_KIND_FIELD_NUMBER: _ClassVar[int]
-    VALUE_TYPE_FIELD_NUMBER: _ClassVar[int]
-    UNIT_FIELD_NUMBER: _ClassVar[int]
+    BOOL: MetricDescriptor.ValueType
+    CUMULATIVE: MetricDescriptor.MetricKind
+    DELTA: MetricDescriptor.MetricKind
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
-    METADATA_FIELD_NUMBER: _ClassVar[int]
+    DISTRIBUTION: MetricDescriptor.ValueType
+    DOUBLE: MetricDescriptor.ValueType
+    GAUGE: MetricDescriptor.MetricKind
+    INT64: MetricDescriptor.ValueType
+    LABELS_FIELD_NUMBER: _ClassVar[int]
     LAUNCH_STAGE_FIELD_NUMBER: _ClassVar[int]
+    METADATA_FIELD_NUMBER: _ClassVar[int]
+    METRIC_KIND_FIELD_NUMBER: _ClassVar[int]
+    METRIC_KIND_UNSPECIFIED: MetricDescriptor.MetricKind
+    MONEY: MetricDescriptor.ValueType
     MONITORED_RESOURCE_TYPES_FIELD_NUMBER: _ClassVar[int]
-    name: str
-    type: str
-    labels: _containers.RepeatedCompositeFieldContainer[_label_pb2.LabelDescriptor]
-    metric_kind: MetricDescriptor.MetricKind
-    value_type: MetricDescriptor.ValueType
-    unit: str
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    STRING: MetricDescriptor.ValueType
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    UNIT_FIELD_NUMBER: _ClassVar[int]
+    VALUE_TYPE_FIELD_NUMBER: _ClassVar[int]
+    VALUE_TYPE_UNSPECIFIED: MetricDescriptor.ValueType
     description: str
     display_name: str
-    metadata: MetricDescriptor.MetricDescriptorMetadata
+    labels: _containers.RepeatedCompositeFieldContainer[_label_pb2.LabelDescriptor]
     launch_stage: _launch_stage_pb2.LaunchStage
+    metadata: MetricDescriptor.MetricDescriptorMetadata
+    metric_kind: MetricDescriptor.MetricKind
     monitored_resource_types: _containers.RepeatedScalarFieldContainer[str]
+    name: str
+    type: str
+    unit: str
+    value_type: MetricDescriptor.ValueType
     def __init__(
         self,
         name: _Optional[str] = ...,
@@ -171,24 +168,4 @@ class MetricDescriptor(_message.Message):
         ] = ...,
         launch_stage: _Optional[_Union[_launch_stage_pb2.LaunchStage, str]] = ...,
         monitored_resource_types: _Optional[_Iterable[str]] = ...,
-    ) -> None: ...
-
-class Metric(_message.Message):
-    __slots__ = ("type", "labels")
-    class LabelsEntry(_message.Message):
-        __slots__ = ("key", "value")
-        KEY_FIELD_NUMBER: _ClassVar[int]
-        VALUE_FIELD_NUMBER: _ClassVar[int]
-        key: str
-        value: str
-        def __init__(
-            self, key: _Optional[str] = ..., value: _Optional[str] = ...
-        ) -> None: ...
-
-    TYPE_FIELD_NUMBER: _ClassVar[int]
-    LABELS_FIELD_NUMBER: _ClassVar[int]
-    type: str
-    labels: _containers.ScalarMap[str, str]
-    def __init__(
-        self, type: _Optional[str] = ..., labels: _Optional[_Mapping[str, str]] = ...
     ) -> None: ...

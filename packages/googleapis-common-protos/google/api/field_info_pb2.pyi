@@ -29,22 +29,17 @@ FIELD_INFO_FIELD_NUMBER: _ClassVar[int]
 field_info: _descriptor.FieldDescriptor
 
 class FieldInfo(_message.Message):
-    __slots__ = ("format", "referenced_types")
+    __slots__ = ["format", "referenced_types"]
     class Format(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        FORMAT_UNSPECIFIED: _ClassVar[FieldInfo.Format]
-        UUID4: _ClassVar[FieldInfo.Format]
-        IPV4: _ClassVar[FieldInfo.Format]
-        IPV6: _ClassVar[FieldInfo.Format]
-        IPV4_OR_IPV6: _ClassVar[FieldInfo.Format]
+        __slots__ = []
 
-    FORMAT_UNSPECIFIED: FieldInfo.Format
-    UUID4: FieldInfo.Format
-    IPV4: FieldInfo.Format
-    IPV6: FieldInfo.Format
-    IPV4_OR_IPV6: FieldInfo.Format
     FORMAT_FIELD_NUMBER: _ClassVar[int]
+    FORMAT_UNSPECIFIED: FieldInfo.Format
+    IPV4: FieldInfo.Format
+    IPV4_OR_IPV6: FieldInfo.Format
+    IPV6: FieldInfo.Format
     REFERENCED_TYPES_FIELD_NUMBER: _ClassVar[int]
+    UUID4: FieldInfo.Format
     format: FieldInfo.Format
     referenced_types: _containers.RepeatedCompositeFieldContainer[TypeReference]
     def __init__(
@@ -54,7 +49,7 @@ class FieldInfo(_message.Message):
     ) -> None: ...
 
 class TypeReference(_message.Message):
-    __slots__ = ("type_name",)
+    __slots__ = ["type_name"]
     TYPE_NAME_FIELD_NUMBER: _ClassVar[int]
     type_name: str
     def __init__(self, type_name: _Optional[str] = ...) -> None: ...

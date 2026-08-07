@@ -23,15 +23,15 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Endpoint(_message.Message):
-    __slots__ = ("name", "aliases", "target", "allow_cors")
-    NAME_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["aliases", "allow_cors", "name", "target"]
     ALIASES_FIELD_NUMBER: _ClassVar[int]
-    TARGET_FIELD_NUMBER: _ClassVar[int]
     ALLOW_CORS_FIELD_NUMBER: _ClassVar[int]
-    name: str
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    TARGET_FIELD_NUMBER: _ClassVar[int]
     aliases: _containers.RepeatedScalarFieldContainer[str]
-    target: str
     allow_cors: bool
+    name: str
+    target: str
     def __init__(
         self,
         name: _Optional[str] = ...,

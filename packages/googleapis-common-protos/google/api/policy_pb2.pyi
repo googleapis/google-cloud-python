@@ -25,18 +25,18 @@ from google.protobuf.internal import containers as _containers
 
 DESCRIPTOR: _descriptor.FileDescriptor
 FIELD_POLICY_FIELD_NUMBER: _ClassVar[int]
-field_policy: _descriptor.FieldDescriptor
 METHOD_POLICY_FIELD_NUMBER: _ClassVar[int]
+field_policy: _descriptor.FieldDescriptor
 method_policy: _descriptor.FieldDescriptor
 
 class FieldPolicy(_message.Message):
-    __slots__ = ("selector", "resource_permission", "resource_type")
-    SELECTOR_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["resource_permission", "resource_type", "selector"]
     RESOURCE_PERMISSION_FIELD_NUMBER: _ClassVar[int]
     RESOURCE_TYPE_FIELD_NUMBER: _ClassVar[int]
-    selector: str
+    SELECTOR_FIELD_NUMBER: _ClassVar[int]
     resource_permission: str
     resource_type: str
+    selector: str
     def __init__(
         self,
         selector: _Optional[str] = ...,
@@ -45,11 +45,11 @@ class FieldPolicy(_message.Message):
     ) -> None: ...
 
 class MethodPolicy(_message.Message):
-    __slots__ = ("selector", "request_policies")
-    SELECTOR_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["request_policies", "selector"]
     REQUEST_POLICIES_FIELD_NUMBER: _ClassVar[int]
-    selector: str
+    SELECTOR_FIELD_NUMBER: _ClassVar[int]
     request_policies: _containers.RepeatedCompositeFieldContainer[FieldPolicy]
+    selector: str
     def __init__(
         self,
         selector: _Optional[str] = ...,

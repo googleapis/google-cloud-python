@@ -24,53 +24,53 @@ from google.protobuf import message as _message
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class HttpRequest(_message.Message):
-    __slots__ = (
-        "request_method",
-        "request_url",
-        "request_size",
-        "status",
-        "response_size",
-        "user_agent",
-        "remote_ip",
-        "server_ip",
-        "referer",
-        "latency",
-        "cache_lookup",
-        "cache_hit",
-        "cache_validated_with_origin_server",
+    __slots__ = [
         "cache_fill_bytes",
+        "cache_hit",
+        "cache_lookup",
+        "cache_validated_with_origin_server",
+        "latency",
         "protocol",
-    )
-    REQUEST_METHOD_FIELD_NUMBER: _ClassVar[int]
-    REQUEST_URL_FIELD_NUMBER: _ClassVar[int]
-    REQUEST_SIZE_FIELD_NUMBER: _ClassVar[int]
-    STATUS_FIELD_NUMBER: _ClassVar[int]
-    RESPONSE_SIZE_FIELD_NUMBER: _ClassVar[int]
-    USER_AGENT_FIELD_NUMBER: _ClassVar[int]
-    REMOTE_IP_FIELD_NUMBER: _ClassVar[int]
-    SERVER_IP_FIELD_NUMBER: _ClassVar[int]
-    REFERER_FIELD_NUMBER: _ClassVar[int]
-    LATENCY_FIELD_NUMBER: _ClassVar[int]
-    CACHE_LOOKUP_FIELD_NUMBER: _ClassVar[int]
-    CACHE_HIT_FIELD_NUMBER: _ClassVar[int]
-    CACHE_VALIDATED_WITH_ORIGIN_SERVER_FIELD_NUMBER: _ClassVar[int]
+        "referer",
+        "remote_ip",
+        "request_method",
+        "request_size",
+        "request_url",
+        "response_size",
+        "server_ip",
+        "status",
+        "user_agent",
+    ]
     CACHE_FILL_BYTES_FIELD_NUMBER: _ClassVar[int]
+    CACHE_HIT_FIELD_NUMBER: _ClassVar[int]
+    CACHE_LOOKUP_FIELD_NUMBER: _ClassVar[int]
+    CACHE_VALIDATED_WITH_ORIGIN_SERVER_FIELD_NUMBER: _ClassVar[int]
+    LATENCY_FIELD_NUMBER: _ClassVar[int]
     PROTOCOL_FIELD_NUMBER: _ClassVar[int]
-    request_method: str
-    request_url: str
-    request_size: int
-    status: int
-    response_size: int
-    user_agent: str
-    remote_ip: str
-    server_ip: str
-    referer: str
-    latency: _duration_pb2.Duration
-    cache_lookup: bool
-    cache_hit: bool
-    cache_validated_with_origin_server: bool
+    REFERER_FIELD_NUMBER: _ClassVar[int]
+    REMOTE_IP_FIELD_NUMBER: _ClassVar[int]
+    REQUEST_METHOD_FIELD_NUMBER: _ClassVar[int]
+    REQUEST_SIZE_FIELD_NUMBER: _ClassVar[int]
+    REQUEST_URL_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_SIZE_FIELD_NUMBER: _ClassVar[int]
+    SERVER_IP_FIELD_NUMBER: _ClassVar[int]
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    USER_AGENT_FIELD_NUMBER: _ClassVar[int]
     cache_fill_bytes: int
+    cache_hit: bool
+    cache_lookup: bool
+    cache_validated_with_origin_server: bool
+    latency: _duration_pb2.Duration
     protocol: str
+    referer: str
+    remote_ip: str
+    request_method: str
+    request_size: int
+    request_url: str
+    response_size: int
+    server_ip: str
+    status: int
+    user_agent: str
     def __init__(
         self,
         request_method: _Optional[str] = ...,

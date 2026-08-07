@@ -27,7 +27,7 @@ from google.api import policy_pb2 as _policy_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Control(_message.Message):
-    __slots__ = ("environment", "method_policies")
+    __slots__ = ["environment", "method_policies"]
     ENVIRONMENT_FIELD_NUMBER: _ClassVar[int]
     METHOD_POLICIES_FIELD_NUMBER: _ClassVar[int]
     environment: str

@@ -25,13 +25,13 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class GcpUserAccessBinding(_message.Message):
-    __slots__ = ("name", "group_key", "access_levels")
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    GROUP_KEY_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["access_levels", "group_key", "name"]
     ACCESS_LEVELS_FIELD_NUMBER: _ClassVar[int]
-    name: str
-    group_key: str
+    GROUP_KEY_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
     access_levels: _containers.RepeatedScalarFieldContainer[str]
+    group_key: str
+    name: str
     def __init__(
         self,
         name: _Optional[str] = ...,

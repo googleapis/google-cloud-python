@@ -26,13 +26,13 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Status(_message.Message):
-    __slots__ = ("code", "message", "details")
+    __slots__ = ["code", "details", "message"]
     CODE_FIELD_NUMBER: _ClassVar[int]
-    MESSAGE_FIELD_NUMBER: _ClassVar[int]
     DETAILS_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
     code: int
-    message: str
     details: _containers.RepeatedCompositeFieldContainer[_any_pb2.Any]
+    message: str
     def __init__(
         self,
         code: _Optional[int] = ...,

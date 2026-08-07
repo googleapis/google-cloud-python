@@ -21,11 +21,11 @@ from google.protobuf import message as _message
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class LocalizedText(_message.Message):
-    __slots__ = ("text", "language_code")
-    TEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["language_code", "text"]
     LANGUAGE_CODE_FIELD_NUMBER: _ClassVar[int]
-    text: str
+    TEXT_FIELD_NUMBER: _ClassVar[int]
     language_code: str
+    text: str
     def __init__(
         self, text: _Optional[str] = ..., language_code: _Optional[str] = ...
     ) -> None: ...

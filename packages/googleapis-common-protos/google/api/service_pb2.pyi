@@ -47,88 +47,88 @@ from google.api import usage_pb2 as _usage_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Service(_message.Message):
-    __slots__ = (
-        "name",
-        "title",
-        "producer_project_id",
-        "id",
+    __slots__ = [
         "apis",
-        "types",
-        "enums",
-        "documentation",
-        "backend",
-        "http",
-        "quota",
         "authentication",
+        "backend",
+        "billing",
+        "config_version",
         "context",
-        "usage",
-        "endpoints",
         "control",
+        "documentation",
+        "endpoints",
+        "enums",
+        "http",
+        "id",
+        "logging",
         "logs",
         "metrics",
         "monitored_resources",
-        "billing",
-        "logging",
         "monitoring",
-        "system_parameters",
-        "source_info",
+        "name",
+        "producer_project_id",
         "publishing",
-        "config_version",
-    )
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    TITLE_FIELD_NUMBER: _ClassVar[int]
-    PRODUCER_PROJECT_ID_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
+        "quota",
+        "source_info",
+        "system_parameters",
+        "title",
+        "types",
+        "usage",
+    ]
     APIS_FIELD_NUMBER: _ClassVar[int]
-    TYPES_FIELD_NUMBER: _ClassVar[int]
-    ENUMS_FIELD_NUMBER: _ClassVar[int]
-    DOCUMENTATION_FIELD_NUMBER: _ClassVar[int]
-    BACKEND_FIELD_NUMBER: _ClassVar[int]
-    HTTP_FIELD_NUMBER: _ClassVar[int]
-    QUOTA_FIELD_NUMBER: _ClassVar[int]
     AUTHENTICATION_FIELD_NUMBER: _ClassVar[int]
+    BACKEND_FIELD_NUMBER: _ClassVar[int]
+    BILLING_FIELD_NUMBER: _ClassVar[int]
+    CONFIG_VERSION_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    USAGE_FIELD_NUMBER: _ClassVar[int]
-    ENDPOINTS_FIELD_NUMBER: _ClassVar[int]
     CONTROL_FIELD_NUMBER: _ClassVar[int]
+    DOCUMENTATION_FIELD_NUMBER: _ClassVar[int]
+    ENDPOINTS_FIELD_NUMBER: _ClassVar[int]
+    ENUMS_FIELD_NUMBER: _ClassVar[int]
+    HTTP_FIELD_NUMBER: _ClassVar[int]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    LOGGING_FIELD_NUMBER: _ClassVar[int]
     LOGS_FIELD_NUMBER: _ClassVar[int]
     METRICS_FIELD_NUMBER: _ClassVar[int]
     MONITORED_RESOURCES_FIELD_NUMBER: _ClassVar[int]
-    BILLING_FIELD_NUMBER: _ClassVar[int]
-    LOGGING_FIELD_NUMBER: _ClassVar[int]
     MONITORING_FIELD_NUMBER: _ClassVar[int]
-    SYSTEM_PARAMETERS_FIELD_NUMBER: _ClassVar[int]
-    SOURCE_INFO_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    PRODUCER_PROJECT_ID_FIELD_NUMBER: _ClassVar[int]
     PUBLISHING_FIELD_NUMBER: _ClassVar[int]
-    CONFIG_VERSION_FIELD_NUMBER: _ClassVar[int]
-    name: str
-    title: str
-    producer_project_id: str
-    id: str
+    QUOTA_FIELD_NUMBER: _ClassVar[int]
+    SOURCE_INFO_FIELD_NUMBER: _ClassVar[int]
+    SYSTEM_PARAMETERS_FIELD_NUMBER: _ClassVar[int]
+    TITLE_FIELD_NUMBER: _ClassVar[int]
+    TYPES_FIELD_NUMBER: _ClassVar[int]
+    USAGE_FIELD_NUMBER: _ClassVar[int]
     apis: _containers.RepeatedCompositeFieldContainer[_api_pb2.Api]
-    types: _containers.RepeatedCompositeFieldContainer[_type_pb2.Type]
-    enums: _containers.RepeatedCompositeFieldContainer[_type_pb2.Enum]
-    documentation: _documentation_pb2.Documentation
-    backend: _backend_pb2.Backend
-    http: _http_pb2.Http
-    quota: _quota_pb2.Quota
     authentication: _auth_pb2.Authentication
+    backend: _backend_pb2.Backend
+    billing: _billing_pb2.Billing
+    config_version: _wrappers_pb2.UInt32Value
     context: _context_pb2.Context
-    usage: _usage_pb2.Usage
-    endpoints: _containers.RepeatedCompositeFieldContainer[_endpoint_pb2.Endpoint]
     control: _control_pb2.Control
+    documentation: _documentation_pb2.Documentation
+    endpoints: _containers.RepeatedCompositeFieldContainer[_endpoint_pb2.Endpoint]
+    enums: _containers.RepeatedCompositeFieldContainer[_type_pb2.Enum]
+    http: _http_pb2.Http
+    id: str
+    logging: _logging_pb2.Logging
     logs: _containers.RepeatedCompositeFieldContainer[_log_pb2.LogDescriptor]
     metrics: _containers.RepeatedCompositeFieldContainer[_metric_pb2.MetricDescriptor]
     monitored_resources: _containers.RepeatedCompositeFieldContainer[
         _monitored_resource_pb2.MonitoredResourceDescriptor
     ]
-    billing: _billing_pb2.Billing
-    logging: _logging_pb2.Logging
     monitoring: _monitoring_pb2.Monitoring
-    system_parameters: _system_parameter_pb2.SystemParameters
-    source_info: _source_info_pb2.SourceInfo
+    name: str
+    producer_project_id: str
     publishing: _client_pb2.Publishing
-    config_version: _wrappers_pb2.UInt32Value
+    quota: _quota_pb2.Quota
+    source_info: _source_info_pb2.SourceInfo
+    system_parameters: _system_parameter_pb2.SystemParameters
+    title: str
+    types: _containers.RepeatedCompositeFieldContainer[_type_pb2.Type]
+    usage: _usage_pb2.Usage
     def __init__(
         self,
         name: _Optional[str] = ...,

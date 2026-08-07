@@ -26,7 +26,7 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class SourceInfo(_message.Message):
-    __slots__ = ("source_files",)
+    __slots__ = ["source_files"]
     SOURCE_FILES_FIELD_NUMBER: _ClassVar[int]
     source_files: _containers.RepeatedCompositeFieldContainer[_any_pb2.Any]
     def __init__(

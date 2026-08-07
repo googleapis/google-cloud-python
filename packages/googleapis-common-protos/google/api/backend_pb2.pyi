@@ -26,7 +26,7 @@ from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Backend(_message.Message):
-    __slots__ = ("rules",)
+    __slots__ = ["rules"]
     RULES_FIELD_NUMBER: _ClassVar[int]
     rules: _containers.RepeatedCompositeFieldContainer[BackendRule]
     def __init__(
@@ -34,30 +34,24 @@ class Backend(_message.Message):
     ) -> None: ...
 
 class BackendRule(_message.Message):
-    __slots__ = (
-        "selector",
+    __slots__ = [
         "address",
         "deadline",
+        "disable_auth",
+        "jwt_audience",
+        "load_balancing_policy",
         "min_deadline",
         "operation_deadline",
-        "path_translation",
-        "jwt_audience",
-        "disable_auth",
-        "protocol",
         "overrides_by_request_protocol",
-        "load_balancing_policy",
-    )
+        "path_translation",
+        "protocol",
+        "selector",
+    ]
     class PathTranslation(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        PATH_TRANSLATION_UNSPECIFIED: _ClassVar[BackendRule.PathTranslation]
-        CONSTANT_ADDRESS: _ClassVar[BackendRule.PathTranslation]
-        APPEND_PATH_TO_ADDRESS: _ClassVar[BackendRule.PathTranslation]
+        __slots__ = []
 
-    PATH_TRANSLATION_UNSPECIFIED: BackendRule.PathTranslation
-    CONSTANT_ADDRESS: BackendRule.PathTranslation
-    APPEND_PATH_TO_ADDRESS: BackendRule.PathTranslation
     class OverridesByRequestProtocolEntry(_message.Message):
-        __slots__ = ("key", "value")
+        __slots__ = ["key", "value"]
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
         key: str
@@ -68,28 +62,31 @@ class BackendRule(_message.Message):
             value: _Optional[_Union[BackendRule, _Mapping]] = ...,
         ) -> None: ...
 
-    SELECTOR_FIELD_NUMBER: _ClassVar[int]
     ADDRESS_FIELD_NUMBER: _ClassVar[int]
+    APPEND_PATH_TO_ADDRESS: BackendRule.PathTranslation
+    CONSTANT_ADDRESS: BackendRule.PathTranslation
     DEADLINE_FIELD_NUMBER: _ClassVar[int]
+    DISABLE_AUTH_FIELD_NUMBER: _ClassVar[int]
+    JWT_AUDIENCE_FIELD_NUMBER: _ClassVar[int]
+    LOAD_BALANCING_POLICY_FIELD_NUMBER: _ClassVar[int]
     MIN_DEADLINE_FIELD_NUMBER: _ClassVar[int]
     OPERATION_DEADLINE_FIELD_NUMBER: _ClassVar[int]
-    PATH_TRANSLATION_FIELD_NUMBER: _ClassVar[int]
-    JWT_AUDIENCE_FIELD_NUMBER: _ClassVar[int]
-    DISABLE_AUTH_FIELD_NUMBER: _ClassVar[int]
-    PROTOCOL_FIELD_NUMBER: _ClassVar[int]
     OVERRIDES_BY_REQUEST_PROTOCOL_FIELD_NUMBER: _ClassVar[int]
-    LOAD_BALANCING_POLICY_FIELD_NUMBER: _ClassVar[int]
-    selector: str
+    PATH_TRANSLATION_FIELD_NUMBER: _ClassVar[int]
+    PATH_TRANSLATION_UNSPECIFIED: BackendRule.PathTranslation
+    PROTOCOL_FIELD_NUMBER: _ClassVar[int]
+    SELECTOR_FIELD_NUMBER: _ClassVar[int]
     address: str
     deadline: float
+    disable_auth: bool
+    jwt_audience: str
+    load_balancing_policy: str
     min_deadline: float
     operation_deadline: float
-    path_translation: BackendRule.PathTranslation
-    jwt_audience: str
-    disable_auth: bool
-    protocol: str
     overrides_by_request_protocol: _containers.MessageMap[str, BackendRule]
-    load_balancing_policy: str
+    path_translation: BackendRule.PathTranslation
+    protocol: str
+    selector: str
     def __init__(
         self,
         selector: _Optional[str] = ...,

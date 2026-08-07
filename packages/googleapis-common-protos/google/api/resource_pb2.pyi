@@ -24,53 +24,48 @@ from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 
 DESCRIPTOR: _descriptor.FileDescriptor
-RESOURCE_REFERENCE_FIELD_NUMBER: _ClassVar[int]
-resource_reference: _descriptor.FieldDescriptor
 RESOURCE_DEFINITION_FIELD_NUMBER: _ClassVar[int]
-resource_definition: _descriptor.FieldDescriptor
 RESOURCE_FIELD_NUMBER: _ClassVar[int]
+RESOURCE_REFERENCE_FIELD_NUMBER: _ClassVar[int]
 resource: _descriptor.FieldDescriptor
+resource_definition: _descriptor.FieldDescriptor
+resource_reference: _descriptor.FieldDescriptor
 
 class ResourceDescriptor(_message.Message):
-    __slots__ = (
-        "type",
-        "pattern",
-        "name_field",
+    __slots__ = [
         "history",
+        "name_field",
+        "pattern",
         "plural",
         "singular",
         "style",
-    )
+        "type",
+    ]
     class History(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        HISTORY_UNSPECIFIED: _ClassVar[ResourceDescriptor.History]
-        ORIGINALLY_SINGLE_PATTERN: _ClassVar[ResourceDescriptor.History]
-        FUTURE_MULTI_PATTERN: _ClassVar[ResourceDescriptor.History]
+        __slots__ = []
 
-    HISTORY_UNSPECIFIED: ResourceDescriptor.History
-    ORIGINALLY_SINGLE_PATTERN: ResourceDescriptor.History
-    FUTURE_MULTI_PATTERN: ResourceDescriptor.History
     class Style(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        STYLE_UNSPECIFIED: _ClassVar[ResourceDescriptor.Style]
-        DECLARATIVE_FRIENDLY: _ClassVar[ResourceDescriptor.Style]
+        __slots__ = []
 
-    STYLE_UNSPECIFIED: ResourceDescriptor.Style
     DECLARATIVE_FRIENDLY: ResourceDescriptor.Style
-    TYPE_FIELD_NUMBER: _ClassVar[int]
-    PATTERN_FIELD_NUMBER: _ClassVar[int]
-    NAME_FIELD_FIELD_NUMBER: _ClassVar[int]
+    FUTURE_MULTI_PATTERN: ResourceDescriptor.History
     HISTORY_FIELD_NUMBER: _ClassVar[int]
+    HISTORY_UNSPECIFIED: ResourceDescriptor.History
+    NAME_FIELD_FIELD_NUMBER: _ClassVar[int]
+    ORIGINALLY_SINGLE_PATTERN: ResourceDescriptor.History
+    PATTERN_FIELD_NUMBER: _ClassVar[int]
     PLURAL_FIELD_NUMBER: _ClassVar[int]
     SINGULAR_FIELD_NUMBER: _ClassVar[int]
     STYLE_FIELD_NUMBER: _ClassVar[int]
-    type: str
-    pattern: _containers.RepeatedScalarFieldContainer[str]
-    name_field: str
+    STYLE_UNSPECIFIED: ResourceDescriptor.Style
+    TYPE_FIELD_NUMBER: _ClassVar[int]
     history: ResourceDescriptor.History
+    name_field: str
+    pattern: _containers.RepeatedScalarFieldContainer[str]
     plural: str
     singular: str
     style: _containers.RepeatedScalarFieldContainer[ResourceDescriptor.Style]
+    type: str
     def __init__(
         self,
         type: _Optional[str] = ...,
@@ -83,11 +78,11 @@ class ResourceDescriptor(_message.Message):
     ) -> None: ...
 
 class ResourceReference(_message.Message):
-    __slots__ = ("type", "child_type")
-    TYPE_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["child_type", "type"]
     CHILD_TYPE_FIELD_NUMBER: _ClassVar[int]
-    type: str
+    TYPE_FIELD_NUMBER: _ClassVar[int]
     child_type: str
+    type: str
     def __init__(
         self, type: _Optional[str] = ..., child_type: _Optional[str] = ...
     ) -> None: ...

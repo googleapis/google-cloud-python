@@ -25,7 +25,7 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Context(_message.Message):
-    __slots__ = ("rules",)
+    __slots__ = ["rules"]
     RULES_FIELD_NUMBER: _ClassVar[int]
     rules: _containers.RepeatedCompositeFieldContainer[ContextRule]
     def __init__(
@@ -33,23 +33,23 @@ class Context(_message.Message):
     ) -> None: ...
 
 class ContextRule(_message.Message):
-    __slots__ = (
-        "selector",
-        "requested",
-        "provided",
+    __slots__ = [
         "allowed_request_extensions",
         "allowed_response_extensions",
-    )
-    SELECTOR_FIELD_NUMBER: _ClassVar[int]
-    REQUESTED_FIELD_NUMBER: _ClassVar[int]
-    PROVIDED_FIELD_NUMBER: _ClassVar[int]
+        "provided",
+        "requested",
+        "selector",
+    ]
     ALLOWED_REQUEST_EXTENSIONS_FIELD_NUMBER: _ClassVar[int]
     ALLOWED_RESPONSE_EXTENSIONS_FIELD_NUMBER: _ClassVar[int]
-    selector: str
-    requested: _containers.RepeatedScalarFieldContainer[str]
-    provided: _containers.RepeatedScalarFieldContainer[str]
+    PROVIDED_FIELD_NUMBER: _ClassVar[int]
+    REQUESTED_FIELD_NUMBER: _ClassVar[int]
+    SELECTOR_FIELD_NUMBER: _ClassVar[int]
     allowed_request_extensions: _containers.RepeatedScalarFieldContainer[str]
     allowed_response_extensions: _containers.RepeatedScalarFieldContainer[str]
+    provided: _containers.RepeatedScalarFieldContainer[str]
+    requested: _containers.RepeatedScalarFieldContainer[str]
+    selector: str
     def __init__(
         self,
         selector: _Optional[str] = ...,

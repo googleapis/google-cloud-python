@@ -24,11 +24,11 @@ from google.protobuf import timestamp_pb2 as _timestamp_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Interval(_message.Message):
-    __slots__ = ("start_time", "end_time")
-    START_TIME_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["end_time", "start_time"]
     END_TIME_FIELD_NUMBER: _ClassVar[int]
-    start_time: _timestamp_pb2.Timestamp
+    START_TIME_FIELD_NUMBER: _ClassVar[int]
     end_time: _timestamp_pb2.Timestamp
+    start_time: _timestamp_pb2.Timestamp
     def __init__(
         self,
         start_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,

@@ -23,41 +23,41 @@ from google.protobuf.internal import containers as _containers
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class PostalAddress(_message.Message):
-    __slots__ = (
-        "revision",
-        "region_code",
-        "language_code",
-        "postal_code",
-        "sorting_code",
-        "administrative_area",
-        "locality",
-        "sublocality",
+    __slots__ = [
         "address_lines",
-        "recipients",
+        "administrative_area",
+        "language_code",
+        "locality",
         "organization",
-    )
-    REVISION_FIELD_NUMBER: _ClassVar[int]
-    REGION_CODE_FIELD_NUMBER: _ClassVar[int]
-    LANGUAGE_CODE_FIELD_NUMBER: _ClassVar[int]
-    POSTAL_CODE_FIELD_NUMBER: _ClassVar[int]
-    SORTING_CODE_FIELD_NUMBER: _ClassVar[int]
-    ADMINISTRATIVE_AREA_FIELD_NUMBER: _ClassVar[int]
-    LOCALITY_FIELD_NUMBER: _ClassVar[int]
-    SUBLOCALITY_FIELD_NUMBER: _ClassVar[int]
+        "postal_code",
+        "recipients",
+        "region_code",
+        "revision",
+        "sorting_code",
+        "sublocality",
+    ]
     ADDRESS_LINES_FIELD_NUMBER: _ClassVar[int]
-    RECIPIENTS_FIELD_NUMBER: _ClassVar[int]
+    ADMINISTRATIVE_AREA_FIELD_NUMBER: _ClassVar[int]
+    LANGUAGE_CODE_FIELD_NUMBER: _ClassVar[int]
+    LOCALITY_FIELD_NUMBER: _ClassVar[int]
     ORGANIZATION_FIELD_NUMBER: _ClassVar[int]
-    revision: int
-    region_code: str
-    language_code: str
-    postal_code: str
-    sorting_code: str
-    administrative_area: str
-    locality: str
-    sublocality: str
+    POSTAL_CODE_FIELD_NUMBER: _ClassVar[int]
+    RECIPIENTS_FIELD_NUMBER: _ClassVar[int]
+    REGION_CODE_FIELD_NUMBER: _ClassVar[int]
+    REVISION_FIELD_NUMBER: _ClassVar[int]
+    SORTING_CODE_FIELD_NUMBER: _ClassVar[int]
+    SUBLOCALITY_FIELD_NUMBER: _ClassVar[int]
     address_lines: _containers.RepeatedScalarFieldContainer[str]
-    recipients: _containers.RepeatedScalarFieldContainer[str]
+    administrative_area: str
+    language_code: str
+    locality: str
     organization: str
+    postal_code: str
+    recipients: _containers.RepeatedScalarFieldContainer[str]
+    region_code: str
+    revision: int
+    sorting_code: str
+    sublocality: str
     def __init__(
         self,
         revision: _Optional[int] = ...,
