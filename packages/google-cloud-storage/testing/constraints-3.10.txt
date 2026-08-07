@@ -16,5 +16,5 @@ proto-plus==1.26.1
 protobuf==6.33.5
 grpc-google-iam-v1==0.14.2
 opentelemetry-api==1.1.0
-requests==2.22.0
+requests==2.33.0
 google-crc32c==1.6.0
