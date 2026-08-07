@@ -453,6 +453,9 @@ def test_create_channel_implicit_with_default_host(
     assert channel is grpc_secure_channel.return_value
 
     google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
+    # AuthMetadataPlugin can be called once (if installed google-auth supports
+    # suppress_metrics_header) or twice (if older google-auth raises TypeError
+    # on call 1 and falls back to call 2 without suppress_metrics_header).
     assert auth_metadata_plugin.call_count in (1, 2)
     try:
         auth_metadata_plugin.assert_called_with(
