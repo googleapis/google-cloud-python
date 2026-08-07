@@ -24,7 +24,7 @@ from unittest import mock
 import google.auth.transport.mtls
 
 from google.cloud.asset_v1._compat import transcode_request
-from google.cloud.asset_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, get_client_cert_source
+from google.cloud.asset_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
 
 from google.auth.exceptions import MutualTLSChannelError
 from google.api_core.universe import EmptyUniverseError
@@ -413,21 +413,13 @@ def test_transcode_request_proto_plus_wrapper():
     assert transcoded["uri"] == "/v1/test/proto-plus-field"
 
 
-def test_get_client_cert_source():
-    mock_provided_cert_source = mock.Mock()
-    mock_default_cert_source = mock.Mock()
+def test_read_environment_variables():
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true", "GOOGLE_API_USE_MTLS_ENDPOINT": "always", "GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
+        use_cert, mtls_endpoint, universe_domain = read_environment_variables()
+        assert use_cert is True
+        assert mtls_endpoint == "always"
+        assert universe_domain == "foo.com"
 
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert get_client_cert_source(None) is None
-        assert get_client_cert_source(mock_provided_cert_source) is None
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert get_client_cert_source(mock_provided_cert_source) == mock_provided_cert_source
-
-        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
-            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
-                assert get_client_cert_source(None) is mock_default_cert_source
-                assert get_client_cert_source(mock_provided_cert_source) is mock_provided_cert_source
-
-        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
-            assert get_client_cert_source(None) is None
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "invalid"}):
+        with pytest.raises(MutualTLSChannelError):
+            read_environment_variables()

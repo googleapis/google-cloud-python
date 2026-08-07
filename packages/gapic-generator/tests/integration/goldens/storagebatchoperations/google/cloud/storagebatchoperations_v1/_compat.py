@@ -32,8 +32,6 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.protobuf import json_format
 from urllib.parse import urlparse, urlunparse
 
-from google.auth.transport import mtls  # type: ignore
-
 try:
     # note: `#type: ignore` is added because the return type for `should_use_client_cert`
     # is different than that of the fallback implementation below. This will be removed once
@@ -51,18 +49,28 @@ except ImportError:  # pragma: NO COVER
         return use_client_cert == "true"
 
 
-def get_client_cert_source(provided_cert_source):
-    """Return the client cert source to be used by the client.
+def read_environment_variables():
+    """Returns the environment variables used by the client.
 
-    Args:
-        provided_cert_source (bytes): The client certificate source provided.
     Returns:
-        bytes or None: The client cert source to be used by the client.
+        Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
+        GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
+
+    Raises:
+        ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
+            any of ["true", "false"].
+        google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
+            is not any of ["auto", "never", "always"].
     """
-    if should_use_client_cert():
-        return provided_cert_source or (
-            mtls.default_client_cert_source() if mtls.has_default_client_cert_source() else None
+    use_client_cert = should_use_client_cert()
+    use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
+    universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+    if use_mtls_endpoint not in ("auto", "never", "always"):
+        raise MutualTLSChannelError(
+            "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`,"
+            " `auto` or `always`"
         )
+    return use_client_cert, use_mtls_endpoint, universe_domain_env
 
 
 DEFAULT_UNIVERSE = "googleapis.com"

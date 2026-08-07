@@ -28,7 +28,7 @@ from google.cloud.storagebatchoperations_v1 import gapic_version as package_vers
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.cloud.storagebatchoperations_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, get_client_cert_source
+from google.cloud.storagebatchoperations_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
 from google.cloud.storagebatchoperations_v1._compat import setup_request_id
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
@@ -310,25 +310,23 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
         return api_endpoint, client_cert_source
 
     @staticmethod
-    def _read_environment_variables():
-        """Returns the environment variables used by the client.
+    def _get_client_cert_source(provided_cert_source, use_cert_flag):
+        """Return the client cert source to be used by the client.
+
+        Args:
+            provided_cert_source (bytes): The client certificate source provided.
+            use_cert_flag (bool): A flag indicating whether to use the client certificate.
 
         Returns:
-            Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
-            GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
-
-        Raises:
-            ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
-                any of ["true", "false"].
-            google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
-                is not any of ["auto", "never", "always"].
+            bytes or None: The client cert source to be used by the client.
         """
-        use_client_cert = should_use_client_cert()
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
-        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
-        return use_client_cert, use_mtls_endpoint, universe_domain_env
+        client_cert_source = None
+        if use_cert_flag:
+            if provided_cert_source:
+                client_cert_source = provided_cert_source
+            elif mtls.has_default_client_cert_source():
+                client_cert_source = mtls.default_client_cert_source()
+        return client_cert_source
 
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
@@ -452,8 +450,8 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
 
         universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 
-        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = StorageBatchOperationsClient._read_environment_variables()
-        self._client_cert_source = get_client_cert_source(self._client_options.client_cert_source)
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = read_environment_variables()
+        self._client_cert_source = StorageBatchOperationsClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
         self._universe_domain = get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint: str = ""  # updated below, depending on `transport`
 
