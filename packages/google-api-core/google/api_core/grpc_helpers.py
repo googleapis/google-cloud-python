@@ -25,13 +25,7 @@ import google.auth.transport.grpc
 import google.auth.transport.requests
 import google.protobuf
 import grpc
-from google.api_core import exceptions, general_helpers
-
-try:
-    from google.api_core import _feature_gating_helpers
-    HAVE_FEATURE_GATING = True
-except ImportError:
-    HAVE_FEATURE_GATING = False
+from google.api_core import _feature_gating_helpers, exceptions, general_helpers
 
 # The list of gRPC Callable interfaces that return iterators.
 _STREAM_WRAP_CLASSES = (grpc.UnaryStreamMultiCallable, grpc.StreamStreamMultiCallable)
@@ -393,18 +387,15 @@ def create_channel(
         target, composite_credentials, compression=compression, **kwargs
     )
 
-    if HAVE_FEATURE_GATING:
-        is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
-            env_var="GOOGLE_CLOUD_PYTHON_TRACING_ENABLED",
-            feature_key="tracer_provider",
-            configuration=None,
-        )
-    else:
-        is_tracing_enabled = False
+    is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
+        env_var="GOOGLE_CLOUD_PYTHON_TRACING_ENABLED",
+        feature_key="tracer_provider",
+        configuration=None,
+    )
 
     if is_tracing_enabled:
         try:
-            import opentelemetry.instrumentation.grpc as otel_grpc
+            import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
             interceptor = otel_grpc.client_interceptor()
             channel = otel_grpc.intercept_channel(channel, interceptor)

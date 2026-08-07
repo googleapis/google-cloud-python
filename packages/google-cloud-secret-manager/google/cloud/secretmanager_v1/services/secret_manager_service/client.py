@@ -75,7 +75,7 @@ except ImportError:  # pragma: NO COVER
 if HAVE_OTEL:
     tracer = trace.get_tracer(__name__)
 else:
-    tracer = None
+    tracer = None  # type: ignore[assignment]
 
 _LOGGER = std_logging.getLogger(__name__)
 

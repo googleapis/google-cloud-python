@@ -21,6 +21,7 @@ import pytest
 
 try:
     from google.api_core import grpc_helpers
+
     HAVE_GRPC = True
 except ImportError:
     HAVE_GRPC = False
@@ -112,9 +113,8 @@ def test_create_channel_otel_installed_but_disabled(monkeypatch):
 def test_create_channel_otel_not_installed_fails_open(monkeypatch):
     """Verify that create_channel fails open if OTel is not installed, even if enabled."""
 
-    # Ensure it's not in sys.modules
-    if "opentelemetry.instrumentation.grpc" in sys.modules:
-        del sys.modules["opentelemetry.instrumentation.grpc"]
+    # Simulate missing module
+    monkeypatch.setitem(sys.modules, "opentelemetry.instrumentation.grpc", None)
 
     # Enable tracing
     monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "true")
