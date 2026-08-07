@@ -117,7 +117,7 @@ six==1.17.0
 stack-data==0.6.3
 threadpoolctl==3.6.0
 tomli==2.4.0
-urllib3==1.26.20
+urllib3==2.7.0
 wcwidth==0.6.0
 wheel==0.45.1
 widgetsnbextension==4.0.15
