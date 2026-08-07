@@ -36,14 +36,14 @@ import inspect
 import google.auth.credentials
 import google.auth.transport.grpc
 
+from google.api_core import exceptions, grpc_helpers_async
+
 _SUPPORTS_SUPPRESS_METRICS = (
     "suppress_metrics_header"
     in inspect.signature(
         google.auth.transport.grpc.AuthMetadataPlugin.__init__
     ).parameters
 )
-
-from google.api_core import exceptions, grpc_helpers_async
 
 
 class RpcErrorImpl(grpc.RpcError, grpc.Call):
