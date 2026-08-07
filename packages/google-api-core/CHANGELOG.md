@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.33.0...google-api-core-v2.34.0) (2026-08-06)
+
+
+### Features
+
+* Add Feature Gating configuration helpers. ([#17524](https://github.com/googleapis/google-cloud-python/issues/17524)) ([eceea95](https://github.com/googleapis/google-cloud-python/commit/eceea95be8f528afac4fe352ae6dbac913b6a202))
+* **api-core:** centralize rest transcoding helpers ([#17765](https://github.com/googleapis/google-cloud-python/issues/17765)) ([4f21b8b](https://github.com/googleapis/google-cloud-python/commit/4f21b8b07bab99e9ee92bf3c8a9e0f8da5350cf9))
+
+
+### Bug Fixes
+
+* **api-core:** use truthiness check in setup_request_id to support proto-plus messages ([#18000](https://github.com/googleapis/google-cloud-python/issues/18000)) ([ad8f93c](https://github.com/googleapis/google-cloud-python/commit/ad8f93c3211b3ae9d9b234a5b2fa52a8cbf4b206))
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* deduplicate x-goog-api-client headers ([#17616](https://github.com/googleapis/google-cloud-python/issues/17616)) ([6167e41](https://github.com/googleapis/google-cloud-python/commit/6167e4136e24a40fa6fc77be5987ba9cab8ac5e8))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
 ## [2.33.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.32.0...google-api-core-v2.33.0) (2026-07-22)
 
 

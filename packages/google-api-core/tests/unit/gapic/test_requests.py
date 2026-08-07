@@ -37,9 +37,23 @@ class MockProtoRequest:
         return hasattr(self, key)
 
 
+class MockProtoPlusRequest:
+    def __init__(self, **kwargs):
+        self._pb = MockProtoRequest(**kwargs)
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+
 class MockValueErrorRequest:
     def HasField(self, key):
         raise ValueError("Mismatched field")
+
+
+class MockProtoPlusValueErrorRequest:
+    def __init__(self, **kwargs):
+        self._pb = MockValueErrorRequest()
+        for k, v in kwargs.items():
+            setattr(self, k, v)
 
 
 # --- Parameterized Test ---
@@ -59,8 +73,14 @@ UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
         # MockProtoRequest cases
         (MockProtoRequest(), True, "uuid"),
         (MockProtoRequest(request_id="already_set"), True, "already_set"),
+        (MockProtoRequest(request_id=""), True, ""),
+        # MockProtoPlusRequest cases
+        (MockProtoPlusRequest(), True, "uuid"),
+        (MockProtoPlusRequest(request_id="already_set"), True, "already_set"),
+        (MockProtoPlusRequest(request_id=""), True, ""),
         # ValueError case
         (MockValueErrorRequest(), True, "uuid"),
+        (MockProtoPlusValueErrorRequest(), True, "uuid"),
         # Dict cases
         ({}, True, "uuid"),
         ({"request_id": None}, True, "uuid"),
@@ -80,7 +100,12 @@ UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
         "non_proto3_optional_already_set",
         "proto3_optional_not_in_request_proto",
         "proto3_optional_already_in_request_proto",
+        "proto3_optional_explicit_empty_proto",
+        "proto3_optional_not_in_request_proto_plus",
+        "proto3_optional_already_in_request_proto_plus",
+        "proto3_optional_explicit_empty_proto_plus",
         "value_error_fallback",
+        "proto3_optional_value_error_fallback_proto_plus",
         "dict_proto3_optional_not_in_request",
         "dict_proto3_optional_value_none",
         "dict_proto3_optional_already_in_request",

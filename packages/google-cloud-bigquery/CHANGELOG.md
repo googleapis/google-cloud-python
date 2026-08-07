@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.43.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.3...google-cloud-bigquery-v3.43.0) (2026-08-06)
+
+
+### Features
+
+* add pandas-gbq capability helper ([#17957](https://github.com/googleapis/google-cloud-python/issues/17957)) ([2207ca6](https://github.com/googleapis/google-cloud-python/commit/2207ca66fe9b5d5aff201dd922f37df06ab4b664))
+
+
+### Bug Fixes
+
+* **bigquery:** Fix bigquery socket leak ([#17953](https://github.com/googleapis/google-cloud-python/issues/17953)) ([8c26b38](https://github.com/googleapis/google-cloud-python/commit/8c26b38a7ab4b5c543f479705c4a231fffffcfcc))
+* remove stray debug print in RangeQueryParameter constructor ([#17973](https://github.com/googleapis/google-cloud-python/issues/17973)) ([fe7bfd0](https://github.com/googleapis/google-cloud-python/commit/fe7bfd03bedf340ed41f3a2730bf77657075833e))
+
+
+### Documentation
+
+* add connector libraries overview table to package README ([#17939](https://github.com/googleapis/google-cloud-python/issues/17939)) ([71bc622](https://github.com/googleapis/google-cloud-python/commit/71bc6223ee0f344b2bc91ddcab82ab0b1b8fc19b))
+* correct return type in CellDataParser.time_to_py docstring ([#17972](https://github.com/googleapis/google-cloud-python/issues/17972)) ([bd1e224](https://github.com/googleapis/google-cloud-python/commit/bd1e2246d2a2a1a0f1973a568e8eb87a1427f9d5))
+
 ## [3.42.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.2...google-cloud-bigquery-v3.42.3) (2026-07-30)
 
 

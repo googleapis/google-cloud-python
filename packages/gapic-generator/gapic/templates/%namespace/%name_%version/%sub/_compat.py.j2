@@ -17,17 +17,17 @@ import os
 import json
 {% if has_auto_populated_fields %}
 import uuid
+import google.protobuf.message
 {% endif %}
 
 from typing import Any, Dict, List, Optional, Tuple
 {% if has_auto_populated_fields %}
-from typing import Union
+from typing import TYPE_CHECKING, Union
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    import proto  # type: ignore[import-untyped]
 {% endif %}
 
-{% if has_auto_populated_fields %}
-import google.protobuf.message
-
-{% endif %}
 from google.api_core import path_template
 from google.api_core.universe import EmptyUniverseError
 from google.auth.exceptions import MutualTLSChannelError
@@ -49,6 +49,34 @@ except ImportError:  # pragma: NO COVER
                 " either `true` or `false`"
             )
         return use_client_cert == "true"
+
+
+{# TODO(https://github.com/googleapis/google-cloud-python/issues/17883):
+Defer to google.auth.transport.mtls.should_use_mtls_endpoint (available in google-auth >= 2.56.0)
+to parse GOOGLE_API_USE_MTLS_ENDPOINT when available in minimum supported google-auth. #}
+def read_environment_variables():
+    """Returns the environment variables used by the client.
+
+    Returns:
+        Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
+        GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
+
+    Raises:
+        ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
+            any of ["true", "false"].
+        google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
+            is not any of ["auto", "never", "always"].
+    """
+    use_client_cert = should_use_client_cert()
+    use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
+    universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+    if use_mtls_endpoint not in ("auto", "never", "always"):
+        raise MutualTLSChannelError(
+            "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`,"
+            " `auto` or `always`"
+        )
+    return use_client_cert, use_mtls_endpoint, universe_domain_env
+
 
 DEFAULT_UNIVERSE = "googleapis.com"
 
@@ -170,7 +198,7 @@ def get_universe_domain(
 {% if has_auto_populated_fields %}
 
 def setup_request_id(
-    request: Union[google.protobuf.message.Message, dict, None],
+    request: Union[google.protobuf.message.Message, "proto.Message", dict, None],
     field_name: str,
     is_proto3_optional: bool,
 ) -> None:
@@ -184,34 +212,58 @@ def setup_request_id(
     resources).
 
     Args:
-        request (Union[google.protobuf.message.Message, dict]): The
-            request object.
-        field_name (str): The name of the field to populate.
-        is_proto3_optional (bool): Whether the field is proto3 optional.
+        request (Union[google.protobuf.message.Message, proto.Message, dict, None]): The
+            request object or dictionary.
+        field_name (str): The name of the field to populate (e.g., "request_id").
+        is_proto3_optional (bool): Whether the field supports explicit presence
+            (defined with `optional` in proto3 syntax). When True, empty strings ("")
+            are preserved as explicit user input per AIP-4235, and UUID auto-population
+            occurs only if the field is unset. When False, any empty or falsy value is
+            populated with a UUID.
     """
     if request is None:
         return
 
+    # Evaluate whether the field is considered "unset" and needs auto-population.
+    #
+    # According to AIP-4235, optional request ID fields must be populated
+    # if and only if they have explicit presence (`is_proto3_optional=True`)
+    # and were not set by the user (i.e. unset). Explicitly provided empty
+    # strings ('') must be preserved when `is_proto3_optional=True`.
+    should_populate = False
     if isinstance(request, dict):
         if is_proto3_optional:
-            if field_name not in request or request[field_name] is None:
-                request[field_name] = str(uuid.uuid4())
-        elif not request.get(field_name):
-            request[field_name] = str(uuid.uuid4())
-        return
-
-    if is_proto3_optional:
-        try:
-            # Pure protobuf messages
-            if not request.HasField(field_name):
-                setattr(request, field_name, str(uuid.uuid4()))
-        except (AttributeError, ValueError):
-            # Proto-plus messages or other objects
-            if not getattr(request, field_name, None):
-                setattr(request, field_name, str(uuid.uuid4()))
+            # Case 1a: Dictionary request with explicit presence (`is_proto3_optional=True`).
+            # Per AIP-4235, auto-populate only if the key is completely missing from
+            # the dictionary or its value is explicitly set to None.
+            # An explicit empty string ('') must NOT be overwritten.
+            should_populate = field_name not in request or request[field_name] is None
+        else:
+            # Case 1b: Dictionary request without explicit presence (`is_proto3_optional=False`).
+            # Auto-populate if the key is missing, None, or falsy (e.g., empty string '').
+            should_populate = not request.get(field_name)
     else:
-        if not getattr(request, field_name, None):
-            setattr(request, field_name, str(uuid.uuid4()))
+        # Case 2: Object request (proto-plus wrapper or pure protobuf message).
+        if is_proto3_optional:
+            # Extract the protobuf from proto-plus if wrapped.
+            pure_pb: google.protobuf.message.Message = getattr(request, "_pb", request)
+            try:
+                should_populate = not pure_pb.HasField(field_name)
+            except (AttributeError, ValueError):
+                # Fall back if `HasField` fails or is unsupported.
+                should_populate = getattr(pure_pb, field_name, None) is None
+        else:
+            # Case 2b: Object request without explicit presence (`is_proto3_optional=False`).
+            # Auto-populate if the field value is falsy (None or empty string '').
+            should_populate = not bool(getattr(request, field_name, False))
+
+    # If the field was found to be empty, set random id
+    if should_populate:
+        generated_id = str(uuid.uuid4())
+        if isinstance(request, dict):
+            request[field_name] = generated_id
+        else:
+            setattr(request, field_name, generated_id)
 
 {% endif %}
 
