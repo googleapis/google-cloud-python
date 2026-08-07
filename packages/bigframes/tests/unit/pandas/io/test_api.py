@@ -127,3 +127,43 @@ def test_read_gbq_colab_calls_set_location(
     assert kwargs["pyformat_args"] == sample_pyformat_args
     assert not kwargs["dry_run"]
     assert isinstance(result, bigframes.dataframe.DataFrame)
+
+
+@mock.patch("bigframes.pandas.io.api._get_storage_client")
+@mock.patch("bigframes.core.global_session.with_default_session")
+def test_read_csv_gcs_sets_location(mock_with_default_session, mock_get_storage_client):
+    mock_storage_client = mock.Mock()
+    mock_bucket = mock.Mock()
+    mock_bucket.location = "us-east1"
+    mock_storage_client.get_bucket.return_value = mock_bucket
+    mock_get_storage_client.return_value = mock_storage_client
+
+    import bigframes._config as config
+    config.options.bigquery.location = None
+    config.options.bigquery._session_started = False
+    config.options.bigquery.use_regional_endpoints = None
+
+    bf_io_api.read_csv("gs://test-bucket/file.csv")
+
+    assert config.options.bigquery.location == "us-east1"
+
+
+@mock.patch("bigframes.pandas.io.api._get_storage_client")
+@mock.patch("bigframes.core.global_session.with_default_session")
+def test_read_csv_gcs_doesnt_overwrite_set_location(mock_with_default_session, mock_get_storage_client):
+    mock_storage_client = mock.Mock()
+    mock_bucket = mock.Mock()
+    mock_bucket.location = "us-east1"
+    mock_storage_client.get_bucket.return_value = mock_bucket
+    mock_get_storage_client.return_value = mock_storage_client
+
+    import bigframes._config as config
+    config.options.bigquery.location = "eu"
+    config.options.bigquery._session_started = False
+    config.options.bigquery.use_regional_endpoints = None
+
+    bf_io_api.read_csv("gs://test-bucket/file.csv")
+
+    assert config.options.bigquery.location == "EU"
+
+
