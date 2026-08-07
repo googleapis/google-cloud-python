@@ -22,16 +22,16 @@ import pytest
 try:
     from google.api_core import grpc_helpers
 
-    HAVE_GRPC = True
+    HAVE_GRPC_HELPERS = True
 except ImportError:
-    HAVE_GRPC = False
+    HAVE_GRPC_HELPERS = False
 
 
 # Removed clean_sys_modules fixture as it causes issues in no-grpc environments
 # when tests are collected.
 
 
-@pytest.mark.skipif(not HAVE_GRPC, reason="Requires gRPC")
+@pytest.mark.skipif(not HAVE_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
 def test_create_channel_otel_installed_and_enabled(monkeypatch):
     """Verify that create_channel wraps the channel with OTel interceptor when installed and enabled."""
 
@@ -46,10 +46,13 @@ def test_create_channel_otel_installed_and_enabled(monkeypatch):
     # Link them
     mock_otel.instrumentation = mock_otel_instrumentation
     mock_otel_instrumentation.grpc = mock_otel_grpc
-
-    sys.modules["opentelemetry"] = mock_otel
-    sys.modules["opentelemetry.instrumentation"] = mock_otel_instrumentation
-    sys.modules["opentelemetry.instrumentation.grpc"] = mock_otel_grpc
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation", mock_otel_instrumentation
+    )
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
+    )
 
     # Enable tracing
     monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "true")
@@ -79,12 +82,14 @@ def test_create_channel_otel_installed_and_enabled(monkeypatch):
             assert channel == f"wrapped_{mock_channel}"
 
 
-@pytest.mark.skipif(not HAVE_GRPC, reason="Requires gRPC")
+@pytest.mark.skipif(not HAVE_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
 def test_create_channel_otel_installed_but_disabled(monkeypatch):
     """Verify that create_channel does NOT wrap the channel if tracing is disabled."""
 
     mock_otel_grpc = mock.Mock()
-    sys.modules["opentelemetry.instrumentation.grpc"] = mock_otel_grpc
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
+    )
 
     # Disable tracing (or leave unset, default should be false/disabled)
     monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "false")
@@ -109,7 +114,7 @@ def test_create_channel_otel_installed_but_disabled(monkeypatch):
             assert channel == mock_channel
 
 
-@pytest.mark.skipif(not HAVE_GRPC, reason="Requires gRPC")
+@pytest.mark.skipif(not HAVE_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
 def test_create_channel_otel_not_installed_fails_open(monkeypatch):
     """Verify that create_channel fails open if OTel is not installed, even if enabled."""
 
