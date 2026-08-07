@@ -35,17 +35,30 @@ from typing import (
 )
 
 import google.protobuf
-from google.api_core import _feature_gating_helpers, gapic_v1
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
 from google.api_core import retry as retries
+
+try:
+    from google.api_core import _feature_gating_helpers
+
+    HAVE_FEATURE_GATING = True
+except ImportError:
+    HAVE_FEATURE_GATING = False
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.secretmanager_v1 import gapic_version as package_version
 from google.oauth2 import service_account  # type: ignore
-from opentelemetry import trace
+
+try:
+    from opentelemetry import trace
+
+    HAVE_OTEL = True
+except ImportError:
+    HAVE_OTEL = False
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -59,7 +72,10 @@ try:
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
-tracer = trace.get_tracer(__name__)
+if HAVE_OTEL:
+    tracer = trace.get_tracer(__name__)
+else:
+    tracer = None
 
 _LOGGER = std_logging.getLogger(__name__)
 
@@ -1872,15 +1888,20 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # Validate the universe domain.
         self._validate_universe_domain()
 
-        is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
-            env_var="GOOGLE_CLOUD_PYTHON_TRACING_ENABLED",
-            feature_key="tracer_provider",
-            configuration=self._client_options,
-        )
+        if HAVE_FEATURE_GATING:
+            is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
+                env_var="GOOGLE_CLOUD_PYTHON_TRACING_ENABLED",
+                feature_key="tracer_provider",
+                configuration=self._client_options,
+            )
+        else:
+            is_tracing_enabled = False
 
         # Send the request.
-        if is_tracing_enabled:
-            with tracer.start_as_current_span("SecretManagerServiceClient.access_secret_version") as span:
+        if is_tracing_enabled and HAVE_OTEL and tracer:
+            with tracer.start_as_current_span(
+                "SecretManagerServiceClient.access_secret_version"
+            ) as span:
                 span.set_attribute("gcp.secretmanager.secret.name", request.name)
                 response = rpc(
                     request,

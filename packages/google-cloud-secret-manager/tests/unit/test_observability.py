@@ -12,12 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import importlib
 from unittest import mock
 
 import pytest
 from google.auth import credentials as ga_credentials
 from google.cloud import secretmanager_v1
+from google.cloud.secretmanager_v1.services.secret_manager_service.client import (
+    HAVE_FEATURE_GATING,
+    HAVE_OTEL,
+)
 from google.cloud.secretmanager_v1.types import service
 
 # We use the clean pattern from BigQuery tests
@@ -44,6 +47,10 @@ def setup_otel():
     trace._TRACER_PROVIDER = orig_trace_provider
 
 
+@pytest.mark.skipif(
+    not HAVE_FEATURE_GATING or not HAVE_OTEL,
+    reason="Requires feature gating and OpenTelemetry",
+)
 def test_access_secret_version_custom_span(setup_otel, monkeypatch):
     """Verify that calling access_secret_version produces a custom T3 span with attributes."""
 
@@ -86,9 +93,16 @@ def test_access_secret_version_custom_span(setup_otel, monkeypatch):
 
     # Verify custom attributes
     attributes = t3_span.attributes
-    assert attributes.get("gcp.secretmanager.secret.name") == "projects/test-project/secrets/test-secret/versions/1"
+    assert (
+        attributes.get("gcp.secretmanager.secret.name")
+        == "projects/test-project/secrets/test-secret/versions/1"
+    )
 
 
+@pytest.mark.skipif(
+    not HAVE_FEATURE_GATING or not HAVE_OTEL,
+    reason="Requires feature gating and OpenTelemetry",
+)
 def test_access_secret_version_custom_span_disabled(setup_otel, monkeypatch):
     """Verify that calling access_secret_version does NOT produce custom span if disabled."""
 
