@@ -64,12 +64,10 @@ from google.cloud.bigtable.data._metrics import (
     OperationType,
     tracked_retry,
 )
+from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
 from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
     BigtableMetricsExporter,
     GoogleCloudMetricsHandler,
-)
-from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
-    OpenTelemetryMetricsHandler,
 )
 from google.cloud.bigtable.data._sync_autogen._swappable_channel import (
     SwappableChannel as SwappableChannelType,
@@ -223,9 +221,7 @@ class BigtableDataClient(ClientWithProject):
                     "Client-side metrics will be disabled.",
                     e,
                 )
-        self._metrics = BigtableClientSideMetricsController(
-            handlers=handlers
-        )
+        self._metrics = BigtableClientSideMetricsController(handlers=handlers)
         self.transport = cast(TransportType, self._gapic_client.transport)
         self._active_instances: Set[_WarmedInstanceKey] = set()
         self._instance_owners: dict[_WarmedInstanceKey, Set[int]] = {}

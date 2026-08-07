@@ -1075,9 +1075,6 @@ class TestTable:
         from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
             BigtableMetricsExporter,
         )
-        from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
-            OpenTelemetryMetricsHandler,
-        )
 
         expected_table_id = "table-id"
         expected_instance_id = "instance-id"
@@ -1386,9 +1383,6 @@ class TestAuthorizedView(CrossSync._Sync_Impl.TestTable):
         from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
             BigtableMetricsExporter,
         )
-        from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
-            OpenTelemetryMetricsHandler,
-        )
 
         expected_table_id = "table-id"
         expected_instance_id = "instance-id"
@@ -1512,9 +1506,6 @@ class TestMaterializedView(CrossSync._Sync_Impl.TestTable):
         )
         from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
             BigtableMetricsExporter,
-        )
-        from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
-            OpenTelemetryMetricsHandler,
         )
 
         expected_instance_id = "instance-id"

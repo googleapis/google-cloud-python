@@ -14,10 +14,9 @@
 
 from __future__ import annotations
 
-from collections import defaultdict
 import logging
 import time
-from typing import Any, Mapping
+from collections import defaultdict
 
 from google.api.distribution_pb2 import Distribution
 from google.api.metric_pb2 import Metric as GMetric
@@ -102,16 +101,17 @@ _RESOURCE_KEY_MAP = {
 
 
 def _partition_attributes(
-    attributes: Attributes
+    attributes: Attributes,
 ) -> tuple[dict[str, str], dict[str, str]]:
     """Split data point attributes into monitored resource labels and metric labels."""
     resource_labels = {label_name: "" for label_name in _RESOURCE_KEY_MAP.values()}
     metric_labels = {}
-    for attr_key, attr_value in attributes.items():
-        if attr_key in _RESOURCE_KEY_MAP:
-            resource_labels[_RESOURCE_KEY_MAP[attr_key]] = str(attr_value)
-        elif not attr_key.startswith("resource_"):
-            metric_labels[attr_key] = str(attr_value)
+    if attributes:
+        for attr_key, attr_value in attributes.items():
+            if attr_key in _RESOURCE_KEY_MAP:
+                resource_labels[_RESOURCE_KEY_MAP[attr_key]] = str(attr_value)
+            elif not attr_key.startswith("resource_"):
+                metric_labels[attr_key] = str(attr_value)
     return resource_labels, metric_labels
 
 
