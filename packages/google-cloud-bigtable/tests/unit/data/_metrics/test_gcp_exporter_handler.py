@@ -130,6 +130,34 @@ class TestBigtableMetricsExporter:
         with mock.patch("google.auth.default", return_value=(mock.Mock(), "project")):
             return BigtableMetricsExporter(*args, **kwargs)
 
+    def test__partition_attributes(self):
+        from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+            _partition_attributes,
+        )
+
+        attributes = {
+            "resource_project": "proj-1",
+            "resource_instance": "inst-1",
+            "resource_cluster": "cls-1",
+            "resource_table": "tbl-1",
+            "resource_zone": "zone-1",
+            "method": "ReadRows",
+            "status_code": "OK",
+            "resource_custom_unsupported": "should_be_stripped",
+        }
+        res_labels, metric_labels = _partition_attributes(attributes)
+        assert res_labels == {
+            "project_id": "proj-1",
+            "instance": "inst-1",
+            "cluster": "cls-1",
+            "table": "tbl-1",
+            "zone": "zone-1",
+        }
+        assert metric_labels == {
+            "method": "ReadRows",
+            "status_code": "OK",
+        }
+
     def test_ctor_defaults(self):
         from google.cloud.monitoring_v3 import MetricServiceClient
 

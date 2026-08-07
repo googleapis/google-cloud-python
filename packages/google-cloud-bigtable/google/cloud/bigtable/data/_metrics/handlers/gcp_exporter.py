@@ -17,6 +17,7 @@ from __future__ import annotations
 from collections import defaultdict
 import logging
 import time
+from typing import Any, Mapping
 
 from google.api.distribution_pb2 import Distribution
 from google.api.metric_pb2 import Metric as GMetric
@@ -42,6 +43,7 @@ from opentelemetry.sdk.metrics.export import (
     NumberDataPoint,
     PeriodicExportingMetricReader,
 )
+from opentelemetry.util.types import Attributes
 
 from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
     OpenTelemetryMetricsHandler,
@@ -88,6 +90,29 @@ VIEW_LIST = [
     )
     for n in INSTRUMENT_NAMES
 ]
+
+# Maps OpenTelemetry data point resource attribute names to Cloud Monitoring MonitoredResource label names
+_RESOURCE_KEY_MAP = {
+    "resource_project": "project_id",
+    "resource_instance": "instance",
+    "resource_cluster": "cluster",
+    "resource_table": "table",
+    "resource_zone": "zone",
+}
+
+
+def _partition_attributes(
+    attributes: Attributes
+) -> tuple[dict[str, str], dict[str, str]]:
+    """Split data point attributes into monitored resource labels and metric labels."""
+    resource_labels = {label_name: "" for label_name in _RESOURCE_KEY_MAP.values()}
+    metric_labels = {}
+    for attr_key, attr_value in attributes.items():
+        if attr_key in _RESOURCE_KEY_MAP:
+            resource_labels[_RESOURCE_KEY_MAP[attr_key]] = str(attr_value)
+        elif not attr_key.startswith("resource_"):
+            metric_labels[attr_key] = str(attr_value)
+    return resource_labels, metric_labels
 
 
 class GoogleCloudMetricsHandler(OpenTelemetryMetricsHandler):
@@ -161,9 +186,10 @@ class BigtableMetricsExporter(MetricExporter):
                 for metric in scope_metric.metrics:
                     for data_point in metric.data.data_points:
                         if data_point.attributes:
-                            project_id = data_point.attributes.get(
-                                "resource_project", ""
+                            resource_labels, metric_labels = _partition_attributes(
+                                data_point.attributes
                             )
+                            project_id = resource_labels.get("project_id", "")
                             if not project_id:
                                 _LOGGER.warning(
                                     "Missing resource_project attribute for metric %s",
@@ -172,21 +198,7 @@ class BigtableMetricsExporter(MetricExporter):
                                 continue
                             monitored_resource = MonitoredResource(
                                 type="bigtable_client_raw",
-                                labels={
-                                    "project_id": project_id,
-                                    "instance": data_point.attributes.get(
-                                        "resource_instance", ""
-                                    ),
-                                    "cluster": data_point.attributes.get(
-                                        "resource_cluster", ""
-                                    ),
-                                    "table": data_point.attributes.get(
-                                        "resource_table", ""
-                                    ),
-                                    "zone": data_point.attributes.get(
-                                        "resource_zone", ""
-                                    ),
-                                },
+                                labels=resource_labels,
                             )
                             try:
                                 point = self._to_point(data_point)
@@ -204,11 +216,7 @@ class BigtableMetricsExporter(MetricExporter):
                                 points=[point],
                                 metric=GMetric(
                                     type=f"{self.prefix}/{metric.name}",
-                                    labels={
-                                        k: str(v)
-                                        for k, v in data_point.attributes.items()
-                                        if not k.startswith("resource_")
-                                    },
+                                    labels=metric_labels,
                                 ),
                                 unit=metric.unit,
                             )
