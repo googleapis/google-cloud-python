@@ -5,6 +5,7 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 from decimal import Decimal
+from unittest import mock
 
 from django.db.models import F
 
@@ -271,3 +272,24 @@ class TestLookups(SpannerSimpleTestClass):
         )
         self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
+
+    def test_in_lookup_str_param_cast(self):
+        from django.db.models.lookups import Exact
+        lookup = Exact(Author._meta.get_field("name").get_col("tests_author"), "10")
+        compiler = SQLCompiler(Author.objects.all().query, self.connection, "default")
+        field_mock = mock.MagicMock()
+        field_mock.rel_db_type.return_value = "INT64"
+        target_info = mock.MagicMock()
+        target_info.target_fields = [field_mock]
+        with mock.patch.object(lookup, "as_sql", return_value=("name = %s", ["10"])):
+            with mock.patch.object(lookup.lhs.output_field, "get_path_info", return_value=[target_info], create=True):
+                sql, params = Exact.as_spanner(lookup, compiler, self.connection)
+                self.assertEqual(params[0], 10)
+
+    def test_regex_with_placeholder_and_params(self):
+        from django.db.models import Value
+        from django.db.models.functions import Concat
+        qs1 = Author.objects.filter(name__iexact=Concat(F("last_name"), Value("test"))).values("name")
+        compiler = SQLCompiler(qs1.query, self.connection, "default")
+        sql, params = compiler.as_sql()
+        self.assertTrue(len(sql) > 0)

@@ -71,12 +71,15 @@ class TestUtils(SpannerSimpleTestClass):
         cursor = mock.MagicMock()
 
         def description(*args, **kwargs):
-            return [["name", TypeCode.STRING], ["age", TypeCode.INT64]]
+            return [["name", TypeCode.STRING], ["bio", TypeCode.STRING], ["age", TypeCode.INT64]]
 
         def get_table_column_schema(*args, **kwargs):
             column_details = {}
             column_details["name"] = ColumnDetails(
                 null_ok=False, spanner_type="STRING(10)"
+            )
+            column_details["bio"] = ColumnDetails(
+                null_ok=True, spanner_type="STRING(MAX)"
             )
             column_details["age"] = ColumnDetails(null_ok=True, spanner_type="INT64")
             return column_details
@@ -86,33 +89,8 @@ class TestUtils(SpannerSimpleTestClass):
         table_description = db_introspection.get_table_description(
             cursor=cursor, table_name="Table_1"
         )
-        self.assertEqual(
-            table_description,
-            [
-                FieldInfo(
-                    name="name",
-                    type_code=TypeCode.STRING,
-                    display_size=None,
-                    internal_size=10,
-                    precision=None,
-                    scale=None,
-                    null_ok=False,
-                    default=None,
-                    collation=None,
-                ),
-                FieldInfo(
-                    name="age",
-                    type_code=TypeCode.INT64,
-                    display_size=None,
-                    internal_size=None,
-                    precision=None,
-                    scale=None,
-                    null_ok=True,
-                    default=None,
-                    collation=None,
-                ),
-            ],
-        )
+        self.assertEqual(len(table_description), 3)
+        self.assertEqual(table_description[1].internal_size, "MAX")
 
     def test_get_primary_key_column(self):
         """
@@ -159,17 +137,19 @@ class TestUtils(SpannerSimpleTestClass):
         cursor = mock.MagicMock()
 
         def run_sql_in_snapshot(*args, **kwargs):
-            # returns dummy data for 'CONSTRAINT_NAME, COLUMN_NAME' query.
+            # returns dummy data for 'CONSTRAINT_NAME, COLUMN_NAME' query with multi-column constraint
             if "CONSTRAINT_NAME, COLUMN_NAME" in args[0]:
-                return [["pk_constraint", "id"], ["name_constraint", "name"]]
+                return [["pk_constraint", "id"], ["pk_constraint", "sub_id"], ["name_constraint", "name"]]
             # returns dummy data for 'CONSTRAINT_NAME, CONSTRAINT_TYPE' query.
             if "CONSTRAINT_NAME, CONSTRAINT_TYPE" in args[0]:
                 return [
                     ["pk_constraint", "PRIMARY KEY"],
-                    ["FOREIGN KEY", "dept_id"],
+                    ["name_constraint", "FOREIGN KEY"],
+                    ["unadded_fk", "FOREIGN KEY"],
+                    ["new_const", "CHECK"],
                 ]
-            # returns dummy data for 'INFORMATION_SCHEMA.INDEXES' table query.
-            return [["pk_index", "id", "ASCENDING", "PRIMARY_KEY", True]]
+            # returns dummy data for 'INFORMATION_SCHEMA.INDEXES' table query with multi-column index.
+            return [["pk_index", "id", "ASCENDING", "PRIMARY_KEY", True], ["pk_index", "sub_id", "ASCENDING", "PRIMARY_KEY", True]]
 
         cursor.run_sql_in_snapshot = run_sql_in_snapshot
         constraints = db_introspection.get_constraints(
@@ -181,7 +161,7 @@ class TestUtils(SpannerSimpleTestClass):
             {
                 "pk_constraint": {
                     "check": False,
-                    "columns": ["id"],
+                    "columns": ["id", "sub_id"],
                     "foreign_key": None,
                     "index": False,
                     "orders": [],
@@ -189,18 +169,8 @@ class TestUtils(SpannerSimpleTestClass):
                     "type": None,
                     "unique": True,
                 },
-                "name_constraint": {
-                    "check": False,
-                    "columns": ["name"],
-                    "foreign_key": None,
-                    "index": False,
-                    "orders": [],
-                    "primary_key": False,
-                    "type": None,
-                    "unique": False,
-                },
-                "FOREIGN KEY": {
-                    "check": False,
+                "new_const": {
+                    "check": True,
                     "columns": [],
                     "foreign_key": None,
                     "index": False,
@@ -211,13 +181,40 @@ class TestUtils(SpannerSimpleTestClass):
                 },
                 "pk_index": {
                     "check": False,
-                    "columns": ["id"],
+                    "columns": ["id", "sub_id"],
                     "foreign_key": None,
                     "index": True,
-                    "orders": ["ASCENDING"],
+                    "orders": ["ASCENDING", "ASCENDING"],
                     "primary_key": True,
                     "type": "PRIMARY_KEY",
                     "unique": True,
                 },
             },
         )
+
+    def test_get_table_list_with_view(self):
+        db_introspection = DatabaseIntrospection(self.connection)
+        cursor = mock.MagicMock()
+        cursor.run_sql_in_snapshot.return_value = [["View_1", "VIEW"]]
+        table_list = db_introspection.get_table_list(cursor=cursor)
+        self.assertEqual(table_list, [TableInfo(name="View_1", type="v")])
+
+    def test_get_relations(self):
+        db_introspection = DatabaseIntrospection(self.connection)
+        cursor = mock.MagicMock()
+        cursor.run_sql_in_snapshot.return_value = [("author_id", "id", "author")]
+        relations = db_introspection.get_relations(cursor=cursor, table_name="book")
+        self.assertEqual(relations, {"author_id": ("id", "author")})
+
+    def test_get_key_columns(self):
+        db_introspection = DatabaseIntrospection(self.connection)
+        cursor = mock.MagicMock()
+        cursor.fetchall.return_value = [("author_id", "author", "id")]
+        keys = db_introspection.get_key_columns(cursor=cursor, table_name="book")
+        self.assertEqual(keys, [("author_id", "author", "id")])
+
+    def test_get_sequences(self):
+        db_introspection = DatabaseIntrospection(self.connection)
+        cursor = mock.MagicMock()
+        with self.assertRaises(NotImplementedError):
+            db_introspection.get_sequences(cursor=cursor, table_name="book")

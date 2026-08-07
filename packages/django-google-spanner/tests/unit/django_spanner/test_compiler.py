@@ -4,6 +4,7 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
+from unittest import mock
 from django.core.exceptions import EmptyResultSet
 from django.db.models.query import QuerySet
 from django.db.utils import DatabaseError
@@ -129,12 +130,12 @@ class TestCompiler(SpannerSimpleTestClass):
         self.assertEqual(
             sql_compiled,
             [
-                "SELECT tests_number.num AS num FROM tests_number WHERE "
-                + "tests_number.num <= %s UNION DISTINCT SELECT * FROM ("
+                "(SELECT tests_number.num AS num FROM tests_number WHERE "
+                + "tests_number.num <= %s) UNION DISTINCT (SELECT * FROM ("
                 + "SELECT tests_number.num AS num FROM tests_number WHERE "
                 + "tests_number.num >= %s EXCEPT DISTINCT "
                 + "SELECT tests_number.num AS num FROM tests_number "
-                + "WHERE tests_number.num = %s)"
+                + "WHERE tests_number.num = %s))"
             ],
         )
         self.assertEqual(params, [1, 8, 10])
@@ -173,3 +174,53 @@ class TestCompiler(SpannerSimpleTestClass):
         compiler = SQLCompiler(QuerySet().query, self.connection, "default")
         with self.assertRaises(EmptyResultSet):
             compiler.get_combinator_sql("union", False)
+
+    def test_get_combinator_sql_sliced_and_features(self):
+        qs1 = Number.objects.filter(num__lte=1)
+        qs2 = Number.objects.none()  # Empty result set
+        qs3 = Number.objects.filter(num__gte=8)
+        qs4 = qs1.union(qs3)
+
+        compiler = SQLCompiler(qs4.query, self.connection, "default")
+        compiler.connection.features.supports_slicing_ordering_in_compound = True
+        compiler.query.high_mark = 10
+        sql, params = compiler.get_combinator_sql("union", False)
+        self.assertTrue(len(sql) > 0)
+
+        # Test values_select set_values
+        qs_val = Number.objects.values("num")
+        qs_comb = qs_val.union(Number.objects.all())
+        comp_val = SQLCompiler(qs_comb.query, self.connection, "default")
+        sql2, params2 = comp_val.get_combinator_sql("union", True)
+        self.assertTrue(len(sql2) > 0)
+
+    def test_get_combinator_sql_edge_cases(self):
+        qs1, qs_empty = Number.objects.filter(num=1), Number.objects.none()
+
+        # Test valid combinators (union, difference, subquery)
+        for comp in [
+            SQLCompiler(qs1.union(qs_empty).query, self.connection, "default"),
+            SQLCompiler(qs1.difference(qs_empty).query, self.connection, "default"),
+        ]:
+            comp.query.subquery = True
+            self.assertTrue(len(comp.get_combinator_sql("union", False)[0]) > 0)
+
+        # Test EmptyResultSet exceptions (intersection on empty, union on empty parts)
+        qs_none1, qs_none2 = Number.objects.none(), Number.objects.none()
+        for comp in [
+            SQLCompiler(qs_empty.intersection(qs1).query, self.connection, "default"),
+            SQLCompiler(qs_none1.union(qs_none2).query, self.connection, "default"),
+        ]:
+            with self.assertRaises(EmptyResultSet):
+                comp.get_combinator_sql("union", False)
+
+        # supports_parentheses_in_compound False with subquery combinator
+        comp_sub = SQLCompiler(qs1.union(Number.objects.filter(num=2)).query, self.connection, "default")
+        mock_sub = mock.MagicMock(as_sql=mock.MagicMock(return_value=("SELECT 1", [])))
+        mock_sub.query.combinator = "union"
+        mock_sub.query.is_sliced = False
+        mock_sub.get_order_by.return_value = []
+        with mock.patch.object(self.connection.features, "supports_parentheses_in_compound", False):
+            with mock.patch.object(comp_sub.query.combined_queries[0], "get_compiler", return_value=mock_sub):
+                with mock.patch.object(comp_sub.query.combined_queries[1], "get_compiler", return_value=mock_sub):
+                    self.assertIn("SELECT * FROM", comp_sub.get_combinator_sql("union", False)[0][0])

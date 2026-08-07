@@ -15,6 +15,8 @@ class TestBase(SpannerSimpleTestClass):
         import django_spanner.base
 
         django_spanner.base._SPANNER_CLIENT_CACHE = None
+        self.db_wrapper.connection = None
+        self.db_wrapper.settings_dict = dict(self.settings_dict)
         self.client_patcher = mock.patch("django_spanner.base.spanner.Client")
         self.mock_client = self.client_patcher.start()
         self.mock_client.return_value.instance.return_value.instance_id = (
@@ -44,15 +46,19 @@ class TestBase(SpannerSimpleTestClass):
         self.assertEqual(params["option"], self.OPTIONS["option"])
 
     def test_get_new_connection(self):
-        self.db_wrapper.Database = mock_database = mock.MagicMock()
-        mock_database.connect = mock_connection = mock.MagicMock()
-        conn_params = {"test_param": "dummy"}
-        self.db_wrapper.get_new_connection(conn_params)
-        mock_connection.assert_called_once_with(
-            self.INSTANCE_ID,
-            client=mock_database.connect.call_args[1]["client"],
-            **conn_params,
-        )
+        orig_database = self.db_wrapper.Database
+        try:
+            self.db_wrapper.Database = mock_database = mock.MagicMock()
+            mock_database.connect = mock_connection = mock.MagicMock()
+            conn_params = {"test_param": "dummy"}
+            self.db_wrapper.get_new_connection(conn_params)
+            mock_connection.assert_called_once_with(
+                self.INSTANCE_ID,
+                client=mock_database.connect.call_args[1]["client"],
+                **conn_params,
+            )
+        finally:
+            self.db_wrapper.Database = orig_database
 
     def test_init_connection_state(self):
         from google.cloud.spanner_dbapi.connection import Connection
@@ -87,15 +93,28 @@ class TestBase(SpannerSimpleTestClass):
         mock_connection.is_closed = False
         self.assertTrue(self.db_wrapper.is_usable())
 
-    def test_is_usable_with_error(self):
-        from google.cloud.spanner_dbapi.exceptions import Error
+    def test_allow_transactions_in_auto_commit(self):
+        self.assertTrue(self.db_wrapper.allow_transactions_in_auto_commit)
+        self.db_wrapper.settings_dict["ALLOW_TRANSACTIONS_IN_AUTO_COMMIT"] = False
+        self.assertFalse(self.db_wrapper.allow_transactions_in_auto_commit)
 
-        self.db_wrapper.connection = mock_connection = mock.MagicMock()
-        mock_connection.cursor = mock.MagicMock(side_effect=Error)
+    def test_is_usable_with_error(self):
+        mock_cursor = mock.MagicMock()
+        mock_cursor.execute.side_effect = self.db_wrapper.Database.Error("error")
+        mock_connection = mock.MagicMock(is_closed=False)
+        mock_connection.cursor.return_value = mock_cursor
+        self.db_wrapper.connection = mock_connection
         self.assertFalse(self.db_wrapper.is_usable())
 
     def test_start_transaction_under_autocommit(self):
+        mock_cursor = mock.MagicMock()
         self.db_wrapper.connection = mock_connection = mock.MagicMock()
-        mock_connection.cursor = mock_cursor = mock.MagicMock()
+        mock_connection.cursor.return_value = mock_cursor
+
         self.db_wrapper._start_transaction_under_autocommit()
-        mock_cursor.assert_called_once_with()
+        mock_cursor.execute.assert_called_once_with("BEGIN")
+
+        mock_cursor.reset_mock()
+        self.db_wrapper.settings_dict["ALLOW_TRANSACTIONS_IN_AUTO_COMMIT"] = False
+        self.db_wrapper._start_transaction_under_autocommit()
+        mock_cursor.execute.assert_called_once_with("SELECT 1")

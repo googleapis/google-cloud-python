@@ -132,4 +132,4 @@ class TestBasics(MockServerTestBase):
         finally:
             for db, config in DATABASES.items():
                 if config["ENGINE"] == "django_spanner":
-                    config.pop("DISABLE_RANDOM_ID_GENERATION", None)
+                    config.pop("RANDOM_ID_GENERATION_ENABLED", None)
