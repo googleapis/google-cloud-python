@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 import logging
+import warnings
 
 from google.auth import _helpers
 from google.auth import exceptions
@@ -30,9 +31,6 @@ except ImportError as caught_exc:  # pragma: NO COVER
     raise ImportError(
         "gRPC is not installed from please install the grpcio package to use the gRPC transport."
     ) from caught_exc
-
-
-import warnings
 
 _grpc_ver_str = getattr(grpc, "__version__", None)
 if _grpc_ver_str and _helpers._parse_version_to_tuple(_grpc_ver_str) < (1, 83, 0):
