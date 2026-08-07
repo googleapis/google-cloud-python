@@ -459,7 +459,7 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
 
     data = _load_json_file(absolute_path)
 
-    if "cert_configs" not in data:
+    if not isinstance(data, dict) or "cert_configs" not in data:
         raise exceptions.ClientCertError(
             'Certificate config file {} is in an invalid format, a "cert configs" object is expected'.format(
                 absolute_path
@@ -472,7 +472,17 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
     # and we want to gracefully fallback to testing other mTLS configurations
     # like SecureConnect instead of throwing an exception.
 
-    if "workload" not in cert_configs:
+    if (not isinstance(cert_configs, dict) or "workload" not in cert_configs) and config_path is None:
+        default_home_path = path.expanduser(CERTIFICATE_CONFIGURATION_DEFAULT_PATH)
+        if path.exists(default_home_path) and default_home_path != absolute_path:
+            home_data = _load_json_file(default_home_path)
+            if isinstance(home_data, dict):
+                home_cert_configs = home_data.get("cert_configs")
+                if isinstance(home_cert_configs, dict) and "workload" in home_cert_configs:
+                    cert_configs = home_cert_configs
+                    absolute_path = default_home_path
+
+    if not isinstance(cert_configs, dict) or "workload" not in cert_configs:
         return None, None
     workload = cert_configs["workload"]
 
