@@ -27,7 +27,7 @@ from google.cloud.logging_v2 import gapic_version as package_version
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.cloud.logging_v2._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
+from google.cloud.logging_v2._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables, get_client_cert_source
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
@@ -276,25 +276,6 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
 
         return api_endpoint, client_cert_source
 
-    @staticmethod
-    def _get_client_cert_source(provided_cert_source, use_cert_flag):
-        """Return the client cert source to be used by the client.
-
-        Args:
-            provided_cert_source (bytes): The client certificate source provided.
-            use_cert_flag (bool): A flag indicating whether to use the client certificate.
-
-        Returns:
-            bytes or None: The client cert source to be used by the client.
-        """
-        client_cert_source = None
-        if use_cert_flag:
-            if provided_cert_source:
-                client_cert_source = provided_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
-        return client_cert_source
-
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
 
@@ -415,7 +396,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = read_environment_variables()
-        self._client_cert_source = BaseMetricsServiceV2Client._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
+        self._client_cert_source = get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
         self._universe_domain = get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint: str = ""  # updated below, depending on `transport`
 
