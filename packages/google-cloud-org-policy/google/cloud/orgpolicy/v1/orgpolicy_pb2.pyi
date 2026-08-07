@@ -51,7 +51,7 @@ class Policy(_message.Message):
             "suggested_value",
         ]
         class AllValues(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-            __slots__ = []
+            __slots__: list[str] = []
 
         ALLOW: Policy.ListPolicy.AllValues
         ALLOWED_VALUES_FIELD_NUMBER: _ClassVar[int]
@@ -76,7 +76,7 @@ class Policy(_message.Message):
         ) -> None: ...
 
     class RestoreDefault(_message.Message):
-        __slots__ = []
+        __slots__: list[str] = []
         def __init__(self) -> None: ...
 
     BOOLEAN_POLICY_FIELD_NUMBER: _ClassVar[int]

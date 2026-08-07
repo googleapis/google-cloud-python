@@ -305,6 +305,6 @@ __all__ = (
     "UpdateTableRequest",
 )
 
-from .overlay import *  # noqa: F403
+from .overlay import *  # noqa: E402, F403
 
 __all__ += overlay.__all__  # noqa: F405

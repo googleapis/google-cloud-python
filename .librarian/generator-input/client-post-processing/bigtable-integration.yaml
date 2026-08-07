@@ -253,7 +253,8 @@ replacements:
       "UpdateTableRequest",
       )
 
-      from .overlay import *  # noqa: F403
+      # TODO: noqa: E402 needed because overlay import is appended after __all__
+      from .overlay import *  # noqa: E402, F403
 
       __all__ += overlay.__all__  # noqa: F405
     count: 1

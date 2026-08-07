@@ -78,6 +78,7 @@ from google.cloud.ces_v1beta.types import (
     golden_run,
 )
 from google.cloud.ces_v1beta.types import evaluation as gcc_evaluation
+from google.cloud.ces_v1beta.types import session_service
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
