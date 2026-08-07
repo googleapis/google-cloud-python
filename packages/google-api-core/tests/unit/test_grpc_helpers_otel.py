@@ -36,27 +36,22 @@ def test_create_channel_otel_installed_and_enabled(monkeypatch):
     """Verify that create_channel wraps the channel with OTel interceptor when installed and enabled."""
 
     # Build a hierarchy of mocks to simulate the nested OpenTelemetry modules.
-    # This allows us to test code that imports these modules without needing them installed.
+    # MagicMock automatically creates child mocks on attribute access.
     mock_otel = mock.Mock()
-    mock_otel_instrumentation = mock.Mock()
-    mock_otel_grpc = mock.Mock()
+    mock_otel_grpc = mock_otel.instrumentation.grpc
     mock_interceptor = mock.Mock()
     mock_otel_grpc.client_interceptor.return_value = mock_interceptor
     mock_otel_grpc.intercept_channel.side_effect = lambda ch, inc: f"wrapped_{ch}"
 
-    # Link the mocks together to match the package structure (opentelemetry.instrumentation.grpc)
-    mock_otel.instrumentation = mock_otel_instrumentation
-    mock_otel_instrumentation.grpc = mock_otel_grpc
-
     # Inject the mocks into sys.modules so Python's import system uses them.
-    # monkeypatch ensures these changes are reverted after the test finishes.
-    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
-    monkeypatch.setitem(
-        sys.modules, "opentelemetry.instrumentation", mock_otel_instrumentation
-    )
-    monkeypatch.setitem(
-        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
-    )
+    modules = {
+        "opentelemetry": mock_otel,
+        "opentelemetry.instrumentation": mock_otel.instrumentation,
+        "opentelemetry.instrumentation.grpc": mock_otel_grpc,
+    }
+
+    for name, mod in modules.items():
+        monkeypatch.setitem(sys.modules, name, mod)
 
     # Enable tracing
     monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "true")
