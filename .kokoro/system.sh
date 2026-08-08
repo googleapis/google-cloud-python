@@ -264,7 +264,7 @@ for path in `find 'packages' \
   fi
 
   set +e
-  # Passing the array expanded as arguments to git diff
+  # Passing the array expanded as arguments to git diff.
   package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- "${files_to_check[@]}" | wc -l)
   set -e
 
