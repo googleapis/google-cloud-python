@@ -534,3 +534,19 @@ def response_log(logger: logging.Logger, response: Any) -> None:
     if is_logging_enabled(logger):
         json_response = _parse_response(response)
         _response_log_base(logger, json_response)
+
+
+def _parse_version_to_tuple(version_string):
+    """Safely converts a semantic version string to a comparable tuple of integers."""
+    parts = []
+    for part in version_string.split("."):
+        digits = ""
+        for c in part:
+            if not c.isdigit():
+                break
+            digits += c
+        if digits:
+            parts.append(int(digits))
+        else:
+            break
+    return tuple(parts)

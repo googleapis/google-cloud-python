@@ -30,6 +30,8 @@ The main concepts with this API are:
 import sys
 import warnings
 
+import google.api_core as api_core
+
 from google.cloud.bigquery import version as bigquery_version
 
 __version__ = bigquery_version.__version__
@@ -131,6 +133,23 @@ if sys.version_info < (3, 10):  # pragma: NO COVER
         "more details, see: [Google Cloud Client Libraries Supported Python Versions policy](https://cloud.google.com/python/docs/supported-python-versions)",
         FutureWarning,
     )
+
+_PQC_GRPC_WARNING_TEMPLATE = (
+    "Package {consumer_package} depends on {dependency_package}, currently installed at version {version_used_string}. "
+    "grpcio < 1.83.0 does not support Post-Quantum Cryptography (PQC). "
+    "Support for non-PQC environments is deprecated. In October 2026, "
+    "Google Cloud Python client libraries will raise their minimum requirements "
+    "(including google-api-core and grpcio) to enforce grpcio >= 1.83.0. "
+    "For more details on Google Cloud's post-quantum security migration, visit: "
+    "https://cloud.google.com/security/resources/post-quantum-cryptography"
+)
+
+api_core.warn_deprecation_for_versions_less_than(
+    "google.cloud.bigquery",
+    "grpcio",
+    "1.83.0",
+    message_template=_PQC_GRPC_WARNING_TEMPLATE,
+)
 
 __all__ = [
     "__version__",

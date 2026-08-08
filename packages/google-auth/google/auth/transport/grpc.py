@@ -17,7 +17,9 @@
 from __future__ import absolute_import
 
 import logging
+import warnings
 
+from google.auth import _helpers
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
 from google.auth.transport import mtls
@@ -29,6 +31,18 @@ except ImportError as caught_exc:  # pragma: NO COVER
     raise ImportError(
         "gRPC is not installed from please install the grpcio package to use the gRPC transport."
     ) from caught_exc
+
+_grpc_ver_str = getattr(grpc, "__version__", None)
+if _grpc_ver_str and _helpers._parse_version_to_tuple(_grpc_ver_str) < (1, 83, 0):
+    warnings.warn(
+        "grpcio < 1.83.0 does not support Post-Quantum Cryptography (PQC). "
+        "Support for non-PQC environments is deprecated. In October 2026, "
+        "google-auth will raise its minimum requirements "
+        "to enforce grpcio >= 1.83.0. "
+        "For more details on Google Cloud's post-quantum security migration, visit: "
+        "https://cloud.google.com/security/resources/post-quantum-cryptography",
+        FutureWarning,
+    )
 
 _LOGGER = logging.getLogger(__name__)
 
