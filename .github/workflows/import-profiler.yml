@@ -33,6 +33,11 @@ jobs:
         python-version: "3.15"
         allow-prereleases: true
         cache: 'pip'
+    - name: Run import profiler unit tests
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov setuptools
+        pytest scripts/import_profiler/test_profiler.py --cov=profiler --cov-report=term-missing --cov-fail-under=100
     - name: Run import profiler
       env:
         BUILD_TYPE: presubmit

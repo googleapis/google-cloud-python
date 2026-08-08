@@ -4124,7 +4124,7 @@ class _Client(object):
         self._endpoint_cache = {}
         self.database_admin_api = _make_database_admin_api()
         self.instance_admin_api = _make_instance_api()
-        self._client_info = CrossSync.Mock()
+        self._client_info = gapic_v1.client_info.ClientInfo()
         self._client_options = CrossSync.Mock()
         self._client_options.universe_domain = "googleapis.com"
         self._client_options.api_key = None
