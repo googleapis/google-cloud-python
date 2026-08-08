@@ -143,7 +143,7 @@ case ${TEST_TYPE} in
                     WORKTREE_DIR=$(mktemp -d)
                     rmdir "${WORKTREE_DIR}"
                     if git worktree add "${WORKTREE_DIR}" "${BASELINE_COMMIT}" 2>/dev/null; then
-                        (
+                        if ! (
                             cd "${WORKTREE_DIR}/${REPO_PREFIX}"
                             if [ -f setup.py ] || [ -f pyproject.toml ]; then
                                 if pip install -e . ; then
@@ -156,7 +156,13 @@ case ${TEST_TYPE} in
                                     exit 1
                                 fi
                             fi
-                        )
+                        ); then
+                            git worktree remove -f "${WORKTREE_DIR}"
+                            deactivate
+                            rm -rf .venv-profiler
+                            rm -rf "${PROFILER_TEMP_DIR}"
+                            exit 1
+                        fi
                         git worktree remove -f "${WORKTREE_DIR}"
                     else
                         echo "Failed to create git worktree for baseline. Skipping baseline generation."
