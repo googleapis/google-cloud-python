@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.48.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.47.0...bigframes-v2.48.0) (2026-08-08)
+
+
+### Features
+
+* **bigframes:** Transpiler supports more string ops ([#17693](https://github.com/googleapis/google-cloud-python/issues/17693)) ([7d2bc21](https://github.com/googleapis/google-cloud-python/commit/7d2bc213caabb23eef04e8242e1a05351013d217))
+
+
+### Bug Fixes
+
+* **bigframes:** fix field name typos for ai.generate* functions ([#17983](https://github.com/googleapis/google-cloud-python/issues/17983)) ([1b5c48b](https://github.com/googleapis/google-cloud-python/commit/1b5c48b851d92d77f9fb4ce5beea57a22281445d))
+* bump @angular/compiler, @angular/common, @angular/core, @angular/forms, @angular/platform-browser, @angular/router and @angular/compiler-cli in /packages/bigframes/bigframes/display/table_widget_angular ([#17992](https://github.com/googleapis/google-cloud-python/issues/17992)) ([346aaab](https://github.com/googleapis/google-cloud-python/commit/346aaab68b04fe5d280a5b49aee376d67b4233ad))
+* bump fast-uri from 3.1.4 to 3.1.5 in /packages/bigframes/bigframes/display/table_widget_angular ([#17989](https://github.com/googleapis/google-cloud-python/issues/17989)) ([3b3f3f4](https://github.com/googleapis/google-cloud-python/commit/3b3f3f4743b64e9ce483392930aa91efa6f022cb))
+* bump ip-address and express-rate-limit in /packages/bigframes/bigframes/display/table_widget_angular ([#17985](https://github.com/googleapis/google-cloud-python/issues/17985)) ([02ed656](https://github.com/googleapis/google-cloud-python/commit/02ed656410a9682d308eaf9d3086fe76cf7e27d0))
+* bump undici and @angular/build in /packages/bigframes/bigframes/display/table_widget_angular ([#17986](https://github.com/googleapis/google-cloud-python/issues/17986)) ([6938061](https://github.com/googleapis/google-cloud-python/commit/69380617aa68f565e0885911c87520abe216c358))
+* bump undici from 7.25.0 to 7.29.0 in /packages/bigframes/tests/js ([#17987](https://github.com/googleapis/google-cloud-python/issues/17987)) ([65a3571](https://github.com/googleapis/google-cloud-python/commit/65a3571325be9497c17d1c640b3cd56d8a7766e2))
+
 ## [2.47.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.46.0...bigframes-v2.47.0) (2026-08-03)
 
 

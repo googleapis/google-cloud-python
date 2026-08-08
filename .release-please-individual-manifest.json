@@ -1,5 +1,5 @@
 {
-  "packages/bigframes": "2.47.0",
+  "packages/bigframes": "2.48.0",
   "packages/google-cloud-bigtable": "2.41.0",
   "packages/google-crc32c": "1.8.0",
   "packages/pandas-gbq": "0.35.1",
