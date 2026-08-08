@@ -90,7 +90,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.38.0
+    version: 1.39.0
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -150,7 +150,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.34.0
+    version: 2.34.1
     python:
       library_type: CORE
   - name: google-apps-card
@@ -639,7 +639,7 @@ libraries:
       metadata_name_override: bigqueryreservation
       default_version: v1
   - name: google-cloud-bigquery-storage
-    version: 2.40.0
+    version: 2.41.0
     apis:
       - path: google/cloud/bigquery/storage/v1
       - path: google/cloud/bigquery/storage/v1beta2
@@ -1994,7 +1994,7 @@ libraries:
       metadata_name_override: speech
       default_version: v1
   - name: google-cloud-storage
-    version: 3.13.1
+    version: 3.14.0
     apis:
       - path: google/storage/v2
     python:
