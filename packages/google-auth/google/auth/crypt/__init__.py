@@ -56,6 +56,31 @@ RSASigner = rsa.RSASigner
 RSAVerifier = rsa.RSAVerifier
 
 
+def from_service_account_info(info):
+    """Create a Signer instance from a service account info dictionary.
+
+    Automatically detects whether the private key is RSA or ECDSA (or other non-RSA)
+    and returns the appropriate Signer instance.
+
+    Args:
+        info (Mapping[str, str]): Service account info dictionary.
+
+    Returns:
+        google.auth.crypt.Signer: The constructed signer.
+    """
+    private_key = info.get("private_key")
+    key_id = info.get("private_key_id")
+    if not private_key:
+        raise ValueError("The private_key field is missing from service account info.")
+
+    try:
+        return RSASigner.from_service_account_info(info)
+    except (ValueError, TypeError):
+        pass
+
+    return EsSigner.from_string(private_key, key_id=key_id)
+
+
 def verify_signature(message, signature, certs, verifier_cls=rsa.RSAVerifier):
     """Verify an RSA or ECDSA cryptographic signature.
 
@@ -93,4 +118,5 @@ __all__ = [
     "RSAVerifier",
     "Signer",
     "Verifier",
+    "from_service_account_info",
 ]

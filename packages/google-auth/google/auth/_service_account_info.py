@@ -52,11 +52,14 @@ def from_dict(data, require=None, use_rsa_signer=True):
             "fields {}.".format(", ".join(missing))
         )
 
-    # Create a signer.
+    # Create a signer with automatic fallback to EC and PQC (ML-DSA) signers.
     if use_rsa_signer:
-        signer = crypt.RSASigner.from_service_account_info(data)
+        try:
+            signer = crypt.RSASigner.from_service_account_info(data)
+        except (ValueError, TypeError):
+            signer = crypt.from_service_account_info(data)
     else:
-        signer = crypt.EsSigner.from_service_account_info(data)
+        signer = crypt.from_service_account_info(data)
 
     return signer
 
