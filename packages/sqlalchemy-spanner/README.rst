@@ -159,6 +159,38 @@ Read
        for row in connection.execute(select(["*"], from_obj=table)).fetchall():
            print(row)
 
+Async Support
+~~~~~~~~~~~~~
+
+The Spanner dialect also supports asyncio when used with SQLAlchemy 1.4 or 2.0.
+To use the async client, use the ``spanner+spanner_asyncio`` prefix:
+
+.. code:: python
+
+   spanner+spanner_asyncio:///projects/project-id/instances/instance-id/databases/database-id
+
+Example usage with ``create_async_engine``:
+
+.. code:: python
+
+   from sqlalchemy.ext.asyncio import create_async_engine
+   from sqlalchemy import text
+   import asyncio
+
+   async def main():
+       engine = create_async_engine(
+           "spanner+spanner_asyncio:///projects/project-id/instances/instance-id/databases/database-id"
+       )
+
+       async with engine.connect() as conn:
+           result = await conn.execute(text("SELECT 1"))
+           print(result.fetchone())
+
+       await engine.dispose()
+
+   if __name__ == "__main__":
+       asyncio.run(main())
+
 Migration
 ---------
 
