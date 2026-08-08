@@ -119,7 +119,10 @@ class DualCompilerProxyExecutor(executor.Executor):
     ) -> executor.ExecuteResult:
         compiler_option = bigframes.options.experiments.sql_compiler
         if compiler_option == "legacy":
-            return self._ibis_executor.execute(array_value, execution_spec)
+            return self._ibis_executor.execute(
+                array_value,
+                execution_spec.with_bq_labels({_COMPILER_LABEL_KEY: "ibis"}),
+            )
         elif compiler_option == "experimental":
             return self._sqlglot_executor.execute(
                 array_value,

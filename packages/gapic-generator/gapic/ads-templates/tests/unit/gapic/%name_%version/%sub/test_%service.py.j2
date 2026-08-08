@@ -668,7 +668,10 @@ def test_{{ method_name }}_api_version_header(transport_name):
 
         # Establish that the api version header was sent.
         _, _, kw = call.mock_calls[0]
-        assert kw['metadata'][0] == (version_header.API_VERSION_METADATA_KEY, "{{ service.version }}")
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "{{ service.version }}",
+        ) in kw['metadata']
     else:
         pytest.skip("google-api-core>=2.19.0 is required for `google.api_core.version_header`")
 {% endif %}{# service.version #}

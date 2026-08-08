@@ -617,6 +617,12 @@ class ReadRowsPage(object):
             pandas.DataFrame:
                 A data frame of all rows in the stream.
         """
+        warnings.warn(
+            "Retrieving DataFrames directly via google-cloud-bigquery-storage is deprecated. "
+            "Please use 'pandas_gbq.read_gbq()' or 'pandas_gbq.pandas.read_bigquery_stream_batches()'.",
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
         if pandas is None:
             raise ImportError(_PANDAS_REQUIRED)
 
