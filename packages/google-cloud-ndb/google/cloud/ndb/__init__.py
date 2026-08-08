@@ -22,7 +22,6 @@ version of the ``db`` API (hence ``ndb``).
 """
 
 import google.api_core as api_core
-from google.cloud.ndb import utils
 from google.cloud.ndb import version
 
 __version__: str = version.__version__
