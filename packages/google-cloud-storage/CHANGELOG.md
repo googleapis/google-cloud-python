@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.13.1...google-cloud-storage-v3.14.0) (2026-08-08)
+
+
+### Features
+
+* **storage:** expose metadata parameter in asyncio gRPC calls ([#17634](https://github.com/googleapis/google-cloud-python/issues/17634)) ([aaa263d](https://github.com/googleapis/google-cloud-python/commit/aaa263d672a801fd3d567c43e235a75545de3ec3))
+
+
+### Bug Fixes
+
+* **storage:** add retry support for finalize and close in AsyncAppendableObjectWriter ([#17733](https://github.com/googleapis/google-cloud-python/issues/17733)) ([92bb6dc](https://github.com/googleapis/google-cloud-python/commit/92bb6dc5cf32cfaf215f0423b13d70e338cd2faf))
+
 ## [3.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.13.0...google-cloud-storage-v3.13.1) (2026-08-06)
 
 

@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.39.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.38.0...gapic-generator-v1.39.0) (2026-08-08)
+
+
+### Features
+
+* **generator:** add fallback compatibility imports for google-api-core helpers ([#17999](https://github.com/googleapis/google-cloud-python/issues/17999)) ([9c13ae2](https://github.com/googleapis/google-cloud-python/commit/9c13ae2476e8ea7a5f3197ed5d094d3b1d5686a9))
+
+
+### Bug Fixes
+
+* **generator:** check for api_version header in metadata list ([#18015](https://github.com/googleapis/google-cloud-python/issues/18015)) ([0e63510](https://github.com/googleapis/google-cloud-python/commit/0e63510c3b03c14bb1f8dd473dbcdfb719a7050d))
+
 ## [1.38.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.37.1...gapic-generator-v1.38.0) (2026-08-06)
 
 

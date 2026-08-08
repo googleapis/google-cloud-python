@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.34.1](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.34.0...google-api-core-v2.34.1) (2026-08-08)
+
+
+### Bug Fixes
+
+* **api_core:** support suppress_metrics_header fallback in AuthMetadataPlugin ([#18029](https://github.com/googleapis/google-cloud-python/issues/18029)) ([dd2000d](https://github.com/googleapis/google-cloud-python/commit/dd2000d473b5ac315aa0f8408d7aefba793fd623))
+
 ## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.33.0...google-api-core-v2.34.0) (2026-08-06)
 
 

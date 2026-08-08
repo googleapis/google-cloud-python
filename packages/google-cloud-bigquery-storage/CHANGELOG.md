@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.40.0...google-cloud-bigquery-storage-v2.41.0) (2026-08-08)
+
+
+### Features
+
+* **bigquery-storage:** add deprecation warning for to_dataframe ([#18022](https://github.com/googleapis/google-cloud-python/issues/18022)) ([57e7822](https://github.com/googleapis/google-cloud-python/commit/57e7822651e0f255fa3090f2fafbe0be3af272eb))
+
+
+### Bug Fixes
+
+* **storage:** support updated GapicCallable metadata in tests ([#18031](https://github.com/googleapis/google-cloud-python/issues/18031)) ([24fe2e3](https://github.com/googleapis/google-cloud-python/commit/24fe2e3fd6320fe0e676105b54df6f6322f211bd))
+
 ## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.39.0...google-cloud-bigquery-storage-v2.40.0) (2026-08-06)
 
 
