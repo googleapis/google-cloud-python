@@ -583,3 +583,8 @@ class AsyncMultiRangeDownloader:
     @property
     def is_stream_open(self) -> bool:
         return self._is_stream_open
+
+    @property
+    def object_metadata(self) -> Optional[_storage_v2.Object]:
+        """The metadata of the object being downloaded."""
+        return self.read_obj_str.object_metadata if self.read_obj_str else None
