@@ -331,8 +331,6 @@ replacements:
          data_client/data_client_usage
          classic_client/usage
          admin_client/admin_client_usage
-
-        summary_overview.md
     count: 1
   - paths: [
       packages/google-cloud-bigtable/README.rst
