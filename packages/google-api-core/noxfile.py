@@ -31,8 +31,7 @@ import nox
 RUFF_VERSION = "ruff==0.14.14"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
-SUPPORTED_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
@@ -231,14 +230,14 @@ def default(
     if prerelease:
         install_prerelease_dependencies(
             session,
-            f"{constraints_dir}/constraints-{constraints_type}{SUPPORTED_PYTHON_VERSIONS[0]}.txt",
+            f"{constraints_dir}/constraints-{constraints_type}{ALL_PYTHON[0]}.txt",
         )
         # This *must* be the last install command to get the package from source.
         session.install("-e", lib_with_extras, "--no-deps")
     elif install_deps_from_source:
         install_core_deps_dependencies(
             session,
-            f"{constraints_dir}/constraints-{constraints_type}{SUPPORTED_PYTHON_VERSIONS[0]}.txt",
+            f"{constraints_dir}/constraints-{constraints_type}{ALL_PYTHON[0]}.txt",
         )
         # This *must* be the last install command to get the package from source.
         session.install("-e", lib_with_extras, "--no-deps")
