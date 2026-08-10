@@ -155,7 +155,7 @@ async def shared_instance(
                 display_name=shared_instance_id,
                 node_count=1,
                 labels=labels,
-                edition=spanner_instance_admin.Instance.Edition.ENTERPRISE_PLUS,
+                edition=spanner_instance_admin.Instance.Edition.ENTERPRISE,
             ),
         )
         created_op = await spanner_client.instance_admin_api.create_instance(
