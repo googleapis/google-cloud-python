@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.31.0
+version: v0.31.2-0.20260730143954-e9da697881de
 repo: googleapis/google-cloud-python
 sources:
   googleapis:

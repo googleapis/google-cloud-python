@@ -16,6 +16,7 @@ from unittest import mock
 import grpc
 import pytest
 from google.api_core.gapic_v1.client_info import METRICS_METADATA_KEY
+
 from google.cloud.pubsub_v1 import subscriber, types
 from google.cloud.pubsub_v1.open_telemetry.context_propagation import (
     OpenTelemetryContextGetter,

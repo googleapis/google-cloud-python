@@ -19,6 +19,8 @@ from typing import Dict, List, Optional, Tuple, Union
 
 from google.api_core import exceptions
 from google.api_core.retry_async import AsyncRetry
+from google.rpc import status_pb2
+
 from google.cloud import _storage_v2
 from google.cloud._storage_v2.types import BidiWriteObjectRedirectedError
 from google.cloud._storage_v2.types.storage import BidiWriteObjectRequest
@@ -39,7 +41,6 @@ from google.cloud.storage.asyncio.retry.writes_resumption_strategy import (
     _WriteResumptionStrategy,
     _WriteState,
 )
-from google.rpc import status_pb2
 
 from . import _utils
 
