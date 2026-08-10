@@ -42,9 +42,10 @@ replacements:
   - paths: [
       "packages/google-cloud-datastore/docs/index.rst",
     ]
-    before: |
-      \.\. include:: multiprocessing\.rst[\s\S]*?CHANGELOG
+    before: '(?s)\.\. include:: multiprocessing\.rst.*'
     after: |
+      .. include:: README.rst
+
       .. note::
 
          Because the Datastore client uses the :mod:`grpcio` library by default
@@ -78,6 +79,11 @@ replacements:
           :maxdepth: 2
 
           CHANGELOG
+
+      .. toctree::
+        :hidden:
+
+        summary_overview.md
     count: 1
   - paths: [
       "packages/google-cloud-datastore/google/cloud/datastore/__init__.py",

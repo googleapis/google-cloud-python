@@ -34,9 +34,7 @@ replacements:
       "packages/google-cloud-firestore/google/cloud/firestore_v1/__init__.py",
     ]
     before: |
-      import sys\n
-      import google.api_core as api_core\n
-      from google.cloud.firestore_v1 import gapic_version as package_version
+      import google\.api_core as api_core\n\nfrom google\.cloud\.firestore_v1 import gapic_version as package_version
       [\s\S]*?"WriteResult",\n\)
     after: |
       """Python idiomatic client for Google Cloud Firestore."""\n
@@ -349,9 +347,7 @@ replacements:
       "packages/google-cloud-firestore/google/cloud/firestore_admin_v1/__init__.py",
     ]
     before: |
-      import sys\n
-      import google.api_core as api_core\n
-      from google.cloud.firestore_admin_v1 import gapic_version as package_version
+      import google\.api_core as api_core\n\nfrom google\.cloud\.firestore_admin_v1 import gapic_version as package_version
       [\s\S]*?"WeeklyRecurrence",\n\)
     after: |
       from .services.firestore_admin import FirestoreAdminClient
