@@ -24,7 +24,7 @@ from unittest import mock
 import google.auth.transport.mtls
 
 from google.cloud.redis_v1._compat import transcode_request
-from google.cloud.redis_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert
+from google.cloud.redis_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
 
 from google.auth.exceptions import MutualTLSChannelError
 from google.api_core.universe import EmptyUniverseError
@@ -411,3 +411,15 @@ def test_transcode_request_proto_plus_wrapper():
 
     transcoded, _, _ = transcode_request(http_options, mock_proto_plus)
     assert transcoded["uri"] == "/v1/test/proto-plus-field"
+
+
+def test_read_environment_variables():
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true", "GOOGLE_API_USE_MTLS_ENDPOINT": "always", "GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
+        use_cert, mtls_endpoint, universe_domain = read_environment_variables()
+        assert use_cert is True
+        assert mtls_endpoint == "always"
+        assert universe_domain == "foo.com"
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "invalid"}):
+        with pytest.raises(MutualTLSChannelError):
+            read_environment_variables()
