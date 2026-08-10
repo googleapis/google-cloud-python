@@ -154,10 +154,10 @@ jobs:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
-      - name: Set up Python ${{ needs.python_config.outputs.prerelease_python }}
+      - name: Set up Python ${{ needs.python_config.outputs.latest_stable_python }}
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
-          python-version: ${{ needs.python_config.outputs.prerelease_python }}
+          python-version: ${{ needs.python_config.outputs.latest_stable_python }}
           allow-prereleases: true
           # Caches compiled wheels locally to prevent building heavy libraries 
           # such as grpcio, which we build from scratch on every run for Python 3.15+.
