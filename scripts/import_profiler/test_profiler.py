@@ -730,8 +730,29 @@ def test_find_module_from_package_exception_in_find_spec():
     def mock_find_spec(mod):
         raise Exception("Find spec error")
 
+    # Exception during metadata lookup falls back
+    with patch("importlib.metadata.files", return_value=["foo/bar/__init__.py"]), \
+         patch("importlib.util.find_spec", side_effect=mock_find_spec), \
+         patch("setuptools.find_namespace_packages", side_effect=Exception):
+        res = find_module_from_package("foo-bar")
+        assert res == "foo.bar"
+
+    # Exception during setuptools __init__.py lookup falls back
     with patch("importlib.metadata.files", side_effect=Exception), \
-         patch("setuptools.find_namespace_packages", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["foo_bar"]), \
+         patch("os.path.isfile", return_value=True), \
+         patch("importlib.util.find_spec", side_effect=mock_find_spec):
+        res = find_module_from_package("foo-bar")
+        assert res == "foo.bar"
+
+    # Exception during setuptools namespace package lookup falls back
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("os.path.isdir", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["foo_bar"]), \
+         patch("os.path.isfile", return_value=False), \
+         patch("os.listdir", return_value=["mod.py"]), \
          patch("importlib.util.find_spec", side_effect=mock_find_spec):
         res = find_module_from_package("foo-bar")
         assert res == "foo.bar"
