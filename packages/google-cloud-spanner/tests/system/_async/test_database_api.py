@@ -126,12 +126,12 @@ async def test_db_batch_send_and_ack(
         except MethodNotImplemented as e:
             pytest.skip(f"Queues are not implemented yet: {e}")
         except GoogleAPIError as e:
+            grpc_status_name = getattr(
+                getattr(e, "grpc_status_code", None), "name", None
+            )
             if (
                 getattr(e, "code", None) == 501
-                or (
-                    getattr(e, "grpc_status_code", None)
-                    and e.grpc_status_code.name == "UNIMPLEMENTED"
-                )
+                or grpc_status_name == "UNIMPLEMENTED"
                 or "UNIMPLEMENTED" in str(e)
             ):
                 pytest.skip(f"Queues are not implemented yet: {e}")
