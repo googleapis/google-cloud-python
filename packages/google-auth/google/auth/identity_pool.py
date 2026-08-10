@@ -572,7 +572,12 @@ class Credentials(external_account.Credentials):
         cert_fingerprint = None
         # Check if the credential is X.509 based.
         if self._credential_source_certificate is not None:
-            cert_bytes = self._get_cert_bytes()
+            try:
+                cert_bytes = self._get_cert_bytes()
+            except exceptions.ClientCertError as e:
+                raise exceptions.RefreshError(
+                    "Failed to retrieve certificate bytes for external account credentials"
+                ) from e
             cert = _agent_identity_utils.parse_certificate(cert_bytes)
             if _agent_identity_utils.should_request_bound_token(cert):
                 cert_fingerprint = (
