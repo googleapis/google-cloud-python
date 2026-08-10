@@ -27,6 +27,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core.gapic_v1.client_info import METRICS_METADATA_KEY
 from google.api_core.timeout import ConstantTimeout
+from opentelemetry import trace
+
 from google.cloud.pubsub_v1 import publisher, types
 from google.cloud.pubsub_v1.open_telemetry.context_propagation import (
     OpenTelemetryContextSetter,
@@ -39,7 +41,6 @@ from google.cloud.pubsub_v1.publisher._sequencer import ordered_sequencer
 from google.pubsub_v1 import types as gapic_types
 from google.pubsub_v1.services.publisher import client as publisher_client
 from google.pubsub_v1.services.publisher.transports.grpc import PublisherGrpcTransport
-from opentelemetry import trace
 
 C = TypeVar("C", bound=Callable[..., Any])
 typed_flaky = cast(Callable[[C], C], flaky(max_runs=5, min_passes=1))
