@@ -35,3 +35,4 @@ omit =
   */proto/*.py
   */site-packages/*.py
   google/cloud/__init__.py
+
