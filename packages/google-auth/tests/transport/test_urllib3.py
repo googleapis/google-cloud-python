@@ -584,7 +584,13 @@ class TestAuthorizedHttp(object):
         with mock.patch.object(
             google.auth.transport._mtls_helper,
             "check_parameters_for_unauthorized_response",
-            return_value=(new_cert, new_key, None, "old_fingerprint", "new_fingerprint"),
+            return_value=(
+                new_cert,
+                new_key,
+                None,
+                "old_fingerprint",
+                "new_fingerprint",
+            ),
         ) as mock_check_params:
             with mock.patch.object(
                 authed_http,

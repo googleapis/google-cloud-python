@@ -725,9 +725,7 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
                     self._terminal_exception = e
 
             if self._interceptor._wrapper:
-                if self._interceptor._should_retry(
-                    status_code, 0, self._attempt_cert
-                ):
+                if self._interceptor._should_retry(status_code, 0, self._attempt_cert):
                     self._interceptor._wrapper.refresh_logic(1)
 
         with self._lock:
