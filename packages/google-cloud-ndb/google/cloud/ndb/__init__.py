@@ -21,13 +21,11 @@ version of the ``db`` API (hence ``ndb``).
 .. autodata:: __all__
 """
 
-from google.cloud.ndb import utils
-from google.cloud.ndb import version
-
-
 from google.api_core._python_package_support import (
     warn_deprecation_for_versions_less_than,
 )
+from google.cloud.ndb import version
+
 
 _PQC_GRPC_WARNING_TEMPLATE = (
     "Package {consumer_package} depends on {dependency_package}, currently installed at version {version_used_string}. "
