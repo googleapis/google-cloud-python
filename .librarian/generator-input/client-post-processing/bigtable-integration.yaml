@@ -304,13 +304,8 @@ replacements:
   - paths: [
       packages/google-cloud-bigtable/docs/index.rst
     ]
-    before: '(?s)\.\. include:: multiprocessing\.rst\n\n+API Reference\n-------------.*'
+    before: '(?s)This package includes clients for multiple versions of Google Cloud Bigtable\..*'
     after: |
-      .. include:: README.rst
-
-      .. include:: multiprocessing.rst
-
-
       Client Types
       -------------
       .. toctree::
