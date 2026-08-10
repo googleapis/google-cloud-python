@@ -385,7 +385,7 @@ def find_module_from_package(pkg):
     try:
         files = importlib.metadata.files(pkg)
         if files:
-            init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not str(f).startswith(('tests/', 'testing/', 'samples/'))]
+            init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not str(f).replace('\\', '/').startswith(('tests/', 'testing/', 'samples/'))]
             if init_files:
                 from pathlib import Path
                 shortest_init = min(init_files, key=lambda p: len(Path(p).parts))
@@ -415,18 +415,24 @@ def find_module_from_package(pkg):
             # First preference: packages containing __init__.py
             for p in sorted(filtered, key=len):
                 path = os.path.join(where_dir, p.replace('.', os.sep))
-                if os.path.isfile(os.path.join(path, '__init__.py')):
-                    if importlib.util.find_spec(p):
-                        return p
+                try:
+                    if os.path.isfile(os.path.join(path, '__init__.py')):
+                        if importlib.util.find_spec(p):
+                            return p
+                except OSError:
+                    continue
 
             # Second preference: namespace packages containing .py files (e.g. googleapis-common-protos -> google.api)
             for p in sorted(filtered, key=len):
                 path = os.path.join(where_dir, p.replace('.', os.sep))
-                if os.path.isdir(path) and any(f.endswith('.py') for f in os.listdir(path)):
-                    if importlib.util.find_spec(p):
-                        return p
-    except Exception:
-        pass
+                try:
+                    if os.path.isdir(path) and any(f.endswith('.py') for f in os.listdir(path)):
+                        if importlib.util.find_spec(p):
+                            return p
+                except OSError:
+                    continue
+    except Exception as e:
+        print(f"WARNING: Package discovery failed: {e}", file=sys.stderr)
 
     # 3. Fallback to basic string manipulation heuristics
     candidates = [

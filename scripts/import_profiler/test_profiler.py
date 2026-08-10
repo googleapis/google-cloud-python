@@ -667,11 +667,35 @@ def test_find_module_from_package_setuptools_not_file_and_exception():
         res = find_module_from_package("my-pkg")
         assert res == "my_pkg"
 
+def test_find_module_from_package_oserror_handling(capsys):
+    sys.modules.setdefault("setuptools", MagicMock())
+    def mock_isfile(path):
+        if "bad_pkg" in path:
+            raise OSError("Permission denied")
+        return False
+
+    def mock_listdir(path):
+        if "bad_pkg" in path:
+            raise OSError("Access denied")
+        return ["mod.py"]
+
     with patch("importlib.metadata.files", side_effect=Exception), \
          patch("os.path.exists", return_value=True), \
-         patch("setuptools.find_namespace_packages", side_effect=RuntimeError("setuptools fail")):
+         patch("os.path.isdir", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["bad_pkg", "good_pkg"]), \
+         patch("os.path.isfile", side_effect=mock_isfile), \
+         patch("os.listdir", side_effect=mock_listdir), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("my-pkg")
+        assert res == "good_pkg"
+
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("setuptools.find_namespace_packages", side_effect=RuntimeError("setuptools failure")):
         res = find_module_from_package("my-pkg")
         assert res == "my.pkg"
+        captured = capsys.readouterr()
+        assert "WARNING: Package discovery failed: setuptools failure" in captured.err
 
 
 def test_find_module_from_package_namespace_package_no_init():
