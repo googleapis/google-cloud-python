@@ -674,6 +674,33 @@ def test_find_module_from_package_setuptools_not_file_and_exception():
         assert res == "my.pkg"
 
 
+def test_find_module_from_package_namespace_package_no_init():
+    sys.modules.setdefault("setuptools", MagicMock())
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("os.path.isdir", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["google.api"]), \
+         patch("os.path.isfile", return_value=False), \
+         patch("os.listdir", return_value=["http_pb2.py"]), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("googleapis-common-protos")
+        assert res == "google.api"
+
+
+def test_find_module_from_package_src_layout():
+    sys.modules.setdefault("setuptools", MagicMock())
+    def mock_isdir(path):
+        return path == "src" or path == "."
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("os.path.isdir", side_effect=mock_isdir), \
+         patch("setuptools.find_namespace_packages", return_value=["google_crc32c"]), \
+         patch("os.path.isfile", return_value=True), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("google-crc32c")
+        assert res == "google_crc32c"
+
+
 def test_find_module_from_package_exception_in_find_spec():
     sys.modules.setdefault("setuptools", MagicMock())
     def mock_find_spec(mod):
