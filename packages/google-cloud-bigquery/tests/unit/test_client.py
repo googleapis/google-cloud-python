@@ -6563,6 +6563,22 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(error_info), 1)
         assert error_info[0] == []  # no chunk errors
 
+        EXPECTED_SENT_DATA = {
+            "rows": [
+                {"insertId": None, "json": {"name": "Little One", "adult": "false"}},
+                {"insertId": None, "json": {"name": "Young Gun", "adult": "true"}},
+            ]
+        }
+
+        actual_calls = conn.api_request.call_args_list
+        assert len(actual_calls) == 1
+        assert actual_calls[0] == mock.call(
+            method="POST",
+            path=API_PATH,
+            data=EXPECTED_SENT_DATA,
+            timeout=DEFAULT_TIMEOUT,
+        )
+
     def test_insert_rows_from_dataframe_emits_pending_deprecation_warning(self):
         pandas = pytest.importorskip("pandas")
         from google.cloud.bigquery.schema import SchemaField
@@ -9407,13 +9423,9 @@ class TestClientUpload(object):
         get_table_patch = mock.patch(
             "google.cloud.bigquery.client.Client.get_table", autospec=True
         )
-        with (
-            load_patch,
-            get_table_patch,
-            pytest.warns(
-                PendingDeprecationWarning,
-                match="Loading DataFrames via google-cloud-bigquery is deprecated",
-            ),
+        with load_patch, get_table_patch, pytest.warns(
+            PendingDeprecationWarning,
+            match="Loading DataFrames via google-cloud-bigquery is deprecated",
         ):
             client.load_table_from_dataframe(dataframe, self.TABLE_REF)
 
