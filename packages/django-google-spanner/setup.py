@@ -18,10 +18,12 @@ description = "Bridge to enable using Django with Spanner."
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
+# TODO: Update upper bound when adding support for Django 6.0+
+# (django_spanner/__init__.py currently enforces SUPPORTED_DJANGO_VERSIONS = [(5, 2)])
 dependencies = [
     "sqlparse >= 0.3.0",
     "google-cloud-spanner >= 3.13.0",
-    "django >= 5.2, < 5.3",
+    "django >= 5.2, < 6.0",
 ]
 extras = {
     "tracing": [
