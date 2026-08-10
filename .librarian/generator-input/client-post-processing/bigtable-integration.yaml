@@ -310,8 +310,8 @@ replacements:
       .. toctree::
           :maxdepth: 2
 
-          bigtable_v2/services_
-          bigtable_v2/types_
+          bigtable_admin_v2/services_
+          bigtable_admin_v2/types_
     after: |
       Client Types
       -------------
