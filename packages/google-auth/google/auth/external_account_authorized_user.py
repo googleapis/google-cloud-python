@@ -42,9 +42,9 @@ from typing import Optional, TYPE_CHECKING
 
 
 from google.auth import _helpers
+from google.auth import _regional_access_boundary_utils
 from google.auth import credentials
 from google.auth import exceptions
-from google.auth import iam
 from google.oauth2 import sts
 from google.oauth2 import utils
 
@@ -337,9 +337,7 @@ class Credentials(
 
         pool_id = match.groups()[0]
 
-        return iam._WORKFORCE_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
-            pool_id=pool_id
-        )
+        return _regional_access_boundary_utils.get_workforce_pool_rab_endpoint(pool_id)
 
     def revoke(self, request):
         """Revokes the refresh token.

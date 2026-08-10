@@ -16,7 +16,6 @@
 # - @googleapis/bigtable-team
 # - @googleapis/cloud-sdk-auth-team
 # - @googleapis/cloud-sdk-python-team
-# - @googleapis/dkp-team
 # - @googleapis/firestore-team
 # - @googleapis/gcs-team
 # - @googleapis/pubsub-team
@@ -33,7 +32,6 @@
 /packages/bigquery-magics/                    @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/db-dtypes/                          @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/django-google-spanner/              @googleapis/spanner-team
-/packages/gcp-sphinx-docfx-yaml/              @googleapis/dkp-team
 /packages/google-auth/                        @googleapis/cloud-sdk-auth-team @googleapis/aion-team
 /packages/google-cloud-bigquery*/             @googleapis/bigquery-team @googleapis/bigquery-dataframe-team
 /packages/google-cloud-bigtable/              @googleapis/bigtable-team

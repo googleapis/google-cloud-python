@@ -12,22 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import google.cloud.spanner_v1.types.result_set as result_set
+import google.cloud.spanner_v1.types.type as spanner_type
+from google.cloud.spanner_v1 import (
+    BeginTransactionRequest,
+    CommitRequest,
+    CreateSessionRequest,
+    ExecuteSqlRequest,
+)
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of
-from google.cloud.spanner_v1 import (
-    CreateSessionRequest,
-    ExecuteSqlRequest,
-    BeginTransactionRequest,
-    CommitRequest,
-)
+
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
+    add_result,
     add_update_count,
 )
-from tests.mockserver_tests.mock_server_test_base import add_result
-import google.cloud.spanner_v1.types.type as spanner_type
-import google.cloud.spanner_v1.types.result_set as result_set
 
 
 class TestStaleReads(MockServerTestBase):

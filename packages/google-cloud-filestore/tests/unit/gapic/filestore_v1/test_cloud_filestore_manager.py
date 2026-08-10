@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -116,6 +117,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1000,7 +1016,14 @@ def test_cloud_filestore_manager_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1047,7 +1070,14 @@ def test_cloud_filestore_manager_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1383,8 +1413,8 @@ def test_cloud_filestore_manager_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.ListInstancesRequest,
-        dict,
+        cloud_filestore_service.ListInstancesRequest(),
+        {},
     ],
 )
 def test_list_instances(request_type, transport: str = "grpc"):
@@ -1395,7 +1425,7 @@ def test_list_instances(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -1444,12 +1474,13 @@ def test_list_instances_non_empty_request_with_auto_populated_field():
         client.list_instances(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.ListInstancesRequest(
+        request_msg = cloud_filestore_service.ListInstancesRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_instances_use_cached_wrapped_rpc():
@@ -1530,10 +1561,14 @@ async def test_list_instances_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_instances_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.ListInstancesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.ListInstancesRequest(),
+        {},
+    ],
+)
+async def test_list_instances_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1541,7 +1576,7 @@ async def test_list_instances_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -1564,11 +1599,6 @@ async def test_list_instances_async(
     assert isinstance(response, pagers.ListInstancesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_instances_async_from_dict():
-    await test_list_instances_async(request_type=dict)
 
 
 def test_list_instances_field_headers():
@@ -1763,6 +1793,9 @@ def test_list_instances_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_filestore_service.Instance) for i in results)
@@ -1851,6 +1884,8 @@ async def test_list_instances_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1907,8 +1942,8 @@ async def test_list_instances_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.GetInstanceRequest,
-        dict,
+        cloud_filestore_service.GetInstanceRequest(),
+        {},
     ],
 )
 def test_get_instance(request_type, transport: str = "grpc"):
@@ -1919,7 +1954,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -1991,9 +2026,10 @@ def test_get_instance_non_empty_request_with_auto_populated_field():
         client.get_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.GetInstanceRequest(
+        request_msg = cloud_filestore_service.GetInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_instance_use_cached_wrapped_rpc():
@@ -2074,10 +2110,14 @@ async def test_get_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.GetInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.GetInstanceRequest(),
+        {},
+    ],
+)
+async def test_get_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2085,7 +2125,7 @@ async def test_get_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -2134,11 +2174,6 @@ async def test_get_instance_async(
     assert response.custom_performance_supported is True
     assert response.deletion_protection_enabled is True
     assert response.deletion_protection_reason == "deletion_protection_reason_value"
-
-
-@pytest.mark.asyncio
-async def test_get_instance_async_from_dict():
-    await test_get_instance_async(request_type=dict)
 
 
 def test_get_instance_field_headers():
@@ -2287,8 +2322,8 @@ async def test_get_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.CreateInstanceRequest,
-        dict,
+        cloud_filestore_service.CreateInstanceRequest(),
+        {},
     ],
 )
 def test_create_instance(request_type, transport: str = "grpc"):
@@ -2299,7 +2334,7 @@ def test_create_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -2341,10 +2376,11 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
         client.create_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.CreateInstanceRequest(
+        request_msg = cloud_filestore_service.CreateInstanceRequest(
             parent="parent_value",
             instance_id="instance_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_instance_use_cached_wrapped_rpc():
@@ -2435,10 +2471,14 @@ async def test_create_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.CreateInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.CreateInstanceRequest(),
+        {},
+    ],
+)
+async def test_create_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2446,7 +2486,7 @@ async def test_create_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -2464,11 +2504,6 @@ async def test_create_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_instance_async_from_dict():
-    await test_create_instance_async(request_type=dict)
 
 
 def test_create_instance_field_headers():
@@ -2637,8 +2672,8 @@ async def test_create_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.UpdateInstanceRequest,
-        dict,
+        cloud_filestore_service.UpdateInstanceRequest(),
+        {},
     ],
 )
 def test_update_instance(request_type, transport: str = "grpc"):
@@ -2649,7 +2684,7 @@ def test_update_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -2688,7 +2723,8 @@ def test_update_instance_non_empty_request_with_auto_populated_field():
         client.update_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.UpdateInstanceRequest()
+        request_msg = cloud_filestore_service.UpdateInstanceRequest()
+        assert args[0] == request_msg
 
 
 def test_update_instance_use_cached_wrapped_rpc():
@@ -2779,10 +2815,14 @@ async def test_update_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.UpdateInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.UpdateInstanceRequest(),
+        {},
+    ],
+)
+async def test_update_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2790,7 +2830,7 @@ async def test_update_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -2808,11 +2848,6 @@ async def test_update_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_instance_async_from_dict():
-    await test_update_instance_async(request_type=dict)
 
 
 def test_update_instance_field_headers():
@@ -2971,8 +3006,8 @@ async def test_update_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.RestoreInstanceRequest,
-        dict,
+        cloud_filestore_service.RestoreInstanceRequest(),
+        {},
     ],
 )
 def test_restore_instance(request_type, transport: str = "grpc"):
@@ -2983,7 +3018,7 @@ def test_restore_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_instance), "__call__") as call:
@@ -3026,11 +3061,12 @@ def test_restore_instance_non_empty_request_with_auto_populated_field():
         client.restore_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.RestoreInstanceRequest(
+        request_msg = cloud_filestore_service.RestoreInstanceRequest(
             name="name_value",
             file_share="file_share_value",
             source_backup="source_backup_value",
         )
+        assert args[0] == request_msg
 
 
 def test_restore_instance_use_cached_wrapped_rpc():
@@ -3123,10 +3159,14 @@ async def test_restore_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_restore_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.RestoreInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.RestoreInstanceRequest(),
+        {},
+    ],
+)
+async def test_restore_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3134,7 +3174,7 @@ async def test_restore_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_instance), "__call__") as call:
@@ -3152,11 +3192,6 @@ async def test_restore_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_restore_instance_async_from_dict():
-    await test_restore_instance_async(request_type=dict)
 
 
 def test_restore_instance_field_headers():
@@ -3223,8 +3258,8 @@ async def test_restore_instance_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.RevertInstanceRequest,
-        dict,
+        cloud_filestore_service.RevertInstanceRequest(),
+        {},
     ],
 )
 def test_revert_instance(request_type, transport: str = "grpc"):
@@ -3235,7 +3270,7 @@ def test_revert_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.revert_instance), "__call__") as call:
@@ -3277,10 +3312,11 @@ def test_revert_instance_non_empty_request_with_auto_populated_field():
         client.revert_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.RevertInstanceRequest(
+        request_msg = cloud_filestore_service.RevertInstanceRequest(
             name="name_value",
             target_snapshot_id="target_snapshot_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_revert_instance_use_cached_wrapped_rpc():
@@ -3371,10 +3407,14 @@ async def test_revert_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_revert_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.RevertInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.RevertInstanceRequest(),
+        {},
+    ],
+)
+async def test_revert_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3382,7 +3422,7 @@ async def test_revert_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.revert_instance), "__call__") as call:
@@ -3400,11 +3440,6 @@ async def test_revert_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_revert_instance_async_from_dict():
-    await test_revert_instance_async(request_type=dict)
 
 
 def test_revert_instance_field_headers():
@@ -3471,8 +3506,8 @@ async def test_revert_instance_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.DeleteInstanceRequest,
-        dict,
+        cloud_filestore_service.DeleteInstanceRequest(),
+        {},
     ],
 )
 def test_delete_instance(request_type, transport: str = "grpc"):
@@ -3483,7 +3518,7 @@ def test_delete_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -3524,9 +3559,10 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
         client.delete_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.DeleteInstanceRequest(
+        request_msg = cloud_filestore_service.DeleteInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_instance_use_cached_wrapped_rpc():
@@ -3617,10 +3653,14 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_instance_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.DeleteInstanceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.DeleteInstanceRequest(),
+        {},
+    ],
+)
+async def test_delete_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3628,7 +3668,7 @@ async def test_delete_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -3646,11 +3686,6 @@ async def test_delete_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_instance_async_from_dict():
-    await test_delete_instance_async(request_type=dict)
 
 
 def test_delete_instance_field_headers():
@@ -3799,8 +3834,8 @@ async def test_delete_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.ListSnapshotsRequest,
-        dict,
+        cloud_filestore_service.ListSnapshotsRequest(),
+        {},
     ],
 )
 def test_list_snapshots(request_type, transport: str = "grpc"):
@@ -3811,7 +3846,7 @@ def test_list_snapshots(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
@@ -3860,12 +3895,13 @@ def test_list_snapshots_non_empty_request_with_auto_populated_field():
         client.list_snapshots(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.ListSnapshotsRequest(
+        request_msg = cloud_filestore_service.ListSnapshotsRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_snapshots_use_cached_wrapped_rpc():
@@ -3946,10 +3982,14 @@ async def test_list_snapshots_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_snapshots_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.ListSnapshotsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.ListSnapshotsRequest(),
+        {},
+    ],
+)
+async def test_list_snapshots_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3957,7 +3997,7 @@ async def test_list_snapshots_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
@@ -3980,11 +4020,6 @@ async def test_list_snapshots_async(
     assert isinstance(response, pagers.ListSnapshotsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_snapshots_async_from_dict():
-    await test_list_snapshots_async(request_type=dict)
 
 
 def test_list_snapshots_field_headers():
@@ -4179,6 +4214,9 @@ def test_list_snapshots_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_filestore_service.Snapshot) for i in results)
@@ -4267,6 +4305,8 @@ async def test_list_snapshots_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4323,8 +4363,8 @@ async def test_list_snapshots_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.GetSnapshotRequest,
-        dict,
+        cloud_filestore_service.GetSnapshotRequest(),
+        {},
     ],
 )
 def test_get_snapshot(request_type, transport: str = "grpc"):
@@ -4335,7 +4375,7 @@ def test_get_snapshot(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
@@ -4385,9 +4425,10 @@ def test_get_snapshot_non_empty_request_with_auto_populated_field():
         client.get_snapshot(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.GetSnapshotRequest(
+        request_msg = cloud_filestore_service.GetSnapshotRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_snapshot_use_cached_wrapped_rpc():
@@ -4468,10 +4509,14 @@ async def test_get_snapshot_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_snapshot_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.GetSnapshotRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.GetSnapshotRequest(),
+        {},
+    ],
+)
+async def test_get_snapshot_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4479,7 +4524,7 @@ async def test_get_snapshot_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
@@ -4506,11 +4551,6 @@ async def test_get_snapshot_async(
     assert response.description == "description_value"
     assert response.state == cloud_filestore_service.Snapshot.State.CREATING
     assert response.filesystem_used_bytes == 2267
-
-
-@pytest.mark.asyncio
-async def test_get_snapshot_async_from_dict():
-    await test_get_snapshot_async(request_type=dict)
 
 
 def test_get_snapshot_field_headers():
@@ -4659,8 +4699,8 @@ async def test_get_snapshot_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.CreateSnapshotRequest,
-        dict,
+        cloud_filestore_service.CreateSnapshotRequest(),
+        {},
     ],
 )
 def test_create_snapshot(request_type, transport: str = "grpc"):
@@ -4671,7 +4711,7 @@ def test_create_snapshot(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
@@ -4713,10 +4753,11 @@ def test_create_snapshot_non_empty_request_with_auto_populated_field():
         client.create_snapshot(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.CreateSnapshotRequest(
+        request_msg = cloud_filestore_service.CreateSnapshotRequest(
             parent="parent_value",
             snapshot_id="snapshot_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_snapshot_use_cached_wrapped_rpc():
@@ -4807,10 +4848,14 @@ async def test_create_snapshot_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_snapshot_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.CreateSnapshotRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.CreateSnapshotRequest(),
+        {},
+    ],
+)
+async def test_create_snapshot_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4818,7 +4863,7 @@ async def test_create_snapshot_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
@@ -4836,11 +4881,6 @@ async def test_create_snapshot_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_snapshot_async_from_dict():
-    await test_create_snapshot_async(request_type=dict)
 
 
 def test_create_snapshot_field_headers():
@@ -5009,8 +5049,8 @@ async def test_create_snapshot_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.DeleteSnapshotRequest,
-        dict,
+        cloud_filestore_service.DeleteSnapshotRequest(),
+        {},
     ],
 )
 def test_delete_snapshot(request_type, transport: str = "grpc"):
@@ -5021,7 +5061,7 @@ def test_delete_snapshot(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
@@ -5062,9 +5102,10 @@ def test_delete_snapshot_non_empty_request_with_auto_populated_field():
         client.delete_snapshot(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.DeleteSnapshotRequest(
+        request_msg = cloud_filestore_service.DeleteSnapshotRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_snapshot_use_cached_wrapped_rpc():
@@ -5155,10 +5196,14 @@ async def test_delete_snapshot_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_snapshot_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.DeleteSnapshotRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.DeleteSnapshotRequest(),
+        {},
+    ],
+)
+async def test_delete_snapshot_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5166,7 +5211,7 @@ async def test_delete_snapshot_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
@@ -5184,11 +5229,6 @@ async def test_delete_snapshot_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_snapshot_async_from_dict():
-    await test_delete_snapshot_async(request_type=dict)
 
 
 def test_delete_snapshot_field_headers():
@@ -5337,8 +5377,8 @@ async def test_delete_snapshot_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.UpdateSnapshotRequest,
-        dict,
+        cloud_filestore_service.UpdateSnapshotRequest(),
+        {},
     ],
 )
 def test_update_snapshot(request_type, transport: str = "grpc"):
@@ -5349,7 +5389,7 @@ def test_update_snapshot(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
@@ -5388,7 +5428,8 @@ def test_update_snapshot_non_empty_request_with_auto_populated_field():
         client.update_snapshot(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.UpdateSnapshotRequest()
+        request_msg = cloud_filestore_service.UpdateSnapshotRequest()
+        assert args[0] == request_msg
 
 
 def test_update_snapshot_use_cached_wrapped_rpc():
@@ -5479,10 +5520,14 @@ async def test_update_snapshot_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_snapshot_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.UpdateSnapshotRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.UpdateSnapshotRequest(),
+        {},
+    ],
+)
+async def test_update_snapshot_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5490,7 +5535,7 @@ async def test_update_snapshot_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
@@ -5508,11 +5553,6 @@ async def test_update_snapshot_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_snapshot_async_from_dict():
-    await test_update_snapshot_async(request_type=dict)
 
 
 def test_update_snapshot_field_headers():
@@ -5671,8 +5711,8 @@ async def test_update_snapshot_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.ListBackupsRequest,
-        dict,
+        cloud_filestore_service.ListBackupsRequest(),
+        {},
     ],
 )
 def test_list_backups(request_type, transport: str = "grpc"):
@@ -5683,7 +5723,7 @@ def test_list_backups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -5732,12 +5772,13 @@ def test_list_backups_non_empty_request_with_auto_populated_field():
         client.list_backups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.ListBackupsRequest(
+        request_msg = cloud_filestore_service.ListBackupsRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backups_use_cached_wrapped_rpc():
@@ -5818,10 +5859,14 @@ async def test_list_backups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_backups_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.ListBackupsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.ListBackupsRequest(),
+        {},
+    ],
+)
+async def test_list_backups_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5829,7 +5874,7 @@ async def test_list_backups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -5852,11 +5897,6 @@ async def test_list_backups_async(
     assert isinstance(response, pagers.ListBackupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_backups_async_from_dict():
-    await test_list_backups_async(request_type=dict)
 
 
 def test_list_backups_field_headers():
@@ -6051,6 +6091,9 @@ def test_list_backups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_filestore_service.Backup) for i in results)
@@ -6139,6 +6182,8 @@ async def test_list_backups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6195,8 +6240,8 @@ async def test_list_backups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.GetBackupRequest,
-        dict,
+        cloud_filestore_service.GetBackupRequest(),
+        {},
     ],
 )
 def test_get_backup(request_type, transport: str = "grpc"):
@@ -6207,7 +6252,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -6278,9 +6323,10 @@ def test_get_backup_non_empty_request_with_auto_populated_field():
         client.get_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.GetBackupRequest(
+        request_msg = cloud_filestore_service.GetBackupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_use_cached_wrapped_rpc():
@@ -6359,10 +6405,14 @@ async def test_get_backup_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_backup_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.GetBackupRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.GetBackupRequest(),
+        {},
+    ],
+)
+async def test_get_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6370,7 +6420,7 @@ async def test_get_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -6418,11 +6468,6 @@ async def test_get_backup_async(
         response.file_system_protocol
         == cloud_filestore_service.Instance.FileProtocol.NFS_V3
     )
-
-
-@pytest.mark.asyncio
-async def test_get_backup_async_from_dict():
-    await test_get_backup_async(request_type=dict)
 
 
 def test_get_backup_field_headers():
@@ -6571,8 +6616,8 @@ async def test_get_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.CreateBackupRequest,
-        dict,
+        cloud_filestore_service.CreateBackupRequest(),
+        {},
     ],
 )
 def test_create_backup(request_type, transport: str = "grpc"):
@@ -6583,7 +6628,7 @@ def test_create_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
@@ -6625,10 +6670,11 @@ def test_create_backup_non_empty_request_with_auto_populated_field():
         client.create_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.CreateBackupRequest(
+        request_msg = cloud_filestore_service.CreateBackupRequest(
             parent="parent_value",
             backup_id="backup_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_backup_use_cached_wrapped_rpc():
@@ -6719,10 +6765,14 @@ async def test_create_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_backup_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.CreateBackupRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.CreateBackupRequest(),
+        {},
+    ],
+)
+async def test_create_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6730,7 +6780,7 @@ async def test_create_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
@@ -6748,11 +6798,6 @@ async def test_create_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_backup_async_from_dict():
-    await test_create_backup_async(request_type=dict)
 
 
 def test_create_backup_field_headers():
@@ -6921,8 +6966,8 @@ async def test_create_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.DeleteBackupRequest,
-        dict,
+        cloud_filestore_service.DeleteBackupRequest(),
+        {},
     ],
 )
 def test_delete_backup(request_type, transport: str = "grpc"):
@@ -6933,7 +6978,7 @@ def test_delete_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -6974,9 +7019,10 @@ def test_delete_backup_non_empty_request_with_auto_populated_field():
         client.delete_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.DeleteBackupRequest(
+        request_msg = cloud_filestore_service.DeleteBackupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_backup_use_cached_wrapped_rpc():
@@ -7067,10 +7113,14 @@ async def test_delete_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_backup_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.DeleteBackupRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.DeleteBackupRequest(),
+        {},
+    ],
+)
+async def test_delete_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7078,7 +7128,7 @@ async def test_delete_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -7096,11 +7146,6 @@ async def test_delete_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_backup_async_from_dict():
-    await test_delete_backup_async(request_type=dict)
 
 
 def test_delete_backup_field_headers():
@@ -7249,8 +7294,8 @@ async def test_delete_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.UpdateBackupRequest,
-        dict,
+        cloud_filestore_service.UpdateBackupRequest(),
+        {},
     ],
 )
 def test_update_backup(request_type, transport: str = "grpc"):
@@ -7261,7 +7306,7 @@ def test_update_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
@@ -7300,7 +7345,8 @@ def test_update_backup_non_empty_request_with_auto_populated_field():
         client.update_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.UpdateBackupRequest()
+        request_msg = cloud_filestore_service.UpdateBackupRequest()
+        assert args[0] == request_msg
 
 
 def test_update_backup_use_cached_wrapped_rpc():
@@ -7391,10 +7437,14 @@ async def test_update_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_backup_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.UpdateBackupRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.UpdateBackupRequest(),
+        {},
+    ],
+)
+async def test_update_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7402,7 +7452,7 @@ async def test_update_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
@@ -7420,11 +7470,6 @@ async def test_update_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_backup_async_from_dict():
-    await test_update_backup_async(request_type=dict)
 
 
 def test_update_backup_field_headers():
@@ -7583,8 +7628,8 @@ async def test_update_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_filestore_service.PromoteReplicaRequest,
-        dict,
+        cloud_filestore_service.PromoteReplicaRequest(),
+        {},
     ],
 )
 def test_promote_replica(request_type, transport: str = "grpc"):
@@ -7595,7 +7640,7 @@ def test_promote_replica(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.promote_replica), "__call__") as call:
@@ -7637,10 +7682,11 @@ def test_promote_replica_non_empty_request_with_auto_populated_field():
         client.promote_replica(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_filestore_service.PromoteReplicaRequest(
+        request_msg = cloud_filestore_service.PromoteReplicaRequest(
             name="name_value",
             peer_instance="peer_instance_value",
         )
+        assert args[0] == request_msg
 
 
 def test_promote_replica_use_cached_wrapped_rpc():
@@ -7731,10 +7777,14 @@ async def test_promote_replica_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_promote_replica_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_filestore_service.PromoteReplicaRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_filestore_service.PromoteReplicaRequest(),
+        {},
+    ],
+)
+async def test_promote_replica_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFilestoreManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7742,7 +7792,7 @@ async def test_promote_replica_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.promote_replica), "__call__") as call:
@@ -7760,11 +7810,6 @@ async def test_promote_replica_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_promote_replica_async_from_dict():
-    await test_promote_replica_async(request_type=dict)
 
 
 def test_promote_replica_field_headers():
@@ -8079,6 +8124,9 @@ def test_list_instances_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_instances(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -9282,6 +9330,9 @@ def test_list_snapshots_rest_pager(transport: str = "rest"):
 
         pager = client.list_snapshots(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_filestore_service.Snapshot) for i in results)
@@ -10297,6 +10348,9 @@ def test_list_backups_rest_pager(transport: str = "rest"):
 
         pager = client.list_backups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_filestore_service.Backup) for i in results)
@@ -11296,7 +11350,6 @@ def test_list_instances_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11317,7 +11370,6 @@ def test_get_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11338,7 +11390,6 @@ def test_create_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11359,7 +11410,6 @@ def test_update_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11380,7 +11430,6 @@ def test_restore_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.RestoreInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11401,7 +11450,6 @@ def test_revert_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.RevertInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11422,7 +11470,6 @@ def test_delete_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11443,7 +11490,6 @@ def test_list_snapshots_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.ListSnapshotsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11464,7 +11510,6 @@ def test_get_snapshot_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.GetSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -11485,7 +11530,6 @@ def test_create_snapshot_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.CreateSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -11506,7 +11550,6 @@ def test_delete_snapshot_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.DeleteSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -11527,7 +11570,6 @@ def test_update_snapshot_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.UpdateSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -11548,7 +11590,6 @@ def test_list_backups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11569,7 +11610,6 @@ def test_get_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -11590,7 +11630,6 @@ def test_create_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.CreateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -11611,7 +11650,6 @@ def test_delete_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -11632,7 +11670,6 @@ def test_update_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.UpdateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -11653,7 +11690,6 @@ def test_promote_replica_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.PromoteReplicaRequest()
-
         assert args[0] == request_msg
 
 
@@ -11695,7 +11731,6 @@ async def test_list_instances_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11736,7 +11771,6 @@ async def test_get_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11761,7 +11795,6 @@ async def test_create_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11786,7 +11819,6 @@ async def test_update_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11811,7 +11843,6 @@ async def test_restore_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.RestoreInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11836,7 +11867,6 @@ async def test_revert_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.RevertInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11861,7 +11891,6 @@ async def test_delete_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11889,7 +11918,6 @@ async def test_list_snapshots_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.ListSnapshotsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11919,7 +11947,6 @@ async def test_get_snapshot_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.GetSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -11944,7 +11971,6 @@ async def test_create_snapshot_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.CreateSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -11969,7 +11995,6 @@ async def test_delete_snapshot_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.DeleteSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -11994,7 +12019,6 @@ async def test_update_snapshot_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.UpdateSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -12022,7 +12046,6 @@ async def test_list_backups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12060,7 +12083,6 @@ async def test_get_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -12085,7 +12107,6 @@ async def test_create_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.CreateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -12110,7 +12131,6 @@ async def test_delete_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -12135,7 +12155,6 @@ async def test_update_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.UpdateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -12160,7 +12179,6 @@ async def test_promote_replica_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.PromoteReplicaRequest()
-
         assert args[0] == request_msg
 
 
@@ -15566,7 +15584,6 @@ def test_list_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15586,7 +15603,6 @@ def test_get_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15606,7 +15622,6 @@ def test_create_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15626,7 +15641,6 @@ def test_update_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15646,7 +15660,6 @@ def test_restore_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.RestoreInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15666,7 +15679,6 @@ def test_revert_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.RevertInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15686,7 +15698,6 @@ def test_delete_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15706,7 +15717,6 @@ def test_list_snapshots_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.ListSnapshotsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15726,7 +15736,6 @@ def test_get_snapshot_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.GetSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -15746,7 +15755,6 @@ def test_create_snapshot_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.CreateSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -15766,7 +15774,6 @@ def test_delete_snapshot_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.DeleteSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -15786,7 +15793,6 @@ def test_update_snapshot_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.UpdateSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -15806,7 +15812,6 @@ def test_list_backups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15826,7 +15831,6 @@ def test_get_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -15846,7 +15850,6 @@ def test_create_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.CreateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -15866,7 +15869,6 @@ def test_delete_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -15886,7 +15888,6 @@ def test_update_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.UpdateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -15906,7 +15907,6 @@ def test_promote_replica_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_filestore_service.PromoteReplicaRequest()
-
         assert args[0] == request_msg
 
 

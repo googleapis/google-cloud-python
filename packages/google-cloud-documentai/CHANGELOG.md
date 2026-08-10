@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-documentai/#history
 
+## [3.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.14.0...google-cloud-documentai-v3.15.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-d packages (#17092) ([d49a2b9412b4ee9105125db36104a3e18344e0ad](https://github.com/googleapis/google-cloud-python/commit/d49a2b9412b4ee9105125db36104a3e18344e0ad))
+
 ## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.13.0...google-cloud-documentai-v3.14.0) (2026-04-02)
 
 

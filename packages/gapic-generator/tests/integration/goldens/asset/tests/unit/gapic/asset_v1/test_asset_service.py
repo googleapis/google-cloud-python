@@ -62,7 +62,6 @@ from google.longrunning import operations_pb2 # type: ignore
 from google.oauth2 import service_account
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
-import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
@@ -76,6 +75,18 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -121,150 +132,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert AssetServiceClient._get_default_mtls_endpoint(None) is None
-    assert AssetServiceClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert AssetServiceClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    assert AssetServiceClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
-    assert AssetServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
-    assert AssetServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
-    assert AssetServiceClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
-
-def test__read_environment_variables():
-    assert AssetServiceClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert AssetServiceClient._read_environment_variables() == (True, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert AssetServiceClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                AssetServiceClient._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert AssetServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert AssetServiceClient._read_environment_variables() == (False, "never", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert AssetServiceClient._read_environment_variables() == (False, "always", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert AssetServiceClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            AssetServiceClient._read_environment_variables()
-    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert AssetServiceClient._read_environment_variables() == (False, "auto", "foo.com")
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
-            assert AssetServiceClient._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
-            assert AssetServiceClient._use_client_cert_effective() is False
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert AssetServiceClient._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-            assert AssetServiceClient._use_client_cert_effective() is False
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert AssetServiceClient._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
-            assert AssetServiceClient._use_client_cert_effective() is False
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert AssetServiceClient._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
-            assert AssetServiceClient._use_client_cert_effective() is False
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert AssetServiceClient._use_client_cert_effective() is False
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
-            with pytest.raises(ValueError):
-                AssetServiceClient._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if  hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
-            assert AssetServiceClient._use_client_cert_effective() is False
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if  hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert AssetServiceClient._use_client_cert_effective() is False
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -278,40 +145,6 @@ def test__get_client_cert_source():
             assert AssetServiceClient._get_client_cert_source(None, True) is mock_default_cert_source
             assert AssetServiceClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
-@mock.patch.object(AssetServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceClient))
-@mock.patch.object(AssetServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceAsyncClient))
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = AssetServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
-    mock_universe = "bar.com"
-    mock_endpoint = AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
-
-    assert AssetServiceClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
-    assert AssetServiceClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == AssetServiceClient.DEFAULT_MTLS_ENDPOINT
-    assert AssetServiceClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
-    assert AssetServiceClient._get_api_endpoint(None, None, default_universe, "always") == AssetServiceClient.DEFAULT_MTLS_ENDPOINT
-    assert AssetServiceClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == AssetServiceClient.DEFAULT_MTLS_ENDPOINT
-    assert AssetServiceClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
-    assert AssetServiceClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        AssetServiceClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
-    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert AssetServiceClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
-    assert AssetServiceClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
-    assert AssetServiceClient._get_universe_domain(None, None) == AssetServiceClient._DEFAULT_UNIVERSE
-
-    with pytest.raises(ValueError) as excinfo:
-        AssetServiceClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 @pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
     (401, CRED_INFO_JSON, True),
@@ -696,11 +529,12 @@ def test_asset_service_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):
@@ -743,11 +577,12 @@ def test_asset_service_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):
@@ -981,10 +816,8 @@ def test_asset_service_client_create_channel_credentials_file(client_class, tran
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.ExportAssetsRequest({
-  }),
-  {
-  },
+  asset_service.ExportAssetsRequest(),
+  {},
 ])
 def test_export_assets(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -1120,8 +953,8 @@ async def test_export_assets_async_use_cached_wrapped_rpc(transport: str = "grpc
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.ExportAssetsRequest({  }),
-  {  },
+  asset_service.ExportAssetsRequest(),
+  {},
 ])
 async def test_export_assets_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -1216,10 +1049,8 @@ async def test_export_assets_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.ListAssetsRequest({
-  }),
-  {
-  },
+  asset_service.ListAssetsRequest(),
+  {},
 ])
 def test_list_assets(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -1350,8 +1181,8 @@ async def test_list_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.ListAssetsRequest({  }),
-  {  },
+  asset_service.ListAssetsRequest(),
+  {},
 ])
 async def test_list_assets_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -1581,6 +1412,9 @@ def test_list_assets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.Asset)
@@ -1667,6 +1501,8 @@ async def test_list_assets_async_pager():
         )
         async_pager = await client.list_assets(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -1723,10 +1559,8 @@ async def test_list_assets_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.BatchGetAssetsHistoryRequest({
-  }),
-  {
-  },
+  asset_service.BatchGetAssetsHistoryRequest(),
+  {},
 ])
 def test_batch_get_assets_history(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -1853,8 +1687,8 @@ async def test_batch_get_assets_history_async_use_cached_wrapped_rpc(transport: 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.BatchGetAssetsHistoryRequest({  }),
-  {  },
+  asset_service.BatchGetAssetsHistoryRequest(),
+  {},
 ])
 async def test_batch_get_assets_history_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -1948,10 +1782,8 @@ async def test_batch_get_assets_history_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.CreateFeedRequest({
-  }),
-  {
-  },
+  asset_service.CreateFeedRequest(),
+  {},
 ])
 def test_create_feed(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -2090,8 +1922,8 @@ async def test_create_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.CreateFeedRequest({  }),
-  {  },
+  asset_service.CreateFeedRequest(),
+  {},
 ])
 async def test_create_feed_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -2277,10 +2109,8 @@ async def test_create_feed_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.GetFeedRequest({
-  }),
-  {
-  },
+  asset_service.GetFeedRequest(),
+  {},
 ])
 def test_get_feed(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -2417,8 +2247,8 @@ async def test_get_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.GetFeedRequest({  }),
-  {  },
+  asset_service.GetFeedRequest(),
+  {},
 ])
 async def test_get_feed_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -2604,10 +2434,8 @@ async def test_get_feed_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.ListFeedsRequest({
-  }),
-  {
-  },
+  asset_service.ListFeedsRequest(),
+  {},
 ])
 def test_list_feeds(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -2734,8 +2562,8 @@ async def test_list_feeds_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.ListFeedsRequest({  }),
-  {  },
+  asset_service.ListFeedsRequest(),
+  {},
 ])
 async def test_list_feeds_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -2911,10 +2739,8 @@ async def test_list_feeds_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.UpdateFeedRequest({
-  }),
-  {
-  },
+  asset_service.UpdateFeedRequest(),
+  {},
 ])
 def test_update_feed(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -3049,8 +2875,8 @@ async def test_update_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.UpdateFeedRequest({  }),
-  {  },
+  asset_service.UpdateFeedRequest(),
+  {},
 ])
 async def test_update_feed_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -3236,10 +3062,8 @@ async def test_update_feed_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.DeleteFeedRequest({
-  }),
-  {
-  },
+  asset_service.DeleteFeedRequest(),
+  {},
 ])
 def test_delete_feed(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -3365,8 +3189,8 @@ async def test_delete_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.DeleteFeedRequest({  }),
-  {  },
+  asset_service.DeleteFeedRequest(),
+  {},
 ])
 async def test_delete_feed_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -3541,10 +3365,8 @@ async def test_delete_feed_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.SearchAllResourcesRequest({
-  }),
-  {
-  },
+  asset_service.SearchAllResourcesRequest(),
+  {},
 ])
 def test_search_all_resources(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -3679,8 +3501,8 @@ async def test_search_all_resources_async_use_cached_wrapped_rpc(transport: str 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.SearchAllResourcesRequest({  }),
-  {  },
+  asset_service.SearchAllResourcesRequest(),
+  {},
 ])
 async def test_search_all_resources_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -3930,6 +3752,9 @@ def test_search_all_resources_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.ResourceSearchResult)
@@ -4016,6 +3841,8 @@ async def test_search_all_resources_async_pager():
         )
         async_pager = await client.search_all_resources(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -4072,10 +3899,8 @@ async def test_search_all_resources_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.SearchAllIamPoliciesRequest({
-  }),
-  {
-  },
+  asset_service.SearchAllIamPoliciesRequest(),
+  {},
 ])
 def test_search_all_iam_policies(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -4210,8 +4035,8 @@ async def test_search_all_iam_policies_async_use_cached_wrapped_rpc(transport: s
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.SearchAllIamPoliciesRequest({  }),
-  {  },
+  asset_service.SearchAllIamPoliciesRequest(),
+  {},
 ])
 async def test_search_all_iam_policies_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -4451,6 +4276,9 @@ def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.IamPolicySearchResult)
@@ -4537,6 +4365,8 @@ async def test_search_all_iam_policies_async_pager():
         )
         async_pager = await client.search_all_iam_policies(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -4593,10 +4423,8 @@ async def test_search_all_iam_policies_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeIamPolicyRequest({
-  }),
-  {
-  },
+  asset_service.AnalyzeIamPolicyRequest(),
+  {},
 ])
 def test_analyze_iam_policy(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -4725,8 +4553,8 @@ async def test_analyze_iam_policy_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeIamPolicyRequest({  }),
-  {  },
+  asset_service.AnalyzeIamPolicyRequest(),
+  {},
 ])
 async def test_analyze_iam_policy_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -4822,10 +4650,8 @@ async def test_analyze_iam_policy_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeIamPolicyLongrunningRequest({
-  }),
-  {
-  },
+  asset_service.AnalyzeIamPolicyLongrunningRequest(),
+  {},
 ])
 def test_analyze_iam_policy_longrunning(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -4961,8 +4787,8 @@ async def test_analyze_iam_policy_longrunning_async_use_cached_wrapped_rpc(trans
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeIamPolicyLongrunningRequest({  }),
-  {  },
+  asset_service.AnalyzeIamPolicyLongrunningRequest(),
+  {},
 ])
 async def test_analyze_iam_policy_longrunning_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -5057,10 +4883,8 @@ async def test_analyze_iam_policy_longrunning_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeMoveRequest({
-  }),
-  {
-  },
+  asset_service.AnalyzeMoveRequest(),
+  {},
 ])
 def test_analyze_move(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -5189,8 +5013,8 @@ async def test_analyze_move_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeMoveRequest({  }),
-  {  },
+  asset_service.AnalyzeMoveRequest(),
+  {},
 ])
 async def test_analyze_move_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -5284,10 +5108,8 @@ async def test_analyze_move_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.QueryAssetsRequest({
-  }),
-  {
-  },
+  asset_service.QueryAssetsRequest(),
+  {},
 ])
 def test_query_assets(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -5424,8 +5246,8 @@ async def test_query_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.QueryAssetsRequest({  }),
-  {  },
+  asset_service.QueryAssetsRequest(),
+  {},
 ])
 async def test_query_assets_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -5523,10 +5345,8 @@ async def test_query_assets_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.CreateSavedQueryRequest({
-  }),
-  {
-  },
+  asset_service.CreateSavedQueryRequest(),
+  {},
 ])
 def test_create_saved_query(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -5663,8 +5483,8 @@ async def test_create_saved_query_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.CreateSavedQueryRequest({  }),
-  {  },
+  asset_service.CreateSavedQueryRequest(),
+  {},
 ])
 async def test_create_saved_query_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -5868,10 +5688,8 @@ async def test_create_saved_query_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.GetSavedQueryRequest({
-  }),
-  {
-  },
+  asset_service.GetSavedQueryRequest(),
+  {},
 ])
 def test_get_saved_query(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -6006,8 +5824,8 @@ async def test_get_saved_query_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.GetSavedQueryRequest({  }),
-  {  },
+  asset_service.GetSavedQueryRequest(),
+  {},
 ])
 async def test_get_saved_query_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -6191,10 +6009,8 @@ async def test_get_saved_query_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.ListSavedQueriesRequest({
-  }),
-  {
-  },
+  asset_service.ListSavedQueriesRequest(),
+  {},
 ])
 def test_list_saved_queries(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -6327,8 +6143,8 @@ async def test_list_saved_queries_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.ListSavedQueriesRequest({  }),
-  {  },
+  asset_service.ListSavedQueriesRequest(),
+  {},
 ])
 async def test_list_saved_queries_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -6558,6 +6374,9 @@ def test_list_saved_queries_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, asset_service.SavedQuery)
@@ -6644,6 +6463,8 @@ async def test_list_saved_queries_async_pager():
         )
         async_pager = await client.list_saved_queries(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -6700,10 +6521,8 @@ async def test_list_saved_queries_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.UpdateSavedQueryRequest({
-  }),
-  {
-  },
+  asset_service.UpdateSavedQueryRequest(),
+  {},
 ])
 def test_update_saved_query(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -6836,8 +6655,8 @@ async def test_update_saved_query_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.UpdateSavedQueryRequest({  }),
-  {  },
+  asset_service.UpdateSavedQueryRequest(),
+  {},
 ])
 async def test_update_saved_query_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -7031,10 +6850,8 @@ async def test_update_saved_query_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.DeleteSavedQueryRequest({
-  }),
-  {
-  },
+  asset_service.DeleteSavedQueryRequest(),
+  {},
 ])
 def test_delete_saved_query(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -7160,8 +6977,8 @@ async def test_delete_saved_query_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.DeleteSavedQueryRequest({  }),
-  {  },
+  asset_service.DeleteSavedQueryRequest(),
+  {},
 ])
 async def test_delete_saved_query_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -7336,10 +7153,8 @@ async def test_delete_saved_query_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.BatchGetEffectiveIamPoliciesRequest({
-  }),
-  {
-  },
+  asset_service.BatchGetEffectiveIamPoliciesRequest(),
+  {},
 ])
 def test_batch_get_effective_iam_policies(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -7466,8 +7281,8 @@ async def test_batch_get_effective_iam_policies_async_use_cached_wrapped_rpc(tra
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.BatchGetEffectiveIamPoliciesRequest({  }),
-  {  },
+  asset_service.BatchGetEffectiveIamPoliciesRequest(),
+  {},
 ])
 async def test_batch_get_effective_iam_policies_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -7561,10 +7376,8 @@ async def test_batch_get_effective_iam_policies_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeOrgPoliciesRequest({
-  }),
-  {
-  },
+  asset_service.AnalyzeOrgPoliciesRequest(),
+  {},
 ])
 def test_analyze_org_policies(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -7699,8 +7512,8 @@ async def test_analyze_org_policies_async_use_cached_wrapped_rpc(transport: str 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeOrgPoliciesRequest({  }),
-  {  },
+  asset_service.AnalyzeOrgPoliciesRequest(),
+  {},
 ])
 async def test_analyze_org_policies_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -7950,6 +7763,9 @@ def test_analyze_org_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult)
@@ -8036,6 +7852,8 @@ async def test_analyze_org_policies_async_pager():
         )
         async_pager = await client.analyze_org_policies(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -8092,10 +7910,8 @@ async def test_analyze_org_policies_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeOrgPolicyGovernedContainersRequest({
-  }),
-  {
-  },
+  asset_service.AnalyzeOrgPolicyGovernedContainersRequest(),
+  {},
 ])
 def test_analyze_org_policy_governed_containers(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -8230,8 +8046,8 @@ async def test_analyze_org_policy_governed_containers_async_use_cached_wrapped_r
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeOrgPolicyGovernedContainersRequest({  }),
-  {  },
+  asset_service.AnalyzeOrgPolicyGovernedContainersRequest(),
+  {},
 ])
 async def test_analyze_org_policy_governed_containers_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -8481,6 +8297,9 @@ def test_analyze_org_policy_governed_containers_pager(transport_name: str = "grp
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer)
@@ -8567,6 +8386,8 @@ async def test_analyze_org_policy_governed_containers_async_pager():
         )
         async_pager = await client.analyze_org_policy_governed_containers(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -8623,10 +8444,8 @@ async def test_analyze_org_policy_governed_containers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeOrgPolicyGovernedAssetsRequest({
-  }),
-  {
-  },
+  asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(),
+  {},
 ])
 def test_analyze_org_policy_governed_assets(request_type, transport: str = 'grpc'):
     client = AssetServiceClient(
@@ -8761,8 +8580,8 @@ async def test_analyze_org_policy_governed_assets_async_use_cached_wrapped_rpc(t
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeOrgPolicyGovernedAssetsRequest({  }),
-  {  },
+  asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(),
+  {},
 ])
 async def test_analyze_org_policy_governed_assets_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -9012,6 +8831,9 @@ def test_analyze_org_policy_governed_assets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset)
@@ -9098,6 +8920,8 @@ async def test_analyze_org_policy_governed_assets_async_pager():
         )
         async_pager = await client.analyze_org_policy_governed_assets(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -9206,15 +9030,17 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_assets._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseExportAssets,
+        "_BaseExportAssets__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_assets._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -9259,13 +9085,6 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_export_assets_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.export_assets._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("parent", "outputConfig", )))
 
 
 def test_list_assets_rest_use_cached_wrapped_rpc():
@@ -9316,17 +9135,20 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_assets._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListAssets,
+        "_BaseListAssets__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_assets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_types", "content_type", "page_size", "page_token", "read_time", "relationship_types", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("assetTypes", "contentType", "pageSize", "pageToken", "readTime", "relationshipTypes", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -9373,13 +9195,6 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_assets_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_assets._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("assetTypes", "contentType", "pageSize", "pageToken", "readTime", "relationshipTypes", )) & set(("parent", )))
 
 
 def test_list_assets_rest_flattened():
@@ -9488,6 +9303,9 @@ def test_list_assets_rest_pager(transport: str = 'rest'):
 
         pager = client.list_assets(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.Asset)
@@ -9546,17 +9364,20 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_assets_history._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseBatchGetAssetsHistory,
+        "_BaseBatchGetAssetsHistory__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_assets_history._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_names", "content_type", "read_time_window", "relationship_types", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("assetNames", "contentType", "readTimeWindow", "relationshipTypes", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -9603,13 +9424,6 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_batch_get_assets_history_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.batch_get_assets_history._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("assetNames", "contentType", "readTimeWindow", "relationshipTypes", )) & set(("parent", )))
 
 
 def test_create_feed_rest_use_cached_wrapped_rpc():
@@ -9661,16 +9475,18 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_feed._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateFeed,
+        "_BaseCreateFeed__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["feedId"] = 'feed_id_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_feed._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -9720,13 +9536,6 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_feed_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_feed._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("parent", "feedId", "feed", )))
 
 
 def test_create_feed_rest_flattened():
@@ -9831,15 +9640,17 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_feed._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetFeed,
+        "_BaseGetFeed__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_feed._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -9886,13 +9697,6 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_feed_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_feed._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_feed_rest_flattened():
@@ -9997,15 +9801,17 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_feeds._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListFeeds,
+        "_BaseListFeeds__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_feeds._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -10052,13 +9858,6 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_feeds_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_feeds._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("parent", )))
 
 
 def test_list_feeds_rest_flattened():
@@ -10162,13 +9961,15 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_feed._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateFeed,
+        "_BaseUpdateFeed__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_feed._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
@@ -10214,13 +10015,6 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_feed_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.update_feed._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("feed", "updateMask", )))
 
 
 def test_update_feed_rest_flattened():
@@ -10325,15 +10119,17 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_feed._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteFeed,
+        "_BaseDeleteFeed__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_feed._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -10377,13 +10173,6 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_feed_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_feed._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_delete_feed_rest_flattened():
@@ -10486,17 +10275,20 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_resources._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSearchAllResources,
+        "_BaseSearchAllResources__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["scope"] = 'scope_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_resources._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_types", "order_by", "page_size", "page_token", "query", "read_mask", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", "readMask", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -10543,13 +10335,6 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_search_all_resources_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.search_all_resources._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", "readMask", )) & set(("scope", )))
 
 
 def test_search_all_resources_rest_flattened():
@@ -10662,6 +10447,9 @@ def test_search_all_resources_rest_pager(transport: str = 'rest'):
 
         pager = client.search_all_resources(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.ResourceSearchResult)
@@ -10720,17 +10508,20 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_iam_policies._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSearchAllIamPolicies,
+        "_BaseSearchAllIamPolicies__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["scope"] = 'scope_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_iam_policies._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_types", "order_by", "page_size", "page_token", "query", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -10777,13 +10568,6 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_search_all_iam_policies_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.search_all_iam_policies._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", )) & set(("scope", )))
 
 
 def test_search_all_iam_policies_rest_flattened():
@@ -10894,6 +10678,9 @@ def test_search_all_iam_policies_rest_pager(transport: str = 'rest'):
 
         pager = client.search_all_iam_policies(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.IamPolicySearchResult)
@@ -10951,15 +10738,18 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_iam_policy._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAnalyzeIamPolicy,
+        "_BaseAnalyzeIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_iam_policy._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("analysis_query", "execution_timeout", "saved_analysis_query", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("analysisQuery", "executionTimeout", "savedAnalysisQuery", ))
 
     # verify required fields with non-default values are left alone
 
@@ -11004,13 +10794,6 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_analyze_iam_policy_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.analyze_iam_policy._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("analysisQuery", "executionTimeout", "savedAnalysisQuery", )) & set(("analysisQuery", )))
 
 
 def test_analyze_iam_policy_longrunning_rest_use_cached_wrapped_rpc():
@@ -11064,13 +10847,15 @@ def test_analyze_iam_policy_longrunning_rest_required_fields(request_type=asset_
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_iam_policy_longrunning._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAnalyzeIamPolicyLongrunning,
+        "_BaseAnalyzeIamPolicyLongrunning__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_iam_policy_longrunning._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
@@ -11113,13 +10898,6 @@ def test_analyze_iam_policy_longrunning_rest_required_fields(request_type=asset_
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_analyze_iam_policy_longrunning_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.analyze_iam_policy_longrunning._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("analysisQuery", "outputConfig", )))
 
 
 def test_analyze_move_rest_use_cached_wrapped_rpc():
@@ -11172,7 +10950,12 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
     # verify fields with default values are dropped
     assert "destinationParent" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_move._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAnalyzeMove,
+        "_BaseAnalyzeMove__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -11182,10 +10965,8 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
     jsonified_request["resource"] = 'resource_value'
     jsonified_request["destinationParent"] = 'destination_parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_move._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("destination_parent", "view", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("destinationParent", "view", ))
 
     # verify required fields with non-default values are left alone
     assert "resource" in jsonified_request
@@ -11240,13 +11021,6 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
             assert sorted(expected_params) == sorted(actual_params)
 
 
-def test_analyze_move_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.analyze_move._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("destinationParent", "view", )) & set(("resource", "destinationParent", )))
-
-
 def test_query_assets_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -11295,15 +11069,17 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).query_assets._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseQueryAssets,
+        "_BaseQueryAssets__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).query_assets._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -11351,13 +11127,6 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_query_assets_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.query_assets._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("parent", )))
 
 
 def test_create_saved_query_rest_use_cached_wrapped_rpc():
@@ -11410,7 +11179,12 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
     # verify fields with default values are dropped
     assert "savedQueryId" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_saved_query._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateSavedQuery,
+        "_BaseCreateSavedQuery__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -11420,10 +11194,8 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["savedQueryId"] = 'saved_query_id_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_saved_query._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("saved_query_id", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("savedQueryId", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -11477,13 +11249,6 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_saved_query_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_saved_query._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("savedQueryId", )) & set(("parent", "savedQuery", "savedQueryId", )))
 
 
 def test_create_saved_query_rest_flattened():
@@ -11592,15 +11357,17 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_saved_query._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetSavedQuery,
+        "_BaseGetSavedQuery__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_saved_query._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -11647,13 +11414,6 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_saved_query_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_saved_query._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_saved_query_rest_flattened():
@@ -11758,17 +11518,20 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_saved_queries._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListSavedQueries,
+        "_BaseListSavedQueries__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_saved_queries._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("filter", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("filter", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -11815,13 +11578,6 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_saved_queries_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_saved_queries._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("filter", "pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_saved_queries_rest_flattened():
@@ -11930,6 +11686,9 @@ def test_list_saved_queries_rest_pager(transport: str = 'rest'):
 
         pager = client.list_saved_queries(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, asset_service.SavedQuery)
@@ -11987,15 +11746,18 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_saved_query._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateSavedQuery,
+        "_BaseUpdateSavedQuery__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_saved_query._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask", ))
 
     # verify required fields with non-default values are left alone
 
@@ -12041,13 +11803,6 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_saved_query_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.update_saved_query._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask", )) & set(("savedQuery", "updateMask", )))
 
 
 def test_update_saved_query_rest_flattened():
@@ -12154,15 +11909,17 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_saved_query._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteSavedQuery,
+        "_BaseDeleteSavedQuery__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_saved_query._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -12206,13 +11963,6 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_saved_query_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_saved_query._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_delete_saved_query_rest_flattened():
@@ -12317,7 +12067,12 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
     # verify fields with default values are dropped
     assert "names" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_effective_iam_policies._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseBatchGetEffectiveIamPolicies,
+        "_BaseBatchGetEffectiveIamPolicies__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -12327,10 +12082,8 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
     jsonified_request["scope"] = 'scope_value'
     jsonified_request["names"] = 'names_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_effective_iam_policies._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("names", ))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -12385,13 +12138,6 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
             assert sorted(expected_params) == sorted(actual_params)
 
 
-def test_batch_get_effective_iam_policies_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.batch_get_effective_iam_policies._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("names", )) & set(("scope", "names", )))
-
-
 def test_analyze_org_policies_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -12442,7 +12188,12 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
     # verify fields with default values are dropped
     assert "constraint" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policies._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAnalyzeOrgPolicies,
+        "_BaseAnalyzeOrgPolicies__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -12452,10 +12203,8 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
     jsonified_request["scope"] = 'scope_value'
     jsonified_request["constraint"] = 'constraint_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policies._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("constraint", "filter", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -12508,13 +12257,6 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_analyze_org_policies_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.analyze_org_policies._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
 
 
 def test_analyze_org_policies_rest_flattened():
@@ -12627,6 +12369,9 @@ def test_analyze_org_policies_rest_pager(transport: str = 'rest'):
 
         pager = client.analyze_org_policies(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult)
@@ -12687,7 +12432,12 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
     # verify fields with default values are dropped
     assert "constraint" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_containers._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAnalyzeOrgPolicyGovernedContainers,
+        "_BaseAnalyzeOrgPolicyGovernedContainers__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -12697,10 +12447,8 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
     jsonified_request["scope"] = 'scope_value'
     jsonified_request["constraint"] = 'constraint_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_containers._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("constraint", "filter", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -12753,13 +12501,6 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_analyze_org_policy_governed_containers_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.analyze_org_policy_governed_containers._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
 
 
 def test_analyze_org_policy_governed_containers_rest_flattened():
@@ -12872,6 +12613,9 @@ def test_analyze_org_policy_governed_containers_rest_pager(transport: str = 'res
 
         pager = client.analyze_org_policy_governed_containers(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer)
@@ -12932,7 +12676,12 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
     # verify fields with default values are dropped
     assert "constraint" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_assets._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAnalyzeOrgPolicyGovernedAssets,
+        "_BaseAnalyzeOrgPolicyGovernedAssets__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -12942,10 +12691,8 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
     jsonified_request["scope"] = 'scope_value'
     jsonified_request["constraint"] = 'constraint_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_assets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("constraint", "filter", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
@@ -12998,13 +12745,6 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_analyze_org_policy_governed_assets_rest_unset_required_fields():
-    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.analyze_org_policy_governed_assets._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
 
 
 def test_analyze_org_policy_governed_assets_rest_flattened():
@@ -13116,6 +12856,9 @@ def test_analyze_org_policy_governed_assets_rest_pager(transport: str = 'rest'):
         sample_request = {'scope': 'sample1/sample2'}
 
         pager = client.analyze_org_policy_governed_assets(request=sample_request)
+
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
 
         results = list(pager)
         assert len(results) == 6

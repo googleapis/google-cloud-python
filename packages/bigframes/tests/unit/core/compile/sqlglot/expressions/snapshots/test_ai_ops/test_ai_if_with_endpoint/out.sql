@@ -1,6 +1,6 @@
 SELECT
   AI.IF(
-    prompt => (`string_col`, ' is the same as ', `string_col`),
+    prompt => STRUCT(`string_col`, ' is the same as ', `string_col`),
     endpoint => 'gemini-2.5-flash'
   ) AS `result`
 FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

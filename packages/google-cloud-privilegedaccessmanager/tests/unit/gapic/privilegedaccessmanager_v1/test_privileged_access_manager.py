@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -116,6 +117,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1004,7 +1020,14 @@ def test_privileged_access_manager_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1051,7 +1074,14 @@ def test_privileged_access_manager_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1387,8 +1417,8 @@ def test_privileged_access_manager_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        privilegedaccessmanager.CheckOnboardingStatusRequest,
-        dict,
+        privilegedaccessmanager.CheckOnboardingStatusRequest(),
+        {},
     ],
 )
 def test_check_onboarding_status(request_type, transport: str = "grpc"):
@@ -1399,7 +1429,7 @@ def test_check_onboarding_status(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1447,9 +1477,10 @@ def test_check_onboarding_status_non_empty_request_with_auto_populated_field():
         client.check_onboarding_status(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == privilegedaccessmanager.CheckOnboardingStatusRequest(
+        request_msg = privilegedaccessmanager.CheckOnboardingStatusRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_check_onboarding_status_use_cached_wrapped_rpc():
@@ -1535,9 +1566,15 @@ async def test_check_onboarding_status_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        privilegedaccessmanager.CheckOnboardingStatusRequest(),
+        {},
+    ],
+)
 async def test_check_onboarding_status_async(
-    transport: str = "grpc_asyncio",
-    request_type=privilegedaccessmanager.CheckOnboardingStatusRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PrivilegedAccessManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1546,7 +1583,7 @@ async def test_check_onboarding_status_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1569,11 +1606,6 @@ async def test_check_onboarding_status_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, privilegedaccessmanager.CheckOnboardingStatusResponse)
     assert response.service_account == "service_account_value"
-
-
-@pytest.mark.asyncio
-async def test_check_onboarding_status_async_from_dict():
-    await test_check_onboarding_status_async(request_type=dict)
 
 
 def test_check_onboarding_status_field_headers():
@@ -1644,8 +1676,8 @@ async def test_check_onboarding_status_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        privilegedaccessmanager.ListEntitlementsRequest,
-        dict,
+        privilegedaccessmanager.ListEntitlementsRequest(),
+        {},
     ],
 )
 def test_list_entitlements(request_type, transport: str = "grpc"):
@@ -1656,7 +1688,7 @@ def test_list_entitlements(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1709,12 +1741,13 @@ def test_list_entitlements_non_empty_request_with_auto_populated_field():
         client.list_entitlements(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == privilegedaccessmanager.ListEntitlementsRequest(
+        request_msg = privilegedaccessmanager.ListEntitlementsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_entitlements_use_cached_wrapped_rpc():
@@ -1797,10 +1830,14 @@ async def test_list_entitlements_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_entitlements_async(
-    transport: str = "grpc_asyncio",
-    request_type=privilegedaccessmanager.ListEntitlementsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        privilegedaccessmanager.ListEntitlementsRequest(),
+        {},
+    ],
+)
+async def test_list_entitlements_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivilegedAccessManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1808,7 +1845,7 @@ async def test_list_entitlements_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1833,11 +1870,6 @@ async def test_list_entitlements_async(
     assert isinstance(response, pagers.ListEntitlementsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_entitlements_async_from_dict():
-    await test_list_entitlements_async(request_type=dict)
 
 
 def test_list_entitlements_field_headers():
@@ -2042,6 +2074,9 @@ def test_list_entitlements_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, privilegedaccessmanager.Entitlement) for i in results)
@@ -2134,6 +2169,8 @@ async def test_list_entitlements_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2194,8 +2231,8 @@ async def test_list_entitlements_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        privilegedaccessmanager.SearchEntitlementsRequest,
-        dict,
+        privilegedaccessmanager.SearchEntitlementsRequest(),
+        {},
     ],
 )
 def test_search_entitlements(request_type, transport: str = "grpc"):
@@ -2206,7 +2243,7 @@ def test_search_entitlements(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2256,11 +2293,12 @@ def test_search_entitlements_non_empty_request_with_auto_populated_field():
         client.search_entitlements(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == privilegedaccessmanager.SearchEntitlementsRequest(
+        request_msg = privilegedaccessmanager.SearchEntitlementsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_entitlements_use_cached_wrapped_rpc():
@@ -2345,10 +2383,14 @@ async def test_search_entitlements_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_entitlements_async(
-    transport: str = "grpc_asyncio",
-    request_type=privilegedaccessmanager.SearchEntitlementsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        privilegedaccessmanager.SearchEntitlementsRequest(),
+        {},
+    ],
+)
+async def test_search_entitlements_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivilegedAccessManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2356,7 +2398,7 @@ async def test_search_entitlements_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2379,11 +2421,6 @@ async def test_search_entitlements_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchEntitlementsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_entitlements_async_from_dict():
-    await test_search_entitlements_async(request_type=dict)
 
 
 def test_search_entitlements_field_headers():
@@ -2502,6 +2539,9 @@ def test_search_entitlements_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, privilegedaccessmanager.Entitlement) for i in results)
@@ -2594,6 +2634,8 @@ async def test_search_entitlements_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2654,8 +2696,8 @@ async def test_search_entitlements_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        privilegedaccessmanager.GetEntitlementRequest,
-        dict,
+        privilegedaccessmanager.GetEntitlementRequest(),
+        {},
     ],
 )
 def test_get_entitlement(request_type, transport: str = "grpc"):
@@ -2666,7 +2708,7 @@ def test_get_entitlement(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entitlement), "__call__") as call:
@@ -2714,9 +2756,10 @@ def test_get_entitlement_non_empty_request_with_auto_populated_field():
         client.get_entitlement(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == privilegedaccessmanager.GetEntitlementRequest(
+        request_msg = privilegedaccessmanager.GetEntitlementRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_entitlement_use_cached_wrapped_rpc():
@@ -2797,10 +2840,14 @@ async def test_get_entitlement_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_entitlement_async(
-    transport: str = "grpc_asyncio",
-    request_type=privilegedaccessmanager.GetEntitlementRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        privilegedaccessmanager.GetEntitlementRequest(),
+        {},
+    ],
+)
+async def test_get_entitlement_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivilegedAccessManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2808,7 +2855,7 @@ async def test_get_entitlement_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entitlement), "__call__") as call:
@@ -2833,11 +2880,6 @@ async def test_get_entitlement_async(
     assert response.name == "name_value"
     assert response.state == privilegedaccessmanager.Entitlement.State.CREATING
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_entitlement_async_from_dict():
-    await test_get_entitlement_async(request_type=dict)
 
 
 def test_get_entitlement_field_headers():
@@ -2986,8 +3028,8 @@ async def test_get_entitlement_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        privilegedaccessmanager.CreateEntitlementRequest,
-        dict,
+        privilegedaccessmanager.CreateEntitlementRequest(),
+        {},
     ],
 )
 def test_create_entitlement(request_type, transport: str = "grpc"):
@@ -2998,7 +3040,7 @@ def test_create_entitlement(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3045,11 +3087,12 @@ def test_create_entitlement_non_empty_request_with_auto_populated_field():
         client.create_entitlement(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == privilegedaccessmanager.CreateEntitlementRequest(
+        request_msg = privilegedaccessmanager.CreateEntitlementRequest(
             parent="parent_value",
             entitlement_id="entitlement_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_entitlement_use_cached_wrapped_rpc():
@@ -3144,10 +3187,14 @@ async def test_create_entitlement_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_entitlement_async(
-    transport: str = "grpc_asyncio",
-    request_type=privilegedaccessmanager.CreateEntitlementRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        privilegedaccessmanager.CreateEntitlementRequest(),
+        {},
+    ],
+)
+async def test_create_entitlement_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivilegedAccessManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3155,7 +3202,7 @@ async def test_create_entitlement_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3175,11 +3222,6 @@ async def test_create_entitlement_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_entitlement_async_from_dict():
-    await test_create_entitlement_async(request_type=dict)
 
 
 def test_create_entitlement_field_headers():
@@ -3356,8 +3398,8 @@ async def test_create_entitlement_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        privilegedaccessmanager.DeleteEntitlementRequest,
-        dict,
+        privilegedaccessmanager.DeleteEntitlementRequest(),
+        {},
     ],
 )
 def test_delete_entitlement(request_type, transport: str = "grpc"):
@@ -3368,7 +3410,7 @@ def test_delete_entitlement(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3414,10 +3456,11 @@ def test_delete_entitlement_non_empty_request_with_auto_populated_field():
         client.delete_entitlement(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == privilegedaccessmanager.DeleteEntitlementRequest(
+        request_msg = privilegedaccessmanager.DeleteEntitlementRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_entitlement_use_cached_wrapped_rpc():
@@ -3512,10 +3555,14 @@ async def test_delete_entitlement_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_entitlement_async(
-    transport: str = "grpc_asyncio",
-    request_type=privilegedaccessmanager.DeleteEntitlementRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        privilegedaccessmanager.DeleteEntitlementRequest(),
+        {},
+    ],
+)
+async def test_delete_entitlement_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivilegedAccessManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3523,7 +3570,7 @@ async def test_delete_entitlement_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3543,11 +3590,6 @@ async def test_delete_entitlement_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_entitlement_async_from_dict():
-    await test_delete_entitlement_async(request_type=dict)
 
 
 def test_delete_entitlement_field_headers():
@@ -3704,8 +3746,8 @@ async def test_delete_entitlement_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        privilegedaccessmanager.UpdateEntitlementRequest,
-        dict,
+        privilegedaccessmanager.UpdateEntitlementRequest(),
+        {},
     ],
 )
 def test_update_entitlement(request_type, transport: str = "grpc"):
@@ -3716,7 +3758,7 @@ def test_update_entitlement(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3759,7 +3801,8 @@ def test_update_entitlement_non_empty_request_with_auto_populated_field():
         client.update_entitlement(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == privilegedaccessmanager.UpdateEntitlementRequest()
+        request_msg = privilegedaccessmanager.UpdateEntitlementRequest()
+        assert args[0] == request_msg
 
 
 def test_update_entitlement_use_cached_wrapped_rpc():
@@ -3854,10 +3897,14 @@ async def test_update_entitlement_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_entitlement_async(
-    transport: str = "grpc_asyncio",
-    request_type=privilegedaccessmanager.UpdateEntitlementRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        privilegedaccessmanager.UpdateEntitlementRequest(),
+        {},
+    ],
+)
+async def test_update_entitlement_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivilegedAccessManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3865,7 +3912,7 @@ async def test_update_entitlement_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3885,11 +3932,6 @@ async def test_update_entitlement_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_entitlement_async_from_dict():
-    await test_update_entitlement_async(request_type=dict)
 
 
 def test_update_entitlement_field_headers():
@@ -4056,8 +4098,8 @@ async def test_update_entitlement_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        privilegedaccessmanager.ListGrantsRequest,
-        dict,
+        privilegedaccessmanager.ListGrantsRequest(),
+        {},
     ],
 )
 def test_list_grants(request_type, transport: str = "grpc"):
@@ -4068,7 +4110,7 @@ def test_list_grants(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_grants), "__call__") as call:
@@ -4117,12 +4159,13 @@ def test_list_grants_non_empty_request_with_auto_populated_field():
         client.list_grants(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == privilegedaccessmanager.ListGrantsRequest(
+        request_msg = privilegedaccessmanager.ListGrantsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_grants_use_cached_wrapped_rpc():
@@ -4203,10 +4246,14 @@ async def test_list_grants_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_grants_async(
-    transport: str = "grpc_asyncio",
-    request_type=privilegedaccessmanager.ListGrantsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        privilegedaccessmanager.ListGrantsRequest(),
+        {},
+    ],
+)
+async def test_list_grants_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivilegedAccessManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4214,7 +4261,7 @@ async def test_list_grants_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_grants), "__call__") as call:
@@ -4237,11 +4284,6 @@ async def test_list_grants_async(
     assert isinstance(response, pagers.ListGrantsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_grants_async_from_dict():
-    await test_list_grants_async(request_type=dict)
 
 
 def test_list_grants_field_headers():
@@ -4436,6 +4478,9 @@ def test_list_grants_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, privilegedaccessmanager.Grant) for i in results)
@@ -4524,6 +4569,8 @@ async def test_list_grants_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4580,8 +4627,8 @@ async def test_list_grants_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        privilegedaccessmanager.SearchGrantsRequest,
-        dict,
+        privilegedaccessmanager.SearchGrantsRequest(),
+        {},
     ],
 )
 def test_search_grants(request_type, transport: str = "grpc"):
@@ -4592,7 +4639,7 @@ def test_search_grants(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_grants), "__call__") as call:
@@ -4638,11 +4685,12 @@ def test_search_grants_non_empty_request_with_auto_populated_field():
         client.search_grants(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == privilegedaccessmanager.SearchGrantsRequest(
+        request_msg = privilegedaccessmanager.SearchGrantsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_grants_use_cached_wrapped_rpc():
@@ -4723,10 +4771,14 @@ async def test_search_grants_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_grants_async(
-    transport: str = "grpc_asyncio",
-    request_type=privilegedaccessmanager.SearchGrantsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        privilegedaccessmanager.SearchGrantsRequest(),
+        {},
+    ],
+)
+async def test_search_grants_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivilegedAccessManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4734,7 +4786,7 @@ async def test_search_grants_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_grants), "__call__") as call:
@@ -4755,11 +4807,6 @@ async def test_search_grants_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchGrantsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_grants_async_from_dict():
-    await test_search_grants_async(request_type=dict)
 
 
 def test_search_grants_field_headers():
@@ -4872,6 +4919,9 @@ def test_search_grants_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, privilegedaccessmanager.Grant) for i in results)
@@ -4960,6 +5010,8 @@ async def test_search_grants_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5016,8 +5068,8 @@ async def test_search_grants_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        privilegedaccessmanager.GetGrantRequest,
-        dict,
+        privilegedaccessmanager.GetGrantRequest(),
+        {},
     ],
 )
 def test_get_grant(request_type, transport: str = "grpc"):
@@ -5028,7 +5080,7 @@ def test_get_grant(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_grant), "__call__") as call:
@@ -5080,9 +5132,10 @@ def test_get_grant_non_empty_request_with_auto_populated_field():
         client.get_grant(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == privilegedaccessmanager.GetGrantRequest(
+        request_msg = privilegedaccessmanager.GetGrantRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_grant_use_cached_wrapped_rpc():
@@ -5161,10 +5214,14 @@ async def test_get_grant_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_grant_async(
-    transport: str = "grpc_asyncio",
-    request_type=privilegedaccessmanager.GetGrantRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        privilegedaccessmanager.GetGrantRequest(),
+        {},
+    ],
+)
+async def test_get_grant_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivilegedAccessManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5172,7 +5229,7 @@ async def test_get_grant_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_grant), "__call__") as call:
@@ -5201,11 +5258,6 @@ async def test_get_grant_async(
     assert response.state == privilegedaccessmanager.Grant.State.APPROVAL_AWAITED
     assert response.additional_email_recipients == ["additional_email_recipients_value"]
     assert response.externally_modified is True
-
-
-@pytest.mark.asyncio
-async def test_get_grant_async_from_dict():
-    await test_get_grant_async(request_type=dict)
 
 
 def test_get_grant_field_headers():
@@ -5354,8 +5406,8 @@ async def test_get_grant_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        privilegedaccessmanager.CreateGrantRequest,
-        dict,
+        privilegedaccessmanager.CreateGrantRequest(),
+        {},
     ],
 )
 def test_create_grant(request_type, transport: str = "grpc"):
@@ -5366,7 +5418,7 @@ def test_create_grant(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_grant), "__call__") as call:
@@ -5419,10 +5471,11 @@ def test_create_grant_non_empty_request_with_auto_populated_field():
         client.create_grant(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == privilegedaccessmanager.CreateGrantRequest(
+        request_msg = privilegedaccessmanager.CreateGrantRequest(
             parent="parent_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_grant_use_cached_wrapped_rpc():
@@ -5503,10 +5556,14 @@ async def test_create_grant_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_grant_async(
-    transport: str = "grpc_asyncio",
-    request_type=privilegedaccessmanager.CreateGrantRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        privilegedaccessmanager.CreateGrantRequest(),
+        {},
+    ],
+)
+async def test_create_grant_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivilegedAccessManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5514,7 +5571,7 @@ async def test_create_grant_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_grant), "__call__") as call:
@@ -5543,11 +5600,6 @@ async def test_create_grant_async(
     assert response.state == privilegedaccessmanager.Grant.State.APPROVAL_AWAITED
     assert response.additional_email_recipients == ["additional_email_recipients_value"]
     assert response.externally_modified is True
-
-
-@pytest.mark.asyncio
-async def test_create_grant_async_from_dict():
-    await test_create_grant_async(request_type=dict)
 
 
 def test_create_grant_field_headers():
@@ -5706,8 +5758,8 @@ async def test_create_grant_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        privilegedaccessmanager.ApproveGrantRequest,
-        dict,
+        privilegedaccessmanager.ApproveGrantRequest(),
+        {},
     ],
 )
 def test_approve_grant(request_type, transport: str = "grpc"):
@@ -5718,7 +5770,7 @@ def test_approve_grant(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.approve_grant), "__call__") as call:
@@ -5771,10 +5823,11 @@ def test_approve_grant_non_empty_request_with_auto_populated_field():
         client.approve_grant(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == privilegedaccessmanager.ApproveGrantRequest(
+        request_msg = privilegedaccessmanager.ApproveGrantRequest(
             name="name_value",
             reason="reason_value",
         )
+        assert args[0] == request_msg
 
 
 def test_approve_grant_use_cached_wrapped_rpc():
@@ -5855,10 +5908,14 @@ async def test_approve_grant_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_approve_grant_async(
-    transport: str = "grpc_asyncio",
-    request_type=privilegedaccessmanager.ApproveGrantRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        privilegedaccessmanager.ApproveGrantRequest(),
+        {},
+    ],
+)
+async def test_approve_grant_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivilegedAccessManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5866,7 +5923,7 @@ async def test_approve_grant_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.approve_grant), "__call__") as call:
@@ -5895,11 +5952,6 @@ async def test_approve_grant_async(
     assert response.state == privilegedaccessmanager.Grant.State.APPROVAL_AWAITED
     assert response.additional_email_recipients == ["additional_email_recipients_value"]
     assert response.externally_modified is True
-
-
-@pytest.mark.asyncio
-async def test_approve_grant_async_from_dict():
-    await test_approve_grant_async(request_type=dict)
 
 
 def test_approve_grant_field_headers():
@@ -5966,8 +6018,8 @@ async def test_approve_grant_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        privilegedaccessmanager.DenyGrantRequest,
-        dict,
+        privilegedaccessmanager.DenyGrantRequest(),
+        {},
     ],
 )
 def test_deny_grant(request_type, transport: str = "grpc"):
@@ -5978,7 +6030,7 @@ def test_deny_grant(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.deny_grant), "__call__") as call:
@@ -6031,10 +6083,11 @@ def test_deny_grant_non_empty_request_with_auto_populated_field():
         client.deny_grant(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == privilegedaccessmanager.DenyGrantRequest(
+        request_msg = privilegedaccessmanager.DenyGrantRequest(
             name="name_value",
             reason="reason_value",
         )
+        assert args[0] == request_msg
 
 
 def test_deny_grant_use_cached_wrapped_rpc():
@@ -6113,10 +6166,14 @@ async def test_deny_grant_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_deny_grant_async(
-    transport: str = "grpc_asyncio",
-    request_type=privilegedaccessmanager.DenyGrantRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        privilegedaccessmanager.DenyGrantRequest(),
+        {},
+    ],
+)
+async def test_deny_grant_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivilegedAccessManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6124,7 +6181,7 @@ async def test_deny_grant_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.deny_grant), "__call__") as call:
@@ -6153,11 +6210,6 @@ async def test_deny_grant_async(
     assert response.state == privilegedaccessmanager.Grant.State.APPROVAL_AWAITED
     assert response.additional_email_recipients == ["additional_email_recipients_value"]
     assert response.externally_modified is True
-
-
-@pytest.mark.asyncio
-async def test_deny_grant_async_from_dict():
-    await test_deny_grant_async(request_type=dict)
 
 
 def test_deny_grant_field_headers():
@@ -6224,8 +6276,8 @@ async def test_deny_grant_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        privilegedaccessmanager.RevokeGrantRequest,
-        dict,
+        privilegedaccessmanager.RevokeGrantRequest(),
+        {},
     ],
 )
 def test_revoke_grant(request_type, transport: str = "grpc"):
@@ -6236,7 +6288,7 @@ def test_revoke_grant(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.revoke_grant), "__call__") as call:
@@ -6278,10 +6330,11 @@ def test_revoke_grant_non_empty_request_with_auto_populated_field():
         client.revoke_grant(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == privilegedaccessmanager.RevokeGrantRequest(
+        request_msg = privilegedaccessmanager.RevokeGrantRequest(
             name="name_value",
             reason="reason_value",
         )
+        assert args[0] == request_msg
 
 
 def test_revoke_grant_use_cached_wrapped_rpc():
@@ -6372,10 +6425,14 @@ async def test_revoke_grant_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_revoke_grant_async(
-    transport: str = "grpc_asyncio",
-    request_type=privilegedaccessmanager.RevokeGrantRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        privilegedaccessmanager.RevokeGrantRequest(),
+        {},
+    ],
+)
+async def test_revoke_grant_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivilegedAccessManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6383,7 +6440,7 @@ async def test_revoke_grant_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.revoke_grant), "__call__") as call:
@@ -6401,11 +6458,6 @@ async def test_revoke_grant_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_revoke_grant_async_from_dict():
-    await test_revoke_grant_async(request_type=dict)
 
 
 def test_revoke_grant_field_headers():
@@ -6852,6 +6904,9 @@ def test_list_entitlements_rest_pager(transport: str = "rest"):
 
         pager = client.list_entitlements(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, privilegedaccessmanager.Entitlement) for i in results)
@@ -7065,6 +7120,9 @@ def test_search_entitlements_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.search_entitlements(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -8121,6 +8179,9 @@ def test_list_grants_rest_pager(transport: str = "rest"):
 
         pager = client.list_grants(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, privilegedaccessmanager.Grant) for i in results)
@@ -8329,6 +8390,9 @@ def test_search_grants_rest_pager(transport: str = "rest"):
         }
 
         pager = client.search_grants(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -9201,7 +9265,6 @@ def test_check_onboarding_status_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.CheckOnboardingStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -9224,7 +9287,6 @@ def test_list_entitlements_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.ListEntitlementsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9247,7 +9309,6 @@ def test_search_entitlements_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.SearchEntitlementsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9268,7 +9329,6 @@ def test_get_entitlement_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.GetEntitlementRequest()
-
         assert args[0] == request_msg
 
 
@@ -9291,7 +9351,6 @@ def test_create_entitlement_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.CreateEntitlementRequest()
-
         assert args[0] == request_msg
 
 
@@ -9314,7 +9373,6 @@ def test_delete_entitlement_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.DeleteEntitlementRequest()
-
         assert args[0] == request_msg
 
 
@@ -9337,7 +9395,6 @@ def test_update_entitlement_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.UpdateEntitlementRequest()
-
         assert args[0] == request_msg
 
 
@@ -9358,7 +9415,6 @@ def test_list_grants_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.ListGrantsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9379,7 +9435,6 @@ def test_search_grants_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.SearchGrantsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9400,7 +9455,6 @@ def test_get_grant_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.GetGrantRequest()
-
         assert args[0] == request_msg
 
 
@@ -9421,7 +9475,6 @@ def test_create_grant_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.CreateGrantRequest()
-
         assert args[0] == request_msg
 
 
@@ -9442,7 +9495,6 @@ def test_approve_grant_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.ApproveGrantRequest()
-
         assert args[0] == request_msg
 
 
@@ -9463,7 +9515,6 @@ def test_deny_grant_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.DenyGrantRequest()
-
         assert args[0] == request_msg
 
 
@@ -9484,7 +9535,6 @@ def test_revoke_grant_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.RevokeGrantRequest()
-
         assert args[0] == request_msg
 
 
@@ -9527,7 +9577,6 @@ async def test_check_onboarding_status_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.CheckOnboardingStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -9557,7 +9606,6 @@ async def test_list_entitlements_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.ListEntitlementsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9586,7 +9634,6 @@ async def test_search_entitlements_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.SearchEntitlementsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9615,7 +9662,6 @@ async def test_get_entitlement_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.GetEntitlementRequest()
-
         assert args[0] == request_msg
 
 
@@ -9642,7 +9688,6 @@ async def test_create_entitlement_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.CreateEntitlementRequest()
-
         assert args[0] == request_msg
 
 
@@ -9669,7 +9714,6 @@ async def test_delete_entitlement_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.DeleteEntitlementRequest()
-
         assert args[0] == request_msg
 
 
@@ -9696,7 +9740,6 @@ async def test_update_entitlement_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.UpdateEntitlementRequest()
-
         assert args[0] == request_msg
 
 
@@ -9724,7 +9767,6 @@ async def test_list_grants_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.ListGrantsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9751,7 +9793,6 @@ async def test_search_grants_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.SearchGrantsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9782,7 +9823,6 @@ async def test_get_grant_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.GetGrantRequest()
-
         assert args[0] == request_msg
 
 
@@ -9813,7 +9853,6 @@ async def test_create_grant_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.CreateGrantRequest()
-
         assert args[0] == request_msg
 
 
@@ -9844,7 +9883,6 @@ async def test_approve_grant_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.ApproveGrantRequest()
-
         assert args[0] == request_msg
 
 
@@ -9875,7 +9913,6 @@ async def test_deny_grant_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.DenyGrantRequest()
-
         assert args[0] == request_msg
 
 
@@ -9900,7 +9937,6 @@ async def test_revoke_grant_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.RevokeGrantRequest()
-
         assert args[0] == request_msg
 
 
@@ -12527,7 +12563,6 @@ def test_check_onboarding_status_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.CheckOnboardingStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -12549,7 +12584,6 @@ def test_list_entitlements_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.ListEntitlementsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12571,7 +12605,6 @@ def test_search_entitlements_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.SearchEntitlementsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12591,7 +12624,6 @@ def test_get_entitlement_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.GetEntitlementRequest()
-
         assert args[0] == request_msg
 
 
@@ -12613,7 +12645,6 @@ def test_create_entitlement_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.CreateEntitlementRequest()
-
         assert args[0] == request_msg
 
 
@@ -12635,7 +12666,6 @@ def test_delete_entitlement_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.DeleteEntitlementRequest()
-
         assert args[0] == request_msg
 
 
@@ -12657,7 +12687,6 @@ def test_update_entitlement_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.UpdateEntitlementRequest()
-
         assert args[0] == request_msg
 
 
@@ -12677,7 +12706,6 @@ def test_list_grants_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.ListGrantsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12697,7 +12725,6 @@ def test_search_grants_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.SearchGrantsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12717,7 +12744,6 @@ def test_get_grant_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.GetGrantRequest()
-
         assert args[0] == request_msg
 
 
@@ -12737,7 +12763,6 @@ def test_create_grant_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.CreateGrantRequest()
-
         assert args[0] == request_msg
 
 
@@ -12757,7 +12782,6 @@ def test_approve_grant_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.ApproveGrantRequest()
-
         assert args[0] == request_msg
 
 
@@ -12777,7 +12801,6 @@ def test_deny_grant_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.DenyGrantRequest()
-
         assert args[0] == request_msg
 
 
@@ -12797,7 +12820,6 @@ def test_revoke_grant_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = privilegedaccessmanager.RevokeGrantRequest()
-
         assert args[0] == request_msg
 
 

@@ -16,12 +16,16 @@
 from .common import (
     Aggregate,
     Blueprint,
+    SaasCondition,
     UnitCondition,
     UnitOperationCondition,
     UnitOperationErrorCategory,
     UnitVariable,
 )
 from .deployments_resources import (
+    AppParams,
+    ComponentRef,
+    CompositeRef,
     Dependency,
     Deprovision,
     FromMapping,
@@ -103,10 +107,14 @@ from .rollouts_service import (
 __all__ = (
     "Aggregate",
     "Blueprint",
+    "SaasCondition",
     "UnitCondition",
     "UnitOperationCondition",
     "UnitVariable",
     "UnitOperationErrorCategory",
+    "AppParams",
+    "ComponentRef",
+    "CompositeRef",
     "Dependency",
     "Deprovision",
     "FromMapping",

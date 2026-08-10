@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
 
 class ProcessingErrorReason(proto.Enum):
     r"""The processing error reason.
+    New reasons may be added in the future.
 
     Values:
         PROCESSING_ERROR_REASON_UNSPECIFIED (0):
@@ -116,6 +117,45 @@ class ProcessingErrorReason(proto.Enum):
         PROCESSING_ERROR_REASON_ONE_PER_CLICK_CONVERSION_ACTION_NOT_PERMITTED_WITH_BRAID (28):
             One-per-click conversion actions cannot be
             used with BRAIDs.
+        PROCESSING_ERROR_REASON_MATCH_ID_NOT_FOUND (29):
+            The match ID can not be found.
+        PROCESSING_ERROR_REASON_USER_ID_NOT_FOUND_FOR_MATCH_ID (30):
+            The user ID can not be found for the match
+            ID.
+        PROCESSING_ERROR_REASON_USER_ID_NOT_FOUND_FOR_GCLID (31):
+            The user ID can not be found for the GCLID.
+        PROCESSING_ERROR_REASON_USER_ID_NOT_FOUND_FOR_DCLID (32):
+            The user ID can not be found for the DCLID.
+        PROCESSING_ERROR_REASON_INVALID_AD_IDENTIFIERS (33):
+            There are ad identifiers that are invalid.
+        PROCESSING_ERROR_REASON_INVALID_MOBILE_ID_FORMAT (34):
+            The mobile ID format is invalid.
+        PROCESSING_ERROR_REASON_ORIGINAL_CONVERSIONS_NOT_FOUND (35):
+            The original conversions can't be found.
+        PROCESSING_ERROR_REASON_EVENT_ID_DECODE_ERROR (36):
+            The event ID (dclid or impression ID) cannot
+            be decoded.
+        PROCESSING_ERROR_REASON_USER_ID_NOT_FOUND_FOR_IMPRESSION_ID (37):
+            The user ID cannot be found for the given
+            impression ID.
+        PROCESSING_ERROR_REASON_USER_ID_NOT_FOUND (38):
+            The user ID cannot be found.
+        PROCESSING_ERROR_REASON_CONVERSION_PRECEDES_CLICK (39):
+            The event timestamp on the event was earlier
+            than the associated click.
+        PROCESSING_ERROR_REASON_TOO_RECENT_CLICK (40):
+            The click occurred too recently.
+        PROCESSING_ERROR_REASON_INVALID_CLICK (41):
+            The event can't be attributed to a click
+            (GCLID). This may be because the click did not
+            come from a Google Ads campaign, for example.
+        PROCESSING_ERROR_REASON_INVALID_OPERATING_ACCOUNT_FOR_CLICK (42):
+            The click from the event isn't associated with the
+            [``operating_account``][google.ads.datamanager.v1.Destination.operating_account]
+            of the destination.
+        PROCESSING_ERROR_REASON_CLICK_NOT_FOUND (43):
+            A corresponding click can't be found that
+            matches the provided attributes.
     """
 
     PROCESSING_ERROR_REASON_UNSPECIFIED = 0
@@ -149,6 +189,21 @@ class ProcessingErrorReason(proto.Enum):
     PROCESSING_ERROR_REASON_ONE_PER_CLICK_CONVERSION_ACTION_NOT_PERMITTED_WITH_BRAID = (
         28
     )
+    PROCESSING_ERROR_REASON_MATCH_ID_NOT_FOUND = 29
+    PROCESSING_ERROR_REASON_USER_ID_NOT_FOUND_FOR_MATCH_ID = 30
+    PROCESSING_ERROR_REASON_USER_ID_NOT_FOUND_FOR_GCLID = 31
+    PROCESSING_ERROR_REASON_USER_ID_NOT_FOUND_FOR_DCLID = 32
+    PROCESSING_ERROR_REASON_INVALID_AD_IDENTIFIERS = 33
+    PROCESSING_ERROR_REASON_INVALID_MOBILE_ID_FORMAT = 34
+    PROCESSING_ERROR_REASON_ORIGINAL_CONVERSIONS_NOT_FOUND = 35
+    PROCESSING_ERROR_REASON_EVENT_ID_DECODE_ERROR = 36
+    PROCESSING_ERROR_REASON_USER_ID_NOT_FOUND_FOR_IMPRESSION_ID = 37
+    PROCESSING_ERROR_REASON_USER_ID_NOT_FOUND = 38
+    PROCESSING_ERROR_REASON_CONVERSION_PRECEDES_CLICK = 39
+    PROCESSING_ERROR_REASON_TOO_RECENT_CLICK = 40
+    PROCESSING_ERROR_REASON_INVALID_CLICK = 41
+    PROCESSING_ERROR_REASON_INVALID_OPERATING_ACCOUNT_FOR_CLICK = 42
+    PROCESSING_ERROR_REASON_CLICK_NOT_FOUND = 43
 
 
 class ProcessingWarningReason(proto.Enum):

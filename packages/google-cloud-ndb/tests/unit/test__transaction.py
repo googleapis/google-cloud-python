@@ -14,16 +14,13 @@
 
 import itertools
 import logging
-
 from unittest import mock
 
 import pytest
-
 from google.api_core import exceptions as core_exceptions
+
+from google.cloud.ndb import _transaction, exceptions, tasklets
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import exceptions
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import _transaction
 
 
 class Test_in_transaction:

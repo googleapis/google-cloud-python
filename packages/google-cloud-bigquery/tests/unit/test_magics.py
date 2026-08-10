@@ -14,22 +14,20 @@
 
 import copy
 import re
+import warnings
 from concurrent import futures
 from unittest import mock
-import warnings
 
-from google.api_core import exceptions
 import google.auth.credentials
 import pytest
-from tests.unit.helpers import make_connection
-from test_utils.imports import maybe_fail_import
-
+from google.api_core import exceptions
 from google.cloud import bigquery
 from google.cloud.bigquery import exceptions as bq_exceptions
-from google.cloud.bigquery import job
-from google.cloud.bigquery import table
+from google.cloud.bigquery import job, table
 from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
+from test_utils.imports import maybe_fail_import
 
+from tests.unit.helpers import make_connection
 
 try:
     from google.cloud.bigquery.magics import magics
@@ -39,15 +37,15 @@ except ImportError:
 
 bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
 IPython = pytest.importorskip("IPython")
-interactiveshell = pytest.importorskip("IPython.terminal.interactiveshell")
+interactiveshell = pytest.importorskip("IPython.core.interactiveshell")
 tools = pytest.importorskip("IPython.testing.tools")
 io = pytest.importorskip("IPython.utils.io")
 pandas = pytest.importorskip("pandas")
 
 
-@pytest.fixture()
+@pytest.fixture(autouse=True)
 def use_local_magics_context(monkeypatch):
-    if magics is not None:
+    if magics is not None:  # pragma: NO COVER
         local_context = magics.Context()
         local_context._project = "unit-test-project"
         mock_credentials = mock.create_autospec(
@@ -60,8 +58,7 @@ def use_local_magics_context(monkeypatch):
 @pytest.fixture(scope="session")
 def ipython():
     config = tools.default_config()
-    config.TerminalInteractiveShell.simple_prompt = True
-    shell = interactiveshell.TerminalInteractiveShell.instance(config=config)
+    shell = interactiveshell.InteractiveShell.instance(config=config)
     return shell
 
 
@@ -145,10 +142,12 @@ QUERY_RESULTS_RESOURCE = {
 }
 
 
-def test_context_with_default_credentials():
-    """When Application Default Credentials are set, the context credentials
-    will be created the first time it is called
+def test_context_resolves_unset_credentials_and_project():
+    """When context credentials and project are unset (None), accessing them
+    resolves them from Application Default Credentials.
     """
+    magics.context._credentials = None
+    magics.context._project = None
     assert magics.context._credentials is None
     assert magics.context._project is None
 
@@ -696,7 +695,8 @@ def test_bigquery_magic_with_bqstorage_from_argument(
     assert kwargs.get("credentials") is mock_credentials
     client_info = kwargs.get("client_info")
     assert client_info is not None
-    assert client_info.user_agent == "ipython-" + IPython.__version__
+    assert client_info.user_agent.startswith("ipython-" + IPython.__version__)
+    assert "pandas-gbq" in client_info.user_agent
 
     query_job_mock.to_dataframe.assert_called_once_with(
         bqstorage_client=bqstorage_instance_mock,
@@ -2138,6 +2138,7 @@ def test_bigquery_magic_w_destination_table(monkeypatch):
     magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
     )
+    magics.context._project = "test-project"
 
     create_dataset_if_necessary_patch = mock.patch(
         "google.cloud.bigquery.magics.magics._create_dataset_if_necessary",
@@ -2171,6 +2172,7 @@ def test_bigquery_magic_create_dataset_fails(monkeypatch):
     magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
     )
+    magics.context._project = "test-project"
 
     create_dataset_if_necessary_patch = mock.patch(
         "google.cloud.bigquery.magics.magics._create_dataset_if_necessary",
@@ -2195,13 +2197,10 @@ def test_bigquery_magic_create_dataset_fails(monkeypatch):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-def test_bigquery_magic_with_location(monkeypatch):
+def test_bigquery_magic_with_location(monkeypatch, use_local_magics_context):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
-    magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
-    )
 
     run_query_patch = mock.patch(
         "google.cloud.bigquery.magics.magics._run_query", autospec=True

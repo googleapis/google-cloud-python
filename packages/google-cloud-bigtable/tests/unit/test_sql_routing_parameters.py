@@ -14,12 +14,8 @@
 # limitations under the License.
 #
 
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # type: ignore # noqa: F401
-except ImportError:  # pragma: NO COVER
-    import mock
+from unittest import mock
+
 import pytest
 from grpc.experimental import aio
 

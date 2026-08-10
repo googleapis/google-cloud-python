@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -857,7 +873,14 @@ def test_projects_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -904,7 +927,14 @@ def test_projects_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -3263,6 +3293,9 @@ def test_get_xpn_resources_rest_pager(transport: str = "rest"):
 
         pager = client.get_xpn_resources(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.XpnResourceId) for i in results)
@@ -3536,6 +3569,9 @@ def test_list_xpn_hosts_rest_pager(transport: str = "rest"):
         )
 
         pager = client.list_xpn_hosts(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -9720,7 +9756,6 @@ def test_disable_xpn_host_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DisableXpnHostProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9742,7 +9777,6 @@ def test_disable_xpn_resource_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DisableXpnResourceProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9762,7 +9796,6 @@ def test_enable_xpn_host_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.EnableXpnHostProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9784,7 +9817,6 @@ def test_enable_xpn_resource_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.EnableXpnResourceProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9804,7 +9836,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9824,7 +9855,6 @@ def test_get_xpn_host_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetXpnHostProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9846,7 +9876,6 @@ def test_get_xpn_resources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetXpnResourcesProjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9866,7 +9895,6 @@ def test_list_xpn_hosts_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListXpnHostsProjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9886,7 +9914,6 @@ def test_move_disk_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.MoveDiskProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9906,7 +9933,6 @@ def test_move_instance_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.MoveInstanceProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9928,7 +9954,6 @@ def test_set_cloud_armor_tier_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetCloudArmorTierProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9950,7 +9975,6 @@ def test_set_common_instance_metadata_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetCommonInstanceMetadataProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9972,7 +9996,6 @@ def test_set_default_network_tier_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetDefaultNetworkTierProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9994,7 +10017,6 @@ def test_set_managed_protection_tier_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetManagedProtectionTierProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -10016,7 +10038,6 @@ def test_set_usage_export_bucket_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetUsageExportBucketProjectRequest()
-
         assert args[0] == request_msg
 
 

@@ -465,6 +465,10 @@ class _BaseControlServiceRestTransport(ControlServiceTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/assistants/*/agents/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
                 },
                 {
@@ -486,6 +490,10 @@ class _BaseControlServiceRestTransport(ControlServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/evaluations/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/identityMappingStores/*/operations/*}",
                 },
                 {
                     "method": "get",
@@ -567,6 +575,10 @@ class _BaseControlServiceRestTransport(ControlServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/identityMappingStores/*}/operations",
                 },
                 {
                     "method": "get",

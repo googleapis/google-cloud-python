@@ -308,7 +308,7 @@ def googlesql_scalar_op_impl(
             )
             arg_spec = op.args[-1]
         if isinstance(operand.op(), ibis_generic.OmittedArg):
-            assert arg_spec.optional, f"Argument omitted, but not optional"
+            assert arg_spec.optional, "Argument omitted, but not optional"
             continue
 
         target_idx = len(final_operands)

@@ -20,7 +20,7 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.ces_v1beta.types import schema, session_service
+from google.cloud.ces_v1beta.types import schema, search_suggestions, session_service
 from google.cloud.ces_v1beta.types import tool as gcc_tool
 from google.cloud.ces_v1beta.types import toolset_tool as gcc_toolset_tool
 
@@ -157,6 +157,13 @@ class ExecuteToolResponse(proto.Message):
         variables (google.protobuf.struct_pb2.Struct):
             The variable values at the end of the tool
             execution.
+        citations (google.cloud.ces_v1beta.types.Citations):
+            Citations that provide the source information
+            for the tool's execution.
+        google_search_suggestions (google.cloud.ces_v1beta.types.GoogleSearchSuggestions):
+            The suggestions returned from Google Search
+            as a result of invoking the Google Search Tool
+            during the tool execution.
     """
 
     tool: str = proto.Field(
@@ -179,6 +186,16 @@ class ExecuteToolResponse(proto.Message):
         proto.MESSAGE,
         number=4,
         message=struct_pb2.Struct,
+    )
+    citations: session_service.Citations = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=session_service.Citations,
+    )
+    google_search_suggestions: search_suggestions.GoogleSearchSuggestions = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=search_suggestions.GoogleSearchSuggestions,
     )
 
 
@@ -294,6 +311,12 @@ class RetrieveToolsRequest(proto.Message):
             Optional. The identifiers of the tools to
             retrieve from the toolset. If empty, all tools
             in the toolset will be returned.
+        bypass_persistence_config (bool):
+            Optional. If true, the returned tools will
+            contain raw descriptions and schemas directly
+            from the server, bypassing any stored
+            persistence configurations
+            (overrides/snapshots).
     """
 
     toolset: str = proto.Field(
@@ -303,6 +326,10 @@ class RetrieveToolsRequest(proto.Message):
     tool_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+    bypass_persistence_config: bool = proto.Field(
+        proto.BOOL,
+        number=4,
     )
 
 

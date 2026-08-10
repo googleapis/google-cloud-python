@@ -42,7 +42,7 @@
       - name: DataFrame
         uid: bigframes.dataframe.DataFrame
       - name: PlotAccessor
-        uid: bigframes.operations.plotting.PlotAccessor
+        uid: bigframes.pandas.api.typing.PlotAccessor
       - name: StructAccessor
         uid: bigframes.operations.structs.StructFrameAccessor
       name: DataFrame
@@ -86,7 +86,7 @@
       - name: ListAccessor
         uid: bigframes.operations.lists.ListAccessor
       - name: PlotAccessor
-        uid: bigframes.operations.plotting.PlotAccessor
+        uid: bigframes.pandas.api.typing.PlotAccessor
       name: Series
     - name: Window
       uid: bigframes.core.window.Window

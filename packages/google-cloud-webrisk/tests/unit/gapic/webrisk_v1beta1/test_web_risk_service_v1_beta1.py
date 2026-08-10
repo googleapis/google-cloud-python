@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -105,6 +106,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -991,7 +1007,14 @@ def test_web_risk_service_v1_beta1_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1038,7 +1061,14 @@ def test_web_risk_service_v1_beta1_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1374,8 +1404,8 @@ def test_web_risk_service_v1_beta1_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        webrisk.ComputeThreatListDiffRequest,
-        dict,
+        webrisk.ComputeThreatListDiffRequest(),
+        {},
     ],
 )
 def test_compute_threat_list_diff(request_type, transport: str = "grpc"):
@@ -1386,7 +1416,7 @@ def test_compute_threat_list_diff(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1437,7 +1467,8 @@ def test_compute_threat_list_diff_non_empty_request_with_auto_populated_field():
         client.compute_threat_list_diff(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webrisk.ComputeThreatListDiffRequest()
+        request_msg = webrisk.ComputeThreatListDiffRequest()
+        assert args[0] == request_msg
 
 
 def test_compute_threat_list_diff_use_cached_wrapped_rpc():
@@ -1523,8 +1554,15 @@ async def test_compute_threat_list_diff_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        webrisk.ComputeThreatListDiffRequest(),
+        {},
+    ],
+)
 async def test_compute_threat_list_diff_async(
-    transport: str = "grpc_asyncio", request_type=webrisk.ComputeThreatListDiffRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WebRiskServiceV1Beta1AsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1533,7 +1571,7 @@ async def test_compute_threat_list_diff_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1561,11 +1599,6 @@ async def test_compute_threat_list_diff_async(
         == webrisk.ComputeThreatListDiffResponse.ResponseType.DIFF
     )
     assert response.new_version_token == b"new_version_token_blob"
-
-
-@pytest.mark.asyncio
-async def test_compute_threat_list_diff_async_from_dict():
-    await test_compute_threat_list_diff_async(request_type=dict)
 
 
 def test_compute_threat_list_diff_flattened():
@@ -1689,8 +1722,8 @@ async def test_compute_threat_list_diff_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        webrisk.SearchUrisRequest,
-        dict,
+        webrisk.SearchUrisRequest(),
+        {},
     ],
 )
 def test_search_uris(request_type, transport: str = "grpc"):
@@ -1701,7 +1734,7 @@ def test_search_uris(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_uris), "__call__") as call:
@@ -1742,9 +1775,10 @@ def test_search_uris_non_empty_request_with_auto_populated_field():
         client.search_uris(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webrisk.SearchUrisRequest(
+        request_msg = webrisk.SearchUrisRequest(
             uri="uri_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_uris_use_cached_wrapped_rpc():
@@ -1825,9 +1859,14 @@ async def test_search_uris_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_uris_async(
-    transport: str = "grpc_asyncio", request_type=webrisk.SearchUrisRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        webrisk.SearchUrisRequest(),
+        {},
+    ],
+)
+async def test_search_uris_async(request_type, transport: str = "grpc_asyncio"):
     client = WebRiskServiceV1Beta1AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1835,7 +1874,7 @@ async def test_search_uris_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_uris), "__call__") as call:
@@ -1853,11 +1892,6 @@ async def test_search_uris_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webrisk.SearchUrisResponse)
-
-
-@pytest.mark.asyncio
-async def test_search_uris_async_from_dict():
-    await test_search_uris_async(request_type=dict)
 
 
 def test_search_uris_flattened():
@@ -1955,8 +1989,8 @@ async def test_search_uris_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        webrisk.SearchHashesRequest,
-        dict,
+        webrisk.SearchHashesRequest(),
+        {},
     ],
 )
 def test_search_hashes(request_type, transport: str = "grpc"):
@@ -1967,7 +2001,7 @@ def test_search_hashes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_hashes), "__call__") as call:
@@ -2006,7 +2040,8 @@ def test_search_hashes_non_empty_request_with_auto_populated_field():
         client.search_hashes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webrisk.SearchHashesRequest()
+        request_msg = webrisk.SearchHashesRequest()
+        assert args[0] == request_msg
 
 
 def test_search_hashes_use_cached_wrapped_rpc():
@@ -2087,9 +2122,14 @@ async def test_search_hashes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_hashes_async(
-    transport: str = "grpc_asyncio", request_type=webrisk.SearchHashesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        webrisk.SearchHashesRequest(),
+        {},
+    ],
+)
+async def test_search_hashes_async(request_type, transport: str = "grpc_asyncio"):
     client = WebRiskServiceV1Beta1AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2097,7 +2137,7 @@ async def test_search_hashes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_hashes), "__call__") as call:
@@ -2115,11 +2155,6 @@ async def test_search_hashes_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webrisk.SearchHashesResponse)
-
-
-@pytest.mark.asyncio
-async def test_search_hashes_async_from_dict():
-    await test_search_hashes_async(request_type=dict)
 
 
 def test_search_hashes_flattened():
@@ -2936,7 +2971,6 @@ def test_compute_threat_list_diff_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webrisk.ComputeThreatListDiffRequest()
-
         assert args[0] == request_msg
 
 
@@ -2957,7 +2991,6 @@ def test_search_uris_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webrisk.SearchUrisRequest()
-
         assert args[0] == request_msg
 
 
@@ -2978,7 +3011,6 @@ def test_search_hashes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webrisk.SearchHashesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3022,7 +3054,6 @@ async def test_compute_threat_list_diff_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webrisk.ComputeThreatListDiffRequest()
-
         assert args[0] == request_msg
 
 
@@ -3047,7 +3078,6 @@ async def test_search_uris_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webrisk.SearchUrisRequest()
-
         assert args[0] == request_msg
 
 
@@ -3072,7 +3102,6 @@ async def test_search_hashes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webrisk.SearchHashesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3501,7 +3530,6 @@ def test_compute_threat_list_diff_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webrisk.ComputeThreatListDiffRequest()
-
         assert args[0] == request_msg
 
 
@@ -3521,7 +3549,6 @@ def test_search_uris_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webrisk.SearchUrisRequest()
-
         assert args[0] == request_msg
 
 
@@ -3541,7 +3568,6 @@ def test_search_hashes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webrisk.SearchHashesRequest()
-
         assert args[0] == request_msg
 
 

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -111,6 +112,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -879,7 +895,14 @@ def test_storage_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -926,7 +949,14 @@ def test_storage_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1235,8 +1265,8 @@ def test_storage_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.DeleteBucketRequest,
-        dict,
+        storage.DeleteBucketRequest(),
+        {},
     ],
 )
 def test_delete_bucket(request_type, transport: str = "grpc"):
@@ -1247,7 +1277,7 @@ def test_delete_bucket(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_bucket), "__call__") as call:
@@ -1288,9 +1318,10 @@ def test_delete_bucket_non_empty_request_with_auto_populated_field():
         client.delete_bucket(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.DeleteBucketRequest(
+        request_msg = storage.DeleteBucketRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_bucket_use_cached_wrapped_rpc():
@@ -1371,9 +1402,14 @@ async def test_delete_bucket_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_bucket_async(
-    transport: str = "grpc_asyncio", request_type=storage.DeleteBucketRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.DeleteBucketRequest(),
+        {},
+    ],
+)
+async def test_delete_bucket_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1381,7 +1417,7 @@ async def test_delete_bucket_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_bucket), "__call__") as call:
@@ -1397,11 +1433,6 @@ async def test_delete_bucket_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_bucket_async_from_dict():
-    await test_delete_bucket_async(request_type=dict)
 
 
 def test_delete_bucket_flattened():
@@ -1487,8 +1518,8 @@ async def test_delete_bucket_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.GetBucketRequest,
-        dict,
+        storage.GetBucketRequest(),
+        {},
     ],
 )
 def test_get_bucket(request_type, transport: str = "grpc"):
@@ -1499,7 +1530,7 @@ def test_get_bucket(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_bucket), "__call__") as call:
@@ -1563,9 +1594,10 @@ def test_get_bucket_non_empty_request_with_auto_populated_field():
         client.get_bucket(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.GetBucketRequest(
+        request_msg = storage.GetBucketRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_bucket_use_cached_wrapped_rpc():
@@ -1644,9 +1676,14 @@ async def test_get_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_bucket_async(
-    transport: str = "grpc_asyncio", request_type=storage.GetBucketRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.GetBucketRequest(),
+        {},
+    ],
+)
+async def test_get_bucket_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1654,7 +1691,7 @@ async def test_get_bucket_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_bucket), "__call__") as call:
@@ -1695,11 +1732,6 @@ async def test_get_bucket_async(
     assert response.rpo == "rpo_value"
     assert response.default_event_based_hold is True
     assert response.satisfies_pzs is True
-
-
-@pytest.mark.asyncio
-async def test_get_bucket_async_from_dict():
-    await test_get_bucket_async(request_type=dict)
 
 
 def test_get_bucket_flattened():
@@ -1785,8 +1817,8 @@ async def test_get_bucket_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.CreateBucketRequest,
-        dict,
+        storage.CreateBucketRequest(),
+        {},
     ],
 )
 def test_create_bucket(request_type, transport: str = "grpc"):
@@ -1797,7 +1829,7 @@ def test_create_bucket(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_bucket), "__call__") as call:
@@ -1864,12 +1896,13 @@ def test_create_bucket_non_empty_request_with_auto_populated_field():
         client.create_bucket(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.CreateBucketRequest(
+        request_msg = storage.CreateBucketRequest(
             parent="parent_value",
             bucket_id="bucket_id_value",
             predefined_acl="predefined_acl_value",
             predefined_default_object_acl="predefined_default_object_acl_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_bucket_use_cached_wrapped_rpc():
@@ -1950,9 +1983,14 @@ async def test_create_bucket_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_bucket_async(
-    transport: str = "grpc_asyncio", request_type=storage.CreateBucketRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.CreateBucketRequest(),
+        {},
+    ],
+)
+async def test_create_bucket_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1960,7 +1998,7 @@ async def test_create_bucket_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_bucket), "__call__") as call:
@@ -2001,11 +2039,6 @@ async def test_create_bucket_async(
     assert response.rpo == "rpo_value"
     assert response.default_event_based_hold is True
     assert response.satisfies_pzs is True
-
-
-@pytest.mark.asyncio
-async def test_create_bucket_async_from_dict():
-    await test_create_bucket_async(request_type=dict)
 
 
 def test_create_bucket_flattened():
@@ -2111,8 +2144,8 @@ async def test_create_bucket_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.ListBucketsRequest,
-        dict,
+        storage.ListBucketsRequest(),
+        {},
     ],
 )
 def test_list_buckets(request_type, transport: str = "grpc"):
@@ -2123,7 +2156,7 @@ def test_list_buckets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_buckets), "__call__") as call:
@@ -2171,11 +2204,12 @@ def test_list_buckets_non_empty_request_with_auto_populated_field():
         client.list_buckets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.ListBucketsRequest(
+        request_msg = storage.ListBucketsRequest(
             parent="parent_value",
             page_token="page_token_value",
             prefix="prefix_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_buckets_use_cached_wrapped_rpc():
@@ -2256,9 +2290,14 @@ async def test_list_buckets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_buckets_async(
-    transport: str = "grpc_asyncio", request_type=storage.ListBucketsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.ListBucketsRequest(),
+        {},
+    ],
+)
+async def test_list_buckets_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2266,7 +2305,7 @@ async def test_list_buckets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_buckets), "__call__") as call:
@@ -2289,11 +2328,6 @@ async def test_list_buckets_async(
     assert isinstance(response, pagers.ListBucketsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_buckets_async_from_dict():
-    await test_list_buckets_async(request_type=dict)
 
 
 def test_list_buckets_flattened():
@@ -2424,6 +2458,9 @@ def test_list_buckets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, storage.Bucket) for i in results)
@@ -2512,6 +2549,8 @@ async def test_list_buckets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2568,8 +2607,8 @@ async def test_list_buckets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.LockBucketRetentionPolicyRequest,
-        dict,
+        storage.LockBucketRetentionPolicyRequest(),
+        {},
     ],
 )
 def test_lock_bucket_retention_policy(request_type, transport: str = "grpc"):
@@ -2580,7 +2619,7 @@ def test_lock_bucket_retention_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2648,9 +2687,10 @@ def test_lock_bucket_retention_policy_non_empty_request_with_auto_populated_fiel
         client.lock_bucket_retention_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.LockBucketRetentionPolicyRequest(
+        request_msg = storage.LockBucketRetentionPolicyRequest(
             bucket="bucket_value",
         )
+        assert args[0] == request_msg
 
 
 def test_lock_bucket_retention_policy_use_cached_wrapped_rpc():
@@ -2736,9 +2776,15 @@ async def test_lock_bucket_retention_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.LockBucketRetentionPolicyRequest(),
+        {},
+    ],
+)
 async def test_lock_bucket_retention_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage.LockBucketRetentionPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2747,7 +2793,7 @@ async def test_lock_bucket_retention_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2790,11 +2836,6 @@ async def test_lock_bucket_retention_policy_async(
     assert response.rpo == "rpo_value"
     assert response.default_event_based_hold is True
     assert response.satisfies_pzs is True
-
-
-@pytest.mark.asyncio
-async def test_lock_bucket_retention_policy_async_from_dict():
-    await test_lock_bucket_retention_policy_async(request_type=dict)
 
 
 def test_lock_bucket_retention_policy_flattened():
@@ -2884,8 +2925,8 @@ async def test_lock_bucket_retention_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -2896,7 +2937,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -2942,9 +2983,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -3025,9 +3067,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3035,7 +3082,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -3058,11 +3105,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_from_dict_foreign():
@@ -3165,8 +3207,8 @@ async def test_get_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -3177,7 +3219,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -3223,9 +3265,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -3306,9 +3349,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3316,7 +3364,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -3339,11 +3387,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_from_dict_foreign():
@@ -3447,8 +3490,8 @@ async def test_set_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -3459,7 +3502,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3507,9 +3550,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -3594,9 +3638,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3605,7 +3655,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3628,11 +3678,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_from_dict_foreign():
@@ -3753,8 +3798,8 @@ async def test_test_iam_permissions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.UpdateBucketRequest,
-        dict,
+        storage.UpdateBucketRequest(),
+        {},
     ],
 )
 def test_update_bucket(request_type, transport: str = "grpc"):
@@ -3765,7 +3810,7 @@ def test_update_bucket(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_bucket), "__call__") as call:
@@ -3830,10 +3875,11 @@ def test_update_bucket_non_empty_request_with_auto_populated_field():
         client.update_bucket(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.UpdateBucketRequest(
+        request_msg = storage.UpdateBucketRequest(
             predefined_acl="predefined_acl_value",
             predefined_default_object_acl="predefined_default_object_acl_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_bucket_use_cached_wrapped_rpc():
@@ -3914,9 +3960,14 @@ async def test_update_bucket_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_bucket_async(
-    transport: str = "grpc_asyncio", request_type=storage.UpdateBucketRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.UpdateBucketRequest(),
+        {},
+    ],
+)
+async def test_update_bucket_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3924,7 +3975,7 @@ async def test_update_bucket_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_bucket), "__call__") as call:
@@ -3965,11 +4016,6 @@ async def test_update_bucket_async(
     assert response.rpo == "rpo_value"
     assert response.default_event_based_hold is True
     assert response.satisfies_pzs is True
-
-
-@pytest.mark.asyncio
-async def test_update_bucket_async_from_dict():
-    await test_update_bucket_async(request_type=dict)
 
 
 def test_update_bucket_flattened():
@@ -4065,8 +4111,8 @@ async def test_update_bucket_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.ComposeObjectRequest,
-        dict,
+        storage.ComposeObjectRequest(),
+        {},
     ],
 )
 def test_compose_object(request_type, transport: str = "grpc"):
@@ -4077,7 +4123,7 @@ def test_compose_object(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.compose_object), "__call__") as call:
@@ -4154,10 +4200,11 @@ def test_compose_object_non_empty_request_with_auto_populated_field():
         client.compose_object(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.ComposeObjectRequest(
+        request_msg = storage.ComposeObjectRequest(
             destination_predefined_acl="destination_predefined_acl_value",
             kms_key="kms_key_value",
         )
+        assert args[0] == request_msg
 
 
 def test_compose_object_use_cached_wrapped_rpc():
@@ -4238,9 +4285,14 @@ async def test_compose_object_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_compose_object_async(
-    transport: str = "grpc_asyncio", request_type=storage.ComposeObjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.ComposeObjectRequest(),
+        {},
+    ],
+)
+async def test_compose_object_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4248,7 +4300,7 @@ async def test_compose_object_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.compose_object), "__call__") as call:
@@ -4303,16 +4355,11 @@ async def test_compose_object_async(
     assert response.event_based_hold is True
 
 
-@pytest.mark.asyncio
-async def test_compose_object_async_from_dict():
-    await test_compose_object_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.DeleteObjectRequest,
-        dict,
+        storage.DeleteObjectRequest(),
+        {},
     ],
 )
 def test_delete_object(request_type, transport: str = "grpc"):
@@ -4323,7 +4370,7 @@ def test_delete_object(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_object), "__call__") as call:
@@ -4365,10 +4412,11 @@ def test_delete_object_non_empty_request_with_auto_populated_field():
         client.delete_object(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.DeleteObjectRequest(
+        request_msg = storage.DeleteObjectRequest(
             bucket="bucket_value",
             object_="object__value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_object_use_cached_wrapped_rpc():
@@ -4449,9 +4497,14 @@ async def test_delete_object_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_object_async(
-    transport: str = "grpc_asyncio", request_type=storage.DeleteObjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.DeleteObjectRequest(),
+        {},
+    ],
+)
+async def test_delete_object_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4459,7 +4512,7 @@ async def test_delete_object_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_object), "__call__") as call:
@@ -4475,11 +4528,6 @@ async def test_delete_object_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_object_async_from_dict():
-    await test_delete_object_async(request_type=dict)
 
 
 def test_delete_object_flattened():
@@ -4585,8 +4633,8 @@ async def test_delete_object_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.RestoreObjectRequest,
-        dict,
+        storage.RestoreObjectRequest(),
+        {},
     ],
 )
 def test_restore_object(request_type, transport: str = "grpc"):
@@ -4597,7 +4645,7 @@ def test_restore_object(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_object), "__call__") as call:
@@ -4675,11 +4723,12 @@ def test_restore_object_non_empty_request_with_auto_populated_field():
         client.restore_object(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.RestoreObjectRequest(
+        request_msg = storage.RestoreObjectRequest(
             bucket="bucket_value",
             object_="object__value",
             restore_token="restore_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_restore_object_use_cached_wrapped_rpc():
@@ -4760,9 +4809,14 @@ async def test_restore_object_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_restore_object_async(
-    transport: str = "grpc_asyncio", request_type=storage.RestoreObjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.RestoreObjectRequest(),
+        {},
+    ],
+)
+async def test_restore_object_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4770,7 +4824,7 @@ async def test_restore_object_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_object), "__call__") as call:
@@ -4823,11 +4877,6 @@ async def test_restore_object_async(
     assert response.kms_key == "kms_key_value"
     assert response.temporary_hold is True
     assert response.event_based_hold is True
-
-
-@pytest.mark.asyncio
-async def test_restore_object_async_from_dict():
-    await test_restore_object_async(request_type=dict)
 
 
 def test_restore_object_flattened():
@@ -4933,8 +4982,8 @@ async def test_restore_object_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.CancelResumableWriteRequest,
-        dict,
+        storage.CancelResumableWriteRequest(),
+        {},
     ],
 )
 def test_cancel_resumable_write(request_type, transport: str = "grpc"):
@@ -4945,7 +4994,7 @@ def test_cancel_resumable_write(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4990,9 +5039,10 @@ def test_cancel_resumable_write_non_empty_request_with_auto_populated_field():
         client.cancel_resumable_write(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.CancelResumableWriteRequest(
+        request_msg = storage.CancelResumableWriteRequest(
             upload_id="upload_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_resumable_write_use_cached_wrapped_rpc():
@@ -5078,8 +5128,15 @@ async def test_cancel_resumable_write_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.CancelResumableWriteRequest(),
+        {},
+    ],
+)
 async def test_cancel_resumable_write_async(
-    transport: str = "grpc_asyncio", request_type=storage.CancelResumableWriteRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5088,7 +5145,7 @@ async def test_cancel_resumable_write_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5108,11 +5165,6 @@ async def test_cancel_resumable_write_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage.CancelResumableWriteResponse)
-
-
-@pytest.mark.asyncio
-async def test_cancel_resumable_write_async_from_dict():
-    await test_cancel_resumable_write_async(request_type=dict)
 
 
 def test_cancel_resumable_write_flattened():
@@ -5204,8 +5256,8 @@ async def test_cancel_resumable_write_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.GetObjectRequest,
-        dict,
+        storage.GetObjectRequest(),
+        {},
     ],
 )
 def test_get_object(request_type, transport: str = "grpc"):
@@ -5216,7 +5268,7 @@ def test_get_object(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_object), "__call__") as call:
@@ -5294,11 +5346,12 @@ def test_get_object_non_empty_request_with_auto_populated_field():
         client.get_object(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.GetObjectRequest(
+        request_msg = storage.GetObjectRequest(
             bucket="bucket_value",
             object_="object__value",
             restore_token="restore_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_object_use_cached_wrapped_rpc():
@@ -5377,9 +5430,14 @@ async def test_get_object_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_object_async(
-    transport: str = "grpc_asyncio", request_type=storage.GetObjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.GetObjectRequest(),
+        {},
+    ],
+)
+async def test_get_object_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5387,7 +5445,7 @@ async def test_get_object_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_object), "__call__") as call:
@@ -5440,11 +5498,6 @@ async def test_get_object_async(
     assert response.kms_key == "kms_key_value"
     assert response.temporary_hold is True
     assert response.event_based_hold is True
-
-
-@pytest.mark.asyncio
-async def test_get_object_async_from_dict():
-    await test_get_object_async(request_type=dict)
 
 
 def test_get_object_flattened():
@@ -5550,8 +5603,8 @@ async def test_get_object_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.ReadObjectRequest,
-        dict,
+        storage.ReadObjectRequest(),
+        {},
     ],
 )
 def test_read_object(request_type, transport: str = "grpc"):
@@ -5562,7 +5615,7 @@ def test_read_object(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read_object), "__call__") as call:
@@ -5605,10 +5658,11 @@ def test_read_object_non_empty_request_with_auto_populated_field():
         client.read_object(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.ReadObjectRequest(
+        request_msg = storage.ReadObjectRequest(
             bucket="bucket_value",
             object_="object__value",
         )
+        assert args[0] == request_msg
 
 
 def test_read_object_use_cached_wrapped_rpc():
@@ -5689,9 +5743,14 @@ async def test_read_object_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_read_object_async(
-    transport: str = "grpc_asyncio", request_type=storage.ReadObjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.ReadObjectRequest(),
+        {},
+    ],
+)
+async def test_read_object_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5699,7 +5758,7 @@ async def test_read_object_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read_object), "__call__") as call:
@@ -5719,11 +5778,6 @@ async def test_read_object_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, storage.ReadObjectResponse)
-
-
-@pytest.mark.asyncio
-async def test_read_object_async_from_dict():
-    await test_read_object_async(request_type=dict)
 
 
 def test_read_object_flattened():
@@ -5829,8 +5883,8 @@ async def test_read_object_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.BidiReadObjectRequest,
-        dict,
+        storage.BidiReadObjectRequest(),
+        {},
     ],
 )
 def test_bidi_read_object(request_type, transport: str = "grpc"):
@@ -5841,7 +5895,7 @@ def test_bidi_read_object(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5940,9 +5994,14 @@ async def test_bidi_read_object_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_bidi_read_object_async(
-    transport: str = "grpc_asyncio", request_type=storage.BidiReadObjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.BidiReadObjectRequest(),
+        {},
+    ],
+)
+async def test_bidi_read_object_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5950,7 +6009,7 @@ async def test_bidi_read_object_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5972,16 +6031,11 @@ async def test_bidi_read_object_async(
     assert isinstance(message, storage.BidiReadObjectResponse)
 
 
-@pytest.mark.asyncio
-async def test_bidi_read_object_async_from_dict():
-    await test_bidi_read_object_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.UpdateObjectRequest,
-        dict,
+        storage.UpdateObjectRequest(),
+        {},
     ],
 )
 def test_update_object(request_type, transport: str = "grpc"):
@@ -5992,7 +6046,7 @@ def test_update_object(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_object), "__call__") as call:
@@ -6068,9 +6122,10 @@ def test_update_object_non_empty_request_with_auto_populated_field():
         client.update_object(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.UpdateObjectRequest(
+        request_msg = storage.UpdateObjectRequest(
             predefined_acl="predefined_acl_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_object_use_cached_wrapped_rpc():
@@ -6151,9 +6206,14 @@ async def test_update_object_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_object_async(
-    transport: str = "grpc_asyncio", request_type=storage.UpdateObjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.UpdateObjectRequest(),
+        {},
+    ],
+)
+async def test_update_object_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6161,7 +6221,7 @@ async def test_update_object_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_object), "__call__") as call:
@@ -6214,11 +6274,6 @@ async def test_update_object_async(
     assert response.kms_key == "kms_key_value"
     assert response.temporary_hold is True
     assert response.event_based_hold is True
-
-
-@pytest.mark.asyncio
-async def test_update_object_async_from_dict():
-    await test_update_object_async(request_type=dict)
 
 
 def test_update_object_flattened():
@@ -6314,8 +6369,8 @@ async def test_update_object_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.WriteObjectRequest,
-        dict,
+        storage.WriteObjectRequest(),
+        {},
     ],
 )
 def test_write_object(request_type, transport: str = "grpc"):
@@ -6326,7 +6381,7 @@ def test_write_object(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6424,9 +6479,14 @@ async def test_write_object_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_write_object_async(
-    transport: str = "grpc_asyncio", request_type=storage.WriteObjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.WriteObjectRequest(),
+        {},
+    ],
+)
+async def test_write_object_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6434,7 +6494,7 @@ async def test_write_object_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6454,16 +6514,11 @@ async def test_write_object_async(
     assert isinstance(response, storage.WriteObjectResponse)
 
 
-@pytest.mark.asyncio
-async def test_write_object_async_from_dict():
-    await test_write_object_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.BidiWriteObjectRequest,
-        dict,
+        storage.BidiWriteObjectRequest(),
+        {},
     ],
 )
 def test_bidi_write_object(request_type, transport: str = "grpc"):
@@ -6474,7 +6529,7 @@ def test_bidi_write_object(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6575,9 +6630,14 @@ async def test_bidi_write_object_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_bidi_write_object_async(
-    transport: str = "grpc_asyncio", request_type=storage.BidiWriteObjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.BidiWriteObjectRequest(),
+        {},
+    ],
+)
+async def test_bidi_write_object_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6585,7 +6645,7 @@ async def test_bidi_write_object_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6609,16 +6669,11 @@ async def test_bidi_write_object_async(
     assert isinstance(message, storage.BidiWriteObjectResponse)
 
 
-@pytest.mark.asyncio
-async def test_bidi_write_object_async_from_dict():
-    await test_bidi_write_object_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.ListObjectsRequest,
-        dict,
+        storage.ListObjectsRequest(),
+        {},
     ],
 )
 def test_list_objects(request_type, transport: str = "grpc"):
@@ -6629,7 +6684,7 @@ def test_list_objects(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_objects), "__call__") as call:
@@ -6682,7 +6737,7 @@ def test_list_objects_non_empty_request_with_auto_populated_field():
         client.list_objects(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.ListObjectsRequest(
+        request_msg = storage.ListObjectsRequest(
             parent="parent_value",
             page_token="page_token_value",
             delimiter="delimiter_value",
@@ -6692,6 +6747,7 @@ def test_list_objects_non_empty_request_with_auto_populated_field():
             match_glob="match_glob_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_objects_use_cached_wrapped_rpc():
@@ -6772,9 +6828,14 @@ async def test_list_objects_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_objects_async(
-    transport: str = "grpc_asyncio", request_type=storage.ListObjectsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.ListObjectsRequest(),
+        {},
+    ],
+)
+async def test_list_objects_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6782,7 +6843,7 @@ async def test_list_objects_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_objects), "__call__") as call:
@@ -6805,11 +6866,6 @@ async def test_list_objects_async(
     assert isinstance(response, pagers.ListObjectsAsyncPager)
     assert response.prefixes == ["prefixes_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_objects_async_from_dict():
-    await test_list_objects_async(request_type=dict)
 
 
 def test_list_objects_flattened():
@@ -6940,6 +6996,9 @@ def test_list_objects_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, storage.Object) for i in results)
@@ -7028,6 +7087,8 @@ async def test_list_objects_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7084,8 +7145,8 @@ async def test_list_objects_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.RewriteObjectRequest,
-        dict,
+        storage.RewriteObjectRequest(),
+        {},
     ],
 )
 def test_rewrite_object(request_type, transport: str = "grpc"):
@@ -7096,7 +7157,7 @@ def test_rewrite_object(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rewrite_object), "__call__") as call:
@@ -7153,7 +7214,7 @@ def test_rewrite_object_non_empty_request_with_auto_populated_field():
         client.rewrite_object(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.RewriteObjectRequest(
+        request_msg = storage.RewriteObjectRequest(
             destination_name="destination_name_value",
             destination_bucket="destination_bucket_value",
             destination_kms_key="destination_kms_key_value",
@@ -7163,6 +7224,7 @@ def test_rewrite_object_non_empty_request_with_auto_populated_field():
             destination_predefined_acl="destination_predefined_acl_value",
             copy_source_encryption_algorithm="copy_source_encryption_algorithm_value",
         )
+        assert args[0] == request_msg
 
 
 def test_rewrite_object_use_cached_wrapped_rpc():
@@ -7243,9 +7305,14 @@ async def test_rewrite_object_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_rewrite_object_async(
-    transport: str = "grpc_asyncio", request_type=storage.RewriteObjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.RewriteObjectRequest(),
+        {},
+    ],
+)
+async def test_rewrite_object_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7253,7 +7320,7 @@ async def test_rewrite_object_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rewrite_object), "__call__") as call:
@@ -7282,16 +7349,11 @@ async def test_rewrite_object_async(
     assert response.rewrite_token == "rewrite_token_value"
 
 
-@pytest.mark.asyncio
-async def test_rewrite_object_async_from_dict():
-    await test_rewrite_object_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.StartResumableWriteRequest,
-        dict,
+        storage.StartResumableWriteRequest(),
+        {},
     ],
 )
 def test_start_resumable_write(request_type, transport: str = "grpc"):
@@ -7302,7 +7364,7 @@ def test_start_resumable_write(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7348,7 +7410,8 @@ def test_start_resumable_write_non_empty_request_with_auto_populated_field():
         client.start_resumable_write(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.StartResumableWriteRequest()
+        request_msg = storage.StartResumableWriteRequest()
+        assert args[0] == request_msg
 
 
 def test_start_resumable_write_use_cached_wrapped_rpc():
@@ -7434,8 +7497,15 @@ async def test_start_resumable_write_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.StartResumableWriteRequest(),
+        {},
+    ],
+)
 async def test_start_resumable_write_async(
-    transport: str = "grpc_asyncio", request_type=storage.StartResumableWriteRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7444,7 +7514,7 @@ async def test_start_resumable_write_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7469,16 +7539,11 @@ async def test_start_resumable_write_async(
     assert response.upload_id == "upload_id_value"
 
 
-@pytest.mark.asyncio
-async def test_start_resumable_write_async_from_dict():
-    await test_start_resumable_write_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.QueryWriteStatusRequest,
-        dict,
+        storage.QueryWriteStatusRequest(),
+        {},
     ],
 )
 def test_query_write_status(request_type, transport: str = "grpc"):
@@ -7489,7 +7554,7 @@ def test_query_write_status(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7536,9 +7601,10 @@ def test_query_write_status_non_empty_request_with_auto_populated_field():
         client.query_write_status(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.QueryWriteStatusRequest(
+        request_msg = storage.QueryWriteStatusRequest(
             upload_id="upload_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_write_status_use_cached_wrapped_rpc():
@@ -7623,9 +7689,14 @@ async def test_query_write_status_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_write_status_async(
-    transport: str = "grpc_asyncio", request_type=storage.QueryWriteStatusRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.QueryWriteStatusRequest(),
+        {},
+    ],
+)
+async def test_query_write_status_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7633,7 +7704,7 @@ async def test_query_write_status_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7653,11 +7724,6 @@ async def test_query_write_status_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage.QueryWriteStatusResponse)
-
-
-@pytest.mark.asyncio
-async def test_query_write_status_async_from_dict():
-    await test_query_write_status_async(request_type=dict)
 
 
 def test_query_write_status_flattened():
@@ -7749,8 +7815,8 @@ async def test_query_write_status_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.MoveObjectRequest,
-        dict,
+        storage.MoveObjectRequest(),
+        {},
     ],
 )
 def test_move_object(request_type, transport: str = "grpc"):
@@ -7761,7 +7827,7 @@ def test_move_object(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_object), "__call__") as call:
@@ -7839,11 +7905,12 @@ def test_move_object_non_empty_request_with_auto_populated_field():
         client.move_object(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.MoveObjectRequest(
+        request_msg = storage.MoveObjectRequest(
             bucket="bucket_value",
             source_object="source_object_value",
             destination_object="destination_object_value",
         )
+        assert args[0] == request_msg
 
 
 def test_move_object_use_cached_wrapped_rpc():
@@ -7924,9 +7991,14 @@ async def test_move_object_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_move_object_async(
-    transport: str = "grpc_asyncio", request_type=storage.MoveObjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.MoveObjectRequest(),
+        {},
+    ],
+)
+async def test_move_object_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7934,7 +8006,7 @@ async def test_move_object_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_object), "__call__") as call:
@@ -7987,11 +8059,6 @@ async def test_move_object_async(
     assert response.kms_key == "kms_key_value"
     assert response.temporary_hold is True
     assert response.event_based_hold is True
-
-
-@pytest.mark.asyncio
-async def test_move_object_async_from_dict():
-    await test_move_object_async(request_type=dict)
 
 
 def test_move_object_flattened():
@@ -8216,7 +8283,6 @@ def test_delete_bucket_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.DeleteBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -8237,7 +8303,6 @@ def test_get_bucket_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.GetBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -8258,7 +8323,6 @@ def test_create_bucket_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.CreateBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -8279,7 +8343,6 @@ def test_list_buckets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.ListBucketsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8302,7 +8365,6 @@ def test_lock_bucket_retention_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.LockBucketRetentionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8323,7 +8385,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8344,7 +8405,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8367,7 +8427,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8388,7 +8447,6 @@ def test_update_bucket_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.UpdateBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -8409,7 +8467,6 @@ def test_compose_object_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.ComposeObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -8430,7 +8487,6 @@ def test_delete_object_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.DeleteObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -8451,7 +8507,6 @@ def test_restore_object_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.RestoreObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -8474,7 +8529,6 @@ def test_cancel_resumable_write_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.CancelResumableWriteRequest()
-
         assert args[0] == request_msg
 
 
@@ -8495,7 +8549,6 @@ def test_get_object_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.GetObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -8516,7 +8569,6 @@ def test_read_object_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.ReadObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -8537,7 +8589,6 @@ def test_update_object_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.UpdateObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -8558,7 +8609,6 @@ def test_list_objects_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.ListObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8579,7 +8629,6 @@ def test_rewrite_object_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.RewriteObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -8602,7 +8651,6 @@ def test_start_resumable_write_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.StartResumableWriteRequest()
-
         assert args[0] == request_msg
 
 
@@ -8625,7 +8673,6 @@ def test_query_write_status_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.QueryWriteStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -8646,7 +8693,6 @@ def test_move_object_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.MoveObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -8665,7 +8711,6 @@ def test_delete_bucket_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.DeleteBucketRequest(**{"name": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -8689,7 +8734,6 @@ def test_get_bucket_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.GetBucketRequest(**{"name": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -8713,7 +8757,6 @@ def test_create_bucket_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.CreateBucketRequest(**{"parent": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"project": "sample1"}
@@ -8737,7 +8780,6 @@ def test_create_bucket_routing_parameters_request_2_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.CreateBucketRequest(**{"bucket": {"project": "sample1"}})
-
         assert args[0] == request_msg
 
         expected_headers = {"project": "sample1"}
@@ -8761,7 +8803,6 @@ def test_list_buckets_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.ListBucketsRequest(**{"parent": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"project": "sample1"}
@@ -8787,7 +8828,6 @@ def test_lock_bucket_retention_policy_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.LockBucketRetentionPolicyRequest(**{"bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -8811,7 +8851,6 @@ def test_get_iam_policy_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -8839,7 +8878,6 @@ def test_get_iam_policy_routing_parameters_request_2_grpc():
         request_msg = iam_policy_pb2.GetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -8863,7 +8901,6 @@ def test_set_iam_policy_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -8891,7 +8928,6 @@ def test_set_iam_policy_routing_parameters_request_2_grpc():
         request_msg = iam_policy_pb2.SetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -8919,7 +8955,6 @@ def test_test_iam_permissions_routing_parameters_request_1_grpc():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -8949,7 +8984,6 @@ def test_test_iam_permissions_routing_parameters_request_2_grpc():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/objects/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -8981,7 +9015,6 @@ def test_test_iam_permissions_routing_parameters_request_3_grpc():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/managedFolders/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -9005,7 +9038,6 @@ def test_update_bucket_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.UpdateBucketRequest(**{"bucket": {"name": "sample1"}})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -9031,7 +9063,6 @@ def test_compose_object_routing_parameters_request_1_grpc():
         request_msg = storage.ComposeObjectRequest(
             **{"destination": {"bucket": "sample1"}}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -9055,7 +9086,6 @@ def test_delete_object_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.DeleteObjectRequest(**{"bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -9079,7 +9109,6 @@ def test_restore_object_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.RestoreObjectRequest(**{"bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -9109,7 +9138,6 @@ def test_cancel_resumable_write_routing_parameters_request_1_grpc():
         request_msg = storage.CancelResumableWriteRequest(
             **{"upload_id": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -9133,7 +9161,6 @@ def test_get_object_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.GetObjectRequest(**{"bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -9157,7 +9184,6 @@ def test_read_object_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.ReadObjectRequest(**{"bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -9181,7 +9207,6 @@ def test_update_object_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.UpdateObjectRequest(**{"object": {"bucket": "sample1"}})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -9205,7 +9230,6 @@ def test_list_objects_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.ListObjectsRequest(**{"parent": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -9229,7 +9253,6 @@ def test_rewrite_object_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.RewriteObjectRequest(**{"source_bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"source_bucket": "sample1"}
@@ -9253,7 +9276,6 @@ def test_rewrite_object_routing_parameters_request_2_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.RewriteObjectRequest(**{"destination_bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -9283,7 +9305,6 @@ def test_start_resumable_write_routing_parameters_request_1_grpc():
         request_msg = storage.StartResumableWriteRequest(
             **{"write_object_spec": {"resource": {"bucket": "sample1"}}}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -9313,7 +9334,6 @@ def test_query_write_status_routing_parameters_request_1_grpc():
         request_msg = storage.QueryWriteStatusRequest(
             **{"upload_id": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -9337,7 +9357,6 @@ def test_move_object_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.MoveObjectRequest(**{"bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -9379,7 +9398,6 @@ async def test_delete_bucket_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.DeleteBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -9416,7 +9434,6 @@ async def test_get_bucket_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.GetBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -9453,7 +9470,6 @@ async def test_create_bucket_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.CreateBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -9481,7 +9497,6 @@ async def test_list_buckets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.ListBucketsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9520,7 +9535,6 @@ async def test_lock_bucket_retention_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.LockBucketRetentionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9548,7 +9562,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9576,7 +9589,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9605,7 +9617,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9642,7 +9653,6 @@ async def test_update_bucket_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.UpdateBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -9685,7 +9695,6 @@ async def test_compose_object_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.ComposeObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9708,7 +9717,6 @@ async def test_delete_object_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.DeleteObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9751,7 +9759,6 @@ async def test_restore_object_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.RestoreObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9778,7 +9785,6 @@ async def test_cancel_resumable_write_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.CancelResumableWriteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9821,7 +9827,6 @@ async def test_get_object_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.GetObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9847,7 +9852,6 @@ async def test_read_object_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.ReadObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9890,7 +9894,6 @@ async def test_update_object_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.UpdateObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9918,7 +9921,6 @@ async def test_list_objects_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.ListObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9948,7 +9950,6 @@ async def test_rewrite_object_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.RewriteObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -9977,7 +9978,6 @@ async def test_start_resumable_write_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.StartResumableWriteRequest()
-
         assert args[0] == request_msg
 
 
@@ -10004,7 +10004,6 @@ async def test_query_write_status_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.QueryWriteStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -10047,7 +10046,6 @@ async def test_move_object_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.MoveObjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -10068,7 +10066,6 @@ async def test_delete_bucket_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.DeleteBucketRequest(**{"name": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10108,7 +10105,6 @@ async def test_get_bucket_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.GetBucketRequest(**{"name": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10148,7 +10144,6 @@ async def test_create_bucket_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.CreateBucketRequest(**{"parent": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"project": "sample1"}
@@ -10188,7 +10183,6 @@ async def test_create_bucket_routing_parameters_request_2_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.CreateBucketRequest(**{"bucket": {"project": "sample1"}})
-
         assert args[0] == request_msg
 
         expected_headers = {"project": "sample1"}
@@ -10219,7 +10213,6 @@ async def test_list_buckets_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.ListBucketsRequest(**{"parent": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"project": "sample1"}
@@ -10261,7 +10254,6 @@ async def test_lock_bucket_retention_policy_routing_parameters_request_1_grpc_as
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.LockBucketRetentionPolicyRequest(**{"bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10292,7 +10284,6 @@ async def test_get_iam_policy_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10327,7 +10318,6 @@ async def test_get_iam_policy_routing_parameters_request_2_grpc_asyncio():
         request_msg = iam_policy_pb2.GetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -10358,7 +10348,6 @@ async def test_set_iam_policy_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10393,7 +10382,6 @@ async def test_set_iam_policy_routing_parameters_request_2_grpc_asyncio():
         request_msg = iam_policy_pb2.SetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -10427,7 +10415,6 @@ async def test_test_iam_permissions_routing_parameters_request_1_grpc_asyncio():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10463,7 +10450,6 @@ async def test_test_iam_permissions_routing_parameters_request_2_grpc_asyncio():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/objects/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -10501,7 +10487,6 @@ async def test_test_iam_permissions_routing_parameters_request_3_grpc_asyncio():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/managedFolders/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -10541,7 +10526,6 @@ async def test_update_bucket_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.UpdateBucketRequest(**{"bucket": {"name": "sample1"}})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10589,7 +10573,6 @@ async def test_compose_object_routing_parameters_request_1_grpc_asyncio():
         request_msg = storage.ComposeObjectRequest(
             **{"destination": {"bucket": "sample1"}}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10615,7 +10598,6 @@ async def test_delete_object_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.DeleteObjectRequest(**{"bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10661,7 +10643,6 @@ async def test_restore_object_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.RestoreObjectRequest(**{"bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10695,7 +10676,6 @@ async def test_cancel_resumable_write_routing_parameters_request_1_grpc_asyncio(
         request_msg = storage.CancelResumableWriteRequest(
             **{"upload_id": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -10741,7 +10721,6 @@ async def test_get_object_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.GetObjectRequest(**{"bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10770,7 +10749,6 @@ async def test_read_object_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.ReadObjectRequest(**{"bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10816,7 +10794,6 @@ async def test_update_object_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.UpdateObjectRequest(**{"object": {"bucket": "sample1"}})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10847,7 +10824,6 @@ async def test_list_objects_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.ListObjectsRequest(**{"parent": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10880,7 +10856,6 @@ async def test_rewrite_object_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.RewriteObjectRequest(**{"source_bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"source_bucket": "sample1"}
@@ -10913,7 +10888,6 @@ async def test_rewrite_object_routing_parameters_request_2_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.RewriteObjectRequest(**{"destination_bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10949,7 +10923,6 @@ async def test_start_resumable_write_routing_parameters_request_1_grpc_asyncio()
         request_msg = storage.StartResumableWriteRequest(
             **{"write_object_spec": {"resource": {"bucket": "sample1"}}}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -10983,7 +10956,6 @@ async def test_query_write_status_routing_parameters_request_1_grpc_asyncio():
         request_msg = storage.QueryWriteStatusRequest(
             **{"upload_id": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -11029,7 +11001,6 @@ async def test_move_object_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage.MoveObjectRequest(**{"bucket": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}

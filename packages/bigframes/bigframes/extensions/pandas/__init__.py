@@ -21,5 +21,11 @@ directly.
 from bigframes.extensions.pandas.dataframe_accessor import (
     PandasBigQueryDataFrameAccessor,
 )
+from bigframes.extensions.pandas.series_accessor import (
+    PandasBigQuerySeriesAccessor,
+)
 
-__all__ = ["PandasBigQueryDataFrameAccessor"]
+__all__ = [
+    "PandasBigQueryDataFrameAccessor",
+    "PandasBigQuerySeriesAccessor",
+]

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -107,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1000,7 +1016,14 @@ def test_conversion_sources_service_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1047,7 +1070,14 @@ def test_conversion_sources_service_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1384,8 +1414,8 @@ def test_conversion_sources_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversionsources.CreateConversionSourceRequest,
-        dict,
+        conversionsources.CreateConversionSourceRequest(),
+        {},
     ],
 )
 def test_create_conversion_source(request_type, transport: str = "grpc"):
@@ -1396,7 +1426,7 @@ def test_create_conversion_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1448,9 +1478,10 @@ def test_create_conversion_source_non_empty_request_with_auto_populated_field():
         client.create_conversion_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversionsources.CreateConversionSourceRequest(
+        request_msg = conversionsources.CreateConversionSourceRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_conversion_source_use_cached_wrapped_rpc():
@@ -1536,9 +1567,15 @@ async def test_create_conversion_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversionsources.CreateConversionSourceRequest(),
+        {},
+    ],
+)
 async def test_create_conversion_source_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversionsources.CreateConversionSourceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversionSourcesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1547,7 +1584,7 @@ async def test_create_conversion_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1574,11 +1611,6 @@ async def test_create_conversion_source_async(
     assert response.name == "name_value"
     assert response.state == conversionsources.ConversionSource.State.ACTIVE
     assert response.controller == conversionsources.ConversionSource.Controller.MERCHANT
-
-
-@pytest.mark.asyncio
-async def test_create_conversion_source_async_from_dict():
-    await test_create_conversion_source_async(request_type=dict)
 
 
 def test_create_conversion_source_field_headers():
@@ -1769,8 +1801,8 @@ async def test_create_conversion_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversionsources.UpdateConversionSourceRequest,
-        dict,
+        conversionsources.UpdateConversionSourceRequest(),
+        {},
     ],
 )
 def test_update_conversion_source(request_type, transport: str = "grpc"):
@@ -1781,7 +1813,7 @@ def test_update_conversion_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1831,7 +1863,8 @@ def test_update_conversion_source_non_empty_request_with_auto_populated_field():
         client.update_conversion_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversionsources.UpdateConversionSourceRequest()
+        request_msg = conversionsources.UpdateConversionSourceRequest()
+        assert args[0] == request_msg
 
 
 def test_update_conversion_source_use_cached_wrapped_rpc():
@@ -1917,9 +1950,15 @@ async def test_update_conversion_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversionsources.UpdateConversionSourceRequest(),
+        {},
+    ],
+)
 async def test_update_conversion_source_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversionsources.UpdateConversionSourceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversionSourcesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1928,7 +1967,7 @@ async def test_update_conversion_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1955,11 +1994,6 @@ async def test_update_conversion_source_async(
     assert response.name == "name_value"
     assert response.state == conversionsources.ConversionSource.State.ACTIVE
     assert response.controller == conversionsources.ConversionSource.Controller.MERCHANT
-
-
-@pytest.mark.asyncio
-async def test_update_conversion_source_async_from_dict():
-    await test_update_conversion_source_async(request_type=dict)
 
 
 def test_update_conversion_source_field_headers():
@@ -2150,8 +2184,8 @@ async def test_update_conversion_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversionsources.DeleteConversionSourceRequest,
-        dict,
+        conversionsources.DeleteConversionSourceRequest(),
+        {},
     ],
 )
 def test_delete_conversion_source(request_type, transport: str = "grpc"):
@@ -2162,7 +2196,7 @@ def test_delete_conversion_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2207,9 +2241,10 @@ def test_delete_conversion_source_non_empty_request_with_auto_populated_field():
         client.delete_conversion_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversionsources.DeleteConversionSourceRequest(
+        request_msg = conversionsources.DeleteConversionSourceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_conversion_source_use_cached_wrapped_rpc():
@@ -2295,9 +2330,15 @@ async def test_delete_conversion_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversionsources.DeleteConversionSourceRequest(),
+        {},
+    ],
+)
 async def test_delete_conversion_source_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversionsources.DeleteConversionSourceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversionSourcesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2306,7 +2347,7 @@ async def test_delete_conversion_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2324,11 +2365,6 @@ async def test_delete_conversion_source_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_conversion_source_async_from_dict():
-    await test_delete_conversion_source_async(request_type=dict)
 
 
 def test_delete_conversion_source_field_headers():
@@ -2481,8 +2517,8 @@ async def test_delete_conversion_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversionsources.UndeleteConversionSourceRequest,
-        dict,
+        conversionsources.UndeleteConversionSourceRequest(),
+        {},
     ],
 )
 def test_undelete_conversion_source(request_type, transport: str = "grpc"):
@@ -2493,7 +2529,7 @@ def test_undelete_conversion_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2545,9 +2581,10 @@ def test_undelete_conversion_source_non_empty_request_with_auto_populated_field(
         client.undelete_conversion_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversionsources.UndeleteConversionSourceRequest(
+        request_msg = conversionsources.UndeleteConversionSourceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_undelete_conversion_source_use_cached_wrapped_rpc():
@@ -2633,9 +2670,15 @@ async def test_undelete_conversion_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversionsources.UndeleteConversionSourceRequest(),
+        {},
+    ],
+)
 async def test_undelete_conversion_source_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversionsources.UndeleteConversionSourceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversionSourcesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2644,7 +2687,7 @@ async def test_undelete_conversion_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2671,11 +2714,6 @@ async def test_undelete_conversion_source_async(
     assert response.name == "name_value"
     assert response.state == conversionsources.ConversionSource.State.ACTIVE
     assert response.controller == conversionsources.ConversionSource.Controller.MERCHANT
-
-
-@pytest.mark.asyncio
-async def test_undelete_conversion_source_async_from_dict():
-    await test_undelete_conversion_source_async(request_type=dict)
 
 
 def test_undelete_conversion_source_field_headers():
@@ -2746,8 +2784,8 @@ async def test_undelete_conversion_source_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversionsources.GetConversionSourceRequest,
-        dict,
+        conversionsources.GetConversionSourceRequest(),
+        {},
     ],
 )
 def test_get_conversion_source(request_type, transport: str = "grpc"):
@@ -2758,7 +2796,7 @@ def test_get_conversion_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2810,9 +2848,10 @@ def test_get_conversion_source_non_empty_request_with_auto_populated_field():
         client.get_conversion_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversionsources.GetConversionSourceRequest(
+        request_msg = conversionsources.GetConversionSourceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_conversion_source_use_cached_wrapped_rpc():
@@ -2898,9 +2937,15 @@ async def test_get_conversion_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversionsources.GetConversionSourceRequest(),
+        {},
+    ],
+)
 async def test_get_conversion_source_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversionsources.GetConversionSourceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversionSourcesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2909,7 +2954,7 @@ async def test_get_conversion_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2936,11 +2981,6 @@ async def test_get_conversion_source_async(
     assert response.name == "name_value"
     assert response.state == conversionsources.ConversionSource.State.ACTIVE
     assert response.controller == conversionsources.ConversionSource.Controller.MERCHANT
-
-
-@pytest.mark.asyncio
-async def test_get_conversion_source_async_from_dict():
-    await test_get_conversion_source_async(request_type=dict)
 
 
 def test_get_conversion_source_field_headers():
@@ -3097,8 +3137,8 @@ async def test_get_conversion_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversionsources.ListConversionSourcesRequest,
-        dict,
+        conversionsources.ListConversionSourcesRequest(),
+        {},
     ],
 )
 def test_list_conversion_sources(request_type, transport: str = "grpc"):
@@ -3109,7 +3149,7 @@ def test_list_conversion_sources(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3158,10 +3198,11 @@ def test_list_conversion_sources_non_empty_request_with_auto_populated_field():
         client.list_conversion_sources(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversionsources.ListConversionSourcesRequest(
+        request_msg = conversionsources.ListConversionSourcesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_conversion_sources_use_cached_wrapped_rpc():
@@ -3247,9 +3288,15 @@ async def test_list_conversion_sources_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversionsources.ListConversionSourcesRequest(),
+        {},
+    ],
+)
 async def test_list_conversion_sources_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversionsources.ListConversionSourcesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversionSourcesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3258,7 +3305,7 @@ async def test_list_conversion_sources_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3281,11 +3328,6 @@ async def test_list_conversion_sources_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConversionSourcesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_conversion_sources_async_from_dict():
-    await test_list_conversion_sources_async(request_type=dict)
 
 
 def test_list_conversion_sources_field_headers():
@@ -3490,6 +3532,9 @@ def test_list_conversion_sources_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, conversionsources.ConversionSource) for i in results)
@@ -3582,6 +3627,8 @@ async def test_list_conversion_sources_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4783,6 +4830,9 @@ def test_list_conversion_sources_rest_pager(transport: str = "rest"):
 
         pager = client.list_conversion_sources(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, conversionsources.ConversionSource) for i in results)
@@ -4917,7 +4967,6 @@ def test_create_conversion_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.CreateConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4940,7 +4989,6 @@ def test_update_conversion_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.UpdateConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4963,7 +5011,6 @@ def test_delete_conversion_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.DeleteConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4986,7 +5033,6 @@ def test_undelete_conversion_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.UndeleteConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5009,7 +5055,6 @@ def test_get_conversion_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.GetConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5032,7 +5077,6 @@ def test_list_conversion_sources_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.ListConversionSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5077,7 +5121,6 @@ async def test_create_conversion_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.CreateConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5108,7 +5151,6 @@ async def test_update_conversion_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.UpdateConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5133,7 +5175,6 @@ async def test_delete_conversion_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.DeleteConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5164,7 +5205,6 @@ async def test_undelete_conversion_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.UndeleteConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5195,7 +5235,6 @@ async def test_get_conversion_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.GetConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5224,7 +5263,6 @@ async def test_list_conversion_sources_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.ListConversionSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6249,7 +6287,6 @@ def test_create_conversion_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.CreateConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6271,7 +6308,6 @@ def test_update_conversion_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.UpdateConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6293,7 +6329,6 @@ def test_delete_conversion_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.DeleteConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6315,7 +6350,6 @@ def test_undelete_conversion_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.UndeleteConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6337,7 +6371,6 @@ def test_get_conversion_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.GetConversionSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6359,7 +6392,6 @@ def test_list_conversion_sources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversionsources.ListConversionSourcesRequest()
-
         assert args[0] == request_msg
 
 

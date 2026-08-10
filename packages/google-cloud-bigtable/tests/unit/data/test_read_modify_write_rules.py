@@ -13,13 +13,9 @@
 # limitations under the License.
 
 
-import pytest
+from unittest import mock
 
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock  # type: ignore
+import pytest
 
 
 class TestBaseReadModifyWriteRule:

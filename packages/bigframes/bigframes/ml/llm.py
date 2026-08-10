@@ -59,6 +59,8 @@ _GEMINI_2P5_PRO_PREVIEW_ENDPOINT = "gemini-2.5-pro-preview-05-06"
 _GEMINI_2P5_PRO_ENDPOINT = "gemini-2.5-pro"
 _GEMINI_2P5_FLASH_ENDPOINT = "gemini-2.5-flash"
 _GEMINI_2P5_FLASH_LITE_ENDPOINT = "gemini-2.5-flash-lite"
+_GEMINI_3P1_FLASH_LITE_ENDPOINT = "gemini-3.1-flash-lite"
+_GEMINI_3P5_FLASH_ENDPOINT = "gemini-3.5-flash"
 
 _GEMINI_ENDPOINTS = (
     _GEMINI_1P5_PRO_PREVIEW_ENDPOINT,
@@ -73,6 +75,8 @@ _GEMINI_ENDPOINTS = (
     _GEMINI_2P5_PRO_ENDPOINT,
     _GEMINI_2P5_FLASH_ENDPOINT,
     _GEMINI_2P5_FLASH_LITE_ENDPOINT,
+    _GEMINI_3P1_FLASH_LITE_ENDPOINT,
+    _GEMINI_3P5_FLASH_ENDPOINT,
 )
 _GEMINI_PREVIEW_ENDPOINTS = (
     _GEMINI_1P5_PRO_PREVIEW_ENDPOINT,
@@ -96,6 +100,8 @@ _GEMINI_MULTIMODAL_ENDPOINTS = (
     _GEMINI_2P5_PRO_ENDPOINT,
     _GEMINI_2P5_FLASH_ENDPOINT,
     _GEMINI_2P5_FLASH_LITE_ENDPOINT,
+    _GEMINI_3P1_FLASH_LITE_ENDPOINT,
+    _GEMINI_3P5_FLASH_ENDPOINT,
 )
 
 _CLAUDE_3_SONNET_ENDPOINT = "claude-3-sonnet"
@@ -440,7 +446,8 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
             "gemini-1.5-pro-001", "gemini-1.5-pro-002", "gemini-1.5-flash-001",
             "gemini-1.5-flash-002", "gemini-2.0-flash-exp",
             "gemini-2.0-flash-lite-001", "gemini-2.0-flash-001",
-            "gemini-2.5-pro", "gemini-2.5-flash" and "gemini-2.5-flash-lite".
+            "gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.5-flash-lite",
+            "gemini-3.1-flash-lite" and "gemini-3.5-flash".
             If no setting is provided, "gemini-2.0-flash-001" will be used by
             default and a warning will be issued.
 
@@ -478,6 +485,8 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
                 "gemini-2.5-pro",
                 "gemini-2.5-flash",
                 "gemini-2.5-flash-lite",
+                "gemini-3.1-flash-lite",
+                "gemini-3.5-flash",
             ]
         ] = None,
         session: Optional[bigframes.Session] = None,

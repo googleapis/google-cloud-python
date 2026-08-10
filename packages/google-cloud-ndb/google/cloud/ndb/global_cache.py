@@ -18,15 +18,15 @@ import abc
 import base64
 import hashlib
 import os
-import pymemcache.exceptions
-import redis.exceptions
 import threading
 import time
 import warnings
+from typing import Any
 
 import pymemcache
+import pymemcache.exceptions
 import redis as redis_module
-from typing import Any
+import redis.exceptions
 
 # Python 2.7 doesn't have ConnectionError. In Python 3, ConnectionError is subclass of
 # OSError, which Python 2.7 does have.

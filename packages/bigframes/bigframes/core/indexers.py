@@ -14,13 +14,17 @@
 
 from __future__ import annotations
 
+import numbers
 import typing
 import warnings
-from typing import Tuple, Union
+from typing import Any, Sequence, Tuple, Union, cast
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
+import numpy as np
 import pandas as pd
+import pyarrow as pa
+import pyarrow.types  # type: ignore
 
 import bigframes.core.blocks
 import bigframes.core.col
@@ -28,6 +32,7 @@ import bigframes.core.expression as ex
 import bigframes.core.guid as guid
 import bigframes.core.indexes as indexes
 import bigframes.core.scalar
+import bigframes.core.validations as validations
 import bigframes.core.window_spec as windows
 import bigframes.dataframe
 import bigframes.dtypes
@@ -43,6 +48,9 @@ if typing.TYPE_CHECKING:
         bigframes.core.scalar.Scalar,
         bigframes.core.col.Expression,
     ]
+
+
+_DATAFRAME_ILOC_ERROR = "Only DataFrame.iloc[:, col_indexer] = value is supported."
 
 
 class LocSeriesIndexer:
@@ -102,6 +110,9 @@ class IlocSeriesIndexer:
 
         Other key types are not yet supported.
         """
+        if not _is_noop_slice(key):
+            validations.enforce_ordered(self._series, "iloc")
+
         return _iloc_getitem_series_or_dataframe(self._series, key)
 
 
@@ -110,9 +121,9 @@ class IatSeriesIndexer:
         self._series = series
 
     def __getitem__(self, key: int) -> bigframes.core.scalar.Scalar:
-        if not isinstance(key, int):
+        if not _is_integer_scalar(key):
             raise ValueError("Series iAt based indexing can only have integer indexers")
-        return self._series.iloc[key]
+        return self._series.iloc[_to_python_int(key)]
 
 
 class AtSeriesIndexer:
@@ -186,14 +197,7 @@ class LocDataFrameIndexer:
         key: Tuple[slice, str],
         value: bigframes.dataframe.SingleItemValue,
     ):
-        if (
-            isinstance(key, tuple)
-            and len(key) == 2
-            and isinstance(key[0], slice)
-            and (key[0].start is None or key[0].start == 0)
-            and (key[0].step is None or key[0].step == 1)
-            and key[0].stop is None
-        ):
+        if isinstance(key, tuple) and len(key) == 2 and _is_noop_slice(key[0]):
             # TODO(swast): Support setting multiple columns with key[1] as a list
             # of labels and value as a DataFrame.
             df = self._dataframe.assign(**{key[1]: value})
@@ -244,7 +248,40 @@ class ILocDataFrameIndexer:
 
         Other key types are not yet supported.
         """
+        requires_ordering = True
+        if isinstance(key, tuple):
+            if len(key) > 0:
+                row_indexer = key[0]
+                if _is_noop_slice(row_indexer):
+                    requires_ordering = False
+        elif _is_noop_slice(key):
+            requires_ordering = False
+
+        if requires_ordering:
+            validations.enforce_ordered(self._dataframe, "iloc")
+
         return _iloc_getitem_series_or_dataframe(self._dataframe, key)
+
+    def __setitem__(
+        self,
+        key: Tuple[
+            slice, Union[int, typing.Sequence[int], slice, typing.Sequence[bool]]
+        ],
+        value: Union[
+            bigframes.dataframe.SingleItemValue, bigframes.dataframe.DataFrame
+        ],
+    ):
+        if not (isinstance(key, tuple) and len(key) == 2):
+            raise NotImplementedError(_DATAFRAME_ILOC_ERROR)
+
+        row_indexer, col_indexer = key
+
+        if not _is_noop_slice(row_indexer):
+            raise NotImplementedError(_DATAFRAME_ILOC_ERROR)
+
+        col_offsets = _iloc_col_indexer_to_offsets(self._dataframe, col_indexer)
+        df = self._dataframe._assign_multi_items_by_offsets(col_offsets, value)
+        self._dataframe._set_block(df._get_block())
 
 
 class IatDataFrameIndexer:
@@ -254,19 +291,21 @@ class IatDataFrameIndexer:
     def __getitem__(self, key: tuple) -> bigframes.core.scalar.Scalar:
         error_message = "DataFrame.iat should be indexed by a tuple of exactly 2 ints"
         # we raise TypeError or ValueError under the same conditions that pandas does
-        if isinstance(key, int):
+        if _is_integer_scalar(key):
             raise TypeError(error_message)
         if not isinstance(key, tuple):
             raise ValueError(error_message)
-        key_values_are_ints = [isinstance(key_value, int) for key_value in key]
+        key_values_are_ints = [_is_integer_scalar(key_value) for key_value in key]
         if not all(key_values_are_ints):
             raise ValueError(error_message)
         if len(key) != 2:
             raise TypeError(error_message)
+        row_idx = _to_python_int(key[0])
+        col_idx = _to_python_int(key[1])
         block: bigframes.core.blocks.Block = self._dataframe._block
-        column_block = block.select_columns([block.value_columns[key[1]]])
+        column_block = block.select_columns([block.value_columns[col_idx]])
         column = bigframes.series.Series(column_block)
-        return column.iloc[key[0]]
+        return column.iloc[row_idx]
 
 
 class AtDataFrameIndexer:
@@ -281,6 +320,16 @@ class AtDataFrameIndexer:
                 "DataFrame.at should be indexed by a (row label, column name) tuple."
             )
         return self._dataframe.loc[key]
+
+
+def _is_noop_slice(key: Any) -> bool:
+    """Return True if key is a slice selecting all elements in the original order."""
+    return (
+        isinstance(key, slice)
+        and (key.start is None or key.start == 0)
+        and (key.step is None or key.step == 1)
+        and key.stop is None
+    )
 
 
 @typing.overload
@@ -304,12 +353,14 @@ def _loc_getitem_series_or_dataframe(
     pd.Series,
     bigframes.core.scalar.Scalar,
 ]:
+    if _is_noop_slice(key):
+        return series_or_dataframe.copy()
+
     if isinstance(key, slice):
-        if (key.start is None) and (key.stop is None) and (key.step is None):
-            return series_or_dataframe.copy()
         raise NotImplementedError(
             f"loc does not yet support indexing with a slice. {constants.FEEDBACK_LINK}"
         )
+
     if isinstance(key, bigframes.core.col.Expression):
         label_to_col_ref = {
             label: ex.deref(id)
@@ -426,6 +477,119 @@ def _struct_accessor_check_and_warn(
         warnings.warn(msg, stacklevel=7, category=bfe.BadIndexerKeyWarning)
 
 
+def _to_python_int(value: Any) -> int:
+    if isinstance(value, pa.Scalar):
+        return int(value.as_py())
+    return int(value)
+
+
+def _iloc_clip_to_offset(index: Any, length: int, name: str) -> int:
+    """Support negative values for offsets."""
+    if not _is_integer_scalar(index):
+        raise TypeError(f"got unexpected {type(index)} for {name}")
+    offset = _to_python_int(index)
+    if offset < 0:
+        offset += length
+
+    if offset < 0 or offset >= length:
+        raise IndexError(f"{name} {index} is out-of-bounds")
+
+    return offset
+
+
+def _is_integer_scalar(value: Any) -> bool:
+    return not (
+        isinstance(value, bool)
+        or isinstance(value, np.bool_)
+        or (isinstance(value, pa.Scalar) and pyarrow.types.is_boolean(value.type))
+    ) and (
+        isinstance(value, numbers.Integral)
+        or (isinstance(value, pa.Scalar) and pyarrow.types.is_integer(value.type))
+    )
+
+
+def _is_boolean_scalar(value: Any) -> bool:
+    return (
+        isinstance(value, bool)
+        or isinstance(value, np.bool_)
+        or (isinstance(value, pa.Scalar) and pyarrow.types.is_boolean(value.type))
+    )
+
+
+def _truth_val(value: Any) -> bool:
+    if value is None or value is pd.NA or pd.isna(value):
+        return False
+    if isinstance(value, pa.Scalar):
+        return bool(value.as_py()) if value.is_valid else False
+    return bool(value)
+
+
+def _is_boolean_indexer(indexer: Any) -> bool:
+    if hasattr(indexer, "dtype") and pd.api.types.is_bool_dtype(indexer.dtype):
+        return True
+    if (
+        hasattr(indexer, "type")
+        and isinstance(indexer.type, pa.DataType)
+        and pyarrow.types.is_boolean(indexer.type)
+    ):
+        return True
+    if pd.api.types.is_list_like(indexer):
+        lst = (
+            list(indexer)
+            if not isinstance(indexer, (bigframes.series.Series, indexes.Index))
+            else list(indexer.to_pandas())
+        )
+        if len(lst) > 0 and all(
+            _is_boolean_scalar(x) or (x is None) or (x is pd.NA) or pd.isna(x)
+            for x in lst
+        ):
+            return any(_is_boolean_scalar(x) for x in lst)
+    return False
+
+
+def _iloc_col_indexer_to_offsets(
+    df: bigframes.dataframe.DataFrame, col_indexer: Any
+) -> Sequence[int]:
+    """Convert col_indexer from one of the many pandas-compatible formats to a list of offsets."""
+    n_cols = len(df.columns)
+
+    if _is_integer_scalar(col_indexer):
+        col_offset = _to_python_int(col_indexer)
+        return [
+            _iloc_clip_to_offset(
+                col_offset, n_cols, "single positional iloc column indexer"
+            )
+        ]
+
+    elif isinstance(col_indexer, slice):
+        return list(range(*col_indexer.indices(n_cols)))
+
+    elif _is_boolean_indexer(col_indexer):
+        col_indexer_list = list(col_indexer)
+        if len(col_indexer_list) != n_cols:
+            raise ValueError(
+                f"Boolean iloc column indexer has wrong length: {len(col_indexer_list)} instead of {n_cols}"
+            )
+        return [i for i, val in enumerate(col_indexer_list) if _truth_val(val)]
+
+    elif pd.api.types.is_list_like(col_indexer):
+        col_indexer_list = list(col_indexer)
+        return [
+            _iloc_clip_to_offset(idx, n_cols, "iloc column indexer")
+            for idx in col_indexer_list
+        ]
+
+    raise TypeError(f"got unexpected {type(col_indexer)} for iloc column indexer")
+
+
+def _iloc_df_from_column_offsets(
+    df: bigframes.dataframe.DataFrame, key: Sequence[int]
+) -> bigframes.dataframe.DataFrame:
+    block = df._block
+    selected_ids = tuple(block.value_columns[offset] for offset in key)
+    return bigframes.dataframe.DataFrame(block.select_columns(selected_ids))
+
+
 @typing.overload
 def _iloc_getitem_series_or_dataframe(
     series_or_dataframe: bigframes.series.Series, key
@@ -447,9 +611,10 @@ def _iloc_getitem_series_or_dataframe(
     bigframes.core.scalar.Scalar,
     pd.Series,
 ]:
-    if isinstance(key, int):
-        stop_key = key + 1 if key != -1 else None
-        internal_slice_result = series_or_dataframe._slice(key, stop_key, 1)
+    if _is_integer_scalar(key):
+        key_int = _to_python_int(key)
+        stop_key = key_int + 1 if key_int != -1 else None
+        internal_slice_result = series_or_dataframe._slice(key_int, stop_key, 1)
         result_pd_df = internal_slice_result.to_pandas()
         if result_pd_df.empty:
             raise IndexError("single positional indexer is out-of-bounds")
@@ -470,20 +635,48 @@ def _iloc_getitem_series_or_dataframe(
 
         # len(key) == 2
         df = typing.cast(bigframes.dataframe.DataFrame, series_or_dataframe)
-        if isinstance(key[1], int):
+        if _is_integer_scalar(key[0]) and _is_integer_scalar(key[1]):
             return df.iat[key]
-        elif isinstance(key[1], list):
-            columns = df.columns[key[1]]
-            return _iloc_getitem_series_or_dataframe(df[columns], key[0])
-        raise NotImplementedError(
-            f"iloc does not yet support indexing with {key}. {constants.FEEDBACK_LINK}"
-        )
+
+        row_indexer, column_indexer = key
+        column_offsets = _iloc_col_indexer_to_offsets(df, column_indexer)
+        df_subset = _iloc_df_from_column_offsets(df, column_offsets)
+
+        if _is_integer_scalar(column_indexer):
+            selected_columns = cast(
+                Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
+                df_subset[df_subset.columns[0]],
+            )
+        else:
+            selected_columns = df_subset
+
+        return _iloc_getitem_series_or_dataframe(selected_columns, row_indexer)
     elif pd.api.types.is_list_like(key):
         if len(key) == 0:
             return typing.cast(
                 Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
                 series_or_dataframe.iloc[0:0],
             )
+
+        if _is_boolean_indexer(key):
+            key_list = (
+                list(key)
+                if not isinstance(key, (bigframes.series.Series, indexes.Index))
+                else list(key.to_pandas())
+            )
+            n_rows = len(series_or_dataframe)
+            if len(key_list) != n_rows:
+                raise IndexError(
+                    f"Boolean index has wrong length: {len(key_list)} instead of {n_rows}"
+                )
+            key = [i for i, val in enumerate(key_list) if _truth_val(val)]
+            if len(key) == 0:
+                return typing.cast(
+                    Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
+                    series_or_dataframe.iloc[0:0],
+                )
+        else:
+            key = [_to_python_int(k) for k in list(key)]
 
         # Check if both positive index and negative index are necessary
         if isinstance(key, (bigframes.series.Series, indexes.Index)):

@@ -25,6 +25,7 @@ from google.cloud import _http
 from google.cloud.storage import __version__, _helpers
 from google.cloud.storage._opentelemetry_tracing import (
     HAS_OPENTELEMETRY,
+    _is_bucket_metadata_disabled,
     create_trace_span,
     enable_otel_traces,
 )
@@ -88,6 +89,7 @@ class Connection(_http.JSONConnection):
             and enable_otel_traces
             and hasattr(client, "_bucket_metadata_cache")
             and client._bucket_metadata_cache
+            and not _is_bucket_metadata_disabled()
         ):
             path = kwargs.get("path") or ""
             match = re.search(r"/b/([^/?#]+)", path)

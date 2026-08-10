@@ -67,10 +67,8 @@ def patched_client(monkeypatch):
 
     with (
         patch("google.cloud.spanner_v1.metrics.metrics_exporter.MetricServiceClient"),
-        patch(
-            "google.cloud.spanner_v1.metrics.metrics_exporter.CloudMonitoringMetricsExporter"
-        ),
-        patch("opentelemetry.sdk.metrics.export.PeriodicExportingMetricReader"),
+        patch("google.cloud.spanner_v1.client.CloudMonitoringMetricsExporter"),
+        patch("google.cloud.spanner_v1.client.PeriodicExportingMetricReader"),
     ):
         client = Client(
             project="test",
@@ -81,6 +79,7 @@ def patched_client(monkeypatch):
     # Resetting
     metrics.set_meter_provider(metrics.NoOpMeterProvider())
     SpannerMetricsTracerFactory._metrics_tracer_factory = None
+    client_module._metrics_monitor_initialized = False
     # Reset context var
     ctx = SpannerMetricsTracerFactory._current_metrics_tracer_ctx
     ctx.set(None)

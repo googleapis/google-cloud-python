@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -104,6 +105,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -896,7 +912,14 @@ def test_executions_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -943,7 +966,14 @@ def test_executions_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1250,8 +1280,8 @@ def test_executions_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        executions.ListExecutionsRequest,
-        dict,
+        executions.ListExecutionsRequest(),
+        {},
     ],
 )
 def test_list_executions(request_type, transport: str = "grpc"):
@@ -1262,7 +1292,7 @@ def test_list_executions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
@@ -1309,12 +1339,13 @@ def test_list_executions_non_empty_request_with_auto_populated_field():
         client.list_executions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == executions.ListExecutionsRequest(
+        request_msg = executions.ListExecutionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_executions_use_cached_wrapped_rpc():
@@ -1395,9 +1426,14 @@ async def test_list_executions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_executions_async(
-    transport: str = "grpc_asyncio", request_type=executions.ListExecutionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        executions.ListExecutionsRequest(),
+        {},
+    ],
+)
+async def test_list_executions_async(request_type, transport: str = "grpc_asyncio"):
     client = ExecutionsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1405,7 +1441,7 @@ async def test_list_executions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
@@ -1426,11 +1462,6 @@ async def test_list_executions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExecutionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_executions_async_from_dict():
-    await test_list_executions_async(request_type=dict)
 
 
 def test_list_executions_field_headers():
@@ -1625,6 +1656,9 @@ def test_list_executions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, executions.Execution) for i in results)
@@ -1713,6 +1747,8 @@ async def test_list_executions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1769,8 +1805,8 @@ async def test_list_executions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        executions.CreateExecutionRequest,
-        dict,
+        executions.CreateExecutionRequest(),
+        {},
     ],
 )
 def test_create_execution(request_type, transport: str = "grpc"):
@@ -1781,7 +1817,7 @@ def test_create_execution(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_execution), "__call__") as call:
@@ -1835,9 +1871,10 @@ def test_create_execution_non_empty_request_with_auto_populated_field():
         client.create_execution(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == executions.CreateExecutionRequest(
+        request_msg = executions.CreateExecutionRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_execution_use_cached_wrapped_rpc():
@@ -1920,9 +1957,14 @@ async def test_create_execution_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_execution_async(
-    transport: str = "grpc_asyncio", request_type=executions.CreateExecutionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        executions.CreateExecutionRequest(),
+        {},
+    ],
+)
+async def test_create_execution_async(request_type, transport: str = "grpc_asyncio"):
     client = ExecutionsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1930,7 +1972,7 @@ async def test_create_execution_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_execution), "__call__") as call:
@@ -1961,11 +2003,6 @@ async def test_create_execution_async(
     assert response.result == "result_value"
     assert response.workflow_revision_id == "workflow_revision_id_value"
     assert response.call_log_level == executions.Execution.CallLogLevel.LOG_ALL_CALLS
-
-
-@pytest.mark.asyncio
-async def test_create_execution_async_from_dict():
-    await test_create_execution_async(request_type=dict)
 
 
 def test_create_execution_field_headers():
@@ -2124,8 +2161,8 @@ async def test_create_execution_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        executions.GetExecutionRequest,
-        dict,
+        executions.GetExecutionRequest(),
+        {},
     ],
 )
 def test_get_execution(request_type, transport: str = "grpc"):
@@ -2136,7 +2173,7 @@ def test_get_execution(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
@@ -2190,9 +2227,10 @@ def test_get_execution_non_empty_request_with_auto_populated_field():
         client.get_execution(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == executions.GetExecutionRequest(
+        request_msg = executions.GetExecutionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_execution_use_cached_wrapped_rpc():
@@ -2273,9 +2311,14 @@ async def test_get_execution_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_execution_async(
-    transport: str = "grpc_asyncio", request_type=executions.GetExecutionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        executions.GetExecutionRequest(),
+        {},
+    ],
+)
+async def test_get_execution_async(request_type, transport: str = "grpc_asyncio"):
     client = ExecutionsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2283,7 +2326,7 @@ async def test_get_execution_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
@@ -2314,11 +2357,6 @@ async def test_get_execution_async(
     assert response.result == "result_value"
     assert response.workflow_revision_id == "workflow_revision_id_value"
     assert response.call_log_level == executions.Execution.CallLogLevel.LOG_ALL_CALLS
-
-
-@pytest.mark.asyncio
-async def test_get_execution_async_from_dict():
-    await test_get_execution_async(request_type=dict)
 
 
 def test_get_execution_field_headers():
@@ -2467,8 +2505,8 @@ async def test_get_execution_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        executions.CancelExecutionRequest,
-        dict,
+        executions.CancelExecutionRequest(),
+        {},
     ],
 )
 def test_cancel_execution(request_type, transport: str = "grpc"):
@@ -2479,7 +2517,7 @@ def test_cancel_execution(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
@@ -2533,9 +2571,10 @@ def test_cancel_execution_non_empty_request_with_auto_populated_field():
         client.cancel_execution(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == executions.CancelExecutionRequest(
+        request_msg = executions.CancelExecutionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_execution_use_cached_wrapped_rpc():
@@ -2618,9 +2657,14 @@ async def test_cancel_execution_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_cancel_execution_async(
-    transport: str = "grpc_asyncio", request_type=executions.CancelExecutionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        executions.CancelExecutionRequest(),
+        {},
+    ],
+)
+async def test_cancel_execution_async(request_type, transport: str = "grpc_asyncio"):
     client = ExecutionsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2628,7 +2672,7 @@ async def test_cancel_execution_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
@@ -2659,11 +2703,6 @@ async def test_cancel_execution_async(
     assert response.result == "result_value"
     assert response.workflow_revision_id == "workflow_revision_id_value"
     assert response.call_log_level == executions.Execution.CallLogLevel.LOG_ALL_CALLS
-
-
-@pytest.mark.asyncio
-async def test_cancel_execution_async_from_dict():
-    await test_cancel_execution_async(request_type=dict)
 
 
 def test_cancel_execution_field_headers():
@@ -2931,7 +2970,6 @@ def test_list_executions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = executions.ListExecutionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2952,7 +2990,6 @@ def test_create_execution_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = executions.CreateExecutionRequest()
-
         assert args[0] == request_msg
 
 
@@ -2973,7 +3010,6 @@ def test_get_execution_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = executions.GetExecutionRequest()
-
         assert args[0] == request_msg
 
 
@@ -2994,7 +3030,6 @@ def test_cancel_execution_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = executions.CancelExecutionRequest()
-
         assert args[0] == request_msg
 
 
@@ -3035,7 +3070,6 @@ async def test_list_executions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = executions.ListExecutionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3067,7 +3101,6 @@ async def test_create_execution_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = executions.CreateExecutionRequest()
-
         assert args[0] == request_msg
 
 
@@ -3099,7 +3132,6 @@ async def test_get_execution_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = executions.GetExecutionRequest()
-
         assert args[0] == request_msg
 
 
@@ -3131,7 +3163,6 @@ async def test_cancel_execution_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = executions.CancelExecutionRequest()
-
         assert args[0] == request_msg
 
 

@@ -19,8 +19,6 @@ from typing import Dict, List, Optional, Tuple, Union
 
 from google.api_core import exceptions
 from google.api_core.retry_async import AsyncRetry
-from google.rpc import status_pb2
-
 from google.cloud import _storage_v2
 from google.cloud._storage_v2.types import BidiWriteObjectRedirectedError
 from google.cloud._storage_v2.types.storage import BidiWriteObjectRequest
@@ -41,6 +39,7 @@ from google.cloud.storage.asyncio.retry.writes_resumption_strategy import (
     _WriteResumptionStrategy,
     _WriteState,
 )
+from google.rpc import status_pb2
 
 from . import _utils
 
@@ -299,6 +298,30 @@ class AsyncAppendableObjectWriter:
             if redirect_proto.generation:
                 self.generation = redirect_proto.generation
 
+    def _merge_retry_policy(
+        self, retry_policy: Optional[AsyncRetry] = None
+    ) -> AsyncRetry:
+        if retry_policy is None:
+            return AsyncRetry(
+                predicate=_is_write_retryable, on_error=self._on_open_error
+            )
+        else:
+            original_on_error = retry_policy._on_error
+
+            def combined_on_error(exc):
+                self._on_open_error(exc)
+                if original_on_error:
+                    original_on_error(exc)
+
+            return AsyncRetry(
+                predicate=_is_write_retryable,
+                initial=retry_policy._initial,
+                maximum=retry_policy._maximum,
+                multiplier=retry_policy._multiplier,
+                deadline=retry_policy._deadline,
+                on_error=combined_on_error,
+            )
+
     async def open(
         self,
         retry_policy: Optional[AsyncRetry] = None,
@@ -312,26 +335,7 @@ class AsyncAppendableObjectWriter:
         if self._is_stream_open:
             raise ValueError("Underlying bidi-gRPC stream is already open")
 
-        if retry_policy is None:
-            retry_policy = AsyncRetry(
-                predicate=_is_write_retryable, on_error=self._on_open_error
-            )
-        else:
-            original_on_error = retry_policy._on_error
-
-            def combined_on_error(exc):
-                self._on_open_error(exc)
-                if original_on_error:
-                    original_on_error(exc)
-
-            retry_policy = AsyncRetry(
-                predicate=_is_write_retryable,
-                initial=retry_policy._initial,
-                maximum=retry_policy._maximum,
-                multiplier=retry_policy._multiplier,
-                deadline=retry_policy._deadline,
-                on_error=combined_on_error,
-            )
+        retry_policy = self._merge_retry_policy(retry_policy)
 
         async def _do_open():
             current_metadata = list(metadata) if metadata else []
@@ -386,6 +390,7 @@ class AsyncAppendableObjectWriter:
         data: bytes,
         retry_policy: Optional[AsyncRetry] = None,
         metadata: Optional[List[Tuple[str, str]]] = None,
+        enable_checksum: bool = True,
     ) -> None:
         """Appends data to the Appendable object with automatic retries.
 
@@ -405,6 +410,9 @@ class AsyncAppendableObjectWriter:
 
         :type metadata: List[Tuple[str, str]]
         :param metadata: (Optional) The metadata to be sent with the request.
+
+        :type enable_checksum: bool
+        :param enable_checksum: (Optional) If True, calculates and checks checksums for each chunk. Defaults to True.
 
         :raises ValueError: If the stream is not open.
         """
@@ -487,7 +495,12 @@ class AsyncAppendableObjectWriter:
             return generator()
 
         # State initialization
-        write_state = _WriteState(_MAX_CHUNK_SIZE_BYTES, buffer, self.flush_interval)
+        write_state = _WriteState(
+            _MAX_CHUNK_SIZE_BYTES,
+            buffer,
+            self.flush_interval,
+            enable_checksum=enable_checksum,
+        )
         write_state.write_handle = self.write_handle
         write_state.persisted_size = self.persisted_size
         # offset is set during `open()` call.
@@ -547,12 +560,34 @@ class AsyncAppendableObjectWriter:
         self.bytes_appended_since_last_flush = 0
         return self.persisted_size
 
-    async def close(self, finalize_on_close=False) -> Union[int, _storage_v2.Object]:
+    async def close(
+        self,
+        finalize_on_close=False,
+        full_object_checksum: Optional[int] = None,
+        retry_policy: Optional[AsyncRetry] = None,
+    ) -> Union[int, _storage_v2.Object]:
         """Closes the underlying bidi-gRPC stream.
 
         :type finalize_on_close: bool
         :param finalize_on_close: Finalizes the Appendable Object. No more data
           can be appended.
+        :type full_object_checksum: int
+        :param full_object_checksum: (Optional) This should be the CRC32C checksum of
+            the entire contents of the object as a 32-bit integer.
+            Used only when finalize_on_close is True.
+
+            It can be obtained by running:
+
+            .. code-block:: python
+
+                import google_crc32c
+
+                data = b"Hello, world!"
+                crc32c_int = google_crc32c.value(data)
+                print(crc32c_int)
+
+        :type retry_policy: :class:`~google.api_core.retry_async.AsyncRetry`
+        :param retry_policy: (Optional) The retry policy to use for the operation.
 
         rtype: Union[int, _storage_v2.Object]
         returns: Updated `self.persisted_size` by default after closing the
@@ -561,20 +596,64 @@ class AsyncAppendableObjectWriter:
 
         :raises ValueError: If the stream is not open (i.e., `open()` has not
             been called).
+        :raises ValueError: If full_object_checksum is provided but
+            finalize_on_close is False.
+        :raises google.api_core.exceptions.InvalidArgument: If the provided
+            full_object_checksum does not match the checksum computed by the
+            server.
 
         """
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before close().")
 
+        if full_object_checksum is not None and not finalize_on_close:
+            raise ValueError(
+                "full_object_checksum can only be provided when finalize_on_close is True."
+            )
+
         if finalize_on_close:
-            return await self.finalize()
+            return await self.finalize(
+                full_object_checksum=full_object_checksum,
+                retry_policy=retry_policy,
+            )
 
-        await self.write_obj_stream.close()
+        retry_policy = self._merge_retry_policy(retry_policy)
 
-        self._is_stream_open = False
-        return self.persisted_size
+        attempt_count = 0
+        expected_offset = self.offset
 
-    async def finalize(self) -> _storage_v2.Object:
+        async def _do_close():
+            nonlocal attempt_count
+            attempt_count += 1
+
+            if attempt_count > 1:
+                logger.info(
+                    f"Re-opening the stream for close retry attempt: {attempt_count}"
+                )
+                self._is_stream_open = False
+                await self.open()
+                if (
+                    self.offset is not None
+                    and expected_offset is not None
+                    and self.offset != expected_offset
+                ):
+                    raise exceptions.InternalServerError(
+                        f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
+                    )
+
+            await self.write_obj_stream.close()
+            return self.persisted_size
+
+        try:
+            return await retry_policy(_do_close)()
+        finally:
+            self._is_stream_open = False
+
+    async def finalize(
+        self,
+        full_object_checksum: Optional[int] = None,
+        retry_policy: Optional[AsyncRetry] = None,
+    ) -> _storage_v2.Object:
         """Finalizes the Appendable Object.
 
         Note: Once finalized no more data can be appended.
@@ -585,26 +664,93 @@ class AsyncAppendableObjectWriter:
         However if `.finalize()` is called no more data can be appended to the
         object.
 
+        :type full_object_checksum: int
+        :param full_object_checksum: (Optional) This should be the CRC32C checksum of
+            the entire contents of the object as a 32-bit integer.
+
+            It can be obtained by running:
+
+            .. code-block:: python
+
+                import google_crc32c
+
+                data = b"Hello, world!"
+                crc32c_int = google_crc32c.value(data)
+                print(crc32c_int)
+
+        :type retry_policy: :class:`~google.api_core.retry_async.AsyncRetry`
+        :param retry_policy: (Optional) The retry policy to use for the operation.
+
         rtype: google.cloud.storage_v2.types.Object
         returns: The finalized object resource.
 
         :raises ValueError: If the stream is not open (i.e., `open()` has not
             been called).
+        :raises google.api_core.exceptions.InvalidArgument: If the provided
+            full_object_checksum does not match the checksum computed by the
+            server.
         """
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before finalize().")
 
-        await self.write_obj_stream.send(
-            _storage_v2.BidiWriteObjectRequest(finish_write=True)
-        )
-        response = await self.write_obj_stream.recv()
-        self.object_resource = response.resource
-        self.persisted_size = self.object_resource.size
-        await self.write_obj_stream.close()
+        if full_object_checksum is None:
+            finalize_req = _storage_v2.BidiWriteObjectRequest(finish_write=True)
+        elif isinstance(full_object_checksum, bool) or not isinstance(
+            full_object_checksum, int
+        ):
+            raise TypeError("full_object_checksum must be an integer.")
+        elif not (0 <= full_object_checksum <= 0xFFFFFFFF):
+            raise ValueError("full_object_checksum must be a 32-bit unsigned integer.")
+        else:
+            finalize_req = _storage_v2.BidiWriteObjectRequest(
+                finish_write=True,
+                object_checksums=_storage_v2.ObjectChecksums(
+                    crc32c=full_object_checksum
+                ),
+            )
 
-        self._is_stream_open = False
-        self.offset = None
-        return self.object_resource
+        retry_policy = self._merge_retry_policy(retry_policy)
+
+        attempt_count = 0
+        expected_offset = self.offset
+
+        async def _do_finalize():
+            nonlocal attempt_count
+            attempt_count += 1
+
+            if attempt_count > 1:
+                logger.info(
+                    f"Re-opening the stream for finalize retry attempt: {attempt_count}"
+                )
+                self._is_stream_open = False
+                await self.open()
+                if (
+                    self.offset is not None
+                    and expected_offset is not None
+                    and self.offset != expected_offset
+                ):
+                    raise exceptions.InternalServerError(
+                        f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
+                    )
+
+            await self.write_obj_stream.send(finalize_req)
+            response = await self.write_obj_stream.recv()
+            self.object_resource = response.resource
+            self.persisted_size = self.object_resource.size
+            return self.object_resource
+
+        try:
+            return await retry_policy(_do_finalize)()
+        finally:
+            if self.write_obj_stream:
+                try:
+                    await self.write_obj_stream.close()
+                except Exception as e:
+                    logger.debug(
+                        f"Stream close during finalize cleanup resulted in: {e}"
+                    )
+            self._is_stream_open = False
+            self.offset = None
 
     @property
     def is_stream_open(self) -> bool:

@@ -12,17 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 import threading
-
 from unittest import mock
 
+import pytest
+
+from google.cloud.ndb import _eventloop, _options, exceptions, model
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import _eventloop
-from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
-from google.cloud.ndb import model
-from google.cloud.ndb import _options
 
 
 class Test_get_context:

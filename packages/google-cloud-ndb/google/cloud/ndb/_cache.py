@@ -20,10 +20,8 @@ import warnings
 
 from google.api_core import retry as core_retry
 
-from google.cloud.ndb import _batch
+from google.cloud.ndb import _batch, tasklets, utils
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import utils
 
 _LOCKED_FOR_READ = b"0-"
 _LOCKED_FOR_WRITE = b"00"

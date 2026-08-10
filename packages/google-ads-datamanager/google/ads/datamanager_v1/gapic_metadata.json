@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "IngestionServiceClient",
           "rpcs": {
+            "IngestAdEvents": {
+              "methods": [
+                "ingest_ad_events"
+              ]
+            },
             "IngestAudienceMembers": {
               "methods": [
                 "ingest_audience_members"
@@ -35,6 +40,11 @@
         "grpc-async": {
           "libraryClient": "IngestionServiceAsyncClient",
           "rpcs": {
+            "IngestAdEvents": {
+              "methods": [
+                "ingest_ad_events"
+              ]
+            },
             "IngestAudienceMembers": {
               "methods": [
                 "ingest_audience_members"
@@ -60,6 +70,11 @@
         "rest": {
           "libraryClient": "IngestionServiceClient",
           "rpcs": {
+            "IngestAdEvents": {
+              "methods": [
+                "ingest_ad_events"
+              ]
+            },
             "IngestAudienceMembers": {
               "methods": [
                 "ingest_audience_members"

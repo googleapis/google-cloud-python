@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-gsuiteaddons/#history
 
+## [0.5.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gsuiteaddons-v0.5.0...google-cloud-gsuiteaddons-v0.5.1) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[e-i] packages ([#17079](https://github.com/googleapis/google-cloud-python/issues/17079)) ([5239b18](https://github.com/googleapis/google-cloud-python/commit/5239b1814f216676bf02dea08726313ad355439d))
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gsuiteaddons-v0.4.0...google-cloud-gsuiteaddons-v0.5.0) (2026-03-26)
 
 

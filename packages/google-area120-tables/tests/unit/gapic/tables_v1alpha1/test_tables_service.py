@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -107,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -938,7 +954,14 @@ def test_tables_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -985,7 +1008,14 @@ def test_tables_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1315,8 +1345,8 @@ def test_tables_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        tables.GetTableRequest,
-        dict,
+        tables.GetTableRequest(),
+        {},
     ],
 )
 def test_get_table(request_type, transport: str = "grpc"):
@@ -1327,7 +1357,7 @@ def test_get_table(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_table), "__call__") as call:
@@ -1373,9 +1403,10 @@ def test_get_table_non_empty_request_with_auto_populated_field():
         client.get_table(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.GetTableRequest(
+        request_msg = tables.GetTableRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_table_use_cached_wrapped_rpc():
@@ -1454,9 +1485,14 @@ async def test_get_table_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_table_async(
-    transport: str = "grpc_asyncio", request_type=tables.GetTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tables.GetTableRequest(),
+        {},
+    ],
+)
+async def test_get_table_async(request_type, transport: str = "grpc_asyncio"):
     client = TablesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1464,7 +1500,7 @@ async def test_get_table_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_table), "__call__") as call:
@@ -1487,11 +1523,6 @@ async def test_get_table_async(
     assert isinstance(response, tables.Table)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_table_async_from_dict():
-    await test_get_table_async(request_type=dict)
 
 
 def test_get_table_field_headers():
@@ -1636,8 +1667,8 @@ async def test_get_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tables.ListTablesRequest,
-        dict,
+        tables.ListTablesRequest(),
+        {},
     ],
 )
 def test_list_tables(request_type, transport: str = "grpc"):
@@ -1648,7 +1679,7 @@ def test_list_tables(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
@@ -1692,9 +1723,10 @@ def test_list_tables_non_empty_request_with_auto_populated_field():
         client.list_tables(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.ListTablesRequest(
+        request_msg = tables.ListTablesRequest(
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_tables_use_cached_wrapped_rpc():
@@ -1775,9 +1807,14 @@ async def test_list_tables_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_tables_async(
-    transport: str = "grpc_asyncio", request_type=tables.ListTablesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tables.ListTablesRequest(),
+        {},
+    ],
+)
+async def test_list_tables_async(request_type, transport: str = "grpc_asyncio"):
     client = TablesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1785,7 +1822,7 @@ async def test_list_tables_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
@@ -1806,11 +1843,6 @@ async def test_list_tables_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTablesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_tables_async_from_dict():
-    await test_list_tables_async(request_type=dict)
 
 
 def test_list_tables_pager(transport_name: str = "grpc"):
@@ -1858,6 +1890,9 @@ def test_list_tables_pager(transport_name: str = "grpc"):
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
         assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -1947,6 +1982,8 @@ async def test_list_tables_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2003,8 +2040,8 @@ async def test_list_tables_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tables.GetWorkspaceRequest,
-        dict,
+        tables.GetWorkspaceRequest(),
+        {},
     ],
 )
 def test_get_workspace(request_type, transport: str = "grpc"):
@@ -2015,7 +2052,7 @@ def test_get_workspace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workspace), "__call__") as call:
@@ -2061,9 +2098,10 @@ def test_get_workspace_non_empty_request_with_auto_populated_field():
         client.get_workspace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.GetWorkspaceRequest(
+        request_msg = tables.GetWorkspaceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_workspace_use_cached_wrapped_rpc():
@@ -2144,9 +2182,14 @@ async def test_get_workspace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_workspace_async(
-    transport: str = "grpc_asyncio", request_type=tables.GetWorkspaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tables.GetWorkspaceRequest(),
+        {},
+    ],
+)
+async def test_get_workspace_async(request_type, transport: str = "grpc_asyncio"):
     client = TablesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2154,7 +2197,7 @@ async def test_get_workspace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workspace), "__call__") as call:
@@ -2177,11 +2220,6 @@ async def test_get_workspace_async(
     assert isinstance(response, tables.Workspace)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_workspace_async_from_dict():
-    await test_get_workspace_async(request_type=dict)
 
 
 def test_get_workspace_field_headers():
@@ -2326,8 +2364,8 @@ async def test_get_workspace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tables.ListWorkspacesRequest,
-        dict,
+        tables.ListWorkspacesRequest(),
+        {},
     ],
 )
 def test_list_workspaces(request_type, transport: str = "grpc"):
@@ -2338,7 +2376,7 @@ def test_list_workspaces(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workspaces), "__call__") as call:
@@ -2382,9 +2420,10 @@ def test_list_workspaces_non_empty_request_with_auto_populated_field():
         client.list_workspaces(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.ListWorkspacesRequest(
+        request_msg = tables.ListWorkspacesRequest(
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_workspaces_use_cached_wrapped_rpc():
@@ -2465,9 +2504,14 @@ async def test_list_workspaces_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_workspaces_async(
-    transport: str = "grpc_asyncio", request_type=tables.ListWorkspacesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tables.ListWorkspacesRequest(),
+        {},
+    ],
+)
+async def test_list_workspaces_async(request_type, transport: str = "grpc_asyncio"):
     client = TablesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2475,7 +2519,7 @@ async def test_list_workspaces_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workspaces), "__call__") as call:
@@ -2496,11 +2540,6 @@ async def test_list_workspaces_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkspacesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_workspaces_async_from_dict():
-    await test_list_workspaces_async(request_type=dict)
 
 
 def test_list_workspaces_pager(transport_name: str = "grpc"):
@@ -2548,6 +2587,9 @@ def test_list_workspaces_pager(transport_name: str = "grpc"):
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
         assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -2637,6 +2679,8 @@ async def test_list_workspaces_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2693,8 +2737,8 @@ async def test_list_workspaces_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tables.GetRowRequest,
-        dict,
+        tables.GetRowRequest(),
+        {},
     ],
 )
 def test_get_row(request_type, transport: str = "grpc"):
@@ -2705,7 +2749,7 @@ def test_get_row(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_row), "__call__") as call:
@@ -2749,9 +2793,10 @@ def test_get_row_non_empty_request_with_auto_populated_field():
         client.get_row(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.GetRowRequest(
+        request_msg = tables.GetRowRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_row_use_cached_wrapped_rpc():
@@ -2830,9 +2875,14 @@ async def test_get_row_async_use_cached_wrapped_rpc(transport: str = "grpc_async
 
 
 @pytest.mark.asyncio
-async def test_get_row_async(
-    transport: str = "grpc_asyncio", request_type=tables.GetRowRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tables.GetRowRequest(),
+        {},
+    ],
+)
+async def test_get_row_async(request_type, transport: str = "grpc_asyncio"):
     client = TablesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2840,7 +2890,7 @@ async def test_get_row_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_row), "__call__") as call:
@@ -2861,11 +2911,6 @@ async def test_get_row_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Row)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_row_async_from_dict():
-    await test_get_row_async(request_type=dict)
 
 
 def test_get_row_field_headers():
@@ -3010,8 +3055,8 @@ async def test_get_row_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tables.ListRowsRequest,
-        dict,
+        tables.ListRowsRequest(),
+        {},
     ],
 )
 def test_list_rows(request_type, transport: str = "grpc"):
@@ -3022,7 +3067,7 @@ def test_list_rows(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rows), "__call__") as call:
@@ -3068,11 +3113,12 @@ def test_list_rows_non_empty_request_with_auto_populated_field():
         client.list_rows(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.ListRowsRequest(
+        request_msg = tables.ListRowsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_rows_use_cached_wrapped_rpc():
@@ -3151,9 +3197,14 @@ async def test_list_rows_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_list_rows_async(
-    transport: str = "grpc_asyncio", request_type=tables.ListRowsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tables.ListRowsRequest(),
+        {},
+    ],
+)
+async def test_list_rows_async(request_type, transport: str = "grpc_asyncio"):
     client = TablesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3161,7 +3212,7 @@ async def test_list_rows_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rows), "__call__") as call:
@@ -3182,11 +3233,6 @@ async def test_list_rows_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRowsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_rows_async_from_dict():
-    await test_list_rows_async(request_type=dict)
 
 
 def test_list_rows_field_headers():
@@ -3381,6 +3427,9 @@ def test_list_rows_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tables.Row) for i in results)
@@ -3469,6 +3518,8 @@ async def test_list_rows_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3525,8 +3576,8 @@ async def test_list_rows_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tables.CreateRowRequest,
-        dict,
+        tables.CreateRowRequest(),
+        {},
     ],
 )
 def test_create_row(request_type, transport: str = "grpc"):
@@ -3537,7 +3588,7 @@ def test_create_row(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_row), "__call__") as call:
@@ -3581,9 +3632,10 @@ def test_create_row_non_empty_request_with_auto_populated_field():
         client.create_row(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.CreateRowRequest(
+        request_msg = tables.CreateRowRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_row_use_cached_wrapped_rpc():
@@ -3662,9 +3714,14 @@ async def test_create_row_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_create_row_async(
-    transport: str = "grpc_asyncio", request_type=tables.CreateRowRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tables.CreateRowRequest(),
+        {},
+    ],
+)
+async def test_create_row_async(request_type, transport: str = "grpc_asyncio"):
     client = TablesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3672,7 +3729,7 @@ async def test_create_row_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_row), "__call__") as call:
@@ -3693,11 +3750,6 @@ async def test_create_row_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Row)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_row_async_from_dict():
-    await test_create_row_async(request_type=dict)
 
 
 def test_create_row_field_headers():
@@ -3852,8 +3904,8 @@ async def test_create_row_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tables.BatchCreateRowsRequest,
-        dict,
+        tables.BatchCreateRowsRequest(),
+        {},
     ],
 )
 def test_batch_create_rows(request_type, transport: str = "grpc"):
@@ -3864,7 +3916,7 @@ def test_batch_create_rows(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3909,9 +3961,10 @@ def test_batch_create_rows_non_empty_request_with_auto_populated_field():
         client.batch_create_rows(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.BatchCreateRowsRequest(
+        request_msg = tables.BatchCreateRowsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_create_rows_use_cached_wrapped_rpc():
@@ -3994,9 +4047,14 @@ async def test_batch_create_rows_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_create_rows_async(
-    transport: str = "grpc_asyncio", request_type=tables.BatchCreateRowsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tables.BatchCreateRowsRequest(),
+        {},
+    ],
+)
+async def test_batch_create_rows_async(request_type, transport: str = "grpc_asyncio"):
     client = TablesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4004,7 +4062,7 @@ async def test_batch_create_rows_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4024,11 +4082,6 @@ async def test_batch_create_rows_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.BatchCreateRowsResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_create_rows_async_from_dict():
-    await test_batch_create_rows_async(request_type=dict)
 
 
 def test_batch_create_rows_field_headers():
@@ -4099,8 +4152,8 @@ async def test_batch_create_rows_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tables.UpdateRowRequest,
-        dict,
+        tables.UpdateRowRequest(),
+        {},
     ],
 )
 def test_update_row(request_type, transport: str = "grpc"):
@@ -4111,7 +4164,7 @@ def test_update_row(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_row), "__call__") as call:
@@ -4153,7 +4206,8 @@ def test_update_row_non_empty_request_with_auto_populated_field():
         client.update_row(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.UpdateRowRequest()
+        request_msg = tables.UpdateRowRequest()
+        assert args[0] == request_msg
 
 
 def test_update_row_use_cached_wrapped_rpc():
@@ -4232,9 +4286,14 @@ async def test_update_row_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_update_row_async(
-    transport: str = "grpc_asyncio", request_type=tables.UpdateRowRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tables.UpdateRowRequest(),
+        {},
+    ],
+)
+async def test_update_row_async(request_type, transport: str = "grpc_asyncio"):
     client = TablesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4242,7 +4301,7 @@ async def test_update_row_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_row), "__call__") as call:
@@ -4263,11 +4322,6 @@ async def test_update_row_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Row)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_row_async_from_dict():
-    await test_update_row_async(request_type=dict)
 
 
 def test_update_row_field_headers():
@@ -4422,8 +4476,8 @@ async def test_update_row_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tables.BatchUpdateRowsRequest,
-        dict,
+        tables.BatchUpdateRowsRequest(),
+        {},
     ],
 )
 def test_batch_update_rows(request_type, transport: str = "grpc"):
@@ -4434,7 +4488,7 @@ def test_batch_update_rows(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4479,9 +4533,10 @@ def test_batch_update_rows_non_empty_request_with_auto_populated_field():
         client.batch_update_rows(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.BatchUpdateRowsRequest(
+        request_msg = tables.BatchUpdateRowsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_update_rows_use_cached_wrapped_rpc():
@@ -4564,9 +4619,14 @@ async def test_batch_update_rows_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_update_rows_async(
-    transport: str = "grpc_asyncio", request_type=tables.BatchUpdateRowsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tables.BatchUpdateRowsRequest(),
+        {},
+    ],
+)
+async def test_batch_update_rows_async(request_type, transport: str = "grpc_asyncio"):
     client = TablesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4574,7 +4634,7 @@ async def test_batch_update_rows_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4594,11 +4654,6 @@ async def test_batch_update_rows_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.BatchUpdateRowsResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_update_rows_async_from_dict():
-    await test_batch_update_rows_async(request_type=dict)
 
 
 def test_batch_update_rows_field_headers():
@@ -4669,8 +4724,8 @@ async def test_batch_update_rows_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tables.DeleteRowRequest,
-        dict,
+        tables.DeleteRowRequest(),
+        {},
     ],
 )
 def test_delete_row(request_type, transport: str = "grpc"):
@@ -4681,7 +4736,7 @@ def test_delete_row(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_row), "__call__") as call:
@@ -4722,9 +4777,10 @@ def test_delete_row_non_empty_request_with_auto_populated_field():
         client.delete_row(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.DeleteRowRequest(
+        request_msg = tables.DeleteRowRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_row_use_cached_wrapped_rpc():
@@ -4803,9 +4859,14 @@ async def test_delete_row_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_delete_row_async(
-    transport: str = "grpc_asyncio", request_type=tables.DeleteRowRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tables.DeleteRowRequest(),
+        {},
+    ],
+)
+async def test_delete_row_async(request_type, transport: str = "grpc_asyncio"):
     client = TablesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4813,7 +4874,7 @@ async def test_delete_row_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_row), "__call__") as call:
@@ -4829,11 +4890,6 @@ async def test_delete_row_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_row_async_from_dict():
-    await test_delete_row_async(request_type=dict)
 
 
 def test_delete_row_field_headers():
@@ -4978,8 +5034,8 @@ async def test_delete_row_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tables.BatchDeleteRowsRequest,
-        dict,
+        tables.BatchDeleteRowsRequest(),
+        {},
     ],
 )
 def test_batch_delete_rows(request_type, transport: str = "grpc"):
@@ -4990,7 +5046,7 @@ def test_batch_delete_rows(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5035,9 +5091,10 @@ def test_batch_delete_rows_non_empty_request_with_auto_populated_field():
         client.batch_delete_rows(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tables.BatchDeleteRowsRequest(
+        request_msg = tables.BatchDeleteRowsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_delete_rows_use_cached_wrapped_rpc():
@@ -5120,9 +5177,14 @@ async def test_batch_delete_rows_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_delete_rows_async(
-    transport: str = "grpc_asyncio", request_type=tables.BatchDeleteRowsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tables.BatchDeleteRowsRequest(),
+        {},
+    ],
+)
+async def test_batch_delete_rows_async(request_type, transport: str = "grpc_asyncio"):
     client = TablesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5130,7 +5192,7 @@ async def test_batch_delete_rows_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5148,11 +5210,6 @@ async def test_batch_delete_rows_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_batch_delete_rows_async_from_dict():
-    await test_batch_delete_rows_async(request_type=dict)
 
 
 def test_batch_delete_rows_field_headers():
@@ -5480,6 +5537,9 @@ def test_list_tables_rest_pager(transport: str = "rest"):
 
         pager = client.list_tables(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tables.Table) for i in results)
@@ -5750,6 +5810,9 @@ def test_list_workspaces_rest_pager(transport: str = "rest"):
         sample_request = {}
 
         pager = client.list_workspaces(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -6180,6 +6243,9 @@ def test_list_rows_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "tables/sample1"}
 
         pager = client.list_rows(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -7250,7 +7316,6 @@ def test_get_table_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.GetTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -7271,7 +7336,6 @@ def test_list_tables_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.ListTablesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7292,7 +7356,6 @@ def test_get_workspace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.GetWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7313,7 +7376,6 @@ def test_list_workspaces_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.ListWorkspacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7334,7 +7396,6 @@ def test_get_row_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.GetRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -7355,7 +7416,6 @@ def test_list_rows_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.ListRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7376,7 +7436,6 @@ def test_create_row_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.CreateRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -7399,7 +7458,6 @@ def test_batch_create_rows_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.BatchCreateRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7420,7 +7478,6 @@ def test_update_row_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.UpdateRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -7443,7 +7500,6 @@ def test_batch_update_rows_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.BatchUpdateRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7464,7 +7520,6 @@ def test_delete_row_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.DeleteRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -7487,7 +7542,6 @@ def test_batch_delete_rows_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.BatchDeleteRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7529,7 +7583,6 @@ async def test_get_table_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.GetTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -7556,7 +7609,6 @@ async def test_list_tables_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.ListTablesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7584,7 +7636,6 @@ async def test_get_workspace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.GetWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7611,7 +7662,6 @@ async def test_list_workspaces_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.ListWorkspacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7638,7 +7688,6 @@ async def test_get_row_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.GetRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -7665,7 +7714,6 @@ async def test_list_rows_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.ListRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7692,7 +7740,6 @@ async def test_create_row_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.CreateRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -7719,7 +7766,6 @@ async def test_batch_create_rows_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.BatchCreateRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7746,7 +7792,6 @@ async def test_update_row_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.UpdateRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -7773,7 +7818,6 @@ async def test_batch_update_rows_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.BatchUpdateRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7796,7 +7840,6 @@ async def test_delete_row_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.DeleteRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -7821,7 +7864,6 @@ async def test_batch_delete_rows_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.BatchDeleteRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9470,7 +9512,6 @@ def test_get_table_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.GetTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -9490,7 +9531,6 @@ def test_list_tables_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.ListTablesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9510,7 +9550,6 @@ def test_get_workspace_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.GetWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -9530,7 +9569,6 @@ def test_list_workspaces_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.ListWorkspacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9550,7 +9588,6 @@ def test_get_row_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.GetRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -9570,7 +9607,6 @@ def test_list_rows_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.ListRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9590,7 +9626,6 @@ def test_create_row_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.CreateRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -9612,7 +9647,6 @@ def test_batch_create_rows_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.BatchCreateRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9632,7 +9666,6 @@ def test_update_row_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.UpdateRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -9654,7 +9687,6 @@ def test_batch_update_rows_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.BatchUpdateRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9674,7 +9706,6 @@ def test_delete_row_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.DeleteRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -9696,7 +9727,6 @@ def test_batch_delete_rows_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tables.BatchDeleteRowsRequest()
-
         assert args[0] == request_msg
 
 

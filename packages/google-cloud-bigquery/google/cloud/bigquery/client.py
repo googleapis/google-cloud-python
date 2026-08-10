@@ -14,11 +14,8 @@
 
 """Client for interacting with the Google BigQuery API."""
 
-from __future__ import absolute_import
-from __future__ import annotations
-from __future__ import division
+from __future__ import absolute_import, annotations, division
 
-from collections import abc as collections_abc
 import copy
 import datetime
 import functools
@@ -30,36 +27,39 @@ import math
 import os
 import tempfile
 import typing
+import uuid
+import warnings
+from collections import abc as collections_abc
 from typing import (
+    IO,
     Any,
     Callable,
     Dict,
-    IO,
     Iterable,
-    Mapping,
     List,
+    Mapping,
     Optional,
     Sequence,
     Tuple,
     Union,
 )
-import uuid
-import warnings
-
-import requests
-
-from google import resumable_media  # type: ignore
-from google.resumable_media.requests import MultipartUpload  # type: ignore
-from google.resumable_media.requests import ResumableUpload
 
 import google.api_core.client_options
 import google.api_core.exceptions as core_exceptions
-from google.api_core.iam import Policy
+import google.cloud._helpers  # type: ignore
+import requests
+from google import resumable_media  # type: ignore
 from google.api_core import page_iterator
 from google.api_core import retry as retries
-import google.cloud._helpers  # type: ignore
+from google.api_core.iam import Policy
 from google.cloud import exceptions  # pytype: disable=import-error
-from google.cloud.client import ClientWithProject  # type: ignore  # pytype: disable=import-error
+from google.cloud.client import (
+    ClientWithProject,  # type: ignore  # pytype: disable=import-error
+)
+from google.resumable_media.requests import (
+    MultipartUpload,  # type: ignore
+    ResumableUpload,
+)
 
 try:
     from google.cloud.bigquery_storage_v1.services.big_query_read.client import (
@@ -70,29 +70,30 @@ except ImportError:
 
 
 from google.auth.credentials import Credentials
-from google.cloud.bigquery._http import Connection
-from google.cloud.bigquery import _job_helpers
-from google.cloud.bigquery import _pandas_helpers
-from google.cloud.bigquery import _versions_helpers
-from google.cloud.bigquery import enums
+from google.cloud.bigquery import (
+    _job_helpers,
+    _pandas_helpers,
+    _versions_helpers,
+    enums,
+    job,
+)
 from google.cloud.bigquery import exceptions as bq_exceptions
-from google.cloud.bigquery import job
-from google.cloud.bigquery._helpers import _get_sub_prop
-from google.cloud.bigquery._helpers import _record_field_to_json
-from google.cloud.bigquery._helpers import _str_or_none
-from google.cloud.bigquery._helpers import _verify_job_config_type
-from google.cloud.bigquery._helpers import _get_bigquery_host
-from google.cloud.bigquery._helpers import _DEFAULT_HOST
-from google.cloud.bigquery._helpers import _DEFAULT_HOST_TEMPLATE
-from google.cloud.bigquery._helpers import _DEFAULT_UNIVERSE
-from google.cloud.bigquery._helpers import _validate_universe
-from google.cloud.bigquery._helpers import _get_client_universe
-from google.cloud.bigquery._helpers import TimeoutType
+from google.cloud.bigquery._helpers import (
+    _DEFAULT_HOST,
+    _DEFAULT_HOST_TEMPLATE,
+    _DEFAULT_UNIVERSE,
+    TimeoutType,
+    _get_bigquery_host,
+    _get_client_universe,
+    _get_sub_prop,
+    _record_field_to_json,
+    _str_or_none,
+    _validate_universe,
+    _verify_job_config_type,
+)
+from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery._job_helpers import make_job_id as _make_job_id
-from google.cloud.bigquery.dataset import Dataset
-from google.cloud.bigquery.dataset import DatasetListItem
-from google.cloud.bigquery.dataset import DatasetReference
-
+from google.cloud.bigquery.dataset import Dataset, DatasetListItem, DatasetReference
 from google.cloud.bigquery.enums import AutoRowIDs, DatasetView, UpdateMode
 from google.cloud.bigquery.format_options import ParquetOptions
 from google.cloud.bigquery.job import (
@@ -105,27 +106,26 @@ from google.cloud.bigquery.job import (
     QueryJob,
     QueryJobConfig,
 )
-from google.cloud.bigquery.model import Model
-from google.cloud.bigquery.model import ModelReference
-from google.cloud.bigquery.model import _model_arg_to_model_ref
+from google.cloud.bigquery.model import Model, ModelReference, _model_arg_to_model_ref
 from google.cloud.bigquery.opentelemetry_tracing import create_span
 from google.cloud.bigquery.query import _QueryResults
 from google.cloud.bigquery.retry import (
+    DEFAULT_GET_JOB_TIMEOUT,
     DEFAULT_JOB_RETRY,
     DEFAULT_RETRY,
     DEFAULT_TIMEOUT,
-    DEFAULT_GET_JOB_TIMEOUT,
     POLLING_DEFAULT_VALUE,
 )
-from google.cloud.bigquery.routine import Routine
-from google.cloud.bigquery.routine import RoutineReference
+from google.cloud.bigquery.routine import Routine, RoutineReference
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.table import _table_arg_to_table
-from google.cloud.bigquery.table import _table_arg_to_table_ref
-from google.cloud.bigquery.table import Table
-from google.cloud.bigquery.table import TableListItem
-from google.cloud.bigquery.table import TableReference
-from google.cloud.bigquery.table import RowIterator
+from google.cloud.bigquery.table import (
+    RowIterator,
+    Table,
+    TableListItem,
+    TableReference,
+    _table_arg_to_table,
+    _table_arg_to_table_ref,
+)
 
 pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import()
 pandas = (
@@ -621,11 +621,45 @@ class Client(ClientWithProject):
             )
             return None
 
-        if bqstorage_client is None:  # pragma: NO COVER
+        # Import here since it should be installed if the BQ Storage client is
+        # also installed.
+        import google.api_core.gapic_v1.client_info
+
+        try:
+            import pandas_gbq  # type: ignore
+        except ImportError:
+            pandas_gbq = None  # type: ignore
+
+        if pandas_gbq is None:
+            user_agent = "pandas-gbq/0.0.0"
+        else:
+            user_agent = f"pandas-gbq/{pandas_gbq.__version__}"
+
+        if client_info is None:
+            amended_client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                user_agent=user_agent,
+            )
+        else:
+            if client_info.user_agent is None:
+                amended_user_agent = user_agent
+            else:
+                amended_user_agent = client_info.user_agent + " " + user_agent
+
+            amended_client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                python_version=client_info.python_version,
+                grpc_version=client_info.grpc_version,
+                api_core_version=client_info.api_core_version,
+                gapic_version=client_info.gapic_version,
+                user_agent=amended_user_agent,
+                rest_version=client_info.rest_version,
+                protobuf_runtime_version=client_info.protobuf_runtime_version,
+            )
+
+        if bqstorage_client is None:
             bqstorage_client = bigquery_storage.BigQueryReadClient(
                 credentials=self._credentials,
                 client_options=client_options,
-                client_info=client_info,  # type: ignore  # (None is also accepted)
+                client_info=amended_client_info,
             )
 
         return bqstorage_client
@@ -4012,15 +4046,22 @@ class Client(ClientWithProject):
         path = "%s/insertAll" % table.path
         # We can always retry, because every row has an insert ID.
         span_attributes = {"path": path}
-        response = self._call_api(
-            retry,
-            span_name="BigQuery.insertRowsJson",
-            span_attributes=span_attributes,
-            method="POST",
-            path=path,
-            data=data,
-            timeout=timeout,
-        )
+        try:
+            response = self._call_api(
+                retry,
+                span_name="BigQuery.insertRowsJson",
+                span_attributes=span_attributes,
+                method="POST",
+                path=path,
+                data=data,
+                timeout=timeout,
+            )
+        except requests.exceptions.SSLError as exc:
+            msg = (
+                "An SSL/Connection error occurred while streaming rows. This "
+                "could be due to an invalid request (e.g., invalid table schema)."
+            )
+            raise requests.exceptions.SSLError(msg) from exc
         errors = []
 
         for error in response.get("insertErrors", ()):

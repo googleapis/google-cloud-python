@@ -80,6 +80,8 @@ class ConfidentialComputingAsyncClient:
     parse_challenge_path = staticmethod(
         ConfidentialComputingClient.parse_challenge_path
     )
+    instance_path = staticmethod(ConfidentialComputingClient.instance_path)
+    parse_instance_path = staticmethod(ConfidentialComputingClient.parse_instance_path)
     common_billing_account_path = staticmethod(
         ConfidentialComputingClient.common_billing_account_path
     )
@@ -838,9 +840,7 @@ class ConfidentialComputingAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("ConfidentialComputingAsyncClient",)

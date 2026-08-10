@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -927,7 +943,14 @@ def test_instance_group_managers_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -974,7 +997,14 @@ def test_instance_group_managers_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1882,6 +1912,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.aggregated_list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         assert isinstance(pager.get("a"), compute.InstanceGroupManagersScopedList)
         assert pager.get("h") is None
@@ -5683,6 +5716,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.InstanceGroupManager) for i in results)
@@ -5972,6 +6008,9 @@ def test_list_errors_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_errors(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -6271,6 +6310,9 @@ def test_list_managed_instances_rest_pager(transport: str = "rest"):
 
         pager = client.list_managed_instances(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.ManagedInstance) for i in results)
@@ -6568,6 +6610,9 @@ def test_list_per_instance_configs_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_per_instance_configs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -13611,6 +13656,7 @@ def test_apply_updates_to_instances_rest_call_success(request_type):
     }
     request_init["instance_group_managers_apply_updates_request_resource"] = {
         "all_instances": True,
+        "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
         "instances": ["instances_value1", "instances_value2"],
         "minimal_action": "minimal_action_value",
         "most_disruptive_allowed_action": "most_disruptive_allowed_action_value",
@@ -15489,6 +15535,7 @@ def test_insert_rest_call_success(request_type):
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "restarting_in_place": 2013,
             "resuming": 874,
             "starting": 876,
             "stopping": 884,
@@ -15620,6 +15667,7 @@ def test_insert_rest_call_success(request_type):
         "target_stopped_size": 2047,
         "target_suspended_size": 2251,
         "update_policy": {
+            "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
             "max_unavailable": {},
@@ -16486,6 +16534,7 @@ def test_patch_rest_call_success(request_type):
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "restarting_in_place": 2013,
             "resuming": 874,
             "starting": 876,
             "stopping": 884,
@@ -16617,6 +16666,7 @@ def test_patch_rest_call_success(request_type):
         "target_stopped_size": 2047,
         "target_suspended_size": 2251,
         "update_policy": {
+            "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
             "max_unavailable": {},
@@ -19981,6 +20031,7 @@ def test_update_rest_call_success(request_type):
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "restarting_in_place": 2013,
             "resuming": 874,
             "starting": 876,
             "stopping": 884,
@@ -20112,6 +20163,7 @@ def test_update_rest_call_success(request_type):
         "target_stopped_size": 2047,
         "target_suspended_size": 2251,
         "update_policy": {
+            "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
             "max_unavailable": {},
@@ -20644,7 +20696,6 @@ def test_abandon_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AbandonInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20664,7 +20715,6 @@ def test_aggregated_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AggregatedListInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20686,7 +20736,6 @@ def test_apply_updates_to_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20710,7 +20759,6 @@ def test_configure_accelerator_topologies_unary_empty_call_rest():
         request_msg = (
             compute.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -20730,7 +20778,6 @@ def test_create_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.CreateInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20750,7 +20797,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20770,7 +20816,6 @@ def test_delete_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20792,7 +20837,6 @@ def test_delete_per_instance_configs_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeletePerInstanceConfigsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20812,7 +20856,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20836,7 +20879,6 @@ def test_get_available_accelerator_topologies_empty_call_rest():
         request_msg = (
             compute.GetAvailableAcceleratorTopologiesInstanceGroupManagerRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -20856,7 +20898,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20876,7 +20917,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20896,7 +20936,6 @@ def test_list_errors_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListErrorsInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20918,7 +20957,6 @@ def test_list_managed_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListManagedInstancesInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20940,7 +20978,6 @@ def test_list_per_instance_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListPerInstanceConfigsInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20960,7 +20997,6 @@ def test_patch_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20982,7 +21018,6 @@ def test_patch_per_instance_configs_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchPerInstanceConfigsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21004,7 +21039,6 @@ def test_recreate_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RecreateInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21024,7 +21058,6 @@ def test_resize_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResizeInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21044,7 +21077,6 @@ def test_resize_advanced_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResizeAdvancedInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21064,7 +21096,6 @@ def test_resume_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResumeInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21086,7 +21117,6 @@ def test_set_auto_healing_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetAutoHealingPoliciesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21108,7 +21138,6 @@ def test_set_instance_template_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetInstanceTemplateInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21128,7 +21157,6 @@ def test_set_target_pools_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetTargetPoolsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21148,7 +21176,6 @@ def test_start_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StartInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21168,7 +21195,6 @@ def test_stop_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21190,7 +21216,6 @@ def test_suspend_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SuspendInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21212,7 +21237,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21232,7 +21256,6 @@ def test_update_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21254,7 +21277,6 @@ def test_update_per_instance_configs_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 

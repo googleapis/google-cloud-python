@@ -343,7 +343,9 @@ class PartnerLinkServiceAsyncClient:
                 # Initialize request argument(s)
                 partner_link = datamanager_v1.PartnerLink()
                 partner_link.owning_account.account_id = "account_id_value"
+                partner_link.owning_account.account_type = "FLOODLIGHT_CONFIG"
                 partner_link.partner_account.account_id = "account_id_value"
+                partner_link.partner_account.account_type = "FLOODLIGHT_CONFIG"
 
                 request = datamanager_v1.CreatePartnerLinkRequest(
                     parent="parent_value",
@@ -709,9 +711,7 @@ class PartnerLinkServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("PartnerLinkServiceAsyncClient",)

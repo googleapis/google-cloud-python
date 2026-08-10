@@ -16,7 +16,6 @@ from __future__ import absolute_import, division
 
 import inspect
 import math
-import sys
 import time
 from typing import Any, Callable, TypeVar, cast
 from unittest import mock
@@ -154,28 +153,13 @@ def test_init_w_custom_transport(creds):
 )
 @typed_flaky
 def test_open_telemetry_publisher_options(creds, enable_open_telemetry):
-    if sys.version_info >= (3, 8) or enable_open_telemetry is False:
-        client = publisher.Client(
-            publisher_options=types.PublisherOptions(
-                enable_open_telemetry_tracing=enable_open_telemetry
-            ),
-            credentials=creds,
-        )
-        assert client._open_telemetry_enabled == enable_open_telemetry
-    else:
-        # Open Telemetry is not supported and hence disabled for Python
-        # versions 3.7 or below
-        with pytest.warns(
-            RuntimeWarning,
-            match="Open Telemetry for Python version 3.7 or lower is not supported. Disabling Open Telemetry tracing.",
-        ):
-            client = publisher.Client(
-                publisher_options=types.PublisherOptions(
-                    enable_open_telemetry_tracing=enable_open_telemetry
-                ),
-                credentials=creds,
-            )
-            assert client._open_telemetry_enabled is False
+    client = publisher.Client(
+        publisher_options=types.PublisherOptions(
+            enable_open_telemetry_tracing=enable_open_telemetry
+        ),
+        credentials=creds,
+    )
+    assert client._open_telemetry_enabled == enable_open_telemetry
 
 
 def test_opentelemetry_context_setter():
@@ -185,10 +169,6 @@ def test_opentelemetry_context_setter():
     assert "googclient_key" in msg.attributes.keys()
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 8),
-    reason="Open Telemetry not supported below Python version 3.8",
-)
 def test_opentelemetry_context_propagation(creds, span_exporter):
     TOPIC = "projects/projectID/topics/topicID"
     client = publisher.Client(
@@ -208,10 +188,6 @@ def test_opentelemetry_context_propagation(creds, span_exporter):
     assert "googclient_traceparent" in args[0].attributes
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 8),
-    reason="Open Telemetry not supported below Python version 3.8",
-)
 @pytest.mark.parametrize(
     "enable_open_telemetry",
     [
@@ -271,10 +247,6 @@ def test_opentelemetry_publisher_batching_exception(
         assert len(spans) == 0
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 8),
-    reason="Open Telemetry not supported below Python version 3.8",
-)
 def test_opentelemetry_flow_control_exception(creds, span_exporter):
     publisher_options = types.PublisherOptions(
         flow_control=types.PublishFlowControl(
@@ -299,16 +271,30 @@ def test_opentelemetry_flow_control_exception(creds, span_exporter):
 
     spans = span_exporter.get_finished_spans()
 
-    # Find the spans related to the second, failing publish call
-    failed_create_span = None
+    # Find the spans related to the second, failing publish call.
+    # We first find the failed flow control span.
     failed_fc_span = None
     for span in spans:
-        if span.name == "topicID create":
-            if span.status.status_code == trace.StatusCode.ERROR:
+        if (
+            span.name == "publisher flow control"
+            and span.status.status_code == trace.StatusCode.ERROR
+        ):
+            failed_fc_span = span
+            break
+
+    # Next, we find the corresponding 'create' span.
+    # Crucially, to prevent matching late-arriving or concurrent publish spans from other tests
+    # (e.g. background batch/sequencer threads from previous tests executing late),
+    # we filter for the 'topicID create' span that shares the EXACT same trace ID.
+    failed_create_span = None
+    if failed_fc_span:
+        for span in spans:
+            if (
+                span.name == "topicID create"
+                and span.context.trace_id == failed_fc_span.context.trace_id
+            ):
                 failed_create_span = span
-        elif span.name == "publisher flow control":
-            if span.status.status_code == trace.StatusCode.ERROR:
-                failed_fc_span = span
+                break
 
     assert failed_create_span is not None, "Failed 'topicID create' span not found"
     assert failed_fc_span is not None, "Failed 'publisher flow control' span not found"
@@ -332,10 +318,6 @@ def test_opentelemetry_flow_control_exception(creds, span_exporter):
     assert has_exception_event, "Exception event not found in failed create span"
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 8),
-    reason="Open Telemetry not supported below Python version 3.8",
-)
 def test_opentelemetry_publish(creds, span_exporter):
     TOPIC = "projects/projectID/topics/topicID"
     client = publisher.Client(

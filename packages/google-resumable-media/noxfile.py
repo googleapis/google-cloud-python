@@ -15,11 +15,23 @@
 from __future__ import absolute_import
 import os
 import pathlib
+import re
 import shutil
 
 import nox
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 SYSTEM_TEST_ENV_VARS = ("GOOGLE_APPLICATION_CREDENTIALS",)
 RUFF_VERSION = "ruff==0.14.14"
@@ -67,7 +79,7 @@ def unit(session):
         line_coverage,
         os.path.join("tests", "unit"),
         os.path.join("tests_async", "unit"),
-        *session.posargs
+        *session.posargs,
     )
 
 
@@ -104,6 +116,7 @@ def docs(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
+
 
 @nox.session(python="3.10")
 def docfx(session):
@@ -250,7 +263,16 @@ def mypy(session):
         "types-requests",
         "types-mock",
     )
-    session.run("mypy", "-p", "google", "-p", "tests", "-p", "tests_async")
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "google",
+        "-p",
+        "tests",
+        "-p",
+        "tests_async",
+    )
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
@@ -303,17 +325,153 @@ def cover(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def prerelease_deps(session):
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Resolve the linked bug once prerelease_deps and core_deps_from_source
-    # are implemented for this package.
-    if session.python == DEFAULT_PYTHON_VERSION:
-        session.skip(f"Skipping prerelease_deps for {DEFAULT_PYTHON_VERSION} until a future release.")
+    """
+    Run all tests with pre-release versions of dependencies installed
+    rather than the standard non pre-release versions.
+    Pre-release versions can be installed using
+    `pip install --pre <package>`.
+    """
+
+    # Install standard test dependencies, then install local packages in-place.
+    session.install("mock", "pytest", "pytest-cov", "pytest-asyncio<=0.14.0", "brotli")
+    session.install("-e", ".[requests,aiohttp]")
+
+    # Because we test minimum dependency versions on the minimum Python
+    # version, the first version we test with in the unit tests sessions has a
+    # constraints file containing all dependencies and extras.
+    with open(
+        CURRENT_DIRECTORY
+        / "testing"
+        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        encoding="utf-8",
+    ) as constraints_file:
+        constraints_text = constraints_file.read()
+
+    # Ignore leading whitespace and comment lines.
+    constraints_deps = [
+        match.group(1)
+        for match in re.finditer(
+            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
+        )
+    ]
+
+    # Install dependencies specified in `testing/constraints-X.txt`.
+    session.install(*constraints_deps)
+
+    # Note: If a dependency is added to the `prerel_deps` list,
+    # the `core_dependencies_from_source` list in the `core_deps_from_source`
+    # nox session should also be updated.
+    prerel_deps = [
+        "google-crc32c",
+        "google-auth",
+        "cryptography",
+        "cffi",
+        "cachetools",
+        "rsa",
+        "pyasn1",
+    ]
+
+    deps_dir = CURRENT_DIRECTORY.parent
+    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
+        deps_dir = deps_dir.parent
+
+    # Extract the base package name, safely ignoring version bounds and spaces
+    # (e.g., "grpcio>=1.75.1" becomes "grpcio")
+    parsed_deps = {
+        dep: re.match(r"^([a-zA-Z0-9_-]+)", dep).group(1) for dep in prerel_deps
+    }
+
+    # Dynamically sort local packages vs PyPI dependencies
+    local_paths = []
+    pypi_deps = []
+
+    for dep, pkg_name in parsed_deps.items():
+        if (deps_dir / pkg_name).exists():
+            local_paths.append(str(deps_dir / pkg_name))
+        else:
+            pypi_deps.append(dep)
+
+    # Batch pip installations to avoid sequential overhead
+    if local_paths:
+        session.install(*local_paths, "--no-deps", "--ignore-installed")
+    if pypi_deps:
+        session.install(*pypi_deps, "--pre", "--no-deps", "--ignore-installed")
+
+    # Reuse the parsed names for logging and version verification
+    for dep, pkg_name in parsed_deps.items():
+        print(f"Installed {dep}")
+
+    session.run(
+        "py.test",
+        os.path.join("tests", "unit"),
+        os.path.join("tests_async", "unit"),
+        *session.posargs,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def core_deps_from_source(session):
-    ## TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Resolve the linked bug once prerelease_deps and core_deps_from_source
-    # are implemented for this package.
-    if session.python == DEFAULT_PYTHON_VERSION:
-        session.skip(f"Skipping core_deps_from_source for {DEFAULT_PYTHON_VERSION} until a future release.")
+    """Run all tests with core dependencies installed from source
+    rather than pulling the dependencies from PyPI.
+    """
+
+    # Install standard test dependencies, then install local packages in-place.
+    session.install("mock", "pytest", "pytest-cov", "pytest-asyncio<=0.14.0", "brotli")
+    session.install("-e", ".[requests,aiohttp]")
+
+    # Because we test minimum dependency versions on the minimum Python
+    # version, the first version we test with in the unit tests sessions has a
+    # constraints file containing all dependencies and extras.
+    with open(
+        CURRENT_DIRECTORY
+        / "testing"
+        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        encoding="utf-8",
+    ) as constraints_file:
+        constraints_text = constraints_file.read()
+
+    # Ignore leading whitespace and comment lines.
+    constraints_deps = [
+        match.group(1)
+        for match in re.finditer(
+            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
+        )
+    ]
+
+    # Install dependencies specified in `testing/constraints-X.txt`.
+    session.install(*constraints_deps)
+
+    # Note: If a dependency is added to the `core_dependencies_from_source` list,
+    # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
+    core_dependencies_from_source = [
+        "google-crc32c",
+        "google-auth",
+    ]
+
+    deps_dir = CURRENT_DIRECTORY.parent
+    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
+        deps_dir = deps_dir.parent
+
+    # Batch the pip installation to avoid sequential overhead
+    dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
+
+    session.install(*dep_paths, "--no-deps", "--ignore-installed")
+    print(
+        f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
+    )
+
+    other_deps = [
+        "cryptography",
+        "cffi",
+        "cachetools",
+        "rsa",
+        "pyasn1",
+    ]
+    session.install(*other_deps)
+
+    session.run(
+        "py.test",
+        os.path.join("tests", "unit"),
+        os.path.join("tests_async", "unit"),
+        *session.posargs,
+    )

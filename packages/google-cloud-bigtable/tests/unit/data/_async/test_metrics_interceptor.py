@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest import mock
+
 import pytest
 from grpc import ClientCallDetails, RpcError
 
@@ -20,12 +22,6 @@ from google.cloud.bigtable.data._metrics.data_model import (
     ActiveOperationMetric,
     OperationState,
 )
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock  # type: ignore
 
 if CrossSync.is_async:
     from google.cloud.bigtable.data._async.metrics_interceptor import (

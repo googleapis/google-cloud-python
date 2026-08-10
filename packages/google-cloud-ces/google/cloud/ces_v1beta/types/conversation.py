@@ -133,22 +133,24 @@ class Conversation(proto.Message):
             INPUT_TYPE_UNSPECIFIED (0):
                 Unspecified input type.
             INPUT_TYPE_TEXT (1):
-                The input message is text.
+                Text input.
+            INPUT_TYPE_EVENT (7):
+                Event input.
             INPUT_TYPE_AUDIO (2):
-                The input message is audio.
+                Audio input.
             INPUT_TYPE_IMAGE (3):
-                The input message is image.
+                Image input.
             INPUT_TYPE_BLOB (4):
-                The input message is blob file.
+                Blob input.
             INPUT_TYPE_TOOL_RESPONSE (5):
-                The input message is client function tool
-                response.
+                Client function tool response input.
             INPUT_TYPE_VARIABLES (6):
-                The input message are variables.
+                Variables input.
         """
 
         INPUT_TYPE_UNSPECIFIED = 0
         INPUT_TYPE_TEXT = 1
+        INPUT_TYPE_EVENT = 7
         INPUT_TYPE_AUDIO = 2
         INPUT_TYPE_IMAGE = 3
         INPUT_TYPE_BLOB = 4

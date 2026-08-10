@@ -51,6 +51,7 @@ __protobuf__ = proto.module(
         "AdditionalNodeNetworkConfig",
         "AdditionalPodNetworkConfig",
         "ShieldedInstanceConfig",
+        "CustomImageConfig",
         "SandboxConfig",
         "GcfsConfig",
         "ReservationAffinity",
@@ -81,6 +82,7 @@ __protobuf__ = proto.module(
         "HighScaleCheckpointingConfig",
         "LustreCsiDriverConfig",
         "SlurmOperatorConfig",
+        "AgentSandboxConfig",
         "NodeReadinessConfig",
         "SliceControllerConfig",
         "RayOperatorConfig",
@@ -223,6 +225,7 @@ __protobuf__ = proto.module(
         "NodePoolLoggingConfig",
         "LoggingVariantConfig",
         "MonitoringComponentConfig",
+        "DataplaneV2Config",
         "ManagedPrometheusConfig",
         "AutoMonitoringConfig",
         "PodAutoscaling",
@@ -414,7 +417,10 @@ class LinuxNodeConfig(proto.Message):
             net.core.netdev_max_backlog net.core.rmem_max
             net.core.rmem_default net.core.wmem_default
             net.core.wmem_max net.core.optmem_max net.core.somaxconn
-            net.ipv4.tcp_rmem net.ipv4.tcp_wmem net.ipv4.tcp_tw_reuse
+            net.ipv4.neigh.default.gc_thresh1
+            net.ipv4.neigh.default.gc_thresh2
+            net.ipv4.neigh.default.gc_thresh3 net.ipv4.tcp_rmem
+            net.ipv4.tcp_wmem net.ipv4.tcp_tw_reuse
             net.ipv4.tcp_mtu_probing net.ipv4.tcp_max_orphans
             net.ipv4.tcp_max_tw_buckets net.ipv4.tcp_syn_retries
             net.ipv4.tcp_ecn net.ipv4.tcp_congestion_control
@@ -423,7 +429,8 @@ class LinuxNodeConfig(proto.Message):
             net.netfilter.nf_conntrack_tcp_timeout_close_wait
             net.netfilter.nf_conntrack_tcp_timeout_time_wait
             net.netfilter.nf_conntrack_tcp_timeout_established
-            net.netfilter.nf_conntrack_acct kernel.shmmni kernel.shmmax
+            net.netfilter.nf_conntrack_acct kernel.keys.maxkeys
+            kernel.keys.maxbytes kernel.shmmni kernel.shmmax
             kernel.shmall kernel.perf_event_paranoid
             kernel.sched_rt_runtime_us kernel.softlockup_panic
             kernel.yama.ptrace_scope kernel.kptr_restrict
@@ -1726,6 +1733,10 @@ class NodeConfig(proto.Message):
             of it will be used. Please see
             https://cloud.google.com/kubernetes-engine/docs/concepts/node-images
             for available image types.
+        node_image_config (google.cloud.container_v1.types.CustomImageConfig):
+            The node image configuration to use for this node pool. Note
+            that this is only applicable for node pools using
+            image_type=CUSTOM.
         labels (MutableMapping[str, str]):
             The Kubernetes labels (key/value pairs) to apply to each
             node. The values in this field are added to the set of
@@ -1985,6 +1996,11 @@ class NodeConfig(proto.Message):
     image_type: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    node_image_config: "CustomImageConfig" = proto.Field(
+        proto.MESSAGE,
+        number=90,
+        message="CustomImageConfig",
     )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -2607,6 +2623,27 @@ class ShieldedInstanceConfig(proto.Message):
     enable_integrity_monitoring: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+
+
+class CustomImageConfig(proto.Message):
+    r"""CustomImageConfig contains the information r
+
+    Attributes:
+        image (str):
+            The name of the image to use for this node.
+        image_project (str):
+            The project containing the image to use for
+            this node.
+    """
+
+    image: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    image_project: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -3397,6 +3434,9 @@ class AddonsConfig(proto.Message):
         slice_controller_config (google.cloud.container_v1.types.SliceControllerConfig):
             Optional. Configuration for the slice
             controller add-on.
+        agent_sandbox_config (google.cloud.container_v1.types.AgentSandboxConfig):
+            Optional. Configuration for the AgentSandbox
+            addon.
         node_readiness_config (google.cloud.container_v1.types.NodeReadinessConfig):
             Optional. Configuration for
             NodeReadinessController add-on.
@@ -3498,6 +3538,11 @@ class AddonsConfig(proto.Message):
         proto.MESSAGE,
         number=26,
         message="SliceControllerConfig",
+    )
+    agent_sandbox_config: "AgentSandboxConfig" = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message="AgentSandboxConfig",
     )
     node_readiness_config: "NodeReadinessConfig" = proto.Field(
         proto.MESSAGE,
@@ -3908,6 +3953,21 @@ class SlurmOperatorConfig(proto.Message):
             When enabled, it runs a Slurm Operator that
             manages the set of compute pods for Slurm
             Cluster.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
+class AgentSandboxConfig(proto.Message):
+    r"""Configuration for the AgentSandbox addon.
+
+    Attributes:
+        enabled (bool):
+            Optional. Whether AgentSandbox is enabled for
+            this cluster.
     """
 
     enabled: bool = proto.Field(
@@ -5857,6 +5917,14 @@ class ClusterUpdate(proto.Message):
         desired_image_type (str):
             The desired image type for the node pool. NOTE: Set the
             "desired_node_pool" field as well.
+        desired_image (str):
+            The desired name of the image to use for this node. This is
+            used to create clusters using a custom image. NOTE: Set the
+            "desired_node_pool" field as well.
+        desired_image_project (str):
+            The project containing the desired image to use for this
+            node. This is used to create clusters using a custom image.
+            NOTE: Set the "desired_node_pool" field as well.
         desired_database_encryption (google.cloud.container_v1.types.DatabaseEncryption):
             Configuration of etcd encryption.
         desired_workload_identity_config (google.cloud.container_v1.types.WorkloadIdentityConfig):
@@ -6184,6 +6252,14 @@ class ClusterUpdate(proto.Message):
     desired_image_type: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    desired_image: str = proto.Field(
+        proto.STRING,
+        number=44,
+    )
+    desired_image_project: str = proto.Field(
+        proto.STRING,
+        number=45,
     )
     desired_database_encryption: "DatabaseEncryption" = proto.Field(
         proto.MESSAGE,
@@ -7314,6 +7390,14 @@ class UpdateNodePoolRequest(proto.Message):
             The name (project, location, cluster, node pool) of the node
             pool to update. Specified in the format
             ``projects/*/locations/*/clusters/*/nodePools/*``.
+        image (str):
+            The desired name of the image name to use for
+            this node. This is used to create clusters using
+            a custom image.
+        image_project (str):
+            The project containing the desired image to
+            use for this node pool. This is used to create
+            clusters using a custom image.
         locations (MutableSequence[str]):
             The desired list of Google Compute Engine
             `zones <https://cloud.google.com/compute/docs/zones#available>`__
@@ -7477,6 +7561,14 @@ class UpdateNodePoolRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    image: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    image_project: str = proto.Field(
+        proto.STRING,
+        number=11,
     )
     locations: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -11015,6 +11107,11 @@ class NetworkConfig(proto.Message):
             [ClusterUpdate.desired_default_enable_private_nodes][google.container.v1.ClusterUpdate.desired_default_enable_private_nodes]
 
             This field is a member of `oneof`_ ``_default_enable_private_nodes``.
+        dataplane_v2_config (google.cloud.container_v1.types.DataplaneV2Config):
+            Optional. DataplaneV2Config specifies the
+            DPv2 configuration.
+
+            This field is a member of `oneof`_ ``_dataplane_v2_config``.
         disable_l4_lb_firewall_reconciliation (bool):
             Disable L4 load balancer VPC firewalls to
             enable firewall policies.
@@ -11131,6 +11228,12 @@ class NetworkConfig(proto.Message):
         proto.BOOL,
         number=22,
         optional=True,
+    )
+    dataplane_v2_config: "DataplaneV2Config" = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        optional=True,
+        message="DataplaneV2Config",
     )
     disable_l4_lb_firewall_reconciliation: bool = proto.Field(
         proto.BOOL,
@@ -13263,6 +13366,42 @@ class MonitoringComponentConfig(proto.Message):
         proto.ENUM,
         number=1,
         enum=Component,
+    )
+
+
+class DataplaneV2Config(proto.Message):
+    r"""DataplaneV2Config is the configuration for DPv2.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        scalability_mode (google.cloud.container_v1.types.DataplaneV2Config.ScalabilityMode):
+            Optional. Scalability mode for the cluster.
+
+            This field is a member of `oneof`_ ``_scalability_mode``.
+    """
+
+    class ScalabilityMode(proto.Enum):
+        r"""Options on how to scale the cluster.
+
+        Values:
+            SCALABILITY_MODE_UNSPECIFIED (0):
+                Default value.
+            DISABLED (3):
+                Disables the scale optimized mode for DPv2.
+            SCALE_OPTIMIZED (4):
+                Enables the scale optimized mode for DPv2.
+        """
+
+        SCALABILITY_MODE_UNSPECIFIED = 0
+        DISABLED = 3
+        SCALE_OPTIMIZED = 4
+
+    scalability_mode: ScalabilityMode = proto.Field(
+        proto.ENUM,
+        number=1,
+        optional=True,
+        enum=ScalabilityMode,
     )
 
 

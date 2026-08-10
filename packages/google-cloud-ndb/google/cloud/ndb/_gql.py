@@ -3,12 +3,9 @@ import re
 import time
 from typing import Any
 
+from google.cloud.ndb import _datastore_query, exceptions, key, model
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import exceptions
 from google.cloud.ndb import query as query_module
-from google.cloud.ndb import key
-from google.cloud.ndb import model
-from google.cloud.ndb import _datastore_query
 
 
 class GQL(object):

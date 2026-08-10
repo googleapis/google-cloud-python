@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-bigtable-admin
+#   python3 -m pip install google-cloud-bigtable
 
 
 # [START bigtableadmin_v2_generated_BigtableInstanceAdmin_UpdateCluster_async]
@@ -42,11 +42,11 @@ async def sample_update_cluster():
     request = bigtable_admin_v2.Cluster()
 
     # Make the request
-    operation = client.update_cluster(request=request)
+    operation = await client.update_cluster(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

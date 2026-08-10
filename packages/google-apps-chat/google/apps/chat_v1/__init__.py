@@ -23,6 +23,42 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.apps.chat_v1.services.chat_service",
+    "google.apps.chat_v1.types.action_status",
+    "google.apps.chat_v1.types.annotation",
+    "google.apps.chat_v1.types.attachment",
+    "google.apps.chat_v1.types.audience",
+    "google.apps.chat_v1.types.availability",
+    "google.apps.chat_v1.types.chat_service",
+    "google.apps.chat_v1.types.contextual_addon",
+    "google.apps.chat_v1.types.deletion_metadata",
+    "google.apps.chat_v1.types.event_payload",
+    "google.apps.chat_v1.types.group",
+    "google.apps.chat_v1.types.history_state",
+    "google.apps.chat_v1.types.matched_url",
+    "google.apps.chat_v1.types.membership",
+    "google.apps.chat_v1.types.message",
+    "google.apps.chat_v1.types.reaction",
+    "google.apps.chat_v1.types.section",
+    "google.apps.chat_v1.types.slash_command",
+    "google.apps.chat_v1.types.space",
+    "google.apps.chat_v1.types.space_event",
+    "google.apps.chat_v1.types.space_notification_setting",
+    "google.apps.chat_v1.types.space_read_state",
+    "google.apps.chat_v1.types.space_setup",
+    "google.apps.chat_v1.types.thread_read_state",
+    "google.apps.chat_v1.types.user",
+    "google.apps.chat_v1.types.widgets",
+}
+
+
 from .services.chat_service import ChatServiceAsyncClient, ChatServiceClient
 from .types.action_status import ActionStatus
 from .types.annotation import (
@@ -44,6 +80,17 @@ from .types.attachment import (
     GetAttachmentRequest,
     UploadAttachmentRequest,
     UploadAttachmentResponse,
+)
+from .types.audience import Audience
+from .types.availability import (
+    Availability,
+    CustomStatus,
+    DoNotDisturbMetadata,
+    GetAvailabilityRequest,
+    MarkAsActiveRequest,
+    MarkAsAwayRequest,
+    MarkAsDoNotDisturbRequest,
+    UpdateAvailabilityRequest,
 )
 from .types.contextual_addon import ContextualAddOnMarkup
 from .types.deletion_metadata import DeletionMetadata
@@ -193,7 +240,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -222,9 +269,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -261,6 +308,8 @@ __all__ = (
     "AttachedGif",
     "Attachment",
     "AttachmentDataRef",
+    "Audience",
+    "Availability",
     "CalendarEventLinkData",
     "CardWithId",
     "ChatServiceClient",
@@ -277,6 +326,7 @@ __all__ = (
     "CreateSpaceRequest",
     "CustomEmoji",
     "CustomEmojiMetadata",
+    "CustomStatus",
     "DeleteCustomEmojiRequest",
     "DeleteMembershipRequest",
     "DeleteMessageRequest",
@@ -286,6 +336,7 @@ __all__ = (
     "DeletionMetadata",
     "Dialog",
     "DialogAction",
+    "DoNotDisturbMetadata",
     "DriveDataRef",
     "DriveLinkData",
     "Emoji",
@@ -295,6 +346,7 @@ __all__ = (
     "FindGroupChatsResponse",
     "ForwardedMetadata",
     "GetAttachmentRequest",
+    "GetAvailabilityRequest",
     "GetCustomEmojiRequest",
     "GetMembershipRequest",
     "GetMessageRequest",
@@ -321,6 +373,9 @@ __all__ = (
     "ListSpaceEventsResponse",
     "ListSpacesRequest",
     "ListSpacesResponse",
+    "MarkAsActiveRequest",
+    "MarkAsAwayRequest",
+    "MarkAsDoNotDisturbRequest",
     "MatchedUrl",
     "MeetSpaceLinkData",
     "Membership",
@@ -365,6 +420,7 @@ __all__ = (
     "SpaceView",
     "Thread",
     "ThreadReadState",
+    "UpdateAvailabilityRequest",
     "UpdateMembershipRequest",
     "UpdateMessageRequest",
     "UpdateSectionRequest",

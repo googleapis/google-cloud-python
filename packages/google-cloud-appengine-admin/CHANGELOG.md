@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-appengine-admin/#history
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.17.0...google-cloud-appengine-admin-v1.18.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-a packages (#17089) ([39c988267529419b03f808d7662ec521258571b4](https://github.com/googleapis/google-cloud-python/commit/39c988267529419b03f808d7662ec521258571b4))
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.16.0...google-cloud-appengine-admin-v1.17.0) (2026-03-26)
 
 

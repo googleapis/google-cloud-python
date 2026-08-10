@@ -123,7 +123,7 @@ try:
 except ImportError:
     bigquery_magics = None
 
-if sys.version_info < (3, 10):
+if sys.version_info < (3, 10):  # pragma: NO COVER
     warnings.warn(
         "The python-bigquery library no longer supports Python <= 3.9. "
         f"Your Python version is {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}. We "

@@ -114,8 +114,8 @@ class Rollout(proto.Message):
             Optional. The strategy used for executing
             this Rollout. This strategy will override
             whatever strategy is specified in the
-            RolloutType. If not specified on creation, the
-            strategy from RolloutType will be used.
+            RolloutKind. If not specified on creation, the
+            strategy from RolloutKind will be used.
 
             There are two supported values strategies which
             are used to control
@@ -130,9 +130,9 @@ class Rollout(proto.Message):
             filter string against Unit. The filter will be applied to
             determine the eligible unit population. This filter can only
             reduce, but not expand the scope of the rollout. If not
-            provided, the unit_filter from the RolloutType will be used.
+            provided, the unit_filter from the RolloutKind will be used.
         rollout_kind (str):
-            Optional. Immutable. Name of the RolloutKind
+            Required. Immutable. Name of the RolloutKind
             this rollout is stemming from and adhering to.
         stats (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.RolloutStats):
             Optional. Output only. Details about the
@@ -144,6 +144,15 @@ class Rollout(proto.Message):
             through all natural Rollout States (such as RUNNING ->
             SUCCEEDED or RUNNING -> FAILED). Requests can only be made
             when the Rollout is in a non-terminal state.
+        effective_unit_filter (str):
+            Optional. Output only. Output only snapshot of the effective
+            unit filter at Rollout start time. Contains a
+            CEL(https://github.com/google/cel-spec) expression
+            consisting of a conjunction of Rollout.unit_filter and
+            RolloutKind.unit_filter. This field captures the filter
+            applied by the Rollout to determine the Unit population. If
+            the associated RolloutKind's unit_filter is modified after
+            the rollout is started, it will not be updated here.
         labels (MutableMapping[str, str]):
             Optional. The labels on the resource, which
             can be used for categorization. similar to
@@ -181,6 +190,10 @@ class Rollout(proto.Message):
             made by users must refresh this value. Changes
             to a resource made by the service should refresh
             this value.
+        delete_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the resource
+            was marked for deletion (deletion is an
+            asynchronous operation).
     """
 
     class RolloutState(proto.Enum):
@@ -283,6 +296,10 @@ class Rollout(proto.Message):
         number=25,
         message="RolloutControl",
     )
+    effective_unit_filter: str = proto.Field(
+        proto.STRING,
+        number=26,
+    )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
@@ -309,6 +326,11 @@ class Rollout(proto.Message):
     update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=10304,
+        message=timestamp_pb2.Timestamp,
+    )
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=10305,
         message=timestamp_pb2.Timestamp,
     )
 
@@ -483,23 +505,32 @@ class ErrorBudget(proto.Message):
     exceeds max(allowed_count, allowed_ratio \* total_units), the
     rollout will be paused.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         allowed_count (int):
             Optional. The maximum number of failed units
             allowed in a location without pausing the
             rollout.
+
+            This field is a member of `oneof`_ ``_allowed_count``.
         allowed_percentage (int):
             Optional. The maximum percentage of units allowed to fail
             (0, 100] within a location without pausing the rollout.
+
+            This field is a member of `oneof`_ ``_allowed_percentage``.
     """
 
     allowed_count: int = proto.Field(
         proto.INT32,
         number=1,
+        optional=True,
     )
     allowed_percentage: int = proto.Field(
         proto.INT32,
         number=2,
+        optional=True,
     )
 
 
@@ -507,13 +538,17 @@ class RolloutStats(proto.Message):
     r"""RolloutStats contains information about the progress of a
     rollout.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         operations_by_state (MutableSequence[google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Aggregate]):
-            Output only. A breakdown of the progress of
-            operations triggered by the rollout. Provides a
-            count of Operations by their state. This can be
-            used to determine the number of units which have
-            been updated, or are scheduled to be updated.
+            Optional. Output only. Unordered list. A
+            breakdown of the progress of operations
+            triggered by the rollout. Provides a count of
+            Operations by their state. This can be used to
+            determine the number of units which have been
+            updated, or are scheduled to be updated.
 
             There will be at most one entry per group.
             Possible values for operation groups are:
@@ -524,12 +559,23 @@ class RolloutStats(proto.Message):
             - "SUCCEEDED"
             - "FAILED"
             - "CANCELLED".
+        estimated_total_unit_count (int):
+            Optional. Output only. Estimated number of
+            units based. The estimation is computed upon
+            creation of the rollout.
+
+            This field is a member of `oneof`_ ``_estimated_total_unit_count``.
     """
 
     operations_by_state: MutableSequence[common.Aggregate] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=common.Aggregate,
+    )
+    estimated_total_unit_count: int = proto.Field(
+        proto.INT64,
+        number=3,
+        optional=True,
     )
 
 

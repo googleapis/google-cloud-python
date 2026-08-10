@@ -170,7 +170,7 @@ def test_update_constraints_with_setup_py_missing_lower_bounds():
     assert "setup.py is missing explicit lower bounds" in result.output
 
     invalid_pkg_list = parse_error_msg(result.output)
-    assert set(invalid_pkg_list) == {"requests", "packaging", "wheel"}
+    assert set(invalid_pkg_list) == {"requests", "wheel"}
 
 
 def test_check():
@@ -311,4 +311,16 @@ def test_check_with_setup_py_missing_lower_bounds():
     assert result.exit_code == 2
 
     invalid_pkg_list = parse_error_msg(result.output)
-    assert set(invalid_pkg_list) == {"requests", "packaging", "wheel"}
+    assert set(invalid_pkg_list) == {"requests", "wheel"}
+
+
+def test_lower_bound_with_exclusion():
+    from packaging.requirements import Requirement
+
+    req = Requirement("google-auth>=1.25.0, !=2.24.0")
+    assert lower_bound_checker._lower_bound(req) == "1.25.0"
+
+    # Multiple exclusions
+    req_multiple = Requirement("google-auth>=1.25.0, !=2.24.0, !=2.25.0")
+    assert lower_bound_checker._lower_bound(req_multiple) == "1.25.0"
+

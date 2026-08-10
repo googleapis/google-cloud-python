@@ -1,6 +1,6 @@
 SELECT
   AI.CLASSIFY(
-    input => (`string_col`),
+    input => STRUCT(`string_col`),
     categories => ['greeting', 'rejection'],
     examples => [('hi', 'greeting'), ('bye', 'rejection')],
     endpoint => 'gemini-2.5-flash',

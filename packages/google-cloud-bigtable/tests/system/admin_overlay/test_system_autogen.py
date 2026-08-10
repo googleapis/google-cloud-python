@@ -20,7 +20,6 @@ from datetime import datetime, timedelta
 from typing import Tuple
 
 import pytest
-from google.api_core import exceptions
 from google.api_core import operation as api_core_operation
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
@@ -73,30 +72,43 @@ def instance_admin_client(admin_overlay_project_id):
         yield client
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="session", autouse=True)
+def cleanup_old_instances(admin_overlay_project_id):
+    """Automatically deletes any test instances older than 1 day.
+
+    This fixture runs once per test session and helps prevent resource leakage
+    by cleaning up instances that failed to be deleted during previous test runs."""
+    from tests.system.utils import clear_stale_instances
+
+    from .conftest import INSTANCE_PREFIX
+
+    clear_stale_instances(admin_overlay_project_id, INSTANCE_PREFIX, older_than_days=1)
+
+
+@pytest.fixture(scope="function")
 def instances_to_delete(instance_admin_client):
     instances = []
     try:
         yield instances
     finally:
-        for instance in instances:
+        for instance in reversed(instances):
             try:
                 instance_admin_client.delete_instance(name=instance.name)
-            except exceptions.NotFound:
-                pass
+            except Exception as e:
+                print(f"Failed to delete instance {instance.name}: {e}")
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def backups_to_delete(table_admin_client):
     backups = []
     try:
         yield backups
     finally:
-        for backup in backups:
+        for backup in reversed(backups):
             try:
                 table_admin_client.delete_backup(name=backup.name)
-            except exceptions.NotFound:
-                pass
+            except Exception as e:
+                print(f"Failed to delete backup {backup.name}: {e}")
 
 
 def create_instance(
@@ -135,7 +147,8 @@ def create_instance(
         )
         operation = instance_admin_client.create_instance(create_instance_request)
         instance_name = instance_admin_client.instance_path(project_id, instance_id)
-        instances_to_delete.append(admin_v2.Instance(name=instance_name))
+        instance_placeholder = admin_v2.Instance(name=instance_name)
+        instances_to_delete.append(instance_placeholder)
         instance = operation.result()
         instances_to_delete[-1] = instance
     create_table_request = admin_v2.CreateTableRequest(
@@ -198,9 +211,9 @@ def create_backup(
             ),
         )
     )
-    backups_to_delete.append(
-        admin_v2.Backup(name=f"{cluster_name}/backups/{backup_id}")
-    )
+    backup_name = f"{cluster_name}/backups/{backup_id}"
+    backup_placeholder = admin_v2.Backup(name=backup_name)
+    backups_to_delete.append(backup_placeholder)
     backup = operation.result()
     backups_to_delete[-1] = backup
     return backup

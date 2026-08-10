@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -113,6 +114,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -985,7 +1001,14 @@ def test_data_sources_service_client_get_mtls_endpoint_and_cert_source(client_cl
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1032,7 +1055,14 @@ def test_data_sources_service_client_get_mtls_endpoint_and_cert_source(client_cl
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1360,8 +1390,8 @@ def test_data_sources_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        datasources.GetDataSourceRequest,
-        dict,
+        datasources.GetDataSourceRequest(),
+        {},
     ],
 )
 def test_get_data_source(request_type, transport: str = "grpc"):
@@ -1372,7 +1402,7 @@ def test_get_data_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_source), "__call__") as call:
@@ -1422,9 +1452,10 @@ def test_get_data_source_non_empty_request_with_auto_populated_field():
         client.get_data_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datasources.GetDataSourceRequest(
+        request_msg = datasources.GetDataSourceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_data_source_use_cached_wrapped_rpc():
@@ -1505,9 +1536,14 @@ async def test_get_data_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_data_source_async(
-    transport: str = "grpc_asyncio", request_type=datasources.GetDataSourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datasources.GetDataSourceRequest(),
+        {},
+    ],
+)
+async def test_get_data_source_async(request_type, transport: str = "grpc_asyncio"):
     client = DataSourcesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1515,7 +1551,7 @@ async def test_get_data_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_source), "__call__") as call:
@@ -1542,11 +1578,6 @@ async def test_get_data_source_async(
     assert response.data_source_id == 1462
     assert response.display_name == "display_name_value"
     assert response.input == datasources.DataSource.Input.API
-
-
-@pytest.mark.asyncio
-async def test_get_data_source_async_from_dict():
-    await test_get_data_source_async(request_type=dict)
 
 
 def test_get_data_source_field_headers():
@@ -1695,8 +1726,8 @@ async def test_get_data_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datasources.ListDataSourcesRequest,
-        dict,
+        datasources.ListDataSourcesRequest(),
+        {},
     ],
 )
 def test_list_data_sources(request_type, transport: str = "grpc"):
@@ -1707,7 +1738,7 @@ def test_list_data_sources(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1756,10 +1787,11 @@ def test_list_data_sources_non_empty_request_with_auto_populated_field():
         client.list_data_sources(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datasources.ListDataSourcesRequest(
+        request_msg = datasources.ListDataSourcesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_data_sources_use_cached_wrapped_rpc():
@@ -1842,9 +1874,14 @@ async def test_list_data_sources_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_data_sources_async(
-    transport: str = "grpc_asyncio", request_type=datasources.ListDataSourcesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datasources.ListDataSourcesRequest(),
+        {},
+    ],
+)
+async def test_list_data_sources_async(request_type, transport: str = "grpc_asyncio"):
     client = DataSourcesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1852,7 +1889,7 @@ async def test_list_data_sources_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1875,11 +1912,6 @@ async def test_list_data_sources_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataSourcesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_data_sources_async_from_dict():
-    await test_list_data_sources_async(request_type=dict)
 
 
 def test_list_data_sources_field_headers():
@@ -2084,6 +2116,9 @@ def test_list_data_sources_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, datasources.DataSource) for i in results)
@@ -2176,6 +2211,8 @@ async def test_list_data_sources_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2234,8 +2271,8 @@ async def test_list_data_sources_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datasources.CreateDataSourceRequest,
-        dict,
+        datasources.CreateDataSourceRequest(),
+        {},
     ],
 )
 def test_create_data_source(request_type, transport: str = "grpc"):
@@ -2246,7 +2283,7 @@ def test_create_data_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2300,9 +2337,10 @@ def test_create_data_source_non_empty_request_with_auto_populated_field():
         client.create_data_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datasources.CreateDataSourceRequest(
+        request_msg = datasources.CreateDataSourceRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_data_source_use_cached_wrapped_rpc():
@@ -2387,9 +2425,14 @@ async def test_create_data_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_data_source_async(
-    transport: str = "grpc_asyncio", request_type=datasources.CreateDataSourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datasources.CreateDataSourceRequest(),
+        {},
+    ],
+)
+async def test_create_data_source_async(request_type, transport: str = "grpc_asyncio"):
     client = DataSourcesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2397,7 +2440,7 @@ async def test_create_data_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2426,11 +2469,6 @@ async def test_create_data_source_async(
     assert response.data_source_id == 1462
     assert response.display_name == "display_name_value"
     assert response.input == datasources.DataSource.Input.API
-
-
-@pytest.mark.asyncio
-async def test_create_data_source_async_from_dict():
-    await test_create_data_source_async(request_type=dict)
 
 
 def test_create_data_source_field_headers():
@@ -2621,8 +2659,8 @@ async def test_create_data_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datasources.UpdateDataSourceRequest,
-        dict,
+        datasources.UpdateDataSourceRequest(),
+        {},
     ],
 )
 def test_update_data_source(request_type, transport: str = "grpc"):
@@ -2633,7 +2671,7 @@ def test_update_data_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2685,7 +2723,8 @@ def test_update_data_source_non_empty_request_with_auto_populated_field():
         client.update_data_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datasources.UpdateDataSourceRequest()
+        request_msg = datasources.UpdateDataSourceRequest()
+        assert args[0] == request_msg
 
 
 def test_update_data_source_use_cached_wrapped_rpc():
@@ -2770,9 +2809,14 @@ async def test_update_data_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_data_source_async(
-    transport: str = "grpc_asyncio", request_type=datasources.UpdateDataSourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datasources.UpdateDataSourceRequest(),
+        {},
+    ],
+)
+async def test_update_data_source_async(request_type, transport: str = "grpc_asyncio"):
     client = DataSourcesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2780,7 +2824,7 @@ async def test_update_data_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2809,11 +2853,6 @@ async def test_update_data_source_async(
     assert response.data_source_id == 1462
     assert response.display_name == "display_name_value"
     assert response.input == datasources.DataSource.Input.API
-
-
-@pytest.mark.asyncio
-async def test_update_data_source_async_from_dict():
-    await test_update_data_source_async(request_type=dict)
 
 
 def test_update_data_source_field_headers():
@@ -3004,8 +3043,8 @@ async def test_update_data_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datasources.DeleteDataSourceRequest,
-        dict,
+        datasources.DeleteDataSourceRequest(),
+        {},
     ],
 )
 def test_delete_data_source(request_type, transport: str = "grpc"):
@@ -3016,7 +3055,7 @@ def test_delete_data_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3061,9 +3100,10 @@ def test_delete_data_source_non_empty_request_with_auto_populated_field():
         client.delete_data_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datasources.DeleteDataSourceRequest(
+        request_msg = datasources.DeleteDataSourceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_data_source_use_cached_wrapped_rpc():
@@ -3148,9 +3188,14 @@ async def test_delete_data_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_data_source_async(
-    transport: str = "grpc_asyncio", request_type=datasources.DeleteDataSourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datasources.DeleteDataSourceRequest(),
+        {},
+    ],
+)
+async def test_delete_data_source_async(request_type, transport: str = "grpc_asyncio"):
     client = DataSourcesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3158,7 +3203,7 @@ async def test_delete_data_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3176,11 +3221,6 @@ async def test_delete_data_source_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_data_source_async_from_dict():
-    await test_delete_data_source_async(request_type=dict)
 
 
 def test_delete_data_source_field_headers():
@@ -3333,8 +3373,8 @@ async def test_delete_data_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datasources.FetchDataSourceRequest,
-        dict,
+        datasources.FetchDataSourceRequest(),
+        {},
     ],
 )
 def test_fetch_data_source(request_type, transport: str = "grpc"):
@@ -3345,7 +3385,7 @@ def test_fetch_data_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3390,9 +3430,10 @@ def test_fetch_data_source_non_empty_request_with_auto_populated_field():
         client.fetch_data_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datasources.FetchDataSourceRequest(
+        request_msg = datasources.FetchDataSourceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_data_source_use_cached_wrapped_rpc():
@@ -3475,9 +3516,14 @@ async def test_fetch_data_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_fetch_data_source_async(
-    transport: str = "grpc_asyncio", request_type=datasources.FetchDataSourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datasources.FetchDataSourceRequest(),
+        {},
+    ],
+)
+async def test_fetch_data_source_async(request_type, transport: str = "grpc_asyncio"):
     client = DataSourcesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3485,7 +3531,7 @@ async def test_fetch_data_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3503,11 +3549,6 @@ async def test_fetch_data_source_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_fetch_data_source_async_from_dict():
-    await test_fetch_data_source_async(request_type=dict)
 
 
 def test_fetch_data_source_field_headers():
@@ -3999,6 +4040,9 @@ def test_list_data_sources_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "accounts/sample1"}
 
         pager = client.list_data_sources(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -4830,7 +4874,6 @@ def test_get_data_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.GetDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4853,7 +4896,6 @@ def test_list_data_sources_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.ListDataSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4876,7 +4918,6 @@ def test_create_data_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.CreateDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4899,7 +4940,6 @@ def test_update_data_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.UpdateDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4922,7 +4962,6 @@ def test_delete_data_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.DeleteDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4945,7 +4984,6 @@ def test_fetch_data_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.FetchDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4989,7 +5027,6 @@ async def test_get_data_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.GetDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5018,7 +5055,6 @@ async def test_list_data_sources_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.ListDataSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5050,7 +5086,6 @@ async def test_create_data_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.CreateDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5082,7 +5117,6 @@ async def test_update_data_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.UpdateDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5107,7 +5141,6 @@ async def test_delete_data_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.DeleteDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5132,7 +5165,6 @@ async def test_fetch_data_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.FetchDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6189,7 +6221,6 @@ def test_get_data_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.GetDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6211,7 +6242,6 @@ def test_list_data_sources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.ListDataSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6233,7 +6263,6 @@ def test_create_data_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.CreateDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6255,7 +6284,6 @@ def test_update_data_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.UpdateDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6277,7 +6305,6 @@ def test_delete_data_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.DeleteDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6299,7 +6326,6 @@ def test_fetch_data_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datasources.FetchDataSourceRequest()
-
         assert args[0] == request_msg
 
 

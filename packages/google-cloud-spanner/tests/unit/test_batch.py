@@ -310,7 +310,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
 
         # Assertion: Ensure that calling batch.commit() raises Aborted
         with self.assertRaises(Aborted) as context:
-            batch.commit(timeout_secs=0.1, default_retry_delay=0)
+            batch.commit(timeout_secs=1.0, default_retry_delay=0)
 
         # Verify exception includes request_id attribute
         self.assertIn("409 Transaction was aborted", str(context.exception))
@@ -759,7 +759,14 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         return_value="global",
     )
     def test_batch_write_end_to_end_tracing_enabled(self, mock_region):
-        self._test_batch_write_with_request_options(enable_end_to_end_tracing=True)
+        if ot_helpers.HAS_OPENTELEMETRY_INSTALLED:
+            tracer = _opentelemetry_tracing.get_tracer()
+            with tracer.start_as_current_span("test"):
+                self._test_batch_write_with_request_options(
+                    enable_end_to_end_tracing=True
+                )
+        else:
+            self._test_batch_write_with_request_options(enable_end_to_end_tracing=True)
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",

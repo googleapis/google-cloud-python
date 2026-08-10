@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -115,6 +116,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -931,7 +947,14 @@ def test_asset_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -978,7 +1001,14 @@ def test_asset_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1297,8 +1327,8 @@ def test_asset_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.ExportAssetsRequest,
-        dict,
+        asset_service.ExportAssetsRequest(),
+        {},
     ],
 )
 def test_export_assets(request_type, transport: str = "grpc"):
@@ -1309,7 +1339,7 @@ def test_export_assets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_assets), "__call__") as call:
@@ -1350,9 +1380,10 @@ def test_export_assets_non_empty_request_with_auto_populated_field():
         client.export_assets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.ExportAssetsRequest(
+        request_msg = asset_service.ExportAssetsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_assets_use_cached_wrapped_rpc():
@@ -1443,9 +1474,14 @@ async def test_export_assets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_assets_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.ExportAssetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.ExportAssetsRequest(),
+        {},
+    ],
+)
+async def test_export_assets_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1453,7 +1489,7 @@ async def test_export_assets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_assets), "__call__") as call:
@@ -1471,11 +1507,6 @@ async def test_export_assets_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_assets_async_from_dict():
-    await test_export_assets_async(request_type=dict)
 
 
 def test_export_assets_field_headers():
@@ -1542,8 +1573,8 @@ async def test_export_assets_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.ListAssetsRequest,
-        dict,
+        asset_service.ListAssetsRequest(),
+        {},
     ],
 )
 def test_list_assets(request_type, transport: str = "grpc"):
@@ -1554,7 +1585,7 @@ def test_list_assets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -1599,10 +1630,11 @@ def test_list_assets_non_empty_request_with_auto_populated_field():
         client.list_assets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.ListAssetsRequest(
+        request_msg = asset_service.ListAssetsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_assets_use_cached_wrapped_rpc():
@@ -1683,9 +1715,14 @@ async def test_list_assets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_assets_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.ListAssetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.ListAssetsRequest(),
+        {},
+    ],
+)
+async def test_list_assets_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1693,7 +1730,7 @@ async def test_list_assets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -1714,11 +1751,6 @@ async def test_list_assets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_assets_async_from_dict():
-    await test_list_assets_async(request_type=dict)
 
 
 def test_list_assets_field_headers():
@@ -1913,6 +1945,9 @@ def test_list_assets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.Asset) for i in results)
@@ -2001,6 +2036,8 @@ async def test_list_assets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2057,8 +2094,8 @@ async def test_list_assets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.BatchGetAssetsHistoryRequest,
-        dict,
+        asset_service.BatchGetAssetsHistoryRequest(),
+        {},
     ],
 )
 def test_batch_get_assets_history(request_type, transport: str = "grpc"):
@@ -2069,7 +2106,7 @@ def test_batch_get_assets_history(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2114,9 +2151,10 @@ def test_batch_get_assets_history_non_empty_request_with_auto_populated_field():
         client.batch_get_assets_history(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.BatchGetAssetsHistoryRequest(
+        request_msg = asset_service.BatchGetAssetsHistoryRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_get_assets_history_use_cached_wrapped_rpc():
@@ -2202,9 +2240,15 @@ async def test_batch_get_assets_history_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.BatchGetAssetsHistoryRequest(),
+        {},
+    ],
+)
 async def test_batch_get_assets_history_async(
-    transport: str = "grpc_asyncio",
-    request_type=asset_service.BatchGetAssetsHistoryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2213,7 +2257,7 @@ async def test_batch_get_assets_history_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2233,11 +2277,6 @@ async def test_batch_get_assets_history_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_get_assets_history_async_from_dict():
-    await test_batch_get_assets_history_async(request_type=dict)
 
 
 def test_batch_get_assets_history_field_headers():
@@ -2308,8 +2347,8 @@ async def test_batch_get_assets_history_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.CreateFeedRequest,
-        dict,
+        asset_service.CreateFeedRequest(),
+        {},
     ],
 )
 def test_create_feed(request_type, transport: str = "grpc"):
@@ -2320,7 +2359,7 @@ def test_create_feed(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_feed), "__call__") as call:
@@ -2373,10 +2412,11 @@ def test_create_feed_non_empty_request_with_auto_populated_field():
         client.create_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.CreateFeedRequest(
+        request_msg = asset_service.CreateFeedRequest(
             parent="parent_value",
             feed_id="feed_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_feed_use_cached_wrapped_rpc():
@@ -2457,9 +2497,14 @@ async def test_create_feed_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_feed_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.CreateFeedRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.CreateFeedRequest(),
+        {},
+    ],
+)
+async def test_create_feed_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2467,7 +2512,7 @@ async def test_create_feed_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_feed), "__call__") as call:
@@ -2496,11 +2541,6 @@ async def test_create_feed_async(
     assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
     assert response.relationship_types == ["relationship_types_value"]
-
-
-@pytest.mark.asyncio
-async def test_create_feed_async_from_dict():
-    await test_create_feed_async(request_type=dict)
 
 
 def test_create_feed_field_headers():
@@ -2645,8 +2685,8 @@ async def test_create_feed_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.GetFeedRequest,
-        dict,
+        asset_service.GetFeedRequest(),
+        {},
     ],
 )
 def test_get_feed(request_type, transport: str = "grpc"):
@@ -2657,7 +2697,7 @@ def test_get_feed(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_feed), "__call__") as call:
@@ -2709,9 +2749,10 @@ def test_get_feed_non_empty_request_with_auto_populated_field():
         client.get_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.GetFeedRequest(
+        request_msg = asset_service.GetFeedRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_feed_use_cached_wrapped_rpc():
@@ -2790,9 +2831,14 @@ async def test_get_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_feed_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.GetFeedRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.GetFeedRequest(),
+        {},
+    ],
+)
+async def test_get_feed_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2800,7 +2846,7 @@ async def test_get_feed_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_feed), "__call__") as call:
@@ -2829,11 +2875,6 @@ async def test_get_feed_async(
     assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
     assert response.relationship_types == ["relationship_types_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_feed_async_from_dict():
-    await test_get_feed_async(request_type=dict)
 
 
 def test_get_feed_field_headers():
@@ -2978,8 +3019,8 @@ async def test_get_feed_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.ListFeedsRequest,
-        dict,
+        asset_service.ListFeedsRequest(),
+        {},
     ],
 )
 def test_list_feeds(request_type, transport: str = "grpc"):
@@ -2990,7 +3031,7 @@ def test_list_feeds(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_feeds), "__call__") as call:
@@ -3031,9 +3072,10 @@ def test_list_feeds_non_empty_request_with_auto_populated_field():
         client.list_feeds(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.ListFeedsRequest(
+        request_msg = asset_service.ListFeedsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_feeds_use_cached_wrapped_rpc():
@@ -3112,9 +3154,14 @@ async def test_list_feeds_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_feeds_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.ListFeedsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.ListFeedsRequest(),
+        {},
+    ],
+)
+async def test_list_feeds_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3122,7 +3169,7 @@ async def test_list_feeds_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_feeds), "__call__") as call:
@@ -3140,11 +3187,6 @@ async def test_list_feeds_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.ListFeedsResponse)
-
-
-@pytest.mark.asyncio
-async def test_list_feeds_async_from_dict():
-    await test_list_feeds_async(request_type=dict)
 
 
 def test_list_feeds_field_headers():
@@ -3293,8 +3335,8 @@ async def test_list_feeds_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.UpdateFeedRequest,
-        dict,
+        asset_service.UpdateFeedRequest(),
+        {},
     ],
 )
 def test_update_feed(request_type, transport: str = "grpc"):
@@ -3305,7 +3347,7 @@ def test_update_feed(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_feed), "__call__") as call:
@@ -3355,7 +3397,8 @@ def test_update_feed_non_empty_request_with_auto_populated_field():
         client.update_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.UpdateFeedRequest()
+        request_msg = asset_service.UpdateFeedRequest()
+        assert args[0] == request_msg
 
 
 def test_update_feed_use_cached_wrapped_rpc():
@@ -3436,9 +3479,14 @@ async def test_update_feed_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_feed_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.UpdateFeedRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.UpdateFeedRequest(),
+        {},
+    ],
+)
+async def test_update_feed_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3446,7 +3494,7 @@ async def test_update_feed_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_feed), "__call__") as call:
@@ -3475,11 +3523,6 @@ async def test_update_feed_async(
     assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
     assert response.relationship_types == ["relationship_types_value"]
-
-
-@pytest.mark.asyncio
-async def test_update_feed_async_from_dict():
-    await test_update_feed_async(request_type=dict)
 
 
 def test_update_feed_field_headers():
@@ -3624,8 +3667,8 @@ async def test_update_feed_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.DeleteFeedRequest,
-        dict,
+        asset_service.DeleteFeedRequest(),
+        {},
     ],
 )
 def test_delete_feed(request_type, transport: str = "grpc"):
@@ -3636,7 +3679,7 @@ def test_delete_feed(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_feed), "__call__") as call:
@@ -3677,9 +3720,10 @@ def test_delete_feed_non_empty_request_with_auto_populated_field():
         client.delete_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.DeleteFeedRequest(
+        request_msg = asset_service.DeleteFeedRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_feed_use_cached_wrapped_rpc():
@@ -3760,9 +3804,14 @@ async def test_delete_feed_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_feed_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.DeleteFeedRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.DeleteFeedRequest(),
+        {},
+    ],
+)
+async def test_delete_feed_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3770,7 +3819,7 @@ async def test_delete_feed_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_feed), "__call__") as call:
@@ -3786,11 +3835,6 @@ async def test_delete_feed_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_feed_async_from_dict():
-    await test_delete_feed_async(request_type=dict)
 
 
 def test_delete_feed_field_headers():
@@ -3935,8 +3979,8 @@ async def test_delete_feed_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.SearchAllResourcesRequest,
-        dict,
+        asset_service.SearchAllResourcesRequest(),
+        {},
     ],
 )
 def test_search_all_resources(request_type, transport: str = "grpc"):
@@ -3947,7 +3991,7 @@ def test_search_all_resources(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3998,12 +4042,13 @@ def test_search_all_resources_non_empty_request_with_auto_populated_field():
         client.search_all_resources(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.SearchAllResourcesRequest(
+        request_msg = asset_service.SearchAllResourcesRequest(
             scope="scope_value",
             query="query_value",
             page_token="page_token_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_all_resources_use_cached_wrapped_rpc():
@@ -4088,9 +4133,15 @@ async def test_search_all_resources_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.SearchAllResourcesRequest(),
+        {},
+    ],
+)
 async def test_search_all_resources_async(
-    transport: str = "grpc_asyncio",
-    request_type=asset_service.SearchAllResourcesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4099,7 +4150,7 @@ async def test_search_all_resources_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4122,11 +4173,6 @@ async def test_search_all_resources_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllResourcesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_all_resources_async_from_dict():
-    await test_search_all_resources_async(request_type=dict)
 
 
 def test_search_all_resources_field_headers():
@@ -4351,6 +4397,9 @@ def test_search_all_resources_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.ResourceSearchResult) for i in results)
@@ -4443,6 +4492,8 @@ async def test_search_all_resources_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4501,8 +4552,8 @@ async def test_search_all_resources_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.SearchAllIamPoliciesRequest,
-        dict,
+        asset_service.SearchAllIamPoliciesRequest(),
+        {},
     ],
 )
 def test_search_all_iam_policies(request_type, transport: str = "grpc"):
@@ -4513,7 +4564,7 @@ def test_search_all_iam_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4564,12 +4615,13 @@ def test_search_all_iam_policies_non_empty_request_with_auto_populated_field():
         client.search_all_iam_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.SearchAllIamPoliciesRequest(
+        request_msg = asset_service.SearchAllIamPoliciesRequest(
             scope="scope_value",
             query="query_value",
             page_token="page_token_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_all_iam_policies_use_cached_wrapped_rpc():
@@ -4655,9 +4707,15 @@ async def test_search_all_iam_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.SearchAllIamPoliciesRequest(),
+        {},
+    ],
+)
 async def test_search_all_iam_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=asset_service.SearchAllIamPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4666,7 +4724,7 @@ async def test_search_all_iam_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4689,11 +4747,6 @@ async def test_search_all_iam_policies_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllIamPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_all_iam_policies_async_from_dict():
-    await test_search_all_iam_policies_async(request_type=dict)
 
 
 def test_search_all_iam_policies_field_headers():
@@ -4908,6 +4961,9 @@ def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.IamPolicySearchResult) for i in results)
@@ -5000,6 +5056,8 @@ async def test_search_all_iam_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5058,8 +5116,8 @@ async def test_search_all_iam_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.AnalyzeIamPolicyRequest,
-        dict,
+        asset_service.AnalyzeIamPolicyRequest(),
+        {},
     ],
 )
 def test_analyze_iam_policy(request_type, transport: str = "grpc"):
@@ -5070,7 +5128,7 @@ def test_analyze_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5118,9 +5176,10 @@ def test_analyze_iam_policy_non_empty_request_with_auto_populated_field():
         client.analyze_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.AnalyzeIamPolicyRequest(
+        request_msg = asset_service.AnalyzeIamPolicyRequest(
             saved_analysis_query="saved_analysis_query_value",
         )
+        assert args[0] == request_msg
 
 
 def test_analyze_iam_policy_use_cached_wrapped_rpc():
@@ -5205,9 +5264,14 @@ async def test_analyze_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_analyze_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.AnalyzeIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.AnalyzeIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_analyze_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5215,7 +5279,7 @@ async def test_analyze_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5238,11 +5302,6 @@ async def test_analyze_iam_policy_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.AnalyzeIamPolicyResponse)
     assert response.fully_explored is True
-
-
-@pytest.mark.asyncio
-async def test_analyze_iam_policy_async_from_dict():
-    await test_analyze_iam_policy_async(request_type=dict)
 
 
 def test_analyze_iam_policy_field_headers():
@@ -5313,8 +5372,8 @@ async def test_analyze_iam_policy_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.AnalyzeIamPolicyLongrunningRequest,
-        dict,
+        asset_service.AnalyzeIamPolicyLongrunningRequest(),
+        {},
     ],
 )
 def test_analyze_iam_policy_longrunning(request_type, transport: str = "grpc"):
@@ -5325,7 +5384,7 @@ def test_analyze_iam_policy_longrunning(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5370,9 +5429,10 @@ def test_analyze_iam_policy_longrunning_non_empty_request_with_auto_populated_fi
         client.analyze_iam_policy_longrunning(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.AnalyzeIamPolicyLongrunningRequest(
+        request_msg = asset_service.AnalyzeIamPolicyLongrunningRequest(
             saved_analysis_query="saved_analysis_query_value",
         )
+        assert args[0] == request_msg
 
 
 def test_analyze_iam_policy_longrunning_use_cached_wrapped_rpc():
@@ -5468,9 +5528,15 @@ async def test_analyze_iam_policy_longrunning_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.AnalyzeIamPolicyLongrunningRequest(),
+        {},
+    ],
+)
 async def test_analyze_iam_policy_longrunning_async(
-    transport: str = "grpc_asyncio",
-    request_type=asset_service.AnalyzeIamPolicyLongrunningRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5479,7 +5545,7 @@ async def test_analyze_iam_policy_longrunning_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5499,11 +5565,6 @@ async def test_analyze_iam_policy_longrunning_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_analyze_iam_policy_longrunning_async_from_dict():
-    await test_analyze_iam_policy_longrunning_async(request_type=dict)
 
 
 def test_analyze_iam_policy_longrunning_field_headers():
@@ -5574,8 +5635,8 @@ async def test_analyze_iam_policy_longrunning_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.AnalyzeMoveRequest,
-        dict,
+        asset_service.AnalyzeMoveRequest(),
+        {},
     ],
 )
 def test_analyze_move(request_type, transport: str = "grpc"):
@@ -5586,7 +5647,7 @@ def test_analyze_move(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.analyze_move), "__call__") as call:
@@ -5628,10 +5689,11 @@ def test_analyze_move_non_empty_request_with_auto_populated_field():
         client.analyze_move(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.AnalyzeMoveRequest(
+        request_msg = asset_service.AnalyzeMoveRequest(
             resource="resource_value",
             destination_parent="destination_parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_analyze_move_use_cached_wrapped_rpc():
@@ -5712,9 +5774,14 @@ async def test_analyze_move_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_analyze_move_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.AnalyzeMoveRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.AnalyzeMoveRequest(),
+        {},
+    ],
+)
+async def test_analyze_move_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5722,7 +5789,7 @@ async def test_analyze_move_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.analyze_move), "__call__") as call:
@@ -5740,11 +5807,6 @@ async def test_analyze_move_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.AnalyzeMoveResponse)
-
-
-@pytest.mark.asyncio
-async def test_analyze_move_async_from_dict():
-    await test_analyze_move_async(request_type=dict)
 
 
 def test_analyze_move_field_headers():
@@ -5811,8 +5873,8 @@ async def test_analyze_move_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.QueryAssetsRequest,
-        dict,
+        asset_service.QueryAssetsRequest(),
+        {},
     ],
 )
 def test_query_assets(request_type, transport: str = "grpc"):
@@ -5823,7 +5885,7 @@ def test_query_assets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_assets), "__call__") as call:
@@ -5872,12 +5934,13 @@ def test_query_assets_non_empty_request_with_auto_populated_field():
         client.query_assets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.QueryAssetsRequest(
+        request_msg = asset_service.QueryAssetsRequest(
             parent="parent_value",
             statement="statement_value",
             job_reference="job_reference_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_assets_use_cached_wrapped_rpc():
@@ -5958,9 +6021,14 @@ async def test_query_assets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_assets_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.QueryAssetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.QueryAssetsRequest(),
+        {},
+    ],
+)
+async def test_query_assets_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5968,7 +6036,7 @@ async def test_query_assets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_assets), "__call__") as call:
@@ -5991,11 +6059,6 @@ async def test_query_assets_async(
     assert isinstance(response, asset_service.QueryAssetsResponse)
     assert response.job_reference == "job_reference_value"
     assert response.done is True
-
-
-@pytest.mark.asyncio
-async def test_query_assets_async_from_dict():
-    await test_query_assets_async(request_type=dict)
 
 
 def test_query_assets_field_headers():
@@ -6062,8 +6125,8 @@ async def test_query_assets_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.CreateSavedQueryRequest,
-        dict,
+        asset_service.CreateSavedQueryRequest(),
+        {},
     ],
 )
 def test_create_saved_query(request_type, transport: str = "grpc"):
@@ -6074,7 +6137,7 @@ def test_create_saved_query(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6129,10 +6192,11 @@ def test_create_saved_query_non_empty_request_with_auto_populated_field():
         client.create_saved_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.CreateSavedQueryRequest(
+        request_msg = asset_service.CreateSavedQueryRequest(
             parent="parent_value",
             saved_query_id="saved_query_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_saved_query_use_cached_wrapped_rpc():
@@ -6217,9 +6281,14 @@ async def test_create_saved_query_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_saved_query_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.CreateSavedQueryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.CreateSavedQueryRequest(),
+        {},
+    ],
+)
+async def test_create_saved_query_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6227,7 +6296,7 @@ async def test_create_saved_query_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6256,11 +6325,6 @@ async def test_create_saved_query_async(
     assert response.description == "description_value"
     assert response.creator == "creator_value"
     assert response.last_updater == "last_updater_value"
-
-
-@pytest.mark.asyncio
-async def test_create_saved_query_async_from_dict():
-    await test_create_saved_query_async(request_type=dict)
 
 
 def test_create_saved_query_field_headers():
@@ -6437,8 +6501,8 @@ async def test_create_saved_query_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.GetSavedQueryRequest,
-        dict,
+        asset_service.GetSavedQueryRequest(),
+        {},
     ],
 )
 def test_get_saved_query(request_type, transport: str = "grpc"):
@@ -6449,7 +6513,7 @@ def test_get_saved_query(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_saved_query), "__call__") as call:
@@ -6499,9 +6563,10 @@ def test_get_saved_query_non_empty_request_with_auto_populated_field():
         client.get_saved_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.GetSavedQueryRequest(
+        request_msg = asset_service.GetSavedQueryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_saved_query_use_cached_wrapped_rpc():
@@ -6582,9 +6647,14 @@ async def test_get_saved_query_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_saved_query_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.GetSavedQueryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.GetSavedQueryRequest(),
+        {},
+    ],
+)
+async def test_get_saved_query_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6592,7 +6662,7 @@ async def test_get_saved_query_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_saved_query), "__call__") as call:
@@ -6619,11 +6689,6 @@ async def test_get_saved_query_async(
     assert response.description == "description_value"
     assert response.creator == "creator_value"
     assert response.last_updater == "last_updater_value"
-
-
-@pytest.mark.asyncio
-async def test_get_saved_query_async_from_dict():
-    await test_get_saved_query_async(request_type=dict)
 
 
 def test_get_saved_query_field_headers():
@@ -6772,8 +6837,8 @@ async def test_get_saved_query_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.ListSavedQueriesRequest,
-        dict,
+        asset_service.ListSavedQueriesRequest(),
+        {},
     ],
 )
 def test_list_saved_queries(request_type, transport: str = "grpc"):
@@ -6784,7 +6849,7 @@ def test_list_saved_queries(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6834,11 +6899,12 @@ def test_list_saved_queries_non_empty_request_with_auto_populated_field():
         client.list_saved_queries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.ListSavedQueriesRequest(
+        request_msg = asset_service.ListSavedQueriesRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_saved_queries_use_cached_wrapped_rpc():
@@ -6923,9 +6989,14 @@ async def test_list_saved_queries_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_saved_queries_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.ListSavedQueriesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.ListSavedQueriesRequest(),
+        {},
+    ],
+)
+async def test_list_saved_queries_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6933,7 +7004,7 @@ async def test_list_saved_queries_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6956,11 +7027,6 @@ async def test_list_saved_queries_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSavedQueriesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_saved_queries_async_from_dict():
-    await test_list_saved_queries_async(request_type=dict)
 
 
 def test_list_saved_queries_field_headers():
@@ -7165,6 +7231,9 @@ def test_list_saved_queries_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, asset_service.SavedQuery) for i in results)
@@ -7257,6 +7326,8 @@ async def test_list_saved_queries_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7315,8 +7386,8 @@ async def test_list_saved_queries_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.UpdateSavedQueryRequest,
-        dict,
+        asset_service.UpdateSavedQueryRequest(),
+        {},
     ],
 )
 def test_update_saved_query(request_type, transport: str = "grpc"):
@@ -7327,7 +7398,7 @@ def test_update_saved_query(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7379,7 +7450,8 @@ def test_update_saved_query_non_empty_request_with_auto_populated_field():
         client.update_saved_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.UpdateSavedQueryRequest()
+        request_msg = asset_service.UpdateSavedQueryRequest()
+        assert args[0] == request_msg
 
 
 def test_update_saved_query_use_cached_wrapped_rpc():
@@ -7464,9 +7536,14 @@ async def test_update_saved_query_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_saved_query_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.UpdateSavedQueryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.UpdateSavedQueryRequest(),
+        {},
+    ],
+)
+async def test_update_saved_query_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7474,7 +7551,7 @@ async def test_update_saved_query_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7503,11 +7580,6 @@ async def test_update_saved_query_async(
     assert response.description == "description_value"
     assert response.creator == "creator_value"
     assert response.last_updater == "last_updater_value"
-
-
-@pytest.mark.asyncio
-async def test_update_saved_query_async_from_dict():
-    await test_update_saved_query_async(request_type=dict)
 
 
 def test_update_saved_query_field_headers():
@@ -7674,8 +7746,8 @@ async def test_update_saved_query_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.DeleteSavedQueryRequest,
-        dict,
+        asset_service.DeleteSavedQueryRequest(),
+        {},
     ],
 )
 def test_delete_saved_query(request_type, transport: str = "grpc"):
@@ -7686,7 +7758,7 @@ def test_delete_saved_query(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7731,9 +7803,10 @@ def test_delete_saved_query_non_empty_request_with_auto_populated_field():
         client.delete_saved_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.DeleteSavedQueryRequest(
+        request_msg = asset_service.DeleteSavedQueryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_saved_query_use_cached_wrapped_rpc():
@@ -7818,9 +7891,14 @@ async def test_delete_saved_query_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_saved_query_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.DeleteSavedQueryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.DeleteSavedQueryRequest(),
+        {},
+    ],
+)
+async def test_delete_saved_query_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7828,7 +7906,7 @@ async def test_delete_saved_query_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7846,11 +7924,6 @@ async def test_delete_saved_query_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_saved_query_async_from_dict():
-    await test_delete_saved_query_async(request_type=dict)
 
 
 def test_delete_saved_query_field_headers():
@@ -8003,8 +8076,8 @@ async def test_delete_saved_query_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.BatchGetEffectiveIamPoliciesRequest,
-        dict,
+        asset_service.BatchGetEffectiveIamPoliciesRequest(),
+        {},
     ],
 )
 def test_batch_get_effective_iam_policies(request_type, transport: str = "grpc"):
@@ -8015,7 +8088,7 @@ def test_batch_get_effective_iam_policies(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8060,9 +8133,10 @@ def test_batch_get_effective_iam_policies_non_empty_request_with_auto_populated_
         client.batch_get_effective_iam_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.BatchGetEffectiveIamPoliciesRequest(
+        request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest(
             scope="scope_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_get_effective_iam_policies_use_cached_wrapped_rpc():
@@ -8148,9 +8222,15 @@ async def test_batch_get_effective_iam_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.BatchGetEffectiveIamPoliciesRequest(),
+        {},
+    ],
+)
 async def test_batch_get_effective_iam_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=asset_service.BatchGetEffectiveIamPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8159,7 +8239,7 @@ async def test_batch_get_effective_iam_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8179,11 +8259,6 @@ async def test_batch_get_effective_iam_policies_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_get_effective_iam_policies_async_from_dict():
-    await test_batch_get_effective_iam_policies_async(request_type=dict)
 
 
 def test_batch_get_effective_iam_policies_field_headers():
@@ -8254,8 +8329,8 @@ async def test_batch_get_effective_iam_policies_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.AnalyzeOrgPoliciesRequest,
-        dict,
+        asset_service.AnalyzeOrgPoliciesRequest(),
+        {},
     ],
 )
 def test_analyze_org_policies(request_type, transport: str = "grpc"):
@@ -8266,7 +8341,7 @@ def test_analyze_org_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8317,12 +8392,13 @@ def test_analyze_org_policies_non_empty_request_with_auto_populated_field():
         client.analyze_org_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.AnalyzeOrgPoliciesRequest(
+        request_msg = asset_service.AnalyzeOrgPoliciesRequest(
             scope="scope_value",
             constraint="constraint_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_analyze_org_policies_use_cached_wrapped_rpc():
@@ -8407,9 +8483,15 @@ async def test_analyze_org_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.AnalyzeOrgPoliciesRequest(),
+        {},
+    ],
+)
 async def test_analyze_org_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=asset_service.AnalyzeOrgPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8418,7 +8500,7 @@ async def test_analyze_org_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8441,11 +8523,6 @@ async def test_analyze_org_policies_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_analyze_org_policies_async_from_dict():
-    await test_analyze_org_policies_async(request_type=dict)
 
 
 def test_analyze_org_policies_field_headers():
@@ -8670,6 +8747,9 @@ def test_analyze_org_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -8765,6 +8845,8 @@ async def test_analyze_org_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8826,8 +8908,8 @@ async def test_analyze_org_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
-        dict,
+        asset_service.AnalyzeOrgPolicyGovernedContainersRequest(),
+        {},
     ],
 )
 def test_analyze_org_policy_governed_containers(request_type, transport: str = "grpc"):
@@ -8838,7 +8920,7 @@ def test_analyze_org_policy_governed_containers(request_type, transport: str = "
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8889,12 +8971,13 @@ def test_analyze_org_policy_governed_containers_non_empty_request_with_auto_popu
         client.analyze_org_policy_governed_containers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest(
+        request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest(
             scope="scope_value",
             constraint="constraint_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_analyze_org_policy_governed_containers_use_cached_wrapped_rpc():
@@ -8980,9 +9063,15 @@ async def test_analyze_org_policy_governed_containers_async_use_cached_wrapped_r
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.AnalyzeOrgPolicyGovernedContainersRequest(),
+        {},
+    ],
+)
 async def test_analyze_org_policy_governed_containers_async(
-    transport: str = "grpc_asyncio",
-    request_type=asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8991,7 +9080,7 @@ async def test_analyze_org_policy_governed_containers_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9014,11 +9103,6 @@ async def test_analyze_org_policy_governed_containers_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_analyze_org_policy_governed_containers_async_from_dict():
-    await test_analyze_org_policy_governed_containers_async(request_type=dict)
 
 
 def test_analyze_org_policy_governed_containers_field_headers():
@@ -9245,6 +9329,9 @@ def test_analyze_org_policy_governed_containers_pager(transport_name: str = "grp
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -9343,6 +9430,8 @@ async def test_analyze_org_policy_governed_containers_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9409,8 +9498,8 @@ async def test_analyze_org_policy_governed_containers_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
-        dict,
+        asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(),
+        {},
     ],
 )
 def test_analyze_org_policy_governed_assets(request_type, transport: str = "grpc"):
@@ -9421,7 +9510,7 @@ def test_analyze_org_policy_governed_assets(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9472,12 +9561,13 @@ def test_analyze_org_policy_governed_assets_non_empty_request_with_auto_populate
         client.analyze_org_policy_governed_assets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(
+        request_msg = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(
             scope="scope_value",
             constraint="constraint_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_analyze_org_policy_governed_assets_use_cached_wrapped_rpc():
@@ -9563,9 +9653,15 @@ async def test_analyze_org_policy_governed_assets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(),
+        {},
+    ],
+)
 async def test_analyze_org_policy_governed_assets_async(
-    transport: str = "grpc_asyncio",
-    request_type=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9574,7 +9670,7 @@ async def test_analyze_org_policy_governed_assets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9597,11 +9693,6 @@ async def test_analyze_org_policy_governed_assets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_analyze_org_policy_governed_assets_async_from_dict():
-    await test_analyze_org_policy_governed_assets_async(request_type=dict)
 
 
 def test_analyze_org_policy_governed_assets_field_headers():
@@ -9828,6 +9919,9 @@ def test_analyze_org_policy_governed_assets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -9925,6 +10019,8 @@ async def test_analyze_org_policy_governed_assets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -10365,6 +10461,9 @@ def test_list_assets_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "sample1/sample2"}
 
         pager = client.list_assets(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -11663,6 +11762,9 @@ def test_search_all_resources_rest_pager(transport: str = "rest"):
 
         pager = client.search_all_resources(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.ResourceSearchResult) for i in results)
@@ -11929,6 +12031,9 @@ def test_search_all_iam_policies_rest_pager(transport: str = "rest"):
         sample_request = {"scope": "sample1/sample2"}
 
         pager = client.search_all_iam_policies(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -13117,6 +13222,9 @@ def test_list_saved_queries_rest_pager(transport: str = "rest"):
 
         pager = client.list_saved_queries(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, asset_service.SavedQuery) for i in results)
@@ -13919,6 +14027,9 @@ def test_analyze_org_policies_rest_pager(transport: str = "rest"):
 
         pager = client.analyze_org_policies(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -14221,6 +14332,9 @@ def test_analyze_org_policy_governed_containers_rest_pager(transport: str = "res
         sample_request = {"scope": "sample1/sample2"}
 
         pager = client.analyze_org_policy_governed_containers(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -14525,6 +14639,9 @@ def test_analyze_org_policy_governed_assets_rest_pager(transport: str = "rest"):
 
         pager = client.analyze_org_policy_governed_assets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -14664,7 +14781,6 @@ def test_export_assets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ExportAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14685,7 +14801,6 @@ def test_list_assets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14708,7 +14823,6 @@ def test_batch_get_assets_history_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetAssetsHistoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14729,7 +14843,6 @@ def test_create_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -14750,7 +14863,6 @@ def test_get_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -14771,7 +14883,6 @@ def test_list_feeds_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListFeedsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14792,7 +14903,6 @@ def test_update_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -14813,7 +14923,6 @@ def test_delete_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -14836,7 +14945,6 @@ def test_search_all_resources_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllResourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14859,7 +14967,6 @@ def test_search_all_iam_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllIamPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14882,7 +14989,6 @@ def test_analyze_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14905,7 +15011,6 @@ def test_analyze_iam_policy_longrunning_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyLongrunningRequest()
-
         assert args[0] == request_msg
 
 
@@ -14926,7 +15031,6 @@ def test_analyze_move_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeMoveRequest()
-
         assert args[0] == request_msg
 
 
@@ -14947,7 +15051,6 @@ def test_query_assets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.QueryAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14970,7 +15073,6 @@ def test_create_saved_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14991,7 +15093,6 @@ def test_get_saved_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -15014,7 +15115,6 @@ def test_list_saved_queries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListSavedQueriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15037,7 +15137,6 @@ def test_update_saved_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -15060,7 +15159,6 @@ def test_delete_saved_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -15083,7 +15181,6 @@ def test_batch_get_effective_iam_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15106,7 +15203,6 @@ def test_analyze_org_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15129,7 +15225,6 @@ def test_analyze_org_policy_governed_containers_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
-
         assert args[0] == request_msg
 
 
@@ -15152,7 +15247,6 @@ def test_analyze_org_policy_governed_assets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15191,7 +15285,6 @@ async def test_export_assets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ExportAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15218,7 +15311,6 @@ async def test_list_assets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15245,7 +15337,6 @@ async def test_batch_get_assets_history_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetAssetsHistoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -15276,7 +15367,6 @@ async def test_create_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -15307,7 +15397,6 @@ async def test_get_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -15332,7 +15421,6 @@ async def test_list_feeds_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListFeedsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15363,7 +15451,6 @@ async def test_update_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -15386,7 +15473,6 @@ async def test_delete_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -15415,7 +15501,6 @@ async def test_search_all_resources_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllResourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15444,7 +15529,6 @@ async def test_search_all_iam_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllIamPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15473,7 +15557,6 @@ async def test_analyze_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -15500,7 +15583,6 @@ async def test_analyze_iam_policy_longrunning_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyLongrunningRequest()
-
         assert args[0] == request_msg
 
 
@@ -15525,7 +15607,6 @@ async def test_analyze_move_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeMoveRequest()
-
         assert args[0] == request_msg
 
 
@@ -15553,7 +15634,6 @@ async def test_query_assets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.QueryAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15585,7 +15665,6 @@ async def test_create_saved_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -15615,7 +15694,6 @@ async def test_get_saved_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -15644,7 +15722,6 @@ async def test_list_saved_queries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListSavedQueriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15676,7 +15753,6 @@ async def test_update_saved_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -15701,7 +15777,6 @@ async def test_delete_saved_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -15728,7 +15803,6 @@ async def test_batch_get_effective_iam_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15757,7 +15831,6 @@ async def test_analyze_org_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15786,7 +15859,6 @@ async def test_analyze_org_policy_governed_containers_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
-
         assert args[0] == request_msg
 
 
@@ -15815,7 +15887,6 @@ async def test_analyze_org_policy_governed_assets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19132,7 +19203,6 @@ def test_export_assets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ExportAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19152,7 +19222,6 @@ def test_list_assets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19174,7 +19243,6 @@ def test_batch_get_assets_history_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetAssetsHistoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -19194,7 +19262,6 @@ def test_create_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -19214,7 +19281,6 @@ def test_get_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -19234,7 +19300,6 @@ def test_list_feeds_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListFeedsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19254,7 +19319,6 @@ def test_update_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -19274,7 +19338,6 @@ def test_delete_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -19296,7 +19359,6 @@ def test_search_all_resources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllResourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -19318,7 +19380,6 @@ def test_search_all_iam_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.SearchAllIamPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -19340,7 +19401,6 @@ def test_analyze_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -19362,7 +19422,6 @@ def test_analyze_iam_policy_longrunning_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeIamPolicyLongrunningRequest()
-
         assert args[0] == request_msg
 
 
@@ -19382,7 +19441,6 @@ def test_analyze_move_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeMoveRequest()
-
         assert args[0] == request_msg
 
 
@@ -19402,7 +19460,6 @@ def test_query_assets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.QueryAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19424,7 +19481,6 @@ def test_create_saved_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -19444,7 +19500,6 @@ def test_get_saved_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -19466,7 +19521,6 @@ def test_list_saved_queries_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListSavedQueriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -19488,7 +19542,6 @@ def test_update_saved_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -19510,7 +19563,6 @@ def test_delete_saved_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteSavedQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -19532,7 +19584,6 @@ def test_batch_get_effective_iam_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.BatchGetEffectiveIamPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -19554,7 +19605,6 @@ def test_analyze_org_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -19576,7 +19626,6 @@ def test_analyze_org_policy_governed_containers_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
-
         assert args[0] == request_msg
 
 
@@ -19598,7 +19647,6 @@ def test_analyze_org_policy_governed_assets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
-
         assert args[0] == request_msg
 
 

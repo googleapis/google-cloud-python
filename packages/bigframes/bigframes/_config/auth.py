@@ -23,7 +23,6 @@ import google.auth.transport.requests
 import pydata_google_auth
 
 import bigframes._config.bigquery_options as bigquery_options
-from bigframes._config import options
 
 _SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
 

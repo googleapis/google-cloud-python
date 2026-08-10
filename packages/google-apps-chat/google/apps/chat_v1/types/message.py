@@ -417,10 +417,6 @@ class AttachedGif(proto.Message):
 class QuotedMessageMetadata(proto.Message):
     r"""Information about a message that another message quotes.
 
-    When you create a message, you can quote messages within the same
-    thread, or quote a root message to create a new root message.
-    However, you can't quote a message reply from a different thread.
-
     When you update a message, you can't add or replace the
     ``quotedMessageMetadata`` field, but you can remove it.
 
@@ -462,19 +458,24 @@ class QuotedMessageMetadata(proto.Message):
             QUOTE_TYPE_UNSPECIFIED (0):
                 Reserved. This value is unused.
             REPLY (1):
-                If quote_type is ``REPLY``, you can do the following:
+                When ``quote_type`` is ``REPLY``, you can do the following:
 
                 - If you're replying in a thread, you can quote another
                   message in that thread.
 
                 - If you're creating a root message, you can quote another
                   root message in that space.
+            FORWARD (2):
+                When ``quote_type`` is ``FORWARD``, you can quote a:
 
-                You can't quote a message reply from a different thread.
+                - Message from a different space.
+
+                - Message reply from a different thread in the same space.
         """
 
         QUOTE_TYPE_UNSPECIFIED = 0
         REPLY = 1
+        FORWARD = 2
 
     name: str = proto.Field(
         proto.STRING,

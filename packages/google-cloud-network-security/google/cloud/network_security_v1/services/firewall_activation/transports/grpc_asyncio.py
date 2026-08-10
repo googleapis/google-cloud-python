@@ -387,6 +387,39 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
         return self._stubs["list_firewall_endpoints"]
 
     @property
+    def list_project_firewall_endpoints(
+        self,
+    ) -> Callable[
+        [firewall_activation.ListFirewallEndpointsRequest],
+        Awaitable[firewall_activation.ListFirewallEndpointsResponse],
+    ]:
+        r"""Return a callable for the list project firewall
+        endpoints method over gRPC.
+
+        Lists FirewallEndpoints in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListFirewallEndpointsRequest],
+                    Awaitable[~.ListFirewallEndpointsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_project_firewall_endpoints" not in self._stubs:
+            self._stubs["list_project_firewall_endpoints"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.FirewallActivation/ListProjectFirewallEndpoints",
+                    request_serializer=firewall_activation.ListFirewallEndpointsRequest.serialize,
+                    response_deserializer=firewall_activation.ListFirewallEndpointsResponse.deserialize,
+                )
+            )
+        return self._stubs["list_project_firewall_endpoints"]
+
+    @property
     def get_firewall_endpoint(
         self,
     ) -> Callable[
@@ -414,6 +447,37 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
                 response_deserializer=firewall_activation.FirewallEndpoint.deserialize,
             )
         return self._stubs["get_firewall_endpoint"]
+
+    @property
+    def get_project_firewall_endpoint(
+        self,
+    ) -> Callable[
+        [firewall_activation.GetFirewallEndpointRequest],
+        Awaitable[firewall_activation.FirewallEndpoint],
+    ]:
+        r"""Return a callable for the get project firewall endpoint method over gRPC.
+
+        Gets details of a single project Endpoint.
+
+        Returns:
+            Callable[[~.GetFirewallEndpointRequest],
+                    Awaitable[~.FirewallEndpoint]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_project_firewall_endpoint" not in self._stubs:
+            self._stubs["get_project_firewall_endpoint"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.FirewallActivation/GetProjectFirewallEndpoint",
+                    request_serializer=firewall_activation.GetFirewallEndpointRequest.serialize,
+                    response_deserializer=firewall_activation.FirewallEndpoint.deserialize,
+                )
+            )
+        return self._stubs["get_project_firewall_endpoint"]
 
     @property
     def create_firewall_endpoint(
@@ -446,6 +510,39 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
         return self._stubs["create_firewall_endpoint"]
 
     @property
+    def create_project_firewall_endpoint(
+        self,
+    ) -> Callable[
+        [firewall_activation.CreateFirewallEndpointRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create project firewall
+        endpoint method over gRPC.
+
+        Creates a new FirewallEndpoint in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateFirewallEndpointRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_project_firewall_endpoint" not in self._stubs:
+            self._stubs["create_project_firewall_endpoint"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.FirewallActivation/CreateProjectFirewallEndpoint",
+                    request_serializer=firewall_activation.CreateFirewallEndpointRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["create_project_firewall_endpoint"]
+
+    @property
     def delete_firewall_endpoint(
         self,
     ) -> Callable[
@@ -475,6 +572,38 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
         return self._stubs["delete_firewall_endpoint"]
 
     @property
+    def delete_project_firewall_endpoint(
+        self,
+    ) -> Callable[
+        [firewall_activation.DeleteFirewallEndpointRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete project firewall
+        endpoint method over gRPC.
+
+        Deletes a single project Endpoint.
+
+        Returns:
+            Callable[[~.DeleteFirewallEndpointRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_project_firewall_endpoint" not in self._stubs:
+            self._stubs["delete_project_firewall_endpoint"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.FirewallActivation/DeleteProjectFirewallEndpoint",
+                    request_serializer=firewall_activation.DeleteFirewallEndpointRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["delete_project_firewall_endpoint"]
+
+    @property
     def update_firewall_endpoint(
         self,
     ) -> Callable[
@@ -502,6 +631,38 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_firewall_endpoint"]
+
+    @property
+    def update_project_firewall_endpoint(
+        self,
+    ) -> Callable[
+        [firewall_activation.UpdateFirewallEndpointRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update project firewall
+        endpoint method over gRPC.
+
+        Update a single project Endpoint.
+
+        Returns:
+            Callable[[~.UpdateFirewallEndpointRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_project_firewall_endpoint" not in self._stubs:
+            self._stubs["update_project_firewall_endpoint"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.FirewallActivation/UpdateProjectFirewallEndpoint",
+                    request_serializer=firewall_activation.UpdateFirewallEndpointRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["update_project_firewall_endpoint"]
 
     @property
     def list_firewall_endpoint_associations(
@@ -672,8 +833,18 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_project_firewall_endpoints: self._wrap_method(
+                self.list_project_firewall_endpoints,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_firewall_endpoint: self._wrap_method(
                 self.get_firewall_endpoint,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_project_firewall_endpoint: self._wrap_method(
+                self.get_project_firewall_endpoint,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -682,13 +853,28 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_project_firewall_endpoint: self._wrap_method(
+                self.create_project_firewall_endpoint,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_firewall_endpoint: self._wrap_method(
                 self.delete_firewall_endpoint,
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.delete_project_firewall_endpoint: self._wrap_method(
+                self.delete_project_firewall_endpoint,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_firewall_endpoint: self._wrap_method(
                 self.update_firewall_endpoint,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_project_firewall_endpoint: self._wrap_method(
+                self.update_project_firewall_endpoint,
                 default_timeout=None,
                 client_info=client_info,
             ),

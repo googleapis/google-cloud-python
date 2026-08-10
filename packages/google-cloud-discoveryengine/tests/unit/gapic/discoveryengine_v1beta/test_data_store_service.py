@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -68,6 +69,7 @@ from google.cloud.discoveryengine_v1beta.services.data_store_service import (
     transports,
 )
 from google.cloud.discoveryengine_v1beta.types import (
+    cmek_config_service,
     common,
     data_store,
     data_store_service,
@@ -122,6 +124,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -982,7 +999,14 @@ def test_data_store_service_client_get_mtls_endpoint_and_cert_source(client_clas
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1029,7 +1053,14 @@ def test_data_store_service_client_get_mtls_endpoint_and_cert_source(client_clas
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1343,7 +1374,11 @@ def test_data_store_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=None,
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
@@ -1357,8 +1392,8 @@ def test_data_store_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_store_service.CreateDataStoreRequest,
-        dict,
+        data_store_service.CreateDataStoreRequest(),
+        {},
     ],
 )
 def test_create_data_store(request_type, transport: str = "grpc"):
@@ -1369,7 +1404,7 @@ def test_create_data_store(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1401,6 +1436,7 @@ def test_create_data_store_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = data_store_service.CreateDataStoreRequest(
+        cmek_config_name="cmek_config_name_value",
         parent="parent_value",
         data_store_id="data_store_id_value",
     )
@@ -1415,10 +1451,12 @@ def test_create_data_store_non_empty_request_with_auto_populated_field():
         client.create_data_store(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.CreateDataStoreRequest(
+        request_msg = data_store_service.CreateDataStoreRequest(
+            cmek_config_name="cmek_config_name_value",
             parent="parent_value",
             data_store_id="data_store_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_data_store_use_cached_wrapped_rpc():
@@ -1511,10 +1549,14 @@ async def test_create_data_store_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_data_store_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_store_service.CreateDataStoreRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_store_service.CreateDataStoreRequest(),
+        {},
+    ],
+)
+async def test_create_data_store_async(request_type, transport: str = "grpc_asyncio"):
     client = DataStoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1522,7 +1564,7 @@ async def test_create_data_store_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1542,11 +1584,6 @@ async def test_create_data_store_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_data_store_async_from_dict():
-    await test_create_data_store_async(request_type=dict)
 
 
 def test_create_data_store_field_headers():
@@ -1723,8 +1760,8 @@ async def test_create_data_store_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_store_service.GetDataStoreRequest,
-        dict,
+        data_store_service.GetDataStoreRequest(),
+        {},
     ],
 )
 def test_get_data_store(request_type, transport: str = "grpc"):
@@ -1735,7 +1772,7 @@ def test_get_data_store(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_store), "__call__") as call:
@@ -1747,6 +1784,11 @@ def test_get_data_store(request_type, transport: str = "grpc"):
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             default_schema_id="default_schema_id_value",
             content_config=data_store.DataStore.ContentConfig.NO_CONTENT,
+            kms_key_name="kms_key_name_value",
+            acl_enabled=True,
+            identity_mapping_store="identity_mapping_store_value",
+            is_infobot_faq_data_store=True,
+            configurable_billing_approach=data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
         )
         response = client.get_data_store(request)
 
@@ -1764,6 +1806,14 @@ def test_get_data_store(request_type, transport: str = "grpc"):
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
     assert response.default_schema_id == "default_schema_id_value"
     assert response.content_config == data_store.DataStore.ContentConfig.NO_CONTENT
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.acl_enabled is True
+    assert response.identity_mapping_store == "identity_mapping_store_value"
+    assert response.is_infobot_faq_data_store is True
+    assert (
+        response.configurable_billing_approach
+        == data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE
+    )
 
 
 def test_get_data_store_non_empty_request_with_auto_populated_field():
@@ -1789,9 +1839,10 @@ def test_get_data_store_non_empty_request_with_auto_populated_field():
         client.get_data_store(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.GetDataStoreRequest(
+        request_msg = data_store_service.GetDataStoreRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_data_store_use_cached_wrapped_rpc():
@@ -1872,9 +1923,14 @@ async def test_get_data_store_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_data_store_async(
-    transport: str = "grpc_asyncio", request_type=data_store_service.GetDataStoreRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_store_service.GetDataStoreRequest(),
+        {},
+    ],
+)
+async def test_get_data_store_async(request_type, transport: str = "grpc_asyncio"):
     client = DataStoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1882,7 +1938,7 @@ async def test_get_data_store_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_store), "__call__") as call:
@@ -1895,6 +1951,11 @@ async def test_get_data_store_async(
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
                 default_schema_id="default_schema_id_value",
                 content_config=data_store.DataStore.ContentConfig.NO_CONTENT,
+                kms_key_name="kms_key_name_value",
+                acl_enabled=True,
+                identity_mapping_store="identity_mapping_store_value",
+                is_infobot_faq_data_store=True,
+                configurable_billing_approach=data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
             )
         )
         response = await client.get_data_store(request)
@@ -1913,11 +1974,14 @@ async def test_get_data_store_async(
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
     assert response.default_schema_id == "default_schema_id_value"
     assert response.content_config == data_store.DataStore.ContentConfig.NO_CONTENT
-
-
-@pytest.mark.asyncio
-async def test_get_data_store_async_from_dict():
-    await test_get_data_store_async(request_type=dict)
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.acl_enabled is True
+    assert response.identity_mapping_store == "identity_mapping_store_value"
+    assert response.is_infobot_faq_data_store is True
+    assert (
+        response.configurable_billing_approach
+        == data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE
+    )
 
 
 def test_get_data_store_field_headers():
@@ -2066,8 +2130,8 @@ async def test_get_data_store_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_store_service.ListDataStoresRequest,
-        dict,
+        data_store_service.ListDataStoresRequest(),
+        {},
     ],
 )
 def test_list_data_stores(request_type, transport: str = "grpc"):
@@ -2078,7 +2142,7 @@ def test_list_data_stores(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_stores), "__call__") as call:
@@ -2124,11 +2188,12 @@ def test_list_data_stores_non_empty_request_with_auto_populated_field():
         client.list_data_stores(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.ListDataStoresRequest(
+        request_msg = data_store_service.ListDataStoresRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_data_stores_use_cached_wrapped_rpc():
@@ -2211,10 +2276,14 @@ async def test_list_data_stores_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_data_stores_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_store_service.ListDataStoresRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_store_service.ListDataStoresRequest(),
+        {},
+    ],
+)
+async def test_list_data_stores_async(request_type, transport: str = "grpc_asyncio"):
     client = DataStoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2222,7 +2291,7 @@ async def test_list_data_stores_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_stores), "__call__") as call:
@@ -2243,11 +2312,6 @@ async def test_list_data_stores_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataStoresAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_data_stores_async_from_dict():
-    await test_list_data_stores_async(request_type=dict)
 
 
 def test_list_data_stores_field_headers():
@@ -2442,6 +2506,9 @@ def test_list_data_stores_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, data_store.DataStore) for i in results)
@@ -2530,6 +2597,8 @@ async def test_list_data_stores_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2586,8 +2655,8 @@ async def test_list_data_stores_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_store_service.DeleteDataStoreRequest,
-        dict,
+        data_store_service.DeleteDataStoreRequest(),
+        {},
     ],
 )
 def test_delete_data_store(request_type, transport: str = "grpc"):
@@ -2598,7 +2667,7 @@ def test_delete_data_store(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2643,9 +2712,10 @@ def test_delete_data_store_non_empty_request_with_auto_populated_field():
         client.delete_data_store(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.DeleteDataStoreRequest(
+        request_msg = data_store_service.DeleteDataStoreRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_data_store_use_cached_wrapped_rpc():
@@ -2738,10 +2808,14 @@ async def test_delete_data_store_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_data_store_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_store_service.DeleteDataStoreRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_store_service.DeleteDataStoreRequest(),
+        {},
+    ],
+)
+async def test_delete_data_store_async(request_type, transport: str = "grpc_asyncio"):
     client = DataStoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2749,7 +2823,7 @@ async def test_delete_data_store_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2769,11 +2843,6 @@ async def test_delete_data_store_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_data_store_async_from_dict():
-    await test_delete_data_store_async(request_type=dict)
 
 
 def test_delete_data_store_field_headers():
@@ -2930,8 +2999,8 @@ async def test_delete_data_store_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_store_service.UpdateDataStoreRequest,
-        dict,
+        data_store_service.UpdateDataStoreRequest(),
+        {},
     ],
 )
 def test_update_data_store(request_type, transport: str = "grpc"):
@@ -2942,7 +3011,7 @@ def test_update_data_store(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2956,6 +3025,11 @@ def test_update_data_store(request_type, transport: str = "grpc"):
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             default_schema_id="default_schema_id_value",
             content_config=gcd_data_store.DataStore.ContentConfig.NO_CONTENT,
+            kms_key_name="kms_key_name_value",
+            acl_enabled=True,
+            identity_mapping_store="identity_mapping_store_value",
+            is_infobot_faq_data_store=True,
+            configurable_billing_approach=gcd_data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
         )
         response = client.update_data_store(request)
 
@@ -2973,6 +3047,14 @@ def test_update_data_store(request_type, transport: str = "grpc"):
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
     assert response.default_schema_id == "default_schema_id_value"
     assert response.content_config == gcd_data_store.DataStore.ContentConfig.NO_CONTENT
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.acl_enabled is True
+    assert response.identity_mapping_store == "identity_mapping_store_value"
+    assert response.is_infobot_faq_data_store is True
+    assert (
+        response.configurable_billing_approach
+        == gcd_data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE
+    )
 
 
 def test_update_data_store_non_empty_request_with_auto_populated_field():
@@ -2998,7 +3080,8 @@ def test_update_data_store_non_empty_request_with_auto_populated_field():
         client.update_data_store(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_store_service.UpdateDataStoreRequest()
+        request_msg = data_store_service.UpdateDataStoreRequest()
+        assert args[0] == request_msg
 
 
 def test_update_data_store_use_cached_wrapped_rpc():
@@ -3081,10 +3164,14 @@ async def test_update_data_store_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_data_store_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_store_service.UpdateDataStoreRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_store_service.UpdateDataStoreRequest(),
+        {},
+    ],
+)
+async def test_update_data_store_async(request_type, transport: str = "grpc_asyncio"):
     client = DataStoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3092,7 +3179,7 @@ async def test_update_data_store_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3107,6 +3194,11 @@ async def test_update_data_store_async(
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
                 default_schema_id="default_schema_id_value",
                 content_config=gcd_data_store.DataStore.ContentConfig.NO_CONTENT,
+                kms_key_name="kms_key_name_value",
+                acl_enabled=True,
+                identity_mapping_store="identity_mapping_store_value",
+                is_infobot_faq_data_store=True,
+                configurable_billing_approach=gcd_data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
             )
         )
         response = await client.update_data_store(request)
@@ -3125,11 +3217,14 @@ async def test_update_data_store_async(
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
     assert response.default_schema_id == "default_schema_id_value"
     assert response.content_config == gcd_data_store.DataStore.ContentConfig.NO_CONTENT
-
-
-@pytest.mark.asyncio
-async def test_update_data_store_async_from_dict():
-    await test_update_data_store_async(request_type=dict)
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.acl_enabled is True
+    assert response.identity_mapping_store == "identity_mapping_store_value"
+    assert response.is_infobot_faq_data_store is True
+    assert (
+        response.configurable_billing_approach
+        == gcd_data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE
+    )
 
 
 def test_update_data_store_field_headers():
@@ -3370,8 +3465,10 @@ def test_create_data_store_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "cmek_config_name",
             "create_advanced_site_search",
             "data_store_id",
+            "disable_cmek",
             "skip_default_schema_creation",
         )
     )
@@ -3438,8 +3535,10 @@ def test_create_data_store_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "cmekConfigName",
                 "createAdvancedSiteSearch",
                 "dataStoreId",
+                "disableCmek",
                 "skipDefaultSchemaCreation",
             )
         )
@@ -3944,6 +4043,9 @@ def test_list_data_stores_rest_pager(transport: str = "rest"):
 
         pager = client.list_data_stores(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, data_store.DataStore) for i in results)
@@ -4443,7 +4545,6 @@ def test_create_data_store_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.CreateDataStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -4464,7 +4565,6 @@ def test_get_data_store_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.GetDataStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -4485,7 +4585,6 @@ def test_list_data_stores_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.ListDataStoresRequest()
-
         assert args[0] == request_msg
 
 
@@ -4508,7 +4607,6 @@ def test_delete_data_store_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.DeleteDataStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -4531,7 +4629,6 @@ def test_update_data_store_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.UpdateDataStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -4572,7 +4669,6 @@ async def test_create_data_store_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.CreateDataStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -4596,6 +4692,11 @@ async def test_get_data_store_empty_call_grpc_asyncio():
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
                 default_schema_id="default_schema_id_value",
                 content_config=data_store.DataStore.ContentConfig.NO_CONTENT,
+                kms_key_name="kms_key_name_value",
+                acl_enabled=True,
+                identity_mapping_store="identity_mapping_store_value",
+                is_infobot_faq_data_store=True,
+                configurable_billing_approach=data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
             )
         )
         await client.get_data_store(request=None)
@@ -4604,7 +4705,6 @@ async def test_get_data_store_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.GetDataStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -4631,7 +4731,6 @@ async def test_list_data_stores_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.ListDataStoresRequest()
-
         assert args[0] == request_msg
 
 
@@ -4658,7 +4757,6 @@ async def test_delete_data_store_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.DeleteDataStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -4684,6 +4782,11 @@ async def test_update_data_store_empty_call_grpc_asyncio():
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
                 default_schema_id="default_schema_id_value",
                 content_config=gcd_data_store.DataStore.ContentConfig.NO_CONTENT,
+                kms_key_name="kms_key_name_value",
+                acl_enabled=True,
+                identity_mapping_store="identity_mapping_store_value",
+                is_infobot_faq_data_store=True,
+                configurable_billing_approach=gcd_data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
             )
         )
         await client.update_data_store(request=None)
@@ -4692,7 +4795,6 @@ async def test_update_data_store_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.UpdateDataStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -4751,6 +4853,10 @@ def test_create_data_store_rest_call_success(request_type):
         "default_schema_id": "default_schema_id_value",
         "content_config": 1,
         "create_time": {"seconds": 751, "nanos": 543},
+        "advanced_site_search_config": {
+            "disable_initial_index": True,
+            "disable_automatic_refresh": True,
+        },
         "language_info": {
             "language_code": "language_code_value",
             "normalized_language_code": "normalized_language_code_value",
@@ -4758,6 +4864,17 @@ def test_create_data_store_rest_call_success(request_type):
             "region": "region_value",
         },
         "natural_language_query_understanding_config": {"mode": 1},
+        "kms_key_name": "kms_key_name_value",
+        "cmek_config": {
+            "name": "name_value",
+            "kms_key": "kms_key_value",
+            "kms_key_version": "kms_key_version_value",
+            "state": 1,
+            "is_default": True,
+            "last_rotation_timestamp_micros": 3234,
+            "single_region_keys": [{"kms_key": "kms_key_value"}],
+            "notebooklm_state": 1,
+        },
         "billing_estimation": {
             "structured_data_size": 2152,
             "unstructured_data_size": 2379,
@@ -4766,6 +4883,7 @@ def test_create_data_store_rest_call_success(request_type):
             "unstructured_data_update_time": {},
             "website_data_update_time": {},
         },
+        "acl_enabled": True,
         "workspace_config": {
             "type_": 1,
             "dasher_customer_id": "dasher_customer_id_value",
@@ -4789,7 +4907,28 @@ def test_create_data_store_rest_call_success(request_type):
                     ],
                     "use_native_text": True,
                 },
-                "layout_parsing_config": {},
+                "layout_parsing_config": {
+                    "enable_table_annotation": True,
+                    "enable_image_annotation": True,
+                    "enable_llm_layout_parsing": True,
+                    "structured_content_types": [
+                        "structured_content_types_value1",
+                        "structured_content_types_value2",
+                    ],
+                    "exclude_html_elements": [
+                        "exclude_html_elements_value1",
+                        "exclude_html_elements_value2",
+                    ],
+                    "exclude_html_classes": [
+                        "exclude_html_classes_value1",
+                        "exclude_html_classes_value2",
+                    ],
+                    "exclude_html_ids": [
+                        "exclude_html_ids_value1",
+                        "exclude_html_ids_value2",
+                    ],
+                    "enable_get_processed_document": True,
+                },
             },
             "parsing_config_overrides": {},
         },
@@ -4798,7 +4937,38 @@ def test_create_data_store_rest_call_success(request_type):
             "json_schema": "json_schema_value",
             "name": "name_value",
         },
+        "healthcare_fhir_config": {
+            "enable_configurable_schema": True,
+            "enable_static_indexing_for_batch_ingestion": True,
+            "initial_filter_groups": [
+                "initial_filter_groups_value1",
+                "initial_filter_groups_value2",
+            ],
+        },
         "serving_config_data_store": {"disabled_for_serving": True},
+        "identity_mapping_store": "identity_mapping_store_value",
+        "is_infobot_faq_data_store": True,
+        "federated_search_config": {
+            "alloy_db_config": {
+                "alloydb_connection_config": {
+                    "instance": "instance_value",
+                    "database": "database_value",
+                    "user": "user_value",
+                    "password": "password_value",
+                    "auth_mode": 1,
+                    "enable_psvs": True,
+                },
+                "alloydb_ai_nl_config": {"nl_config_id": "nl_config_id_value"},
+                "returned_fields": ["returned_fields_value1", "returned_fields_value2"],
+            },
+            "third_party_oauth_config": {
+                "app_name": "app_name_value",
+                "instance_name": "instance_name_value",
+            },
+            "notebooklm_config": {"search_config": "search_config_value"},
+        },
+        "configurable_billing_approach": 1,
+        "configurable_billing_approach_update_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5005,6 +5175,11 @@ def test_get_data_store_rest_call_success(request_type):
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             default_schema_id="default_schema_id_value",
             content_config=data_store.DataStore.ContentConfig.NO_CONTENT,
+            kms_key_name="kms_key_name_value",
+            acl_enabled=True,
+            identity_mapping_store="identity_mapping_store_value",
+            is_infobot_faq_data_store=True,
+            configurable_billing_approach=data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
         )
 
         # Wrap the value into a proper Response obj
@@ -5027,6 +5202,14 @@ def test_get_data_store_rest_call_success(request_type):
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
     assert response.default_schema_id == "default_schema_id_value"
     assert response.content_config == data_store.DataStore.ContentConfig.NO_CONTENT
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.acl_enabled is True
+    assert response.identity_mapping_store == "identity_mapping_store_value"
+    assert response.is_infobot_faq_data_store is True
+    assert (
+        response.configurable_billing_approach
+        == data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5408,6 +5591,10 @@ def test_update_data_store_rest_call_success(request_type):
         "default_schema_id": "default_schema_id_value",
         "content_config": 1,
         "create_time": {"seconds": 751, "nanos": 543},
+        "advanced_site_search_config": {
+            "disable_initial_index": True,
+            "disable_automatic_refresh": True,
+        },
         "language_info": {
             "language_code": "language_code_value",
             "normalized_language_code": "normalized_language_code_value",
@@ -5415,6 +5602,17 @@ def test_update_data_store_rest_call_success(request_type):
             "region": "region_value",
         },
         "natural_language_query_understanding_config": {"mode": 1},
+        "kms_key_name": "kms_key_name_value",
+        "cmek_config": {
+            "name": "name_value",
+            "kms_key": "kms_key_value",
+            "kms_key_version": "kms_key_version_value",
+            "state": 1,
+            "is_default": True,
+            "last_rotation_timestamp_micros": 3234,
+            "single_region_keys": [{"kms_key": "kms_key_value"}],
+            "notebooklm_state": 1,
+        },
         "billing_estimation": {
             "structured_data_size": 2152,
             "unstructured_data_size": 2379,
@@ -5423,6 +5621,7 @@ def test_update_data_store_rest_call_success(request_type):
             "unstructured_data_update_time": {},
             "website_data_update_time": {},
         },
+        "acl_enabled": True,
         "workspace_config": {
             "type_": 1,
             "dasher_customer_id": "dasher_customer_id_value",
@@ -5446,7 +5645,28 @@ def test_update_data_store_rest_call_success(request_type):
                     ],
                     "use_native_text": True,
                 },
-                "layout_parsing_config": {},
+                "layout_parsing_config": {
+                    "enable_table_annotation": True,
+                    "enable_image_annotation": True,
+                    "enable_llm_layout_parsing": True,
+                    "structured_content_types": [
+                        "structured_content_types_value1",
+                        "structured_content_types_value2",
+                    ],
+                    "exclude_html_elements": [
+                        "exclude_html_elements_value1",
+                        "exclude_html_elements_value2",
+                    ],
+                    "exclude_html_classes": [
+                        "exclude_html_classes_value1",
+                        "exclude_html_classes_value2",
+                    ],
+                    "exclude_html_ids": [
+                        "exclude_html_ids_value1",
+                        "exclude_html_ids_value2",
+                    ],
+                    "enable_get_processed_document": True,
+                },
             },
             "parsing_config_overrides": {},
         },
@@ -5455,7 +5675,38 @@ def test_update_data_store_rest_call_success(request_type):
             "json_schema": "json_schema_value",
             "name": "name_value",
         },
+        "healthcare_fhir_config": {
+            "enable_configurable_schema": True,
+            "enable_static_indexing_for_batch_ingestion": True,
+            "initial_filter_groups": [
+                "initial_filter_groups_value1",
+                "initial_filter_groups_value2",
+            ],
+        },
         "serving_config_data_store": {"disabled_for_serving": True},
+        "identity_mapping_store": "identity_mapping_store_value",
+        "is_infobot_faq_data_store": True,
+        "federated_search_config": {
+            "alloy_db_config": {
+                "alloydb_connection_config": {
+                    "instance": "instance_value",
+                    "database": "database_value",
+                    "user": "user_value",
+                    "password": "password_value",
+                    "auth_mode": 1,
+                    "enable_psvs": True,
+                },
+                "alloydb_ai_nl_config": {"nl_config_id": "nl_config_id_value"},
+                "returned_fields": ["returned_fields_value1", "returned_fields_value2"],
+            },
+            "third_party_oauth_config": {
+                "app_name": "app_name_value",
+                "instance_name": "instance_name_value",
+            },
+            "notebooklm_config": {"search_config": "search_config_value"},
+        },
+        "configurable_billing_approach": 1,
+        "configurable_billing_approach_update_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5536,6 +5787,11 @@ def test_update_data_store_rest_call_success(request_type):
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             default_schema_id="default_schema_id_value",
             content_config=gcd_data_store.DataStore.ContentConfig.NO_CONTENT,
+            kms_key_name="kms_key_name_value",
+            acl_enabled=True,
+            identity_mapping_store="identity_mapping_store_value",
+            is_infobot_faq_data_store=True,
+            configurable_billing_approach=gcd_data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
         )
 
         # Wrap the value into a proper Response obj
@@ -5558,6 +5814,14 @@ def test_update_data_store_rest_call_success(request_type):
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
     assert response.default_schema_id == "default_schema_id_value"
     assert response.content_config == gcd_data_store.DataStore.ContentConfig.NO_CONTENT
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.acl_enabled is True
+    assert response.identity_mapping_store == "identity_mapping_store_value"
+    assert response.is_infobot_faq_data_store is True
+    assert (
+        response.configurable_billing_approach
+        == gcd_data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5854,7 +6118,6 @@ def test_create_data_store_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.CreateDataStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -5874,7 +6137,6 @@ def test_get_data_store_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.GetDataStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -5894,7 +6156,6 @@ def test_list_data_stores_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.ListDataStoresRequest()
-
         assert args[0] == request_msg
 
 
@@ -5916,7 +6177,6 @@ def test_delete_data_store_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.DeleteDataStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -5938,7 +6198,6 @@ def test_update_data_store_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.UpdateDataStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -6041,7 +6300,11 @@ def test_data_store_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -6067,7 +6330,11 @@ def test_data_store_service_auth_adc():
         DataStoreServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id=None,
         )
 
@@ -6087,7 +6354,11 @@ def test_data_store_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -6140,7 +6411,11 @@ def test_data_store_service_transport_create_channel(transport_class, grpc_helpe
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=["1", "2"],
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
@@ -6448,10 +6723,33 @@ def test_data_store_service_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_collection_path():
+def test_cmek_config_path():
     project = "squid"
     location = "clam"
-    collection = "whelk"
+    expected = "projects/{project}/locations/{location}/cmekConfig".format(
+        project=project,
+        location=location,
+    )
+    actual = DataStoreServiceClient.cmek_config_path(project, location)
+    assert expected == actual
+
+
+def test_parse_cmek_config_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+    }
+    path = DataStoreServiceClient.cmek_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataStoreServiceClient.parse_cmek_config_path(path)
+    assert expected == actual
+
+
+def test_collection_path():
+    project = "oyster"
+    location = "nudibranch"
+    collection = "cuttlefish"
     expected = (
         "projects/{project}/locations/{location}/collections/{collection}".format(
             project=project,
@@ -6465,9 +6763,9 @@ def test_collection_path():
 
 def test_parse_collection_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "collection": "nudibranch",
+        "project": "mussel",
+        "location": "winkle",
+        "collection": "nautilus",
     }
     path = DataStoreServiceClient.collection_path(**expected)
 
@@ -6476,10 +6774,75 @@ def test_parse_collection_path():
     assert expected == actual
 
 
-def test_data_store_path():
+def test_crypto_keys_path():
+    project = "scallop"
+    location = "abalone"
+    key_ring = "squid"
+    crypto_key = "clam"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = DataStoreServiceClient.crypto_keys_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_keys_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "key_ring": "oyster",
+        "crypto_key": "nudibranch",
+    }
+    path = DataStoreServiceClient.crypto_keys_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataStoreServiceClient.parse_crypto_keys_path(path)
+    assert expected == actual
+
+
+def test_crypto_key_versions_path():
     project = "cuttlefish"
     location = "mussel"
-    data_store = "winkle"
+    key_ring = "winkle"
+    crypto_key = "nautilus"
+    crypto_key_version = "scallop"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+        crypto_key_version=crypto_key_version,
+    )
+    actual = DataStoreServiceClient.crypto_key_versions_path(
+        project, location, key_ring, crypto_key, crypto_key_version
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_versions_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "key_ring": "clam",
+        "crypto_key": "whelk",
+        "crypto_key_version": "octopus",
+    }
+    path = DataStoreServiceClient.crypto_key_versions_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataStoreServiceClient.parse_crypto_key_versions_path(path)
+    assert expected == actual
+
+
+def test_data_store_path():
+    project = "oyster"
+    location = "nudibranch"
+    data_store = "cuttlefish"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}".format(
         project=project,
         location=location,
@@ -6491,9 +6854,9 @@ def test_data_store_path():
 
 def test_parse_data_store_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "data_store": "abalone",
+        "project": "mussel",
+        "location": "winkle",
+        "data_store": "nautilus",
     }
     path = DataStoreServiceClient.data_store_path(**expected)
 
@@ -6503,9 +6866,9 @@ def test_parse_data_store_path():
 
 
 def test_document_processing_config_path():
-    project = "squid"
-    location = "clam"
-    data_store = "whelk"
+    project = "scallop"
+    location = "abalone"
+    data_store = "squid"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/documentProcessingConfig".format(
         project=project,
         location=location,
@@ -6519,9 +6882,9 @@ def test_document_processing_config_path():
 
 def test_parse_document_processing_config_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "data_store": "nudibranch",
+        "project": "clam",
+        "location": "whelk",
+        "data_store": "octopus",
     }
     path = DataStoreServiceClient.document_processing_config_path(**expected)
 
@@ -6530,11 +6893,39 @@ def test_parse_document_processing_config_path():
     assert expected == actual
 
 
+def test_identity_mapping_store_path():
+    project = "oyster"
+    location = "nudibranch"
+    identity_mapping_store = "cuttlefish"
+    expected = "projects/{project}/locations/{location}/identityMappingStores/{identity_mapping_store}".format(
+        project=project,
+        location=location,
+        identity_mapping_store=identity_mapping_store,
+    )
+    actual = DataStoreServiceClient.identity_mapping_store_path(
+        project, location, identity_mapping_store
+    )
+    assert expected == actual
+
+
+def test_parse_identity_mapping_store_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "identity_mapping_store": "nautilus",
+    }
+    path = DataStoreServiceClient.identity_mapping_store_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataStoreServiceClient.parse_identity_mapping_store_path(path)
+    assert expected == actual
+
+
 def test_schema_path():
-    project = "cuttlefish"
-    location = "mussel"
-    data_store = "winkle"
-    schema = "nautilus"
+    project = "scallop"
+    location = "abalone"
+    data_store = "squid"
+    schema = "clam"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/schemas/{schema}".format(
         project=project,
         location=location,
@@ -6547,10 +6938,10 @@ def test_schema_path():
 
 def test_parse_schema_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "data_store": "squid",
-        "schema": "clam",
+        "project": "whelk",
+        "location": "octopus",
+        "data_store": "oyster",
+        "schema": "nudibranch",
     }
     path = DataStoreServiceClient.schema_path(**expected)
 
@@ -6560,7 +6951,7 @@ def test_parse_schema_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6570,7 +6961,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "mussel",
     }
     path = DataStoreServiceClient.common_billing_account_path(**expected)
 
@@ -6580,7 +6971,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -6590,7 +6981,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "nautilus",
     }
     path = DataStoreServiceClient.common_folder_path(**expected)
 
@@ -6600,7 +6991,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6610,7 +7001,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "abalone",
     }
     path = DataStoreServiceClient.common_organization_path(**expected)
 
@@ -6620,7 +7011,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6630,7 +7021,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "clam",
     }
     path = DataStoreServiceClient.common_project_path(**expected)
 
@@ -6640,8 +7031,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6652,8 +7043,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = DataStoreServiceClient.common_location_path(**expected)
 

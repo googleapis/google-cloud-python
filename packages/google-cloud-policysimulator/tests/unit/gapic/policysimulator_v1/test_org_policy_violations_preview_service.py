@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -115,6 +116,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1065,7 +1081,14 @@ def test_org_policy_violations_preview_service_client_get_mtls_endpoint_and_cert
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1112,7 +1135,14 @@ def test_org_policy_violations_preview_service_client_get_mtls_endpoint_and_cert
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1456,8 +1486,8 @@ def test_org_policy_violations_preview_service_client_create_channel_credentials
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest,
-        dict,
+        gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest(),
+        {},
     ],
 )
 def test_list_org_policy_violations_previews(request_type, transport: str = "grpc"):
@@ -1468,7 +1498,7 @@ def test_list_org_policy_violations_previews(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1517,10 +1547,11 @@ def test_list_org_policy_violations_previews_non_empty_request_with_auto_populat
         client.list_org_policy_violations_previews(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest(
+        request_msg = gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_org_policy_violations_previews_use_cached_wrapped_rpc():
@@ -1606,9 +1637,15 @@ async def test_list_org_policy_violations_previews_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest(),
+        {},
+    ],
+)
 async def test_list_org_policy_violations_previews_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrgPolicyViolationsPreviewServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1617,7 +1654,7 @@ async def test_list_org_policy_violations_previews_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1640,11 +1677,6 @@ async def test_list_org_policy_violations_previews_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOrgPolicyViolationsPreviewsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_org_policy_violations_previews_async_from_dict():
-    await test_list_org_policy_violations_previews_async(request_type=dict)
 
 
 def test_list_org_policy_violations_previews_field_headers():
@@ -1851,6 +1883,9 @@ def test_list_org_policy_violations_previews_pager(transport_name: str = "grpc")
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1945,6 +1980,8 @@ async def test_list_org_policy_violations_previews_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2007,8 +2044,8 @@ async def test_list_org_policy_violations_previews_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest,
-        dict,
+        gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest(),
+        {},
     ],
 )
 def test_get_org_policy_violations_preview(request_type, transport: str = "grpc"):
@@ -2019,7 +2056,7 @@ def test_get_org_policy_violations_preview(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2073,9 +2110,10 @@ def test_get_org_policy_violations_preview_non_empty_request_with_auto_populated
         client.get_org_policy_violations_preview(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest(
+        request_msg = gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_org_policy_violations_preview_use_cached_wrapped_rpc():
@@ -2161,9 +2199,15 @@ async def test_get_org_policy_violations_preview_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest(),
+        {},
+    ],
+)
 async def test_get_org_policy_violations_preview_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrgPolicyViolationsPreviewServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2172,7 +2216,7 @@ async def test_get_org_policy_violations_preview_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2201,11 +2245,6 @@ async def test_get_org_policy_violations_preview_async(
     assert response.state == gcp_orgpolicy.PreviewState.PREVIEW_PENDING
     assert response.violations_count == 1744
     assert response.custom_constraints == ["custom_constraints_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_org_policy_violations_preview_async_from_dict():
-    await test_get_org_policy_violations_preview_async(request_type=dict)
 
 
 def test_get_org_policy_violations_preview_field_headers():
@@ -2362,8 +2401,8 @@ async def test_get_org_policy_violations_preview_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest,
-        dict,
+        gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest(),
+        {},
     ],
 )
 def test_create_org_policy_violations_preview(request_type, transport: str = "grpc"):
@@ -2374,7 +2413,7 @@ def test_create_org_policy_violations_preview(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2420,10 +2459,11 @@ def test_create_org_policy_violations_preview_non_empty_request_with_auto_popula
         client.create_org_policy_violations_preview(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest(
+        request_msg = gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest(
             parent="parent_value",
             org_policy_violations_preview_id="org_policy_violations_preview_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_org_policy_violations_preview_use_cached_wrapped_rpc():
@@ -2519,9 +2559,15 @@ async def test_create_org_policy_violations_preview_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest(),
+        {},
+    ],
+)
 async def test_create_org_policy_violations_preview_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrgPolicyViolationsPreviewServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2530,7 +2576,7 @@ async def test_create_org_policy_violations_preview_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2550,11 +2596,6 @@ async def test_create_org_policy_violations_preview_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_org_policy_violations_preview_async_from_dict():
-    await test_create_org_policy_violations_preview_async(request_type=dict)
 
 
 def test_create_org_policy_violations_preview_field_headers():
@@ -2739,8 +2780,8 @@ async def test_create_org_policy_violations_preview_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcp_orgpolicy.ListOrgPolicyViolationsRequest,
-        dict,
+        gcp_orgpolicy.ListOrgPolicyViolationsRequest(),
+        {},
     ],
 )
 def test_list_org_policy_violations(request_type, transport: str = "grpc"):
@@ -2751,7 +2792,7 @@ def test_list_org_policy_violations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2800,10 +2841,11 @@ def test_list_org_policy_violations_non_empty_request_with_auto_populated_field(
         client.list_org_policy_violations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcp_orgpolicy.ListOrgPolicyViolationsRequest(
+        request_msg = gcp_orgpolicy.ListOrgPolicyViolationsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_org_policy_violations_use_cached_wrapped_rpc():
@@ -2889,9 +2931,15 @@ async def test_list_org_policy_violations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcp_orgpolicy.ListOrgPolicyViolationsRequest(),
+        {},
+    ],
+)
 async def test_list_org_policy_violations_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcp_orgpolicy.ListOrgPolicyViolationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrgPolicyViolationsPreviewServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2900,7 +2948,7 @@ async def test_list_org_policy_violations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2923,11 +2971,6 @@ async def test_list_org_policy_violations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOrgPolicyViolationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_org_policy_violations_async_from_dict():
-    await test_list_org_policy_violations_async(request_type=dict)
 
 
 def test_list_org_policy_violations_field_headers():
@@ -3134,6 +3177,9 @@ def test_list_org_policy_violations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, gcp_orgpolicy.OrgPolicyViolation) for i in results)
@@ -3226,6 +3272,8 @@ async def test_list_org_policy_violations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3541,6 +3589,9 @@ def test_list_org_policy_violations_previews_rest_pager(transport: str = "rest")
         sample_request = {"parent": "organizations/sample1/locations/sample2"}
 
         pager = client.list_org_policy_violations_previews(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -4207,6 +4258,9 @@ def test_list_org_policy_violations_rest_pager(transport: str = "rest"):
 
         pager = client.list_org_policy_violations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, gcp_orgpolicy.OrgPolicyViolation) for i in results)
@@ -4341,7 +4395,6 @@ def test_list_org_policy_violations_previews_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4364,7 +4417,6 @@ def test_get_org_policy_violations_preview_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -4387,7 +4439,6 @@ def test_create_org_policy_violations_preview_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -4410,7 +4461,6 @@ def test_list_org_policy_violations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcp_orgpolicy.ListOrgPolicyViolationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4453,7 +4503,6 @@ async def test_list_org_policy_violations_previews_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4485,7 +4534,6 @@ async def test_get_org_policy_violations_preview_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -4512,7 +4560,6 @@ async def test_create_org_policy_violations_preview_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -4541,7 +4588,6 @@ async def test_list_org_policy_violations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcp_orgpolicy.ListOrgPolicyViolationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5410,7 +5456,6 @@ def test_list_org_policy_violations_previews_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5432,7 +5477,6 @@ def test_get_org_policy_violations_preview_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -5454,7 +5498,6 @@ def test_create_org_policy_violations_preview_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -5476,7 +5519,6 @@ def test_list_org_policy_violations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcp_orgpolicy.ListOrgPolicyViolationsRequest()
-
         assert args[0] == request_msg
 
 

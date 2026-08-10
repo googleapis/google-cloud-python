@@ -24,8 +24,7 @@ import threading
 import uuid
 from typing import Any, cast
 
-from google.cloud.ndb import _eventloop
-from google.cloud.ndb import exceptions
+from google.cloud.ndb import _eventloop, exceptions
 from google.cloud.ndb import key as key_module
 
 

@@ -103,6 +103,12 @@ class SecureSourceManagerAsyncClient:
     )
     hook_path = staticmethod(SecureSourceManagerClient.hook_path)
     parse_hook_path = staticmethod(SecureSourceManagerClient.parse_hook_path)
+    inspect_template_path = staticmethod(
+        SecureSourceManagerClient.inspect_template_path
+    )
+    parse_inspect_template_path = staticmethod(
+        SecureSourceManagerClient.parse_inspect_template_path
+    )
     instance_path = staticmethod(SecureSourceManagerClient.instance_path)
     parse_instance_path = staticmethod(SecureSourceManagerClient.parse_instance_path)
     issue_path = staticmethod(SecureSourceManagerClient.issue_path)
@@ -124,6 +130,10 @@ class SecureSourceManagerAsyncClient:
     repository_path = staticmethod(SecureSourceManagerClient.repository_path)
     parse_repository_path = staticmethod(
         SecureSourceManagerClient.parse_repository_path
+    )
+    service_account_path = staticmethod(SecureSourceManagerClient.service_account_path)
+    parse_service_account_path = staticmethod(
+        SecureSourceManagerClient.parse_service_account_path
     )
     service_attachment_path = staticmethod(
         SecureSourceManagerClient.service_attachment_path
@@ -7894,9 +7904,7 @@ class SecureSourceManagerAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("SecureSourceManagerAsyncClient",)

@@ -28,6 +28,8 @@ from google.cloud.ces_v1beta.types import evaluation as gcc_evaluation
 __protobuf__ = proto.module(
     package="google.cloud.ces.v1beta",
     manifest={
+        "RunEvaluationResultMetricsRequest",
+        "RunEvaluationResultMetricsResponse",
         "RunEvaluationResponse",
         "RunEvaluationOperationMetadata",
         "GenerateEvaluationOperationMetadata",
@@ -75,10 +77,48 @@ __protobuf__ = proto.module(
         "ExportOptions",
         "ExportEvaluationsRequest",
         "ExportEvaluationsResponse",
+        "ExportEvaluationResultsRequest",
         "ExportEvaluationResultsResponse",
+        "ExportEvaluationRunsRequest",
         "ExportEvaluationRunsResponse",
+        "ExportEvaluationRunsOperationMetadata",
+        "ExportEvaluationResultsOperationMetadata",
+        "RunEvaluationResultMetricsOperationMetadata",
     },
 )
+
+
+class RunEvaluationResultMetricsRequest(proto.Message):
+    r"""Request message for
+    [EvaluationService.RunEvaluationResultMetrics][google.cloud.ces.v1beta.EvaluationService.RunEvaluationResultMetrics].
+
+    Attributes:
+        evaluation_result_id (str):
+            Required. The evaluation result to run metrics for. Format:
+            ``projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}/results/{evaluation_result_id}``
+    """
+
+    evaluation_result_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class RunEvaluationResultMetricsResponse(proto.Message):
+    r"""Response message for
+    [EvaluationService.RunEvaluationResultMetrics][google.cloud.ces.v1beta.EvaluationService.RunEvaluationResultMetrics].
+
+    Attributes:
+        status (google.cloud.ces_v1beta.types.EvaluationResult.Outcome):
+            Output only. The status of the evaluation
+            result metrics calculation.
+    """
+
+    status: gcc_evaluation.EvaluationResult.Outcome = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=gcc_evaluation.EvaluationResult.Outcome,
+    )
 
 
 class RunEvaluationResponse(proto.Message):
@@ -214,7 +254,26 @@ class GenerateEvaluationRequest(proto.Message):
             Optional. Indicate the source of the
             conversation. If not set, all sources will be
             searched.
+        evaluation_type (google.cloud.ces_v1beta.types.GenerateEvaluationRequest.EvaluationType):
+            Optional. The type of evaluation to generate.
+            Defaults to GOLDEN if unspecified.
     """
+
+    class EvaluationType(proto.Enum):
+        r"""The type of evaluation to generate.
+
+        Values:
+            EVALUATION_TYPE_UNSPECIFIED (0):
+                Unspecified type. Defaults to GOLDEN.
+            GOLDEN (1):
+                Golden evaluation.
+            SCENARIO (2):
+                Scenario evaluation.
+        """
+
+        EVALUATION_TYPE_UNSPECIFIED = 0
+        GOLDEN = 1
+        SCENARIO = 2
 
     conversation: str = proto.Field(
         proto.STRING,
@@ -224,6 +283,11 @@ class GenerateEvaluationRequest(proto.Message):
         proto.ENUM,
         number=2,
         enum=gcc_conversation.Conversation.Source,
+    )
+    evaluation_type: EvaluationType = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=EvaluationType,
     )
 
 
@@ -1677,6 +1741,38 @@ class ExportEvaluationsResponse(proto.Message):
     )
 
 
+class ExportEvaluationResultsRequest(proto.Message):
+    r"""Request message for
+    [EvaluationService.ExportEvaluationResults][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationResults].
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the evaluation to export
+            evaluation results from. Format:
+            ``projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}``
+        names (MutableSequence[str]):
+            Required. The resource names of the
+            evaluation results to export.
+        export_options (google.cloud.ces_v1beta.types.ExportOptions):
+            Optional. The export options for the
+            evaluation results.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    export_options: "ExportOptions" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ExportOptions",
+    )
+
+
 class ExportEvaluationResultsResponse(proto.Message):
     r"""Response message for
     [EvaluationService.ExportEvaluationResults][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationResults].
@@ -1711,6 +1807,38 @@ class ExportEvaluationResultsResponse(proto.Message):
         proto.STRING,
         number=2,
         oneof="evaluation_results",
+    )
+
+
+class ExportEvaluationRunsRequest(proto.Message):
+    r"""Request message for
+    [EvaluationService.ExportEvaluationRuns][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationRuns].
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the app to export evaluation
+            runs from. Format:
+            ``projects/{project}/locations/{location}/apps/{app}``
+        names (MutableSequence[str]):
+            Required. The resource names of the
+            evaluation runs to export.
+        export_options (google.cloud.ces_v1beta.types.ExportOptions):
+            Optional. The export options for the
+            evaluation runs.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    export_options: "ExportOptions" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ExportOptions",
     )
 
 
@@ -1749,6 +1877,27 @@ class ExportEvaluationRunsResponse(proto.Message):
         number=2,
         oneof="evaluation_runs",
     )
+
+
+class ExportEvaluationRunsOperationMetadata(proto.Message):
+    r"""Operation metadata for
+    [EvaluationService.ExportEvaluationRuns][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationRuns].
+
+    """
+
+
+class ExportEvaluationResultsOperationMetadata(proto.Message):
+    r"""Operation metadata for
+    [EvaluationService.ExportEvaluationResults][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationResults].
+
+    """
+
+
+class RunEvaluationResultMetricsOperationMetadata(proto.Message):
+    r"""Operation metadata for
+    [EvaluationService.RunEvaluationResultMetrics][google.cloud.ces.v1beta.EvaluationService.RunEvaluationResultMetrics].
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -105,6 +106,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -989,7 +1005,14 @@ def test_dashboard_chart_service_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1036,7 +1059,14 @@ def test_dashboard_chart_service_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1376,8 +1406,8 @@ def test_dashboard_chart_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        dashboard_chart.GetDashboardChartRequest,
-        dict,
+        dashboard_chart.GetDashboardChartRequest(),
+        {},
     ],
 )
 def test_get_dashboard_chart(request_type, transport: str = "grpc"):
@@ -1388,7 +1418,7 @@ def test_get_dashboard_chart(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1448,9 +1478,10 @@ def test_get_dashboard_chart_non_empty_request_with_auto_populated_field():
         client.get_dashboard_chart(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dashboard_chart.GetDashboardChartRequest(
+        request_msg = dashboard_chart.GetDashboardChartRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_dashboard_chart_use_cached_wrapped_rpc():
@@ -1535,10 +1566,14 @@ async def test_get_dashboard_chart_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_dashboard_chart_async(
-    transport: str = "grpc_asyncio",
-    request_type=dashboard_chart.GetDashboardChartRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dashboard_chart.GetDashboardChartRequest(),
+        {},
+    ],
+)
+async def test_get_dashboard_chart_async(request_type, transport: str = "grpc_asyncio"):
     client = DashboardChartServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1546,7 +1581,7 @@ async def test_get_dashboard_chart_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1581,11 +1616,6 @@ async def test_get_dashboard_chart_async(
     assert response.tile_type == dashboard_chart.TileType.TILE_TYPE_VISUALIZATION
     assert response.etag == "etag_value"
     assert response.tokens == ["tokens_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_dashboard_chart_async_from_dict():
-    await test_get_dashboard_chart_async(request_type=dict)
 
 
 def test_get_dashboard_chart_field_headers():
@@ -1742,8 +1772,8 @@ async def test_get_dashboard_chart_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dashboard_chart.BatchGetDashboardChartsRequest,
-        dict,
+        dashboard_chart.BatchGetDashboardChartsRequest(),
+        {},
     ],
 )
 def test_batch_get_dashboard_charts(request_type, transport: str = "grpc"):
@@ -1754,7 +1784,7 @@ def test_batch_get_dashboard_charts(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1799,9 +1829,10 @@ def test_batch_get_dashboard_charts_non_empty_request_with_auto_populated_field(
         client.batch_get_dashboard_charts(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dashboard_chart.BatchGetDashboardChartsRequest(
+        request_msg = dashboard_chart.BatchGetDashboardChartsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_get_dashboard_charts_use_cached_wrapped_rpc():
@@ -1887,9 +1918,15 @@ async def test_batch_get_dashboard_charts_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dashboard_chart.BatchGetDashboardChartsRequest(),
+        {},
+    ],
+)
 async def test_batch_get_dashboard_charts_async(
-    transport: str = "grpc_asyncio",
-    request_type=dashboard_chart.BatchGetDashboardChartsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DashboardChartServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1898,7 +1935,7 @@ async def test_batch_get_dashboard_charts_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1918,11 +1955,6 @@ async def test_batch_get_dashboard_charts_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dashboard_chart.BatchGetDashboardChartsResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_get_dashboard_charts_async_from_dict():
-    await test_batch_get_dashboard_charts_async(request_type=dict)
 
 
 def test_batch_get_dashboard_charts_field_headers():
@@ -2607,7 +2639,6 @@ def test_get_dashboard_chart_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboard_chart.GetDashboardChartRequest()
-
         assert args[0] == request_msg
 
 
@@ -2630,7 +2661,6 @@ def test_batch_get_dashboard_charts_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboard_chart.BatchGetDashboardChartsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2679,7 +2709,6 @@ async def test_get_dashboard_chart_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboard_chart.GetDashboardChartRequest()
-
         assert args[0] == request_msg
 
 
@@ -2706,7 +2735,6 @@ async def test_batch_get_dashboard_charts_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboard_chart.BatchGetDashboardChartsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3293,7 +3321,6 @@ def test_get_dashboard_chart_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboard_chart.GetDashboardChartRequest()
-
         assert args[0] == request_msg
 
 
@@ -3315,7 +3342,6 @@ def test_batch_get_dashboard_charts_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboard_chart.BatchGetDashboardChartsRequest()
-
         assert args[0] == request_msg
 
 

@@ -35,8 +35,7 @@ class StreamedResultSet(object):
         instances.
 
     :type source: :class:`~google.cloud.spanner_v1.snapshot.Snapshot`
-    :param source: Deprecated. Snapshot from which the result set was fetched.
-    """
+    :param source: Deprecated. Snapshot from which the result set was fetched."""
 
     def __init__(
         self,
@@ -117,16 +116,36 @@ class StreamedResultSet(object):
         decoders = self._decoders
         width = len(self.fields)
         index = len(self._current_row)
-        for value in values:
-            if self._lazy_decode:
-                self._current_row.append(value)
-            else:
-                self._current_row.append(_parse_nullable(value, decoders[index]))
-            index += 1
-            if index == width:
-                self._rows.append(self._current_row)
-                self._current_row = []
-                index = 0
+        current_row = self._current_row
+        rows = self._rows
+        current_row_append = current_row.append
+        rows_append = rows.append
+        if self._lazy_decode:
+            for value in values:
+                current_row_append(value)
+                index += 1
+                if index == width:
+                    rows_append(current_row)
+                    current_row = []
+                    current_row_append = current_row.append
+                    index = 0
+        else:
+            for value in values:
+                # Note: We manually check value.HasField("null_value") here instead of
+                # wrapping every decoder in _parse_nullable to avoid the overhead of
+                # an extra Python function call layer for every cell value decoded in this loop.
+                # If the nullable check logic is updated in _parse_nullable, update this check.
+                if value.HasField("null_value"):
+                    current_row_append(None)
+                else:
+                    current_row_append(decoders[index](value))
+                index += 1
+                if index == width:
+                    rows_append(current_row)
+                    current_row = []
+                    current_row_append = current_row.append
+                    index = 0
+        self._current_row = current_row
 
     def _consume_next(self):
         """Consume the next partial result set from the stream.

@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-support/#history
 
+## [0.5.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.5.1...google-cloud-support-v0.5.2) (2026-08-06)
+
+
+### Features
+
+* update googleapis and regenerate ([#17933](https://github.com/googleapis/google-cloud-python/issues/17933)) ([f7a23a0](https://github.com/googleapis/google-cloud-python/commit/f7a23a0ffe3fac77bf9f53bc74aa3cea4ef8051e))
+
+## [0.5.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.5.0...google-cloud-support-v0.5.1) (2026-07-07)
+
+
+### Features
+
+* update googleapis and regenerate ([#17635](https://github.com/googleapis/google-cloud-python/issues/17635)) ([9638879](https://github.com/googleapis/google-cloud-python/commit/96388796440b226440f885c04ce565782b1d9190))
+
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.4.0...google-cloud-support-v0.5.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-s packages (#17086) ([40b522a8473dec7ade45113ddd44ccd960803c45](https://github.com/googleapis/google-cloud-python/commit/40b522a8473dec7ade45113ddd44ccd960803c45))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.3.0...google-cloud-support-v0.4.0) (2026-03-26)
 
 

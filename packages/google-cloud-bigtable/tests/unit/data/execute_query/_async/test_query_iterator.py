@@ -14,6 +14,7 @@
 
 import concurrent.futures
 import gc
+from unittest import mock
 
 import pytest
 
@@ -30,13 +31,6 @@ from ..sql_helpers import (
     int_val,
     metadata,
 )
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock  # type: ignore
-
 
 __CROSS_SYNC_OUTPUT__ = (
     "tests.unit.data.execute_query._sync_autogen.test_query_iterator"

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -102,6 +103,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -839,7 +855,14 @@ def test_disks_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -886,7 +909,14 @@ def test_disks_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1781,6 +1811,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.aggregated_list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         assert isinstance(pager.get("a"), compute.DisksScopedList)
         assert pager.get("h") is None
@@ -4591,6 +4624,9 @@ def test_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1", "zone": "sample2"}
 
         pager = client.list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -9954,6 +9990,9 @@ def test_get_rest_call_success(request_type):
             source_image_id="source_image_id_value",
             source_instant_snapshot="source_instant_snapshot_value",
             source_instant_snapshot_id="source_instant_snapshot_id_value",
+            source_machine_image="source_machine_image_value",
+            source_machine_image_disk_device_name="source_machine_image_disk_device_name_value",
+            source_machine_image_id="source_machine_image_id_value",
             source_snapshot="source_snapshot_value",
             source_snapshot_id="source_snapshot_id_value",
             source_storage_object="source_storage_object_value",
@@ -10023,6 +10062,12 @@ def test_get_rest_call_success(request_type):
     assert response.source_image_id == "source_image_id_value"
     assert response.source_instant_snapshot == "source_instant_snapshot_value"
     assert response.source_instant_snapshot_id == "source_instant_snapshot_id_value"
+    assert response.source_machine_image == "source_machine_image_value"
+    assert (
+        response.source_machine_image_disk_device_name
+        == "source_machine_image_disk_device_name_value"
+    )
+    assert response.source_machine_image_id == "source_machine_image_id_value"
     assert response.source_snapshot == "source_snapshot_value"
     assert response.source_snapshot_id == "source_snapshot_id_value"
     assert response.source_storage_object == "source_storage_object_value"
@@ -10317,6 +10362,10 @@ def test_insert_rest_call_success(request_type):
         "source_image_id": "source_image_id_value",
         "source_instant_snapshot": "source_instant_snapshot_value",
         "source_instant_snapshot_id": "source_instant_snapshot_id_value",
+        "source_machine_image": "source_machine_image_value",
+        "source_machine_image_disk_device_name": "source_machine_image_disk_device_name_value",
+        "source_machine_image_encryption_key": {},
+        "source_machine_image_id": "source_machine_image_id_value",
         "source_snapshot": "source_snapshot_value",
         "source_snapshot_encryption_key": {},
         "source_snapshot_id": "source_snapshot_id_value",
@@ -12611,6 +12660,10 @@ def test_update_rest_call_success(request_type):
         "source_image_id": "source_image_id_value",
         "source_instant_snapshot": "source_instant_snapshot_value",
         "source_instant_snapshot_id": "source_instant_snapshot_id_value",
+        "source_machine_image": "source_machine_image_value",
+        "source_machine_image_disk_device_name": "source_machine_image_disk_device_name_value",
+        "source_machine_image_encryption_key": {},
+        "source_machine_image_id": "source_machine_image_id_value",
         "source_snapshot": "source_snapshot_value",
         "source_snapshot_encryption_key": {},
         "source_snapshot_id": "source_snapshot_id_value",
@@ -13085,7 +13138,6 @@ def test_add_resource_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddResourcePoliciesDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13105,7 +13157,6 @@ def test_aggregated_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AggregatedListDisksRequest()
-
         assert args[0] == request_msg
 
 
@@ -13125,7 +13176,6 @@ def test_bulk_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.BulkInsertDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13145,7 +13195,6 @@ def test_bulk_set_labels_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.BulkSetLabelsDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13165,7 +13214,6 @@ def test_create_snapshot_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.CreateSnapshotDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13185,7 +13233,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13205,7 +13252,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13225,7 +13271,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetIamPolicyDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13245,7 +13290,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13265,7 +13309,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListDisksRequest()
-
         assert args[0] == request_msg
 
 
@@ -13287,7 +13330,6 @@ def test_remove_resource_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RemoveResourcePoliciesDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13307,7 +13349,6 @@ def test_resize_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResizeDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13327,7 +13368,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetIamPolicyDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13347,7 +13387,6 @@ def test_set_labels_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetLabelsDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13369,7 +13408,6 @@ def test_start_async_replication_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StartAsyncReplicationDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13391,7 +13429,6 @@ def test_stop_async_replication_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopAsyncReplicationDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13413,7 +13450,6 @@ def test_stop_group_async_replication_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopGroupAsyncReplicationDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13435,7 +13471,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13455,7 +13490,6 @@ def test_update_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13475,7 +13509,6 @@ def test_update_kms_key_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateKmsKeyDiskRequest()
-
         assert args[0] == request_msg
 
 

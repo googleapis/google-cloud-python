@@ -34,6 +34,7 @@ from google.cloud.bigtable.data._metrics.data_model import (
     CompletedOperationMetric,
 )
 from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
+from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 from google.cloud.bigtable_v2.types import ResponseParams
 
 from . import TEST_FAMILY, SystemTestRunner
@@ -115,6 +116,9 @@ class _ErrorInjectorInterceptor(
         return response
 
 
+@pytest.mark.skipif(
+    bool(os.environ.get(BIGTABLE_EMULATOR)), reason="Emulator does not support metrics"
+)
 class TestMetrics(SystemTestRunner):
     def _make_client(self):
         project = os.getenv("GOOGLE_CLOUD_PROJECT") or None
@@ -186,6 +190,1022 @@ class TestMetrics(SystemTestRunner):
         ) as table:
             table._metrics.add_handler(handler)
             yield table
+
+    def test_read_rows(self, table, temp_rows, handler, cluster_config):
+        temp_rows.add_row(b"row_key_1")
+        temp_rows.add_row(b"row_key_2")
+        handler.clear()
+        row_list = table.read_rows(ReadRowsQuery())
+        assert len(row_list) == 2
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.value[0] == 0
+        assert operation.is_streaming is True
+        assert operation.op_type.value == "ReadRows"
+        assert len(operation.completed_attempts) == 1
+        assert operation.completed_attempts[0] == handler.completed_attempts[0]
+        assert operation.cluster_id == next(iter(cluster_config.keys()))
+        assert (
+            operation.zone
+            == cluster_config[operation.cluster_id].location.split("/")[-1]
+        )
+        assert operation.duration_ns > 0 and operation.duration_ns < 1000000000.0
+        assert (
+            operation.first_response_latency_ns is not None
+            and operation.first_response_latency_ns < operation.duration_ns
+        )
+        assert operation.flow_throttling_time_ns == 0
+        attempt = handler.completed_attempts[0]
+        assert isinstance(attempt, CompletedAttemptMetric)
+        assert attempt.duration_ns > 0 and attempt.duration_ns < operation.duration_ns
+        assert attempt.end_status.value[0] == 0
+        assert attempt.backoff_before_attempt_ns == 0
+        assert (
+            attempt.gfe_latency_ns > 0 and attempt.gfe_latency_ns < attempt.duration_ns
+        )
+        assert (
+            attempt.application_blocking_time_ns > 0
+            and attempt.application_blocking_time_ns < operation.duration_ns
+        )
+
+    def test_read_rows_failure_with_retries(
+        self, table, temp_rows, handler, error_injector
+    ):
+        """Test failure in grpc layer by injecting errors into an interceptor
+        with retryable errors, then a terminal one"""
+        temp_rows.add_row(b"row_key_1")
+        handler.clear()
+        expected_zone = "my_zone"
+        expected_cluster = "my_cluster"
+        num_retryable = 2
+        for i in range(num_retryable):
+            error_injector.push(
+                self._make_exception(StatusCode.ABORTED, cluster_id=expected_cluster)
+            )
+        error_injector.push(
+            self._make_exception(StatusCode.PERMISSION_DENIED, zone_id=expected_zone)
+        )
+        with pytest.raises(PermissionDenied):
+            table.read_rows(ReadRowsQuery(), retryable_errors=[Aborted])
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == num_retryable + 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.name == "PERMISSION_DENIED"
+        assert operation.op_type.value == "ReadRows"
+        assert operation.is_streaming is True
+        assert len(operation.completed_attempts) == num_retryable + 1
+        assert operation.cluster_id == expected_cluster
+        assert operation.zone == expected_zone
+        for i in range(num_retryable):
+            attempt = handler.completed_attempts[i]
+            assert isinstance(attempt, CompletedAttemptMetric)
+            assert attempt.end_status.name == "ABORTED"
+            assert attempt.gfe_latency_ns is None
+        final_attempt = handler.completed_attempts[num_retryable]
+        assert isinstance(final_attempt, CompletedAttemptMetric)
+        assert final_attempt.end_status.name == "PERMISSION_DENIED"
+        assert final_attempt.gfe_latency_ns is None
+
+    def test_read_rows_failure_timeout(self, table, temp_rows, handler):
+        """Test failure in gapic layer by passing very low timeout
+
+        No grpc headers expected"""
+        temp_rows.add_row(b"row_key_1")
+        handler.clear()
+        with pytest.raises(GoogleAPICallError):
+            table.read_rows(ReadRowsQuery(), operation_timeout=0.001)
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.name == "DEADLINE_EXCEEDED"
+        assert operation.op_type.value == "ReadRows"
+        assert operation.is_streaming is True
+        assert len(operation.completed_attempts) == 1
+        assert operation.cluster_id == "<unspecified>"
+        assert operation.zone == "global"
+        attempt = handler.completed_attempts[0]
+        assert isinstance(attempt, CompletedAttemptMetric)
+        assert attempt.end_status.name == "DEADLINE_EXCEEDED"
+        assert attempt.gfe_latency_ns is None
+
+    def test_read_rows_failure_unauthorized(
+        self, handler, authorized_view, cluster_config
+    ):
+        """Test failure in backend by accessing an unauthorized family"""
+        from google.cloud.bigtable.data.row_filters import FamilyNameRegexFilter
+
+        with pytest.raises(GoogleAPICallError) as e:
+            authorized_view.read_rows(
+                ReadRowsQuery(row_filter=FamilyNameRegexFilter("unauthorized"))
+            )
+        assert e.value.grpc_status_code.name == "PERMISSION_DENIED"
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.name == "PERMISSION_DENIED"
+        assert operation.op_type.value == "ReadRows"
+        assert operation.is_streaming is True
+        assert len(operation.completed_attempts) == 1
+        assert operation.cluster_id == next(iter(cluster_config.keys()))
+        assert (
+            operation.zone
+            == cluster_config[operation.cluster_id].location.split("/")[-1]
+        )
+        attempt = handler.completed_attempts[0]
+        assert isinstance(attempt, CompletedAttemptMetric)
+        assert attempt.end_status.name == "PERMISSION_DENIED"
+        assert (
+            attempt.gfe_latency_ns >= 0
+            and attempt.gfe_latency_ns < operation.duration_ns
+        )
+
+    def test_read_rows_stream(self, table, temp_rows, handler, cluster_config):
+        temp_rows.add_row(b"row_key_1")
+        temp_rows.add_row(b"row_key_2")
+        handler.clear()
+        generator = table.read_rows_stream(ReadRowsQuery())
+        row_list = [r for r in generator]
+        assert len(row_list) == 2
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.value[0] == 0
+        assert operation.is_streaming is True
+        assert operation.op_type.value == "ReadRows"
+        assert len(operation.completed_attempts) == 1
+        assert operation.completed_attempts[0] == handler.completed_attempts[0]
+        assert operation.cluster_id == next(iter(cluster_config.keys()))
+        assert (
+            operation.zone
+            == cluster_config[operation.cluster_id].location.split("/")[-1]
+        )
+        assert operation.duration_ns > 0 and operation.duration_ns < 1000000000.0
+        assert (
+            operation.first_response_latency_ns is not None
+            and operation.first_response_latency_ns < operation.duration_ns
+        )
+        assert operation.flow_throttling_time_ns == 0
+        attempt = handler.completed_attempts[0]
+        assert isinstance(attempt, CompletedAttemptMetric)
+        assert attempt.duration_ns > 0 and attempt.duration_ns < operation.duration_ns
+        assert attempt.end_status.value[0] == 0
+        assert attempt.backoff_before_attempt_ns == 0
+        assert (
+            attempt.gfe_latency_ns > 0 and attempt.gfe_latency_ns < attempt.duration_ns
+        )
+        assert (
+            attempt.application_blocking_time_ns > 0
+            and attempt.application_blocking_time_ns < operation.duration_ns
+        )
+
+    def test_read_rows_stream_failure_closed(
+        self, table, temp_rows, handler, error_injector
+    ):
+        """Test how metrics collection handles closed generator"""
+        temp_rows.add_row(b"row_key_1")
+        temp_rows.add_row(b"row_key_2")
+        handler.clear()
+        generator = table.read_rows_stream(ReadRowsQuery())
+        generator.__next__()
+        generator.close()
+        with pytest.raises(CrossSync._Sync_Impl.StopIteration):
+            generator.__next__()
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert operation.final_status.name == "CANCELLED"
+        assert operation.op_type.value == "ReadRows"
+        assert operation.is_streaming is True
+        assert len(operation.completed_attempts) == 1
+        assert operation.cluster_id == "<unspecified>"
+        assert operation.zone == "global"
+        attempt = handler.completed_attempts[0]
+        assert attempt.end_status.name == "CANCELLED"
+        assert attempt.gfe_latency_ns is None
+
+    def test_read_rows_stream_failure_with_retries(
+        self, table, temp_rows, handler, error_injector
+    ):
+        """Test failure in grpc layer by injecting errors into an interceptor
+        with retryable errors, then a terminal one"""
+        temp_rows.add_row(b"row_key_1")
+        handler.clear()
+        expected_zone = "my_zone"
+        expected_cluster = "my_cluster"
+        num_retryable = 2
+        for i in range(num_retryable):
+            error_injector.push(
+                self._make_exception(StatusCode.ABORTED, cluster_id=expected_cluster)
+            )
+        error_injector.push(
+            self._make_exception(StatusCode.PERMISSION_DENIED, zone_id=expected_zone)
+        )
+        generator = table.read_rows_stream(ReadRowsQuery(), retryable_errors=[Aborted])
+        with pytest.raises(PermissionDenied):
+            [_ for _ in generator]
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == num_retryable + 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.name == "PERMISSION_DENIED"
+        assert operation.op_type.value == "ReadRows"
+        assert operation.is_streaming is True
+        assert len(operation.completed_attempts) == num_retryable + 1
+        assert operation.cluster_id == expected_cluster
+        assert operation.zone == expected_zone
+        for i in range(num_retryable):
+            attempt = handler.completed_attempts[i]
+            assert isinstance(attempt, CompletedAttemptMetric)
+            assert attempt.end_status.name == "ABORTED"
+            assert attempt.gfe_latency_ns is None
+        final_attempt = handler.completed_attempts[num_retryable]
+        assert isinstance(final_attempt, CompletedAttemptMetric)
+        assert final_attempt.end_status.name == "PERMISSION_DENIED"
+        assert final_attempt.gfe_latency_ns is None
+
+    def test_read_rows_stream_failure_timeout(self, table, temp_rows, handler):
+        """Test failure in gapic layer by passing very low timeout
+
+        No grpc headers expected"""
+        temp_rows.add_row(b"row_key_1")
+        handler.clear()
+        generator = table.read_rows_stream(ReadRowsQuery(), operation_timeout=0.001)
+        with pytest.raises(GoogleAPICallError):
+            [_ for _ in generator]
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.name == "DEADLINE_EXCEEDED"
+        assert operation.op_type.value == "ReadRows"
+        assert operation.is_streaming is True
+        assert len(operation.completed_attempts) == 1
+        assert operation.cluster_id == "<unspecified>"
+        assert operation.zone == "global"
+        attempt = handler.completed_attempts[0]
+        assert isinstance(attempt, CompletedAttemptMetric)
+        assert attempt.end_status.name == "DEADLINE_EXCEEDED"
+        assert attempt.gfe_latency_ns is None
+
+    def test_read_rows_stream_failure_unauthorized(
+        self, handler, authorized_view, cluster_config
+    ):
+        """Test failure in backend by accessing an unauthorized family"""
+        from google.cloud.bigtable.data.row_filters import FamilyNameRegexFilter
+
+        with pytest.raises(GoogleAPICallError) as e:
+            generator = authorized_view.read_rows_stream(
+                ReadRowsQuery(row_filter=FamilyNameRegexFilter("unauthorized"))
+            )
+            [_ for _ in generator]
+        assert e.value.grpc_status_code.name == "PERMISSION_DENIED"
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.name == "PERMISSION_DENIED"
+        assert operation.op_type.value == "ReadRows"
+        assert operation.is_streaming is True
+        assert len(operation.completed_attempts) == 1
+        assert operation.cluster_id == next(iter(cluster_config.keys()))
+        assert (
+            operation.zone
+            == cluster_config[operation.cluster_id].location.split("/")[-1]
+        )
+        attempt = handler.completed_attempts[0]
+        assert isinstance(attempt, CompletedAttemptMetric)
+        assert attempt.end_status.name == "PERMISSION_DENIED"
+        assert (
+            attempt.gfe_latency_ns >= 0
+            and attempt.gfe_latency_ns < operation.duration_ns
+        )
+
+    def test_read_rows_stream_failure_unauthorized_with_retries(
+        self, handler, authorized_view, cluster_config
+    ):
+        """retry unauthorized request multiple times before timing out"""
+        from google.cloud.bigtable.data.row_filters import FamilyNameRegexFilter
+
+        with pytest.raises(GoogleAPICallError) as e:
+            generator = authorized_view.read_rows_stream(
+                ReadRowsQuery(row_filter=FamilyNameRegexFilter("unauthorized")),
+                retryable_errors=[PermissionDenied],
+                operation_timeout=0.5,
+            )
+            [_ for _ in generator]
+        assert e.value.grpc_status_code.name == "DEADLINE_EXCEEDED"
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) > 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.name == "DEADLINE_EXCEEDED"
+        assert operation.op_type.value == "ReadRows"
+        assert operation.is_streaming is True
+        assert len(operation.completed_attempts) > 1
+        assert operation.cluster_id == next(iter(cluster_config.keys()))
+        assert (
+            operation.zone
+            == cluster_config[operation.cluster_id].location.split("/")[-1]
+        )
+        for attempt in handler.completed_attempts:
+            assert isinstance(attempt, CompletedAttemptMetric)
+            assert attempt.end_status.name in ["PERMISSION_DENIED", "DEADLINE_EXCEEDED"]
+
+    def test_read_rows_stream_failure_mid_stream(
+        self, table, temp_rows, handler, error_injector
+    ):
+        """Test failure in grpc stream"""
+        temp_rows.add_row(b"row_key_1")
+        handler.clear()
+        error_injector.fail_mid_stream = True
+        error_injector.push(self._make_exception(StatusCode.ABORTED))
+        error_injector.push(self._make_exception(StatusCode.PERMISSION_DENIED))
+        generator = table.read_rows_stream(ReadRowsQuery(), retryable_errors=[Aborted])
+        with pytest.raises(PermissionDenied):
+            [_ for _ in generator]
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 2
+        operation = handler.completed_operations[0]
+        assert operation.final_status.name == "PERMISSION_DENIED"
+        assert operation.op_type.value == "ReadRows"
+        assert operation.is_streaming is True
+        assert len(operation.completed_attempts) == 2
+        attempt = handler.completed_attempts[0]
+        assert attempt.end_status.name == "ABORTED"
+        final_attempt = handler.completed_attempts[-1]
+        assert final_attempt.end_status.name == "PERMISSION_DENIED"
+
+    def test_read_row(self, table, temp_rows, handler, cluster_config):
+        temp_rows.add_row(b"row_key_1")
+        handler.clear()
+        table.read_row(b"row_key_1")
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.value[0] == 0
+        assert operation.is_streaming is False
+        assert operation.op_type.value == "ReadRows"
+        assert len(operation.completed_attempts) == 1
+        assert operation.completed_attempts[0] == handler.completed_attempts[0]
+        assert operation.cluster_id == next(iter(cluster_config.keys()))
+        assert (
+            operation.zone
+            == cluster_config[operation.cluster_id].location.split("/")[-1]
+        )
+        assert operation.duration_ns > 0 and operation.duration_ns < 1000000000.0
+        assert (
+            operation.first_response_latency_ns > 0
+            and operation.first_response_latency_ns < operation.duration_ns
+        )
+        assert operation.flow_throttling_time_ns == 0
+        attempt = handler.completed_attempts[0]
+        assert isinstance(attempt, CompletedAttemptMetric)
+        assert attempt.duration_ns > 0 and attempt.duration_ns < operation.duration_ns
+        assert attempt.end_status.value[0] == 0
+        assert attempt.backoff_before_attempt_ns == 0
+        assert (
+            attempt.gfe_latency_ns > 0 and attempt.gfe_latency_ns < attempt.duration_ns
+        )
+        assert (
+            attempt.application_blocking_time_ns > 0
+            and attempt.application_blocking_time_ns < operation.duration_ns
+        )
+
+    def test_read_row_failure_with_retries(
+        self, table, temp_rows, handler, error_injector
+    ):
+        """Test failure in grpc layer by injecting errors into an interceptor
+        with retryable errors, then a terminal one"""
+        temp_rows.add_row(b"row_key_1")
+        handler.clear()
+        expected_zone = "my_zone"
+        expected_cluster = "my_cluster"
+        num_retryable = 2
+        for i in range(num_retryable):
+            error_injector.push(
+                self._make_exception(StatusCode.ABORTED, cluster_id=expected_cluster)
+            )
+        error_injector.push(
+            self._make_exception(StatusCode.PERMISSION_DENIED, zone_id=expected_zone)
+        )
+        with pytest.raises(PermissionDenied):
+            table.read_row(b"row_key_1", retryable_errors=[Aborted])
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == num_retryable + 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.name == "PERMISSION_DENIED"
+        assert operation.op_type.value == "ReadRows"
+        assert operation.is_streaming is False
+        assert len(operation.completed_attempts) == num_retryable + 1
+        assert operation.cluster_id == expected_cluster
+        assert operation.zone == expected_zone
+        for i in range(num_retryable):
+            attempt = handler.completed_attempts[i]
+            assert isinstance(attempt, CompletedAttemptMetric)
+            assert attempt.end_status.name == "ABORTED"
+            assert attempt.gfe_latency_ns is None
+        final_attempt = handler.completed_attempts[num_retryable]
+        assert isinstance(final_attempt, CompletedAttemptMetric)
+        assert final_attempt.end_status.name == "PERMISSION_DENIED"
+        assert final_attempt.gfe_latency_ns is None
+
+    def test_read_row_failure_timeout(self, table, temp_rows, handler):
+        """Test failure in gapic layer by passing very low timeout
+
+        No grpc headers expected"""
+        temp_rows.add_row(b"row_key_1")
+        handler.clear()
+        with pytest.raises(GoogleAPICallError):
+            table.read_row(b"row_key_1", operation_timeout=0.001)
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.name == "DEADLINE_EXCEEDED"
+        assert operation.op_type.value == "ReadRows"
+        assert operation.is_streaming is False
+        assert len(operation.completed_attempts) == 1
+        assert operation.cluster_id == "<unspecified>"
+        assert operation.zone == "global"
+        attempt = handler.completed_attempts[0]
+        assert isinstance(attempt, CompletedAttemptMetric)
+        assert attempt.end_status.name == "DEADLINE_EXCEEDED"
+        assert attempt.gfe_latency_ns is None
+
+    def test_read_row_failure_unauthorized(
+        self, handler, authorized_view, cluster_config
+    ):
+        """Test failure in backend by accessing an unauthorized family"""
+        from google.cloud.bigtable.data.row_filters import FamilyNameRegexFilter
+
+        with pytest.raises(GoogleAPICallError) as e:
+            authorized_view.read_row(
+                b"any_row", row_filter=FamilyNameRegexFilter("unauthorized")
+            )
+        assert e.value.grpc_status_code.name == "PERMISSION_DENIED"
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.name == "PERMISSION_DENIED"
+        assert operation.op_type.value == "ReadRows"
+        assert operation.is_streaming is False
+        assert len(operation.completed_attempts) == 1
+        assert operation.cluster_id == next(iter(cluster_config.keys()))
+        assert (
+            operation.zone
+            == cluster_config[operation.cluster_id].location.split("/")[-1]
+        )
+        attempt = handler.completed_attempts[0]
+        assert isinstance(attempt, CompletedAttemptMetric)
+        assert attempt.end_status.name == "PERMISSION_DENIED"
+        assert (
+            attempt.gfe_latency_ns >= 0
+            and attempt.gfe_latency_ns < operation.duration_ns
+        )
+
+    def test_read_rows_sharded(self, table, temp_rows, handler, cluster_config):
+        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+
+        temp_rows.add_row(b"a")
+        temp_rows.add_row(b"b")
+        temp_rows.add_row(b"c")
+        temp_rows.add_row(b"d")
+        query1 = ReadRowsQuery(row_keys=[b"a", b"c"])
+        query2 = ReadRowsQuery(row_keys=[b"b", b"d"])
+        handler.clear()
+        row_list = table.read_rows_sharded([query1, query2])
+        assert len(row_list) == 4
+        assert len(handler.completed_operations) == 2
+        assert len(handler.completed_attempts) == 2
+        for operation in handler.completed_operations:
+            assert isinstance(operation, CompletedOperationMetric)
+            assert operation.final_status.value[0] == 0
+            assert operation.is_streaming is True
+            assert operation.op_type.value == "ReadRows"
+            assert len(operation.completed_attempts) == 1
+            attempt = operation.completed_attempts[0]
+            assert attempt in handler.completed_attempts
+            assert operation.cluster_id == next(iter(cluster_config.keys()))
+            assert (
+                operation.zone
+                == cluster_config[operation.cluster_id].location.split("/")[-1]
+            )
+            assert operation.duration_ns > 0 and operation.duration_ns < 1000000000.0
+            assert (
+                operation.first_response_latency_ns is not None
+                and operation.first_response_latency_ns < operation.duration_ns
+            )
+            assert operation.flow_throttling_time_ns == 0
+            assert isinstance(attempt, CompletedAttemptMetric)
+            assert (
+                attempt.duration_ns > 0 and attempt.duration_ns < operation.duration_ns
+            )
+            assert attempt.end_status.value[0] == 0
+            assert attempt.backoff_before_attempt_ns == 0
+            assert (
+                attempt.gfe_latency_ns > 0
+                and attempt.gfe_latency_ns < attempt.duration_ns
+            )
+            assert (
+                attempt.application_blocking_time_ns > 0
+                and attempt.application_blocking_time_ns < operation.duration_ns
+            )
+
+    def test_read_rows_sharded_failure_with_retries(
+        self, table, temp_rows, handler, error_injector
+    ):
+        """Test failure in grpc layer by injecting errors into an interceptor
+        with retryable errors"""
+        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+
+        temp_rows.add_row(b"a")
+        temp_rows.add_row(b"b")
+        query1 = ReadRowsQuery(row_keys=[b"a"])
+        query2 = ReadRowsQuery(row_keys=[b"b"])
+        handler.clear()
+        error_injector.push(self._make_exception(StatusCode.ABORTED))
+        table.read_rows_sharded([query1, query2], retryable_errors=[Aborted])
+        assert len(handler.completed_operations) == 2
+        assert len(handler.completed_attempts) == 3
+        for op in handler.completed_operations:
+            assert op.final_status.name == "OK"
+            assert op.op_type.value == "ReadRows"
+            assert op.is_streaming is True
+        assert (
+            len([a for a in handler.completed_attempts if a.end_status.name == "OK"])
+            == 2
+        )
+        assert (
+            len(
+                [
+                    a
+                    for a in handler.completed_attempts
+                    if a.end_status.name == "ABORTED"
+                ]
+            )
+            == 1
+        )
+
+    def test_read_rows_sharded_failure_timeout(self, table, temp_rows, handler):
+        """Test failure in gapic layer by passing very low timeout
+
+        No grpc headers expected"""
+        from google.api_core.exceptions import DeadlineExceeded
+
+        from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
+        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+
+        temp_rows.add_row(b"a")
+        temp_rows.add_row(b"b")
+        query1 = ReadRowsQuery(row_keys=[b"a"])
+        query2 = ReadRowsQuery(row_keys=[b"b"])
+        handler.clear()
+        with pytest.raises(ShardedReadRowsExceptionGroup) as e:
+            table.read_rows_sharded([query1, query2], operation_timeout=0.005)
+        assert len(e.value.exceptions) == 2
+        for sub_exc in e.value.exceptions:
+            assert isinstance(sub_exc.__cause__, DeadlineExceeded)
+        assert len(handler.completed_operations) == 2
+        assert len(handler.completed_attempts) == 2
+        for operation in handler.completed_operations:
+            assert isinstance(operation, CompletedOperationMetric)
+            assert operation.final_status.name == "DEADLINE_EXCEEDED"
+            assert operation.op_type.value == "ReadRows"
+            assert operation.is_streaming is True
+            assert len(operation.completed_attempts) == 1
+            assert operation.cluster_id == "<unspecified>"
+            assert operation.zone == "global"
+            attempt = operation.completed_attempts[0]
+            assert isinstance(attempt, CompletedAttemptMetric)
+            assert attempt.end_status.name == "DEADLINE_EXCEEDED"
+            assert attempt.gfe_latency_ns is None
+
+    def test_read_rows_sharded_failure_unauthorized(
+        self, handler, authorized_view, cluster_config
+    ):
+        """Test failure in backend by accessing an unauthorized family"""
+        from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
+        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+        from google.cloud.bigtable.data.row_filters import FamilyNameRegexFilter
+
+        query1 = ReadRowsQuery(row_filter=FamilyNameRegexFilter("unauthorized"))
+        query2 = ReadRowsQuery(row_filter=FamilyNameRegexFilter(TEST_FAMILY))
+        handler.clear()
+        with pytest.raises(ShardedReadRowsExceptionGroup) as e:
+            authorized_view.read_rows_sharded([query1, query2])
+        assert len(e.value.exceptions) == 1
+        assert isinstance(e.value.exceptions[0].__cause__, GoogleAPICallError)
+        assert (
+            e.value.exceptions[0].__cause__.grpc_status_code.name == "PERMISSION_DENIED"
+        )
+        assert len(handler.completed_operations) == 2
+        assert len(handler.completed_attempts) == 2
+        failed_op = next(
+            (op for op in handler.completed_operations if op.final_status.name != "OK")
+        )
+        success_op = next(
+            (op for op in handler.completed_operations if op.final_status.name == "OK")
+        )
+        assert failed_op.final_status.name == "PERMISSION_DENIED"
+        assert failed_op.op_type.value == "ReadRows"
+        assert failed_op.is_streaming is True
+        assert len(failed_op.completed_attempts) == 1
+        assert failed_op.cluster_id == next(iter(cluster_config.keys()))
+        assert (
+            failed_op.zone
+            == cluster_config[failed_op.cluster_id].location.split("/")[-1]
+        )
+        failed_attempt = failed_op.completed_attempts[0]
+        assert failed_attempt.end_status.name == "PERMISSION_DENIED"
+        assert (
+            failed_attempt.gfe_latency_ns >= 0
+            and failed_attempt.gfe_latency_ns < failed_op.duration_ns
+        )
+        assert success_op.final_status.name == "OK"
+        assert success_op.op_type.value == "ReadRows"
+        assert success_op.is_streaming is True
+        assert len(success_op.completed_attempts) == 1
+        success_attempt = success_op.completed_attempts[0]
+        assert success_attempt.end_status.name == "OK"
+
+    def test_read_rows_sharded_failure_mid_stream(
+        self, table, temp_rows, handler, error_injector
+    ):
+        """Test failure in grpc stream"""
+        from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
+        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+
+        temp_rows.add_row(b"a")
+        temp_rows.add_row(b"b")
+        query1 = ReadRowsQuery(row_keys=[b"a"])
+        query2 = ReadRowsQuery(row_keys=[b"b"])
+        handler.clear()
+        error_injector.fail_mid_stream = True
+        error_injector.push(self._make_exception(StatusCode.ABORTED))
+        error_injector.push(self._make_exception(StatusCode.PERMISSION_DENIED))
+        with pytest.raises(ShardedReadRowsExceptionGroup) as e:
+            table.read_rows_sharded([query1, query2], retryable_errors=[Aborted])
+        assert len(e.value.exceptions) == 1
+        assert isinstance(e.value.exceptions[0].__cause__, PermissionDenied)
+        assert len(handler.completed_operations) == 2
+        assert len(handler.completed_attempts) == 3
+        failed_op = next(
+            (op for op in handler.completed_operations if op.final_status.name != "OK")
+        )
+        success_op = next(
+            (op for op in handler.completed_operations if op.final_status.name == "OK")
+        )
+        assert failed_op.final_status.name == "PERMISSION_DENIED"
+        assert failed_op.op_type.value == "ReadRows"
+        assert failed_op.is_streaming is True
+        assert len(failed_op.completed_attempts) == 1
+        assert success_op.final_status.name == "OK"
+        assert len(success_op.completed_attempts) == 2
+        attempt = failed_op.completed_attempts[0]
+        assert attempt.end_status.name == "PERMISSION_DENIED"
+        retried_attempt = success_op.completed_attempts[0]
+        assert retried_attempt.end_status.name == "ABORTED"
+        success_attempt = success_op.completed_attempts[-1]
+        assert success_attempt.end_status.name == "OK"
+
+    def test_bulk_mutate_rows(self, table, temp_rows, handler, cluster_config):
+        from google.cloud.bigtable.data.mutations import RowMutationEntry
+
+        new_value = uuid.uuid4().hex.encode()
+        row_key, mutation = temp_rows.create_row_and_mutation(
+            table, new_value=new_value
+        )
+        bulk_mutation = RowMutationEntry(row_key, [mutation])
+        handler.clear()
+        table.bulk_mutate_rows([bulk_mutation])
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.value[0] == 0
+        assert operation.is_streaming is False
+        assert operation.op_type.value == "MutateRows"
+        assert len(operation.completed_attempts) == 1
+        assert operation.completed_attempts[0] == handler.completed_attempts[0]
+        assert operation.cluster_id == next(iter(cluster_config.keys()))
+        assert (
+            operation.zone
+            == cluster_config[operation.cluster_id].location.split("/")[-1]
+        )
+        assert operation.duration_ns > 0 and operation.duration_ns < 1000000000.0
+        assert operation.first_response_latency_ns is None
+        assert operation.flow_throttling_time_ns == 0
+        attempt = handler.completed_attempts[0]
+        assert isinstance(attempt, CompletedAttemptMetric)
+        assert attempt.duration_ns > 0 and attempt.duration_ns < operation.duration_ns
+        assert attempt.end_status.value[0] == 0
+        assert attempt.backoff_before_attempt_ns == 0
+        assert (
+            attempt.gfe_latency_ns > 0 and attempt.gfe_latency_ns < attempt.duration_ns
+        )
+        assert attempt.application_blocking_time_ns == 0
+
+    def test_bulk_mutate_rows_failure_with_retries(
+        self, table, temp_rows, handler, error_injector
+    ):
+        """Test failure in grpc layer by injecting errors into an interceptor
+        with retryable errors, then a terminal one"""
+        from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
+
+        row_key = b"row_key_1"
+        mutation = SetCell(TEST_FAMILY, b"q", b"v")
+        entry = RowMutationEntry(row_key, [mutation])
+        assert entry.is_idempotent()
+        handler.clear()
+        expected_zone = "my_zone"
+        expected_cluster = "my_cluster"
+        num_retryable = 2
+        for i in range(num_retryable):
+            error_injector.push(
+                self._make_exception(StatusCode.ABORTED, cluster_id=expected_cluster)
+            )
+        error_injector.push(
+            self._make_exception(StatusCode.PERMISSION_DENIED, zone_id=expected_zone)
+        )
+        with pytest.raises(MutationsExceptionGroup):
+            table.bulk_mutate_rows([entry], retryable_errors=[Aborted])
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == num_retryable + 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.name == "PERMISSION_DENIED"
+        assert operation.op_type.value == "MutateRows"
+        assert operation.is_streaming is False
+        assert len(operation.completed_attempts) == num_retryable + 1
+        assert operation.cluster_id == expected_cluster
+        assert operation.zone == expected_zone
+        for i in range(num_retryable):
+            attempt = handler.completed_attempts[i]
+            assert isinstance(attempt, CompletedAttemptMetric)
+            assert attempt.end_status.name == "ABORTED"
+            assert attempt.gfe_latency_ns is None
+        final_attempt = handler.completed_attempts[num_retryable]
+        assert isinstance(final_attempt, CompletedAttemptMetric)
+        assert final_attempt.end_status.name == "PERMISSION_DENIED"
+        assert final_attempt.gfe_latency_ns is None
+
+    def test_bulk_mutate_rows_failure_timeout(self, table, temp_rows, handler):
+        """Test failure in gapic layer by passing very low timeout
+
+        No grpc headers expected"""
+        from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
+
+        row_key = b"row_key_1"
+        mutation = SetCell(TEST_FAMILY, b"q", b"v")
+        entry = RowMutationEntry(row_key, [mutation])
+        handler.clear()
+        with pytest.raises(MutationsExceptionGroup):
+            table.bulk_mutate_rows([entry], operation_timeout=0.001)
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.name == "DEADLINE_EXCEEDED"
+        assert operation.op_type.value == "MutateRows"
+        assert operation.is_streaming is False
+        assert len(operation.completed_attempts) == 1
+        assert operation.cluster_id == "<unspecified>"
+        assert operation.zone == "global"
+        attempt = handler.completed_attempts[0]
+        assert isinstance(attempt, CompletedAttemptMetric)
+        assert attempt.end_status.name == "DEADLINE_EXCEEDED"
+        assert attempt.gfe_latency_ns is None
+
+    def test_bulk_mutate_rows_failure_unauthorized(
+        self, handler, authorized_view, cluster_config
+    ):
+        """Test failure in backend by accessing an unauthorized family"""
+        from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
+
+        row_key = b"row_key_1"
+        mutation = SetCell("unauthorized", b"q", b"v")
+        entry = RowMutationEntry(row_key, [mutation])
+        handler.clear()
+        with pytest.raises(MutationsExceptionGroup):
+            authorized_view.bulk_mutate_rows([entry])
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert operation.final_status.name == "PERMISSION_DENIED"
+        assert operation.op_type.value == "MutateRows"
+        assert operation.is_streaming is False
+        assert len(operation.completed_attempts) == 1
+        assert operation.cluster_id == next(iter(cluster_config.keys()))
+        assert (
+            operation.zone
+            == cluster_config[operation.cluster_id].location.split("/")[-1]
+        )
+        attempt = handler.completed_attempts[0]
+        assert attempt.end_status.name == "PERMISSION_DENIED"
+        assert (
+            attempt.gfe_latency_ns >= 0
+            and attempt.gfe_latency_ns < operation.duration_ns
+        )
+
+    def test_bulk_mutate_rows_failure_unauthorized_with_retries(
+        self, handler, authorized_view, cluster_config
+    ):
+        """retry unauthorized request multiple times before timing out
+
+        For bulk_mutate, the rpc returns success, with failures returned in the response.
+        For this reason, We expect the attempts to be marked as successful, even though
+        the underlying mutation is retried"""
+        from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
+
+        row_key = b"row_key_1"
+        mutation = SetCell("unauthorized", b"q", b"v")
+        entry = RowMutationEntry(row_key, [mutation])
+        handler.clear()
+        with pytest.raises(MutationsExceptionGroup) as e:
+            authorized_view.bulk_mutate_rows(
+                [entry], retryable_errors=[PermissionDenied], operation_timeout=0.5
+            )
+        assert len(e.value.exceptions) == 1
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) > 1
+        operation = handler.completed_operations[0]
+        assert operation.final_status.name == "DEADLINE_EXCEEDED"
+        assert operation.op_type.value == "MutateRows"
+        assert operation.is_streaming is False
+        assert len(operation.completed_attempts) > 1
+        assert operation.cluster_id == next(iter(cluster_config.keys()))
+        assert (
+            operation.zone
+            == cluster_config[operation.cluster_id].location.split("/")[-1]
+        )
+        for attempt in handler.completed_attempts:
+            assert attempt.end_status.name in ["OK", "DEADLINE_EXCEEDED"]
+
+    def test_mutate_rows_batcher(self, table, temp_rows, handler, cluster_config):
+        from google.cloud.bigtable.data.mutations import RowMutationEntry
+
+        new_value, new_value2 = [uuid.uuid4().hex.encode() for _ in range(2)]
+        row_key, mutation = temp_rows.create_row_and_mutation(
+            table, new_value=new_value
+        )
+        row_key2, mutation2 = temp_rows.create_row_and_mutation(
+            table, new_value=new_value2
+        )
+        bulk_mutation = RowMutationEntry(row_key, [mutation])
+        bulk_mutation2 = RowMutationEntry(row_key2, [mutation2])
+        handler.clear()
+        with table.mutations_batcher() as batcher:
+            batcher.append(bulk_mutation)
+            batcher.append(bulk_mutation2)
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.value[0] == 0
+        assert operation.is_streaming is False
+        assert operation.op_type.value == "MutateRows"
+        assert len(operation.completed_attempts) == 1
+        assert operation.completed_attempts[0] == handler.completed_attempts[0]
+        assert operation.cluster_id == next(iter(cluster_config.keys()))
+        assert (
+            operation.zone
+            == cluster_config[operation.cluster_id].location.split("/")[-1]
+        )
+        assert operation.duration_ns > 0 and operation.duration_ns < 1000000000.0
+        assert operation.first_response_latency_ns is None
+        assert (
+            operation.flow_throttling_time_ns > 0
+            and operation.flow_throttling_time_ns < operation.duration_ns
+        )
+        attempt = handler.completed_attempts[0]
+        assert isinstance(attempt, CompletedAttemptMetric)
+        assert attempt.duration_ns > 0 and attempt.duration_ns < operation.duration_ns
+        assert attempt.end_status.value[0] == 0
+        assert attempt.backoff_before_attempt_ns == 0
+        assert (
+            attempt.gfe_latency_ns > 0 and attempt.gfe_latency_ns < attempt.duration_ns
+        )
+        assert attempt.application_blocking_time_ns == 0
+
+    def test_mutate_rows_batcher_failure_with_retries(
+        self, table, handler, error_injector
+    ):
+        """Test failure in grpc layer by injecting errors into an interceptor
+        with retryable errors, then a terminal one"""
+        from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
+
+        row_key = b"row_key_1"
+        mutation = SetCell(TEST_FAMILY, b"q", b"v")
+        entry = RowMutationEntry(row_key, [mutation])
+        assert entry.is_idempotent()
+        handler.clear()
+        expected_zone = "my_zone"
+        expected_cluster = "my_cluster"
+        num_retryable = 2
+        for i in range(num_retryable):
+            error_injector.push(
+                self._make_exception(StatusCode.ABORTED, cluster_id=expected_cluster)
+            )
+        error_injector.push(
+            self._make_exception(StatusCode.PERMISSION_DENIED, zone_id=expected_zone)
+        )
+        with pytest.raises(MutationsExceptionGroup):
+            with table.mutations_batcher(batch_retryable_errors=[Aborted]) as batcher:
+                batcher.append(entry)
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == num_retryable + 1
+        operation = handler.completed_operations[0]
+        assert isinstance(operation, CompletedOperationMetric)
+        assert operation.final_status.name == "PERMISSION_DENIED"
+        assert operation.op_type.value == "MutateRows"
+        assert operation.is_streaming is False
+        assert len(operation.completed_attempts) == num_retryable + 1
+        assert operation.cluster_id == expected_cluster
+        assert operation.zone == expected_zone
+        for i in range(num_retryable):
+            attempt = handler.completed_attempts[i]
+            assert attempt.end_status.name == "ABORTED"
+            assert attempt.gfe_latency_ns is None
+        final_attempt = handler.completed_attempts[num_retryable]
+        assert final_attempt.end_status.name == "PERMISSION_DENIED"
+        assert final_attempt.gfe_latency_ns is None
+
+    def test_mutate_rows_batcher_failure_timeout(self, table, temp_rows, handler):
+        """Test failure in gapic layer by passing very low timeout
+
+        No grpc headers expected"""
+        from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
+
+        row_key = b"row_key_1"
+        mutation = SetCell(TEST_FAMILY, b"q", b"v")
+        entry = RowMutationEntry(row_key, [mutation])
+        with pytest.raises(MutationsExceptionGroup):
+            with table.mutations_batcher(batch_operation_timeout=0.001) as batcher:
+                batcher.append(entry)
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert operation.final_status.name == "DEADLINE_EXCEEDED"
+        assert operation.op_type.value == "MutateRows"
+        assert operation.is_streaming is False
+        assert len(operation.completed_attempts) == 1
+        assert operation.cluster_id == "<unspecified>"
+        assert operation.zone == "global"
+        attempt = handler.completed_attempts[0]
+        assert attempt.end_status.name == "DEADLINE_EXCEEDED"
+        assert attempt.gfe_latency_ns is None
+
+    def test_mutate_rows_batcher_failure_unauthorized(
+        self, handler, authorized_view, cluster_config
+    ):
+        """Test failure in backend by accessing an unauthorized family"""
+        from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+        from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
+
+        row_key = b"row_key_1"
+        mutation = SetCell("unauthorized", b"q", b"v")
+        entry = RowMutationEntry(row_key, [mutation])
+        with pytest.raises(MutationsExceptionGroup) as e:
+            with authorized_view.mutations_batcher() as batcher:
+                batcher.append(entry)
+        assert len(e.value.exceptions) == 1
+        assert isinstance(e.value.exceptions[0].__cause__, GoogleAPICallError)
+        assert (
+            e.value.exceptions[0].__cause__.grpc_status_code.name == "PERMISSION_DENIED"
+        )
+        assert len(handler.completed_operations) == 1
+        assert len(handler.completed_attempts) == 1
+        operation = handler.completed_operations[0]
+        assert operation.final_status.name == "PERMISSION_DENIED"
+        assert operation.op_type.value == "MutateRows"
+        assert operation.is_streaming is False
+        assert len(operation.completed_attempts) == 1
+        assert operation.cluster_id == next(iter(cluster_config.keys()))
+        assert (
+            operation.zone
+            == cluster_config[operation.cluster_id].location.split("/")[-1]
+        )
+        attempt = handler.completed_attempts[0]
+        assert attempt.end_status.name == "PERMISSION_DENIED"
+        assert (
+            attempt.gfe_latency_ns >= 0
+            and attempt.gfe_latency_ns < operation.duration_ns
+        )
 
     @pytest.mark.skipif(
         bool(os.environ.get(BIGTABLE_EMULATOR)),

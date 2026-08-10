@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -922,7 +938,14 @@ def test_cloud_catalog_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -969,7 +992,14 @@ def test_cloud_catalog_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1292,8 +1322,8 @@ def test_cloud_catalog_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_catalog.ListServicesRequest,
-        dict,
+        cloud_catalog.ListServicesRequest(),
+        {},
     ],
 )
 def test_list_services(request_type, transport: str = "grpc"):
@@ -1304,7 +1334,7 @@ def test_list_services(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -1348,9 +1378,10 @@ def test_list_services_non_empty_request_with_auto_populated_field():
         client.list_services(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_catalog.ListServicesRequest(
+        request_msg = cloud_catalog.ListServicesRequest(
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_services_use_cached_wrapped_rpc():
@@ -1431,9 +1462,14 @@ async def test_list_services_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_services_async(
-    transport: str = "grpc_asyncio", request_type=cloud_catalog.ListServicesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_catalog.ListServicesRequest(),
+        {},
+    ],
+)
+async def test_list_services_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudCatalogAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1441,7 +1477,7 @@ async def test_list_services_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -1462,11 +1498,6 @@ async def test_list_services_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_services_async_from_dict():
-    await test_list_services_async(request_type=dict)
 
 
 def test_list_services_pager(transport_name: str = "grpc"):
@@ -1514,6 +1545,9 @@ def test_list_services_pager(transport_name: str = "grpc"):
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
         assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -1603,6 +1637,8 @@ async def test_list_services_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1659,8 +1695,8 @@ async def test_list_services_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_catalog.ListSkusRequest,
-        dict,
+        cloud_catalog.ListSkusRequest(),
+        {},
     ],
 )
 def test_list_skus(request_type, transport: str = "grpc"):
@@ -1671,7 +1707,7 @@ def test_list_skus(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_skus), "__call__") as call:
@@ -1717,11 +1753,12 @@ def test_list_skus_non_empty_request_with_auto_populated_field():
         client.list_skus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_catalog.ListSkusRequest(
+        request_msg = cloud_catalog.ListSkusRequest(
             parent="parent_value",
             currency_code="currency_code_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_skus_use_cached_wrapped_rpc():
@@ -1800,9 +1837,14 @@ async def test_list_skus_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_list_skus_async(
-    transport: str = "grpc_asyncio", request_type=cloud_catalog.ListSkusRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_catalog.ListSkusRequest(),
+        {},
+    ],
+)
+async def test_list_skus_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudCatalogAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1810,7 +1852,7 @@ async def test_list_skus_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_skus), "__call__") as call:
@@ -1831,11 +1873,6 @@ async def test_list_skus_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSkusAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_skus_async_from_dict():
-    await test_list_skus_async(request_type=dict)
 
 
 def test_list_skus_field_headers():
@@ -2030,6 +2067,9 @@ def test_list_skus_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_catalog.Sku) for i in results)
@@ -2118,6 +2158,8 @@ async def test_list_skus_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2260,6 +2302,9 @@ def test_list_services_rest_pager(transport: str = "rest"):
         sample_request = {}
 
         pager = client.list_services(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -2517,6 +2562,9 @@ def test_list_skus_rest_pager(transport: str = "rest"):
 
         pager = client.list_skus(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_catalog.Sku) for i in results)
@@ -2649,7 +2697,6 @@ def test_list_services_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_catalog.ListServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2670,7 +2717,6 @@ def test_list_skus_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_catalog.ListSkusRequest()
-
         assert args[0] == request_msg
 
 
@@ -2711,7 +2757,6 @@ async def test_list_services_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_catalog.ListServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2738,7 +2783,6 @@ async def test_list_skus_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_catalog.ListSkusRequest()
-
         assert args[0] == request_msg
 
 
@@ -3030,7 +3074,6 @@ def test_list_services_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_catalog.ListServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3050,7 +3093,6 @@ def test_list_skus_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_catalog.ListSkusRequest()
-
         assert args[0] == request_msg
 
 

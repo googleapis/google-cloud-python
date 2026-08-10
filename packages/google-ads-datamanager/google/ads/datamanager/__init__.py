@@ -54,9 +54,21 @@ from google.ads.datamanager_v1.services.user_list_service.async_client import (
 from google.ads.datamanager_v1.services.user_list_service.client import (
     UserListServiceClient,
 )
+from google.ads.datamanager_v1.types.ad_event import (
+    AdEvent,
+    AdFormat,
+    AdPlacement,
+    AdType,
+    AttributionHint,
+    Platform,
+    PlatformType,
+    TargetingType,
+)
 from google.ads.datamanager_v1.types.age_range import AgeRange
 from google.ads.datamanager_v1.types.audience import (
     AudienceMember,
+    CompositeData,
+    IpData,
     MobileData,
     PairData,
     PpidData,
@@ -70,8 +82,10 @@ from google.ads.datamanager_v1.types.destination import (
     ProductAccount,
 )
 from google.ads.datamanager_v1.types.device_info import DeviceInfo
+from google.ads.datamanager_v1.types.encrypted_user_id import EncryptedUserId
 from google.ads.datamanager_v1.types.encryption_info import (
     AwsWrappedKeyInfo,
+    CoordinatorKeyInfo,
     EncryptionInfo,
     GcpWrappedKeyInfo,
 )
@@ -88,6 +102,8 @@ from google.ads.datamanager_v1.types.experimental_field import ExperimentalField
 from google.ads.datamanager_v1.types.gender import Gender
 from google.ads.datamanager_v1.types.ingestion_service import (
     Encoding,
+    IngestAdEventsRequest,
+    IngestAdEventsResponse,
     IngestAudienceMembersRequest,
     IngestAudienceMembersResponse,
     IngestEventsRequest,
@@ -107,7 +123,10 @@ from google.ads.datamanager_v1.types.match_rate import MatchRateRange
 from google.ads.datamanager_v1.types.partner_link_service import (
     CreatePartnerLinkRequest,
     DeletePartnerLinkRequest,
+    FeatureSet,
+    PartnerCustomerAccount,
     PartnerLink,
+    PartnerLinkMetadata,
     SearchPartnerLinksRequest,
     SearchPartnerLinksResponse,
 )
@@ -196,6 +215,11 @@ from google.ads.datamanager_v1.types.user_properties import (
     UserProperties,
     UserProperty,
 )
+from google.ads.datamanager_v1.types.viewability_info import (
+    MediaQuartile,
+    ViewabilityInfo,
+    ViewType,
+)
 
 __all__ = (
     "IngestionServiceClient",
@@ -210,8 +234,18 @@ __all__ = (
     "UserListGlobalLicenseServiceAsyncClient",
     "UserListServiceClient",
     "UserListServiceAsyncClient",
+    "AdEvent",
+    "AdFormat",
+    "AdPlacement",
+    "AdType",
+    "AttributionHint",
+    "Platform",
+    "PlatformType",
+    "TargetingType",
     "AgeRange",
     "AudienceMember",
+    "CompositeData",
+    "IpData",
     "MobileData",
     "PairData",
     "PpidData",
@@ -225,7 +259,9 @@ __all__ = (
     "ProductAccount",
     "Product",
     "DeviceInfo",
+    "EncryptedUserId",
     "AwsWrappedKeyInfo",
+    "CoordinatorKeyInfo",
     "EncryptionInfo",
     "GcpWrappedKeyInfo",
     "ErrorReason",
@@ -237,6 +273,8 @@ __all__ = (
     "EventSource",
     "ExperimentalField",
     "Gender",
+    "IngestAdEventsRequest",
+    "IngestAdEventsResponse",
     "IngestAudienceMembersRequest",
     "IngestAudienceMembersResponse",
     "IngestEventsRequest",
@@ -253,9 +291,12 @@ __all__ = (
     "MatchRateRange",
     "CreatePartnerLinkRequest",
     "DeletePartnerLinkRequest",
+    "PartnerCustomerAccount",
     "PartnerLink",
+    "PartnerLinkMetadata",
     "SearchPartnerLinksRequest",
     "SearchPartnerLinksResponse",
+    "FeatureSet",
     "ErrorCount",
     "ErrorInfo",
     "WarningCount",
@@ -309,4 +350,7 @@ __all__ = (
     "UserProperty",
     "CustomerType",
     "CustomerValueBucket",
+    "ViewabilityInfo",
+    "MediaQuartile",
+    "ViewType",
 )

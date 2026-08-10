@@ -111,7 +111,8 @@ def _construct_prompt(
         else:
             prompt.append(sge.Literal.string(elem))
 
-    return sge.Kwarg(this=param_name, expression=sge.Tuple(expressions=prompt))
+    # Need Struct rather than tuple syntax, as tuple syntax is ambiguous for single arg
+    return sge.Kwarg(this=param_name, expression=sge.Struct(expressions=prompt))
 
 
 def _construct_named_args(op: ops.ScalarOp) -> list[sge.Kwarg]:

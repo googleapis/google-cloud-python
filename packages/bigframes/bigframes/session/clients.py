@@ -14,9 +14,7 @@
 
 """Clients manages the connection to Google APIs."""
 
-import os
 import threading
-import typing
 from typing import Optional, Sequence, Tuple
 
 import google.api_core.client_info

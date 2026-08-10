@@ -23,6 +23,86 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.discoveryengine_v1alpha.services.acl_config_service",
+    "google.cloud.discoveryengine_v1alpha.services.chunk_service",
+    "google.cloud.discoveryengine_v1alpha.services.completion_service",
+    "google.cloud.discoveryengine_v1alpha.services.control_service",
+    "google.cloud.discoveryengine_v1alpha.services.conversational_search_service",
+    "google.cloud.discoveryengine_v1alpha.services.data_store_service",
+    "google.cloud.discoveryengine_v1alpha.services.document_service",
+    "google.cloud.discoveryengine_v1alpha.services.engine_service",
+    "google.cloud.discoveryengine_v1alpha.services.estimate_billing_service",
+    "google.cloud.discoveryengine_v1alpha.services.evaluation_service",
+    "google.cloud.discoveryengine_v1alpha.services.grounded_generation_service",
+    "google.cloud.discoveryengine_v1alpha.services.project_service",
+    "google.cloud.discoveryengine_v1alpha.services.rank_service",
+    "google.cloud.discoveryengine_v1alpha.services.recommendation_service",
+    "google.cloud.discoveryengine_v1alpha.services.sample_query_service",
+    "google.cloud.discoveryengine_v1alpha.services.sample_query_set_service",
+    "google.cloud.discoveryengine_v1alpha.services.schema_service",
+    "google.cloud.discoveryengine_v1alpha.services.search_service",
+    "google.cloud.discoveryengine_v1alpha.services.search_tuning_service",
+    "google.cloud.discoveryengine_v1alpha.services.serving_config_service",
+    "google.cloud.discoveryengine_v1alpha.services.session_service",
+    "google.cloud.discoveryengine_v1alpha.services.site_search_engine_service",
+    "google.cloud.discoveryengine_v1alpha.services.user_event_service",
+    "google.cloud.discoveryengine_v1alpha.types.acl_config",
+    "google.cloud.discoveryengine_v1alpha.types.acl_config_service",
+    "google.cloud.discoveryengine_v1alpha.types.answer",
+    "google.cloud.discoveryengine_v1alpha.types.chunk",
+    "google.cloud.discoveryengine_v1alpha.types.chunk_service",
+    "google.cloud.discoveryengine_v1alpha.types.common",
+    "google.cloud.discoveryengine_v1alpha.types.completion",
+    "google.cloud.discoveryengine_v1alpha.types.completion_service",
+    "google.cloud.discoveryengine_v1alpha.types.control",
+    "google.cloud.discoveryengine_v1alpha.types.control_service",
+    "google.cloud.discoveryengine_v1alpha.types.conversation",
+    "google.cloud.discoveryengine_v1alpha.types.conversational_search_service",
+    "google.cloud.discoveryengine_v1alpha.types.custom_tuning_model",
+    "google.cloud.discoveryengine_v1alpha.types.data_store",
+    "google.cloud.discoveryengine_v1alpha.types.data_store_service",
+    "google.cloud.discoveryengine_v1alpha.types.document",
+    "google.cloud.discoveryengine_v1alpha.types.document_processing_config",
+    "google.cloud.discoveryengine_v1alpha.types.document_service",
+    "google.cloud.discoveryengine_v1alpha.types.engine",
+    "google.cloud.discoveryengine_v1alpha.types.engine_service",
+    "google.cloud.discoveryengine_v1alpha.types.estimate_billing_service",
+    "google.cloud.discoveryengine_v1alpha.types.evaluation",
+    "google.cloud.discoveryengine_v1alpha.types.evaluation_service",
+    "google.cloud.discoveryengine_v1alpha.types.grounded_generation_service",
+    "google.cloud.discoveryengine_v1alpha.types.grounding",
+    "google.cloud.discoveryengine_v1alpha.types.import_config",
+    "google.cloud.discoveryengine_v1alpha.types.project",
+    "google.cloud.discoveryengine_v1alpha.types.project_service",
+    "google.cloud.discoveryengine_v1alpha.types.purge_config",
+    "google.cloud.discoveryengine_v1alpha.types.rank_service",
+    "google.cloud.discoveryengine_v1alpha.types.recommendation_service",
+    "google.cloud.discoveryengine_v1alpha.types.sample_query",
+    "google.cloud.discoveryengine_v1alpha.types.sample_query_service",
+    "google.cloud.discoveryengine_v1alpha.types.sample_query_set",
+    "google.cloud.discoveryengine_v1alpha.types.sample_query_set_service",
+    "google.cloud.discoveryengine_v1alpha.types.schema",
+    "google.cloud.discoveryengine_v1alpha.types.schema_service",
+    "google.cloud.discoveryengine_v1alpha.types.search_service",
+    "google.cloud.discoveryengine_v1alpha.types.search_tuning_service",
+    "google.cloud.discoveryengine_v1alpha.types.serving_config",
+    "google.cloud.discoveryengine_v1alpha.types.serving_config_service",
+    "google.cloud.discoveryengine_v1alpha.types.session",
+    "google.cloud.discoveryengine_v1alpha.types.session_service",
+    "google.cloud.discoveryengine_v1alpha.types.site_search_engine",
+    "google.cloud.discoveryengine_v1alpha.types.site_search_engine_service",
+    "google.cloud.discoveryengine_v1alpha.types.user_event",
+    "google.cloud.discoveryengine_v1alpha.types.user_event_service",
+}
+
+
 from .services.acl_config_service import (
     AclConfigServiceAsyncClient,
     AclConfigServiceClient,
@@ -390,7 +470,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -419,9 +499,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -111,6 +112,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1033,7 +1049,14 @@ def test_conversational_search_service_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1080,7 +1103,14 @@ def test_conversational_search_service_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1419,8 +1449,8 @@ def test_conversational_search_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversational_search_service.ConversationalSearchRequest,
-        dict,
+        conversational_search_service.ConversationalSearchRequest(),
+        {},
     ],
 )
 def test_conversational_search(request_type, transport: str = "grpc"):
@@ -1431,7 +1461,7 @@ def test_conversational_search(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1485,13 +1515,14 @@ def test_conversational_search_non_empty_request_with_auto_populated_field():
         client.conversational_search(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversational_search_service.ConversationalSearchRequest(
+        request_msg = conversational_search_service.ConversationalSearchRequest(
             placement="placement_value",
             branch="branch_value",
             query="query_value",
             conversation_id="conversation_id_value",
             visitor_id="visitor_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_conversational_search_use_cached_wrapped_rpc():
@@ -1577,9 +1608,15 @@ async def test_conversational_search_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversational_search_service.ConversationalSearchRequest(),
+        {},
+    ],
+)
 async def test_conversational_search_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversational_search_service.ConversationalSearchRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationalSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1588,7 +1625,7 @@ async def test_conversational_search_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1612,11 +1649,6 @@ async def test_conversational_search_async(
     assert isinstance(
         message, conversational_search_service.ConversationalSearchResponse
     )
-
-
-@pytest.mark.asyncio
-async def test_conversational_search_async_from_dict():
-    await test_conversational_search_async(request_type=dict)
 
 
 def test_conversational_search_field_headers():
@@ -1964,7 +1996,6 @@ def test_conversational_search_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversational_search_service.ConversationalSearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -2006,7 +2037,6 @@ async def test_conversational_search_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversational_search_service.ConversationalSearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -2334,7 +2364,6 @@ def test_conversational_search_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversational_search_service.ConversationalSearchRequest()
-
         assert args[0] == request_msg
 
 

@@ -152,6 +152,8 @@ class DataSource(proto.Message):
             DataProfileScan/DataQualityScan/DataDocumentationScan
             Format:
             //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+            or BigQuery dataset for DataDocumentationScan only Format:
+            //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID
 
             This field is a member of `oneof`_ ``source``.
     """

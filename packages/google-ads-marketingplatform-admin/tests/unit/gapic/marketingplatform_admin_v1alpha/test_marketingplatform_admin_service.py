@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -108,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1043,7 +1059,14 @@ def test_marketingplatform_admin_service_client_get_mtls_endpoint_and_cert_sourc
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1090,7 +1113,14 @@ def test_marketingplatform_admin_service_client_get_mtls_endpoint_and_cert_sourc
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1434,8 +1464,8 @@ def test_marketingplatform_admin_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        marketingplatform_admin.GetOrganizationRequest,
-        dict,
+        marketingplatform_admin.GetOrganizationRequest(),
+        {},
     ],
 )
 def test_get_organization(request_type, transport: str = "grpc"):
@@ -1446,7 +1476,7 @@ def test_get_organization(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_organization), "__call__") as call:
@@ -1492,9 +1522,10 @@ def test_get_organization_non_empty_request_with_auto_populated_field():
         client.get_organization(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == marketingplatform_admin.GetOrganizationRequest(
+        request_msg = marketingplatform_admin.GetOrganizationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_organization_use_cached_wrapped_rpc():
@@ -1577,10 +1608,14 @@ async def test_get_organization_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_organization_async(
-    transport: str = "grpc_asyncio",
-    request_type=marketingplatform_admin.GetOrganizationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        marketingplatform_admin.GetOrganizationRequest(),
+        {},
+    ],
+)
+async def test_get_organization_async(request_type, transport: str = "grpc_asyncio"):
     client = MarketingplatformAdminServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1588,7 +1623,7 @@ async def test_get_organization_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_organization), "__call__") as call:
@@ -1611,11 +1646,6 @@ async def test_get_organization_async(
     assert isinstance(response, resources.Organization)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_organization_async_from_dict():
-    await test_get_organization_async(request_type=dict)
 
 
 def test_get_organization_field_headers():
@@ -1764,8 +1794,8 @@ async def test_get_organization_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        marketingplatform_admin.ListOrganizationsRequest,
-        dict,
+        marketingplatform_admin.ListOrganizationsRequest(),
+        {},
     ],
 )
 def test_list_organizations(request_type, transport: str = "grpc"):
@@ -1776,7 +1806,7 @@ def test_list_organizations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1824,9 +1854,10 @@ def test_list_organizations_non_empty_request_with_auto_populated_field():
         client.list_organizations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == marketingplatform_admin.ListOrganizationsRequest(
+        request_msg = marketingplatform_admin.ListOrganizationsRequest(
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_organizations_use_cached_wrapped_rpc():
@@ -1911,10 +1942,14 @@ async def test_list_organizations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_organizations_async(
-    transport: str = "grpc_asyncio",
-    request_type=marketingplatform_admin.ListOrganizationsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        marketingplatform_admin.ListOrganizationsRequest(),
+        {},
+    ],
+)
+async def test_list_organizations_async(request_type, transport: str = "grpc_asyncio"):
     client = MarketingplatformAdminServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1922,7 +1957,7 @@ async def test_list_organizations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1945,11 +1980,6 @@ async def test_list_organizations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOrganizationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_organizations_async_from_dict():
-    await test_list_organizations_async(request_type=dict)
 
 
 def test_list_organizations_pager(transport_name: str = "grpc"):
@@ -1999,6 +2029,9 @@ def test_list_organizations_pager(transport_name: str = "grpc"):
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
         assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -2092,6 +2125,8 @@ async def test_list_organizations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2150,8 +2185,8 @@ async def test_list_organizations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        marketingplatform_admin.FindSalesPartnerManagedClientsRequest,
-        dict,
+        marketingplatform_admin.FindSalesPartnerManagedClientsRequest(),
+        {},
     ],
 )
 def test_find_sales_partner_managed_clients(request_type, transport: str = "grpc"):
@@ -2162,7 +2197,7 @@ def test_find_sales_partner_managed_clients(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2211,9 +2246,10 @@ def test_find_sales_partner_managed_clients_non_empty_request_with_auto_populate
         client.find_sales_partner_managed_clients(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == marketingplatform_admin.FindSalesPartnerManagedClientsRequest(
+        request_msg = marketingplatform_admin.FindSalesPartnerManagedClientsRequest(
             organization="organization_value",
         )
+        assert args[0] == request_msg
 
 
 def test_find_sales_partner_managed_clients_use_cached_wrapped_rpc():
@@ -2299,9 +2335,15 @@ async def test_find_sales_partner_managed_clients_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        marketingplatform_admin.FindSalesPartnerManagedClientsRequest(),
+        {},
+    ],
+)
 async def test_find_sales_partner_managed_clients_async(
-    transport: str = "grpc_asyncio",
-    request_type=marketingplatform_admin.FindSalesPartnerManagedClientsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MarketingplatformAdminServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2310,7 +2352,7 @@ async def test_find_sales_partner_managed_clients_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2332,11 +2374,6 @@ async def test_find_sales_partner_managed_clients_async(
     assert isinstance(
         response, marketingplatform_admin.FindSalesPartnerManagedClientsResponse
     )
-
-
-@pytest.mark.asyncio
-async def test_find_sales_partner_managed_clients_async_from_dict():
-    await test_find_sales_partner_managed_clients_async(request_type=dict)
 
 
 def test_find_sales_partner_managed_clients_field_headers():
@@ -2409,8 +2446,8 @@ async def test_find_sales_partner_managed_clients_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        marketingplatform_admin.ListAnalyticsAccountLinksRequest,
-        dict,
+        marketingplatform_admin.ListAnalyticsAccountLinksRequest(),
+        {},
     ],
 )
 def test_list_analytics_account_links(request_type, transport: str = "grpc"):
@@ -2421,7 +2458,7 @@ def test_list_analytics_account_links(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2470,10 +2507,11 @@ def test_list_analytics_account_links_non_empty_request_with_auto_populated_fiel
         client.list_analytics_account_links(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == marketingplatform_admin.ListAnalyticsAccountLinksRequest(
+        request_msg = marketingplatform_admin.ListAnalyticsAccountLinksRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_analytics_account_links_use_cached_wrapped_rpc():
@@ -2559,9 +2597,15 @@ async def test_list_analytics_account_links_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        marketingplatform_admin.ListAnalyticsAccountLinksRequest(),
+        {},
+    ],
+)
 async def test_list_analytics_account_links_async(
-    transport: str = "grpc_asyncio",
-    request_type=marketingplatform_admin.ListAnalyticsAccountLinksRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MarketingplatformAdminServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2570,7 +2614,7 @@ async def test_list_analytics_account_links_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2593,11 +2637,6 @@ async def test_list_analytics_account_links_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAnalyticsAccountLinksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_analytics_account_links_async_from_dict():
-    await test_list_analytics_account_links_async(request_type=dict)
 
 
 def test_list_analytics_account_links_field_headers():
@@ -2804,6 +2843,9 @@ def test_list_analytics_account_links_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.AnalyticsAccountLink) for i in results)
@@ -2896,6 +2938,8 @@ async def test_list_analytics_account_links_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2956,8 +3000,8 @@ async def test_list_analytics_account_links_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        marketingplatform_admin.CreateAnalyticsAccountLinkRequest,
-        dict,
+        marketingplatform_admin.CreateAnalyticsAccountLinkRequest(),
+        {},
     ],
 )
 def test_create_analytics_account_link(request_type, transport: str = "grpc"):
@@ -2968,7 +3012,7 @@ def test_create_analytics_account_link(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3025,9 +3069,10 @@ def test_create_analytics_account_link_non_empty_request_with_auto_populated_fie
         client.create_analytics_account_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == marketingplatform_admin.CreateAnalyticsAccountLinkRequest(
+        request_msg = marketingplatform_admin.CreateAnalyticsAccountLinkRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_analytics_account_link_use_cached_wrapped_rpc():
@@ -3113,9 +3158,15 @@ async def test_create_analytics_account_link_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        marketingplatform_admin.CreateAnalyticsAccountLinkRequest(),
+        {},
+    ],
+)
 async def test_create_analytics_account_link_async(
-    transport: str = "grpc_asyncio",
-    request_type=marketingplatform_admin.CreateAnalyticsAccountLinkRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MarketingplatformAdminServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3124,7 +3175,7 @@ async def test_create_analytics_account_link_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3156,11 +3207,6 @@ async def test_create_analytics_account_link_async(
         response.link_verification_state
         == resources.LinkVerificationState.LINK_VERIFICATION_STATE_VERIFIED
     )
-
-
-@pytest.mark.asyncio
-async def test_create_analytics_account_link_async_from_dict():
-    await test_create_analytics_account_link_async(request_type=dict)
 
 
 def test_create_analytics_account_link_field_headers():
@@ -3327,8 +3373,8 @@ async def test_create_analytics_account_link_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        marketingplatform_admin.DeleteAnalyticsAccountLinkRequest,
-        dict,
+        marketingplatform_admin.DeleteAnalyticsAccountLinkRequest(),
+        {},
     ],
 )
 def test_delete_analytics_account_link(request_type, transport: str = "grpc"):
@@ -3339,7 +3385,7 @@ def test_delete_analytics_account_link(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3384,9 +3430,10 @@ def test_delete_analytics_account_link_non_empty_request_with_auto_populated_fie
         client.delete_analytics_account_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == marketingplatform_admin.DeleteAnalyticsAccountLinkRequest(
+        request_msg = marketingplatform_admin.DeleteAnalyticsAccountLinkRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_analytics_account_link_use_cached_wrapped_rpc():
@@ -3472,9 +3519,15 @@ async def test_delete_analytics_account_link_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        marketingplatform_admin.DeleteAnalyticsAccountLinkRequest(),
+        {},
+    ],
+)
 async def test_delete_analytics_account_link_async(
-    transport: str = "grpc_asyncio",
-    request_type=marketingplatform_admin.DeleteAnalyticsAccountLinkRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MarketingplatformAdminServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3483,7 +3536,7 @@ async def test_delete_analytics_account_link_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3501,11 +3554,6 @@ async def test_delete_analytics_account_link_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_analytics_account_link_async_from_dict():
-    await test_delete_analytics_account_link_async(request_type=dict)
 
 
 def test_delete_analytics_account_link_field_headers():
@@ -3658,8 +3706,8 @@ async def test_delete_analytics_account_link_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        marketingplatform_admin.SetPropertyServiceLevelRequest,
-        dict,
+        marketingplatform_admin.SetPropertyServiceLevelRequest(),
+        {},
     ],
 )
 def test_set_property_service_level(request_type, transport: str = "grpc"):
@@ -3670,7 +3718,7 @@ def test_set_property_service_level(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3716,10 +3764,11 @@ def test_set_property_service_level_non_empty_request_with_auto_populated_field(
         client.set_property_service_level(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == marketingplatform_admin.SetPropertyServiceLevelRequest(
+        request_msg = marketingplatform_admin.SetPropertyServiceLevelRequest(
             analytics_account_link="analytics_account_link_value",
             analytics_property="analytics_property_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_property_service_level_use_cached_wrapped_rpc():
@@ -3805,9 +3854,15 @@ async def test_set_property_service_level_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        marketingplatform_admin.SetPropertyServiceLevelRequest(),
+        {},
+    ],
+)
 async def test_set_property_service_level_async(
-    transport: str = "grpc_asyncio",
-    request_type=marketingplatform_admin.SetPropertyServiceLevelRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MarketingplatformAdminServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3816,7 +3871,7 @@ async def test_set_property_service_level_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3836,11 +3891,6 @@ async def test_set_property_service_level_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, marketingplatform_admin.SetPropertyServiceLevelResponse)
-
-
-@pytest.mark.asyncio
-async def test_set_property_service_level_async_from_dict():
-    await test_set_property_service_level_async(request_type=dict)
 
 
 def test_set_property_service_level_field_headers():
@@ -3997,8 +4047,8 @@ async def test_set_property_service_level_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        marketingplatform_admin.ReportPropertyUsageRequest,
-        dict,
+        marketingplatform_admin.ReportPropertyUsageRequest(),
+        {},
     ],
 )
 def test_report_property_usage(request_type, transport: str = "grpc"):
@@ -4009,7 +4059,7 @@ def test_report_property_usage(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4055,10 +4105,11 @@ def test_report_property_usage_non_empty_request_with_auto_populated_field():
         client.report_property_usage(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == marketingplatform_admin.ReportPropertyUsageRequest(
+        request_msg = marketingplatform_admin.ReportPropertyUsageRequest(
             organization="organization_value",
             month="month_value",
         )
+        assert args[0] == request_msg
 
 
 def test_report_property_usage_use_cached_wrapped_rpc():
@@ -4144,9 +4195,15 @@ async def test_report_property_usage_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        marketingplatform_admin.ReportPropertyUsageRequest(),
+        {},
+    ],
+)
 async def test_report_property_usage_async(
-    transport: str = "grpc_asyncio",
-    request_type=marketingplatform_admin.ReportPropertyUsageRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MarketingplatformAdminServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4155,7 +4212,7 @@ async def test_report_property_usage_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4175,11 +4232,6 @@ async def test_report_property_usage_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, marketingplatform_admin.ReportPropertyUsageResponse)
-
-
-@pytest.mark.asyncio
-async def test_report_property_usage_async_from_dict():
-    await test_report_property_usage_async(request_type=dict)
 
 
 def test_report_property_usage_field_headers():
@@ -4606,6 +4658,9 @@ def test_list_organizations_rest_pager(transport: str = "rest"):
 
         pager = client.list_organizations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Organization) for i in results)
@@ -5003,6 +5058,9 @@ def test_list_analytics_account_links_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "organizations/sample1"}
 
         pager = client.list_analytics_account_links(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -5915,7 +5973,6 @@ def test_get_organization_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.GetOrganizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5938,7 +5995,6 @@ def test_list_organizations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.ListOrganizationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5963,7 +6019,6 @@ def test_find_sales_partner_managed_clients_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.FindSalesPartnerManagedClientsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5986,7 +6041,6 @@ def test_list_analytics_account_links_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.ListAnalyticsAccountLinksRequest()
-
         assert args[0] == request_msg
 
 
@@ -6009,7 +6063,6 @@ def test_create_analytics_account_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.CreateAnalyticsAccountLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -6032,7 +6085,6 @@ def test_delete_analytics_account_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.DeleteAnalyticsAccountLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -6055,7 +6107,6 @@ def test_set_property_service_level_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.SetPropertyServiceLevelRequest()
-
         assert args[0] == request_msg
 
 
@@ -6078,7 +6129,6 @@ def test_report_property_usage_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.ReportPropertyUsageRequest()
-
         assert args[0] == request_msg
 
 
@@ -6120,7 +6170,6 @@ async def test_get_organization_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.GetOrganizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -6149,7 +6198,6 @@ async def test_list_organizations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.ListOrganizationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6176,7 +6224,6 @@ async def test_find_sales_partner_managed_clients_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.FindSalesPartnerManagedClientsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6205,7 +6252,6 @@ async def test_list_analytics_account_links_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.ListAnalyticsAccountLinksRequest()
-
         assert args[0] == request_msg
 
 
@@ -6237,7 +6283,6 @@ async def test_create_analytics_account_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.CreateAnalyticsAccountLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -6262,7 +6307,6 @@ async def test_delete_analytics_account_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.DeleteAnalyticsAccountLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -6289,7 +6333,6 @@ async def test_set_property_service_level_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.SetPropertyServiceLevelRequest()
-
         assert args[0] == request_msg
 
 
@@ -6316,7 +6359,6 @@ async def test_report_property_usage_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.ReportPropertyUsageRequest()
-
         assert args[0] == request_msg
 
 
@@ -7522,7 +7564,6 @@ def test_get_organization_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.GetOrganizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7544,7 +7585,6 @@ def test_list_organizations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.ListOrganizationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7566,7 +7606,6 @@ def test_find_sales_partner_managed_clients_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.FindSalesPartnerManagedClientsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7588,7 +7627,6 @@ def test_list_analytics_account_links_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.ListAnalyticsAccountLinksRequest()
-
         assert args[0] == request_msg
 
 
@@ -7610,7 +7648,6 @@ def test_create_analytics_account_link_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.CreateAnalyticsAccountLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -7632,7 +7669,6 @@ def test_delete_analytics_account_link_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.DeleteAnalyticsAccountLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -7654,7 +7690,6 @@ def test_set_property_service_level_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.SetPropertyServiceLevelRequest()
-
         assert args[0] == request_msg
 
 
@@ -7676,7 +7711,6 @@ def test_report_property_usage_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = marketingplatform_admin.ReportPropertyUsageRequest()
-
         assert args[0] == request_msg
 
 

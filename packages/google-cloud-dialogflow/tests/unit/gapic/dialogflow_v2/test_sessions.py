@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -117,6 +118,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -911,7 +927,14 @@ def test_sessions_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -958,7 +981,14 @@ def test_sessions_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1266,8 +1296,8 @@ def test_sessions_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_session.DetectIntentRequest,
-        dict,
+        gcd_session.DetectIntentRequest(),
+        {},
     ],
 )
 def test_detect_intent(request_type, transport: str = "grpc"):
@@ -1278,7 +1308,7 @@ def test_detect_intent(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.detect_intent), "__call__") as call:
@@ -1324,9 +1354,10 @@ def test_detect_intent_non_empty_request_with_auto_populated_field():
         client.detect_intent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_session.DetectIntentRequest(
+        request_msg = gcd_session.DetectIntentRequest(
             session="session_value",
         )
+        assert args[0] == request_msg
 
 
 def test_detect_intent_use_cached_wrapped_rpc():
@@ -1407,9 +1438,14 @@ async def test_detect_intent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_detect_intent_async(
-    transport: str = "grpc_asyncio", request_type=gcd_session.DetectIntentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_session.DetectIntentRequest(),
+        {},
+    ],
+)
+async def test_detect_intent_async(request_type, transport: str = "grpc_asyncio"):
     client = SessionsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1417,7 +1453,7 @@ async def test_detect_intent_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.detect_intent), "__call__") as call:
@@ -1440,11 +1476,6 @@ async def test_detect_intent_async(
     assert isinstance(response, gcd_session.DetectIntentResponse)
     assert response.response_id == "response_id_value"
     assert response.output_audio == b"output_audio_blob"
-
-
-@pytest.mark.asyncio
-async def test_detect_intent_async_from_dict():
-    await test_detect_intent_async(request_type=dict)
 
 
 def test_detect_intent_field_headers():
@@ -1627,8 +1658,8 @@ async def test_detect_intent_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        session.StreamingDetectIntentRequest,
-        dict,
+        session.StreamingDetectIntentRequest(),
+        {},
     ],
 )
 def test_streaming_detect_intent(request_type, transport: str = "grpc"):
@@ -1639,7 +1670,7 @@ def test_streaming_detect_intent(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1743,8 +1774,15 @@ async def test_streaming_detect_intent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session.StreamingDetectIntentRequest(),
+        {},
+    ],
+)
 async def test_streaming_detect_intent_async(
-    transport: str = "grpc_asyncio", request_type=session.StreamingDetectIntentRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SessionsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1753,7 +1791,7 @@ async def test_streaming_detect_intent_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1775,11 +1813,6 @@ async def test_streaming_detect_intent_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, session.StreamingDetectIntentResponse)
-
-
-@pytest.mark.asyncio
-async def test_streaming_detect_intent_async_from_dict():
-    await test_streaming_detect_intent_async(request_type=dict)
 
 
 def test_detect_intent_rest_use_cached_wrapped_rpc():
@@ -2126,7 +2159,6 @@ def test_detect_intent_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_session.DetectIntentRequest()
-
         assert args[0] == request_msg
 
 
@@ -2168,7 +2200,6 @@ async def test_detect_intent_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_session.DetectIntentRequest()
-
         assert args[0] == request_msg
 
 
@@ -2653,7 +2684,6 @@ def test_detect_intent_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_session.DetectIntentRequest()
-
         assert args[0] == request_msg
 
 

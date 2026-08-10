@@ -116,34 +116,15 @@ class _LoggingClientAIOInterceptor(
 class IcebergCatalogServiceGrpcAsyncIOTransport(IcebergCatalogServiceTransport):
     """gRPC AsyncIO backend transport for IcebergCatalogService.
 
-    Iceberg Catalog Service API: this implements the open-source Iceberg
-    REST Catalog API. See the API definition here:
-    https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml
+    Lakehouse runtime catalog supports the following catalog
+    management methods:
 
-    The API is defined as OpenAPI 3.1.1 spec.
-
-    Currently we only support the following methods:
-
-    - GetConfig/GetIcebergCatalogConfig
-    - ListIcebergNamespaces
-    - CheckIcebergNamespaceExists
-    - GetIcebergNamespace
-    - CreateIcebergNamespace (only supports single level)
-    - DeleteIcebergNamespace
-    - UpdateIcebergNamespace properties
-    - ListTableIdentifiers
-    - CreateIcebergTable
-    - DeleteIcebergTable
-    - GetIcebergTable
-    - UpdateIcebergTable (CommitTable)
-    - LoadIcebergTableCredentials
-    - RegisterTable
-
-    Users are required to provided the ``X-Goog-User-Project`` header
-    with the project id or number which can be different from the bucket
-    project id. That project will be charged for the API calls and the
-    calling user must have access to that project. The caller must have
-    ``serviceusage.services.use`` permission on the project.
+    - GetIcebergCatalog
+    - ListIcebergCatalogs
+    - DeleteIcebergCatalog
+    - UpdateIcebergCatalog
+    - CreateIcebergCatalog
+    - FailoverIcebergCatalog
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -458,8 +439,7 @@ class IcebergCatalogServiceGrpcAsyncIOTransport(IcebergCatalogServiceTransport):
     ]:
         r"""Return a callable for the create iceberg catalog method over gRPC.
 
-        Creates the Iceberg REST Catalog. Currently only supports Google
-        Cloud Storage Bucket catalogs. Google Cloud Storage Bucket
+        Creates the Iceberg REST Catalog. Google Cloud Storage Bucket
         catalog id is the bucket for which the catalog is created (e.g.
         ``my-catalog`` for ``gs://my-catalog``).
 

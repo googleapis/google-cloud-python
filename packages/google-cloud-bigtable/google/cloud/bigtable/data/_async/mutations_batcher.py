@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import atexit
 import concurrent.futures
+import time
 import warnings
 from collections import deque
 from typing import TYPE_CHECKING, Sequence, cast
@@ -26,6 +27,7 @@ from google.cloud.bigtable.data._helpers import (
     _get_retryable_errors,
     _get_timeouts,
 )
+from google.cloud.bigtable.data._metrics import ActiveOperationMetric, OperationType
 from google.cloud.bigtable.data.exceptions import (
     FailedMutationEntryError,
     MutationsExceptionGroup,
@@ -36,6 +38,7 @@ from google.cloud.bigtable.data.mutations import (
 )
 
 if TYPE_CHECKING:
+    from google.cloud.bigtable.data._metrics import BigtableClientSideMetricsController
     from google.cloud.bigtable.data.mutations import RowMutationEntry
 
     if CrossSync.is_async:
@@ -180,6 +183,24 @@ class _FlowControlAsync:
                             lambda: self._has_capacity(next_count, next_size)
                         )
             yield mutations[start_idx:end_idx]
+
+    @CrossSync.convert(replace_symbols={"__anext__": "__next__"})
+    async def add_to_flow_with_metrics(
+        self,
+        mutations: RowMutationEntry | list[RowMutationEntry],
+        metrics_controller: BigtableClientSideMetricsController,
+    ):
+        inner_generator = self.add_to_flow(mutations)
+        while True:
+            # start a new metric
+            metric = metrics_controller.create_operation(OperationType.BULK_MUTATE_ROWS)
+            flow_start_time = time.monotonic_ns()
+            try:
+                value = await inner_generator.__anext__()
+            except CrossSync.StopIteration:
+                return
+            metric.flow_throttling_time_ns = time.monotonic_ns() - flow_start_time
+            yield value, metric
 
 
 @CrossSync.convert_class(sync_name="MutationsBatcher")
@@ -357,9 +378,14 @@ class MutationsBatcherAsync:
         """
         # flush new entries
         in_process_requests: list[CrossSync.Future[list[FailedMutationEntryError]]] = []
-        async for batch in self._flow_control.add_to_flow(new_entries):
+        async for batch, metric in self._flow_control.add_to_flow_with_metrics(
+            new_entries, self._target._metrics
+        ):
             batch_task = CrossSync.create_task(
-                self._execute_mutate_rows, batch, sync_executor=self._sync_rpc_executor
+                self._execute_mutate_rows,
+                batch,
+                metric,
+                sync_executor=self._sync_rpc_executor,
             )
             in_process_requests.append(batch_task)
         # wait for all inflight requests to complete
@@ -370,7 +396,7 @@ class MutationsBatcherAsync:
 
     @CrossSync.convert
     async def _execute_mutate_rows(
-        self, batch: list[RowMutationEntry]
+        self, batch: list[RowMutationEntry], metric: ActiveOperationMetric
     ) -> list[FailedMutationEntryError]:
         """
         Helper to execute mutation operation on a batch
@@ -391,6 +417,7 @@ class MutationsBatcherAsync:
                 batch,
                 operation_timeout=self._operation_timeout,
                 attempt_timeout=self._attempt_timeout,
+                metric=metric,
                 retryable_exceptions=self._retryable_errors,
             )
             await operation.start()

@@ -78,13 +78,13 @@ def test__parse_mds_mode_invalid(monkeypatch):
         _mtls._parse_mds_mode()
 
 
-@mock.patch("os.path.exists")
+@mock.patch("google.auth.compute_engine._mtls.os.path.exists")
 def test__certs_exist_true(mock_exists, mock_mds_mtls_config):
     mock_exists.return_value = True
     assert _mtls._certs_exist(mock_mds_mtls_config) is True
 
 
-@mock.patch("os.path.exists")
+@mock.patch("google.auth.compute_engine._mtls.os.path.exists")
 def test__certs_exist_false(mock_exists, mock_mds_mtls_config):
     mock_exists.return_value = False
     assert _mtls._certs_exist(mock_mds_mtls_config) is False
@@ -101,7 +101,7 @@ def test__certs_exist_false(mock_exists, mock_mds_mtls_config):
         ("default", False, False),
     ],
 )
-@mock.patch("os.path.exists")
+@mock.patch("google.auth.compute_engine._mtls.os.path.exists")
 def test_should_use_mds_mtls(
     mock_exists, monkeypatch, mtls_mode, certs_exist, expected_result
 ):
@@ -123,7 +123,7 @@ def test_mds_mtls_adapter_init(mock_ssl_context, mock_mds_mtls_config):
         cafile=mock_mds_mtls_config.ca_cert_path
     )
     adapter.ssl_context.load_cert_chain.assert_called_once_with(
-        certfile=mock_mds_mtls_config.client_combined_cert_path
+        certfile=mock_mds_mtls_config.client_combined_cert_path, password=""
     )
 
 
@@ -250,6 +250,50 @@ def test_mds_mtls_adapter_send_fallback_http_error(
     assert fallback_request.url == "http://fake-mds.com/"
 
 
+@mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")
+@mock.patch("ssl.create_default_context")
+def test_mds_mtls_adapter_send_fallback_connection_error(
+    mock_ssl_context, mock_parse_mds_mode, mock_mds_mtls_config
+):
+    mock_parse_mds_mode.return_value = _mtls.MdsMtlsMode.DEFAULT
+    adapter = _mtls.MdsMtlsAdapter(mock_mds_mtls_config)
+
+    mock_mtls_response = mock.Mock(spec=requests.Response)
+    mock_mtls_response.status_code = 200
+
+    with mock.patch(
+        "requests.adapters.HTTPAdapter.send",
+        side_effect=[requests.exceptions.ConnectionError, mock_mtls_response],
+    ):
+        request = requests.Request(method="GET", url="https://fake-mds.com").prepare()
+        response = adapter.send(request)
+
+    assert response == mock_mtls_response
+    assert request.url == "http://fake-mds.com/"
+
+
+@mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")
+@mock.patch("ssl.create_default_context")
+def test_mds_mtls_adapter_send_fallback_timeout(
+    mock_ssl_context, mock_parse_mds_mode, mock_mds_mtls_config
+):
+    mock_parse_mds_mode.return_value = _mtls.MdsMtlsMode.DEFAULT
+    adapter = _mtls.MdsMtlsAdapter(mock_mds_mtls_config)
+
+    mock_mtls_response = mock.Mock(spec=requests.Response)
+    mock_mtls_response.status_code = 200
+
+    with mock.patch(
+        "requests.adapters.HTTPAdapter.send",
+        side_effect=[requests.exceptions.Timeout, mock_mtls_response],
+    ):
+        request = requests.Request(method="GET", url="https://fake-mds.com").prepare()
+        response = adapter.send(request)
+
+    assert response == mock_mtls_response
+    assert request.url == "http://fake-mds.com/"
+
+
 @mock.patch("requests.adapters.HTTPAdapter.send")
 @mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")
 @mock.patch("ssl.create_default_context")
@@ -259,16 +303,12 @@ def test_mds_mtls_adapter_send_no_fallback_other_exception(
     mock_parse_mds_mode.return_value = _mtls.MdsMtlsMode.DEFAULT
     adapter = _mtls.MdsMtlsAdapter(mock_mds_mtls_config)
 
-    # Simulate HTTP exception
-    with mock.patch(
-        "requests.adapters.HTTPAdapter.send",
-        side_effect=requests.exceptions.ConnectionError,
-    ):
-        request = requests.Request(method="GET", url="https://fake-mds.com").prepare()
-        with pytest.raises(requests.exceptions.ConnectionError):
-            adapter.send(request)
+    mock_http_adapter_send.side_effect = ValueError("Unhandled exception")
+    request = requests.Request(method="GET", url="https://fake-mds.com").prepare()
+    with pytest.raises(ValueError, match="Unhandled exception"):
+        adapter.send(request)
 
-    mock_http_adapter_send.assert_not_called()
+    mock_http_adapter_send.assert_called_once()
 
 
 @mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -118,6 +119,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -990,7 +1006,14 @@ def test_app_gateways_service_client_get_mtls_endpoint_and_cert_source(client_cl
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1037,7 +1060,14 @@ def test_app_gateways_service_client_get_mtls_endpoint_and_cert_source(client_cl
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1365,8 +1395,8 @@ def test_app_gateways_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        app_gateways_service.ListAppGatewaysRequest,
-        dict,
+        app_gateways_service.ListAppGatewaysRequest(),
+        {},
     ],
 )
 def test_list_app_gateways(request_type, transport: str = "grpc"):
@@ -1377,7 +1407,7 @@ def test_list_app_gateways(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1430,12 +1460,13 @@ def test_list_app_gateways_non_empty_request_with_auto_populated_field():
         client.list_app_gateways(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_gateways_service.ListAppGatewaysRequest(
+        request_msg = app_gateways_service.ListAppGatewaysRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_app_gateways_use_cached_wrapped_rpc():
@@ -1518,10 +1549,14 @@ async def test_list_app_gateways_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_app_gateways_async(
-    transport: str = "grpc_asyncio",
-    request_type=app_gateways_service.ListAppGatewaysRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        app_gateways_service.ListAppGatewaysRequest(),
+        {},
+    ],
+)
+async def test_list_app_gateways_async(request_type, transport: str = "grpc_asyncio"):
     client = AppGatewaysServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1529,7 +1564,7 @@ async def test_list_app_gateways_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1554,11 +1589,6 @@ async def test_list_app_gateways_async(
     assert isinstance(response, pagers.ListAppGatewaysAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_app_gateways_async_from_dict():
-    await test_list_app_gateways_async(request_type=dict)
 
 
 def test_list_app_gateways_field_headers():
@@ -1763,6 +1793,9 @@ def test_list_app_gateways_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, app_gateways_service.AppGateway) for i in results)
@@ -1855,6 +1888,8 @@ async def test_list_app_gateways_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1913,8 +1948,8 @@ async def test_list_app_gateways_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        app_gateways_service.GetAppGatewayRequest,
-        dict,
+        app_gateways_service.GetAppGatewayRequest(),
+        {},
     ],
 )
 def test_get_app_gateway(request_type, transport: str = "grpc"):
@@ -1925,7 +1960,7 @@ def test_get_app_gateway(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_app_gateway), "__call__") as call:
@@ -1983,9 +2018,10 @@ def test_get_app_gateway_non_empty_request_with_auto_populated_field():
         client.get_app_gateway(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_gateways_service.GetAppGatewayRequest(
+        request_msg = app_gateways_service.GetAppGatewayRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_app_gateway_use_cached_wrapped_rpc():
@@ -2066,10 +2102,14 @@ async def test_get_app_gateway_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_app_gateway_async(
-    transport: str = "grpc_asyncio",
-    request_type=app_gateways_service.GetAppGatewayRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        app_gateways_service.GetAppGatewayRequest(),
+        {},
+    ],
+)
+async def test_get_app_gateway_async(request_type, transport: str = "grpc_asyncio"):
     client = AppGatewaysServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2077,7 +2117,7 @@ async def test_get_app_gateway_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_app_gateway), "__call__") as call:
@@ -2112,11 +2152,6 @@ async def test_get_app_gateway_async(
     assert (
         response.host_type == app_gateways_service.AppGateway.HostType.GCP_REGIONAL_MIG
     )
-
-
-@pytest.mark.asyncio
-async def test_get_app_gateway_async_from_dict():
-    await test_get_app_gateway_async(request_type=dict)
 
 
 def test_get_app_gateway_field_headers():
@@ -2265,8 +2300,8 @@ async def test_get_app_gateway_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        app_gateways_service.CreateAppGatewayRequest,
-        dict,
+        app_gateways_service.CreateAppGatewayRequest(),
+        {},
     ],
 )
 def test_create_app_gateway(request_type, transport: str = "grpc"):
@@ -2277,7 +2312,7 @@ def test_create_app_gateway(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2324,11 +2359,12 @@ def test_create_app_gateway_non_empty_request_with_auto_populated_field():
         client.create_app_gateway(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_gateways_service.CreateAppGatewayRequest(
+        request_msg = app_gateways_service.CreateAppGatewayRequest(
             parent="parent_value",
             app_gateway_id="app_gateway_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_app_gateway_use_cached_wrapped_rpc():
@@ -2423,10 +2459,14 @@ async def test_create_app_gateway_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_app_gateway_async(
-    transport: str = "grpc_asyncio",
-    request_type=app_gateways_service.CreateAppGatewayRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        app_gateways_service.CreateAppGatewayRequest(),
+        {},
+    ],
+)
+async def test_create_app_gateway_async(request_type, transport: str = "grpc_asyncio"):
     client = AppGatewaysServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2434,7 +2474,7 @@ async def test_create_app_gateway_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2454,11 +2494,6 @@ async def test_create_app_gateway_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_app_gateway_async_from_dict():
-    await test_create_app_gateway_async(request_type=dict)
 
 
 def test_create_app_gateway_field_headers():
@@ -2635,8 +2670,8 @@ async def test_create_app_gateway_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        app_gateways_service.DeleteAppGatewayRequest,
-        dict,
+        app_gateways_service.DeleteAppGatewayRequest(),
+        {},
     ],
 )
 def test_delete_app_gateway(request_type, transport: str = "grpc"):
@@ -2647,7 +2682,7 @@ def test_delete_app_gateway(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2693,10 +2728,11 @@ def test_delete_app_gateway_non_empty_request_with_auto_populated_field():
         client.delete_app_gateway(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_gateways_service.DeleteAppGatewayRequest(
+        request_msg = app_gateways_service.DeleteAppGatewayRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_app_gateway_use_cached_wrapped_rpc():
@@ -2791,10 +2827,14 @@ async def test_delete_app_gateway_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_app_gateway_async(
-    transport: str = "grpc_asyncio",
-    request_type=app_gateways_service.DeleteAppGatewayRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        app_gateways_service.DeleteAppGatewayRequest(),
+        {},
+    ],
+)
+async def test_delete_app_gateway_async(request_type, transport: str = "grpc_asyncio"):
     client = AppGatewaysServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2802,7 +2842,7 @@ async def test_delete_app_gateway_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2822,11 +2862,6 @@ async def test_delete_app_gateway_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_app_gateway_async_from_dict():
-    await test_delete_app_gateway_async(request_type=dict)
 
 
 def test_delete_app_gateway_field_headers():
@@ -3232,6 +3267,9 @@ def test_list_app_gateways_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_app_gateways(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -3953,7 +3991,6 @@ def test_list_app_gateways_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_gateways_service.ListAppGatewaysRequest()
-
         assert args[0] == request_msg
 
 
@@ -3974,7 +4011,6 @@ def test_get_app_gateway_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_gateways_service.GetAppGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -3997,7 +4033,6 @@ def test_create_app_gateway_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_gateways_service.CreateAppGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -4020,7 +4055,6 @@ def test_delete_app_gateway_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_gateways_service.DeleteAppGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -4064,7 +4098,6 @@ async def test_list_app_gateways_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_gateways_service.ListAppGatewaysRequest()
-
         assert args[0] == request_msg
 
 
@@ -4097,7 +4130,6 @@ async def test_get_app_gateway_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_gateways_service.GetAppGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -4124,7 +4156,6 @@ async def test_create_app_gateway_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_gateways_service.CreateAppGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -4151,7 +4182,6 @@ async def test_delete_app_gateway_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_gateways_service.DeleteAppGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -5376,7 +5406,6 @@ def test_list_app_gateways_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_gateways_service.ListAppGatewaysRequest()
-
         assert args[0] == request_msg
 
 
@@ -5396,7 +5425,6 @@ def test_get_app_gateway_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_gateways_service.GetAppGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -5418,7 +5446,6 @@ def test_create_app_gateway_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_gateways_service.CreateAppGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -5440,7 +5467,6 @@ def test_delete_app_gateway_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_gateways_service.DeleteAppGatewayRequest()
-
         assert args[0] == request_msg
 
 

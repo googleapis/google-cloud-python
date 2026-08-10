@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -109,6 +110,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -934,7 +950,14 @@ def test_cms_metadata_value_service_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -981,7 +1004,14 @@ def test_cms_metadata_value_service_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1638,6 +1668,9 @@ def test_list_cms_metadata_values_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "networks/sample1"}
 
         pager = client.list_cms_metadata_values(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -2894,7 +2927,6 @@ def test_get_cms_metadata_value_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cms_metadata_value_service.GetCmsMetadataValueRequest()
-
         assert args[0] == request_msg
 
 
@@ -2916,7 +2948,6 @@ def test_list_cms_metadata_values_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cms_metadata_value_service.ListCmsMetadataValuesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2938,7 +2969,6 @@ def test_batch_activate_cms_metadata_values_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cms_metadata_value_service.BatchActivateCmsMetadataValuesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2962,7 +2992,6 @@ def test_batch_deactivate_cms_metadata_values_empty_call_rest():
         request_msg = (
             cms_metadata_value_service.BatchDeactivateCmsMetadataValuesRequest()
         )
-
         assert args[0] == request_msg
 
 

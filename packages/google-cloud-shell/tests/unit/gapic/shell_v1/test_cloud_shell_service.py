@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -110,6 +111,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -978,7 +994,14 @@ def test_cloud_shell_service_client_get_mtls_endpoint_and_cert_source(client_cla
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1025,7 +1048,14 @@ def test_cloud_shell_service_client_get_mtls_endpoint_and_cert_source(client_cla
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1353,8 +1383,8 @@ def test_cloud_shell_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudshell.GetEnvironmentRequest,
-        dict,
+        cloudshell.GetEnvironmentRequest(),
+        {},
     ],
 )
 def test_get_environment(request_type, transport: str = "grpc"):
@@ -1365,7 +1395,7 @@ def test_get_environment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
@@ -1425,9 +1455,10 @@ def test_get_environment_non_empty_request_with_auto_populated_field():
         client.get_environment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.GetEnvironmentRequest(
+        request_msg = cloudshell.GetEnvironmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_environment_use_cached_wrapped_rpc():
@@ -1508,9 +1539,14 @@ async def test_get_environment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_environment_async(
-    transport: str = "grpc_asyncio", request_type=cloudshell.GetEnvironmentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudshell.GetEnvironmentRequest(),
+        {},
+    ],
+)
+async def test_get_environment_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudShellServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1518,7 +1554,7 @@ async def test_get_environment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
@@ -1555,11 +1591,6 @@ async def test_get_environment_async(
     assert response.ssh_host == "ssh_host_value"
     assert response.ssh_port == 882
     assert response.public_keys == ["public_keys_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_environment_async_from_dict():
-    await test_get_environment_async(request_type=dict)
 
 
 def test_get_environment_field_headers():
@@ -1708,8 +1739,8 @@ async def test_get_environment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudshell.StartEnvironmentRequest,
-        dict,
+        cloudshell.StartEnvironmentRequest(),
+        {},
     ],
 )
 def test_start_environment(request_type, transport: str = "grpc"):
@@ -1720,7 +1751,7 @@ def test_start_environment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1766,10 +1797,11 @@ def test_start_environment_non_empty_request_with_auto_populated_field():
         client.start_environment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.StartEnvironmentRequest(
+        request_msg = cloudshell.StartEnvironmentRequest(
             name="name_value",
             access_token="access_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_start_environment_use_cached_wrapped_rpc():
@@ -1862,9 +1894,14 @@ async def test_start_environment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_start_environment_async(
-    transport: str = "grpc_asyncio", request_type=cloudshell.StartEnvironmentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudshell.StartEnvironmentRequest(),
+        {},
+    ],
+)
+async def test_start_environment_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudShellServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1872,7 +1909,7 @@ async def test_start_environment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1892,11 +1929,6 @@ async def test_start_environment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_start_environment_async_from_dict():
-    await test_start_environment_async(request_type=dict)
 
 
 def test_start_environment_field_headers():
@@ -1967,8 +1999,8 @@ async def test_start_environment_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudshell.AuthorizeEnvironmentRequest,
-        dict,
+        cloudshell.AuthorizeEnvironmentRequest(),
+        {},
     ],
 )
 def test_authorize_environment(request_type, transport: str = "grpc"):
@@ -1979,7 +2011,7 @@ def test_authorize_environment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2026,11 +2058,12 @@ def test_authorize_environment_non_empty_request_with_auto_populated_field():
         client.authorize_environment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.AuthorizeEnvironmentRequest(
+        request_msg = cloudshell.AuthorizeEnvironmentRequest(
             name="name_value",
             access_token="access_token_value",
             id_token="id_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_authorize_environment_use_cached_wrapped_rpc():
@@ -2126,8 +2159,15 @@ async def test_authorize_environment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudshell.AuthorizeEnvironmentRequest(),
+        {},
+    ],
+)
 async def test_authorize_environment_async(
-    transport: str = "grpc_asyncio", request_type=cloudshell.AuthorizeEnvironmentRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudShellServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2136,7 +2176,7 @@ async def test_authorize_environment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2156,11 +2196,6 @@ async def test_authorize_environment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_authorize_environment_async_from_dict():
-    await test_authorize_environment_async(request_type=dict)
 
 
 def test_authorize_environment_field_headers():
@@ -2231,8 +2266,8 @@ async def test_authorize_environment_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudshell.AddPublicKeyRequest,
-        dict,
+        cloudshell.AddPublicKeyRequest(),
+        {},
     ],
 )
 def test_add_public_key(request_type, transport: str = "grpc"):
@@ -2243,7 +2278,7 @@ def test_add_public_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.add_public_key), "__call__") as call:
@@ -2285,10 +2320,11 @@ def test_add_public_key_non_empty_request_with_auto_populated_field():
         client.add_public_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.AddPublicKeyRequest(
+        request_msg = cloudshell.AddPublicKeyRequest(
             environment="environment_value",
             key="key_value",
         )
+        assert args[0] == request_msg
 
 
 def test_add_public_key_use_cached_wrapped_rpc():
@@ -2379,9 +2415,14 @@ async def test_add_public_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_add_public_key_async(
-    transport: str = "grpc_asyncio", request_type=cloudshell.AddPublicKeyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudshell.AddPublicKeyRequest(),
+        {},
+    ],
+)
+async def test_add_public_key_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudShellServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2389,7 +2430,7 @@ async def test_add_public_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.add_public_key), "__call__") as call:
@@ -2407,11 +2448,6 @@ async def test_add_public_key_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_add_public_key_async_from_dict():
-    await test_add_public_key_async(request_type=dict)
 
 
 def test_add_public_key_field_headers():
@@ -2478,8 +2514,8 @@ async def test_add_public_key_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudshell.RemovePublicKeyRequest,
-        dict,
+        cloudshell.RemovePublicKeyRequest(),
+        {},
     ],
 )
 def test_remove_public_key(request_type, transport: str = "grpc"):
@@ -2490,7 +2526,7 @@ def test_remove_public_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2536,10 +2572,11 @@ def test_remove_public_key_non_empty_request_with_auto_populated_field():
         client.remove_public_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.RemovePublicKeyRequest(
+        request_msg = cloudshell.RemovePublicKeyRequest(
             environment="environment_value",
             key="key_value",
         )
+        assert args[0] == request_msg
 
 
 def test_remove_public_key_use_cached_wrapped_rpc():
@@ -2632,9 +2669,14 @@ async def test_remove_public_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_remove_public_key_async(
-    transport: str = "grpc_asyncio", request_type=cloudshell.RemovePublicKeyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudshell.RemovePublicKeyRequest(),
+        {},
+    ],
+)
+async def test_remove_public_key_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudShellServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2642,7 +2684,7 @@ async def test_remove_public_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2662,11 +2704,6 @@ async def test_remove_public_key_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_remove_public_key_async_from_dict():
-    await test_remove_public_key_async(request_type=dict)
 
 
 def test_remove_public_key_field_headers():
@@ -3202,7 +3239,6 @@ def test_get_environment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.GetEnvironmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -3225,7 +3261,6 @@ def test_start_environment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.StartEnvironmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -3248,7 +3283,6 @@ def test_authorize_environment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.AuthorizeEnvironmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -3269,7 +3303,6 @@ def test_add_public_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.AddPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -3292,7 +3325,6 @@ def test_remove_public_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.RemovePublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -3341,7 +3373,6 @@ async def test_get_environment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.GetEnvironmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -3368,7 +3399,6 @@ async def test_start_environment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.StartEnvironmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -3395,7 +3425,6 @@ async def test_authorize_environment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.AuthorizeEnvironmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -3420,7 +3449,6 @@ async def test_add_public_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.AddPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -3447,7 +3475,6 @@ async def test_remove_public_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.RemovePublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4128,7 +4155,6 @@ def test_get_environment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.GetEnvironmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -4150,7 +4176,6 @@ def test_start_environment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.StartEnvironmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -4172,7 +4197,6 @@ def test_authorize_environment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.AuthorizeEnvironmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -4192,7 +4216,6 @@ def test_add_public_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.AddPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4214,7 +4237,6 @@ def test_remove_public_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudshell.RemovePublicKeyRequest()
-
         assert args[0] == request_msg
 
 

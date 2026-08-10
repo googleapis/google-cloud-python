@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1016,7 +1032,14 @@ def test_omnichannel_settings_service_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1063,7 +1086,14 @@ def test_omnichannel_settings_service_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1402,8 +1432,8 @@ def test_omnichannel_settings_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        omnichannelsettings.GetOmnichannelSettingRequest,
-        dict,
+        omnichannelsettings.GetOmnichannelSettingRequest(),
+        {},
     ],
 )
 def test_get_omnichannel_setting(request_type, transport: str = "grpc"):
@@ -1414,7 +1444,7 @@ def test_get_omnichannel_setting(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1466,9 +1496,10 @@ def test_get_omnichannel_setting_non_empty_request_with_auto_populated_field():
         client.get_omnichannel_setting(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == omnichannelsettings.GetOmnichannelSettingRequest(
+        request_msg = omnichannelsettings.GetOmnichannelSettingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_omnichannel_setting_use_cached_wrapped_rpc():
@@ -1554,9 +1585,15 @@ async def test_get_omnichannel_setting_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        omnichannelsettings.GetOmnichannelSettingRequest(),
+        {},
+    ],
+)
 async def test_get_omnichannel_setting_async(
-    transport: str = "grpc_asyncio",
-    request_type=omnichannelsettings.GetOmnichannelSettingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OmnichannelSettingsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1565,7 +1602,7 @@ async def test_get_omnichannel_setting_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1592,11 +1629,6 @@ async def test_get_omnichannel_setting_async(
     assert response.name == "name_value"
     assert response.region_code == "region_code_value"
     assert response.lsf_type == omnichannelsettings.OmnichannelSetting.LsfType.GHLSF
-
-
-@pytest.mark.asyncio
-async def test_get_omnichannel_setting_async_from_dict():
-    await test_get_omnichannel_setting_async(request_type=dict)
 
 
 def test_get_omnichannel_setting_field_headers():
@@ -1753,8 +1785,8 @@ async def test_get_omnichannel_setting_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        omnichannelsettings.ListOmnichannelSettingsRequest,
-        dict,
+        omnichannelsettings.ListOmnichannelSettingsRequest(),
+        {},
     ],
 )
 def test_list_omnichannel_settings(request_type, transport: str = "grpc"):
@@ -1765,7 +1797,7 @@ def test_list_omnichannel_settings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1814,10 +1846,11 @@ def test_list_omnichannel_settings_non_empty_request_with_auto_populated_field()
         client.list_omnichannel_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == omnichannelsettings.ListOmnichannelSettingsRequest(
+        request_msg = omnichannelsettings.ListOmnichannelSettingsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_omnichannel_settings_use_cached_wrapped_rpc():
@@ -1903,9 +1936,15 @@ async def test_list_omnichannel_settings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        omnichannelsettings.ListOmnichannelSettingsRequest(),
+        {},
+    ],
+)
 async def test_list_omnichannel_settings_async(
-    transport: str = "grpc_asyncio",
-    request_type=omnichannelsettings.ListOmnichannelSettingsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OmnichannelSettingsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1914,7 +1953,7 @@ async def test_list_omnichannel_settings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1937,11 +1976,6 @@ async def test_list_omnichannel_settings_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOmnichannelSettingsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_omnichannel_settings_async_from_dict():
-    await test_list_omnichannel_settings_async(request_type=dict)
 
 
 def test_list_omnichannel_settings_field_headers():
@@ -2148,6 +2182,9 @@ def test_list_omnichannel_settings_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -2242,6 +2279,8 @@ async def test_list_omnichannel_settings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2302,8 +2341,8 @@ async def test_list_omnichannel_settings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        omnichannelsettings.CreateOmnichannelSettingRequest,
-        dict,
+        omnichannelsettings.CreateOmnichannelSettingRequest(),
+        {},
     ],
 )
 def test_create_omnichannel_setting(request_type, transport: str = "grpc"):
@@ -2314,7 +2353,7 @@ def test_create_omnichannel_setting(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2366,9 +2405,10 @@ def test_create_omnichannel_setting_non_empty_request_with_auto_populated_field(
         client.create_omnichannel_setting(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == omnichannelsettings.CreateOmnichannelSettingRequest(
+        request_msg = omnichannelsettings.CreateOmnichannelSettingRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_omnichannel_setting_use_cached_wrapped_rpc():
@@ -2454,9 +2494,15 @@ async def test_create_omnichannel_setting_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        omnichannelsettings.CreateOmnichannelSettingRequest(),
+        {},
+    ],
+)
 async def test_create_omnichannel_setting_async(
-    transport: str = "grpc_asyncio",
-    request_type=omnichannelsettings.CreateOmnichannelSettingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OmnichannelSettingsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2465,7 +2511,7 @@ async def test_create_omnichannel_setting_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2492,11 +2538,6 @@ async def test_create_omnichannel_setting_async(
     assert response.name == "name_value"
     assert response.region_code == "region_code_value"
     assert response.lsf_type == omnichannelsettings.OmnichannelSetting.LsfType.GHLSF
-
-
-@pytest.mark.asyncio
-async def test_create_omnichannel_setting_async_from_dict():
-    await test_create_omnichannel_setting_async(request_type=dict)
 
 
 def test_create_omnichannel_setting_field_headers():
@@ -2671,8 +2712,8 @@ async def test_create_omnichannel_setting_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        omnichannelsettings.UpdateOmnichannelSettingRequest,
-        dict,
+        omnichannelsettings.UpdateOmnichannelSettingRequest(),
+        {},
     ],
 )
 def test_update_omnichannel_setting(request_type, transport: str = "grpc"):
@@ -2683,7 +2724,7 @@ def test_update_omnichannel_setting(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2733,7 +2774,8 @@ def test_update_omnichannel_setting_non_empty_request_with_auto_populated_field(
         client.update_omnichannel_setting(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == omnichannelsettings.UpdateOmnichannelSettingRequest()
+        request_msg = omnichannelsettings.UpdateOmnichannelSettingRequest()
+        assert args[0] == request_msg
 
 
 def test_update_omnichannel_setting_use_cached_wrapped_rpc():
@@ -2819,9 +2861,15 @@ async def test_update_omnichannel_setting_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        omnichannelsettings.UpdateOmnichannelSettingRequest(),
+        {},
+    ],
+)
 async def test_update_omnichannel_setting_async(
-    transport: str = "grpc_asyncio",
-    request_type=omnichannelsettings.UpdateOmnichannelSettingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OmnichannelSettingsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2830,7 +2878,7 @@ async def test_update_omnichannel_setting_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2857,11 +2905,6 @@ async def test_update_omnichannel_setting_async(
     assert response.name == "name_value"
     assert response.region_code == "region_code_value"
     assert response.lsf_type == omnichannelsettings.OmnichannelSetting.LsfType.GHLSF
-
-
-@pytest.mark.asyncio
-async def test_update_omnichannel_setting_async_from_dict():
-    await test_update_omnichannel_setting_async(request_type=dict)
 
 
 def test_update_omnichannel_setting_field_headers():
@@ -3036,8 +3079,8 @@ async def test_update_omnichannel_setting_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        omnichannelsettings.RequestInventoryVerificationRequest,
-        dict,
+        omnichannelsettings.RequestInventoryVerificationRequest(),
+        {},
     ],
 )
 def test_request_inventory_verification(request_type, transport: str = "grpc"):
@@ -3048,7 +3091,7 @@ def test_request_inventory_verification(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3095,9 +3138,10 @@ def test_request_inventory_verification_non_empty_request_with_auto_populated_fi
         client.request_inventory_verification(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == omnichannelsettings.RequestInventoryVerificationRequest(
+        request_msg = omnichannelsettings.RequestInventoryVerificationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_request_inventory_verification_use_cached_wrapped_rpc():
@@ -3183,9 +3227,15 @@ async def test_request_inventory_verification_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        omnichannelsettings.RequestInventoryVerificationRequest(),
+        {},
+    ],
+)
 async def test_request_inventory_verification_async(
-    transport: str = "grpc_asyncio",
-    request_type=omnichannelsettings.RequestInventoryVerificationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OmnichannelSettingsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3194,7 +3244,7 @@ async def test_request_inventory_verification_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3216,11 +3266,6 @@ async def test_request_inventory_verification_async(
     assert isinstance(
         response, omnichannelsettings.RequestInventoryVerificationResponse
     )
-
-
-@pytest.mark.asyncio
-async def test_request_inventory_verification_async_from_dict():
-    await test_request_inventory_verification_async(request_type=dict)
 
 
 def test_request_inventory_verification_field_headers():
@@ -3813,6 +3858,9 @@ def test_list_omnichannel_settings_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "accounts/sample1"}
 
         pager = client.list_omnichannel_settings(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -4537,7 +4585,6 @@ def test_get_omnichannel_setting_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.GetOmnichannelSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -4560,7 +4607,6 @@ def test_list_omnichannel_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.ListOmnichannelSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4583,7 +4629,6 @@ def test_create_omnichannel_setting_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.CreateOmnichannelSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -4606,7 +4651,6 @@ def test_update_omnichannel_setting_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.UpdateOmnichannelSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -4629,7 +4673,6 @@ def test_request_inventory_verification_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.RequestInventoryVerificationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4674,7 +4717,6 @@ async def test_get_omnichannel_setting_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.GetOmnichannelSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -4703,7 +4745,6 @@ async def test_list_omnichannel_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.ListOmnichannelSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4734,7 +4775,6 @@ async def test_create_omnichannel_setting_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.CreateOmnichannelSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -4765,7 +4805,6 @@ async def test_update_omnichannel_setting_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.UpdateOmnichannelSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -4792,7 +4831,6 @@ async def test_request_inventory_verification_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.RequestInventoryVerificationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5715,7 +5753,6 @@ def test_get_omnichannel_setting_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.GetOmnichannelSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -5737,7 +5774,6 @@ def test_list_omnichannel_settings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.ListOmnichannelSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5759,7 +5795,6 @@ def test_create_omnichannel_setting_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.CreateOmnichannelSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -5781,7 +5816,6 @@ def test_update_omnichannel_setting_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.UpdateOmnichannelSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -5803,7 +5837,6 @@ def test_request_inventory_verification_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = omnichannelsettings.RequestInventoryVerificationRequest()
-
         assert args[0] == request_msg
 
 

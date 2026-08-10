@@ -12,21 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sqlalchemy.orm import Session
-from sqlalchemy.testing import (
-    eq_,
-    is_instance_of,
-    is_false,
-    is_not_none,
-)
 from google.cloud.spanner_v1 import (
+    CommitRequest,
     CreateSessionRequest,
     ExecuteSqlRequest,
     ResultSet,
     ResultSetStats,
-    CommitRequest,
     TypeCode,
 )
+from sqlalchemy.orm import Session
+from sqlalchemy.testing import (
+    eq_,
+    is_false,
+    is_instance_of,
+    is_not_none,
+)
+
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,

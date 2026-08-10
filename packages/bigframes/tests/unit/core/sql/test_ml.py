@@ -15,11 +15,7 @@
 import pytest
 
 import bigframes.bigquery as bbq
-import bigframes.core.col as col
-import bigframes.core.expression as ex
 import bigframes.core.sql.ml
-import bigframes.dtypes as dtypes
-import bigframes.operations.numeric_ops as numeric_ops
 
 pytest.importorskip("pytest_snapshot")
 

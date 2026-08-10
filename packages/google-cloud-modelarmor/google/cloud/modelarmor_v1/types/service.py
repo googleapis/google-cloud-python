@@ -30,6 +30,8 @@ __protobuf__ = proto.module(
         "DetectionConfidenceLevel",
         "SdpFindingLikelihood",
         "InvocationResult",
+        "StreamingMode",
+        "Modality",
         "Template",
         "FloorSetting",
         "AiPlatformFloorSetting",
@@ -61,7 +63,10 @@ __protobuf__ = proto.module(
         "DataItem",
         "ByteDataItem",
         "SdpDeidentifyResult",
+        "SdpImageFindingLocation",
+        "SdpContentLocation",
         "SdpFinding",
+        "SdpRedactResult",
         "PiAndJailbreakFilterResult",
         "MaliciousUriFilterResult",
         "VirusScanFilterResult",
@@ -205,6 +210,48 @@ class InvocationResult(proto.Enum):
     FAILURE = 3
 
 
+class StreamingMode(proto.Enum):
+    r"""Streaming Mode for Sanitize\* API.
+
+    Values:
+        STREAMING_MODE_UNSPECIFIED (0):
+            Default value.
+        STREAMING_MODE_BUFFERED (1):
+            Buffered Streaming mode.
+        STREAMING_MODE_REALTIME (2):
+            Real Time Streaming mode.
+    """
+
+    STREAMING_MODE_UNSPECIFIED = 0
+    STREAMING_MODE_BUFFERED = 1
+    STREAMING_MODE_REALTIME = 2
+
+
+class Modality(proto.Enum):
+    r"""This enum is used in the TemplateMetadata message to indicate
+    the modality supported for sanitize API calls.
+
+    Values:
+        MODALITY_UNSPECIFIED (0):
+            Unspecified modality. If specified, all
+            modalities will be sanitized.
+        MODALITY_TEXT (1):
+            Represents text modality. If specified, it
+            will sanitize text fields, and text extracted
+            from rich text files (like PDFs, DOCs) and plain
+            text files (like TXT).
+        MODALITY_IMAGE (2):
+            Represents image modality. If specified, it
+            will sanitize image files. The visual content
+            and the text content in the image will be
+            sanitized depending on the filter configuration.
+    """
+
+    MODALITY_UNSPECIFIED = 0
+    MODALITY_TEXT = 1
+    MODALITY_IMAGE = 2
+
+
 class Template(proto.Message):
     r"""Message describing Template resource
 
@@ -259,6 +306,9 @@ class Template(proto.Message):
             multi_language_detection (google.cloud.modelarmor_v1.types.Template.TemplateMetadata.MultiLanguageDetection):
                 Optional. Metadata for multi language
                 detection.
+            modalities (MutableSequence[google.cloud.modelarmor_v1.types.Modality]):
+                Optional. Specifies the modalities to scan.
+                If empty, only text modality will be scanned.
         """
 
         class EnforcementType(proto.Enum):
@@ -333,6 +383,11 @@ class Template(proto.Message):
                 number=9,
                 message="Template.TemplateMetadata.MultiLanguageDetection",
             )
+        )
+        modalities: MutableSequence["Modality"] = proto.RepeatedField(
+            proto.ENUM,
+            number=11,
+            enum="Modality",
         )
 
     name: str = proto.Field(
@@ -861,7 +916,7 @@ class PiAndJailbreakFilterSettings(proto.Message):
             ENABLED (1):
                 Enabled
             DISABLED (2):
-                Enabled
+                Disabled
         """
 
         PI_AND_JAILBREAK_FILTER_ENFORCEMENT_UNSPECIFIED = 0
@@ -1076,6 +1131,8 @@ class SdpAdvancedConfig(proto.Message):
 class SanitizeUserPromptRequest(proto.Message):
     r"""Sanitize User Prompt request.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Required. Represents resource name of
@@ -1086,6 +1143,10 @@ class SanitizeUserPromptRequest(proto.Message):
         multi_language_detection_metadata (google.cloud.modelarmor_v1.types.MultiLanguageDetectionMetadata):
             Optional. Metadata related to Multi Language
             Detection.
+        streaming_mode (google.cloud.modelarmor_v1.types.StreamingMode):
+            Optional. Streaming Mode for StreamSanitize\* API.
+
+            This field is a member of `oneof`_ ``_streaming_mode``.
     """
 
     name: str = proto.Field(
@@ -1102,10 +1163,18 @@ class SanitizeUserPromptRequest(proto.Message):
         number=6,
         message="MultiLanguageDetectionMetadata",
     )
+    streaming_mode: "StreamingMode" = proto.Field(
+        proto.ENUM,
+        number=7,
+        optional=True,
+        enum="StreamingMode",
+    )
 
 
 class SanitizeModelResponseRequest(proto.Message):
     r"""Sanitize Model Response request.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -1120,6 +1189,10 @@ class SanitizeModelResponseRequest(proto.Message):
         multi_language_detection_metadata (google.cloud.modelarmor_v1.types.MultiLanguageDetectionMetadata):
             Optional. Metadata related for multi language
             detection.
+        streaming_mode (google.cloud.modelarmor_v1.types.StreamingMode):
+            Optional. Streaming Mode for StreamSanitize\* API.
+
+            This field is a member of `oneof`_ ``_streaming_mode``.
     """
 
     name: str = proto.Field(
@@ -1139,6 +1212,12 @@ class SanitizeModelResponseRequest(proto.Message):
         proto.MESSAGE,
         number=7,
         message="MultiLanguageDetectionMetadata",
+    )
+    streaming_mode: "StreamingMode" = proto.Field(
+        proto.ENUM,
+        number=8,
+        optional=True,
+        enum="StreamingMode",
     )
 
 
@@ -1217,6 +1296,9 @@ class SanitizationResult(proto.Message):
                 Passthrough field defined in TemplateMetadata
                 to indicate whether to ignore partial invocation
                 failures.
+            stream_chunk_processed (google.cloud.modelarmor_v1.types.DataItem):
+                Output only. The stream chunk processed by
+                the Sanitization service.
         """
 
         error_code: int = proto.Field(
@@ -1230,6 +1312,11 @@ class SanitizationResult(proto.Message):
         ignore_partial_invocation_failures: bool = proto.Field(
             proto.BOOL,
             number=3,
+        )
+        stream_chunk_processed: "DataItem" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="DataItem",
         )
 
     filter_match_state: "FilterMatchState" = proto.Field(
@@ -1377,7 +1464,7 @@ class RaiFilterResult(proto.Message):
         rai_filter_type_results (MutableMapping[str, google.cloud.modelarmor_v1.types.RaiFilterResult.RaiFilterTypeResult]):
             The map of RAI filter results where key is RAI filter type -
             either of "sexually_explicit", "hate_speech", "harassment",
-            "dangerous".
+            "dangerous", "violence", "sexually_suggestive".
     """
 
     class RaiFilterTypeResult(proto.Message):
@@ -1454,6 +1541,12 @@ class SdpFilterResult(proto.Message):
             result if deidentification is performed.
 
             This field is a member of `oneof`_ ``result``.
+        redact_result (google.cloud.modelarmor_v1.types.SdpRedactResult):
+            Sensitive Data Protection Redaction result if
+            redaction is performed. This is primarily used
+            for image redaction.
+
+            This field is a member of `oneof`_ ``result``.
     """
 
     inspect_result: "SdpInspectResult" = proto.Field(
@@ -1467,6 +1560,12 @@ class SdpFilterResult(proto.Message):
         number=2,
         oneof="result",
         message="SdpDeidentifyResult",
+    )
+    redact_result: "SdpRedactResult" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="result",
+        message="SdpRedactResult",
     )
 
 
@@ -1498,6 +1597,9 @@ class SdpInspectResult(proto.Message):
             input items were too large, or because the
             server reached the maximum amount of resources
             allowed for a single API call.
+        extracted_image_text (str):
+            Contains text extracted from the image, if
+            applicable.
     """
 
     execution_state: "FilterExecutionState" = proto.Field(
@@ -1523,6 +1625,10 @@ class SdpInspectResult(proto.Message):
     findings_truncated: bool = proto.Field(
         proto.BOOL,
         number=5,
+    )
+    extracted_image_text: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
@@ -1590,6 +1696,8 @@ class ByteDataItem(proto.Message):
                 TXT
             CSV (7):
                 CSV
+            IMAGE (8):
+                IMAGE
         """
 
         BYTE_ITEM_TYPE_UNSPECIFIED = 0
@@ -1600,6 +1708,7 @@ class ByteDataItem(proto.Message):
         POWERPOINT_DOCUMENT = 5
         TXT = 6
         CSV = 7
+        IMAGE = 8
 
     byte_data_type: ByteItemType = proto.Field(
         proto.ENUM,
@@ -1670,6 +1779,89 @@ class SdpDeidentifyResult(proto.Message):
     )
 
 
+class SdpImageFindingLocation(proto.Message):
+    r"""Location of the finding within an image.
+
+    Attributes:
+        bounding_boxes (MutableSequence[google.cloud.modelarmor_v1.types.SdpImageFindingLocation.SdpBoundingBox]):
+            Bounding boxes locating the pixels within the
+            image containing the finding.
+    """
+
+    class SdpBoundingBox(proto.Message):
+        r"""Bounding box encompassing a finding within an image.
+
+        Attributes:
+            top (int):
+                Top coordinate of the bounding box. (0,0) is
+                upper left.
+            left (int):
+                Left coordinate of the bounding box. (0,0) is
+                upper left.
+            width (int):
+                Width of the bounding box in pixels.
+            height (int):
+                Height of the bounding box in pixels.
+        """
+
+        top: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        left: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        width: int = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+        height: int = proto.Field(
+            proto.INT32,
+            number=4,
+        )
+
+    bounding_boxes: MutableSequence[SdpBoundingBox] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=SdpBoundingBox,
+    )
+
+
+class SdpContentLocation(proto.Message):
+    r"""Precise location of the finding within a document, record,
+    image, or metadata container.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        image_finding_location (google.cloud.modelarmor_v1.types.SdpImageFindingLocation):
+            Location within an image's pixels.
+
+            This field is a member of `oneof`_ ``location``.
+        container_name (str):
+            Name of the container where the finding is
+            located. The top level name is the source file
+            name or table name.
+
+            Nested names could be absent if the embedded
+            object has no string identifier (for example, an
+            image contained within a document).
+    """
+
+    image_finding_location: "SdpImageFindingLocation" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="location",
+        message="SdpImageFindingLocation",
+    )
+    container_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class SdpFinding(proto.Message):
     r"""Finding corresponding to Sensitive Data Protection filter.
 
@@ -1694,11 +1886,23 @@ class SdpFinding(proto.Message):
                 containing element. Note that when the content
                 is not textual, this references the UTF-8
                 encoded textual representation of the content.
+                Note: Omitted if content is an image.
             codepoint_range (google.cloud.modelarmor_v1.types.RangeInfo):
                 Unicode character offsets delimiting the
                 finding. These are relative to the finding's
                 containing element. Provided when the content is
                 text.
+                Note: Omitted if content is an image.
+            content_locations (MutableSequence[google.cloud.modelarmor_v1.types.SdpContentLocation]):
+                List of nested objects pointing to the precise location of
+                the finding within an image, file or record.
+
+                For example, a single finding might be detected in two
+                separate bounding boxes within an image (e.g., if it wraps
+                across a line or is partially obscured). In such cases,
+                content_locations would contain two SdpContentLocation
+                entries, each with an image_finding_location pointing to a
+                different bounding box.
         """
 
         byte_range: "RangeInfo" = proto.Field(
@@ -1710,6 +1914,11 @@ class SdpFinding(proto.Message):
             proto.MESSAGE,
             number=2,
             message="RangeInfo",
+        )
+        content_locations: MutableSequence["SdpContentLocation"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="SdpContentLocation",
         )
 
     info_type: str = proto.Field(
@@ -1725,6 +1934,64 @@ class SdpFinding(proto.Message):
         proto.MESSAGE,
         number=3,
         message=SdpFindingLocation,
+    )
+
+
+class SdpRedactResult(proto.Message):
+    r"""Sensitive Data Protection Redaction Result.
+
+    Attributes:
+        execution_state (google.cloud.modelarmor_v1.types.FilterExecutionState):
+            Output only. Reports whether Sensitive Data
+            Protection redaction was successfully executed
+            or not.
+        message_items (MutableSequence[google.cloud.modelarmor_v1.types.MessageItem]):
+            Output only. Optional messages corresponding
+            to the result. A message can provide warnings or
+            error details. For example, if execution state
+            is skipped then this field provides related
+            reason/explanation.
+        match_state (google.cloud.modelarmor_v1.types.FilterMatchState):
+            Output only. Match state for Sensitive Data Protection
+            Redaction. Value is MATCH_FOUND if content is redacted.
+        redacted_image (bytes):
+            Output only. The redacted image. The type
+            will be the same as the original image.
+        findings (MutableSequence[google.cloud.modelarmor_v1.types.SdpFinding]):
+            Output only. The findings. This field is populated in the
+            response only when include_findings in the SDP template is
+            set to true.
+        extracted_image_text (str):
+            The extracted text from the image.
+    """
+
+    execution_state: "FilterExecutionState" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="FilterExecutionState",
+    )
+    message_items: MutableSequence["MessageItem"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="MessageItem",
+    )
+    match_state: "FilterMatchState" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="FilterMatchState",
+    )
+    redacted_image: bytes = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
+    findings: MutableSequence["SdpFinding"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="SdpFinding",
+    )
+    extracted_image_text: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 

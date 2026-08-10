@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -111,6 +112,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -995,7 +1011,14 @@ def test_local_inventory_service_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1042,7 +1065,14 @@ def test_local_inventory_service_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1378,8 +1408,8 @@ def test_local_inventory_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        localinventory.ListLocalInventoriesRequest,
-        dict,
+        localinventory.ListLocalInventoriesRequest(),
+        {},
     ],
 )
 def test_list_local_inventories(request_type, transport: str = "grpc"):
@@ -1390,7 +1420,7 @@ def test_list_local_inventories(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1439,10 +1469,11 @@ def test_list_local_inventories_non_empty_request_with_auto_populated_field():
         client.list_local_inventories(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == localinventory.ListLocalInventoriesRequest(
+        request_msg = localinventory.ListLocalInventoriesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_local_inventories_use_cached_wrapped_rpc():
@@ -1528,9 +1559,15 @@ async def test_list_local_inventories_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        localinventory.ListLocalInventoriesRequest(),
+        {},
+    ],
+)
 async def test_list_local_inventories_async(
-    transport: str = "grpc_asyncio",
-    request_type=localinventory.ListLocalInventoriesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = LocalInventoryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1539,7 +1576,7 @@ async def test_list_local_inventories_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1562,11 +1599,6 @@ async def test_list_local_inventories_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLocalInventoriesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_local_inventories_async_from_dict():
-    await test_list_local_inventories_async(request_type=dict)
 
 
 def test_list_local_inventories_field_headers():
@@ -1771,6 +1803,9 @@ def test_list_local_inventories_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, localinventory.LocalInventory) for i in results)
@@ -1863,6 +1898,8 @@ async def test_list_local_inventories_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1921,8 +1958,8 @@ async def test_list_local_inventories_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        localinventory.InsertLocalInventoryRequest,
-        dict,
+        localinventory.InsertLocalInventoryRequest(),
+        {},
     ],
 )
 def test_insert_local_inventory(request_type, transport: str = "grpc"):
@@ -1933,7 +1970,7 @@ def test_insert_local_inventory(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1987,9 +2024,10 @@ def test_insert_local_inventory_non_empty_request_with_auto_populated_field():
         client.insert_local_inventory(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == localinventory.InsertLocalInventoryRequest(
+        request_msg = localinventory.InsertLocalInventoryRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_insert_local_inventory_use_cached_wrapped_rpc():
@@ -2075,9 +2113,15 @@ async def test_insert_local_inventory_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        localinventory.InsertLocalInventoryRequest(),
+        {},
+    ],
+)
 async def test_insert_local_inventory_async(
-    transport: str = "grpc_asyncio",
-    request_type=localinventory.InsertLocalInventoryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = LocalInventoryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2086,7 +2130,7 @@ async def test_insert_local_inventory_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2115,11 +2159,6 @@ async def test_insert_local_inventory_async(
     assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.account == 749
     assert response.store_code == "store_code_value"
-
-
-@pytest.mark.asyncio
-async def test_insert_local_inventory_async_from_dict():
-    await test_insert_local_inventory_async(request_type=dict)
 
 
 def test_insert_local_inventory_field_headers():
@@ -2190,8 +2229,8 @@ async def test_insert_local_inventory_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        localinventory.DeleteLocalInventoryRequest,
-        dict,
+        localinventory.DeleteLocalInventoryRequest(),
+        {},
     ],
 )
 def test_delete_local_inventory(request_type, transport: str = "grpc"):
@@ -2202,7 +2241,7 @@ def test_delete_local_inventory(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2247,9 +2286,10 @@ def test_delete_local_inventory_non_empty_request_with_auto_populated_field():
         client.delete_local_inventory(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == localinventory.DeleteLocalInventoryRequest(
+        request_msg = localinventory.DeleteLocalInventoryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_local_inventory_use_cached_wrapped_rpc():
@@ -2335,9 +2375,15 @@ async def test_delete_local_inventory_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        localinventory.DeleteLocalInventoryRequest(),
+        {},
+    ],
+)
 async def test_delete_local_inventory_async(
-    transport: str = "grpc_asyncio",
-    request_type=localinventory.DeleteLocalInventoryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = LocalInventoryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2346,7 +2392,7 @@ async def test_delete_local_inventory_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2364,11 +2410,6 @@ async def test_delete_local_inventory_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_local_inventory_async_from_dict():
-    await test_delete_local_inventory_async(request_type=dict)
 
 
 def test_delete_local_inventory_field_headers():
@@ -2769,6 +2810,9 @@ def test_list_local_inventories_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "accounts/sample1/products/sample2"}
 
         pager = client.list_local_inventories(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -3218,7 +3262,6 @@ def test_list_local_inventories_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = localinventory.ListLocalInventoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3241,7 +3284,6 @@ def test_insert_local_inventory_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = localinventory.InsertLocalInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -3264,7 +3306,6 @@ def test_delete_local_inventory_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = localinventory.DeleteLocalInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -3307,7 +3348,6 @@ async def test_list_local_inventories_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = localinventory.ListLocalInventoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3339,7 +3379,6 @@ async def test_insert_local_inventory_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = localinventory.InsertLocalInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -3364,7 +3403,6 @@ async def test_delete_local_inventory_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = localinventory.DeleteLocalInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -3570,6 +3608,7 @@ def test_insert_local_inventory_rest_call_success(request_type):
             "pickup_method": 1,
             "pickup_sla": 1,
             "instore_product_location": "instore_product_location_value",
+            "local_shipping_label": "local_shipping_label_value",
             "loyalty_programs": [
                 {
                     "program_label": "program_label_value",
@@ -3580,6 +3619,9 @@ def test_insert_local_inventory_rest_call_success(request_type):
                     "member_price_effective_interval": {},
                     "shipping_label": "shipping_label_value",
                 }
+            ],
+            "custom_attributes": [
+                {"name": "name_value", "value": "value_value", "group_values": {}}
             ],
         },
     }
@@ -3893,7 +3935,6 @@ def test_list_local_inventories_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = localinventory.ListLocalInventoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3915,7 +3956,6 @@ def test_insert_local_inventory_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = localinventory.InsertLocalInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -3937,7 +3977,6 @@ def test_delete_local_inventory_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = localinventory.DeleteLocalInventoryRequest()
-
         assert args[0] == request_msg
 
 

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -110,6 +111,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -970,7 +986,14 @@ def test_data_table_service_client_get_mtls_endpoint_and_cert_source(client_clas
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1017,7 +1040,14 @@ def test_data_table_service_client_get_mtls_endpoint_and_cert_source(client_clas
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1349,8 +1379,8 @@ def test_data_table_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcc_data_table.CreateDataTableRequest,
-        dict,
+        gcc_data_table.CreateDataTableRequest(),
+        {},
     ],
 )
 def test_create_data_table(request_type, transport: str = "grpc"):
@@ -1361,7 +1391,7 @@ def test_create_data_table(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1426,10 +1456,11 @@ def test_create_data_table_non_empty_request_with_auto_populated_field():
         client.create_data_table(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcc_data_table.CreateDataTableRequest(
+        request_msg = gcc_data_table.CreateDataTableRequest(
             parent="parent_value",
             data_table_id="data_table_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_data_table_use_cached_wrapped_rpc():
@@ -1512,9 +1543,14 @@ async def test_create_data_table_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_data_table_async(
-    transport: str = "grpc_asyncio", request_type=gcc_data_table.CreateDataTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcc_data_table.CreateDataTableRequest(),
+        {},
+    ],
+)
+async def test_create_data_table_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1522,7 +1558,7 @@ async def test_create_data_table_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1561,11 +1597,6 @@ async def test_create_data_table_async(
     assert response.row_time_to_live == "row_time_to_live_value"
     assert response.approximate_row_count == 2281
     assert response.update_source == gcc_data_table.DataTableUpdateSource.USER
-
-
-@pytest.mark.asyncio
-async def test_create_data_table_async_from_dict():
-    await test_create_data_table_async(request_type=dict)
 
 
 def test_create_data_table_field_headers():
@@ -1742,8 +1773,8 @@ async def test_create_data_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_table.ListDataTablesRequest,
-        dict,
+        data_table.ListDataTablesRequest(),
+        {},
     ],
 )
 def test_list_data_tables(request_type, transport: str = "grpc"):
@@ -1754,7 +1785,7 @@ def test_list_data_tables(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_tables), "__call__") as call:
@@ -1800,11 +1831,12 @@ def test_list_data_tables_non_empty_request_with_auto_populated_field():
         client.list_data_tables(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_table.ListDataTablesRequest(
+        request_msg = data_table.ListDataTablesRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_data_tables_use_cached_wrapped_rpc():
@@ -1887,9 +1919,14 @@ async def test_list_data_tables_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_data_tables_async(
-    transport: str = "grpc_asyncio", request_type=data_table.ListDataTablesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_table.ListDataTablesRequest(),
+        {},
+    ],
+)
+async def test_list_data_tables_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1897,7 +1934,7 @@ async def test_list_data_tables_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_tables), "__call__") as call:
@@ -1918,11 +1955,6 @@ async def test_list_data_tables_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataTablesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_data_tables_async_from_dict():
-    await test_list_data_tables_async(request_type=dict)
 
 
 def test_list_data_tables_field_headers():
@@ -2117,6 +2149,9 @@ def test_list_data_tables_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, data_table.DataTable) for i in results)
@@ -2205,6 +2240,8 @@ async def test_list_data_tables_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2261,8 +2298,8 @@ async def test_list_data_tables_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_table.GetDataTableRequest,
-        dict,
+        data_table.GetDataTableRequest(),
+        {},
     ],
 )
 def test_get_data_table(request_type, transport: str = "grpc"):
@@ -2273,7 +2310,7 @@ def test_get_data_table(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_table), "__call__") as call:
@@ -2333,9 +2370,10 @@ def test_get_data_table_non_empty_request_with_auto_populated_field():
         client.get_data_table(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_table.GetDataTableRequest(
+        request_msg = data_table.GetDataTableRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_data_table_use_cached_wrapped_rpc():
@@ -2416,9 +2454,14 @@ async def test_get_data_table_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_data_table_async(
-    transport: str = "grpc_asyncio", request_type=data_table.GetDataTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_table.GetDataTableRequest(),
+        {},
+    ],
+)
+async def test_get_data_table_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2426,7 +2469,7 @@ async def test_get_data_table_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_table), "__call__") as call:
@@ -2463,11 +2506,6 @@ async def test_get_data_table_async(
     assert response.row_time_to_live == "row_time_to_live_value"
     assert response.approximate_row_count == 2281
     assert response.update_source == data_table.DataTableUpdateSource.USER
-
-
-@pytest.mark.asyncio
-async def test_get_data_table_async_from_dict():
-    await test_get_data_table_async(request_type=dict)
 
 
 def test_get_data_table_field_headers():
@@ -2616,8 +2654,8 @@ async def test_get_data_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcc_data_table.UpdateDataTableRequest,
-        dict,
+        gcc_data_table.UpdateDataTableRequest(),
+        {},
     ],
 )
 def test_update_data_table(request_type, transport: str = "grpc"):
@@ -2628,7 +2666,7 @@ def test_update_data_table(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2690,7 +2728,8 @@ def test_update_data_table_non_empty_request_with_auto_populated_field():
         client.update_data_table(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcc_data_table.UpdateDataTableRequest()
+        request_msg = gcc_data_table.UpdateDataTableRequest()
+        assert args[0] == request_msg
 
 
 def test_update_data_table_use_cached_wrapped_rpc():
@@ -2773,9 +2812,14 @@ async def test_update_data_table_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_data_table_async(
-    transport: str = "grpc_asyncio", request_type=gcc_data_table.UpdateDataTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcc_data_table.UpdateDataTableRequest(),
+        {},
+    ],
+)
+async def test_update_data_table_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2783,7 +2827,7 @@ async def test_update_data_table_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2822,11 +2866,6 @@ async def test_update_data_table_async(
     assert response.row_time_to_live == "row_time_to_live_value"
     assert response.approximate_row_count == 2281
     assert response.update_source == gcc_data_table.DataTableUpdateSource.USER
-
-
-@pytest.mark.asyncio
-async def test_update_data_table_async_from_dict():
-    await test_update_data_table_async(request_type=dict)
 
 
 def test_update_data_table_field_headers():
@@ -2993,8 +3032,8 @@ async def test_update_data_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_table.DeleteDataTableRequest,
-        dict,
+        data_table.DeleteDataTableRequest(),
+        {},
     ],
 )
 def test_delete_data_table(request_type, transport: str = "grpc"):
@@ -3005,7 +3044,7 @@ def test_delete_data_table(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3050,9 +3089,10 @@ def test_delete_data_table_non_empty_request_with_auto_populated_field():
         client.delete_data_table(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_table.DeleteDataTableRequest(
+        request_msg = data_table.DeleteDataTableRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_data_table_use_cached_wrapped_rpc():
@@ -3135,9 +3175,14 @@ async def test_delete_data_table_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_data_table_async(
-    transport: str = "grpc_asyncio", request_type=data_table.DeleteDataTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_table.DeleteDataTableRequest(),
+        {},
+    ],
+)
+async def test_delete_data_table_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3145,7 +3190,7 @@ async def test_delete_data_table_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3163,11 +3208,6 @@ async def test_delete_data_table_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_data_table_async_from_dict():
-    await test_delete_data_table_async(request_type=dict)
 
 
 def test_delete_data_table_field_headers():
@@ -3330,8 +3370,8 @@ async def test_delete_data_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_table.CreateDataTableRowRequest,
-        dict,
+        data_table.CreateDataTableRowRequest(),
+        {},
     ],
 )
 def test_create_data_table_row(request_type, transport: str = "grpc"):
@@ -3342,7 +3382,7 @@ def test_create_data_table_row(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3394,9 +3434,10 @@ def test_create_data_table_row_non_empty_request_with_auto_populated_field():
         client.create_data_table_row(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_table.CreateDataTableRowRequest(
+        request_msg = data_table.CreateDataTableRowRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_data_table_row_use_cached_wrapped_rpc():
@@ -3482,8 +3523,15 @@ async def test_create_data_table_row_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_table.CreateDataTableRowRequest(),
+        {},
+    ],
+)
 async def test_create_data_table_row_async(
-    transport: str = "grpc_asyncio", request_type=data_table.CreateDataTableRowRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3492,7 +3540,7 @@ async def test_create_data_table_row_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3519,11 +3567,6 @@ async def test_create_data_table_row_async(
     assert response.name == "name_value"
     assert response.values == ["values_value"]
     assert response.row_time_to_live == "row_time_to_live_value"
-
-
-@pytest.mark.asyncio
-async def test_create_data_table_row_async_from_dict():
-    await test_create_data_table_row_async(request_type=dict)
 
 
 def test_create_data_table_row_field_headers():
@@ -3690,8 +3733,8 @@ async def test_create_data_table_row_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_table.UpdateDataTableRowRequest,
-        dict,
+        data_table.UpdateDataTableRowRequest(),
+        {},
     ],
 )
 def test_update_data_table_row(request_type, transport: str = "grpc"):
@@ -3702,7 +3745,7 @@ def test_update_data_table_row(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3752,7 +3795,8 @@ def test_update_data_table_row_non_empty_request_with_auto_populated_field():
         client.update_data_table_row(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_table.UpdateDataTableRowRequest()
+        request_msg = data_table.UpdateDataTableRowRequest()
+        assert args[0] == request_msg
 
 
 def test_update_data_table_row_use_cached_wrapped_rpc():
@@ -3838,8 +3882,15 @@ async def test_update_data_table_row_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_table.UpdateDataTableRowRequest(),
+        {},
+    ],
+)
 async def test_update_data_table_row_async(
-    transport: str = "grpc_asyncio", request_type=data_table.UpdateDataTableRowRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3848,7 +3899,7 @@ async def test_update_data_table_row_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3875,11 +3926,6 @@ async def test_update_data_table_row_async(
     assert response.name == "name_value"
     assert response.values == ["values_value"]
     assert response.row_time_to_live == "row_time_to_live_value"
-
-
-@pytest.mark.asyncio
-async def test_update_data_table_row_async_from_dict():
-    await test_update_data_table_row_async(request_type=dict)
 
 
 def test_update_data_table_row_field_headers():
@@ -4046,8 +4092,8 @@ async def test_update_data_table_row_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_table.ListDataTableRowsRequest,
-        dict,
+        data_table.ListDataTableRowsRequest(),
+        {},
     ],
 )
 def test_list_data_table_rows(request_type, transport: str = "grpc"):
@@ -4058,7 +4104,7 @@ def test_list_data_table_rows(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4109,12 +4155,13 @@ def test_list_data_table_rows_non_empty_request_with_auto_populated_field():
         client.list_data_table_rows(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_table.ListDataTableRowsRequest(
+        request_msg = data_table.ListDataTableRowsRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_data_table_rows_use_cached_wrapped_rpc():
@@ -4199,8 +4246,15 @@ async def test_list_data_table_rows_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_table.ListDataTableRowsRequest(),
+        {},
+    ],
+)
 async def test_list_data_table_rows_async(
-    transport: str = "grpc_asyncio", request_type=data_table.ListDataTableRowsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4209,7 +4263,7 @@ async def test_list_data_table_rows_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4232,11 +4286,6 @@ async def test_list_data_table_rows_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataTableRowsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_data_table_rows_async_from_dict():
-    await test_list_data_table_rows_async(request_type=dict)
 
 
 def test_list_data_table_rows_field_headers():
@@ -4441,6 +4490,9 @@ def test_list_data_table_rows_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, data_table.DataTableRow) for i in results)
@@ -4533,6 +4585,8 @@ async def test_list_data_table_rows_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4591,8 +4645,8 @@ async def test_list_data_table_rows_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_table.GetDataTableRowRequest,
-        dict,
+        data_table.GetDataTableRowRequest(),
+        {},
     ],
 )
 def test_get_data_table_row(request_type, transport: str = "grpc"):
@@ -4603,7 +4657,7 @@ def test_get_data_table_row(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4655,9 +4709,10 @@ def test_get_data_table_row_non_empty_request_with_auto_populated_field():
         client.get_data_table_row(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_table.GetDataTableRowRequest(
+        request_msg = data_table.GetDataTableRowRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_data_table_row_use_cached_wrapped_rpc():
@@ -4742,9 +4797,14 @@ async def test_get_data_table_row_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_data_table_row_async(
-    transport: str = "grpc_asyncio", request_type=data_table.GetDataTableRowRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_table.GetDataTableRowRequest(),
+        {},
+    ],
+)
+async def test_get_data_table_row_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4752,7 +4812,7 @@ async def test_get_data_table_row_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4779,11 +4839,6 @@ async def test_get_data_table_row_async(
     assert response.name == "name_value"
     assert response.values == ["values_value"]
     assert response.row_time_to_live == "row_time_to_live_value"
-
-
-@pytest.mark.asyncio
-async def test_get_data_table_row_async_from_dict():
-    await test_get_data_table_row_async(request_type=dict)
 
 
 def test_get_data_table_row_field_headers():
@@ -4940,8 +4995,8 @@ async def test_get_data_table_row_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_table.DeleteDataTableRowRequest,
-        dict,
+        data_table.DeleteDataTableRowRequest(),
+        {},
     ],
 )
 def test_delete_data_table_row(request_type, transport: str = "grpc"):
@@ -4952,7 +5007,7 @@ def test_delete_data_table_row(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4997,9 +5052,10 @@ def test_delete_data_table_row_non_empty_request_with_auto_populated_field():
         client.delete_data_table_row(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_table.DeleteDataTableRowRequest(
+        request_msg = data_table.DeleteDataTableRowRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_data_table_row_use_cached_wrapped_rpc():
@@ -5085,8 +5141,15 @@ async def test_delete_data_table_row_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_table.DeleteDataTableRowRequest(),
+        {},
+    ],
+)
 async def test_delete_data_table_row_async(
-    transport: str = "grpc_asyncio", request_type=data_table.DeleteDataTableRowRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5095,7 +5158,7 @@ async def test_delete_data_table_row_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5113,11 +5176,6 @@ async def test_delete_data_table_row_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_data_table_row_async_from_dict():
-    await test_delete_data_table_row_async(request_type=dict)
 
 
 def test_delete_data_table_row_field_headers():
@@ -5270,8 +5328,8 @@ async def test_delete_data_table_row_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_table.BulkCreateDataTableRowsRequest,
-        dict,
+        data_table.BulkCreateDataTableRowsRequest(),
+        {},
     ],
 )
 def test_bulk_create_data_table_rows(request_type, transport: str = "grpc"):
@@ -5282,7 +5340,7 @@ def test_bulk_create_data_table_rows(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5327,9 +5385,10 @@ def test_bulk_create_data_table_rows_non_empty_request_with_auto_populated_field
         client.bulk_create_data_table_rows(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_table.BulkCreateDataTableRowsRequest(
+        request_msg = data_table.BulkCreateDataTableRowsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_bulk_create_data_table_rows_use_cached_wrapped_rpc():
@@ -5415,9 +5474,15 @@ async def test_bulk_create_data_table_rows_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_table.BulkCreateDataTableRowsRequest(),
+        {},
+    ],
+)
 async def test_bulk_create_data_table_rows_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_table.BulkCreateDataTableRowsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5426,7 +5491,7 @@ async def test_bulk_create_data_table_rows_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5446,11 +5511,6 @@ async def test_bulk_create_data_table_rows_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, data_table.BulkCreateDataTableRowsResponse)
-
-
-@pytest.mark.asyncio
-async def test_bulk_create_data_table_rows_async_from_dict():
-    await test_bulk_create_data_table_rows_async(request_type=dict)
 
 
 def test_bulk_create_data_table_rows_field_headers():
@@ -5617,8 +5677,8 @@ async def test_bulk_create_data_table_rows_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_table.BulkGetDataTableRowsRequest,
-        dict,
+        data_table.BulkGetDataTableRowsRequest(),
+        {},
     ],
 )
 def test_bulk_get_data_table_rows(request_type, transport: str = "grpc"):
@@ -5629,7 +5689,7 @@ def test_bulk_get_data_table_rows(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5674,9 +5734,10 @@ def test_bulk_get_data_table_rows_non_empty_request_with_auto_populated_field():
         client.bulk_get_data_table_rows(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_table.BulkGetDataTableRowsRequest(
+        request_msg = data_table.BulkGetDataTableRowsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_bulk_get_data_table_rows_use_cached_wrapped_rpc():
@@ -5762,8 +5823,15 @@ async def test_bulk_get_data_table_rows_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_table.BulkGetDataTableRowsRequest(),
+        {},
+    ],
+)
 async def test_bulk_get_data_table_rows_async(
-    transport: str = "grpc_asyncio", request_type=data_table.BulkGetDataTableRowsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5772,7 +5840,7 @@ async def test_bulk_get_data_table_rows_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5792,11 +5860,6 @@ async def test_bulk_get_data_table_rows_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, data_table.BulkGetDataTableRowsResponse)
-
-
-@pytest.mark.asyncio
-async def test_bulk_get_data_table_rows_async_from_dict():
-    await test_bulk_get_data_table_rows_async(request_type=dict)
 
 
 def test_bulk_get_data_table_rows_field_headers():
@@ -5963,8 +6026,8 @@ async def test_bulk_get_data_table_rows_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_table.BulkReplaceDataTableRowsRequest,
-        dict,
+        data_table.BulkReplaceDataTableRowsRequest(),
+        {},
     ],
 )
 def test_bulk_replace_data_table_rows(request_type, transport: str = "grpc"):
@@ -5975,7 +6038,7 @@ def test_bulk_replace_data_table_rows(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6020,9 +6083,10 @@ def test_bulk_replace_data_table_rows_non_empty_request_with_auto_populated_fiel
         client.bulk_replace_data_table_rows(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_table.BulkReplaceDataTableRowsRequest(
+        request_msg = data_table.BulkReplaceDataTableRowsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_bulk_replace_data_table_rows_use_cached_wrapped_rpc():
@@ -6108,9 +6172,15 @@ async def test_bulk_replace_data_table_rows_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_table.BulkReplaceDataTableRowsRequest(),
+        {},
+    ],
+)
 async def test_bulk_replace_data_table_rows_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_table.BulkReplaceDataTableRowsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6119,7 +6189,7 @@ async def test_bulk_replace_data_table_rows_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6139,11 +6209,6 @@ async def test_bulk_replace_data_table_rows_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, data_table.BulkReplaceDataTableRowsResponse)
-
-
-@pytest.mark.asyncio
-async def test_bulk_replace_data_table_rows_async_from_dict():
-    await test_bulk_replace_data_table_rows_async(request_type=dict)
 
 
 def test_bulk_replace_data_table_rows_field_headers():
@@ -6310,8 +6375,8 @@ async def test_bulk_replace_data_table_rows_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_table.BulkUpdateDataTableRowsRequest,
-        dict,
+        data_table.BulkUpdateDataTableRowsRequest(),
+        {},
     ],
 )
 def test_bulk_update_data_table_rows(request_type, transport: str = "grpc"):
@@ -6322,7 +6387,7 @@ def test_bulk_update_data_table_rows(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6367,9 +6432,10 @@ def test_bulk_update_data_table_rows_non_empty_request_with_auto_populated_field
         client.bulk_update_data_table_rows(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_table.BulkUpdateDataTableRowsRequest(
+        request_msg = data_table.BulkUpdateDataTableRowsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_bulk_update_data_table_rows_use_cached_wrapped_rpc():
@@ -6455,9 +6521,15 @@ async def test_bulk_update_data_table_rows_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_table.BulkUpdateDataTableRowsRequest(),
+        {},
+    ],
+)
 async def test_bulk_update_data_table_rows_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_table.BulkUpdateDataTableRowsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6466,7 +6538,7 @@ async def test_bulk_update_data_table_rows_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6486,11 +6558,6 @@ async def test_bulk_update_data_table_rows_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, data_table.BulkUpdateDataTableRowsResponse)
-
-
-@pytest.mark.asyncio
-async def test_bulk_update_data_table_rows_async_from_dict():
-    await test_bulk_update_data_table_rows_async(request_type=dict)
 
 
 def test_bulk_update_data_table_rows_field_headers():
@@ -6681,8 +6748,8 @@ async def test_bulk_update_data_table_rows_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_table.GetDataTableOperationErrorsRequest,
-        dict,
+        data_table.GetDataTableOperationErrorsRequest(),
+        {},
     ],
 )
 def test_get_data_table_operation_errors(request_type, transport: str = "grpc"):
@@ -6693,7 +6760,7 @@ def test_get_data_table_operation_errors(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6741,9 +6808,10 @@ def test_get_data_table_operation_errors_non_empty_request_with_auto_populated_f
         client.get_data_table_operation_errors(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_table.GetDataTableOperationErrorsRequest(
+        request_msg = data_table.GetDataTableOperationErrorsRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_data_table_operation_errors_use_cached_wrapped_rpc():
@@ -6829,9 +6897,15 @@ async def test_get_data_table_operation_errors_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_table.GetDataTableOperationErrorsRequest(),
+        {},
+    ],
+)
 async def test_get_data_table_operation_errors_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_table.GetDataTableOperationErrorsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTableServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6840,7 +6914,7 @@ async def test_get_data_table_operation_errors_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6863,11 +6937,6 @@ async def test_get_data_table_operation_errors_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, data_table.DataTableOperationErrors)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_data_table_operation_errors_async_from_dict():
-    await test_get_data_table_operation_errors_async(request_type=dict)
 
 
 def test_get_data_table_operation_errors_field_headers():
@@ -7484,6 +7553,9 @@ def test_list_data_tables_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_data_tables(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -8680,6 +8752,9 @@ def test_list_data_table_rows_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_data_table_rows(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -10158,7 +10233,6 @@ def test_create_data_table_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_data_table.CreateDataTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10179,7 +10253,6 @@ def test_list_data_tables_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.ListDataTablesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10200,7 +10273,6 @@ def test_get_data_table_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.GetDataTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10223,7 +10295,6 @@ def test_update_data_table_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_data_table.UpdateDataTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10246,7 +10317,6 @@ def test_delete_data_table_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.DeleteDataTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10269,7 +10339,6 @@ def test_create_data_table_row_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.CreateDataTableRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -10292,7 +10361,6 @@ def test_update_data_table_row_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.UpdateDataTableRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -10315,7 +10383,6 @@ def test_list_data_table_rows_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.ListDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10338,7 +10405,6 @@ def test_get_data_table_row_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.GetDataTableRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -10361,7 +10427,6 @@ def test_delete_data_table_row_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.DeleteDataTableRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -10384,7 +10449,6 @@ def test_bulk_create_data_table_rows_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.BulkCreateDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10407,7 +10471,6 @@ def test_bulk_get_data_table_rows_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.BulkGetDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10430,7 +10493,6 @@ def test_bulk_replace_data_table_rows_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.BulkReplaceDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10453,7 +10515,6 @@ def test_bulk_update_data_table_rows_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.BulkUpdateDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10476,7 +10537,6 @@ def test_get_data_table_operation_errors_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.GetDataTableOperationErrorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10527,7 +10587,6 @@ async def test_create_data_table_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_data_table.CreateDataTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10554,7 +10613,6 @@ async def test_list_data_tables_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.ListDataTablesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10589,7 +10647,6 @@ async def test_get_data_table_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.GetDataTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10626,7 +10683,6 @@ async def test_update_data_table_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_data_table.UpdateDataTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10651,7 +10707,6 @@ async def test_delete_data_table_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.DeleteDataTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10682,7 +10737,6 @@ async def test_create_data_table_row_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.CreateDataTableRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -10713,7 +10767,6 @@ async def test_update_data_table_row_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.UpdateDataTableRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -10742,7 +10795,6 @@ async def test_list_data_table_rows_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.ListDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10773,7 +10825,6 @@ async def test_get_data_table_row_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.GetDataTableRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -10798,7 +10849,6 @@ async def test_delete_data_table_row_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.DeleteDataTableRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -10825,7 +10875,6 @@ async def test_bulk_create_data_table_rows_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.BulkCreateDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10852,7 +10901,6 @@ async def test_bulk_get_data_table_rows_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.BulkGetDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10879,7 +10927,6 @@ async def test_bulk_replace_data_table_rows_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.BulkReplaceDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10906,7 +10953,6 @@ async def test_bulk_update_data_table_rows_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.BulkUpdateDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10935,7 +10981,6 @@ async def test_get_data_table_operation_errors_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.GetDataTableOperationErrorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13647,7 +13692,6 @@ def test_create_data_table_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_data_table.CreateDataTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -13667,7 +13711,6 @@ def test_list_data_tables_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.ListDataTablesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13687,7 +13730,6 @@ def test_get_data_table_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.GetDataTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -13709,7 +13751,6 @@ def test_update_data_table_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_data_table.UpdateDataTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -13731,7 +13772,6 @@ def test_delete_data_table_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.DeleteDataTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -13753,7 +13793,6 @@ def test_create_data_table_row_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.CreateDataTableRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -13775,7 +13814,6 @@ def test_update_data_table_row_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.UpdateDataTableRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -13797,7 +13835,6 @@ def test_list_data_table_rows_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.ListDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13819,7 +13856,6 @@ def test_get_data_table_row_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.GetDataTableRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -13841,7 +13877,6 @@ def test_delete_data_table_row_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.DeleteDataTableRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -13863,7 +13898,6 @@ def test_bulk_create_data_table_rows_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.BulkCreateDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13885,7 +13919,6 @@ def test_bulk_get_data_table_rows_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.BulkGetDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13907,7 +13940,6 @@ def test_bulk_replace_data_table_rows_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.BulkReplaceDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13929,7 +13961,6 @@ def test_bulk_update_data_table_rows_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.BulkUpdateDataTableRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13951,7 +13982,6 @@ def test_get_data_table_operation_errors_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_table.GetDataTableOperationErrorsRequest()
-
         assert args[0] == request_msg
 
 

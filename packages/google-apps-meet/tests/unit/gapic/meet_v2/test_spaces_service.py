@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -105,6 +106,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -936,7 +952,14 @@ def test_spaces_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -983,7 +1006,14 @@ def test_spaces_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1310,8 +1340,8 @@ def test_spaces_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateSpaceRequest,
-        dict,
+        service.CreateSpaceRequest(),
+        {},
     ],
 )
 def test_create_space(request_type, transport: str = "grpc"):
@@ -1322,7 +1352,7 @@ def test_create_space(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_space), "__call__") as call:
@@ -1368,7 +1398,8 @@ def test_create_space_non_empty_request_with_auto_populated_field():
         client.create_space(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateSpaceRequest()
+        request_msg = service.CreateSpaceRequest()
+        assert args[0] == request_msg
 
 
 def test_create_space_use_cached_wrapped_rpc():
@@ -1449,9 +1480,14 @@ async def test_create_space_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_space_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateSpaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateSpaceRequest(),
+        {},
+    ],
+)
+async def test_create_space_async(request_type, transport: str = "grpc_asyncio"):
     client = SpacesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1459,7 +1495,7 @@ async def test_create_space_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_space), "__call__") as call:
@@ -1484,11 +1520,6 @@ async def test_create_space_async(
     assert response.name == "name_value"
     assert response.meeting_uri == "meeting_uri_value"
     assert response.meeting_code == "meeting_code_value"
-
-
-@pytest.mark.asyncio
-async def test_create_space_async_from_dict():
-    await test_create_space_async(request_type=dict)
 
 
 def test_create_space_flattened():
@@ -1574,8 +1605,8 @@ async def test_create_space_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetSpaceRequest,
-        dict,
+        service.GetSpaceRequest(),
+        {},
     ],
 )
 def test_get_space(request_type, transport: str = "grpc"):
@@ -1586,7 +1617,7 @@ def test_get_space(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_space), "__call__") as call:
@@ -1634,9 +1665,10 @@ def test_get_space_non_empty_request_with_auto_populated_field():
         client.get_space(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetSpaceRequest(
+        request_msg = service.GetSpaceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_space_use_cached_wrapped_rpc():
@@ -1715,9 +1747,14 @@ async def test_get_space_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_space_async(
-    transport: str = "grpc_asyncio", request_type=service.GetSpaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetSpaceRequest(),
+        {},
+    ],
+)
+async def test_get_space_async(request_type, transport: str = "grpc_asyncio"):
     client = SpacesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1725,7 +1762,7 @@ async def test_get_space_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_space), "__call__") as call:
@@ -1750,11 +1787,6 @@ async def test_get_space_async(
     assert response.name == "name_value"
     assert response.meeting_uri == "meeting_uri_value"
     assert response.meeting_code == "meeting_code_value"
-
-
-@pytest.mark.asyncio
-async def test_get_space_async_from_dict():
-    await test_get_space_async(request_type=dict)
 
 
 def test_get_space_field_headers():
@@ -1899,8 +1931,8 @@ async def test_get_space_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateSpaceRequest,
-        dict,
+        service.UpdateSpaceRequest(),
+        {},
     ],
 )
 def test_update_space(request_type, transport: str = "grpc"):
@@ -1911,7 +1943,7 @@ def test_update_space(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_space), "__call__") as call:
@@ -1957,7 +1989,8 @@ def test_update_space_non_empty_request_with_auto_populated_field():
         client.update_space(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateSpaceRequest()
+        request_msg = service.UpdateSpaceRequest()
+        assert args[0] == request_msg
 
 
 def test_update_space_use_cached_wrapped_rpc():
@@ -2038,9 +2071,14 @@ async def test_update_space_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_space_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateSpaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateSpaceRequest(),
+        {},
+    ],
+)
+async def test_update_space_async(request_type, transport: str = "grpc_asyncio"):
     client = SpacesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2048,7 +2086,7 @@ async def test_update_space_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_space), "__call__") as call:
@@ -2073,11 +2111,6 @@ async def test_update_space_async(
     assert response.name == "name_value"
     assert response.meeting_uri == "meeting_uri_value"
     assert response.meeting_code == "meeting_code_value"
-
-
-@pytest.mark.asyncio
-async def test_update_space_async_from_dict():
-    await test_update_space_async(request_type=dict)
 
 
 def test_update_space_field_headers():
@@ -2232,8 +2265,8 @@ async def test_update_space_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.EndActiveConferenceRequest,
-        dict,
+        service.EndActiveConferenceRequest(),
+        {},
     ],
 )
 def test_end_active_conference(request_type, transport: str = "grpc"):
@@ -2244,7 +2277,7 @@ def test_end_active_conference(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2289,9 +2322,10 @@ def test_end_active_conference_non_empty_request_with_auto_populated_field():
         client.end_active_conference(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.EndActiveConferenceRequest(
+        request_msg = service.EndActiveConferenceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_end_active_conference_use_cached_wrapped_rpc():
@@ -2377,8 +2411,15 @@ async def test_end_active_conference_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.EndActiveConferenceRequest(),
+        {},
+    ],
+)
 async def test_end_active_conference_async(
-    transport: str = "grpc_asyncio", request_type=service.EndActiveConferenceRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SpacesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2387,7 +2428,7 @@ async def test_end_active_conference_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2405,11 +2446,6 @@ async def test_end_active_conference_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_end_active_conference_async_from_dict():
-    await test_end_active_conference_async(request_type=dict)
 
 
 def test_end_active_conference_field_headers():
@@ -3298,7 +3334,6 @@ def test_create_space_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -3319,7 +3354,6 @@ def test_get_space_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -3340,7 +3374,6 @@ def test_update_space_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -3363,7 +3396,6 @@ def test_end_active_conference_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.EndActiveConferenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -3406,7 +3438,6 @@ async def test_create_space_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -3435,7 +3466,6 @@ async def test_get_space_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -3464,7 +3494,6 @@ async def test_update_space_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -3489,7 +3518,6 @@ async def test_end_active_conference_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.EndActiveConferenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4171,7 +4199,6 @@ def test_create_space_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4191,7 +4218,6 @@ def test_get_space_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4211,7 +4237,6 @@ def test_update_space_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4233,7 +4258,6 @@ def test_end_active_conference_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.EndActiveConferenceRequest()
-
         assert args[0] == request_msg
 
 

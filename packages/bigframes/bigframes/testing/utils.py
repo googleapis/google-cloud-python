@@ -93,6 +93,14 @@ def assert_series_equivalent(pd_series: pd.Series, bf_series: bpd.Series, **kwar
 def _normalize_all_nulls(col: pd.Series) -> pd.Series:
     if pd_types.is_float_dtype(col.dtype):
         col = col.astype("float64").astype("Float64")
+    elif col.dtype == "object":
+        if any(isinstance(x, decimal.Decimal) for x in col):
+            pass
+        else:
+            try:
+                col = col.astype("Float64")
+            except (TypeError, ValueError, SystemError):
+                pass
     return col
 
 
@@ -432,7 +440,7 @@ def get_cloud_functions(
         "Either 'name' or 'name_prefix' can be passed but not both."
     )
 
-    _, location = bff_utils.get_remote_function_locations(location)
+    location = bff_utils.gcf_location_from_bq_location(location)
     parent = f"projects/{project}/locations/{location}"
     request = functions_v2.ListFunctionsRequest(parent=parent)
     page_result = functions_client.list_functions(request=request)

@@ -398,7 +398,7 @@ class _BaseDnsThreatDetectorServiceRestTransport(DnsThreatDetectorServiceTranspo
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=organizations/*/locations/*}",
+                    "uri": "/v1/{name=organizations/*}/locations",
                 },
             ]
             return http_options
@@ -428,10 +428,6 @@ class _BaseDnsThreatDetectorServiceRestTransport(DnsThreatDetectorServiceTranspo
                 {
                     "method": "get",
                     "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{resource=organizations/*/locations/*/addressGroups/*}:getIamPolicy",
                 },
                 {
                     "method": "get",
@@ -474,11 +470,6 @@ class _BaseDnsThreatDetectorServiceRestTransport(DnsThreatDetectorServiceTranspo
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=organizations/*/locations/*/addressGroups/*}:setIamPolicy",
                     "body": "*",
                 },
                 {
@@ -529,12 +520,12 @@ class _BaseDnsThreatDetectorServiceRestTransport(DnsThreatDetectorServiceTranspo
                 },
                 {
                     "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:testIamPermissions",
+                    "uri": "/v1/{resource=organizations/*/locations/*/addressGroups/*}:testIamPermissions",
                     "body": "*",
                 },
                 {
                     "method": "post",
-                    "uri": "/v1/{resource=organizations/*/locations/*/addressGroups/*}:testIamPermissions",
+                    "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:testIamPermissions",
                     "body": "*",
                 },
                 {

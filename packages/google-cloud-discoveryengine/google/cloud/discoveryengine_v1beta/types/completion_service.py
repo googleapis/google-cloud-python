@@ -30,6 +30,8 @@ __protobuf__ = proto.module(
         "CompleteQueryResponse",
         "AdvancedCompleteQueryRequest",
         "AdvancedCompleteQueryResponse",
+        "RemoveSuggestionRequest",
+        "RemoveSuggestionResponse",
     },
 )
 
@@ -71,11 +73,11 @@ class CompleteQueryRequest(proto.Message):
             - ``search-history`` is the default model for site search
               dataStores.
         user_pseudo_id (str):
-            A unique identifier for tracking visitors. For example, this
-            could be implemented with an HTTP cookie, which should be
-            able to uniquely identify a visitor on a single device. This
-            unique identifier should not change if the visitor logs in
-            or out of the website.
+            Optional. A unique identifier for tracking visitors. For
+            example, this could be implemented with an HTTP cookie,
+            which should be able to uniquely identify a visitor on a
+            single device. This unique identifier should not change if
+            the visitor logs in or out of the website.
 
             This field should NOT have a fixed value such as
             ``unknown_visitor``.
@@ -195,9 +197,10 @@ class AdvancedCompleteQueryRequest(proto.Message):
             The is called "zero prefix" feature, which returns user's
             recently searched queries given the empty query.
         query_model (str):
-            Specifies the autocomplete data model. This overrides any
-            model specified in the Configuration > Autocomplete section
-            of the Cloud console. Currently supported values:
+            Specifies the autocomplete query model, which only applies
+            to the QUERY SuggestionType. This overrides any model
+            specified in the Configuration > Autocomplete section of the
+            Cloud console. Currently supported values:
 
             - ``document`` - Using suggestions generated from
               user-imported documents.
@@ -218,11 +221,11 @@ class AdvancedCompleteQueryRequest(proto.Message):
             - ``search-history`` is the default model for site search
               dataStores.
         user_pseudo_id (str):
-            A unique identifier for tracking visitors. For example, this
-            could be implemented with an HTTP cookie, which should be
-            able to uniquely identify a visitor on a single device. This
-            unique identifier should not change if the visitor logs in
-            or out of the website.
+            Optional. A unique identifier for tracking visitors. For
+            example, this could be implemented with an HTTP cookie,
+            which should be able to uniquely identify a visitor on a
+            single device. This unique identifier should not change if
+            the visitor logs in or out of the website.
 
             This field should NOT have a fixed value such as
             ``unknown_visitor``.
@@ -256,6 +259,11 @@ class AdvancedCompleteQueryRequest(proto.Message):
             empty or unspecified, query suggestions are
             returned. Only one suggestion type is supported
             at the moment.
+        suggestion_type_specs (MutableSequence[google.cloud.discoveryengine_v1beta.types.AdvancedCompleteQueryRequest.SuggestionTypeSpec]):
+            Optional. Specification of each suggestion
+            type.
+        experiment_ids (MutableSequence[str]):
+            Optional. Experiment ids for this request.
     """
 
     class SuggestionType(proto.Enum):
@@ -284,14 +292,14 @@ class AdvancedCompleteQueryRequest(proto.Message):
         GOOGLE_WORKSPACE = 5
 
     class BoostSpec(proto.Message):
-        r"""Specification to boost suggestions based on the condtion of
+        r"""Specification to boost suggestions based on the condition of
         the suggestion.
 
         Attributes:
             condition_boost_specs (MutableSequence[google.cloud.discoveryengine_v1beta.types.AdvancedCompleteQueryRequest.BoostSpec.ConditionBoostSpec]):
                 Condition boost specifications. If a
                 suggestion matches multiple conditions in the
-                specifictions, boost values from these
+                specifications, boost values from these
                 specifications are all applied and combined in a
                 non-linear way. Maximum number of specifications
                 is 20.
@@ -348,6 +356,27 @@ class AdvancedCompleteQueryRequest(proto.Message):
             message="AdvancedCompleteQueryRequest.BoostSpec.ConditionBoostSpec",
         )
 
+    class SuggestionTypeSpec(proto.Message):
+        r"""Specification of each suggestion type.
+
+        Attributes:
+            suggestion_type (google.cloud.discoveryengine_v1beta.types.AdvancedCompleteQueryRequest.SuggestionType):
+                Optional. Suggestion type.
+            max_suggestions (int):
+                Optional. Maximum number of suggestions to
+                return for each suggestion type.
+        """
+
+        suggestion_type: "AdvancedCompleteQueryRequest.SuggestionType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="AdvancedCompleteQueryRequest.SuggestionType",
+        )
+        max_suggestions: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+
     completion_config: str = proto.Field(
         proto.STRING,
         number=1,
@@ -382,6 +411,15 @@ class AdvancedCompleteQueryRequest(proto.Message):
         proto.ENUM,
         number=7,
         enum=SuggestionType,
+    )
+    suggestion_type_specs: MutableSequence[SuggestionTypeSpec] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message=SuggestionTypeSpec,
+    )
+    experiment_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=14,
     )
 
 
@@ -431,6 +469,9 @@ class AdvancedCompleteQueryResponse(proto.Message):
             data_store (MutableSequence[str]):
                 The name of the dataStore that this
                 suggestion belongs to.
+            score (float):
+                The score of each suggestion. The score is in the range of
+                [0, 1].
         """
 
         suggestion: str = proto.Field(
@@ -444,6 +485,10 @@ class AdvancedCompleteQueryResponse(proto.Message):
         data_store: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
+        )
+        score: float = proto.Field(
+            proto.DOUBLE,
+            number=4,
         )
 
     class PersonSuggestion(proto.Message):
@@ -460,6 +505,13 @@ class AdvancedCompleteQueryResponse(proto.Message):
             data_store (str):
                 The name of the dataStore that this
                 suggestion belongs to.
+            score (float):
+                The score of each suggestion. The score is in the range of
+                [0, 1].
+            display_photo_uri (str):
+                The photo uri of the person suggestion.
+            destination_uri (str):
+                The destination uri of the person suggestion.
         """
 
         class PersonType(proto.Enum):
@@ -498,6 +550,18 @@ class AdvancedCompleteQueryResponse(proto.Message):
             proto.STRING,
             number=5,
         )
+        score: float = proto.Field(
+            proto.DOUBLE,
+            number=6,
+        )
+        display_photo_uri: str = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+        destination_uri: str = proto.Field(
+            proto.STRING,
+            number=8,
+        )
 
     class ContentSuggestion(proto.Message):
         r"""Suggestions as content.
@@ -513,6 +577,14 @@ class AdvancedCompleteQueryResponse(proto.Message):
             data_store (str):
                 The name of the dataStore that this
                 suggestion belongs to.
+            score (float):
+                The score of each suggestion. The score is in the range of
+                [0, 1].
+            icon_uri (str):
+                The icon uri of the content suggestion.
+            destination_uri (str):
+                The destination uri of the content
+                suggestion.
         """
 
         class ContentType(proto.Enum):
@@ -552,6 +624,18 @@ class AdvancedCompleteQueryResponse(proto.Message):
             proto.STRING,
             number=5,
         )
+        score: float = proto.Field(
+            proto.DOUBLE,
+            number=6,
+        )
+        icon_uri: str = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+        destination_uri: str = proto.Field(
+            proto.STRING,
+            number=8,
+        )
 
     class RecentSearchSuggestion(proto.Message):
         r"""Suggestions from recent search history.
@@ -561,6 +645,9 @@ class AdvancedCompleteQueryResponse(proto.Message):
                 The suggestion for the query.
             recent_search_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time when this recent rearch happened.
+            score (float):
+                The score of each suggestion. The score is in the range of
+                [0, 1].
         """
 
         suggestion: str = proto.Field(
@@ -571,6 +658,10 @@ class AdvancedCompleteQueryResponse(proto.Message):
             proto.MESSAGE,
             number=2,
             message=timestamp_pb2.Timestamp,
+        )
+        score: float = proto.Field(
+            proto.DOUBLE,
+            number=3,
         )
 
     query_suggestions: MutableSequence[QuerySuggestion] = proto.RepeatedField(
@@ -599,6 +690,101 @@ class AdvancedCompleteQueryResponse(proto.Message):
             message=RecentSearchSuggestion,
         )
     )
+
+
+class RemoveSuggestionRequest(proto.Message):
+    r"""Request message for
+    [CompletionService.RemoveSuggestion][google.cloud.discoveryengine.v1beta.CompletionService.RemoveSuggestion]
+    method.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        search_history_suggestion (str):
+            The search history suggestion to be removed.
+
+            This field is a member of `oneof`_ ``suggestion``.
+        remove_all_search_history_suggestions (bool):
+            Remove all search history suggestions for the
+            user.
+
+            This field is a member of `oneof`_ ``suggestion``.
+        completion_config (str):
+            Required. The completion_config of the parent engine
+            resource name for which the search history suggestion is to
+            be removed, such as
+            ``projects/*/locations/global/collections/default_collection/engines/*/completionConfig``.
+        user_pseudo_id (str):
+            Required. A unique identifier for tracking visitors. For
+            example, this could be implemented with an HTTP cookie,
+            which should be able to uniquely identify a visitor on a
+            single device. This unique identifier should not change if
+            the visitor logs in or out of the website.
+
+            This field should NOT have a fixed value such as
+            ``unknown_visitor``.
+
+            This should be the same identifier as
+            [UserEvent.user_pseudo_id][google.cloud.discoveryengine.v1beta.UserEvent.user_pseudo_id]
+            and
+            [SearchRequest.user_pseudo_id][google.cloud.discoveryengine.v1beta.SearchRequest.user_pseudo_id].
+
+            The field must be a UTF-8 encoded string with a length limit
+            of 128.
+        user_info (google.cloud.discoveryengine_v1beta.types.UserInfo):
+            Optional. Information about the end user.
+
+            This should be the same identifier information as
+            [UserEvent.user_info][google.cloud.discoveryengine.v1beta.UserEvent.user_info]
+            and
+            [SearchRequest.user_info][google.cloud.discoveryengine.v1beta.SearchRequest.user_info].
+        remove_time (google.protobuf.timestamp_pb2.Timestamp):
+            Required. Time at which the suggestion was
+            removed. If not set, the current time will be
+            used.
+    """
+
+    search_history_suggestion: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="suggestion",
+    )
+    remove_all_search_history_suggestions: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+        oneof="suggestion",
+    )
+    completion_config: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    user_pseudo_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    user_info: common.UserInfo = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=common.UserInfo,
+    )
+    remove_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class RemoveSuggestionResponse(proto.Message):
+    r"""Response message for
+    [CompletionService.RemoveSuggestion][google.cloud.discoveryengine.v1beta.CompletionService.RemoveSuggestion]
+    method.
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

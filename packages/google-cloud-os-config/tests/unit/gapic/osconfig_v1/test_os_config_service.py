@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -115,6 +116,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -974,7 +990,14 @@ def test_os_config_service_client_get_mtls_endpoint_and_cert_source(client_class
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1021,7 +1044,14 @@ def test_os_config_service_client_get_mtls_endpoint_and_cert_source(client_class
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1344,8 +1374,8 @@ def test_os_config_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        patch_jobs.ExecutePatchJobRequest,
-        dict,
+        patch_jobs.ExecutePatchJobRequest(),
+        {},
     ],
 )
 def test_execute_patch_job(request_type, transport: str = "grpc"):
@@ -1356,7 +1386,7 @@ def test_execute_patch_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1420,11 +1450,12 @@ def test_execute_patch_job_non_empty_request_with_auto_populated_field():
         client.execute_patch_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == patch_jobs.ExecutePatchJobRequest(
+        request_msg = patch_jobs.ExecutePatchJobRequest(
             parent="parent_value",
             description="description_value",
             display_name="display_name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_execute_patch_job_use_cached_wrapped_rpc():
@@ -1507,9 +1538,14 @@ async def test_execute_patch_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_execute_patch_job_async(
-    transport: str = "grpc_asyncio", request_type=patch_jobs.ExecutePatchJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_jobs.ExecutePatchJobRequest(),
+        {},
+    ],
+)
+async def test_execute_patch_job_async(request_type, transport: str = "grpc_asyncio"):
     client = OsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1517,7 +1553,7 @@ async def test_execute_patch_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1554,11 +1590,6 @@ async def test_execute_patch_job_async(
     assert response.error_message == "error_message_value"
     assert math.isclose(response.percent_complete, 0.1705, rel_tol=1e-6)
     assert response.patch_deployment == "patch_deployment_value"
-
-
-@pytest.mark.asyncio
-async def test_execute_patch_job_async_from_dict():
-    await test_execute_patch_job_async(request_type=dict)
 
 
 def test_execute_patch_job_field_headers():
@@ -1627,8 +1658,8 @@ async def test_execute_patch_job_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        patch_jobs.GetPatchJobRequest,
-        dict,
+        patch_jobs.GetPatchJobRequest(),
+        {},
     ],
 )
 def test_get_patch_job(request_type, transport: str = "grpc"):
@@ -1639,7 +1670,7 @@ def test_get_patch_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_patch_job), "__call__") as call:
@@ -1697,9 +1728,10 @@ def test_get_patch_job_non_empty_request_with_auto_populated_field():
         client.get_patch_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == patch_jobs.GetPatchJobRequest(
+        request_msg = patch_jobs.GetPatchJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_patch_job_use_cached_wrapped_rpc():
@@ -1780,9 +1812,14 @@ async def test_get_patch_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_patch_job_async(
-    transport: str = "grpc_asyncio", request_type=patch_jobs.GetPatchJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_jobs.GetPatchJobRequest(),
+        {},
+    ],
+)
+async def test_get_patch_job_async(request_type, transport: str = "grpc_asyncio"):
     client = OsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1790,7 +1827,7 @@ async def test_get_patch_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_patch_job), "__call__") as call:
@@ -1825,11 +1862,6 @@ async def test_get_patch_job_async(
     assert response.error_message == "error_message_value"
     assert math.isclose(response.percent_complete, 0.1705, rel_tol=1e-6)
     assert response.patch_deployment == "patch_deployment_value"
-
-
-@pytest.mark.asyncio
-async def test_get_patch_job_async_from_dict():
-    await test_get_patch_job_async(request_type=dict)
 
 
 def test_get_patch_job_field_headers():
@@ -1974,8 +2006,8 @@ async def test_get_patch_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        patch_jobs.CancelPatchJobRequest,
-        dict,
+        patch_jobs.CancelPatchJobRequest(),
+        {},
     ],
 )
 def test_cancel_patch_job(request_type, transport: str = "grpc"):
@@ -1986,7 +2018,7 @@ def test_cancel_patch_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_patch_job), "__call__") as call:
@@ -2044,9 +2076,10 @@ def test_cancel_patch_job_non_empty_request_with_auto_populated_field():
         client.cancel_patch_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == patch_jobs.CancelPatchJobRequest(
+        request_msg = patch_jobs.CancelPatchJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_patch_job_use_cached_wrapped_rpc():
@@ -2129,9 +2162,14 @@ async def test_cancel_patch_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_cancel_patch_job_async(
-    transport: str = "grpc_asyncio", request_type=patch_jobs.CancelPatchJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_jobs.CancelPatchJobRequest(),
+        {},
+    ],
+)
+async def test_cancel_patch_job_async(request_type, transport: str = "grpc_asyncio"):
     client = OsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2139,7 +2177,7 @@ async def test_cancel_patch_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_patch_job), "__call__") as call:
@@ -2174,11 +2212,6 @@ async def test_cancel_patch_job_async(
     assert response.error_message == "error_message_value"
     assert math.isclose(response.percent_complete, 0.1705, rel_tol=1e-6)
     assert response.patch_deployment == "patch_deployment_value"
-
-
-@pytest.mark.asyncio
-async def test_cancel_patch_job_async_from_dict():
-    await test_cancel_patch_job_async(request_type=dict)
 
 
 def test_cancel_patch_job_field_headers():
@@ -2243,8 +2276,8 @@ async def test_cancel_patch_job_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        patch_jobs.ListPatchJobsRequest,
-        dict,
+        patch_jobs.ListPatchJobsRequest(),
+        {},
     ],
 )
 def test_list_patch_jobs(request_type, transport: str = "grpc"):
@@ -2255,7 +2288,7 @@ def test_list_patch_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_patch_jobs), "__call__") as call:
@@ -2301,11 +2334,12 @@ def test_list_patch_jobs_non_empty_request_with_auto_populated_field():
         client.list_patch_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == patch_jobs.ListPatchJobsRequest(
+        request_msg = patch_jobs.ListPatchJobsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_patch_jobs_use_cached_wrapped_rpc():
@@ -2386,9 +2420,14 @@ async def test_list_patch_jobs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_patch_jobs_async(
-    transport: str = "grpc_asyncio", request_type=patch_jobs.ListPatchJobsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_jobs.ListPatchJobsRequest(),
+        {},
+    ],
+)
+async def test_list_patch_jobs_async(request_type, transport: str = "grpc_asyncio"):
     client = OsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2396,7 +2435,7 @@ async def test_list_patch_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_patch_jobs), "__call__") as call:
@@ -2417,11 +2456,6 @@ async def test_list_patch_jobs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPatchJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_patch_jobs_async_from_dict():
-    await test_list_patch_jobs_async(request_type=dict)
 
 
 def test_list_patch_jobs_field_headers():
@@ -2616,6 +2650,9 @@ def test_list_patch_jobs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, patch_jobs.PatchJob) for i in results)
@@ -2704,6 +2741,8 @@ async def test_list_patch_jobs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2760,8 +2799,8 @@ async def test_list_patch_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        patch_jobs.ListPatchJobInstanceDetailsRequest,
-        dict,
+        patch_jobs.ListPatchJobInstanceDetailsRequest(),
+        {},
     ],
 )
 def test_list_patch_job_instance_details(request_type, transport: str = "grpc"):
@@ -2772,7 +2811,7 @@ def test_list_patch_job_instance_details(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2822,11 +2861,12 @@ def test_list_patch_job_instance_details_non_empty_request_with_auto_populated_f
         client.list_patch_job_instance_details(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == patch_jobs.ListPatchJobInstanceDetailsRequest(
+        request_msg = patch_jobs.ListPatchJobInstanceDetailsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_patch_job_instance_details_use_cached_wrapped_rpc():
@@ -2912,9 +2952,15 @@ async def test_list_patch_job_instance_details_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_jobs.ListPatchJobInstanceDetailsRequest(),
+        {},
+    ],
+)
 async def test_list_patch_job_instance_details_async(
-    transport: str = "grpc_asyncio",
-    request_type=patch_jobs.ListPatchJobInstanceDetailsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2923,7 +2969,7 @@ async def test_list_patch_job_instance_details_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2946,11 +2992,6 @@ async def test_list_patch_job_instance_details_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPatchJobInstanceDetailsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_patch_job_instance_details_async_from_dict():
-    await test_list_patch_job_instance_details_async(request_type=dict)
 
 
 def test_list_patch_job_instance_details_field_headers():
@@ -3157,6 +3198,9 @@ def test_list_patch_job_instance_details_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, patch_jobs.PatchJobInstanceDetails) for i in results)
@@ -3249,6 +3293,8 @@ async def test_list_patch_job_instance_details_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3309,8 +3355,8 @@ async def test_list_patch_job_instance_details_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        patch_deployments.CreatePatchDeploymentRequest,
-        dict,
+        patch_deployments.CreatePatchDeploymentRequest(),
+        {},
     ],
 )
 def test_create_patch_deployment(request_type, transport: str = "grpc"):
@@ -3321,7 +3367,7 @@ def test_create_patch_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3374,10 +3420,11 @@ def test_create_patch_deployment_non_empty_request_with_auto_populated_field():
         client.create_patch_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == patch_deployments.CreatePatchDeploymentRequest(
+        request_msg = patch_deployments.CreatePatchDeploymentRequest(
             parent="parent_value",
             patch_deployment_id="patch_deployment_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_patch_deployment_use_cached_wrapped_rpc():
@@ -3463,9 +3510,15 @@ async def test_create_patch_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_deployments.CreatePatchDeploymentRequest(),
+        {},
+    ],
+)
 async def test_create_patch_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=patch_deployments.CreatePatchDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3474,7 +3527,7 @@ async def test_create_patch_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3501,11 +3554,6 @@ async def test_create_patch_deployment_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
-
-
-@pytest.mark.asyncio
-async def test_create_patch_deployment_async_from_dict():
-    await test_create_patch_deployment_async(request_type=dict)
 
 
 def test_create_patch_deployment_field_headers():
@@ -3682,8 +3730,8 @@ async def test_create_patch_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        patch_deployments.GetPatchDeploymentRequest,
-        dict,
+        patch_deployments.GetPatchDeploymentRequest(),
+        {},
     ],
 )
 def test_get_patch_deployment(request_type, transport: str = "grpc"):
@@ -3694,7 +3742,7 @@ def test_get_patch_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3746,9 +3794,10 @@ def test_get_patch_deployment_non_empty_request_with_auto_populated_field():
         client.get_patch_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == patch_deployments.GetPatchDeploymentRequest(
+        request_msg = patch_deployments.GetPatchDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_patch_deployment_use_cached_wrapped_rpc():
@@ -3833,9 +3882,15 @@ async def test_get_patch_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_deployments.GetPatchDeploymentRequest(),
+        {},
+    ],
+)
 async def test_get_patch_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=patch_deployments.GetPatchDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3844,7 +3899,7 @@ async def test_get_patch_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3871,11 +3926,6 @@ async def test_get_patch_deployment_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
-
-
-@pytest.mark.asyncio
-async def test_get_patch_deployment_async_from_dict():
-    await test_get_patch_deployment_async(request_type=dict)
 
 
 def test_get_patch_deployment_field_headers():
@@ -4032,8 +4082,8 @@ async def test_get_patch_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        patch_deployments.ListPatchDeploymentsRequest,
-        dict,
+        patch_deployments.ListPatchDeploymentsRequest(),
+        {},
     ],
 )
 def test_list_patch_deployments(request_type, transport: str = "grpc"):
@@ -4044,7 +4094,7 @@ def test_list_patch_deployments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4093,10 +4143,11 @@ def test_list_patch_deployments_non_empty_request_with_auto_populated_field():
         client.list_patch_deployments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == patch_deployments.ListPatchDeploymentsRequest(
+        request_msg = patch_deployments.ListPatchDeploymentsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_patch_deployments_use_cached_wrapped_rpc():
@@ -4182,9 +4233,15 @@ async def test_list_patch_deployments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_deployments.ListPatchDeploymentsRequest(),
+        {},
+    ],
+)
 async def test_list_patch_deployments_async(
-    transport: str = "grpc_asyncio",
-    request_type=patch_deployments.ListPatchDeploymentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4193,7 +4250,7 @@ async def test_list_patch_deployments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4216,11 +4273,6 @@ async def test_list_patch_deployments_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPatchDeploymentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_patch_deployments_async_from_dict():
-    await test_list_patch_deployments_async(request_type=dict)
 
 
 def test_list_patch_deployments_field_headers():
@@ -4425,6 +4477,9 @@ def test_list_patch_deployments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, patch_deployments.PatchDeployment) for i in results)
@@ -4517,6 +4572,8 @@ async def test_list_patch_deployments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4575,8 +4632,8 @@ async def test_list_patch_deployments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        patch_deployments.DeletePatchDeploymentRequest,
-        dict,
+        patch_deployments.DeletePatchDeploymentRequest(),
+        {},
     ],
 )
 def test_delete_patch_deployment(request_type, transport: str = "grpc"):
@@ -4587,7 +4644,7 @@ def test_delete_patch_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4632,9 +4689,10 @@ def test_delete_patch_deployment_non_empty_request_with_auto_populated_field():
         client.delete_patch_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == patch_deployments.DeletePatchDeploymentRequest(
+        request_msg = patch_deployments.DeletePatchDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_patch_deployment_use_cached_wrapped_rpc():
@@ -4720,9 +4778,15 @@ async def test_delete_patch_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_deployments.DeletePatchDeploymentRequest(),
+        {},
+    ],
+)
 async def test_delete_patch_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=patch_deployments.DeletePatchDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4731,7 +4795,7 @@ async def test_delete_patch_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4749,11 +4813,6 @@ async def test_delete_patch_deployment_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_patch_deployment_async_from_dict():
-    await test_delete_patch_deployment_async(request_type=dict)
 
 
 def test_delete_patch_deployment_field_headers():
@@ -4906,8 +4965,8 @@ async def test_delete_patch_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        patch_deployments.UpdatePatchDeploymentRequest,
-        dict,
+        patch_deployments.UpdatePatchDeploymentRequest(),
+        {},
     ],
 )
 def test_update_patch_deployment(request_type, transport: str = "grpc"):
@@ -4918,7 +4977,7 @@ def test_update_patch_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4968,7 +5027,8 @@ def test_update_patch_deployment_non_empty_request_with_auto_populated_field():
         client.update_patch_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == patch_deployments.UpdatePatchDeploymentRequest()
+        request_msg = patch_deployments.UpdatePatchDeploymentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_patch_deployment_use_cached_wrapped_rpc():
@@ -5054,9 +5114,15 @@ async def test_update_patch_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_deployments.UpdatePatchDeploymentRequest(),
+        {},
+    ],
+)
 async def test_update_patch_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=patch_deployments.UpdatePatchDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5065,7 +5131,7 @@ async def test_update_patch_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5092,11 +5158,6 @@ async def test_update_patch_deployment_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
-
-
-@pytest.mark.asyncio
-async def test_update_patch_deployment_async_from_dict():
-    await test_update_patch_deployment_async(request_type=dict)
 
 
 def test_update_patch_deployment_field_headers():
@@ -5263,8 +5324,8 @@ async def test_update_patch_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        patch_deployments.PausePatchDeploymentRequest,
-        dict,
+        patch_deployments.PausePatchDeploymentRequest(),
+        {},
     ],
 )
 def test_pause_patch_deployment(request_type, transport: str = "grpc"):
@@ -5275,7 +5336,7 @@ def test_pause_patch_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5327,9 +5388,10 @@ def test_pause_patch_deployment_non_empty_request_with_auto_populated_field():
         client.pause_patch_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == patch_deployments.PausePatchDeploymentRequest(
+        request_msg = patch_deployments.PausePatchDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_pause_patch_deployment_use_cached_wrapped_rpc():
@@ -5415,9 +5477,15 @@ async def test_pause_patch_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_deployments.PausePatchDeploymentRequest(),
+        {},
+    ],
+)
 async def test_pause_patch_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=patch_deployments.PausePatchDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5426,7 +5494,7 @@ async def test_pause_patch_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5453,11 +5521,6 @@ async def test_pause_patch_deployment_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
-
-
-@pytest.mark.asyncio
-async def test_pause_patch_deployment_async_from_dict():
-    await test_pause_patch_deployment_async(request_type=dict)
 
 
 def test_pause_patch_deployment_field_headers():
@@ -5614,8 +5677,8 @@ async def test_pause_patch_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        patch_deployments.ResumePatchDeploymentRequest,
-        dict,
+        patch_deployments.ResumePatchDeploymentRequest(),
+        {},
     ],
 )
 def test_resume_patch_deployment(request_type, transport: str = "grpc"):
@@ -5626,7 +5689,7 @@ def test_resume_patch_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5678,9 +5741,10 @@ def test_resume_patch_deployment_non_empty_request_with_auto_populated_field():
         client.resume_patch_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == patch_deployments.ResumePatchDeploymentRequest(
+        request_msg = patch_deployments.ResumePatchDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_resume_patch_deployment_use_cached_wrapped_rpc():
@@ -5766,9 +5830,15 @@ async def test_resume_patch_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        patch_deployments.ResumePatchDeploymentRequest(),
+        {},
+    ],
+)
 async def test_resume_patch_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=patch_deployments.ResumePatchDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5777,7 +5847,7 @@ async def test_resume_patch_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5804,11 +5874,6 @@ async def test_resume_patch_deployment_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
-
-
-@pytest.mark.asyncio
-async def test_resume_patch_deployment_async_from_dict():
-    await test_resume_patch_deployment_async(request_type=dict)
 
 
 def test_resume_patch_deployment_field_headers():
@@ -6635,6 +6700,9 @@ def test_list_patch_jobs_rest_pager(transport: str = "rest"):
 
         pager = client.list_patch_jobs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, patch_jobs.PatchJob) for i in results)
@@ -6901,6 +6969,9 @@ def test_list_patch_job_instance_details_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/patchJobs/sample2"}
 
         pager = client.list_patch_job_instance_details(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -7557,6 +7628,9 @@ def test_list_patch_deployments_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1"}
 
         pager = client.list_patch_deployments(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -8421,7 +8495,6 @@ def test_execute_patch_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.ExecutePatchJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -8442,7 +8515,6 @@ def test_get_patch_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.GetPatchJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -8463,7 +8535,6 @@ def test_cancel_patch_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.CancelPatchJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -8484,7 +8555,6 @@ def test_list_patch_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.ListPatchJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8507,7 +8577,6 @@ def test_list_patch_job_instance_details_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.ListPatchJobInstanceDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8530,7 +8599,6 @@ def test_create_patch_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.CreatePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8553,7 +8621,6 @@ def test_get_patch_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.GetPatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8576,7 +8643,6 @@ def test_list_patch_deployments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.ListPatchDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8599,7 +8665,6 @@ def test_delete_patch_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.DeletePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8622,7 +8687,6 @@ def test_update_patch_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.UpdatePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8645,7 +8709,6 @@ def test_pause_patch_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.PausePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8668,7 +8731,6 @@ def test_resume_patch_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.ResumePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8718,7 +8780,6 @@ async def test_execute_patch_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.ExecutePatchJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -8752,7 +8813,6 @@ async def test_get_patch_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.GetPatchJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -8786,7 +8846,6 @@ async def test_cancel_patch_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.CancelPatchJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -8813,7 +8872,6 @@ async def test_list_patch_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.ListPatchJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8842,7 +8900,6 @@ async def test_list_patch_job_instance_details_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.ListPatchJobInstanceDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8873,7 +8930,6 @@ async def test_create_patch_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.CreatePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8904,7 +8960,6 @@ async def test_get_patch_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.GetPatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8933,7 +8988,6 @@ async def test_list_patch_deployments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.ListPatchDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8958,7 +9012,6 @@ async def test_delete_patch_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.DeletePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8989,7 +9042,6 @@ async def test_update_patch_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.UpdatePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9020,7 +9072,6 @@ async def test_pause_patch_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.PausePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9051,7 +9102,6 @@ async def test_resume_patch_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.ResumePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11048,7 +11098,6 @@ def test_execute_patch_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.ExecutePatchJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -11068,7 +11117,6 @@ def test_get_patch_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.GetPatchJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -11088,7 +11136,6 @@ def test_cancel_patch_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.CancelPatchJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -11108,7 +11155,6 @@ def test_list_patch_jobs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.ListPatchJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11130,7 +11176,6 @@ def test_list_patch_job_instance_details_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_jobs.ListPatchJobInstanceDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11152,7 +11197,6 @@ def test_create_patch_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.CreatePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11174,7 +11218,6 @@ def test_get_patch_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.GetPatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11196,7 +11239,6 @@ def test_list_patch_deployments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.ListPatchDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11218,7 +11260,6 @@ def test_delete_patch_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.DeletePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11240,7 +11281,6 @@ def test_update_patch_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.UpdatePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11262,7 +11302,6 @@ def test_pause_patch_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.PausePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11284,7 +11323,6 @@ def test_resume_patch_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = patch_deployments.ResumePatchDeploymentRequest()
-
         assert args[0] == request_msg
 
 

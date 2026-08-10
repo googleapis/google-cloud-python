@@ -31,9 +31,7 @@ from google.ads.datamanager_v1.types import ingestion_service
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class IngestionServiceTransport(abc.ABC):
@@ -157,6 +155,11 @@ class IngestionServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.ingest_ad_events: gapic_v1.method.wrap_method(
+                self.ingest_ad_events,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.retrieve_request_status: gapic_v1.method.wrap_method(
                 self.retrieve_request_status,
                 default_timeout=None,
@@ -205,6 +208,18 @@ class IngestionServiceTransport(abc.ABC):
         Union[
             ingestion_service.IngestEventsResponse,
             Awaitable[ingestion_service.IngestEventsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def ingest_ad_events(
+        self,
+    ) -> Callable[
+        [ingestion_service.IngestAdEventsRequest],
+        Union[
+            ingestion_service.IngestAdEventsResponse,
+            Awaitable[ingestion_service.IngestAdEventsResponse],
         ],
     ]:
         raise NotImplementedError()

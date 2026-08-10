@@ -24,7 +24,6 @@ import typing
 import bigframes_vendored.constants as constants
 
 import bigframes.core.groupby as groupby
-import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.series as series
 

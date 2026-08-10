@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -120,6 +121,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1071,7 +1087,14 @@ def test_organization_address_group_service_client_get_mtls_endpoint_and_cert_so
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1118,7 +1141,14 @@ def test_organization_address_group_service_client_get_mtls_endpoint_and_cert_so
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1459,8 +1489,8 @@ def test_organization_address_group_service_client_create_channel_credentials_fi
 @pytest.mark.parametrize(
     "request_type",
     [
-        address_group.ListAddressGroupsRequest,
-        dict,
+        address_group.ListAddressGroupsRequest(),
+        {},
     ],
 )
 def test_list_address_groups(request_type, transport: str = "grpc"):
@@ -1471,7 +1501,7 @@ def test_list_address_groups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1522,10 +1552,11 @@ def test_list_address_groups_non_empty_request_with_auto_populated_field():
         client.list_address_groups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == address_group.ListAddressGroupsRequest(
+        request_msg = address_group.ListAddressGroupsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_address_groups_use_cached_wrapped_rpc():
@@ -1610,9 +1641,14 @@ async def test_list_address_groups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_address_groups_async(
-    transport: str = "grpc_asyncio", request_type=address_group.ListAddressGroupsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        address_group.ListAddressGroupsRequest(),
+        {},
+    ],
+)
+async def test_list_address_groups_async(request_type, transport: str = "grpc_asyncio"):
     client = OrganizationAddressGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1620,7 +1656,7 @@ async def test_list_address_groups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1645,11 +1681,6 @@ async def test_list_address_groups_async(
     assert isinstance(response, pagers.ListAddressGroupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_address_groups_async_from_dict():
-    await test_list_address_groups_async(request_type=dict)
 
 
 def test_list_address_groups_field_headers():
@@ -1854,6 +1885,9 @@ def test_list_address_groups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, address_group.AddressGroup) for i in results)
@@ -1946,6 +1980,8 @@ async def test_list_address_groups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2004,8 +2040,8 @@ async def test_list_address_groups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        address_group.GetAddressGroupRequest,
-        dict,
+        address_group.GetAddressGroupRequest(),
+        {},
     ],
 )
 def test_get_address_group(request_type, transport: str = "grpc"):
@@ -2016,7 +2052,7 @@ def test_get_address_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2076,9 +2112,10 @@ def test_get_address_group_non_empty_request_with_auto_populated_field():
         client.get_address_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == address_group.GetAddressGroupRequest(
+        request_msg = address_group.GetAddressGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_address_group_use_cached_wrapped_rpc():
@@ -2161,9 +2198,14 @@ async def test_get_address_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_address_group_async(
-    transport: str = "grpc_asyncio", request_type=address_group.GetAddressGroupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        address_group.GetAddressGroupRequest(),
+        {},
+    ],
+)
+async def test_get_address_group_async(request_type, transport: str = "grpc_asyncio"):
     client = OrganizationAddressGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2171,7 +2213,7 @@ async def test_get_address_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2206,11 +2248,6 @@ async def test_get_address_group_async(
     assert response.capacity == 846
     assert response.self_link == "self_link_value"
     assert response.purpose == [address_group.AddressGroup.Purpose.DEFAULT]
-
-
-@pytest.mark.asyncio
-async def test_get_address_group_async_from_dict():
-    await test_get_address_group_async(request_type=dict)
 
 
 def test_get_address_group_field_headers():
@@ -2367,8 +2404,8 @@ async def test_get_address_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_address_group.CreateAddressGroupRequest,
-        dict,
+        gcn_address_group.CreateAddressGroupRequest(),
+        {},
     ],
 )
 def test_create_address_group(request_type, transport: str = "grpc"):
@@ -2379,7 +2416,7 @@ def test_create_address_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2426,11 +2463,12 @@ def test_create_address_group_non_empty_request_with_auto_populated_field():
         client.create_address_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_address_group.CreateAddressGroupRequest(
+        request_msg = gcn_address_group.CreateAddressGroupRequest(
             parent="parent_value",
             address_group_id="address_group_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_address_group_use_cached_wrapped_rpc():
@@ -2525,9 +2563,15 @@ async def test_create_address_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_address_group.CreateAddressGroupRequest(),
+        {},
+    ],
+)
 async def test_create_address_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_address_group.CreateAddressGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationAddressGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2536,7 +2580,7 @@ async def test_create_address_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2556,11 +2600,6 @@ async def test_create_address_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_address_group_async_from_dict():
-    await test_create_address_group_async(request_type=dict)
 
 
 def test_create_address_group_field_headers():
@@ -2737,8 +2776,8 @@ async def test_create_address_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_address_group.UpdateAddressGroupRequest,
-        dict,
+        gcn_address_group.UpdateAddressGroupRequest(),
+        {},
     ],
 )
 def test_update_address_group(request_type, transport: str = "grpc"):
@@ -2749,7 +2788,7 @@ def test_update_address_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2794,9 +2833,10 @@ def test_update_address_group_non_empty_request_with_auto_populated_field():
         client.update_address_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_address_group.UpdateAddressGroupRequest(
+        request_msg = gcn_address_group.UpdateAddressGroupRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_address_group_use_cached_wrapped_rpc():
@@ -2891,9 +2931,15 @@ async def test_update_address_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_address_group.UpdateAddressGroupRequest(),
+        {},
+    ],
+)
 async def test_update_address_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_address_group.UpdateAddressGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationAddressGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2902,7 +2948,7 @@ async def test_update_address_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2922,11 +2968,6 @@ async def test_update_address_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_address_group_async_from_dict():
-    await test_update_address_group_async(request_type=dict)
 
 
 def test_update_address_group_field_headers():
@@ -3093,8 +3134,8 @@ async def test_update_address_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_address_group.AddAddressGroupItemsRequest,
-        dict,
+        gcn_address_group.AddAddressGroupItemsRequest(),
+        {},
     ],
 )
 def test_add_address_group_items(request_type, transport: str = "grpc"):
@@ -3105,7 +3146,7 @@ def test_add_address_group_items(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3151,10 +3192,11 @@ def test_add_address_group_items_non_empty_request_with_auto_populated_field():
         client.add_address_group_items(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_address_group.AddAddressGroupItemsRequest(
+        request_msg = gcn_address_group.AddAddressGroupItemsRequest(
             address_group="address_group_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_add_address_group_items_use_cached_wrapped_rpc():
@@ -3250,9 +3292,15 @@ async def test_add_address_group_items_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_address_group.AddAddressGroupItemsRequest(),
+        {},
+    ],
+)
 async def test_add_address_group_items_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_address_group.AddAddressGroupItemsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationAddressGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3261,7 +3309,7 @@ async def test_add_address_group_items_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3281,11 +3329,6 @@ async def test_add_address_group_items_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_add_address_group_items_async_from_dict():
-    await test_add_address_group_items_async(request_type=dict)
 
 
 def test_add_address_group_items_field_headers():
@@ -3452,8 +3495,8 @@ async def test_add_address_group_items_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_address_group.RemoveAddressGroupItemsRequest,
-        dict,
+        gcn_address_group.RemoveAddressGroupItemsRequest(),
+        {},
     ],
 )
 def test_remove_address_group_items(request_type, transport: str = "grpc"):
@@ -3464,7 +3507,7 @@ def test_remove_address_group_items(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3510,10 +3553,11 @@ def test_remove_address_group_items_non_empty_request_with_auto_populated_field(
         client.remove_address_group_items(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_address_group.RemoveAddressGroupItemsRequest(
+        request_msg = gcn_address_group.RemoveAddressGroupItemsRequest(
             address_group="address_group_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_remove_address_group_items_use_cached_wrapped_rpc():
@@ -3609,9 +3653,15 @@ async def test_remove_address_group_items_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_address_group.RemoveAddressGroupItemsRequest(),
+        {},
+    ],
+)
 async def test_remove_address_group_items_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_address_group.RemoveAddressGroupItemsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationAddressGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3620,7 +3670,7 @@ async def test_remove_address_group_items_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3640,11 +3690,6 @@ async def test_remove_address_group_items_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_remove_address_group_items_async_from_dict():
-    await test_remove_address_group_items_async(request_type=dict)
 
 
 def test_remove_address_group_items_field_headers():
@@ -3811,8 +3856,8 @@ async def test_remove_address_group_items_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_address_group.CloneAddressGroupItemsRequest,
-        dict,
+        gcn_address_group.CloneAddressGroupItemsRequest(),
+        {},
     ],
 )
 def test_clone_address_group_items(request_type, transport: str = "grpc"):
@@ -3823,7 +3868,7 @@ def test_clone_address_group_items(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3870,11 +3915,12 @@ def test_clone_address_group_items_non_empty_request_with_auto_populated_field()
         client.clone_address_group_items(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_address_group.CloneAddressGroupItemsRequest(
+        request_msg = gcn_address_group.CloneAddressGroupItemsRequest(
             address_group="address_group_value",
             source_address_group="source_address_group_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_clone_address_group_items_use_cached_wrapped_rpc():
@@ -3970,9 +4016,15 @@ async def test_clone_address_group_items_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_address_group.CloneAddressGroupItemsRequest(),
+        {},
+    ],
+)
 async def test_clone_address_group_items_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_address_group.CloneAddressGroupItemsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationAddressGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3981,7 +4033,7 @@ async def test_clone_address_group_items_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4001,11 +4053,6 @@ async def test_clone_address_group_items_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_clone_address_group_items_async_from_dict():
-    await test_clone_address_group_items_async(request_type=dict)
 
 
 def test_clone_address_group_items_field_headers():
@@ -4172,8 +4219,8 @@ async def test_clone_address_group_items_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        address_group.DeleteAddressGroupRequest,
-        dict,
+        address_group.DeleteAddressGroupRequest(),
+        {},
     ],
 )
 def test_delete_address_group(request_type, transport: str = "grpc"):
@@ -4184,7 +4231,7 @@ def test_delete_address_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4230,10 +4277,11 @@ def test_delete_address_group_non_empty_request_with_auto_populated_field():
         client.delete_address_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == address_group.DeleteAddressGroupRequest(
+        request_msg = address_group.DeleteAddressGroupRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_address_group_use_cached_wrapped_rpc():
@@ -4328,9 +4376,15 @@ async def test_delete_address_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        address_group.DeleteAddressGroupRequest(),
+        {},
+    ],
+)
 async def test_delete_address_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=address_group.DeleteAddressGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationAddressGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4339,7 +4393,7 @@ async def test_delete_address_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4359,11 +4413,6 @@ async def test_delete_address_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_address_group_async_from_dict():
-    await test_delete_address_group_async(request_type=dict)
 
 
 def test_delete_address_group_field_headers():
@@ -4520,8 +4569,8 @@ async def test_delete_address_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_address_group.ListAddressGroupReferencesRequest,
-        dict,
+        gcn_address_group.ListAddressGroupReferencesRequest(),
+        {},
     ],
 )
 def test_list_address_group_references(request_type, transport: str = "grpc"):
@@ -4532,7 +4581,7 @@ def test_list_address_group_references(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4581,10 +4630,11 @@ def test_list_address_group_references_non_empty_request_with_auto_populated_fie
         client.list_address_group_references(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_address_group.ListAddressGroupReferencesRequest(
+        request_msg = gcn_address_group.ListAddressGroupReferencesRequest(
             address_group="address_group_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_address_group_references_use_cached_wrapped_rpc():
@@ -4670,9 +4720,15 @@ async def test_list_address_group_references_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_address_group.ListAddressGroupReferencesRequest(),
+        {},
+    ],
+)
 async def test_list_address_group_references_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_address_group.ListAddressGroupReferencesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationAddressGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4681,7 +4737,7 @@ async def test_list_address_group_references_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4704,11 +4760,6 @@ async def test_list_address_group_references_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAddressGroupReferencesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_address_group_references_async_from_dict():
-    await test_list_address_group_references_async(request_type=dict)
 
 
 def test_list_address_group_references_field_headers():
@@ -4915,6 +4966,9 @@ def test_list_address_group_references_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -5013,6 +5067,8 @@ async def test_list_address_group_references_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5328,6 +5384,9 @@ def test_list_address_groups_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "organizations/sample1/locations/sample2"}
 
         pager = client.list_address_groups(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -6983,6 +7042,9 @@ def test_list_address_group_references_rest_pager(transport: str = "rest"):
 
         pager = client.list_address_group_references(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -7123,7 +7185,6 @@ def test_list_address_groups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = address_group.ListAddressGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7146,7 +7207,6 @@ def test_get_address_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = address_group.GetAddressGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -7169,7 +7229,6 @@ def test_create_address_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.CreateAddressGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -7192,7 +7251,6 @@ def test_update_address_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.UpdateAddressGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -7215,7 +7273,6 @@ def test_add_address_group_items_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.AddAddressGroupItemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7238,7 +7295,6 @@ def test_remove_address_group_items_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.RemoveAddressGroupItemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7261,7 +7317,6 @@ def test_clone_address_group_items_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.CloneAddressGroupItemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7284,7 +7339,6 @@ def test_delete_address_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = address_group.DeleteAddressGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -7307,7 +7361,6 @@ def test_list_address_group_references_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.ListAddressGroupReferencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7351,7 +7404,6 @@ async def test_list_address_groups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = address_group.ListAddressGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7386,7 +7438,6 @@ async def test_get_address_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = address_group.GetAddressGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -7413,7 +7464,6 @@ async def test_create_address_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.CreateAddressGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -7440,7 +7490,6 @@ async def test_update_address_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.UpdateAddressGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -7467,7 +7516,6 @@ async def test_add_address_group_items_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.AddAddressGroupItemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7494,7 +7542,6 @@ async def test_remove_address_group_items_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.RemoveAddressGroupItemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7521,7 +7568,6 @@ async def test_clone_address_group_items_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.CloneAddressGroupItemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7548,7 +7594,6 @@ async def test_delete_address_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = address_group.DeleteAddressGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -7577,7 +7622,6 @@ async def test_list_address_group_references_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.ListAddressGroupReferencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9572,7 +9616,6 @@ def test_list_address_groups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = address_group.ListAddressGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9594,7 +9637,6 @@ def test_get_address_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = address_group.GetAddressGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -9616,7 +9658,6 @@ def test_create_address_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.CreateAddressGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -9638,7 +9679,6 @@ def test_update_address_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.UpdateAddressGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -9660,7 +9700,6 @@ def test_add_address_group_items_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.AddAddressGroupItemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9682,7 +9721,6 @@ def test_remove_address_group_items_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.RemoveAddressGroupItemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9704,7 +9742,6 @@ def test_clone_address_group_items_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.CloneAddressGroupItemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9726,7 +9763,6 @@ def test_delete_address_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = address_group.DeleteAddressGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -9748,7 +9784,6 @@ def test_list_address_group_references_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_address_group.ListAddressGroupReferencesRequest()
-
         assert args[0] == request_msg
 
 

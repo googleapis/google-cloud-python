@@ -36,6 +36,7 @@ ALL_PYTHON: List[str] = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
@@ -43,6 +44,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
+    "pytest-xdist",
 ]
 MOCK_SERVER_ADDITIONAL_DEPENDENCIES = [
     "google-cloud-testutils",
@@ -213,33 +215,21 @@ def install_unittest_dependencies(session, *constraints):
 @nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
-    ["python", "upb", "cpp"],
+    ["python", "upb"],
 )
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
 
-    # TODO(https://github.com/googleapis/synthtool/issues/1976):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if protobuf_implementation == "cpp":
-        session.install("protobuf<4")
-
     # Run py.test against the unit tests.
     args = [
         "py.test",
+        "-n",
+        "auto",
         "-s",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
         "--cov=google",
@@ -330,8 +320,6 @@ def install_systemtest_dependencies(session, *constraints):
         ("python", "POSTGRESQL"),
         ("upb", "GOOGLE_STANDARD_SQL"),
         ("upb", "POSTGRESQL"),
-        ("cpp", "GOOGLE_STANDARD_SQL"),
-        ("cpp", "POSTGRESQL"),
     ],
 )
 def system(session, protobuf_implementation, database_dialect):
@@ -359,14 +347,6 @@ def system(session, protobuf_implementation, database_dialect):
             "Only run system tests on real Spanner with one protobuf implementation to speed up the build"
         )
 
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
-
     # Install pyopenssl for mTLS testing.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
         session.install("pyopenssl")
@@ -378,12 +358,6 @@ def system(session, protobuf_implementation, database_dialect):
         session.skip("System tests were not found")
 
     install_systemtest_dependencies(session, "-c", constraints_path)
-
-    # TODO(https://github.com/googleapis/synthtool/issues/1976):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if protobuf_implementation == "cpp":
-        session.install("protobuf<4")
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -558,20 +532,10 @@ def docfx(session):
         ("python", "POSTGRESQL"),
         ("upb", "GOOGLE_STANDARD_SQL"),
         ("upb", "POSTGRESQL"),
-        ("cpp", "GOOGLE_STANDARD_SQL"),
-        ("cpp", "POSTGRESQL"),
     ],
 )
 def prerelease_deps(session, protobuf_implementation, database_dialect):
     """Run all tests with prerelease versions of dependencies installed."""
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
     session.install("-e", ".[all, tests, tracing]")
@@ -754,7 +718,6 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
 def mypy(session):
     """Run the type checker."""
     session.skip("Mypy is not yet supported")
-
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2579):
     # use the latest version of mypy
     session.install(
@@ -788,14 +751,6 @@ def core_deps_from_source(session, protobuf_implementation):
     # Install dependencies for the unit test environment
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
     session.install(*unit_deps_all)
-
-    # Install dependencies for the system test environment
-    system_deps_all = (
-        SYSTEM_TEST_STANDARD_DEPENDENCIES
-        + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
-        + SYSTEM_TEST_EXTRAS
-    )
-    session.install(*system_deps_all)
 
     # Because we test minimum dependency versions on the minimum Python
     # version, the first version we test with in the unit tests sessions has a
@@ -840,12 +795,15 @@ def core_deps_from_source(session, protobuf_implementation):
     dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
 
     session.install(*dep_paths, "--no-deps", "--ignore-installed")
+    session.install("pytest-xdist")
     print(
         f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
     )
 
     session.run(
         "py.test",
+        "-n",
+        "auto",
         "tests/unit",
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,

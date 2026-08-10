@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -115,6 +116,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -997,7 +1013,14 @@ def test_managed_kafka_connect_client_get_mtls_endpoint_and_cert_source(client_c
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1044,7 +1067,14 @@ def test_managed_kafka_connect_client_get_mtls_endpoint_and_cert_source(client_c
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1380,8 +1410,8 @@ def test_managed_kafka_connect_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_kafka_connect.ListConnectClustersRequest,
-        dict,
+        managed_kafka_connect.ListConnectClustersRequest(),
+        {},
     ],
 )
 def test_list_connect_clusters(request_type, transport: str = "grpc"):
@@ -1392,7 +1422,7 @@ def test_list_connect_clusters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1445,12 +1475,13 @@ def test_list_connect_clusters_non_empty_request_with_auto_populated_field():
         client.list_connect_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_kafka_connect.ListConnectClustersRequest(
+        request_msg = managed_kafka_connect.ListConnectClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_connect_clusters_use_cached_wrapped_rpc():
@@ -1536,9 +1567,15 @@ async def test_list_connect_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_kafka_connect.ListConnectClustersRequest(),
+        {},
+    ],
+)
 async def test_list_connect_clusters_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_kafka_connect.ListConnectClustersRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedKafkaConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1547,7 +1584,7 @@ async def test_list_connect_clusters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1572,11 +1609,6 @@ async def test_list_connect_clusters_async(
     assert isinstance(response, pagers.ListConnectClustersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_connect_clusters_async_from_dict():
-    await test_list_connect_clusters_async(request_type=dict)
 
 
 def test_list_connect_clusters_field_headers():
@@ -1781,6 +1813,9 @@ def test_list_connect_clusters_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.ConnectCluster) for i in results)
@@ -1873,6 +1908,8 @@ async def test_list_connect_clusters_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1931,8 +1968,8 @@ async def test_list_connect_clusters_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_kafka_connect.GetConnectClusterRequest,
-        dict,
+        managed_kafka_connect.GetConnectClusterRequest(),
+        {},
     ],
 )
 def test_get_connect_cluster(request_type, transport: str = "grpc"):
@@ -1943,7 +1980,7 @@ def test_get_connect_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1995,9 +2032,10 @@ def test_get_connect_cluster_non_empty_request_with_auto_populated_field():
         client.get_connect_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_kafka_connect.GetConnectClusterRequest(
+        request_msg = managed_kafka_connect.GetConnectClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_connect_cluster_use_cached_wrapped_rpc():
@@ -2082,10 +2120,14 @@ async def test_get_connect_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_connect_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_kafka_connect.GetConnectClusterRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_kafka_connect.GetConnectClusterRequest(),
+        {},
+    ],
+)
+async def test_get_connect_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedKafkaConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2093,7 +2135,7 @@ async def test_get_connect_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2120,11 +2162,6 @@ async def test_get_connect_cluster_async(
     assert response.name == "name_value"
     assert response.kafka_cluster == "kafka_cluster_value"
     assert response.state == resources.ConnectCluster.State.CREATING
-
-
-@pytest.mark.asyncio
-async def test_get_connect_cluster_async_from_dict():
-    await test_get_connect_cluster_async(request_type=dict)
 
 
 def test_get_connect_cluster_field_headers():
@@ -2281,8 +2318,8 @@ async def test_get_connect_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_kafka_connect.CreateConnectClusterRequest,
-        dict,
+        managed_kafka_connect.CreateConnectClusterRequest(),
+        {},
     ],
 )
 def test_create_connect_cluster(request_type, transport: str = "grpc"):
@@ -2293,7 +2330,7 @@ def test_create_connect_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2339,10 +2376,11 @@ def test_create_connect_cluster_non_empty_request_with_auto_populated_field():
         client.create_connect_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_kafka_connect.CreateConnectClusterRequest(
+        request_msg = managed_kafka_connect.CreateConnectClusterRequest(
             parent="parent_value",
             connect_cluster_id="connect_cluster_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_connect_cluster_use_cached_wrapped_rpc():
@@ -2438,9 +2476,15 @@ async def test_create_connect_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_kafka_connect.CreateConnectClusterRequest(),
+        {},
+    ],
+)
 async def test_create_connect_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_kafka_connect.CreateConnectClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedKafkaConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2449,7 +2493,7 @@ async def test_create_connect_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2469,11 +2513,6 @@ async def test_create_connect_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_connect_cluster_async_from_dict():
-    await test_create_connect_cluster_async(request_type=dict)
 
 
 def test_create_connect_cluster_field_headers():
@@ -2710,8 +2749,8 @@ async def test_create_connect_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_kafka_connect.UpdateConnectClusterRequest,
-        dict,
+        managed_kafka_connect.UpdateConnectClusterRequest(),
+        {},
     ],
 )
 def test_update_connect_cluster(request_type, transport: str = "grpc"):
@@ -2722,7 +2761,7 @@ def test_update_connect_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2765,7 +2804,8 @@ def test_update_connect_cluster_non_empty_request_with_auto_populated_field():
         client.update_connect_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_kafka_connect.UpdateConnectClusterRequest()
+        request_msg = managed_kafka_connect.UpdateConnectClusterRequest()
+        assert args[0] == request_msg
 
 
 def test_update_connect_cluster_use_cached_wrapped_rpc():
@@ -2861,9 +2901,15 @@ async def test_update_connect_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_kafka_connect.UpdateConnectClusterRequest(),
+        {},
+    ],
+)
 async def test_update_connect_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_kafka_connect.UpdateConnectClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedKafkaConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2872,7 +2918,7 @@ async def test_update_connect_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2892,11 +2938,6 @@ async def test_update_connect_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_connect_cluster_async_from_dict():
-    await test_update_connect_cluster_async(request_type=dict)
 
 
 def test_update_connect_cluster_field_headers():
@@ -3123,8 +3164,8 @@ async def test_update_connect_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_kafka_connect.DeleteConnectClusterRequest,
-        dict,
+        managed_kafka_connect.DeleteConnectClusterRequest(),
+        {},
     ],
 )
 def test_delete_connect_cluster(request_type, transport: str = "grpc"):
@@ -3135,7 +3176,7 @@ def test_delete_connect_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3180,9 +3221,10 @@ def test_delete_connect_cluster_non_empty_request_with_auto_populated_field():
         client.delete_connect_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_kafka_connect.DeleteConnectClusterRequest(
+        request_msg = managed_kafka_connect.DeleteConnectClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_connect_cluster_use_cached_wrapped_rpc():
@@ -3278,9 +3320,15 @@ async def test_delete_connect_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_kafka_connect.DeleteConnectClusterRequest(),
+        {},
+    ],
+)
 async def test_delete_connect_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_kafka_connect.DeleteConnectClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedKafkaConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3289,7 +3337,7 @@ async def test_delete_connect_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3309,11 +3357,6 @@ async def test_delete_connect_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_connect_cluster_async_from_dict():
-    await test_delete_connect_cluster_async(request_type=dict)
 
 
 def test_delete_connect_cluster_field_headers():
@@ -3470,8 +3513,8 @@ async def test_delete_connect_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_kafka_connect.ListConnectorsRequest,
-        dict,
+        managed_kafka_connect.ListConnectorsRequest(),
+        {},
     ],
 )
 def test_list_connectors(request_type, transport: str = "grpc"):
@@ -3482,7 +3525,7 @@ def test_list_connectors(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_connectors), "__call__") as call:
@@ -3527,10 +3570,11 @@ def test_list_connectors_non_empty_request_with_auto_populated_field():
         client.list_connectors(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_kafka_connect.ListConnectorsRequest(
+        request_msg = managed_kafka_connect.ListConnectorsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_connectors_use_cached_wrapped_rpc():
@@ -3611,10 +3655,14 @@ async def test_list_connectors_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_connectors_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_kafka_connect.ListConnectorsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_kafka_connect.ListConnectorsRequest(),
+        {},
+    ],
+)
+async def test_list_connectors_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedKafkaConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3622,7 +3670,7 @@ async def test_list_connectors_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_connectors), "__call__") as call:
@@ -3643,11 +3691,6 @@ async def test_list_connectors_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConnectorsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_connectors_async_from_dict():
-    await test_list_connectors_async(request_type=dict)
 
 
 def test_list_connectors_field_headers():
@@ -3842,6 +3885,9 @@ def test_list_connectors_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Connector) for i in results)
@@ -3930,6 +3976,8 @@ async def test_list_connectors_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3986,8 +4034,8 @@ async def test_list_connectors_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_kafka_connect.GetConnectorRequest,
-        dict,
+        managed_kafka_connect.GetConnectorRequest(),
+        {},
     ],
 )
 def test_get_connector(request_type, transport: str = "grpc"):
@@ -3998,7 +4046,7 @@ def test_get_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_connector), "__call__") as call:
@@ -4044,9 +4092,10 @@ def test_get_connector_non_empty_request_with_auto_populated_field():
         client.get_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_kafka_connect.GetConnectorRequest(
+        request_msg = managed_kafka_connect.GetConnectorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_connector_use_cached_wrapped_rpc():
@@ -4127,10 +4176,14 @@ async def test_get_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_kafka_connect.GetConnectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_kafka_connect.GetConnectorRequest(),
+        {},
+    ],
+)
+async def test_get_connector_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedKafkaConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4138,7 +4191,7 @@ async def test_get_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_connector), "__call__") as call:
@@ -4161,11 +4214,6 @@ async def test_get_connector_async(
     assert isinstance(response, resources.Connector)
     assert response.name == "name_value"
     assert response.state == resources.Connector.State.UNASSIGNED
-
-
-@pytest.mark.asyncio
-async def test_get_connector_async_from_dict():
-    await test_get_connector_async(request_type=dict)
 
 
 def test_get_connector_field_headers():
@@ -4310,8 +4358,8 @@ async def test_get_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_kafka_connect.CreateConnectorRequest,
-        dict,
+        managed_kafka_connect.CreateConnectorRequest(),
+        {},
     ],
 )
 def test_create_connector(request_type, transport: str = "grpc"):
@@ -4322,7 +4370,7 @@ def test_create_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_connector), "__call__") as call:
@@ -4369,10 +4417,11 @@ def test_create_connector_non_empty_request_with_auto_populated_field():
         client.create_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_kafka_connect.CreateConnectorRequest(
+        request_msg = managed_kafka_connect.CreateConnectorRequest(
             parent="parent_value",
             connector_id="connector_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_connector_use_cached_wrapped_rpc():
@@ -4455,10 +4504,14 @@ async def test_create_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_kafka_connect.CreateConnectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_kafka_connect.CreateConnectorRequest(),
+        {},
+    ],
+)
+async def test_create_connector_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedKafkaConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4466,7 +4519,7 @@ async def test_create_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_connector), "__call__") as call:
@@ -4489,11 +4542,6 @@ async def test_create_connector_async(
     assert isinstance(response, resources.Connector)
     assert response.name == "name_value"
     assert response.state == resources.Connector.State.UNASSIGNED
-
-
-@pytest.mark.asyncio
-async def test_create_connector_async_from_dict():
-    await test_create_connector_async(request_type=dict)
 
 
 def test_create_connector_field_headers():
@@ -4682,8 +4730,8 @@ async def test_create_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_kafka_connect.UpdateConnectorRequest,
-        dict,
+        managed_kafka_connect.UpdateConnectorRequest(),
+        {},
     ],
 )
 def test_update_connector(request_type, transport: str = "grpc"):
@@ -4694,7 +4742,7 @@ def test_update_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_connector), "__call__") as call:
@@ -4738,7 +4786,8 @@ def test_update_connector_non_empty_request_with_auto_populated_field():
         client.update_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_kafka_connect.UpdateConnectorRequest()
+        request_msg = managed_kafka_connect.UpdateConnectorRequest()
+        assert args[0] == request_msg
 
 
 def test_update_connector_use_cached_wrapped_rpc():
@@ -4821,10 +4870,14 @@ async def test_update_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_kafka_connect.UpdateConnectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_kafka_connect.UpdateConnectorRequest(),
+        {},
+    ],
+)
+async def test_update_connector_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedKafkaConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4832,7 +4885,7 @@ async def test_update_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_connector), "__call__") as call:
@@ -4855,11 +4908,6 @@ async def test_update_connector_async(
     assert isinstance(response, resources.Connector)
     assert response.name == "name_value"
     assert response.state == resources.Connector.State.UNASSIGNED
-
-
-@pytest.mark.asyncio
-async def test_update_connector_async_from_dict():
-    await test_update_connector_async(request_type=dict)
 
 
 def test_update_connector_field_headers():
@@ -5038,8 +5086,8 @@ async def test_update_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_kafka_connect.DeleteConnectorRequest,
-        dict,
+        managed_kafka_connect.DeleteConnectorRequest(),
+        {},
     ],
 )
 def test_delete_connector(request_type, transport: str = "grpc"):
@@ -5050,7 +5098,7 @@ def test_delete_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_connector), "__call__") as call:
@@ -5091,9 +5139,10 @@ def test_delete_connector_non_empty_request_with_auto_populated_field():
         client.delete_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_kafka_connect.DeleteConnectorRequest(
+        request_msg = managed_kafka_connect.DeleteConnectorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_connector_use_cached_wrapped_rpc():
@@ -5176,10 +5225,14 @@ async def test_delete_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_kafka_connect.DeleteConnectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_kafka_connect.DeleteConnectorRequest(),
+        {},
+    ],
+)
+async def test_delete_connector_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedKafkaConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5187,7 +5240,7 @@ async def test_delete_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_connector), "__call__") as call:
@@ -5203,11 +5256,6 @@ async def test_delete_connector_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_connector_async_from_dict():
-    await test_delete_connector_async(request_type=dict)
 
 
 def test_delete_connector_field_headers():
@@ -5352,8 +5400,8 @@ async def test_delete_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_kafka_connect.PauseConnectorRequest,
-        dict,
+        managed_kafka_connect.PauseConnectorRequest(),
+        {},
     ],
 )
 def test_pause_connector(request_type, transport: str = "grpc"):
@@ -5364,7 +5412,7 @@ def test_pause_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_connector), "__call__") as call:
@@ -5405,9 +5453,10 @@ def test_pause_connector_non_empty_request_with_auto_populated_field():
         client.pause_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_kafka_connect.PauseConnectorRequest(
+        request_msg = managed_kafka_connect.PauseConnectorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_pause_connector_use_cached_wrapped_rpc():
@@ -5488,10 +5537,14 @@ async def test_pause_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_pause_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_kafka_connect.PauseConnectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_kafka_connect.PauseConnectorRequest(),
+        {},
+    ],
+)
+async def test_pause_connector_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedKafkaConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5499,7 +5552,7 @@ async def test_pause_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_connector), "__call__") as call:
@@ -5517,11 +5570,6 @@ async def test_pause_connector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, managed_kafka_connect.PauseConnectorResponse)
-
-
-@pytest.mark.asyncio
-async def test_pause_connector_async_from_dict():
-    await test_pause_connector_async(request_type=dict)
 
 
 def test_pause_connector_field_headers():
@@ -5670,8 +5718,8 @@ async def test_pause_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_kafka_connect.ResumeConnectorRequest,
-        dict,
+        managed_kafka_connect.ResumeConnectorRequest(),
+        {},
     ],
 )
 def test_resume_connector(request_type, transport: str = "grpc"):
@@ -5682,7 +5730,7 @@ def test_resume_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_connector), "__call__") as call:
@@ -5723,9 +5771,10 @@ def test_resume_connector_non_empty_request_with_auto_populated_field():
         client.resume_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_kafka_connect.ResumeConnectorRequest(
+        request_msg = managed_kafka_connect.ResumeConnectorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_resume_connector_use_cached_wrapped_rpc():
@@ -5808,10 +5857,14 @@ async def test_resume_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_resume_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_kafka_connect.ResumeConnectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_kafka_connect.ResumeConnectorRequest(),
+        {},
+    ],
+)
+async def test_resume_connector_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedKafkaConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5819,7 +5872,7 @@ async def test_resume_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_connector), "__call__") as call:
@@ -5837,11 +5890,6 @@ async def test_resume_connector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, managed_kafka_connect.ResumeConnectorResponse)
-
-
-@pytest.mark.asyncio
-async def test_resume_connector_async_from_dict():
-    await test_resume_connector_async(request_type=dict)
 
 
 def test_resume_connector_field_headers():
@@ -5990,8 +6038,8 @@ async def test_resume_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_kafka_connect.RestartConnectorRequest,
-        dict,
+        managed_kafka_connect.RestartConnectorRequest(),
+        {},
     ],
 )
 def test_restart_connector(request_type, transport: str = "grpc"):
@@ -6002,7 +6050,7 @@ def test_restart_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6047,9 +6095,10 @@ def test_restart_connector_non_empty_request_with_auto_populated_field():
         client.restart_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_kafka_connect.RestartConnectorRequest(
+        request_msg = managed_kafka_connect.RestartConnectorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_restart_connector_use_cached_wrapped_rpc():
@@ -6132,10 +6181,14 @@ async def test_restart_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_restart_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_kafka_connect.RestartConnectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_kafka_connect.RestartConnectorRequest(),
+        {},
+    ],
+)
+async def test_restart_connector_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedKafkaConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6143,7 +6196,7 @@ async def test_restart_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6163,11 +6216,6 @@ async def test_restart_connector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, managed_kafka_connect.RestartConnectorResponse)
-
-
-@pytest.mark.asyncio
-async def test_restart_connector_async_from_dict():
-    await test_restart_connector_async(request_type=dict)
 
 
 def test_restart_connector_field_headers():
@@ -6324,8 +6372,8 @@ async def test_restart_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_kafka_connect.StopConnectorRequest,
-        dict,
+        managed_kafka_connect.StopConnectorRequest(),
+        {},
     ],
 )
 def test_stop_connector(request_type, transport: str = "grpc"):
@@ -6336,7 +6384,7 @@ def test_stop_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_connector), "__call__") as call:
@@ -6377,9 +6425,10 @@ def test_stop_connector_non_empty_request_with_auto_populated_field():
         client.stop_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_kafka_connect.StopConnectorRequest(
+        request_msg = managed_kafka_connect.StopConnectorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_stop_connector_use_cached_wrapped_rpc():
@@ -6460,10 +6509,14 @@ async def test_stop_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_stop_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_kafka_connect.StopConnectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_kafka_connect.StopConnectorRequest(),
+        {},
+    ],
+)
+async def test_stop_connector_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedKafkaConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6471,7 +6524,7 @@ async def test_stop_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_connector), "__call__") as call:
@@ -6489,11 +6542,6 @@ async def test_stop_connector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, managed_kafka_connect.StopConnectorResponse)
-
-
-@pytest.mark.asyncio
-async def test_stop_connector_async_from_dict():
-    await test_stop_connector_async(request_type=dict)
 
 
 def test_stop_connector_field_headers():
@@ -6899,6 +6947,9 @@ def test_list_connect_clusters_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_connect_clusters(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -7994,6 +8045,9 @@ def test_list_connectors_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_connectors(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -9637,7 +9691,6 @@ def test_list_connect_clusters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.ListConnectClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -9660,7 +9713,6 @@ def test_get_connect_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.GetConnectClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -9683,7 +9735,6 @@ def test_create_connect_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.CreateConnectClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -9706,7 +9757,6 @@ def test_update_connect_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.UpdateConnectClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -9729,7 +9779,6 @@ def test_delete_connect_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.DeleteConnectClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -9750,7 +9799,6 @@ def test_list_connectors_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.ListConnectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9771,7 +9819,6 @@ def test_get_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.GetConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9792,7 +9839,6 @@ def test_create_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.CreateConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9813,7 +9859,6 @@ def test_update_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.UpdateConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9834,7 +9879,6 @@ def test_delete_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.DeleteConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9855,7 +9899,6 @@ def test_pause_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.PauseConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9876,7 +9919,6 @@ def test_resume_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.ResumeConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9899,7 +9941,6 @@ def test_restart_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.RestartConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9920,7 +9961,6 @@ def test_stop_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.StopConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9964,7 +10004,6 @@ async def test_list_connect_clusters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.ListConnectClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -9995,7 +10034,6 @@ async def test_get_connect_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.GetConnectClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10022,7 +10060,6 @@ async def test_create_connect_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.CreateConnectClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10049,7 +10086,6 @@ async def test_update_connect_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.UpdateConnectClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10076,7 +10112,6 @@ async def test_delete_connect_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.DeleteConnectClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10103,7 +10138,6 @@ async def test_list_connectors_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.ListConnectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10131,7 +10165,6 @@ async def test_get_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.GetConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -10159,7 +10192,6 @@ async def test_create_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.CreateConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -10187,7 +10219,6 @@ async def test_update_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.UpdateConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -10210,7 +10241,6 @@ async def test_delete_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.DeleteConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -10235,7 +10265,6 @@ async def test_pause_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.PauseConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -10260,7 +10289,6 @@ async def test_resume_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.ResumeConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -10287,7 +10315,6 @@ async def test_restart_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.RestartConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -10312,7 +10339,6 @@ async def test_stop_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.StopConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -12954,7 +12980,6 @@ def test_list_connect_clusters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.ListConnectClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -12976,7 +13001,6 @@ def test_get_connect_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.GetConnectClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -12998,7 +13022,6 @@ def test_create_connect_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.CreateConnectClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13020,7 +13043,6 @@ def test_update_connect_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.UpdateConnectClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13042,7 +13064,6 @@ def test_delete_connect_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.DeleteConnectClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13062,7 +13083,6 @@ def test_list_connectors_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.ListConnectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13082,7 +13102,6 @@ def test_get_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.GetConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -13102,7 +13121,6 @@ def test_create_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.CreateConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -13122,7 +13140,6 @@ def test_update_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.UpdateConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -13142,7 +13159,6 @@ def test_delete_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.DeleteConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -13162,7 +13178,6 @@ def test_pause_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.PauseConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -13182,7 +13197,6 @@ def test_resume_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.ResumeConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -13204,7 +13218,6 @@ def test_restart_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.RestartConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -13224,7 +13237,6 @@ def test_stop_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_kafka_connect.StopConnectorRequest()
-
         assert args[0] == request_msg
 
 

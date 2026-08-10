@@ -14,7 +14,6 @@
 
 import inspect
 import re
-import sys
 import unittest.mock as mock
 
 import pandas as pd

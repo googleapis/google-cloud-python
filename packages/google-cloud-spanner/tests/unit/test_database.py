@@ -3557,7 +3557,7 @@ class _Client(object):
         self._endpoint_cache = {}
         self.database_admin_api = _make_database_admin_api()
         self.instance_admin_api = _make_instance_api()
-        self._client_info = mock.Mock()
+        self._client_info = gapic_v1.client_info.ClientInfo()
         self._client_options = mock.Mock()
         self._client_options.universe_domain = "googleapis.com"
         self._client_options.api_key = None
@@ -3658,14 +3658,16 @@ class _Database(object):
         self._sessions_manager = mock.Mock()
         # Configure get_session to return sessions from the pool
         self._sessions_manager.get_session = mock.Mock(
-            side_effect=lambda tx_type: self._pool.get()
-            if hasattr(self, "_pool") and self._pool
-            else None
+            side_effect=lambda tx_type: (
+                self._pool.get() if hasattr(self, "_pool") and self._pool else None
+            )
         )
         self._sessions_manager.put_session = mock.Mock(
-            side_effect=lambda session: self._pool.put(session)
-            if hasattr(self, "_pool") and self._pool
-            else None
+            side_effect=lambda session: (
+                self._pool.put(session)
+                if hasattr(self, "_pool") and self._pool
+                else None
+            )
         )
 
     @property

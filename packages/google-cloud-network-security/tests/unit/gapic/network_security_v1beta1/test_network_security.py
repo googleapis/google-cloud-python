@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -134,6 +135,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -993,7 +1009,14 @@ def test_network_security_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1040,7 +1063,14 @@ def test_network_security_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1363,8 +1393,8 @@ def test_network_security_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        authorization_policy.ListAuthorizationPoliciesRequest,
-        dict,
+        authorization_policy.ListAuthorizationPoliciesRequest(),
+        {},
     ],
 )
 def test_list_authorization_policies(request_type, transport: str = "grpc"):
@@ -1375,7 +1405,7 @@ def test_list_authorization_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1424,10 +1454,11 @@ def test_list_authorization_policies_non_empty_request_with_auto_populated_field
         client.list_authorization_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == authorization_policy.ListAuthorizationPoliciesRequest(
+        request_msg = authorization_policy.ListAuthorizationPoliciesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_authorization_policies_use_cached_wrapped_rpc():
@@ -1513,9 +1544,15 @@ async def test_list_authorization_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        authorization_policy.ListAuthorizationPoliciesRequest(),
+        {},
+    ],
+)
 async def test_list_authorization_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=authorization_policy.ListAuthorizationPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1524,7 +1561,7 @@ async def test_list_authorization_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1547,11 +1584,6 @@ async def test_list_authorization_policies_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAuthorizationPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_authorization_policies_async_from_dict():
-    await test_list_authorization_policies_async(request_type=dict)
 
 
 def test_list_authorization_policies_field_headers():
@@ -1758,6 +1790,9 @@ def test_list_authorization_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1852,6 +1887,8 @@ async def test_list_authorization_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1912,8 +1949,8 @@ async def test_list_authorization_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        authorization_policy.GetAuthorizationPolicyRequest,
-        dict,
+        authorization_policy.GetAuthorizationPolicyRequest(),
+        {},
     ],
 )
 def test_get_authorization_policy(request_type, transport: str = "grpc"):
@@ -1924,7 +1961,7 @@ def test_get_authorization_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1976,9 +2013,10 @@ def test_get_authorization_policy_non_empty_request_with_auto_populated_field():
         client.get_authorization_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == authorization_policy.GetAuthorizationPolicyRequest(
+        request_msg = authorization_policy.GetAuthorizationPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_authorization_policy_use_cached_wrapped_rpc():
@@ -2064,9 +2102,15 @@ async def test_get_authorization_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        authorization_policy.GetAuthorizationPolicyRequest(),
+        {},
+    ],
+)
 async def test_get_authorization_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=authorization_policy.GetAuthorizationPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2075,7 +2119,7 @@ async def test_get_authorization_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2102,11 +2146,6 @@ async def test_get_authorization_policy_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.action == authorization_policy.AuthorizationPolicy.Action.ALLOW
-
-
-@pytest.mark.asyncio
-async def test_get_authorization_policy_async_from_dict():
-    await test_get_authorization_policy_async(request_type=dict)
 
 
 def test_get_authorization_policy_field_headers():
@@ -2263,8 +2302,8 @@ async def test_get_authorization_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_authorization_policy.CreateAuthorizationPolicyRequest,
-        dict,
+        gcn_authorization_policy.CreateAuthorizationPolicyRequest(),
+        {},
     ],
 )
 def test_create_authorization_policy(request_type, transport: str = "grpc"):
@@ -2275,7 +2314,7 @@ def test_create_authorization_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2321,10 +2360,11 @@ def test_create_authorization_policy_non_empty_request_with_auto_populated_field
         client.create_authorization_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_authorization_policy.CreateAuthorizationPolicyRequest(
+        request_msg = gcn_authorization_policy.CreateAuthorizationPolicyRequest(
             parent="parent_value",
             authorization_policy_id="authorization_policy_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_authorization_policy_use_cached_wrapped_rpc():
@@ -2420,9 +2460,15 @@ async def test_create_authorization_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_authorization_policy.CreateAuthorizationPolicyRequest(),
+        {},
+    ],
+)
 async def test_create_authorization_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_authorization_policy.CreateAuthorizationPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2431,7 +2477,7 @@ async def test_create_authorization_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2451,11 +2497,6 @@ async def test_create_authorization_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_authorization_policy_async_from_dict():
-    await test_create_authorization_policy_async(request_type=dict)
 
 
 def test_create_authorization_policy_field_headers():
@@ -2640,8 +2681,8 @@ async def test_create_authorization_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_authorization_policy.UpdateAuthorizationPolicyRequest,
-        dict,
+        gcn_authorization_policy.UpdateAuthorizationPolicyRequest(),
+        {},
     ],
 )
 def test_update_authorization_policy(request_type, transport: str = "grpc"):
@@ -2652,7 +2693,7 @@ def test_update_authorization_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2695,7 +2736,8 @@ def test_update_authorization_policy_non_empty_request_with_auto_populated_field
         client.update_authorization_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_authorization_policy.UpdateAuthorizationPolicyRequest()
+        request_msg = gcn_authorization_policy.UpdateAuthorizationPolicyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_authorization_policy_use_cached_wrapped_rpc():
@@ -2791,9 +2833,15 @@ async def test_update_authorization_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_authorization_policy.UpdateAuthorizationPolicyRequest(),
+        {},
+    ],
+)
 async def test_update_authorization_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_authorization_policy.UpdateAuthorizationPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2802,7 +2850,7 @@ async def test_update_authorization_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2822,11 +2870,6 @@ async def test_update_authorization_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_authorization_policy_async_from_dict():
-    await test_update_authorization_policy_async(request_type=dict)
 
 
 def test_update_authorization_policy_field_headers():
@@ -3001,8 +3044,8 @@ async def test_update_authorization_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        authorization_policy.DeleteAuthorizationPolicyRequest,
-        dict,
+        authorization_policy.DeleteAuthorizationPolicyRequest(),
+        {},
     ],
 )
 def test_delete_authorization_policy(request_type, transport: str = "grpc"):
@@ -3013,7 +3056,7 @@ def test_delete_authorization_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3058,9 +3101,10 @@ def test_delete_authorization_policy_non_empty_request_with_auto_populated_field
         client.delete_authorization_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == authorization_policy.DeleteAuthorizationPolicyRequest(
+        request_msg = authorization_policy.DeleteAuthorizationPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_authorization_policy_use_cached_wrapped_rpc():
@@ -3156,9 +3200,15 @@ async def test_delete_authorization_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        authorization_policy.DeleteAuthorizationPolicyRequest(),
+        {},
+    ],
+)
 async def test_delete_authorization_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=authorization_policy.DeleteAuthorizationPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3167,7 +3217,7 @@ async def test_delete_authorization_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3187,11 +3237,6 @@ async def test_delete_authorization_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_authorization_policy_async_from_dict():
-    await test_delete_authorization_policy_async(request_type=dict)
 
 
 def test_delete_authorization_policy_field_headers():
@@ -3348,8 +3393,8 @@ async def test_delete_authorization_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        server_tls_policy.ListServerTlsPoliciesRequest,
-        dict,
+        server_tls_policy.ListServerTlsPoliciesRequest(),
+        {},
     ],
 )
 def test_list_server_tls_policies(request_type, transport: str = "grpc"):
@@ -3360,7 +3405,7 @@ def test_list_server_tls_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3409,10 +3454,11 @@ def test_list_server_tls_policies_non_empty_request_with_auto_populated_field():
         client.list_server_tls_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == server_tls_policy.ListServerTlsPoliciesRequest(
+        request_msg = server_tls_policy.ListServerTlsPoliciesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_server_tls_policies_use_cached_wrapped_rpc():
@@ -3498,9 +3544,15 @@ async def test_list_server_tls_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        server_tls_policy.ListServerTlsPoliciesRequest(),
+        {},
+    ],
+)
 async def test_list_server_tls_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=server_tls_policy.ListServerTlsPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3509,7 +3561,7 @@ async def test_list_server_tls_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3532,11 +3584,6 @@ async def test_list_server_tls_policies_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServerTlsPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_server_tls_policies_async_from_dict():
-    await test_list_server_tls_policies_async(request_type=dict)
 
 
 def test_list_server_tls_policies_field_headers():
@@ -3743,6 +3790,9 @@ def test_list_server_tls_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, server_tls_policy.ServerTlsPolicy) for i in results)
@@ -3835,6 +3885,8 @@ async def test_list_server_tls_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3893,8 +3945,8 @@ async def test_list_server_tls_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        server_tls_policy.GetServerTlsPolicyRequest,
-        dict,
+        server_tls_policy.GetServerTlsPolicyRequest(),
+        {},
     ],
 )
 def test_get_server_tls_policy(request_type, transport: str = "grpc"):
@@ -3905,7 +3957,7 @@ def test_get_server_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3957,9 +4009,10 @@ def test_get_server_tls_policy_non_empty_request_with_auto_populated_field():
         client.get_server_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == server_tls_policy.GetServerTlsPolicyRequest(
+        request_msg = server_tls_policy.GetServerTlsPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_server_tls_policy_use_cached_wrapped_rpc():
@@ -4045,9 +4098,15 @@ async def test_get_server_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        server_tls_policy.GetServerTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_get_server_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=server_tls_policy.GetServerTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4056,7 +4115,7 @@ async def test_get_server_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4083,11 +4142,6 @@ async def test_get_server_tls_policy_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.allow_open is True
-
-
-@pytest.mark.asyncio
-async def test_get_server_tls_policy_async_from_dict():
-    await test_get_server_tls_policy_async(request_type=dict)
 
 
 def test_get_server_tls_policy_field_headers():
@@ -4244,8 +4298,8 @@ async def test_get_server_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_server_tls_policy.CreateServerTlsPolicyRequest,
-        dict,
+        gcn_server_tls_policy.CreateServerTlsPolicyRequest(),
+        {},
     ],
 )
 def test_create_server_tls_policy(request_type, transport: str = "grpc"):
@@ -4256,7 +4310,7 @@ def test_create_server_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4302,10 +4356,11 @@ def test_create_server_tls_policy_non_empty_request_with_auto_populated_field():
         client.create_server_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_server_tls_policy.CreateServerTlsPolicyRequest(
+        request_msg = gcn_server_tls_policy.CreateServerTlsPolicyRequest(
             parent="parent_value",
             server_tls_policy_id="server_tls_policy_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_server_tls_policy_use_cached_wrapped_rpc():
@@ -4401,9 +4456,15 @@ async def test_create_server_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_server_tls_policy.CreateServerTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_create_server_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_server_tls_policy.CreateServerTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4412,7 +4473,7 @@ async def test_create_server_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4432,11 +4493,6 @@ async def test_create_server_tls_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_server_tls_policy_async_from_dict():
-    await test_create_server_tls_policy_async(request_type=dict)
 
 
 def test_create_server_tls_policy_field_headers():
@@ -4613,8 +4669,8 @@ async def test_create_server_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_server_tls_policy.UpdateServerTlsPolicyRequest,
-        dict,
+        gcn_server_tls_policy.UpdateServerTlsPolicyRequest(),
+        {},
     ],
 )
 def test_update_server_tls_policy(request_type, transport: str = "grpc"):
@@ -4625,7 +4681,7 @@ def test_update_server_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4668,7 +4724,8 @@ def test_update_server_tls_policy_non_empty_request_with_auto_populated_field():
         client.update_server_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_server_tls_policy.UpdateServerTlsPolicyRequest()
+        request_msg = gcn_server_tls_policy.UpdateServerTlsPolicyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_server_tls_policy_use_cached_wrapped_rpc():
@@ -4764,9 +4821,15 @@ async def test_update_server_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_server_tls_policy.UpdateServerTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_update_server_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_server_tls_policy.UpdateServerTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4775,7 +4838,7 @@ async def test_update_server_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4795,11 +4858,6 @@ async def test_update_server_tls_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_server_tls_policy_async_from_dict():
-    await test_update_server_tls_policy_async(request_type=dict)
 
 
 def test_update_server_tls_policy_field_headers():
@@ -4966,8 +5024,8 @@ async def test_update_server_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        server_tls_policy.DeleteServerTlsPolicyRequest,
-        dict,
+        server_tls_policy.DeleteServerTlsPolicyRequest(),
+        {},
     ],
 )
 def test_delete_server_tls_policy(request_type, transport: str = "grpc"):
@@ -4978,7 +5036,7 @@ def test_delete_server_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5023,9 +5081,10 @@ def test_delete_server_tls_policy_non_empty_request_with_auto_populated_field():
         client.delete_server_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == server_tls_policy.DeleteServerTlsPolicyRequest(
+        request_msg = server_tls_policy.DeleteServerTlsPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_server_tls_policy_use_cached_wrapped_rpc():
@@ -5121,9 +5180,15 @@ async def test_delete_server_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        server_tls_policy.DeleteServerTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_delete_server_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=server_tls_policy.DeleteServerTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5132,7 +5197,7 @@ async def test_delete_server_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5152,11 +5217,6 @@ async def test_delete_server_tls_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_server_tls_policy_async_from_dict():
-    await test_delete_server_tls_policy_async(request_type=dict)
 
 
 def test_delete_server_tls_policy_field_headers():
@@ -5313,8 +5373,8 @@ async def test_delete_server_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        client_tls_policy.ListClientTlsPoliciesRequest,
-        dict,
+        client_tls_policy.ListClientTlsPoliciesRequest(),
+        {},
     ],
 )
 def test_list_client_tls_policies(request_type, transport: str = "grpc"):
@@ -5325,7 +5385,7 @@ def test_list_client_tls_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5374,10 +5434,11 @@ def test_list_client_tls_policies_non_empty_request_with_auto_populated_field():
         client.list_client_tls_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == client_tls_policy.ListClientTlsPoliciesRequest(
+        request_msg = client_tls_policy.ListClientTlsPoliciesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_client_tls_policies_use_cached_wrapped_rpc():
@@ -5463,9 +5524,15 @@ async def test_list_client_tls_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        client_tls_policy.ListClientTlsPoliciesRequest(),
+        {},
+    ],
+)
 async def test_list_client_tls_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=client_tls_policy.ListClientTlsPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5474,7 +5541,7 @@ async def test_list_client_tls_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5497,11 +5564,6 @@ async def test_list_client_tls_policies_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListClientTlsPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_client_tls_policies_async_from_dict():
-    await test_list_client_tls_policies_async(request_type=dict)
 
 
 def test_list_client_tls_policies_field_headers():
@@ -5708,6 +5770,9 @@ def test_list_client_tls_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, client_tls_policy.ClientTlsPolicy) for i in results)
@@ -5800,6 +5865,8 @@ async def test_list_client_tls_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5858,8 +5925,8 @@ async def test_list_client_tls_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        client_tls_policy.GetClientTlsPolicyRequest,
-        dict,
+        client_tls_policy.GetClientTlsPolicyRequest(),
+        {},
     ],
 )
 def test_get_client_tls_policy(request_type, transport: str = "grpc"):
@@ -5870,7 +5937,7 @@ def test_get_client_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5922,9 +5989,10 @@ def test_get_client_tls_policy_non_empty_request_with_auto_populated_field():
         client.get_client_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == client_tls_policy.GetClientTlsPolicyRequest(
+        request_msg = client_tls_policy.GetClientTlsPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_client_tls_policy_use_cached_wrapped_rpc():
@@ -6010,9 +6078,15 @@ async def test_get_client_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        client_tls_policy.GetClientTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_get_client_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=client_tls_policy.GetClientTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6021,7 +6095,7 @@ async def test_get_client_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6048,11 +6122,6 @@ async def test_get_client_tls_policy_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.sni == "sni_value"
-
-
-@pytest.mark.asyncio
-async def test_get_client_tls_policy_async_from_dict():
-    await test_get_client_tls_policy_async(request_type=dict)
 
 
 def test_get_client_tls_policy_field_headers():
@@ -6209,8 +6278,8 @@ async def test_get_client_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_client_tls_policy.CreateClientTlsPolicyRequest,
-        dict,
+        gcn_client_tls_policy.CreateClientTlsPolicyRequest(),
+        {},
     ],
 )
 def test_create_client_tls_policy(request_type, transport: str = "grpc"):
@@ -6221,7 +6290,7 @@ def test_create_client_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6267,10 +6336,11 @@ def test_create_client_tls_policy_non_empty_request_with_auto_populated_field():
         client.create_client_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_client_tls_policy.CreateClientTlsPolicyRequest(
+        request_msg = gcn_client_tls_policy.CreateClientTlsPolicyRequest(
             parent="parent_value",
             client_tls_policy_id="client_tls_policy_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_client_tls_policy_use_cached_wrapped_rpc():
@@ -6366,9 +6436,15 @@ async def test_create_client_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_client_tls_policy.CreateClientTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_create_client_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_client_tls_policy.CreateClientTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6377,7 +6453,7 @@ async def test_create_client_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6397,11 +6473,6 @@ async def test_create_client_tls_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_client_tls_policy_async_from_dict():
-    await test_create_client_tls_policy_async(request_type=dict)
 
 
 def test_create_client_tls_policy_field_headers():
@@ -6578,8 +6649,8 @@ async def test_create_client_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_client_tls_policy.UpdateClientTlsPolicyRequest,
-        dict,
+        gcn_client_tls_policy.UpdateClientTlsPolicyRequest(),
+        {},
     ],
 )
 def test_update_client_tls_policy(request_type, transport: str = "grpc"):
@@ -6590,7 +6661,7 @@ def test_update_client_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6633,7 +6704,8 @@ def test_update_client_tls_policy_non_empty_request_with_auto_populated_field():
         client.update_client_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_client_tls_policy.UpdateClientTlsPolicyRequest()
+        request_msg = gcn_client_tls_policy.UpdateClientTlsPolicyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_client_tls_policy_use_cached_wrapped_rpc():
@@ -6729,9 +6801,15 @@ async def test_update_client_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_client_tls_policy.UpdateClientTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_update_client_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_client_tls_policy.UpdateClientTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6740,7 +6818,7 @@ async def test_update_client_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6760,11 +6838,6 @@ async def test_update_client_tls_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_client_tls_policy_async_from_dict():
-    await test_update_client_tls_policy_async(request_type=dict)
 
 
 def test_update_client_tls_policy_field_headers():
@@ -6931,8 +7004,8 @@ async def test_update_client_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        client_tls_policy.DeleteClientTlsPolicyRequest,
-        dict,
+        client_tls_policy.DeleteClientTlsPolicyRequest(),
+        {},
     ],
 )
 def test_delete_client_tls_policy(request_type, transport: str = "grpc"):
@@ -6943,7 +7016,7 @@ def test_delete_client_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6988,9 +7061,10 @@ def test_delete_client_tls_policy_non_empty_request_with_auto_populated_field():
         client.delete_client_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == client_tls_policy.DeleteClientTlsPolicyRequest(
+        request_msg = client_tls_policy.DeleteClientTlsPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_client_tls_policy_use_cached_wrapped_rpc():
@@ -7086,9 +7160,15 @@ async def test_delete_client_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        client_tls_policy.DeleteClientTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_delete_client_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=client_tls_policy.DeleteClientTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7097,7 +7177,7 @@ async def test_delete_client_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7117,11 +7197,6 @@ async def test_delete_client_tls_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_client_tls_policy_async_from_dict():
-    await test_delete_client_tls_policy_async(request_type=dict)
 
 
 def test_delete_client_tls_policy_field_headers():
@@ -7531,6 +7606,9 @@ def test_list_authorization_policies_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_authorization_policies(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -8574,6 +8652,9 @@ def test_list_server_tls_policies_rest_pager(transport: str = "rest"):
 
         pager = client.list_server_tls_policies(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, server_tls_policy.ServerTlsPolicy) for i in results)
@@ -9605,6 +9686,9 @@ def test_list_client_tls_policies_rest_pager(transport: str = "rest"):
 
         pager = client.list_client_tls_policies(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, client_tls_policy.ClientTlsPolicy) for i in results)
@@ -10507,7 +10591,6 @@ def test_list_authorization_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.ListAuthorizationPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10530,7 +10613,6 @@ def test_get_authorization_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.GetAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10553,7 +10635,6 @@ def test_create_authorization_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authorization_policy.CreateAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10576,7 +10657,6 @@ def test_update_authorization_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authorization_policy.UpdateAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10599,7 +10679,6 @@ def test_delete_authorization_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.DeleteAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10622,7 +10701,6 @@ def test_list_server_tls_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.ListServerTlsPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10645,7 +10723,6 @@ def test_get_server_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.GetServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10668,7 +10745,6 @@ def test_create_server_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_server_tls_policy.CreateServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10691,7 +10767,6 @@ def test_update_server_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_server_tls_policy.UpdateServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10714,7 +10789,6 @@ def test_delete_server_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.DeleteServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10737,7 +10811,6 @@ def test_list_client_tls_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.ListClientTlsPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10760,7 +10833,6 @@ def test_get_client_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.GetClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10783,7 +10855,6 @@ def test_create_client_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_client_tls_policy.CreateClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10806,7 +10877,6 @@ def test_update_client_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_client_tls_policy.UpdateClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10829,7 +10899,6 @@ def test_delete_client_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.DeleteClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10872,7 +10941,6 @@ async def test_list_authorization_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.ListAuthorizationPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10903,7 +10971,6 @@ async def test_get_authorization_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.GetAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10930,7 +10997,6 @@ async def test_create_authorization_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authorization_policy.CreateAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10957,7 +11023,6 @@ async def test_update_authorization_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authorization_policy.UpdateAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10984,7 +11049,6 @@ async def test_delete_authorization_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.DeleteAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -11013,7 +11077,6 @@ async def test_list_server_tls_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.ListServerTlsPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11044,7 +11107,6 @@ async def test_get_server_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.GetServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -11071,7 +11133,6 @@ async def test_create_server_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_server_tls_policy.CreateServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -11098,7 +11159,6 @@ async def test_update_server_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_server_tls_policy.UpdateServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -11125,7 +11185,6 @@ async def test_delete_server_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.DeleteServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -11154,7 +11213,6 @@ async def test_list_client_tls_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.ListClientTlsPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11185,7 +11243,6 @@ async def test_get_client_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.GetClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -11212,7 +11269,6 @@ async def test_create_client_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_client_tls_policy.CreateClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -11239,7 +11295,6 @@ async def test_update_client_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_client_tls_policy.UpdateClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -11266,7 +11321,6 @@ async def test_delete_client_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.DeleteClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14438,7 +14492,6 @@ def test_list_authorization_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.ListAuthorizationPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14460,7 +14513,6 @@ def test_get_authorization_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.GetAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14482,7 +14534,6 @@ def test_create_authorization_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authorization_policy.CreateAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14504,7 +14555,6 @@ def test_update_authorization_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authorization_policy.UpdateAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14526,7 +14576,6 @@ def test_delete_authorization_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.DeleteAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14548,7 +14597,6 @@ def test_list_server_tls_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.ListServerTlsPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14570,7 +14618,6 @@ def test_get_server_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.GetServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14592,7 +14639,6 @@ def test_create_server_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_server_tls_policy.CreateServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14614,7 +14660,6 @@ def test_update_server_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_server_tls_policy.UpdateServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14636,7 +14681,6 @@ def test_delete_server_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.DeleteServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14658,7 +14702,6 @@ def test_list_client_tls_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.ListClientTlsPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14680,7 +14723,6 @@ def test_get_client_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.GetClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14702,7 +14744,6 @@ def test_create_client_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_client_tls_policy.CreateClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14724,7 +14765,6 @@ def test_update_client_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_client_tls_policy.UpdateClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14746,7 +14786,6 @@ def test_delete_client_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.DeleteClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 

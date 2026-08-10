@@ -20,20 +20,15 @@ import functools
 import logging
 import os
 
-from google.cloud import environment_vars
-
+from google.cloud.datastore import Key, helpers
 from google.cloud.datastore_v1.types import datastore as datastore_pb2
 from google.cloud.datastore_v1.types import entity as entity_pb2
 from google.cloud.datastore_v1.types import query as query_pb2
-from google.cloud.datastore import helpers, Key
 
+from google.cloud import environment_vars
+from google.cloud.ndb import _datastore_api, exceptions, model, tasklets, utils
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import _datastore_api
-from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
-from google.cloud.ndb import model
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import utils
 
 log = logging.getLogger(__name__)
 

@@ -256,7 +256,7 @@ class OutputAudioEncoding(proto.Enum):
             samples (Linear PCM). Audio content returned as
             LINEAR16 also contains a WAV header.
         OUTPUT_AUDIO_ENCODING_MP3 (2):
-            MP3 audio at 32kbps.
+            MP3 audio at 64kbps.
         OUTPUT_AUDIO_ENCODING_MP3_64_KBPS (4):
             MP3 audio at 64kbps.
         OUTPUT_AUDIO_ENCODING_OGG_OPUS (3):
@@ -504,6 +504,10 @@ class InputAudioConfig(proto.Message):
             only for streaming methods. Note: When specified,
             InputAudioConfig.single_utterance takes precedence over
             StreamingDetectIntentRequest.single_utterance.
+        enable_voice_activity_events (bool):
+            Optional. If ``true``, responses with voice activity speech
+            events will be returned as they are detected. Note: This
+            setting is relevant only for streaming methods.
         disable_no_speech_recognized_event (bool):
             Only used in
             [Participants.AnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.AnalyzeContent]
@@ -570,6 +574,10 @@ class InputAudioConfig(proto.Message):
     single_utterance: bool = proto.Field(
         proto.BOOL,
         number=8,
+    )
+    enable_voice_activity_events: bool = proto.Field(
+        proto.BOOL,
+        number=27,
     )
     disable_no_speech_recognized_event: bool = proto.Field(
         proto.BOOL,

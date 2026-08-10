@@ -30,17 +30,14 @@ def spanner_client():
             project=_helpers.EMULATOR_PROJECT,
             credentials=credentials,
         )
-    elif _helpers.USE_EXPERIMENTAL_HOST:
-        from google.auth.credentials import AnonymousCredentials
-
-        credentials = AnonymousCredentials()
+    elif _helpers.USE_SPANNER_OMNI:
         return spanner_v1.AsyncClient(
             use_plain_text=_helpers.USE_PLAIN_TEXT,
             ca_certificate=_helpers.CA_CERTIFICATE,
             client_certificate=_helpers.CLIENT_CERTIFICATE,
             client_key=_helpers.CLIENT_KEY,
-            credentials=credentials,
-            experimental_host=_helpers.EXPERIMENTAL_HOST,
+            client_options={"api_endpoint": _helpers.SPANNER_OMNI},
+            instance_type="omni",
         )
     else:
         client_options = {"api_endpoint": _helpers.API_ENDPOINT}
@@ -75,8 +72,8 @@ def database_operation_timeout():
 def shared_instance_id():
     if _helpers.CREATE_INSTANCE:
         return f"{_helpers.unique_id('g-c-async')}"
-    if _helpers.USE_EXPERIMENTAL_HOST:
-        return _helpers.EXPERIMENTAL_HOST_INSTANCE
+    if _helpers.USE_SPANNER_OMNI:
+        return _helpers.SPANNER_OMNI_INSTANCE
     return _helpers.INSTANCE_ID
 
 
@@ -106,7 +103,7 @@ async def instance_configs(spanner_client):
     async for config in await spanner_client.list_instance_configs():
         configs.append(config)
 
-    if not _helpers.USE_EMULATOR and not _helpers.USE_EXPERIMENTAL_HOST:
+    if not _helpers.USE_EMULATOR and not _helpers.USE_SPANNER_OMNI:
         # Defend against back-end returning configs for regions we aren't
         # actually allowed to use.
         configs = [config for config in configs if "-us-" in config.name]

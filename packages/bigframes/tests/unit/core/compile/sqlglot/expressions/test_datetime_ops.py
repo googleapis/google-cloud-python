@@ -217,7 +217,7 @@ def test_to_datetime(scalar_types_df: bpd.DataFrame, snapshot):
     )
 
     sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
-    snapshot.assert_match(sql, "out.sql")
+    snapshot.assert_match(sql + "\n", "out.sql")
 
 
 def test_to_timestamp(scalar_types_df: bpd.DataFrame, snapshot):

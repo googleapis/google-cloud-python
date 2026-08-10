@@ -1128,3 +1128,72 @@ def test_managed_function_series_apply_args(
 
     # Ignore any dtype difference.
     pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_deferred_unnamed_udf_execution(session, scalars_dfs):
+    import bigframes.functions.udf_def as udf_def
+
+    # Create an unnamed UDF (name=None)
+    @session.udf()
+    def unnamed_multiplier(x: int) -> int:
+        return x * 3
+
+    assert isinstance(unnamed_multiplier.udf_def, udf_def.PythonUdf)
+
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_series = scalars_df["int64_too"]
+    pd_series = scalars_pandas_df["int64_too"]
+
+    bf_result = bf_series.apply(unnamed_multiplier).to_pandas()
+    pd_result = pd_series.apply(lambda x: x * 3)
+
+    pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+    import bigframes.functions._function_session as functions_sessions
+
+    config = unnamed_multiplier.udf_def.to_managed_function_config()
+    expected_routine_name = functions_sessions.get_managed_function_name(
+        config, session.session_id
+    )
+    routine = session.bqclient.get_routine(
+        f"{session._anonymous_dataset.project}.{session._anonymous_dataset.dataset_id}.{expected_routine_name}"
+    )
+    assert routine is not None
+
+
+def test_deferred_udf_with_runtime_requirements(session, scalars_dfs):
+    import bigframes.functions.udf_def as udf_def
+
+    # Create an unnamed UDF with custom options
+    @session.udf(
+        container_cpu=1,
+        container_memory="2Gi",
+        max_batching_rows=25,
+    )
+    def heavy_unnamed_udf(x: int) -> int:
+        return x + 100
+
+    assert isinstance(heavy_unnamed_udf.udf_def, udf_def.PythonUdf)
+
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_series = scalars_df["int64_too"]
+    pd_series = scalars_pandas_df["int64_too"]
+
+    bf_result = bf_series.apply(heavy_unnamed_udf).to_pandas()
+    pd_result = pd_series.apply(lambda x: x + 100)
+
+    pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+    # Verify it was deployed with the correct runtime options
+    import bigframes.functions._function_session as functions_sessions
+
+    config = heavy_unnamed_udf.udf_def.to_managed_function_config()
+    expected_routine_name = functions_sessions.get_managed_function_name(
+        config, session.session_id
+    )
+    routine = session.bqclient.get_routine(
+        f"{session._anonymous_dataset.project}.{session._anonymous_dataset.dataset_id}.{expected_routine_name}"
+    )
+    assert routine._properties["externalRuntimeOptions"]["containerCpu"] == 1
+    assert routine._properties["externalRuntimeOptions"]["containerMemory"] == "2Gi"
+    assert routine._properties["externalRuntimeOptions"]["maxBatchingRows"] == "25"

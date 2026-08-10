@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -363,11 +363,13 @@ class BigtableGrpcTransport(BigtableTransport):
     ) -> Callable[[bigtable.SampleRowKeysRequest], bigtable.SampleRowKeysResponse]:
         r"""Return a callable for the sample row keys method over gRPC.
 
-        Returns a sample of row keys in the table. The
-        returned row keys will delimit contiguous sections of
-        the table of approximately equal size, which can be used
-        to break up the data for distributed tasks like
-        mapreduces.
+        Returns a sample of row keys in the table. The returned row keys
+        will delimit contiguous sections of the table of approximately
+        equal size, which can be used to break up the data for
+        distributed tasks like mapreduces.
+
+        If a ``row_range`` is provided in the request, the returned
+        samples will be restricted to the specified range.
 
         Returns:
             Callable[[~.SampleRowKeysRequest],

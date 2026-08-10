@@ -48,6 +48,13 @@ from google.maps.places_v1.types.review import Review
 from google.maps.places_v1.types.route_modifiers import RouteModifiers
 from google.maps.places_v1.types.routing_preference import RoutingPreference
 from google.maps.places_v1.types.routing_summary import RoutingSummary
+from google.maps.places_v1.types.transit import (
+    TransitAgency,
+    TransitIcon,
+    TransitLine,
+    TransitStation,
+    TransitStop,
+)
 from google.maps.places_v1.types.travel_mode import TravelMode
 
 __all__ = (
@@ -81,5 +88,10 @@ __all__ = (
     "RouteModifiers",
     "RoutingPreference",
     "RoutingSummary",
+    "TransitAgency",
+    "TransitIcon",
+    "TransitLine",
+    "TransitStation",
+    "TransitStop",
     "TravelMode",
 )

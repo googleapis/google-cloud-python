@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -114,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -921,7 +937,14 @@ def test_datastream_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -968,7 +991,14 @@ def test_datastream_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1277,8 +1307,8 @@ def test_datastream_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.ListConnectionProfilesRequest,
-        dict,
+        datastream.ListConnectionProfilesRequest(),
+        {},
     ],
 )
 def test_list_connection_profiles(request_type, transport: str = "grpc"):
@@ -1289,7 +1319,7 @@ def test_list_connection_profiles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1342,12 +1372,13 @@ def test_list_connection_profiles_non_empty_request_with_auto_populated_field():
         client.list_connection_profiles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.ListConnectionProfilesRequest(
+        request_msg = datastream.ListConnectionProfilesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_connection_profiles_use_cached_wrapped_rpc():
@@ -1433,9 +1464,15 @@ async def test_list_connection_profiles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.ListConnectionProfilesRequest(),
+        {},
+    ],
+)
 async def test_list_connection_profiles_async(
-    transport: str = "grpc_asyncio",
-    request_type=datastream.ListConnectionProfilesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1444,7 +1481,7 @@ async def test_list_connection_profiles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1469,11 +1506,6 @@ async def test_list_connection_profiles_async(
     assert isinstance(response, pagers.ListConnectionProfilesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_connection_profiles_async_from_dict():
-    await test_list_connection_profiles_async(request_type=dict)
 
 
 def test_list_connection_profiles_field_headers():
@@ -1680,6 +1712,9 @@ def test_list_connection_profiles_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1774,6 +1809,8 @@ async def test_list_connection_profiles_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1834,8 +1871,8 @@ async def test_list_connection_profiles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.GetConnectionProfileRequest,
-        dict,
+        datastream.GetConnectionProfileRequest(),
+        {},
     ],
 )
 def test_get_connection_profile(request_type, transport: str = "grpc"):
@@ -1846,7 +1883,7 @@ def test_get_connection_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1896,9 +1933,10 @@ def test_get_connection_profile_non_empty_request_with_auto_populated_field():
         client.get_connection_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.GetConnectionProfileRequest(
+        request_msg = datastream.GetConnectionProfileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_connection_profile_use_cached_wrapped_rpc():
@@ -1984,8 +2022,15 @@ async def test_get_connection_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.GetConnectionProfileRequest(),
+        {},
+    ],
+)
 async def test_get_connection_profile_async(
-    transport: str = "grpc_asyncio", request_type=datastream.GetConnectionProfileRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1994,7 +2039,7 @@ async def test_get_connection_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2019,11 +2064,6 @@ async def test_get_connection_profile_async(
     assert isinstance(response, datastream_resources.ConnectionProfile)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_connection_profile_async_from_dict():
-    await test_get_connection_profile_async(request_type=dict)
 
 
 def test_get_connection_profile_field_headers():
@@ -2180,8 +2220,8 @@ async def test_get_connection_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.CreateConnectionProfileRequest,
-        dict,
+        datastream.CreateConnectionProfileRequest(),
+        {},
     ],
 )
 def test_create_connection_profile(request_type, transport: str = "grpc"):
@@ -2192,7 +2232,7 @@ def test_create_connection_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2239,11 +2279,12 @@ def test_create_connection_profile_non_empty_request_with_auto_populated_field()
         client.create_connection_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.CreateConnectionProfileRequest(
+        request_msg = datastream.CreateConnectionProfileRequest(
             parent="parent_value",
             connection_profile_id="connection_profile_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_connection_profile_use_cached_wrapped_rpc():
@@ -2339,9 +2380,15 @@ async def test_create_connection_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.CreateConnectionProfileRequest(),
+        {},
+    ],
+)
 async def test_create_connection_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=datastream.CreateConnectionProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2350,7 +2397,7 @@ async def test_create_connection_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2370,11 +2417,6 @@ async def test_create_connection_profile_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_connection_profile_async_from_dict():
-    await test_create_connection_profile_async(request_type=dict)
 
 
 def test_create_connection_profile_field_headers():
@@ -2559,8 +2601,8 @@ async def test_create_connection_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.UpdateConnectionProfileRequest,
-        dict,
+        datastream.UpdateConnectionProfileRequest(),
+        {},
     ],
 )
 def test_update_connection_profile(request_type, transport: str = "grpc"):
@@ -2571,7 +2613,7 @@ def test_update_connection_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2616,9 +2658,10 @@ def test_update_connection_profile_non_empty_request_with_auto_populated_field()
         client.update_connection_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.UpdateConnectionProfileRequest(
+        request_msg = datastream.UpdateConnectionProfileRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_connection_profile_use_cached_wrapped_rpc():
@@ -2714,9 +2757,15 @@ async def test_update_connection_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.UpdateConnectionProfileRequest(),
+        {},
+    ],
+)
 async def test_update_connection_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=datastream.UpdateConnectionProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2725,7 +2774,7 @@ async def test_update_connection_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2745,11 +2794,6 @@ async def test_update_connection_profile_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_connection_profile_async_from_dict():
-    await test_update_connection_profile_async(request_type=dict)
 
 
 def test_update_connection_profile_field_headers():
@@ -2924,8 +2968,8 @@ async def test_update_connection_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.DeleteConnectionProfileRequest,
-        dict,
+        datastream.DeleteConnectionProfileRequest(),
+        {},
     ],
 )
 def test_delete_connection_profile(request_type, transport: str = "grpc"):
@@ -2936,7 +2980,7 @@ def test_delete_connection_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2982,10 +3026,11 @@ def test_delete_connection_profile_non_empty_request_with_auto_populated_field()
         client.delete_connection_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DeleteConnectionProfileRequest(
+        request_msg = datastream.DeleteConnectionProfileRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_connection_profile_use_cached_wrapped_rpc():
@@ -3081,9 +3126,15 @@ async def test_delete_connection_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.DeleteConnectionProfileRequest(),
+        {},
+    ],
+)
 async def test_delete_connection_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=datastream.DeleteConnectionProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3092,7 +3143,7 @@ async def test_delete_connection_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3112,11 +3163,6 @@ async def test_delete_connection_profile_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_connection_profile_async_from_dict():
-    await test_delete_connection_profile_async(request_type=dict)
 
 
 def test_delete_connection_profile_field_headers():
@@ -3273,8 +3319,8 @@ async def test_delete_connection_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.DiscoverConnectionProfileRequest,
-        dict,
+        datastream.DiscoverConnectionProfileRequest(),
+        {},
     ],
 )
 def test_discover_connection_profile(request_type, transport: str = "grpc"):
@@ -3285,7 +3331,7 @@ def test_discover_connection_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3331,10 +3377,11 @@ def test_discover_connection_profile_non_empty_request_with_auto_populated_field
         client.discover_connection_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DiscoverConnectionProfileRequest(
+        request_msg = datastream.DiscoverConnectionProfileRequest(
             parent="parent_value",
             connection_profile_name="connection_profile_name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_discover_connection_profile_use_cached_wrapped_rpc():
@@ -3420,9 +3467,15 @@ async def test_discover_connection_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.DiscoverConnectionProfileRequest(),
+        {},
+    ],
+)
 async def test_discover_connection_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=datastream.DiscoverConnectionProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3431,7 +3484,7 @@ async def test_discover_connection_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3451,11 +3504,6 @@ async def test_discover_connection_profile_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastream.DiscoverConnectionProfileResponse)
-
-
-@pytest.mark.asyncio
-async def test_discover_connection_profile_async_from_dict():
-    await test_discover_connection_profile_async(request_type=dict)
 
 
 def test_discover_connection_profile_field_headers():
@@ -3526,8 +3574,8 @@ async def test_discover_connection_profile_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.ListStreamsRequest,
-        dict,
+        datastream.ListStreamsRequest(),
+        {},
     ],
 )
 def test_list_streams(request_type, transport: str = "grpc"):
@@ -3538,7 +3586,7 @@ def test_list_streams(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_streams), "__call__") as call:
@@ -3587,12 +3635,13 @@ def test_list_streams_non_empty_request_with_auto_populated_field():
         client.list_streams(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.ListStreamsRequest(
+        request_msg = datastream.ListStreamsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_streams_use_cached_wrapped_rpc():
@@ -3673,9 +3722,14 @@ async def test_list_streams_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_streams_async(
-    transport: str = "grpc_asyncio", request_type=datastream.ListStreamsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.ListStreamsRequest(),
+        {},
+    ],
+)
+async def test_list_streams_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3683,7 +3737,7 @@ async def test_list_streams_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_streams), "__call__") as call:
@@ -3706,11 +3760,6 @@ async def test_list_streams_async(
     assert isinstance(response, pagers.ListStreamsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_streams_async_from_dict():
-    await test_list_streams_async(request_type=dict)
 
 
 def test_list_streams_field_headers():
@@ -3905,6 +3954,9 @@ def test_list_streams_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, datastream_resources.Stream) for i in results)
@@ -3993,6 +4045,8 @@ async def test_list_streams_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4049,8 +4103,8 @@ async def test_list_streams_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.GetStreamRequest,
-        dict,
+        datastream.GetStreamRequest(),
+        {},
     ],
 )
 def test_get_stream(request_type, transport: str = "grpc"):
@@ -4061,7 +4115,7 @@ def test_get_stream(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_stream), "__call__") as call:
@@ -4109,9 +4163,10 @@ def test_get_stream_non_empty_request_with_auto_populated_field():
         client.get_stream(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.GetStreamRequest(
+        request_msg = datastream.GetStreamRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_stream_use_cached_wrapped_rpc():
@@ -4190,9 +4245,14 @@ async def test_get_stream_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_stream_async(
-    transport: str = "grpc_asyncio", request_type=datastream.GetStreamRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.GetStreamRequest(),
+        {},
+    ],
+)
+async def test_get_stream_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4200,7 +4260,7 @@ async def test_get_stream_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_stream), "__call__") as call:
@@ -4225,11 +4285,6 @@ async def test_get_stream_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.state == datastream_resources.Stream.State.CREATED
-
-
-@pytest.mark.asyncio
-async def test_get_stream_async_from_dict():
-    await test_get_stream_async(request_type=dict)
 
 
 def test_get_stream_field_headers():
@@ -4378,8 +4433,8 @@ async def test_get_stream_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.CreateStreamRequest,
-        dict,
+        datastream.CreateStreamRequest(),
+        {},
     ],
 )
 def test_create_stream(request_type, transport: str = "grpc"):
@@ -4390,7 +4445,7 @@ def test_create_stream(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_stream), "__call__") as call:
@@ -4433,11 +4488,12 @@ def test_create_stream_non_empty_request_with_auto_populated_field():
         client.create_stream(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.CreateStreamRequest(
+        request_msg = datastream.CreateStreamRequest(
             parent="parent_value",
             stream_id="stream_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_stream_use_cached_wrapped_rpc():
@@ -4528,9 +4584,14 @@ async def test_create_stream_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_stream_async(
-    transport: str = "grpc_asyncio", request_type=datastream.CreateStreamRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.CreateStreamRequest(),
+        {},
+    ],
+)
+async def test_create_stream_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4538,7 +4599,7 @@ async def test_create_stream_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_stream), "__call__") as call:
@@ -4556,11 +4617,6 @@ async def test_create_stream_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_stream_async_from_dict():
-    await test_create_stream_async(request_type=dict)
 
 
 def test_create_stream_field_headers():
@@ -4729,8 +4785,8 @@ async def test_create_stream_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.UpdateStreamRequest,
-        dict,
+        datastream.UpdateStreamRequest(),
+        {},
     ],
 )
 def test_update_stream(request_type, transport: str = "grpc"):
@@ -4741,7 +4797,7 @@ def test_update_stream(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_stream), "__call__") as call:
@@ -4782,9 +4838,10 @@ def test_update_stream_non_empty_request_with_auto_populated_field():
         client.update_stream(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.UpdateStreamRequest(
+        request_msg = datastream.UpdateStreamRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_stream_use_cached_wrapped_rpc():
@@ -4875,9 +4932,14 @@ async def test_update_stream_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_stream_async(
-    transport: str = "grpc_asyncio", request_type=datastream.UpdateStreamRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.UpdateStreamRequest(),
+        {},
+    ],
+)
+async def test_update_stream_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4885,7 +4947,7 @@ async def test_update_stream_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_stream), "__call__") as call:
@@ -4903,11 +4965,6 @@ async def test_update_stream_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_stream_async_from_dict():
-    await test_update_stream_async(request_type=dict)
 
 
 def test_update_stream_field_headers():
@@ -5066,8 +5123,8 @@ async def test_update_stream_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.DeleteStreamRequest,
-        dict,
+        datastream.DeleteStreamRequest(),
+        {},
     ],
 )
 def test_delete_stream(request_type, transport: str = "grpc"):
@@ -5078,7 +5135,7 @@ def test_delete_stream(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_stream), "__call__") as call:
@@ -5120,10 +5177,11 @@ def test_delete_stream_non_empty_request_with_auto_populated_field():
         client.delete_stream(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DeleteStreamRequest(
+        request_msg = datastream.DeleteStreamRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_stream_use_cached_wrapped_rpc():
@@ -5214,9 +5272,14 @@ async def test_delete_stream_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_stream_async(
-    transport: str = "grpc_asyncio", request_type=datastream.DeleteStreamRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.DeleteStreamRequest(),
+        {},
+    ],
+)
+async def test_delete_stream_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5224,7 +5287,7 @@ async def test_delete_stream_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_stream), "__call__") as call:
@@ -5242,11 +5305,6 @@ async def test_delete_stream_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_stream_async_from_dict():
-    await test_delete_stream_async(request_type=dict)
 
 
 def test_delete_stream_field_headers():
@@ -5395,8 +5453,8 @@ async def test_delete_stream_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.FetchErrorsRequest,
-        dict,
+        datastream.FetchErrorsRequest(),
+        {},
     ],
 )
 def test_fetch_errors(request_type, transport: str = "grpc"):
@@ -5407,7 +5465,7 @@ def test_fetch_errors(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_errors), "__call__") as call:
@@ -5448,9 +5506,10 @@ def test_fetch_errors_non_empty_request_with_auto_populated_field():
         client.fetch_errors(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.FetchErrorsRequest(
+        request_msg = datastream.FetchErrorsRequest(
             stream="stream_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_errors_use_cached_wrapped_rpc():
@@ -5541,9 +5600,14 @@ async def test_fetch_errors_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_fetch_errors_async(
-    transport: str = "grpc_asyncio", request_type=datastream.FetchErrorsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.FetchErrorsRequest(),
+        {},
+    ],
+)
+async def test_fetch_errors_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5551,7 +5615,7 @@ async def test_fetch_errors_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_errors), "__call__") as call:
@@ -5569,11 +5633,6 @@ async def test_fetch_errors_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_fetch_errors_async_from_dict():
-    await test_fetch_errors_async(request_type=dict)
 
 
 def test_fetch_errors_field_headers():
@@ -5640,8 +5699,8 @@ async def test_fetch_errors_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.FetchStaticIpsRequest,
-        dict,
+        datastream.FetchStaticIpsRequest(),
+        {},
     ],
 )
 def test_fetch_static_ips(request_type, transport: str = "grpc"):
@@ -5652,7 +5711,7 @@ def test_fetch_static_ips(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_static_ips), "__call__") as call:
@@ -5699,10 +5758,11 @@ def test_fetch_static_ips_non_empty_request_with_auto_populated_field():
         client.fetch_static_ips(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.FetchStaticIpsRequest(
+        request_msg = datastream.FetchStaticIpsRequest(
             name="name_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_static_ips_use_cached_wrapped_rpc():
@@ -5785,9 +5845,14 @@ async def test_fetch_static_ips_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_fetch_static_ips_async(
-    transport: str = "grpc_asyncio", request_type=datastream.FetchStaticIpsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.FetchStaticIpsRequest(),
+        {},
+    ],
+)
+async def test_fetch_static_ips_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5795,7 +5860,7 @@ async def test_fetch_static_ips_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_static_ips), "__call__") as call:
@@ -5818,11 +5883,6 @@ async def test_fetch_static_ips_async(
     assert isinstance(response, pagers.FetchStaticIpsAsyncPager)
     assert response.static_ips == ["static_ips_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_static_ips_async_from_dict():
-    await test_fetch_static_ips_async(request_type=dict)
 
 
 def test_fetch_static_ips_field_headers():
@@ -6017,6 +6077,9 @@ def test_fetch_static_ips_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, str) for i in results)
@@ -6105,6 +6168,8 @@ async def test_fetch_static_ips_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6161,8 +6226,8 @@ async def test_fetch_static_ips_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.CreatePrivateConnectionRequest,
-        dict,
+        datastream.CreatePrivateConnectionRequest(),
+        {},
     ],
 )
 def test_create_private_connection(request_type, transport: str = "grpc"):
@@ -6173,7 +6238,7 @@ def test_create_private_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6220,11 +6285,12 @@ def test_create_private_connection_non_empty_request_with_auto_populated_field()
         client.create_private_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.CreatePrivateConnectionRequest(
+        request_msg = datastream.CreatePrivateConnectionRequest(
             parent="parent_value",
             private_connection_id="private_connection_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_private_connection_use_cached_wrapped_rpc():
@@ -6320,9 +6386,15 @@ async def test_create_private_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.CreatePrivateConnectionRequest(),
+        {},
+    ],
+)
 async def test_create_private_connection_async(
-    transport: str = "grpc_asyncio",
-    request_type=datastream.CreatePrivateConnectionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6331,7 +6403,7 @@ async def test_create_private_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6351,11 +6423,6 @@ async def test_create_private_connection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_private_connection_async_from_dict():
-    await test_create_private_connection_async(request_type=dict)
 
 
 def test_create_private_connection_field_headers():
@@ -6540,8 +6607,8 @@ async def test_create_private_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.GetPrivateConnectionRequest,
-        dict,
+        datastream.GetPrivateConnectionRequest(),
+        {},
     ],
 )
 def test_get_private_connection(request_type, transport: str = "grpc"):
@@ -6552,7 +6619,7 @@ def test_get_private_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6604,9 +6671,10 @@ def test_get_private_connection_non_empty_request_with_auto_populated_field():
         client.get_private_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.GetPrivateConnectionRequest(
+        request_msg = datastream.GetPrivateConnectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_private_connection_use_cached_wrapped_rpc():
@@ -6692,8 +6760,15 @@ async def test_get_private_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.GetPrivateConnectionRequest(),
+        {},
+    ],
+)
 async def test_get_private_connection_async(
-    transport: str = "grpc_asyncio", request_type=datastream.GetPrivateConnectionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6702,7 +6777,7 @@ async def test_get_private_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6729,11 +6804,6 @@ async def test_get_private_connection_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.state == datastream_resources.PrivateConnection.State.CREATING
-
-
-@pytest.mark.asyncio
-async def test_get_private_connection_async_from_dict():
-    await test_get_private_connection_async(request_type=dict)
 
 
 def test_get_private_connection_field_headers():
@@ -6890,8 +6960,8 @@ async def test_get_private_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.ListPrivateConnectionsRequest,
-        dict,
+        datastream.ListPrivateConnectionsRequest(),
+        {},
     ],
 )
 def test_list_private_connections(request_type, transport: str = "grpc"):
@@ -6902,7 +6972,7 @@ def test_list_private_connections(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6955,12 +7025,13 @@ def test_list_private_connections_non_empty_request_with_auto_populated_field():
         client.list_private_connections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.ListPrivateConnectionsRequest(
+        request_msg = datastream.ListPrivateConnectionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_private_connections_use_cached_wrapped_rpc():
@@ -7046,9 +7117,15 @@ async def test_list_private_connections_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.ListPrivateConnectionsRequest(),
+        {},
+    ],
+)
 async def test_list_private_connections_async(
-    transport: str = "grpc_asyncio",
-    request_type=datastream.ListPrivateConnectionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7057,7 +7134,7 @@ async def test_list_private_connections_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7082,11 +7159,6 @@ async def test_list_private_connections_async(
     assert isinstance(response, pagers.ListPrivateConnectionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_private_connections_async_from_dict():
-    await test_list_private_connections_async(request_type=dict)
 
 
 def test_list_private_connections_field_headers():
@@ -7293,6 +7365,9 @@ def test_list_private_connections_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -7387,6 +7462,8 @@ async def test_list_private_connections_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7447,8 +7524,8 @@ async def test_list_private_connections_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.DeletePrivateConnectionRequest,
-        dict,
+        datastream.DeletePrivateConnectionRequest(),
+        {},
     ],
 )
 def test_delete_private_connection(request_type, transport: str = "grpc"):
@@ -7459,7 +7536,7 @@ def test_delete_private_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7505,10 +7582,11 @@ def test_delete_private_connection_non_empty_request_with_auto_populated_field()
         client.delete_private_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DeletePrivateConnectionRequest(
+        request_msg = datastream.DeletePrivateConnectionRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_private_connection_use_cached_wrapped_rpc():
@@ -7604,9 +7682,15 @@ async def test_delete_private_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.DeletePrivateConnectionRequest(),
+        {},
+    ],
+)
 async def test_delete_private_connection_async(
-    transport: str = "grpc_asyncio",
-    request_type=datastream.DeletePrivateConnectionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7615,7 +7699,7 @@ async def test_delete_private_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7635,11 +7719,6 @@ async def test_delete_private_connection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_private_connection_async_from_dict():
-    await test_delete_private_connection_async(request_type=dict)
 
 
 def test_delete_private_connection_field_headers():
@@ -7796,8 +7875,8 @@ async def test_delete_private_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.CreateRouteRequest,
-        dict,
+        datastream.CreateRouteRequest(),
+        {},
     ],
 )
 def test_create_route(request_type, transport: str = "grpc"):
@@ -7808,7 +7887,7 @@ def test_create_route(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_route), "__call__") as call:
@@ -7851,11 +7930,12 @@ def test_create_route_non_empty_request_with_auto_populated_field():
         client.create_route(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.CreateRouteRequest(
+        request_msg = datastream.CreateRouteRequest(
             parent="parent_value",
             route_id="route_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_route_use_cached_wrapped_rpc():
@@ -7946,9 +8026,14 @@ async def test_create_route_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_route_async(
-    transport: str = "grpc_asyncio", request_type=datastream.CreateRouteRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.CreateRouteRequest(),
+        {},
+    ],
+)
+async def test_create_route_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7956,7 +8041,7 @@ async def test_create_route_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_route), "__call__") as call:
@@ -7974,11 +8059,6 @@ async def test_create_route_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_route_async_from_dict():
-    await test_create_route_async(request_type=dict)
 
 
 def test_create_route_field_headers():
@@ -8147,8 +8227,8 @@ async def test_create_route_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.GetRouteRequest,
-        dict,
+        datastream.GetRouteRequest(),
+        {},
     ],
 )
 def test_get_route(request_type, transport: str = "grpc"):
@@ -8159,7 +8239,7 @@ def test_get_route(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_route), "__call__") as call:
@@ -8209,9 +8289,10 @@ def test_get_route_non_empty_request_with_auto_populated_field():
         client.get_route(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.GetRouteRequest(
+        request_msg = datastream.GetRouteRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_route_use_cached_wrapped_rpc():
@@ -8290,9 +8371,14 @@ async def test_get_route_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_route_async(
-    transport: str = "grpc_asyncio", request_type=datastream.GetRouteRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.GetRouteRequest(),
+        {},
+    ],
+)
+async def test_get_route_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8300,7 +8386,7 @@ async def test_get_route_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_route), "__call__") as call:
@@ -8327,11 +8413,6 @@ async def test_get_route_async(
     assert response.display_name == "display_name_value"
     assert response.destination_address == "destination_address_value"
     assert response.destination_port == 1734
-
-
-@pytest.mark.asyncio
-async def test_get_route_async_from_dict():
-    await test_get_route_async(request_type=dict)
 
 
 def test_get_route_field_headers():
@@ -8480,8 +8561,8 @@ async def test_get_route_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.ListRoutesRequest,
-        dict,
+        datastream.ListRoutesRequest(),
+        {},
     ],
 )
 def test_list_routes(request_type, transport: str = "grpc"):
@@ -8492,7 +8573,7 @@ def test_list_routes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_routes), "__call__") as call:
@@ -8541,12 +8622,13 @@ def test_list_routes_non_empty_request_with_auto_populated_field():
         client.list_routes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.ListRoutesRequest(
+        request_msg = datastream.ListRoutesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_routes_use_cached_wrapped_rpc():
@@ -8627,9 +8709,14 @@ async def test_list_routes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_routes_async(
-    transport: str = "grpc_asyncio", request_type=datastream.ListRoutesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.ListRoutesRequest(),
+        {},
+    ],
+)
+async def test_list_routes_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8637,7 +8724,7 @@ async def test_list_routes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_routes), "__call__") as call:
@@ -8660,11 +8747,6 @@ async def test_list_routes_async(
     assert isinstance(response, pagers.ListRoutesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_routes_async_from_dict():
-    await test_list_routes_async(request_type=dict)
 
 
 def test_list_routes_field_headers():
@@ -8859,6 +8941,9 @@ def test_list_routes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, datastream_resources.Route) for i in results)
@@ -8947,6 +9032,8 @@ async def test_list_routes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9003,8 +9090,8 @@ async def test_list_routes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datastream.DeleteRouteRequest,
-        dict,
+        datastream.DeleteRouteRequest(),
+        {},
     ],
 )
 def test_delete_route(request_type, transport: str = "grpc"):
@@ -9015,7 +9102,7 @@ def test_delete_route(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_route), "__call__") as call:
@@ -9057,10 +9144,11 @@ def test_delete_route_non_empty_request_with_auto_populated_field():
         client.delete_route(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.DeleteRouteRequest(
+        request_msg = datastream.DeleteRouteRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_route_use_cached_wrapped_rpc():
@@ -9151,9 +9239,14 @@ async def test_delete_route_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_route_async(
-    transport: str = "grpc_asyncio", request_type=datastream.DeleteRouteRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.DeleteRouteRequest(),
+        {},
+    ],
+)
+async def test_delete_route_async(request_type, transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9161,7 +9254,7 @@ async def test_delete_route_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_route), "__call__") as call:
@@ -9179,11 +9272,6 @@ async def test_delete_route_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_route_async_from_dict():
-    await test_delete_route_async(request_type=dict)
 
 
 def test_delete_route_field_headers():
@@ -9584,6 +9672,9 @@ def test_list_connection_profiles_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_connection_profiles(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -10771,6 +10862,9 @@ def test_list_streams_rest_pager(transport: str = "rest"):
 
         pager = client.list_streams(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, datastream_resources.Stream) for i in results)
@@ -11838,6 +11932,9 @@ def test_fetch_static_ips_rest_pager(transport: str = "rest"):
 
         pager = client.fetch_static_ips(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, str) for i in results)
@@ -12515,6 +12612,9 @@ def test_list_private_connections_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_private_connections(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -13371,6 +13471,9 @@ def test_list_routes_rest_pager(transport: str = "rest"):
 
         pager = client.list_routes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, datastream_resources.Route) for i in results)
@@ -13684,7 +13787,6 @@ def test_list_connection_profiles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.ListConnectionProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13707,7 +13809,6 @@ def test_get_connection_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.GetConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -13730,7 +13831,6 @@ def test_create_connection_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.CreateConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -13753,7 +13853,6 @@ def test_update_connection_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.UpdateConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -13776,7 +13875,6 @@ def test_delete_connection_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DeleteConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -13799,7 +13897,6 @@ def test_discover_connection_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DiscoverConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -13820,7 +13917,6 @@ def test_list_streams_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.ListStreamsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13841,7 +13937,6 @@ def test_get_stream_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.GetStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -13862,7 +13957,6 @@ def test_create_stream_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.CreateStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -13883,7 +13977,6 @@ def test_update_stream_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.UpdateStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -13904,7 +13997,6 @@ def test_delete_stream_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DeleteStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -13925,7 +14017,6 @@ def test_fetch_errors_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.FetchErrorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13946,7 +14037,6 @@ def test_fetch_static_ips_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.FetchStaticIpsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13969,7 +14059,6 @@ def test_create_private_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.CreatePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13992,7 +14081,6 @@ def test_get_private_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.GetPrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14015,7 +14103,6 @@ def test_list_private_connections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.ListPrivateConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14038,7 +14125,6 @@ def test_delete_private_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DeletePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14059,7 +14145,6 @@ def test_create_route_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.CreateRouteRequest()
-
         assert args[0] == request_msg
 
 
@@ -14080,7 +14165,6 @@ def test_get_route_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.GetRouteRequest()
-
         assert args[0] == request_msg
 
 
@@ -14101,7 +14185,6 @@ def test_list_routes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.ListRoutesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14122,7 +14205,6 @@ def test_delete_route_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DeleteRouteRequest()
-
         assert args[0] == request_msg
 
 
@@ -14166,7 +14248,6 @@ async def test_list_connection_profiles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.ListConnectionProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14196,7 +14277,6 @@ async def test_get_connection_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.GetConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -14223,7 +14303,6 @@ async def test_create_connection_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.CreateConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -14250,7 +14329,6 @@ async def test_update_connection_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.UpdateConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -14277,7 +14355,6 @@ async def test_delete_connection_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DeleteConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -14304,7 +14381,6 @@ async def test_discover_connection_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DiscoverConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -14332,7 +14408,6 @@ async def test_list_streams_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.ListStreamsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14361,7 +14436,6 @@ async def test_get_stream_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.GetStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -14386,7 +14460,6 @@ async def test_create_stream_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.CreateStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -14411,7 +14484,6 @@ async def test_update_stream_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.UpdateStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -14436,7 +14508,6 @@ async def test_delete_stream_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DeleteStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -14461,7 +14532,6 @@ async def test_fetch_errors_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.FetchErrorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14489,7 +14559,6 @@ async def test_fetch_static_ips_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.FetchStaticIpsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14516,7 +14585,6 @@ async def test_create_private_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.CreatePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14547,7 +14615,6 @@ async def test_get_private_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.GetPrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14577,7 +14644,6 @@ async def test_list_private_connections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.ListPrivateConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14604,7 +14670,6 @@ async def test_delete_private_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DeletePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14629,7 +14694,6 @@ async def test_create_route_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.CreateRouteRequest()
-
         assert args[0] == request_msg
 
 
@@ -14659,7 +14723,6 @@ async def test_get_route_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.GetRouteRequest()
-
         assert args[0] == request_msg
 
 
@@ -14687,7 +14750,6 @@ async def test_list_routes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.ListRoutesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14712,7 +14774,6 @@ async def test_delete_route_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DeleteRouteRequest()
-
         assert args[0] == request_msg
 
 
@@ -18188,7 +18249,6 @@ def test_list_connection_profiles_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.ListConnectionProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -18210,7 +18270,6 @@ def test_get_connection_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.GetConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -18232,7 +18291,6 @@ def test_create_connection_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.CreateConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -18254,7 +18312,6 @@ def test_update_connection_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.UpdateConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -18276,7 +18333,6 @@ def test_delete_connection_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DeleteConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -18298,7 +18354,6 @@ def test_discover_connection_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DiscoverConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -18318,7 +18373,6 @@ def test_list_streams_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.ListStreamsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18338,7 +18392,6 @@ def test_get_stream_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.GetStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -18358,7 +18411,6 @@ def test_create_stream_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.CreateStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -18378,7 +18430,6 @@ def test_update_stream_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.UpdateStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -18398,7 +18449,6 @@ def test_delete_stream_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DeleteStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -18418,7 +18468,6 @@ def test_fetch_errors_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.FetchErrorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18438,7 +18487,6 @@ def test_fetch_static_ips_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.FetchStaticIpsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18460,7 +18508,6 @@ def test_create_private_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.CreatePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18482,7 +18529,6 @@ def test_get_private_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.GetPrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18504,7 +18550,6 @@ def test_list_private_connections_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.ListPrivateConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18526,7 +18571,6 @@ def test_delete_private_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DeletePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18546,7 +18590,6 @@ def test_create_route_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.CreateRouteRequest()
-
         assert args[0] == request_msg
 
 
@@ -18566,7 +18609,6 @@ def test_get_route_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.GetRouteRequest()
-
         assert args[0] == request_msg
 
 
@@ -18586,7 +18628,6 @@ def test_list_routes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.ListRoutesRequest()
-
         assert args[0] == request_msg
 
 
@@ -18606,7 +18647,6 @@ def test_delete_route_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DeleteRouteRequest()
-
         assert args[0] == request_msg
 
 

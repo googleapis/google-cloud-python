@@ -4,7 +4,9 @@
 {%- set auto_populated_field_sample_value = "explicit value for autopopulate-able field" -%}
 {% with method_name = method.client_method_name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.client_method_name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}
 @pytest.mark.parametrize("request_type", [
-  {{ method.input.ident }}({
+{% if auto_populated_fields %}
+  # Pure protobuf messages (non-proto-plus) require keyword arguments.
+  {{ method.input.ident }}(**{
     {% for auto_populated_field in auto_populated_fields %}
     "{{ auto_populated_field }}": "{{ auto_populated_field_sample_value }}",
     {% endfor %}
@@ -14,6 +16,10 @@
     "{{ auto_populated_field }}": "{{ auto_populated_field_sample_value }}",
     {% endfor %}
   },
+{% else %}
+  {{ method.input.ident }}(),
+  {},
+{% endif %}
 ])
 def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     client = {{ service.client_name }}(
@@ -260,7 +266,9 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  {{ method.input.ident }}({
+{% if auto_populated_fields %}
+  # Pure protobuf messages (non-proto-plus) require keyword arguments.
+  {{ method.input.ident }}(**{
     {%- for auto_populated_field in auto_populated_fields %}
     "{{ auto_populated_field }}": "{{ auto_populated_field_sample_value }}",
     {%- endfor %}
@@ -270,6 +278,10 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
     "{{ auto_populated_field }}": "{{ auto_populated_field_sample_value }}",
     {%- endfor %}
   },
+{% else %}
+  {{ method.input.ident }}(),
+  {},
+{% endif %}
 ])
 async def test_{{ method_name }}_async(request_type, transport: str = 'grpc_asyncio'):
     client = {{ service.async_client_name }}(
@@ -734,6 +746,9 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         {% if method.paged_result_field.type.ident|string == 'struct_pb2.ListValue' %}
@@ -890,6 +905,8 @@ async def test_{{ method_name }}_async_pager():
         )
         async_pager = await client.{{ method_name }}(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -1084,7 +1101,12 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._Base{{ method.name }},
+        "_Base{{ method.name }}__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1100,12 +1122,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param}}", {% endfor %}))
+    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param | camel_case}}", {% endfor %}))
     {% endif %}
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     {% for req_field in method.input.required_fields if req_field.is_primitive %}
@@ -1221,13 +1241,6 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     {% endwith %}
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_{{ method_name }}_rest_unset_required_fields():
-    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.{{ method.transport_safe_name|snake_case }}._get_unset_required_fields({})
-    assert set(unset_fields) == (set(({% for param in method.query_params|sort %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{ param.name|camel_case }}", {% endfor %})))
 
     {% endif %}{# required_fields #}
 
@@ -1412,6 +1425,9 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
 
 
         pager = client.{{ method_name }}(request=sample_request)
+
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
 
         {% if method.paged_result_field.map %}
         assert isinstance(pager.get('a'), {{ method.paged_result_field.type.fields.get('value').ident }})
@@ -2194,10 +2210,6 @@ def test_initialize_client_w_{{transport_name}}():
 {% endif %}{# not method.client_streaming #}
 {% endfor %}{# method in service.methods.values() #}
 {% endmacro %}{# empty_call_test #}
-
-{% macro get_uuid4_re() -%}
-{{ uuid4_re }}
-{%- endmacro %}{# uuid_re #}
 
 {% macro routing_parameter_test(service, api, transport, is_async) %}
 {% for method in service.methods.values() %}{# method #}

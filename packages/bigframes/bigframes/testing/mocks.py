@@ -148,6 +148,7 @@ def create_bigquery_session(
     clients_provider = mock.create_autospec(bigframes.session.clients.ClientsProvider)
     type(clients_provider).bqclient = mock.PropertyMock(return_value=bqclient)
     clients_provider._credentials = credentials
+    clients_provider.project = anonymous_dataset.project
 
     bqoptions = bigframes.BigQueryOptions(
         credentials=credentials,

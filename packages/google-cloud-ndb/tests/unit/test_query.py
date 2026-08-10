@@ -13,21 +13,21 @@
 # limitations under the License.
 
 import pickle
-
 from unittest import mock
 
 import pytest
-
 from google.cloud.datastore import entity as datastore_entity
 from google.cloud.datastore import helpers
 
-from google.cloud.ndb import _datastore_api
-from google.cloud.ndb import _datastore_query
-from google.cloud.ndb import exceptions
+from google.cloud.ndb import (
+    _datastore_api,
+    _datastore_query,
+    exceptions,
+    model,
+    tasklets,
+)
 from google.cloud.ndb import key as key_module
-from google.cloud.ndb import model
 from google.cloud.ndb import query as query_module
-from google.cloud.ndb import tasklets
 
 from . import utils
 

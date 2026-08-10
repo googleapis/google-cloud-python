@@ -308,12 +308,16 @@ class TestAsyncMultiRangeDownloader:
         assert not mrd.is_stream_open
 
     @mock.patch("google.cloud.storage.asyncio._utils.google_crc32c")
-    def test_init_raises_if_crc32c_c_extension_is_missing(self, mock_google_crc32c):
+    @pytest.mark.asyncio
+    async def test_download_ranges_raises_if_crc32c_c_extension_is_missing(
+        self, mock_google_crc32c
+    ):
         mock_google_crc32c.implementation = "python"
         mock_client = mock.MagicMock()
+        mrd = AsyncMultiRangeDownloader(mock_client, "bucket", "object")
 
         with pytest.raises(exceptions.FailedPrecondition) as exc_info:
-            AsyncMultiRangeDownloader(mock_client, "bucket", "object")
+            await mrd.download_ranges([(0, 10, BytesIO())])
 
         assert "The google-crc32c package is not installed with C support" in str(
             exc_info.value
@@ -579,3 +583,127 @@ class TestAsyncMultiRangeDownloader:
 
         # Assert
         mock_logger.info.assert_any_call("Resuming download (attempt 2) for 1 ranges.")
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_open_populates_checksum_properties(
+        self, mock_cls_async_read_object_stream
+    ):
+        # Arrange
+        mock_client = mock.MagicMock()
+        mock_client.grpc_client = mock.AsyncMock()
+        mock_stream = mock_cls_async_read_object_stream.return_value
+        mock_stream.open = AsyncMock()
+        mock_stream.generation_number = 123
+        mock_stream.persisted_size = 100
+        mock_stream.read_handle = b"h"
+        mock_stream.is_finalized = True
+        mock_stream.full_obj_server_crc32c = 999
+
+        mrd = AsyncMultiRangeDownloader(mock_client, "bucket", "object")
+        assert mrd.is_finalized is False
+        assert mrd.full_obj_server_crc32c is None
+
+        # Act
+        await mrd.open()
+
+        # Assert
+        assert mrd.is_finalized is True
+        assert mrd.full_obj_server_crc32c == 999
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._ReadResumptionStrategy"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._BidiStreamRetryManager"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_configures_full_object_read_state(
+        self,
+        mock_cls_async_read_object_stream,
+        mock_retry_manager_cls,
+        mock_strategy_cls,
+    ):
+        # Arrange
+        mock_client = mock.MagicMock()
+        mock_client.grpc_client = mock.AsyncMock()
+        mock_stream = mock_cls_async_read_object_stream.return_value
+        mock_stream.open = AsyncMock()
+        mock_stream.persisted_size = 100
+        mock_stream.is_finalized = True
+        mock_stream.full_obj_server_crc32c = 999
+
+        mrd = await AsyncMultiRangeDownloader.create_mrd(mock_client, "b", "o")
+
+        mock_retry_manager = mock_retry_manager_cls.return_value
+        mock_retry_manager.execute = AsyncMock()
+
+        # Act
+        # Implicit full read (0, 0) and explicit full read (0, persisted_size=100)
+        ranges = [(0, 0, BytesIO()), (0, 100, BytesIO()), (10, 20, BytesIO())]
+        await mrd.download_ranges(ranges, enable_checksum=True)
+
+        # Assert
+        mock_retry_manager.execute.assert_called_once()
+        initial_state = mock_retry_manager.execute.call_args[0][0]
+
+        download_states = initial_state["download_states"]
+        assert len(download_states) == 3
+
+        states_list = list(download_states.values())
+        # First state: (0, 0) -> is_full_object_read is True
+        assert states_list[0].is_full_object_read is True
+        assert states_list[0].rolling_checksum is not None
+
+        # Second state: (0, 100) -> is_full_object_read is True
+        assert states_list[1].is_full_object_read is True
+        assert states_list[1].rolling_checksum is not None
+
+        # Third state: (10, 20) -> is_full_object_read is False
+        assert states_list[2].is_full_object_read is False
+        assert states_list[2].rolling_checksum is None
+
+        # State values for enable_checksum and crc32c
+        assert initial_state["enable_checksum"] is True
+        assert initial_state["full_obj_server_crc32c"] == 999
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._ReadResumptionStrategy"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._BidiStreamRetryManager"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_closes_on_datacorruption(
+        self,
+        mock_cls_async_read_object_stream,
+        mock_retry_manager_cls,
+        mock_strategy_cls,
+    ):
+        # Arrange
+        mock_client = mock.MagicMock()
+        mock_client.grpc_client = mock.AsyncMock()
+        mock_stream = mock_cls_async_read_object_stream.return_value
+        mock_stream.open = AsyncMock()
+
+        mrd = await AsyncMultiRangeDownloader.create_mrd(mock_client, "b", "o")
+        mrd.close = AsyncMock()
+
+        mock_retry_manager = mock_retry_manager_cls.return_value
+        mock_retry_manager.execute = AsyncMock(
+            side_effect=DataCorruption(None, "corrupted")
+        )
+
+        # Act & Assert
+        with pytest.raises(DataCorruption):
+            await mrd.download_ranges([(0, 0, BytesIO())])
+
+        mrd.close.assert_called_once()

@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-shopping-merchant-products/#history
 
+## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v1.7.0...google-shopping-merchant-products-v1.8.0) (2026-07-16)
+
+
+### Features
+
+* update googleapis and regenerate ([#17725](https://github.com/googleapis/google-cloud-python/issues/17725)) ([35e16da](https://github.com/googleapis/google-cloud-python/commit/35e16daf25480d66e9fc3443fe485ae2b0241ae3))
+
+## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v1.6.0...google-shopping-merchant-products-v1.7.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-shopping packages (#17072) ([2904f059a0eb610180ccd7f3d169c130a1696333](https://github.com/googleapis/google-cloud-python/commit/2904f059a0eb610180ccd7f3d169c130a1696333))
+
 ## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v1.5.0...google-shopping-merchant-products-v1.6.0) (2026-05-06)
 
 ## [1.5.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v1.4.0...google-shopping-merchant-products-v1.5.0) (2026-03-26)

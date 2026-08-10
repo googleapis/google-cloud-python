@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -927,7 +943,14 @@ def test_region_network_policies_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -974,7 +997,14 @@ def test_region_network_policies_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -2336,6 +2366,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.aggregated_list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         assert isinstance(pager.get("a"), compute.NetworkPoliciesScopedList)
         assert pager.get("h") is None
@@ -4085,6 +4118,9 @@ def test_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1", "region": "sample2"}
 
         pager = client.list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -8745,7 +8781,6 @@ def test_add_association_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddAssociationRegionNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8767,7 +8802,6 @@ def test_add_traffic_classification_rule_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddTrafficClassificationRuleRegionNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8787,7 +8821,6 @@ def test_aggregated_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AggregatedListRegionNetworkPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8807,7 +8840,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteRegionNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8827,7 +8859,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetRegionNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8847,7 +8878,6 @@ def test_get_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetAssociationRegionNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8869,7 +8899,6 @@ def test_get_traffic_classification_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetTrafficClassificationRuleRegionNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8889,7 +8918,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertRegionNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8909,7 +8937,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListRegionNetworkPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8929,7 +8956,6 @@ def test_patch_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchRegionNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8951,7 +8977,6 @@ def test_patch_traffic_classification_rule_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchTrafficClassificationRuleRegionNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8973,7 +8998,6 @@ def test_remove_association_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RemoveAssociationRegionNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8997,7 +9021,6 @@ def test_remove_traffic_classification_rule_unary_empty_call_rest():
         request_msg = (
             compute.RemoveTrafficClassificationRuleRegionNetworkPolicyRequest()
         )
-
         assert args[0] == request_msg
 
 

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -108,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -924,7 +940,14 @@ def test_chunk_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -971,7 +994,14 @@ def test_chunk_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1290,8 +1320,8 @@ def test_chunk_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        chunk_service.GetChunkRequest,
-        dict,
+        chunk_service.GetChunkRequest(),
+        {},
     ],
 )
 def test_get_chunk(request_type, transport: str = "grpc"):
@@ -1302,7 +1332,7 @@ def test_get_chunk(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_chunk), "__call__") as call:
@@ -1352,9 +1382,10 @@ def test_get_chunk_non_empty_request_with_auto_populated_field():
         client.get_chunk(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == chunk_service.GetChunkRequest(
+        request_msg = chunk_service.GetChunkRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_chunk_use_cached_wrapped_rpc():
@@ -1433,9 +1464,14 @@ async def test_get_chunk_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_chunk_async(
-    transport: str = "grpc_asyncio", request_type=chunk_service.GetChunkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        chunk_service.GetChunkRequest(),
+        {},
+    ],
+)
+async def test_get_chunk_async(request_type, transport: str = "grpc_asyncio"):
     client = ChunkServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1443,7 +1479,7 @@ async def test_get_chunk_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_chunk), "__call__") as call:
@@ -1470,11 +1506,6 @@ async def test_get_chunk_async(
     assert response.id == "id_value"
     assert response.content == "content_value"
     assert math.isclose(response.relevance_score, 0.1584, rel_tol=1e-6)
-
-
-@pytest.mark.asyncio
-async def test_get_chunk_async_from_dict():
-    await test_get_chunk_async(request_type=dict)
 
 
 def test_get_chunk_field_headers():
@@ -1619,8 +1650,8 @@ async def test_get_chunk_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        chunk_service.ListChunksRequest,
-        dict,
+        chunk_service.ListChunksRequest(),
+        {},
     ],
 )
 def test_list_chunks(request_type, transport: str = "grpc"):
@@ -1631,7 +1662,7 @@ def test_list_chunks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_chunks), "__call__") as call:
@@ -1676,10 +1707,11 @@ def test_list_chunks_non_empty_request_with_auto_populated_field():
         client.list_chunks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == chunk_service.ListChunksRequest(
+        request_msg = chunk_service.ListChunksRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_chunks_use_cached_wrapped_rpc():
@@ -1760,9 +1792,14 @@ async def test_list_chunks_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_chunks_async(
-    transport: str = "grpc_asyncio", request_type=chunk_service.ListChunksRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        chunk_service.ListChunksRequest(),
+        {},
+    ],
+)
+async def test_list_chunks_async(request_type, transport: str = "grpc_asyncio"):
     client = ChunkServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1770,7 +1807,7 @@ async def test_list_chunks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_chunks), "__call__") as call:
@@ -1791,11 +1828,6 @@ async def test_list_chunks_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChunksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_chunks_async_from_dict():
-    await test_list_chunks_async(request_type=dict)
 
 
 def test_list_chunks_field_headers():
@@ -1990,6 +2022,9 @@ def test_list_chunks_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, chunk.Chunk) for i in results)
@@ -2078,6 +2113,8 @@ async def test_list_chunks_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2556,6 +2593,9 @@ def test_list_chunks_rest_pager(transport: str = "rest"):
 
         pager = client.list_chunks(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, chunk.Chunk) for i in results)
@@ -2688,7 +2728,6 @@ def test_get_chunk_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = chunk_service.GetChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -2709,7 +2748,6 @@ def test_list_chunks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = chunk_service.ListChunksRequest()
-
         assert args[0] == request_msg
 
 
@@ -2753,7 +2791,6 @@ async def test_get_chunk_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = chunk_service.GetChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -2780,7 +2817,6 @@ async def test_list_chunks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = chunk_service.ListChunksRequest()
-
         assert args[0] == request_msg
 
 
@@ -3288,7 +3324,6 @@ def test_get_chunk_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = chunk_service.GetChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -3308,7 +3343,6 @@ def test_list_chunks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = chunk_service.ListChunksRequest()
-
         assert args[0] == request_msg
 
 

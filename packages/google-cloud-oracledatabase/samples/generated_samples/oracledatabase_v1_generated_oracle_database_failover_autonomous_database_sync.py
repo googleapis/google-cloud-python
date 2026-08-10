@@ -41,7 +41,6 @@ def sample_failover_autonomous_database():
     # Initialize request argument(s)
     request = oracledatabase_v1.FailoverAutonomousDatabaseRequest(
         name="name_value",
-        peer_autonomous_database="peer_autonomous_database_value",
     )
 
     # Make the request

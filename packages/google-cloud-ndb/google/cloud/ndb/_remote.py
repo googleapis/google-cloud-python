@@ -16,8 +16,9 @@
 
 # In its own module to avoid circular import between _datastore_api and
 # tasklets modules.
-import grpc
 import time
+
+import grpc
 
 from google.cloud.ndb import exceptions
 

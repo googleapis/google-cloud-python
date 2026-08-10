@@ -24,12 +24,15 @@ credentials file google.oauth2.service_account
 
 from google.auth import _credentials_async as credentials_async
 from google.auth import _helpers
+from google.auth import _regional_access_boundary_utils
 from google.oauth2 import _client_async
 from google.oauth2 import service_account
 
 
 class Credentials(
-    service_account.Credentials, credentials_async.Scoped, credentials_async.Credentials
+    service_account.Credentials,
+    credentials_async.Scoped,
+    credentials_async.CredentialsWithRegionalAccessBoundary,
 ):
     """Service account credentials
 
@@ -66,6 +69,14 @@ class Credentials(
         credentials = credentials.with_quota_project('myproject-123')
     """
 
+    def __setstate__(self, state):
+        """Restores the credential state and ensures the async refresh manager is attached."""
+        super().__setstate__(state)
+
+        self._rab_manager.refresh_manager = (
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+        )
+
     @_helpers.copy_docstring(credentials_async.Credentials)
     async def refresh(self, request):
         assertion = self._make_authorization_grant_assertion()
@@ -74,13 +85,6 @@ class Credentials(
         )
         self.token = access_token
         self.expiry = expiry
-
-    @_helpers.copy_docstring(credentials_async.Credentials)
-    async def before_request(self, request, method, url, headers):
-        # Explicit override to bypass synchronous CredentialsWithRegionalAccessBoundary.
-        await credentials_async.Credentials.before_request(
-            self, request, method, url, headers
-        )
 
 
 class IDTokenCredentials(
@@ -137,11 +141,3 @@ class IDTokenCredentials(
         )
         self.token = access_token
         self.expiry = expiry
-
-    @_helpers.copy_docstring(credentials_async.Credentials)
-    async def before_request(self, request, method, url, headers):
-        # Explicit override to bypass synchronous CredentialsWithRegionalAccessBoundary
-        # and disable Regional Access Boundary refresh for async credentials.
-        await credentials_async.Credentials.before_request(
-            self, request, method, url, headers
-        )

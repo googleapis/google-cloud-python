@@ -62,6 +62,9 @@ class WidgetTool(proto.Message):
             Optional. The mapping that defines how data
             from a source tool is mapped to the widget's
             input parameters.
+        text_response_config (google.cloud.ces_v1beta.types.WidgetTool.TextResponseConfig):
+            Optional. Configuration for always-included
+            text responses.
     """
 
     class WidgetType(proto.Enum):
@@ -110,6 +113,59 @@ class WidgetTool(proto.Message):
         APPOINTMENT_DETAILS = 10
         APPOINTMENT_SCHEDULER = 11
         CONTACT_FORM = 12
+
+    class TextResponseConfig(proto.Message):
+        r"""Configuration for the text response returned with the widget.
+
+        Attributes:
+            type_ (google.cloud.ces_v1beta.types.WidgetTool.TextResponseConfig.Type):
+                Optional. The strategy for providing the text
+                response.
+            static_text (str):
+                Optional. The static text response to return
+                when type is STATIC.
+            text_response_instruction (str):
+                Optional. Instruction for the LLM on how to generate the
+                text response. Used as the description for the text response
+                parameter if type is LLM_GENERATED.
+        """
+
+        class Type(proto.Enum):
+            r"""Defines how the text response is produced.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    Unspecified type.
+                NONE (1):
+                    The LLM dynamically decides whether to
+                    generate a text response alongside the widget
+                    based on the conversation context.
+                LLM_GENERATED (2):
+                    The LLM is explicitly required to generate a
+                    text response.
+                STATIC (3):
+                    A pre-defined static text response is always
+                    used.
+            """
+
+            TYPE_UNSPECIFIED = 0
+            NONE = 1
+            LLM_GENERATED = 2
+            STATIC = 3
+
+        type_: "WidgetTool.TextResponseConfig.Type" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="WidgetTool.TextResponseConfig.Type",
+        )
+        static_text: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        text_response_instruction: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
     class DataMapping(proto.Message):
         r"""Configuration for mapping data from a source tool to the
@@ -204,6 +260,11 @@ class WidgetTool(proto.Message):
         proto.MESSAGE,
         number=6,
         message=DataMapping,
+    )
+    text_response_config: TextResponseConfig = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=TextResponseConfig,
     )
 
 

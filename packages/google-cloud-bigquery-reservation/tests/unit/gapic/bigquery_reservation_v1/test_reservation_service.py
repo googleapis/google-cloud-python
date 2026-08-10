@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -114,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -986,7 +1002,14 @@ def test_reservation_service_client_get_mtls_endpoint_and_cert_source(client_cla
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1033,7 +1056,14 @@ def test_reservation_service_client_get_mtls_endpoint_and_cert_source(client_cla
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1364,8 +1394,8 @@ def test_reservation_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcbr_reservation.CreateReservationRequest,
-        dict,
+        gcbr_reservation.CreateReservationRequest(),
+        {},
     ],
 )
 def test_create_reservation(request_type, transport: str = "grpc"):
@@ -1376,7 +1406,7 @@ def test_create_reservation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1449,10 +1479,11 @@ def test_create_reservation_non_empty_request_with_auto_populated_field():
         client.create_reservation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcbr_reservation.CreateReservationRequest(
+        request_msg = gcbr_reservation.CreateReservationRequest(
             parent="parent_value",
             reservation_id="reservation_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_reservation_use_cached_wrapped_rpc():
@@ -1537,10 +1568,14 @@ async def test_create_reservation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_reservation_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcbr_reservation.CreateReservationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcbr_reservation.CreateReservationRequest(),
+        {},
+    ],
+)
+async def test_create_reservation_async(request_type, transport: str = "grpc_asyncio"):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1548,7 +1583,7 @@ async def test_create_reservation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1595,11 +1630,6 @@ async def test_create_reservation_async(
         response.scaling_mode == gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
     )
     assert response.reservation_group == "reservation_group_value"
-
-
-@pytest.mark.asyncio
-async def test_create_reservation_async_from_dict():
-    await test_create_reservation_async(request_type=dict)
 
 
 def test_create_reservation_field_headers():
@@ -1776,8 +1806,8 @@ async def test_create_reservation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.ListReservationsRequest,
-        dict,
+        reservation.ListReservationsRequest(),
+        {},
     ],
 )
 def test_list_reservations(request_type, transport: str = "grpc"):
@@ -1788,7 +1818,7 @@ def test_list_reservations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1837,10 +1867,11 @@ def test_list_reservations_non_empty_request_with_auto_populated_field():
         client.list_reservations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.ListReservationsRequest(
+        request_msg = reservation.ListReservationsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_reservations_use_cached_wrapped_rpc():
@@ -1923,9 +1954,14 @@ async def test_list_reservations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_reservations_async(
-    transport: str = "grpc_asyncio", request_type=reservation.ListReservationsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.ListReservationsRequest(),
+        {},
+    ],
+)
+async def test_list_reservations_async(request_type, transport: str = "grpc_asyncio"):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1933,7 +1969,7 @@ async def test_list_reservations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1956,11 +1992,6 @@ async def test_list_reservations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReservationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_reservations_async_from_dict():
-    await test_list_reservations_async(request_type=dict)
 
 
 def test_list_reservations_field_headers():
@@ -2165,6 +2196,9 @@ def test_list_reservations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, reservation.Reservation) for i in results)
@@ -2257,6 +2291,8 @@ async def test_list_reservations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2315,8 +2351,8 @@ async def test_list_reservations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.GetReservationRequest,
-        dict,
+        reservation.GetReservationRequest(),
+        {},
     ],
 )
 def test_get_reservation(request_type, transport: str = "grpc"):
@@ -2327,7 +2363,7 @@ def test_get_reservation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_reservation), "__call__") as call:
@@ -2393,9 +2429,10 @@ def test_get_reservation_non_empty_request_with_auto_populated_field():
         client.get_reservation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.GetReservationRequest(
+        request_msg = reservation.GetReservationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_reservation_use_cached_wrapped_rpc():
@@ -2476,9 +2513,14 @@ async def test_get_reservation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_reservation_async(
-    transport: str = "grpc_asyncio", request_type=reservation.GetReservationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.GetReservationRequest(),
+        {},
+    ],
+)
+async def test_get_reservation_async(request_type, transport: str = "grpc_asyncio"):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2486,7 +2528,7 @@ async def test_get_reservation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_reservation), "__call__") as call:
@@ -2529,11 +2571,6 @@ async def test_get_reservation_async(
     assert response.max_slots == 986
     assert response.scaling_mode == reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
     assert response.reservation_group == "reservation_group_value"
-
-
-@pytest.mark.asyncio
-async def test_get_reservation_async_from_dict():
-    await test_get_reservation_async(request_type=dict)
 
 
 def test_get_reservation_field_headers():
@@ -2682,8 +2719,8 @@ async def test_get_reservation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.DeleteReservationRequest,
-        dict,
+        reservation.DeleteReservationRequest(),
+        {},
     ],
 )
 def test_delete_reservation(request_type, transport: str = "grpc"):
@@ -2694,7 +2731,7 @@ def test_delete_reservation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2739,9 +2776,10 @@ def test_delete_reservation_non_empty_request_with_auto_populated_field():
         client.delete_reservation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.DeleteReservationRequest(
+        request_msg = reservation.DeleteReservationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_reservation_use_cached_wrapped_rpc():
@@ -2826,9 +2864,14 @@ async def test_delete_reservation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_reservation_async(
-    transport: str = "grpc_asyncio", request_type=reservation.DeleteReservationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.DeleteReservationRequest(),
+        {},
+    ],
+)
+async def test_delete_reservation_async(request_type, transport: str = "grpc_asyncio"):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2836,7 +2879,7 @@ async def test_delete_reservation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2854,11 +2897,6 @@ async def test_delete_reservation_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_reservation_async_from_dict():
-    await test_delete_reservation_async(request_type=dict)
 
 
 def test_delete_reservation_field_headers():
@@ -3011,8 +3049,8 @@ async def test_delete_reservation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcbr_reservation.UpdateReservationRequest,
-        dict,
+        gcbr_reservation.UpdateReservationRequest(),
+        {},
     ],
 )
 def test_update_reservation(request_type, transport: str = "grpc"):
@@ -3023,7 +3061,7 @@ def test_update_reservation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3093,7 +3131,8 @@ def test_update_reservation_non_empty_request_with_auto_populated_field():
         client.update_reservation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcbr_reservation.UpdateReservationRequest()
+        request_msg = gcbr_reservation.UpdateReservationRequest()
+        assert args[0] == request_msg
 
 
 def test_update_reservation_use_cached_wrapped_rpc():
@@ -3178,10 +3217,14 @@ async def test_update_reservation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_reservation_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcbr_reservation.UpdateReservationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcbr_reservation.UpdateReservationRequest(),
+        {},
+    ],
+)
+async def test_update_reservation_async(request_type, transport: str = "grpc_asyncio"):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3189,7 +3232,7 @@ async def test_update_reservation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3236,11 +3279,6 @@ async def test_update_reservation_async(
         response.scaling_mode == gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
     )
     assert response.reservation_group == "reservation_group_value"
-
-
-@pytest.mark.asyncio
-async def test_update_reservation_async_from_dict():
-    await test_update_reservation_async(request_type=dict)
 
 
 def test_update_reservation_field_headers():
@@ -3407,8 +3445,8 @@ async def test_update_reservation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.FailoverReservationRequest,
-        dict,
+        reservation.FailoverReservationRequest(),
+        {},
     ],
 )
 def test_failover_reservation(request_type, transport: str = "grpc"):
@@ -3419,7 +3457,7 @@ def test_failover_reservation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3489,9 +3527,10 @@ def test_failover_reservation_non_empty_request_with_auto_populated_field():
         client.failover_reservation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.FailoverReservationRequest(
+        request_msg = reservation.FailoverReservationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_failover_reservation_use_cached_wrapped_rpc():
@@ -3576,8 +3615,15 @@ async def test_failover_reservation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.FailoverReservationRequest(),
+        {},
+    ],
+)
 async def test_failover_reservation_async(
-    transport: str = "grpc_asyncio", request_type=reservation.FailoverReservationRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3586,7 +3632,7 @@ async def test_failover_reservation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3631,11 +3677,6 @@ async def test_failover_reservation_async(
     assert response.max_slots == 986
     assert response.scaling_mode == reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
     assert response.reservation_group == "reservation_group_value"
-
-
-@pytest.mark.asyncio
-async def test_failover_reservation_async_from_dict():
-    await test_failover_reservation_async(request_type=dict)
 
 
 def test_failover_reservation_field_headers():
@@ -3706,8 +3747,8 @@ async def test_failover_reservation_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.CreateCapacityCommitmentRequest,
-        dict,
+        reservation.CreateCapacityCommitmentRequest(),
+        {},
     ],
 )
 def test_create_capacity_commitment(request_type, transport: str = "grpc"):
@@ -3718,7 +3759,7 @@ def test_create_capacity_commitment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3781,10 +3822,11 @@ def test_create_capacity_commitment_non_empty_request_with_auto_populated_field(
         client.create_capacity_commitment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.CreateCapacityCommitmentRequest(
+        request_msg = reservation.CreateCapacityCommitmentRequest(
             parent="parent_value",
             capacity_commitment_id="capacity_commitment_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_capacity_commitment_use_cached_wrapped_rpc():
@@ -3870,9 +3912,15 @@ async def test_create_capacity_commitment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.CreateCapacityCommitmentRequest(),
+        {},
+    ],
+)
 async def test_create_capacity_commitment_async(
-    transport: str = "grpc_asyncio",
-    request_type=reservation.CreateCapacityCommitmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3881,7 +3929,7 @@ async def test_create_capacity_commitment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3918,11 +3966,6 @@ async def test_create_capacity_commitment_async(
     assert response.multi_region_auxiliary is True
     assert response.edition == reservation.Edition.STANDARD
     assert response.is_flat_rate is True
-
-
-@pytest.mark.asyncio
-async def test_create_capacity_commitment_async_from_dict():
-    await test_create_capacity_commitment_async(request_type=dict)
 
 
 def test_create_capacity_commitment_field_headers():
@@ -4089,8 +4132,8 @@ async def test_create_capacity_commitment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.ListCapacityCommitmentsRequest,
-        dict,
+        reservation.ListCapacityCommitmentsRequest(),
+        {},
     ],
 )
 def test_list_capacity_commitments(request_type, transport: str = "grpc"):
@@ -4101,7 +4144,7 @@ def test_list_capacity_commitments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4150,10 +4193,11 @@ def test_list_capacity_commitments_non_empty_request_with_auto_populated_field()
         client.list_capacity_commitments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.ListCapacityCommitmentsRequest(
+        request_msg = reservation.ListCapacityCommitmentsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_capacity_commitments_use_cached_wrapped_rpc():
@@ -4239,9 +4283,15 @@ async def test_list_capacity_commitments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.ListCapacityCommitmentsRequest(),
+        {},
+    ],
+)
 async def test_list_capacity_commitments_async(
-    transport: str = "grpc_asyncio",
-    request_type=reservation.ListCapacityCommitmentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4250,7 +4300,7 @@ async def test_list_capacity_commitments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4273,11 +4323,6 @@ async def test_list_capacity_commitments_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCapacityCommitmentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_capacity_commitments_async_from_dict():
-    await test_list_capacity_commitments_async(request_type=dict)
 
 
 def test_list_capacity_commitments_field_headers():
@@ -4484,6 +4529,9 @@ def test_list_capacity_commitments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, reservation.CapacityCommitment) for i in results)
@@ -4576,6 +4624,8 @@ async def test_list_capacity_commitments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4634,8 +4684,8 @@ async def test_list_capacity_commitments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.GetCapacityCommitmentRequest,
-        dict,
+        reservation.GetCapacityCommitmentRequest(),
+        {},
     ],
 )
 def test_get_capacity_commitment(request_type, transport: str = "grpc"):
@@ -4646,7 +4696,7 @@ def test_get_capacity_commitment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4708,9 +4758,10 @@ def test_get_capacity_commitment_non_empty_request_with_auto_populated_field():
         client.get_capacity_commitment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.GetCapacityCommitmentRequest(
+        request_msg = reservation.GetCapacityCommitmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_capacity_commitment_use_cached_wrapped_rpc():
@@ -4796,9 +4847,15 @@ async def test_get_capacity_commitment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.GetCapacityCommitmentRequest(),
+        {},
+    ],
+)
 async def test_get_capacity_commitment_async(
-    transport: str = "grpc_asyncio",
-    request_type=reservation.GetCapacityCommitmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4807,7 +4864,7 @@ async def test_get_capacity_commitment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4844,11 +4901,6 @@ async def test_get_capacity_commitment_async(
     assert response.multi_region_auxiliary is True
     assert response.edition == reservation.Edition.STANDARD
     assert response.is_flat_rate is True
-
-
-@pytest.mark.asyncio
-async def test_get_capacity_commitment_async_from_dict():
-    await test_get_capacity_commitment_async(request_type=dict)
 
 
 def test_get_capacity_commitment_field_headers():
@@ -5005,8 +5057,8 @@ async def test_get_capacity_commitment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.DeleteCapacityCommitmentRequest,
-        dict,
+        reservation.DeleteCapacityCommitmentRequest(),
+        {},
     ],
 )
 def test_delete_capacity_commitment(request_type, transport: str = "grpc"):
@@ -5017,7 +5069,7 @@ def test_delete_capacity_commitment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5062,9 +5114,10 @@ def test_delete_capacity_commitment_non_empty_request_with_auto_populated_field(
         client.delete_capacity_commitment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.DeleteCapacityCommitmentRequest(
+        request_msg = reservation.DeleteCapacityCommitmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_capacity_commitment_use_cached_wrapped_rpc():
@@ -5150,9 +5203,15 @@ async def test_delete_capacity_commitment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.DeleteCapacityCommitmentRequest(),
+        {},
+    ],
+)
 async def test_delete_capacity_commitment_async(
-    transport: str = "grpc_asyncio",
-    request_type=reservation.DeleteCapacityCommitmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5161,7 +5220,7 @@ async def test_delete_capacity_commitment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5179,11 +5238,6 @@ async def test_delete_capacity_commitment_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_capacity_commitment_async_from_dict():
-    await test_delete_capacity_commitment_async(request_type=dict)
 
 
 def test_delete_capacity_commitment_field_headers():
@@ -5336,8 +5390,8 @@ async def test_delete_capacity_commitment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.UpdateCapacityCommitmentRequest,
-        dict,
+        reservation.UpdateCapacityCommitmentRequest(),
+        {},
     ],
 )
 def test_update_capacity_commitment(request_type, transport: str = "grpc"):
@@ -5348,7 +5402,7 @@ def test_update_capacity_commitment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5408,7 +5462,8 @@ def test_update_capacity_commitment_non_empty_request_with_auto_populated_field(
         client.update_capacity_commitment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.UpdateCapacityCommitmentRequest()
+        request_msg = reservation.UpdateCapacityCommitmentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_capacity_commitment_use_cached_wrapped_rpc():
@@ -5494,9 +5549,15 @@ async def test_update_capacity_commitment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.UpdateCapacityCommitmentRequest(),
+        {},
+    ],
+)
 async def test_update_capacity_commitment_async(
-    transport: str = "grpc_asyncio",
-    request_type=reservation.UpdateCapacityCommitmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5505,7 +5566,7 @@ async def test_update_capacity_commitment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5542,11 +5603,6 @@ async def test_update_capacity_commitment_async(
     assert response.multi_region_auxiliary is True
     assert response.edition == reservation.Edition.STANDARD
     assert response.is_flat_rate is True
-
-
-@pytest.mark.asyncio
-async def test_update_capacity_commitment_async_from_dict():
-    await test_update_capacity_commitment_async(request_type=dict)
 
 
 def test_update_capacity_commitment_field_headers():
@@ -5713,8 +5769,8 @@ async def test_update_capacity_commitment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.SplitCapacityCommitmentRequest,
-        dict,
+        reservation.SplitCapacityCommitmentRequest(),
+        {},
     ],
 )
 def test_split_capacity_commitment(request_type, transport: str = "grpc"):
@@ -5725,7 +5781,7 @@ def test_split_capacity_commitment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5770,9 +5826,10 @@ def test_split_capacity_commitment_non_empty_request_with_auto_populated_field()
         client.split_capacity_commitment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.SplitCapacityCommitmentRequest(
+        request_msg = reservation.SplitCapacityCommitmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_split_capacity_commitment_use_cached_wrapped_rpc():
@@ -5858,9 +5915,15 @@ async def test_split_capacity_commitment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.SplitCapacityCommitmentRequest(),
+        {},
+    ],
+)
 async def test_split_capacity_commitment_async(
-    transport: str = "grpc_asyncio",
-    request_type=reservation.SplitCapacityCommitmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5869,7 +5932,7 @@ async def test_split_capacity_commitment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5889,11 +5952,6 @@ async def test_split_capacity_commitment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.SplitCapacityCommitmentResponse)
-
-
-@pytest.mark.asyncio
-async def test_split_capacity_commitment_async_from_dict():
-    await test_split_capacity_commitment_async(request_type=dict)
 
 
 def test_split_capacity_commitment_field_headers():
@@ -6060,8 +6118,8 @@ async def test_split_capacity_commitment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.MergeCapacityCommitmentsRequest,
-        dict,
+        reservation.MergeCapacityCommitmentsRequest(),
+        {},
     ],
 )
 def test_merge_capacity_commitments(request_type, transport: str = "grpc"):
@@ -6072,7 +6130,7 @@ def test_merge_capacity_commitments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6135,10 +6193,11 @@ def test_merge_capacity_commitments_non_empty_request_with_auto_populated_field(
         client.merge_capacity_commitments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.MergeCapacityCommitmentsRequest(
+        request_msg = reservation.MergeCapacityCommitmentsRequest(
             parent="parent_value",
             capacity_commitment_id="capacity_commitment_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_merge_capacity_commitments_use_cached_wrapped_rpc():
@@ -6224,9 +6283,15 @@ async def test_merge_capacity_commitments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.MergeCapacityCommitmentsRequest(),
+        {},
+    ],
+)
 async def test_merge_capacity_commitments_async(
-    transport: str = "grpc_asyncio",
-    request_type=reservation.MergeCapacityCommitmentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6235,7 +6300,7 @@ async def test_merge_capacity_commitments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6272,11 +6337,6 @@ async def test_merge_capacity_commitments_async(
     assert response.multi_region_auxiliary is True
     assert response.edition == reservation.Edition.STANDARD
     assert response.is_flat_rate is True
-
-
-@pytest.mark.asyncio
-async def test_merge_capacity_commitments_async_from_dict():
-    await test_merge_capacity_commitments_async(request_type=dict)
 
 
 def test_merge_capacity_commitments_field_headers():
@@ -6443,8 +6503,8 @@ async def test_merge_capacity_commitments_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.CreateAssignmentRequest,
-        dict,
+        reservation.CreateAssignmentRequest(),
+        {},
     ],
 )
 def test_create_assignment(request_type, transport: str = "grpc"):
@@ -6455,7 +6515,7 @@ def test_create_assignment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6514,10 +6574,11 @@ def test_create_assignment_non_empty_request_with_auto_populated_field():
         client.create_assignment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.CreateAssignmentRequest(
+        request_msg = reservation.CreateAssignmentRequest(
             parent="parent_value",
             assignment_id="assignment_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_assignment_use_cached_wrapped_rpc():
@@ -6600,9 +6661,14 @@ async def test_create_assignment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_assignment_async(
-    transport: str = "grpc_asyncio", request_type=reservation.CreateAssignmentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.CreateAssignmentRequest(),
+        {},
+    ],
+)
+async def test_create_assignment_async(request_type, transport: str = "grpc_asyncio"):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6610,7 +6676,7 @@ async def test_create_assignment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6643,11 +6709,6 @@ async def test_create_assignment_async(
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
     assert response.principal == "principal_value"
-
-
-@pytest.mark.asyncio
-async def test_create_assignment_async_from_dict():
-    await test_create_assignment_async(request_type=dict)
 
 
 def test_create_assignment_field_headers():
@@ -6814,8 +6875,8 @@ async def test_create_assignment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.ListAssignmentsRequest,
-        dict,
+        reservation.ListAssignmentsRequest(),
+        {},
     ],
 )
 def test_list_assignments(request_type, transport: str = "grpc"):
@@ -6826,7 +6887,7 @@ def test_list_assignments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assignments), "__call__") as call:
@@ -6871,10 +6932,11 @@ def test_list_assignments_non_empty_request_with_auto_populated_field():
         client.list_assignments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.ListAssignmentsRequest(
+        request_msg = reservation.ListAssignmentsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_assignments_use_cached_wrapped_rpc():
@@ -6957,9 +7019,14 @@ async def test_list_assignments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_assignments_async(
-    transport: str = "grpc_asyncio", request_type=reservation.ListAssignmentsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.ListAssignmentsRequest(),
+        {},
+    ],
+)
+async def test_list_assignments_async(request_type, transport: str = "grpc_asyncio"):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6967,7 +7034,7 @@ async def test_list_assignments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assignments), "__call__") as call:
@@ -6988,11 +7055,6 @@ async def test_list_assignments_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssignmentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_assignments_async_from_dict():
-    await test_list_assignments_async(request_type=dict)
 
 
 def test_list_assignments_field_headers():
@@ -7187,6 +7249,9 @@ def test_list_assignments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, reservation.Assignment) for i in results)
@@ -7275,6 +7340,8 @@ async def test_list_assignments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7331,8 +7398,8 @@ async def test_list_assignments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.DeleteAssignmentRequest,
-        dict,
+        reservation.DeleteAssignmentRequest(),
+        {},
     ],
 )
 def test_delete_assignment(request_type, transport: str = "grpc"):
@@ -7343,7 +7410,7 @@ def test_delete_assignment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7388,9 +7455,10 @@ def test_delete_assignment_non_empty_request_with_auto_populated_field():
         client.delete_assignment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.DeleteAssignmentRequest(
+        request_msg = reservation.DeleteAssignmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_assignment_use_cached_wrapped_rpc():
@@ -7473,9 +7541,14 @@ async def test_delete_assignment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_assignment_async(
-    transport: str = "grpc_asyncio", request_type=reservation.DeleteAssignmentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.DeleteAssignmentRequest(),
+        {},
+    ],
+)
+async def test_delete_assignment_async(request_type, transport: str = "grpc_asyncio"):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7483,7 +7556,7 @@ async def test_delete_assignment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7501,11 +7574,6 @@ async def test_delete_assignment_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_assignment_async_from_dict():
-    await test_delete_assignment_async(request_type=dict)
 
 
 def test_delete_assignment_field_headers():
@@ -7658,8 +7726,8 @@ async def test_delete_assignment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.SearchAssignmentsRequest,
-        dict,
+        reservation.SearchAssignmentsRequest(),
+        {},
     ],
 )
 def test_search_assignments(request_type, transport: str = "grpc"):
@@ -7670,7 +7738,7 @@ def test_search_assignments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7720,11 +7788,12 @@ def test_search_assignments_non_empty_request_with_auto_populated_field():
         client.search_assignments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.SearchAssignmentsRequest(
+        request_msg = reservation.SearchAssignmentsRequest(
             parent="parent_value",
             query="query_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_assignments_use_cached_wrapped_rpc():
@@ -7809,9 +7878,14 @@ async def test_search_assignments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_assignments_async(
-    transport: str = "grpc_asyncio", request_type=reservation.SearchAssignmentsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.SearchAssignmentsRequest(),
+        {},
+    ],
+)
+async def test_search_assignments_async(request_type, transport: str = "grpc_asyncio"):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7819,7 +7893,7 @@ async def test_search_assignments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7842,11 +7916,6 @@ async def test_search_assignments_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAssignmentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_assignments_async_from_dict():
-    await test_search_assignments_async(request_type=dict)
 
 
 def test_search_assignments_field_headers():
@@ -8061,6 +8130,9 @@ def test_search_assignments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, reservation.Assignment) for i in results)
@@ -8153,6 +8225,8 @@ async def test_search_assignments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8211,8 +8285,8 @@ async def test_search_assignments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.SearchAllAssignmentsRequest,
-        dict,
+        reservation.SearchAllAssignmentsRequest(),
+        {},
     ],
 )
 def test_search_all_assignments(request_type, transport: str = "grpc"):
@@ -8223,7 +8297,7 @@ def test_search_all_assignments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8273,11 +8347,12 @@ def test_search_all_assignments_non_empty_request_with_auto_populated_field():
         client.search_all_assignments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.SearchAllAssignmentsRequest(
+        request_msg = reservation.SearchAllAssignmentsRequest(
             parent="parent_value",
             query="query_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_all_assignments_use_cached_wrapped_rpc():
@@ -8363,9 +8438,15 @@ async def test_search_all_assignments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.SearchAllAssignmentsRequest(),
+        {},
+    ],
+)
 async def test_search_all_assignments_async(
-    transport: str = "grpc_asyncio",
-    request_type=reservation.SearchAllAssignmentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8374,7 +8455,7 @@ async def test_search_all_assignments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8397,11 +8478,6 @@ async def test_search_all_assignments_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllAssignmentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_all_assignments_async_from_dict():
-    await test_search_all_assignments_async(request_type=dict)
 
 
 def test_search_all_assignments_field_headers():
@@ -8616,6 +8692,9 @@ def test_search_all_assignments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, reservation.Assignment) for i in results)
@@ -8708,6 +8787,8 @@ async def test_search_all_assignments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8766,8 +8847,8 @@ async def test_search_all_assignments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.MoveAssignmentRequest,
-        dict,
+        reservation.MoveAssignmentRequest(),
+        {},
     ],
 )
 def test_move_assignment(request_type, transport: str = "grpc"):
@@ -8778,7 +8859,7 @@ def test_move_assignment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_assignment), "__call__") as call:
@@ -8834,11 +8915,12 @@ def test_move_assignment_non_empty_request_with_auto_populated_field():
         client.move_assignment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.MoveAssignmentRequest(
+        request_msg = reservation.MoveAssignmentRequest(
             name="name_value",
             destination_id="destination_id_value",
             assignment_id="assignment_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_move_assignment_use_cached_wrapped_rpc():
@@ -8919,9 +9001,14 @@ async def test_move_assignment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_move_assignment_async(
-    transport: str = "grpc_asyncio", request_type=reservation.MoveAssignmentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.MoveAssignmentRequest(),
+        {},
+    ],
+)
+async def test_move_assignment_async(request_type, transport: str = "grpc_asyncio"):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8929,7 +9016,7 @@ async def test_move_assignment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_assignment), "__call__") as call:
@@ -8960,11 +9047,6 @@ async def test_move_assignment_async(
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
     assert response.principal == "principal_value"
-
-
-@pytest.mark.asyncio
-async def test_move_assignment_async_from_dict():
-    await test_move_assignment_async(request_type=dict)
 
 
 def test_move_assignment_field_headers():
@@ -9123,8 +9205,8 @@ async def test_move_assignment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.UpdateAssignmentRequest,
-        dict,
+        reservation.UpdateAssignmentRequest(),
+        {},
     ],
 )
 def test_update_assignment(request_type, transport: str = "grpc"):
@@ -9135,7 +9217,7 @@ def test_update_assignment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9191,7 +9273,8 @@ def test_update_assignment_non_empty_request_with_auto_populated_field():
         client.update_assignment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.UpdateAssignmentRequest()
+        request_msg = reservation.UpdateAssignmentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_assignment_use_cached_wrapped_rpc():
@@ -9274,9 +9357,14 @@ async def test_update_assignment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_assignment_async(
-    transport: str = "grpc_asyncio", request_type=reservation.UpdateAssignmentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.UpdateAssignmentRequest(),
+        {},
+    ],
+)
+async def test_update_assignment_async(request_type, transport: str = "grpc_asyncio"):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9284,7 +9372,7 @@ async def test_update_assignment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9317,11 +9405,6 @@ async def test_update_assignment_async(
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
     assert response.principal == "principal_value"
-
-
-@pytest.mark.asyncio
-async def test_update_assignment_async_from_dict():
-    await test_update_assignment_async(request_type=dict)
 
 
 def test_update_assignment_field_headers():
@@ -9488,8 +9571,8 @@ async def test_update_assignment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.GetBiReservationRequest,
-        dict,
+        reservation.GetBiReservationRequest(),
+        {},
     ],
 )
 def test_get_bi_reservation(request_type, transport: str = "grpc"):
@@ -9500,7 +9583,7 @@ def test_get_bi_reservation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9550,9 +9633,10 @@ def test_get_bi_reservation_non_empty_request_with_auto_populated_field():
         client.get_bi_reservation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.GetBiReservationRequest(
+        request_msg = reservation.GetBiReservationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_bi_reservation_use_cached_wrapped_rpc():
@@ -9637,9 +9721,14 @@ async def test_get_bi_reservation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_bi_reservation_async(
-    transport: str = "grpc_asyncio", request_type=reservation.GetBiReservationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.GetBiReservationRequest(),
+        {},
+    ],
+)
+async def test_get_bi_reservation_async(request_type, transport: str = "grpc_asyncio"):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9647,7 +9736,7 @@ async def test_get_bi_reservation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9672,11 +9761,6 @@ async def test_get_bi_reservation_async(
     assert isinstance(response, reservation.BiReservation)
     assert response.name == "name_value"
     assert response.size == 443
-
-
-@pytest.mark.asyncio
-async def test_get_bi_reservation_async_from_dict():
-    await test_get_bi_reservation_async(request_type=dict)
 
 
 def test_get_bi_reservation_field_headers():
@@ -9833,8 +9917,8 @@ async def test_get_bi_reservation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.UpdateBiReservationRequest,
-        dict,
+        reservation.UpdateBiReservationRequest(),
+        {},
     ],
 )
 def test_update_bi_reservation(request_type, transport: str = "grpc"):
@@ -9845,7 +9929,7 @@ def test_update_bi_reservation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9893,7 +9977,8 @@ def test_update_bi_reservation_non_empty_request_with_auto_populated_field():
         client.update_bi_reservation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.UpdateBiReservationRequest()
+        request_msg = reservation.UpdateBiReservationRequest()
+        assert args[0] == request_msg
 
 
 def test_update_bi_reservation_use_cached_wrapped_rpc():
@@ -9979,8 +10064,15 @@ async def test_update_bi_reservation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.UpdateBiReservationRequest(),
+        {},
+    ],
+)
 async def test_update_bi_reservation_async(
-    transport: str = "grpc_asyncio", request_type=reservation.UpdateBiReservationRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9989,7 +10081,7 @@ async def test_update_bi_reservation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10014,11 +10106,6 @@ async def test_update_bi_reservation_async(
     assert isinstance(response, reservation.BiReservation)
     assert response.name == "name_value"
     assert response.size == 443
-
-
-@pytest.mark.asyncio
-async def test_update_bi_reservation_async_from_dict():
-    await test_update_bi_reservation_async(request_type=dict)
 
 
 def test_update_bi_reservation_field_headers():
@@ -10185,8 +10272,8 @@ async def test_update_bi_reservation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -10197,7 +10284,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -10243,9 +10330,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -10326,9 +10414,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10336,7 +10429,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -10359,11 +10452,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -10525,8 +10613,8 @@ async def test_get_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -10537,7 +10625,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -10583,9 +10671,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -10666,9 +10755,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10676,7 +10770,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -10699,11 +10793,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -10866,8 +10955,8 @@ async def test_set_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -10878,7 +10967,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10926,9 +11015,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -11013,9 +11103,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11024,7 +11120,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11047,11 +11143,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -11141,8 +11232,8 @@ def test_test_iam_permissions_from_dict_foreign():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.CreateReservationGroupRequest,
-        dict,
+        reservation.CreateReservationGroupRequest(),
+        {},
     ],
 )
 def test_create_reservation_group(request_type, transport: str = "grpc"):
@@ -11153,7 +11244,7 @@ def test_create_reservation_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11202,10 +11293,11 @@ def test_create_reservation_group_non_empty_request_with_auto_populated_field():
         client.create_reservation_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.CreateReservationGroupRequest(
+        request_msg = reservation.CreateReservationGroupRequest(
             parent="parent_value",
             reservation_group_id="reservation_group_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_reservation_group_use_cached_wrapped_rpc():
@@ -11291,9 +11383,15 @@ async def test_create_reservation_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.CreateReservationGroupRequest(),
+        {},
+    ],
+)
 async def test_create_reservation_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=reservation.CreateReservationGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11302,7 +11400,7 @@ async def test_create_reservation_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11325,11 +11423,6 @@ async def test_create_reservation_group_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.ReservationGroup)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_reservation_group_async_from_dict():
-    await test_create_reservation_group_async(request_type=dict)
 
 
 def test_create_reservation_group_field_headers():
@@ -11400,8 +11493,8 @@ async def test_create_reservation_group_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.GetReservationGroupRequest,
-        dict,
+        reservation.GetReservationGroupRequest(),
+        {},
     ],
 )
 def test_get_reservation_group(request_type, transport: str = "grpc"):
@@ -11412,7 +11505,7 @@ def test_get_reservation_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11460,9 +11553,10 @@ def test_get_reservation_group_non_empty_request_with_auto_populated_field():
         client.get_reservation_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.GetReservationGroupRequest(
+        request_msg = reservation.GetReservationGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_reservation_group_use_cached_wrapped_rpc():
@@ -11548,8 +11642,15 @@ async def test_get_reservation_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.GetReservationGroupRequest(),
+        {},
+    ],
+)
 async def test_get_reservation_group_async(
-    transport: str = "grpc_asyncio", request_type=reservation.GetReservationGroupRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11558,7 +11659,7 @@ async def test_get_reservation_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11581,11 +11682,6 @@ async def test_get_reservation_group_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.ReservationGroup)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_reservation_group_async_from_dict():
-    await test_get_reservation_group_async(request_type=dict)
 
 
 def test_get_reservation_group_field_headers():
@@ -11742,8 +11838,8 @@ async def test_get_reservation_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.DeleteReservationGroupRequest,
-        dict,
+        reservation.DeleteReservationGroupRequest(),
+        {},
     ],
 )
 def test_delete_reservation_group(request_type, transport: str = "grpc"):
@@ -11754,7 +11850,7 @@ def test_delete_reservation_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11799,9 +11895,10 @@ def test_delete_reservation_group_non_empty_request_with_auto_populated_field():
         client.delete_reservation_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.DeleteReservationGroupRequest(
+        request_msg = reservation.DeleteReservationGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_reservation_group_use_cached_wrapped_rpc():
@@ -11887,9 +11984,15 @@ async def test_delete_reservation_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.DeleteReservationGroupRequest(),
+        {},
+    ],
+)
 async def test_delete_reservation_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=reservation.DeleteReservationGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11898,7 +12001,7 @@ async def test_delete_reservation_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11916,11 +12019,6 @@ async def test_delete_reservation_group_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_reservation_group_async_from_dict():
-    await test_delete_reservation_group_async(request_type=dict)
 
 
 def test_delete_reservation_group_field_headers():
@@ -12073,8 +12171,8 @@ async def test_delete_reservation_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reservation.ListReservationGroupsRequest,
-        dict,
+        reservation.ListReservationGroupsRequest(),
+        {},
     ],
 )
 def test_list_reservation_groups(request_type, transport: str = "grpc"):
@@ -12085,7 +12183,7 @@ def test_list_reservation_groups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12134,10 +12232,11 @@ def test_list_reservation_groups_non_empty_request_with_auto_populated_field():
         client.list_reservation_groups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.ListReservationGroupsRequest(
+        request_msg = reservation.ListReservationGroupsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_reservation_groups_use_cached_wrapped_rpc():
@@ -12223,9 +12322,15 @@ async def test_list_reservation_groups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reservation.ListReservationGroupsRequest(),
+        {},
+    ],
+)
 async def test_list_reservation_groups_async(
-    transport: str = "grpc_asyncio",
-    request_type=reservation.ListReservationGroupsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReservationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12234,7 +12339,7 @@ async def test_list_reservation_groups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12257,11 +12362,6 @@ async def test_list_reservation_groups_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReservationGroupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_reservation_groups_async_from_dict():
-    await test_list_reservation_groups_async(request_type=dict)
 
 
 def test_list_reservation_groups_field_headers():
@@ -12466,6 +12566,9 @@ def test_list_reservation_groups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, reservation.ReservationGroup) for i in results)
@@ -12558,6 +12661,8 @@ async def test_list_reservation_groups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -13050,6 +13155,9 @@ def test_list_reservations_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_reservations(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -14100,6 +14208,9 @@ def test_list_capacity_commitments_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_capacity_commitments(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -15311,6 +15422,9 @@ def test_list_assignments_rest_pager(transport: str = "rest"):
 
         pager = client.list_assignments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, reservation.Assignment) for i in results)
@@ -15752,6 +15866,9 @@ def test_search_assignments_rest_pager(transport: str = "rest"):
 
         pager = client.search_assignments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, reservation.Assignment) for i in results)
@@ -16016,6 +16133,9 @@ def test_search_all_assignments_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.search_all_assignments(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -17865,6 +17985,9 @@ def test_list_reservation_groups_rest_pager(transport: str = "rest"):
 
         pager = client.list_reservation_groups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, reservation.ReservationGroup) for i in results)
@@ -17999,7 +18122,6 @@ def test_create_reservation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcbr_reservation.CreateReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18022,7 +18144,6 @@ def test_list_reservations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.ListReservationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18043,7 +18164,6 @@ def test_get_reservation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.GetReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18066,7 +18186,6 @@ def test_delete_reservation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.DeleteReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18089,7 +18208,6 @@ def test_update_reservation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcbr_reservation.UpdateReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18112,7 +18230,6 @@ def test_failover_reservation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.FailoverReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18135,7 +18252,6 @@ def test_create_capacity_commitment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.CreateCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18158,7 +18274,6 @@ def test_list_capacity_commitments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.ListCapacityCommitmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18181,7 +18296,6 @@ def test_get_capacity_commitment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.GetCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18204,7 +18318,6 @@ def test_delete_capacity_commitment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.DeleteCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18227,7 +18340,6 @@ def test_update_capacity_commitment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.UpdateCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18250,7 +18362,6 @@ def test_split_capacity_commitment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.SplitCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18273,7 +18384,6 @@ def test_merge_capacity_commitments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.MergeCapacityCommitmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18296,7 +18406,6 @@ def test_create_assignment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.CreateAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18317,7 +18426,6 @@ def test_list_assignments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.ListAssignmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18340,7 +18448,6 @@ def test_delete_assignment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.DeleteAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18363,7 +18470,6 @@ def test_search_assignments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.SearchAssignmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18386,7 +18492,6 @@ def test_search_all_assignments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.SearchAllAssignmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18407,7 +18512,6 @@ def test_move_assignment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.MoveAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18430,7 +18534,6 @@ def test_update_assignment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.UpdateAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18453,7 +18556,6 @@ def test_get_bi_reservation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.GetBiReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18476,7 +18578,6 @@ def test_update_bi_reservation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.UpdateBiReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18497,7 +18598,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -18518,7 +18618,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -18541,7 +18640,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18564,7 +18662,6 @@ def test_create_reservation_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.CreateReservationGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18587,7 +18684,6 @@ def test_get_reservation_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.GetReservationGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18610,7 +18706,6 @@ def test_delete_reservation_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.DeleteReservationGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18633,7 +18728,6 @@ def test_list_reservation_groups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.ListReservationGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18687,7 +18781,6 @@ async def test_create_reservation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcbr_reservation.CreateReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18716,7 +18809,6 @@ async def test_list_reservations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.ListReservationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18754,7 +18846,6 @@ async def test_get_reservation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.GetReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18779,7 +18870,6 @@ async def test_delete_reservation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.DeleteReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18819,7 +18909,6 @@ async def test_update_reservation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcbr_reservation.UpdateReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18859,7 +18948,6 @@ async def test_failover_reservation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.FailoverReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18895,7 +18983,6 @@ async def test_create_capacity_commitment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.CreateCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18924,7 +19011,6 @@ async def test_list_capacity_commitments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.ListCapacityCommitmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18960,7 +19046,6 @@ async def test_get_capacity_commitment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.GetCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18985,7 +19070,6 @@ async def test_delete_capacity_commitment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.DeleteCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -19021,7 +19105,6 @@ async def test_update_capacity_commitment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.UpdateCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -19048,7 +19131,6 @@ async def test_split_capacity_commitment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.SplitCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -19084,7 +19166,6 @@ async def test_merge_capacity_commitments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.MergeCapacityCommitmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19118,7 +19199,6 @@ async def test_create_assignment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.CreateAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -19145,7 +19225,6 @@ async def test_list_assignments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.ListAssignmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19170,7 +19249,6 @@ async def test_delete_assignment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.DeleteAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -19199,7 +19277,6 @@ async def test_search_assignments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.SearchAssignmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19228,7 +19305,6 @@ async def test_search_all_assignments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.SearchAllAssignmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19260,7 +19336,6 @@ async def test_move_assignment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.MoveAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -19294,7 +19369,6 @@ async def test_update_assignment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.UpdateAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -19324,7 +19398,6 @@ async def test_get_bi_reservation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.GetBiReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -19354,7 +19427,6 @@ async def test_update_bi_reservation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.UpdateBiReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -19382,7 +19454,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -19410,7 +19481,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -19439,7 +19509,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19468,7 +19537,6 @@ async def test_create_reservation_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.CreateReservationGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -19497,7 +19565,6 @@ async def test_get_reservation_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.GetReservationGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -19522,7 +19589,6 @@ async def test_delete_reservation_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.DeleteReservationGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -19551,7 +19617,6 @@ async def test_list_reservation_groups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.ListReservationGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24291,7 +24356,6 @@ def test_create_reservation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcbr_reservation.CreateReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -24313,7 +24377,6 @@ def test_list_reservations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.ListReservationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24333,7 +24396,6 @@ def test_get_reservation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.GetReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -24355,7 +24417,6 @@ def test_delete_reservation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.DeleteReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -24377,7 +24438,6 @@ def test_update_reservation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcbr_reservation.UpdateReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -24399,7 +24459,6 @@ def test_failover_reservation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.FailoverReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -24421,7 +24480,6 @@ def test_create_capacity_commitment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.CreateCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24443,7 +24501,6 @@ def test_list_capacity_commitments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.ListCapacityCommitmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24465,7 +24522,6 @@ def test_get_capacity_commitment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.GetCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24487,7 +24543,6 @@ def test_delete_capacity_commitment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.DeleteCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24509,7 +24564,6 @@ def test_update_capacity_commitment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.UpdateCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24531,7 +24585,6 @@ def test_split_capacity_commitment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.SplitCapacityCommitmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24553,7 +24606,6 @@ def test_merge_capacity_commitments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.MergeCapacityCommitmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24575,7 +24627,6 @@ def test_create_assignment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.CreateAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24595,7 +24646,6 @@ def test_list_assignments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.ListAssignmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24617,7 +24667,6 @@ def test_delete_assignment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.DeleteAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24639,7 +24688,6 @@ def test_search_assignments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.SearchAssignmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24661,7 +24709,6 @@ def test_search_all_assignments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.SearchAllAssignmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24681,7 +24728,6 @@ def test_move_assignment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.MoveAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24703,7 +24749,6 @@ def test_update_assignment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.UpdateAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24725,7 +24770,6 @@ def test_get_bi_reservation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.GetBiReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -24747,7 +24791,6 @@ def test_update_bi_reservation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.UpdateBiReservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -24767,7 +24810,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -24787,7 +24829,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -24809,7 +24850,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24831,7 +24871,6 @@ def test_create_reservation_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.CreateReservationGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -24853,7 +24892,6 @@ def test_get_reservation_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.GetReservationGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -24875,7 +24913,6 @@ def test_delete_reservation_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.DeleteReservationGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -24897,7 +24934,6 @@ def test_list_reservation_groups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reservation.ListReservationGroupsRequest()
-
         assert args[0] == request_msg
 
 

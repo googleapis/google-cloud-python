@@ -325,6 +325,7 @@ class Index:
             # Return boolean mask for non-monotonic duplicates
             mask_block = block_with_offsets.select_columns([match_col_id])
             mask_block = mask_block.reset_index(drop=True)
+            mask_block = mask_block.with_column_labels([None])
             result_series = bigframes.series.Series(mask_block)
             return result_series.astype("boolean")
 

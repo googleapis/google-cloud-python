@@ -1,5 +1,5 @@
 {
-    "api_description": "The BigLake API provides access to BigLake Metastore, a serverless, fully\nmanaged, and highly available metastore for open-source data that can be\nused for querying Apache Iceberg tables in BigQuery.",
+    "api_description": "The Lakehouse API (formerly BigLake API) provides access to a serverless,\nfully managed, and highly available metastore that provides a single\nsource of truth for your data lakehouse. It lets multiple\nengines—including Apache Spark, Google Managed Spark, Apache Flink, Trino\nand BigQuery—share tables and metadata for key open formats (Apache\nIceberg, Apache Hive), and query the same copy of data. Plus, through the\nLakehouse runtime catalog federation seamlessly unite your lakehouse\necosystem, letting Iceberg compatible engines on Google Cloud (BigQuery,\nGoogle Managed Spark) discover and analyze enterprise data across\nSnowflake, Databricks, and AWS Glue.",
     "api_id": "biglake.googleapis.com",
     "api_shortname": "biglake",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-biglake-hive/latest",
@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-biglake-hive",
-    "name_pretty": "BigLake",
+    "name_pretty": "Lakehouse",
     "product_documentation": "https://cloud.google.com/bigquery/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

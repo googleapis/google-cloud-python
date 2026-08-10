@@ -2353,7 +2353,9 @@ class RowIterator(HTTPIterator):
                 progress_bar.close()
         finally:
             if owns_bqstorage_client:
-                bqstorage_client._transport.grpc_channel.close()  # type: ignore
+                # mypy: bqstorage_client is guaranteed to be not None when owns_bqstorage_client is True,
+                # but mypy cannot infer this correlation. We ignore the union-attr error here.
+                bqstorage_client._transport.close()  # type: ignore[union-attr]
 
         if record_batches and bqstorage_client is not None:
             return pyarrow.Table.from_batches(record_batches)

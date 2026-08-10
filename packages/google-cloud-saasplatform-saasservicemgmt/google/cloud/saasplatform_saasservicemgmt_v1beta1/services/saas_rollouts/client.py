@@ -1060,9 +1060,13 @@ class SaasRolloutsClient(metaclass=SaasRolloutsClientMeta):
                 client = saasplatform_saasservicemgmt_v1beta1.SaasRolloutsClient()
 
                 # Initialize request argument(s)
+                rollout = saasplatform_saasservicemgmt_v1beta1.Rollout()
+                rollout.rollout_kind = "rollout_kind_value"
+
                 request = saasplatform_saasservicemgmt_v1beta1.CreateRolloutRequest(
                     parent="parent_value",
                     rollout_id="rollout_id_value",
+                    rollout=rollout,
                 )
 
                 # Make the request
@@ -1186,7 +1190,11 @@ class SaasRolloutsClient(metaclass=SaasRolloutsClientMeta):
                 client = saasplatform_saasservicemgmt_v1beta1.SaasRolloutsClient()
 
                 # Initialize request argument(s)
+                rollout = saasplatform_saasservicemgmt_v1beta1.Rollout()
+                rollout.rollout_kind = "rollout_kind_value"
+
                 request = saasplatform_saasservicemgmt_v1beta1.UpdateRolloutRequest(
+                    rollout=rollout,
                 )
 
                 # Make the request
@@ -2125,8 +2133,6 @@ class SaasRolloutsClient(metaclass=SaasRolloutsClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("SaasRolloutsClient",)

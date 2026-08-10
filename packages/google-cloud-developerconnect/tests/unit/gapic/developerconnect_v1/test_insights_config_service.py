@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -118,6 +119,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1002,7 +1018,14 @@ def test_insights_config_service_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1049,7 +1072,14 @@ def test_insights_config_service_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1385,8 +1415,8 @@ def test_insights_config_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        insights_config.ListInsightsConfigsRequest,
-        dict,
+        insights_config.ListInsightsConfigsRequest(),
+        {},
     ],
 )
 def test_list_insights_configs(request_type, transport: str = "grpc"):
@@ -1397,7 +1427,7 @@ def test_list_insights_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1450,12 +1480,13 @@ def test_list_insights_configs_non_empty_request_with_auto_populated_field():
         client.list_insights_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == insights_config.ListInsightsConfigsRequest(
+        request_msg = insights_config.ListInsightsConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_insights_configs_use_cached_wrapped_rpc():
@@ -1541,9 +1572,15 @@ async def test_list_insights_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        insights_config.ListInsightsConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_insights_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=insights_config.ListInsightsConfigsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InsightsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1552,7 +1589,7 @@ async def test_list_insights_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1577,11 +1614,6 @@ async def test_list_insights_configs_async(
     assert isinstance(response, pagers.ListInsightsConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_insights_configs_async_from_dict():
-    await test_list_insights_configs_async(request_type=dict)
 
 
 def test_list_insights_configs_field_headers():
@@ -1786,6 +1818,9 @@ def test_list_insights_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, insights_config.InsightsConfig) for i in results)
@@ -1878,6 +1913,8 @@ async def test_list_insights_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1936,8 +1973,8 @@ async def test_list_insights_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_insights_config.CreateInsightsConfigRequest,
-        dict,
+        gcd_insights_config.CreateInsightsConfigRequest(),
+        {},
     ],
 )
 def test_create_insights_config(request_type, transport: str = "grpc"):
@@ -1948,7 +1985,7 @@ def test_create_insights_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1994,10 +2031,11 @@ def test_create_insights_config_non_empty_request_with_auto_populated_field():
         client.create_insights_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_insights_config.CreateInsightsConfigRequest(
+        request_msg = gcd_insights_config.CreateInsightsConfigRequest(
             parent="parent_value",
             insights_config_id="insights_config_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_insights_config_use_cached_wrapped_rpc():
@@ -2093,9 +2131,15 @@ async def test_create_insights_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_insights_config.CreateInsightsConfigRequest(),
+        {},
+    ],
+)
 async def test_create_insights_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_insights_config.CreateInsightsConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InsightsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2104,7 +2148,7 @@ async def test_create_insights_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2124,11 +2168,6 @@ async def test_create_insights_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_insights_config_async_from_dict():
-    await test_create_insights_config_async(request_type=dict)
 
 
 def test_create_insights_config_field_headers():
@@ -2317,8 +2356,8 @@ async def test_create_insights_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        insights_config.GetInsightsConfigRequest,
-        dict,
+        insights_config.GetInsightsConfigRequest(),
+        {},
     ],
 )
 def test_get_insights_config(request_type, transport: str = "grpc"):
@@ -2329,7 +2368,7 @@ def test_get_insights_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2382,9 +2421,10 @@ def test_get_insights_config_non_empty_request_with_auto_populated_field():
         client.get_insights_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == insights_config.GetInsightsConfigRequest(
+        request_msg = insights_config.GetInsightsConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_insights_config_use_cached_wrapped_rpc():
@@ -2469,10 +2509,14 @@ async def test_get_insights_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_insights_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=insights_config.GetInsightsConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        insights_config.GetInsightsConfigRequest(),
+        {},
+    ],
+)
+async def test_get_insights_config_async(request_type, transport: str = "grpc_asyncio"):
     client = InsightsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2480,7 +2524,7 @@ async def test_get_insights_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2507,11 +2551,6 @@ async def test_get_insights_config_async(
     assert response.name == "name_value"
     assert response.state == insights_config.InsightsConfig.State.PENDING
     assert response.reconciling is True
-
-
-@pytest.mark.asyncio
-async def test_get_insights_config_async_from_dict():
-    await test_get_insights_config_async(request_type=dict)
 
 
 def test_get_insights_config_field_headers():
@@ -2668,8 +2707,8 @@ async def test_get_insights_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        insights_config.UpdateInsightsConfigRequest,
-        dict,
+        insights_config.UpdateInsightsConfigRequest(),
+        {},
     ],
 )
 def test_update_insights_config(request_type, transport: str = "grpc"):
@@ -2680,7 +2719,7 @@ def test_update_insights_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2723,7 +2762,8 @@ def test_update_insights_config_non_empty_request_with_auto_populated_field():
         client.update_insights_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == insights_config.UpdateInsightsConfigRequest()
+        request_msg = insights_config.UpdateInsightsConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_insights_config_use_cached_wrapped_rpc():
@@ -2819,9 +2859,15 @@ async def test_update_insights_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        insights_config.UpdateInsightsConfigRequest(),
+        {},
+    ],
+)
 async def test_update_insights_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=insights_config.UpdateInsightsConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InsightsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2830,7 +2876,7 @@ async def test_update_insights_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2850,11 +2896,6 @@ async def test_update_insights_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_insights_config_async_from_dict():
-    await test_update_insights_config_async(request_type=dict)
 
 
 def test_update_insights_config_field_headers():
@@ -2925,8 +2966,8 @@ async def test_update_insights_config_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        insights_config.DeleteInsightsConfigRequest,
-        dict,
+        insights_config.DeleteInsightsConfigRequest(),
+        {},
     ],
 )
 def test_delete_insights_config(request_type, transport: str = "grpc"):
@@ -2937,7 +2978,7 @@ def test_delete_insights_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2983,10 +3024,11 @@ def test_delete_insights_config_non_empty_request_with_auto_populated_field():
         client.delete_insights_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == insights_config.DeleteInsightsConfigRequest(
+        request_msg = insights_config.DeleteInsightsConfigRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_insights_config_use_cached_wrapped_rpc():
@@ -3082,9 +3124,15 @@ async def test_delete_insights_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        insights_config.DeleteInsightsConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_insights_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=insights_config.DeleteInsightsConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InsightsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3093,7 +3141,7 @@ async def test_delete_insights_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3113,11 +3161,6 @@ async def test_delete_insights_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_insights_config_async_from_dict():
-    await test_delete_insights_config_async(request_type=dict)
 
 
 def test_delete_insights_config_field_headers():
@@ -3274,8 +3317,8 @@ async def test_delete_insights_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        insights_config.GetDeploymentEventRequest,
-        dict,
+        insights_config.GetDeploymentEventRequest(),
+        {},
     ],
 )
 def test_get_deployment_event(request_type, transport: str = "grpc"):
@@ -3286,7 +3329,7 @@ def test_get_deployment_event(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3338,9 +3381,10 @@ def test_get_deployment_event_non_empty_request_with_auto_populated_field():
         client.get_deployment_event(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == insights_config.GetDeploymentEventRequest(
+        request_msg = insights_config.GetDeploymentEventRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_deployment_event_use_cached_wrapped_rpc():
@@ -3425,9 +3469,15 @@ async def test_get_deployment_event_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        insights_config.GetDeploymentEventRequest(),
+        {},
+    ],
+)
 async def test_get_deployment_event_async(
-    transport: str = "grpc_asyncio",
-    request_type=insights_config.GetDeploymentEventRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InsightsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3436,7 +3486,7 @@ async def test_get_deployment_event_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3463,11 +3513,6 @@ async def test_get_deployment_event_async(
     assert response.name == "name_value"
     assert response.runtime_deployment_uri == "runtime_deployment_uri_value"
     assert response.state == insights_config.DeploymentEvent.State.STATE_ACTIVE
-
-
-@pytest.mark.asyncio
-async def test_get_deployment_event_async_from_dict():
-    await test_get_deployment_event_async(request_type=dict)
 
 
 def test_get_deployment_event_field_headers():
@@ -3624,8 +3669,8 @@ async def test_get_deployment_event_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        insights_config.ListDeploymentEventsRequest,
-        dict,
+        insights_config.ListDeploymentEventsRequest(),
+        {},
     ],
 )
 def test_list_deployment_events(request_type, transport: str = "grpc"):
@@ -3636,7 +3681,7 @@ def test_list_deployment_events(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3686,11 +3731,12 @@ def test_list_deployment_events_non_empty_request_with_auto_populated_field():
         client.list_deployment_events(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == insights_config.ListDeploymentEventsRequest(
+        request_msg = insights_config.ListDeploymentEventsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_deployment_events_use_cached_wrapped_rpc():
@@ -3776,9 +3822,15 @@ async def test_list_deployment_events_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        insights_config.ListDeploymentEventsRequest(),
+        {},
+    ],
+)
 async def test_list_deployment_events_async(
-    transport: str = "grpc_asyncio",
-    request_type=insights_config.ListDeploymentEventsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = InsightsConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3787,7 +3839,7 @@ async def test_list_deployment_events_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3810,11 +3862,6 @@ async def test_list_deployment_events_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDeploymentEventsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_deployment_events_async_from_dict():
-    await test_list_deployment_events_async(request_type=dict)
 
 
 def test_list_deployment_events_field_headers():
@@ -4019,6 +4066,9 @@ def test_list_deployment_events_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, insights_config.DeploymentEvent) for i in results)
@@ -4111,6 +4161,8 @@ async def test_list_deployment_events_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4421,6 +4473,9 @@ def test_list_insights_configs_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_insights_configs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -5622,6 +5677,9 @@ def test_list_deployment_events_rest_pager(transport: str = "rest"):
 
         pager = client.list_deployment_events(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, insights_config.DeploymentEvent) for i in results)
@@ -5756,7 +5814,6 @@ def test_list_insights_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.ListInsightsConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5779,7 +5836,6 @@ def test_create_insights_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_insights_config.CreateInsightsConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5802,7 +5858,6 @@ def test_get_insights_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.GetInsightsConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5825,7 +5880,6 @@ def test_update_insights_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.UpdateInsightsConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5848,7 +5902,6 @@ def test_delete_insights_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.DeleteInsightsConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5871,7 +5924,6 @@ def test_get_deployment_event_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.GetDeploymentEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -5894,7 +5946,6 @@ def test_list_deployment_events_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.ListDeploymentEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5938,7 +5989,6 @@ async def test_list_insights_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.ListInsightsConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5965,7 +6015,6 @@ async def test_create_insights_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_insights_config.CreateInsightsConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5996,7 +6045,6 @@ async def test_get_insights_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.GetInsightsConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -6023,7 +6071,6 @@ async def test_update_insights_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.UpdateInsightsConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -6050,7 +6097,6 @@ async def test_delete_insights_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.DeleteInsightsConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -6081,7 +6127,6 @@ async def test_get_deployment_event_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.GetDeploymentEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -6110,7 +6155,6 @@ async def test_list_deployment_events_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.ListDeploymentEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7726,7 +7770,6 @@ def test_list_insights_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.ListInsightsConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7748,7 +7791,6 @@ def test_create_insights_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_insights_config.CreateInsightsConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7770,7 +7812,6 @@ def test_get_insights_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.GetInsightsConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7792,7 +7833,6 @@ def test_update_insights_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.UpdateInsightsConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7814,7 +7854,6 @@ def test_delete_insights_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.DeleteInsightsConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7836,7 +7875,6 @@ def test_get_deployment_event_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.GetDeploymentEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -7858,7 +7896,6 @@ def test_list_deployment_events_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = insights_config.ListDeploymentEventsRequest()
-
         assert args[0] == request_msg
 
 

@@ -33,9 +33,7 @@ from google.cloud.modelarmor_v1.types import service
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ModelArmorTransport(abc.ABC):
@@ -234,6 +232,16 @@ class ModelArmorTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.stream_sanitize_user_prompt: gapic_v1.method.wrap_method(
+                self.stream_sanitize_user_prompt,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.stream_sanitize_model_response: gapic_v1.method.wrap_method(
+                self.stream_sanitize_model_response,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -332,6 +340,30 @@ class ModelArmorTransport(abc.ABC):
 
     @property
     def sanitize_model_response(
+        self,
+    ) -> Callable[
+        [service.SanitizeModelResponseRequest],
+        Union[
+            service.SanitizeModelResponseResponse,
+            Awaitable[service.SanitizeModelResponseResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stream_sanitize_user_prompt(
+        self,
+    ) -> Callable[
+        [service.SanitizeUserPromptRequest],
+        Union[
+            service.SanitizeUserPromptResponse,
+            Awaitable[service.SanitizeUserPromptResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stream_sanitize_model_response(
         self,
     ) -> Callable[
         [service.SanitizeModelResponseRequest],

@@ -266,8 +266,6 @@ class BigQueryRoutine(proto.Message):
 class BigQueryRoutineReference(proto.Message):
     r"""A reference to a BigQuery routine.
 
-    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
-
     Attributes:
         project_id (str):
             The project ID of the routine.
@@ -275,15 +273,6 @@ class BigQueryRoutineReference(proto.Message):
             The dataset ID of the routine.
         routine_id (str):
             The routine ID of the routine.
-        boundary_location_id (str):
-            Optional. The location to restrict BigQuery
-            operations to.
-            If unspecified, this value defaults to the
-            location of the endpoint.
-
-            Examples: "us-central1", "europe-west1".
-
-            This field is a member of `oneof`_ ``_boundary_location_id``.
     """
 
     project_id: str = proto.Field(
@@ -297,11 +286,6 @@ class BigQueryRoutineReference(proto.Message):
     routine_id: str = proto.Field(
         proto.STRING,
         number=3,
-    )
-    boundary_location_id: str = proto.Field(
-        proto.STRING,
-        number=4,
-        optional=True,
     )
 
 
@@ -484,6 +468,19 @@ class LookerQuery(proto.Message):
             Optional. Limit in the query.
 
             This field is a member of `oneof`_ ``_limit``.
+        query_id (str):
+            Optional. The primary identifier for the query resource in
+            Looker, used for API operations. Maps to ``id`` (or
+            ``slug``) in the Looker API ``Query`` resource.
+
+            This field is a member of `oneof`_ ``_query_id``.
+        client_id (str):
+            Optional. The short alphanumeric identifier for the query,
+            used for share links and Explore URLs (e.g., in the ``qid``
+            parameter). Maps to ``client_id`` in the Looker API
+            ``Query`` resource.
+
+            This field is a member of `oneof`_ ``_client_id``.
     """
 
     class Filter(proto.Message):
@@ -539,6 +536,16 @@ class LookerQuery(proto.Message):
         number=6,
         optional=True,
     )
+    query_id: str = proto.Field(
+        proto.STRING,
+        number=10,
+        optional=True,
+    )
+    client_id: str = proto.Field(
+        proto.STRING,
+        number=11,
+        optional=True,
+    )
 
 
 class GlossaryTerm(proto.Message):
@@ -578,12 +585,37 @@ class GlossaryTerm(proto.Message):
 class ConversationOptions(proto.Message):
     r"""Options for the conversation.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         analysis (google.cloud.geminidataanalytics_v1.types.AnalysisOptions):
             Optional. Options for analysis.
         datasource (google.cloud.geminidataanalytics_v1.types.DatasourceOptions):
             Optional. Options for datasources.
+        model (google.cloud.geminidataanalytics_v1.types.ConversationOptions.Model):
+            Optional. The model to use for the agent
+            loop.
+
+            This field is a member of `oneof`_ ``_model``.
     """
+
+    class Model(proto.Enum):
+        r"""Allowed models for the agent/conversation.
+
+        Values:
+            MODEL_UNSPECIFIED (0):
+                No model specified. The model may be set on the chat
+                request, or the default model will be used. Currently, this
+                is ``gemini-3.0-flash-preview``.
+            LATEST_GA_MODEL (1):
+                Use the most up-to-date non-preview model. Currently, this
+                is ``gemini-2.5-flash``. This constrains the request level
+                settings. The default will change to ``gemini-2.5-flash``,
+                and setting ``thinking_mode`` will not be supported.
+        """
+
+        MODEL_UNSPECIFIED = 0
+        LATEST_GA_MODEL = 1
 
     analysis: "AnalysisOptions" = proto.Field(
         proto.MESSAGE,
@@ -594,6 +626,12 @@ class ConversationOptions(proto.Message):
         proto.MESSAGE,
         number=3,
         message="DatasourceOptions",
+    )
+    model: Model = proto.Field(
+        proto.ENUM,
+        number=6,
+        optional=True,
+        enum=Model,
     )
 
 

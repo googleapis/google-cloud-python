@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -111,6 +112,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -922,7 +938,14 @@ def test_tag_bindings_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -969,7 +992,14 @@ def test_tag_bindings_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1281,8 +1311,8 @@ def test_tag_bindings_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        tag_bindings.ListTagBindingsRequest,
-        dict,
+        tag_bindings.ListTagBindingsRequest(),
+        {},
     ],
 )
 def test_list_tag_bindings(request_type, transport: str = "grpc"):
@@ -1293,7 +1323,7 @@ def test_list_tag_bindings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1342,10 +1372,11 @@ def test_list_tag_bindings_non_empty_request_with_auto_populated_field():
         client.list_tag_bindings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tag_bindings.ListTagBindingsRequest(
+        request_msg = tag_bindings.ListTagBindingsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_tag_bindings_use_cached_wrapped_rpc():
@@ -1428,9 +1459,14 @@ async def test_list_tag_bindings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_tag_bindings_async(
-    transport: str = "grpc_asyncio", request_type=tag_bindings.ListTagBindingsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag_bindings.ListTagBindingsRequest(),
+        {},
+    ],
+)
+async def test_list_tag_bindings_async(request_type, transport: str = "grpc_asyncio"):
     client = TagBindingsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1438,7 +1474,7 @@ async def test_list_tag_bindings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1461,11 +1497,6 @@ async def test_list_tag_bindings_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTagBindingsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_tag_bindings_async_from_dict():
-    await test_list_tag_bindings_async(request_type=dict)
 
 
 def test_list_tag_bindings_flattened():
@@ -1602,6 +1633,9 @@ def test_list_tag_bindings_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tag_bindings.TagBinding) for i in results)
@@ -1694,6 +1728,8 @@ async def test_list_tag_bindings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1752,8 +1788,8 @@ async def test_list_tag_bindings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tag_bindings.CreateTagBindingRequest,
-        dict,
+        tag_bindings.CreateTagBindingRequest(),
+        {},
     ],
 )
 def test_create_tag_binding(request_type, transport: str = "grpc"):
@@ -1764,7 +1800,7 @@ def test_create_tag_binding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1807,7 +1843,8 @@ def test_create_tag_binding_non_empty_request_with_auto_populated_field():
         client.create_tag_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tag_bindings.CreateTagBindingRequest()
+        request_msg = tag_bindings.CreateTagBindingRequest()
+        assert args[0] == request_msg
 
 
 def test_create_tag_binding_use_cached_wrapped_rpc():
@@ -1902,9 +1939,14 @@ async def test_create_tag_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_tag_binding_async(
-    transport: str = "grpc_asyncio", request_type=tag_bindings.CreateTagBindingRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag_bindings.CreateTagBindingRequest(),
+        {},
+    ],
+)
+async def test_create_tag_binding_async(request_type, transport: str = "grpc_asyncio"):
     client = TagBindingsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1912,7 +1954,7 @@ async def test_create_tag_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1932,11 +1974,6 @@ async def test_create_tag_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_tag_binding_async_from_dict():
-    await test_create_tag_binding_async(request_type=dict)
 
 
 def test_create_tag_binding_flattened():
@@ -2028,8 +2065,8 @@ async def test_create_tag_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tag_bindings.DeleteTagBindingRequest,
-        dict,
+        tag_bindings.DeleteTagBindingRequest(),
+        {},
     ],
 )
 def test_delete_tag_binding(request_type, transport: str = "grpc"):
@@ -2040,7 +2077,7 @@ def test_delete_tag_binding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2085,9 +2122,10 @@ def test_delete_tag_binding_non_empty_request_with_auto_populated_field():
         client.delete_tag_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tag_bindings.DeleteTagBindingRequest(
+        request_msg = tag_bindings.DeleteTagBindingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_tag_binding_use_cached_wrapped_rpc():
@@ -2182,9 +2220,14 @@ async def test_delete_tag_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_tag_binding_async(
-    transport: str = "grpc_asyncio", request_type=tag_bindings.DeleteTagBindingRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag_bindings.DeleteTagBindingRequest(),
+        {},
+    ],
+)
+async def test_delete_tag_binding_async(request_type, transport: str = "grpc_asyncio"):
     client = TagBindingsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2192,7 +2235,7 @@ async def test_delete_tag_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2212,11 +2255,6 @@ async def test_delete_tag_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_tag_binding_async_from_dict():
-    await test_delete_tag_binding_async(request_type=dict)
 
 
 def test_delete_tag_binding_field_headers():
@@ -2373,8 +2411,8 @@ async def test_delete_tag_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tag_bindings.ListEffectiveTagsRequest,
-        dict,
+        tag_bindings.ListEffectiveTagsRequest(),
+        {},
     ],
 )
 def test_list_effective_tags(request_type, transport: str = "grpc"):
@@ -2385,7 +2423,7 @@ def test_list_effective_tags(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2434,10 +2472,11 @@ def test_list_effective_tags_non_empty_request_with_auto_populated_field():
         client.list_effective_tags(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tag_bindings.ListEffectiveTagsRequest(
+        request_msg = tag_bindings.ListEffectiveTagsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_effective_tags_use_cached_wrapped_rpc():
@@ -2522,9 +2561,14 @@ async def test_list_effective_tags_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_effective_tags_async(
-    transport: str = "grpc_asyncio", request_type=tag_bindings.ListEffectiveTagsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag_bindings.ListEffectiveTagsRequest(),
+        {},
+    ],
+)
+async def test_list_effective_tags_async(request_type, transport: str = "grpc_asyncio"):
     client = TagBindingsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2532,7 +2576,7 @@ async def test_list_effective_tags_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2555,11 +2599,6 @@ async def test_list_effective_tags_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEffectiveTagsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_effective_tags_async_from_dict():
-    await test_list_effective_tags_async(request_type=dict)
 
 
 def test_list_effective_tags_flattened():
@@ -2696,6 +2735,9 @@ def test_list_effective_tags_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tag_bindings.EffectiveTag) for i in results)
@@ -2788,6 +2830,8 @@ async def test_list_effective_tags_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3100,6 +3144,9 @@ def test_list_tag_bindings_rest_pager(transport: str = "rest"):
         sample_request = {}
 
         pager = client.list_tag_bindings(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -3726,6 +3773,9 @@ def test_list_effective_tags_rest_pager(transport: str = "rest"):
 
         pager = client.list_effective_tags(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tag_bindings.EffectiveTag) for i in results)
@@ -3860,7 +3910,6 @@ def test_list_tag_bindings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tag_bindings.ListTagBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3883,7 +3932,6 @@ def test_create_tag_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tag_bindings.CreateTagBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -3906,7 +3954,6 @@ def test_delete_tag_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tag_bindings.DeleteTagBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -3929,7 +3976,6 @@ def test_list_effective_tags_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tag_bindings.ListEffectiveTagsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3972,7 +4018,6 @@ async def test_list_tag_bindings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tag_bindings.ListTagBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3999,7 +4044,6 @@ async def test_create_tag_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tag_bindings.CreateTagBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -4026,7 +4070,6 @@ async def test_delete_tag_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tag_bindings.DeleteTagBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -4055,7 +4098,6 @@ async def test_list_effective_tags_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tag_bindings.ListEffectiveTagsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4749,7 +4791,6 @@ def test_list_tag_bindings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tag_bindings.ListTagBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4771,7 +4812,6 @@ def test_create_tag_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tag_bindings.CreateTagBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -4793,7 +4833,6 @@ def test_delete_tag_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tag_bindings.DeleteTagBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -4815,7 +4854,6 @@ def test_list_effective_tags_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tag_bindings.ListEffectiveTagsRequest()
-
         assert args[0] == request_msg
 
 

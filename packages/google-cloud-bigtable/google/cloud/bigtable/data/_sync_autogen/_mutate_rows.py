@@ -25,16 +25,15 @@ from google.api_core import retry as retries
 import google.cloud.bigtable.data.exceptions as bt_exceptions
 import google.cloud.bigtable_v2.types.bigtable as types_pb
 from google.cloud.bigtable.data._cross_sync import CrossSync
-from google.cloud.bigtable.data._helpers import (
-    _attempt_timeout_generator,
-    _retry_exception_factory,
-)
+from google.cloud.bigtable.data._helpers import _attempt_timeout_generator
+from google.cloud.bigtable.data._metrics import tracked_retry
 from google.cloud.bigtable.data.mutations import (
     _MUTATE_ROWS_REQUEST_MUTATION_LIMIT,
     _EntryWithProto,
 )
 
 if TYPE_CHECKING:
+    from google.cloud.bigtable.data._metrics import ActiveOperationMetric
     from google.cloud.bigtable.data._sync_autogen.client import (
         _DataApiTarget as TargetType,
     )
@@ -61,6 +60,8 @@ class _MutateRowsOperation:
         operation_timeout: the timeout to use for the entire operation, in seconds.
         attempt_timeout: the timeout to use for each mutate_rows attempt, in seconds.
             If not specified, the request will run until operation_timeout is reached.
+        metric: the metric object representing the active operation
+        retryable_exceptions: a list of exceptions that should be retried
     """
 
     def __init__(
@@ -70,6 +71,7 @@ class _MutateRowsOperation:
         mutation_entries: list["RowMutationEntry"],
         operation_timeout: float,
         attempt_timeout: float | None,
+        metric: ActiveOperationMetric,
         retryable_exceptions: Sequence[type[Exception]] = (),
     ):
         total_mutations = sum((len(entry.mutations) for entry in mutation_entries))
@@ -82,13 +84,12 @@ class _MutateRowsOperation:
         self.is_retryable = retries.if_exception_type(
             *retryable_exceptions, bt_exceptions._MutateRowsIncomplete
         )
-        sleep_generator = retries.exponential_sleep_generator(0.01, 2, 60)
-        self._operation = lambda: CrossSync._Sync_Impl.retry_target(
-            self._run_attempt,
-            self.is_retryable,
-            sleep_generator,
-            operation_timeout,
-            exception_factory=_retry_exception_factory,
+        self._operation = lambda: tracked_retry(
+            retry_fn=CrossSync._Sync_Impl.retry_target,
+            operation=metric,
+            target=self._run_attempt,
+            predicate=self.is_retryable,
+            timeout=operation_timeout,
         )
         self.timeout_generator = _attempt_timeout_generator(
             attempt_timeout, operation_timeout
@@ -96,37 +97,39 @@ class _MutateRowsOperation:
         self.mutations = [_EntryWithProto(m, m._to_pb()) for m in mutation_entries]
         self.remaining_indices = list(range(len(self.mutations)))
         self.errors: dict[int, list[Exception]] = {}
+        self._operation_metric = metric
 
     def start(self):
         """Start the operation, and run until completion
 
         Raises:
             MutationsExceptionGroup: if any mutations failed"""
-        try:
-            self._operation()
-        except Exception as exc:
-            incomplete_indices = self.remaining_indices.copy()
-            for idx in incomplete_indices:
-                self._handle_entry_error(idx, exc)
-        finally:
-            all_errors: list[Exception] = []
-            for idx, exc_list in self.errors.items():
-                if len(exc_list) == 0:
-                    raise core_exceptions.ClientError(
-                        f"Mutation {idx} failed with no associated errors"
+        with self._operation_metric:
+            try:
+                self._operation()
+            except Exception as exc:
+                incomplete_indices = self.remaining_indices.copy()
+                for idx in incomplete_indices:
+                    self._handle_entry_error(idx, exc)
+            finally:
+                all_errors: list[Exception] = []
+                for idx, exc_list in self.errors.items():
+                    if len(exc_list) == 0:
+                        raise core_exceptions.ClientError(
+                            f"Mutation {idx} failed with no associated errors"
+                        )
+                    elif len(exc_list) == 1:
+                        cause_exc = exc_list[0]
+                    else:
+                        cause_exc = bt_exceptions.RetryExceptionGroup(exc_list)
+                    entry = self.mutations[idx].entry
+                    all_errors.append(
+                        bt_exceptions.FailedMutationEntryError(idx, entry, cause_exc)
                     )
-                elif len(exc_list) == 1:
-                    cause_exc = exc_list[0]
-                else:
-                    cause_exc = bt_exceptions.RetryExceptionGroup(exc_list)
-                entry = self.mutations[idx].entry
-                all_errors.append(
-                    bt_exceptions.FailedMutationEntryError(idx, entry, cause_exc)
-                )
-            if all_errors:
-                raise bt_exceptions.MutationsExceptionGroup(
-                    all_errors, len(self.mutations)
-                )
+                if all_errors:
+                    raise bt_exceptions.MutationsExceptionGroup(
+                        all_errors, len(self.mutations)
+                    )
 
     def _run_attempt(self):
         """Run a single attempt of the mutate_rows rpc.
@@ -135,6 +138,7 @@ class _MutateRowsOperation:
             _MutateRowsIncomplete: if there are failed mutations eligible for
                 retry after the attempt is complete
             GoogleAPICallError: if the gapic rpc fails"""
+        self._operation_metric.start_attempt()
         request_entries = [self.mutations[idx].proto for idx in self.remaining_indices]
         active_request_indices = {
             req_idx: orig_idx for req_idx, orig_idx in enumerate(self.remaining_indices)

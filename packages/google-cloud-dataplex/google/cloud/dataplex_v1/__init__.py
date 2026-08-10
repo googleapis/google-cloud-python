@@ -23,6 +23,47 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.dataplex_v1.services.business_glossary_service",
+    "google.cloud.dataplex_v1.services.catalog_service",
+    "google.cloud.dataplex_v1.services.cmek_service",
+    "google.cloud.dataplex_v1.services.content_service",
+    "google.cloud.dataplex_v1.services.data_product_service",
+    "google.cloud.dataplex_v1.services.data_scan_service",
+    "google.cloud.dataplex_v1.services.data_taxonomy_service",
+    "google.cloud.dataplex_v1.services.dataplex_service",
+    "google.cloud.dataplex_v1.services.metadata_service",
+    "google.cloud.dataplex_v1.types.analyze",
+    "google.cloud.dataplex_v1.types.approval_workflow",
+    "google.cloud.dataplex_v1.types.business_glossary",
+    "google.cloud.dataplex_v1.types.catalog",
+    "google.cloud.dataplex_v1.types.cmek",
+    "google.cloud.dataplex_v1.types.content",
+    "google.cloud.dataplex_v1.types.data_discovery",
+    "google.cloud.dataplex_v1.types.data_documentation",
+    "google.cloud.dataplex_v1.types.data_products",
+    "google.cloud.dataplex_v1.types.data_profile",
+    "google.cloud.dataplex_v1.types.data_quality",
+    "google.cloud.dataplex_v1.types.data_quality_rule_template",
+    "google.cloud.dataplex_v1.types.data_taxonomy",
+    "google.cloud.dataplex_v1.types.datascans",
+    "google.cloud.dataplex_v1.types.datascans_common",
+    "google.cloud.dataplex_v1.types.logs",
+    "google.cloud.dataplex_v1.types.metadata_",
+    "google.cloud.dataplex_v1.types.processing",
+    "google.cloud.dataplex_v1.types.resources",
+    "google.cloud.dataplex_v1.types.security",
+    "google.cloud.dataplex_v1.types.service",
+    "google.cloud.dataplex_v1.types.tasks",
+}
+
+
 from .services.business_glossary_service import (
     BusinessGlossaryServiceAsyncClient,
     BusinessGlossaryServiceClient,
@@ -45,6 +86,7 @@ from .services.data_taxonomy_service import (
 from .services.dataplex_service import DataplexServiceAsyncClient, DataplexServiceClient
 from .services.metadata_service import MetadataServiceAsyncClient, MetadataServiceClient
 from .types.analyze import Content, Environment, Session
+from .types.approval_workflow import ChangeRequest, DataProductAccessRequest
 from .types.business_glossary import (
     CreateGlossaryCategoryRequest,
     CreateGlossaryRequest,
@@ -119,6 +161,7 @@ from .types.catalog import (
     LookupEntryRequest,
     MetadataFeed,
     MetadataJob,
+    ModifyEntryRequest,
     SearchEntriesRequest,
     SearchEntriesResponse,
     SearchEntriesResult,
@@ -154,6 +197,8 @@ from .types.data_products import (
     ListDataAssetsResponse,
     ListDataProductsRequest,
     ListDataProductsResponse,
+    RequestDataProductAccessRequest,
+    RequestDataProductAccessResponse,
     UpdateDataAssetRequest,
     UpdateDataProductRequest,
 )
@@ -167,6 +212,7 @@ from .types.data_quality import (
     DataQualityRuleResult,
     DataQualitySpec,
 )
+from .types.data_quality_rule_template import DataQualityRuleTemplate
 from .types.data_taxonomy import (
     CreateDataAttributeBindingRequest,
     CreateDataAttributeRequest,
@@ -191,11 +237,14 @@ from .types.data_taxonomy import (
     UpdateDataTaxonomyRequest,
 )
 from .types.datascans import (
+    CancelDataScanJobRequest,
+    CancelDataScanJobResponse,
     CreateDataScanRequest,
     DataScan,
     DataScanJob,
     DataScanType,
     DeleteDataScanRequest,
+    ExecutionIdentity,
     GenerateDataQualityRulesRequest,
     GenerateDataQualityRulesResponse,
     GetDataScanJobRequest,
@@ -305,7 +354,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -334,9 +383,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -381,9 +430,12 @@ __all__ = (
     "AssetStatus",
     "BusinessGlossaryEvent",
     "BusinessGlossaryServiceClient",
+    "CancelDataScanJobRequest",
+    "CancelDataScanJobResponse",
     "CancelJobRequest",
     "CancelMetadataJobRequest",
     "CatalogServiceClient",
+    "ChangeRequest",
     "CmekServiceClient",
     "Content",
     "ContentServiceClient",
@@ -419,6 +471,7 @@ __all__ = (
     "DataDocumentationResult",
     "DataDocumentationSpec",
     "DataProduct",
+    "DataProductAccessRequest",
     "DataProductServiceClient",
     "DataProfileResult",
     "DataProfileSpec",
@@ -428,6 +481,7 @@ __all__ = (
     "DataQualityResult",
     "DataQualityRule",
     "DataQualityRuleResult",
+    "DataQualityRuleTemplate",
     "DataQualityScanRuleResult",
     "DataQualitySpec",
     "DataScan",
@@ -473,6 +527,7 @@ __all__ = (
     "EntryType",
     "EntryView",
     "Environment",
+    "ExecutionIdentity",
     "GenerateDataQualityRulesRequest",
     "GenerateDataQualityRulesResponse",
     "GetAspectTypeRequest",
@@ -568,8 +623,11 @@ __all__ = (
     "MetadataFeed",
     "MetadataJob",
     "MetadataServiceClient",
+    "ModifyEntryRequest",
     "OperationMetadata",
     "Partition",
+    "RequestDataProductAccessRequest",
+    "RequestDataProductAccessResponse",
     "ResourceAccessSpec",
     "RunDataScanRequest",
     "RunDataScanResponse",

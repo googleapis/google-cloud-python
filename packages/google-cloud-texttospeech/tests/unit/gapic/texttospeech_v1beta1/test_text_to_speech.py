@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -105,6 +106,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -921,7 +937,14 @@ def test_text_to_speech_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -968,7 +991,14 @@ def test_text_to_speech_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1287,8 +1317,8 @@ def test_text_to_speech_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tts.ListVoicesRequest,
-        dict,
+        cloud_tts.ListVoicesRequest(),
+        {},
     ],
 )
 def test_list_voices(request_type, transport: str = "grpc"):
@@ -1299,7 +1329,7 @@ def test_list_voices(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_voices), "__call__") as call:
@@ -1340,9 +1370,10 @@ def test_list_voices_non_empty_request_with_auto_populated_field():
         client.list_voices(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tts.ListVoicesRequest(
+        request_msg = cloud_tts.ListVoicesRequest(
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_voices_use_cached_wrapped_rpc():
@@ -1423,9 +1454,14 @@ async def test_list_voices_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_voices_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tts.ListVoicesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tts.ListVoicesRequest(),
+        {},
+    ],
+)
+async def test_list_voices_async(request_type, transport: str = "grpc_asyncio"):
     client = TextToSpeechAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1433,7 +1469,7 @@ async def test_list_voices_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_voices), "__call__") as call:
@@ -1451,11 +1487,6 @@ async def test_list_voices_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tts.ListVoicesResponse)
-
-
-@pytest.mark.asyncio
-async def test_list_voices_async_from_dict():
-    await test_list_voices_async(request_type=dict)
 
 
 def test_list_voices_flattened():
@@ -1543,8 +1574,8 @@ async def test_list_voices_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tts.SynthesizeSpeechRequest,
-        dict,
+        cloud_tts.SynthesizeSpeechRequest(),
+        {},
     ],
 )
 def test_synthesize_speech(request_type, transport: str = "grpc"):
@@ -1555,7 +1586,7 @@ def test_synthesize_speech(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1601,7 +1632,8 @@ def test_synthesize_speech_non_empty_request_with_auto_populated_field():
         client.synthesize_speech(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tts.SynthesizeSpeechRequest()
+        request_msg = cloud_tts.SynthesizeSpeechRequest()
+        assert args[0] == request_msg
 
 
 def test_synthesize_speech_use_cached_wrapped_rpc():
@@ -1684,9 +1716,14 @@ async def test_synthesize_speech_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_synthesize_speech_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tts.SynthesizeSpeechRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tts.SynthesizeSpeechRequest(),
+        {},
+    ],
+)
+async def test_synthesize_speech_async(request_type, transport: str = "grpc_asyncio"):
     client = TextToSpeechAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1694,7 +1731,7 @@ async def test_synthesize_speech_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1717,11 +1754,6 @@ async def test_synthesize_speech_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_tts.SynthesizeSpeechResponse)
     assert response.audio_content == b"audio_content_blob"
-
-
-@pytest.mark.asyncio
-async def test_synthesize_speech_async_from_dict():
-    await test_synthesize_speech_async(request_type=dict)
 
 
 def test_synthesize_speech_flattened():
@@ -1845,8 +1877,8 @@ async def test_synthesize_speech_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tts.StreamingSynthesizeRequest,
-        dict,
+        cloud_tts.StreamingSynthesizeRequest(),
+        {},
     ],
 )
 def test_streaming_synthesize(request_type, transport: str = "grpc"):
@@ -1857,7 +1889,7 @@ def test_streaming_synthesize(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1960,8 +1992,15 @@ async def test_streaming_synthesize_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tts.StreamingSynthesizeRequest(),
+        {},
+    ],
+)
 async def test_streaming_synthesize_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tts.StreamingSynthesizeRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TextToSpeechAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1970,7 +2009,7 @@ async def test_streaming_synthesize_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1992,11 +2031,6 @@ async def test_streaming_synthesize_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, cloud_tts.StreamingSynthesizeResponse)
-
-
-@pytest.mark.asyncio
-async def test_streaming_synthesize_async_from_dict():
-    await test_streaming_synthesize_async(request_type=dict)
 
 
 def test_list_voices_rest_use_cached_wrapped_rpc():
@@ -2429,7 +2463,6 @@ def test_list_voices_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tts.ListVoicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2452,7 +2485,6 @@ def test_synthesize_speech_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tts.SynthesizeSpeechRequest()
-
         assert args[0] == request_msg
 
 
@@ -2491,7 +2523,6 @@ async def test_list_voices_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tts.ListVoicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2520,7 +2551,6 @@ async def test_synthesize_speech_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tts.SynthesizeSpeechRequest()
-
         assert args[0] == request_msg
 
 
@@ -2950,7 +2980,6 @@ def test_list_voices_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tts.ListVoicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2972,7 +3001,6 @@ def test_synthesize_speech_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tts.SynthesizeSpeechRequest()
-
         assert args[0] == request_msg
 
 

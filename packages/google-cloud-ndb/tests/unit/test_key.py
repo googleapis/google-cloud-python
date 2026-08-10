@@ -14,18 +14,14 @@
 
 import base64
 import pickle
-
 from unittest import mock
 
-from google.cloud.datastore import _app_engine_key_pb2
 import google.cloud.datastore
 import pytest
+from google.cloud.datastore import _app_engine_key_pb2
 
-from google.cloud.ndb import exceptions
+from google.cloud.ndb import _options, exceptions, model, tasklets
 from google.cloud.ndb import key as key_module
-from google.cloud.ndb import model
-from google.cloud.ndb import _options
-from google.cloud.ndb import tasklets
 
 from . import utils
 
@@ -1102,8 +1098,7 @@ class Test__from_urlsafe:
     @staticmethod
     def test_basic():
         urlsafe = (
-            "agxzfnNhbXBsZS1hcHByHgsSBlBhcmVudBg7DAsSBUNoaWxkIgdGZ"
-            "WF0aGVyDKIBBXNwYWNl"
+            "agxzfnNhbXBsZS1hcHByHgsSBlBhcmVudBg7DAsSBUNoaWxkIgdGZWF0aGVyDKIBBXNwYWNl"
         )
         urlsafe_bytes = urlsafe.encode("ascii")
         for value in (urlsafe, urlsafe_bytes):

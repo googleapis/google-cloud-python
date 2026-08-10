@@ -421,8 +421,7 @@ class LineageAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._client._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -544,8 +543,7 @@ class LineageAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._client._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -672,8 +670,7 @@ class LineageAsyncClient:
             ),
         )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._client._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1171,8 +1168,7 @@ class LineageAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._client._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1797,8 +1793,7 @@ class LineageAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._client._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2746,9 +2741,7 @@ class LineageAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("LineageAsyncClient",)

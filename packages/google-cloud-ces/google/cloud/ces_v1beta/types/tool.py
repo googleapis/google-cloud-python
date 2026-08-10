@@ -17,12 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.ces_v1beta.types import agent_card, common, fakes
 from google.cloud.ces_v1beta.types import agent_tool as gcc_agent_tool
 from google.cloud.ces_v1beta.types import client_function as gcc_client_function
-from google.cloud.ces_v1beta.types import common, fakes
 from google.cloud.ces_v1beta.types import connector_tool as gcc_connector_tool
 from google.cloud.ces_v1beta.types import data_store_tool as gcc_data_store_tool
 from google.cloud.ces_v1beta.types import file_search_tool as gcc_file_search_tool
@@ -99,6 +100,10 @@ class Tool(proto.Message):
             Optional. The widget tool.
 
             This field is a member of `oneof`_ ``tool_type``.
+        remote_agent_tool (google.cloud.ces_v1beta.types.RemoteAgentTool):
+            Optional. The remote agent tool.
+
+            This field is a member of `oneof`_ ``tool_type``.
         name (str):
             Identifier. The resource name of the tool. Format:
 
@@ -116,6 +121,10 @@ class Tool(proto.Message):
             ``name`` property.
         execution_type (google.cloud.ces_v1beta.types.ExecutionType):
             Optional. The execution type of the tool.
+        timeout (google.protobuf.duration_pb2.Duration):
+            Optional. The timeout for the tool execution. If not set,
+            the default timeout is 30 seconds for ``SYNCHRONOUS`` tools
+            and 60 seconds for ``ASYNCHRONOUS`` tools.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when the tool was
             created.
@@ -202,6 +211,12 @@ class Tool(proto.Message):
         oneof="tool_type",
         message=gcc_widget_tool.WidgetTool,
     )
+    remote_agent_tool: agent_card.RemoteAgentTool = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        oneof="tool_type",
+        message=agent_card.RemoteAgentTool,
+    )
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -214,6 +229,11 @@ class Tool(proto.Message):
         proto.ENUM,
         number=12,
         enum=common.ExecutionType,
+    )
+    timeout: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message=duration_pb2.Duration,
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

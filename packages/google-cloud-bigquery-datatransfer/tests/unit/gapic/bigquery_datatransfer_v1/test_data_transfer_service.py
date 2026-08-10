@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -113,6 +114,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -995,7 +1011,14 @@ def test_data_transfer_service_client_get_mtls_endpoint_and_cert_source(client_c
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1042,7 +1065,14 @@ def test_data_transfer_service_client_get_mtls_endpoint_and_cert_source(client_c
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1378,8 +1408,8 @@ def test_data_transfer_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.GetDataSourceRequest,
-        dict,
+        datatransfer.GetDataSourceRequest(),
+        {},
     ],
 )
 def test_get_data_source(request_type, transport: str = "grpc"):
@@ -1390,7 +1420,7 @@ def test_get_data_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_source), "__call__") as call:
@@ -1470,9 +1500,10 @@ def test_get_data_source_non_empty_request_with_auto_populated_field():
         client.get_data_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.GetDataSourceRequest(
+        request_msg = datatransfer.GetDataSourceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_data_source_use_cached_wrapped_rpc():
@@ -1553,9 +1584,14 @@ async def test_get_data_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_data_source_async(
-    transport: str = "grpc_asyncio", request_type=datatransfer.GetDataSourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.GetDataSourceRequest(),
+        {},
+    ],
+)
+async def test_get_data_source_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1563,7 +1599,7 @@ async def test_get_data_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_source), "__call__") as call:
@@ -1620,11 +1656,6 @@ async def test_get_data_source_async(
     )
     assert response.default_data_refresh_window_days == 3379
     assert response.manual_runs_disabled is True
-
-
-@pytest.mark.asyncio
-async def test_get_data_source_async_from_dict():
-    await test_get_data_source_async(request_type=dict)
 
 
 def test_get_data_source_field_headers():
@@ -1773,8 +1804,8 @@ async def test_get_data_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.ListDataSourcesRequest,
-        dict,
+        datatransfer.ListDataSourcesRequest(),
+        {},
     ],
 )
 def test_list_data_sources(request_type, transport: str = "grpc"):
@@ -1785,7 +1816,7 @@ def test_list_data_sources(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1834,10 +1865,11 @@ def test_list_data_sources_non_empty_request_with_auto_populated_field():
         client.list_data_sources(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ListDataSourcesRequest(
+        request_msg = datatransfer.ListDataSourcesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_data_sources_use_cached_wrapped_rpc():
@@ -1920,9 +1952,14 @@ async def test_list_data_sources_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_data_sources_async(
-    transport: str = "grpc_asyncio", request_type=datatransfer.ListDataSourcesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.ListDataSourcesRequest(),
+        {},
+    ],
+)
+async def test_list_data_sources_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1930,7 +1967,7 @@ async def test_list_data_sources_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1953,11 +1990,6 @@ async def test_list_data_sources_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataSourcesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_data_sources_async_from_dict():
-    await test_list_data_sources_async(request_type=dict)
 
 
 def test_list_data_sources_field_headers():
@@ -2162,6 +2194,9 @@ def test_list_data_sources_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, datatransfer.DataSource) for i in results)
@@ -2254,6 +2289,8 @@ async def test_list_data_sources_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2312,8 +2349,8 @@ async def test_list_data_sources_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.CreateTransferConfigRequest,
-        dict,
+        datatransfer.CreateTransferConfigRequest(),
+        {},
     ],
 )
 def test_create_transfer_config(request_type, transport: str = "grpc"):
@@ -2324,7 +2361,7 @@ def test_create_transfer_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2394,12 +2431,13 @@ def test_create_transfer_config_non_empty_request_with_auto_populated_field():
         client.create_transfer_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.CreateTransferConfigRequest(
+        request_msg = datatransfer.CreateTransferConfigRequest(
             parent="parent_value",
             authorization_code="authorization_code_value",
             version_info="version_info_value",
             service_account_name="service_account_name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_transfer_config_use_cached_wrapped_rpc():
@@ -2485,9 +2523,15 @@ async def test_create_transfer_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.CreateTransferConfigRequest(),
+        {},
+    ],
+)
 async def test_create_transfer_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=datatransfer.CreateTransferConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2496,7 +2540,7 @@ async def test_create_transfer_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2537,11 +2581,6 @@ async def test_create_transfer_config_async(
     assert response.user_id == 747
     assert response.dataset_region == "dataset_region_value"
     assert response.notification_pubsub_topic == "notification_pubsub_topic_value"
-
-
-@pytest.mark.asyncio
-async def test_create_transfer_config_async_from_dict():
-    await test_create_transfer_config_async(request_type=dict)
 
 
 def test_create_transfer_config_field_headers():
@@ -2708,8 +2747,8 @@ async def test_create_transfer_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.UpdateTransferConfigRequest,
-        dict,
+        datatransfer.UpdateTransferConfigRequest(),
+        {},
     ],
 )
 def test_update_transfer_config(request_type, transport: str = "grpc"):
@@ -2720,7 +2759,7 @@ def test_update_transfer_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2789,11 +2828,12 @@ def test_update_transfer_config_non_empty_request_with_auto_populated_field():
         client.update_transfer_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.UpdateTransferConfigRequest(
+        request_msg = datatransfer.UpdateTransferConfigRequest(
             authorization_code="authorization_code_value",
             version_info="version_info_value",
             service_account_name="service_account_name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_transfer_config_use_cached_wrapped_rpc():
@@ -2879,9 +2919,15 @@ async def test_update_transfer_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.UpdateTransferConfigRequest(),
+        {},
+    ],
+)
 async def test_update_transfer_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=datatransfer.UpdateTransferConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2890,7 +2936,7 @@ async def test_update_transfer_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2931,11 +2977,6 @@ async def test_update_transfer_config_async(
     assert response.user_id == 747
     assert response.dataset_region == "dataset_region_value"
     assert response.notification_pubsub_topic == "notification_pubsub_topic_value"
-
-
-@pytest.mark.asyncio
-async def test_update_transfer_config_async_from_dict():
-    await test_update_transfer_config_async(request_type=dict)
 
 
 def test_update_transfer_config_field_headers():
@@ -3102,8 +3143,8 @@ async def test_update_transfer_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.DeleteTransferConfigRequest,
-        dict,
+        datatransfer.DeleteTransferConfigRequest(),
+        {},
     ],
 )
 def test_delete_transfer_config(request_type, transport: str = "grpc"):
@@ -3114,7 +3155,7 @@ def test_delete_transfer_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3159,9 +3200,10 @@ def test_delete_transfer_config_non_empty_request_with_auto_populated_field():
         client.delete_transfer_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.DeleteTransferConfigRequest(
+        request_msg = datatransfer.DeleteTransferConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_transfer_config_use_cached_wrapped_rpc():
@@ -3247,9 +3289,15 @@ async def test_delete_transfer_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.DeleteTransferConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_transfer_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=datatransfer.DeleteTransferConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3258,7 +3306,7 @@ async def test_delete_transfer_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3276,11 +3324,6 @@ async def test_delete_transfer_config_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_transfer_config_async_from_dict():
-    await test_delete_transfer_config_async(request_type=dict)
 
 
 def test_delete_transfer_config_field_headers():
@@ -3433,8 +3476,8 @@ async def test_delete_transfer_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.GetTransferConfigRequest,
-        dict,
+        datatransfer.GetTransferConfigRequest(),
+        {},
     ],
 )
 def test_get_transfer_config(request_type, transport: str = "grpc"):
@@ -3445,7 +3488,7 @@ def test_get_transfer_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3512,9 +3555,10 @@ def test_get_transfer_config_non_empty_request_with_auto_populated_field():
         client.get_transfer_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.GetTransferConfigRequest(
+        request_msg = datatransfer.GetTransferConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_transfer_config_use_cached_wrapped_rpc():
@@ -3599,9 +3643,14 @@ async def test_get_transfer_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_transfer_config_async(
-    transport: str = "grpc_asyncio", request_type=datatransfer.GetTransferConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.GetTransferConfigRequest(),
+        {},
+    ],
+)
+async def test_get_transfer_config_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3609,7 +3658,7 @@ async def test_get_transfer_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3650,11 +3699,6 @@ async def test_get_transfer_config_async(
     assert response.user_id == 747
     assert response.dataset_region == "dataset_region_value"
     assert response.notification_pubsub_topic == "notification_pubsub_topic_value"
-
-
-@pytest.mark.asyncio
-async def test_get_transfer_config_async_from_dict():
-    await test_get_transfer_config_async(request_type=dict)
 
 
 def test_get_transfer_config_field_headers():
@@ -3811,8 +3855,8 @@ async def test_get_transfer_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.ListTransferConfigsRequest,
-        dict,
+        datatransfer.ListTransferConfigsRequest(),
+        {},
     ],
 )
 def test_list_transfer_configs(request_type, transport: str = "grpc"):
@@ -3823,7 +3867,7 @@ def test_list_transfer_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3872,10 +3916,11 @@ def test_list_transfer_configs_non_empty_request_with_auto_populated_field():
         client.list_transfer_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ListTransferConfigsRequest(
+        request_msg = datatransfer.ListTransferConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_transfer_configs_use_cached_wrapped_rpc():
@@ -3961,9 +4006,15 @@ async def test_list_transfer_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.ListTransferConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_transfer_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=datatransfer.ListTransferConfigsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3972,7 +4023,7 @@ async def test_list_transfer_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3995,11 +4046,6 @@ async def test_list_transfer_configs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_transfer_configs_async_from_dict():
-    await test_list_transfer_configs_async(request_type=dict)
 
 
 def test_list_transfer_configs_field_headers():
@@ -4204,6 +4250,9 @@ def test_list_transfer_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, transfer.TransferConfig) for i in results)
@@ -4296,6 +4345,8 @@ async def test_list_transfer_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4354,8 +4405,8 @@ async def test_list_transfer_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.ScheduleTransferRunsRequest,
-        dict,
+        datatransfer.ScheduleTransferRunsRequest(),
+        {},
     ],
 )
 def test_schedule_transfer_runs(request_type, transport: str = "grpc"):
@@ -4366,7 +4417,7 @@ def test_schedule_transfer_runs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4411,9 +4462,10 @@ def test_schedule_transfer_runs_non_empty_request_with_auto_populated_field():
         client.schedule_transfer_runs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ScheduleTransferRunsRequest(
+        request_msg = datatransfer.ScheduleTransferRunsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_schedule_transfer_runs_use_cached_wrapped_rpc():
@@ -4499,9 +4551,15 @@ async def test_schedule_transfer_runs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.ScheduleTransferRunsRequest(),
+        {},
+    ],
+)
 async def test_schedule_transfer_runs_async(
-    transport: str = "grpc_asyncio",
-    request_type=datatransfer.ScheduleTransferRunsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4510,7 +4568,7 @@ async def test_schedule_transfer_runs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4530,11 +4588,6 @@ async def test_schedule_transfer_runs_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datatransfer.ScheduleTransferRunsResponse)
-
-
-@pytest.mark.asyncio
-async def test_schedule_transfer_runs_async_from_dict():
-    await test_schedule_transfer_runs_async(request_type=dict)
 
 
 def test_schedule_transfer_runs_field_headers():
@@ -4711,8 +4764,8 @@ async def test_schedule_transfer_runs_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.StartManualTransferRunsRequest,
-        dict,
+        datatransfer.StartManualTransferRunsRequest(),
+        {},
     ],
 )
 def test_start_manual_transfer_runs(request_type, transport: str = "grpc"):
@@ -4723,7 +4776,7 @@ def test_start_manual_transfer_runs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4768,9 +4821,10 @@ def test_start_manual_transfer_runs_non_empty_request_with_auto_populated_field(
         client.start_manual_transfer_runs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.StartManualTransferRunsRequest(
+        request_msg = datatransfer.StartManualTransferRunsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_start_manual_transfer_runs_use_cached_wrapped_rpc():
@@ -4856,9 +4910,15 @@ async def test_start_manual_transfer_runs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.StartManualTransferRunsRequest(),
+        {},
+    ],
+)
 async def test_start_manual_transfer_runs_async(
-    transport: str = "grpc_asyncio",
-    request_type=datatransfer.StartManualTransferRunsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4867,7 +4927,7 @@ async def test_start_manual_transfer_runs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4887,11 +4947,6 @@ async def test_start_manual_transfer_runs_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datatransfer.StartManualTransferRunsResponse)
-
-
-@pytest.mark.asyncio
-async def test_start_manual_transfer_runs_async_from_dict():
-    await test_start_manual_transfer_runs_async(request_type=dict)
 
 
 def test_start_manual_transfer_runs_field_headers():
@@ -4962,8 +5017,8 @@ async def test_start_manual_transfer_runs_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.GetTransferRunRequest,
-        dict,
+        datatransfer.GetTransferRunRequest(),
+        {},
     ],
 )
 def test_get_transfer_run(request_type, transport: str = "grpc"):
@@ -4974,7 +5029,7 @@ def test_get_transfer_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_transfer_run), "__call__") as call:
@@ -5029,9 +5084,10 @@ def test_get_transfer_run_non_empty_request_with_auto_populated_field():
         client.get_transfer_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.GetTransferRunRequest(
+        request_msg = datatransfer.GetTransferRunRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_transfer_run_use_cached_wrapped_rpc():
@@ -5114,9 +5170,14 @@ async def test_get_transfer_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_transfer_run_async(
-    transport: str = "grpc_asyncio", request_type=datatransfer.GetTransferRunRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.GetTransferRunRequest(),
+        {},
+    ],
+)
+async def test_get_transfer_run_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5124,7 +5185,7 @@ async def test_get_transfer_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_transfer_run), "__call__") as call:
@@ -5155,11 +5216,6 @@ async def test_get_transfer_run_async(
     assert response.user_id == 747
     assert response.schedule == "schedule_value"
     assert response.notification_pubsub_topic == "notification_pubsub_topic_value"
-
-
-@pytest.mark.asyncio
-async def test_get_transfer_run_async_from_dict():
-    await test_get_transfer_run_async(request_type=dict)
 
 
 def test_get_transfer_run_field_headers():
@@ -5308,8 +5364,8 @@ async def test_get_transfer_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.DeleteTransferRunRequest,
-        dict,
+        datatransfer.DeleteTransferRunRequest(),
+        {},
     ],
 )
 def test_delete_transfer_run(request_type, transport: str = "grpc"):
@@ -5320,7 +5376,7 @@ def test_delete_transfer_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5365,9 +5421,10 @@ def test_delete_transfer_run_non_empty_request_with_auto_populated_field():
         client.delete_transfer_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.DeleteTransferRunRequest(
+        request_msg = datatransfer.DeleteTransferRunRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_transfer_run_use_cached_wrapped_rpc():
@@ -5452,9 +5509,14 @@ async def test_delete_transfer_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_transfer_run_async(
-    transport: str = "grpc_asyncio", request_type=datatransfer.DeleteTransferRunRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.DeleteTransferRunRequest(),
+        {},
+    ],
+)
+async def test_delete_transfer_run_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5462,7 +5524,7 @@ async def test_delete_transfer_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5480,11 +5542,6 @@ async def test_delete_transfer_run_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_transfer_run_async_from_dict():
-    await test_delete_transfer_run_async(request_type=dict)
 
 
 def test_delete_transfer_run_field_headers():
@@ -5637,8 +5694,8 @@ async def test_delete_transfer_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.ListTransferRunsRequest,
-        dict,
+        datatransfer.ListTransferRunsRequest(),
+        {},
     ],
 )
 def test_list_transfer_runs(request_type, transport: str = "grpc"):
@@ -5649,7 +5706,7 @@ def test_list_transfer_runs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5698,10 +5755,11 @@ def test_list_transfer_runs_non_empty_request_with_auto_populated_field():
         client.list_transfer_runs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ListTransferRunsRequest(
+        request_msg = datatransfer.ListTransferRunsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_transfer_runs_use_cached_wrapped_rpc():
@@ -5786,9 +5844,14 @@ async def test_list_transfer_runs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_transfer_runs_async(
-    transport: str = "grpc_asyncio", request_type=datatransfer.ListTransferRunsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.ListTransferRunsRequest(),
+        {},
+    ],
+)
+async def test_list_transfer_runs_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5796,7 +5859,7 @@ async def test_list_transfer_runs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5819,11 +5882,6 @@ async def test_list_transfer_runs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferRunsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_transfer_runs_async_from_dict():
-    await test_list_transfer_runs_async(request_type=dict)
 
 
 def test_list_transfer_runs_field_headers():
@@ -6028,6 +6086,9 @@ def test_list_transfer_runs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, transfer.TransferRun) for i in results)
@@ -6120,6 +6181,8 @@ async def test_list_transfer_runs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6178,8 +6241,8 @@ async def test_list_transfer_runs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.ListTransferLogsRequest,
-        dict,
+        datatransfer.ListTransferLogsRequest(),
+        {},
     ],
 )
 def test_list_transfer_logs(request_type, transport: str = "grpc"):
@@ -6190,7 +6253,7 @@ def test_list_transfer_logs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6239,10 +6302,11 @@ def test_list_transfer_logs_non_empty_request_with_auto_populated_field():
         client.list_transfer_logs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.ListTransferLogsRequest(
+        request_msg = datatransfer.ListTransferLogsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_transfer_logs_use_cached_wrapped_rpc():
@@ -6327,9 +6391,14 @@ async def test_list_transfer_logs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_transfer_logs_async(
-    transport: str = "grpc_asyncio", request_type=datatransfer.ListTransferLogsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.ListTransferLogsRequest(),
+        {},
+    ],
+)
+async def test_list_transfer_logs_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6337,7 +6406,7 @@ async def test_list_transfer_logs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6360,11 +6429,6 @@ async def test_list_transfer_logs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferLogsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_transfer_logs_async_from_dict():
-    await test_list_transfer_logs_async(request_type=dict)
 
 
 def test_list_transfer_logs_field_headers():
@@ -6569,6 +6633,9 @@ def test_list_transfer_logs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, transfer.TransferMessage) for i in results)
@@ -6661,6 +6728,8 @@ async def test_list_transfer_logs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6719,8 +6788,8 @@ async def test_list_transfer_logs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.CheckValidCredsRequest,
-        dict,
+        datatransfer.CheckValidCredsRequest(),
+        {},
     ],
 )
 def test_check_valid_creds(request_type, transport: str = "grpc"):
@@ -6731,7 +6800,7 @@ def test_check_valid_creds(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6779,9 +6848,10 @@ def test_check_valid_creds_non_empty_request_with_auto_populated_field():
         client.check_valid_creds(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.CheckValidCredsRequest(
+        request_msg = datatransfer.CheckValidCredsRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_check_valid_creds_use_cached_wrapped_rpc():
@@ -6864,9 +6934,14 @@ async def test_check_valid_creds_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_check_valid_creds_async(
-    transport: str = "grpc_asyncio", request_type=datatransfer.CheckValidCredsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.CheckValidCredsRequest(),
+        {},
+    ],
+)
+async def test_check_valid_creds_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6874,7 +6949,7 @@ async def test_check_valid_creds_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6897,11 +6972,6 @@ async def test_check_valid_creds_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, datatransfer.CheckValidCredsResponse)
     assert response.has_valid_creds is True
-
-
-@pytest.mark.asyncio
-async def test_check_valid_creds_async_from_dict():
-    await test_check_valid_creds_async(request_type=dict)
 
 
 def test_check_valid_creds_field_headers():
@@ -7058,8 +7128,8 @@ async def test_check_valid_creds_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.EnrollDataSourcesRequest,
-        dict,
+        datatransfer.EnrollDataSourcesRequest(),
+        {},
     ],
 )
 def test_enroll_data_sources(request_type, transport: str = "grpc"):
@@ -7070,7 +7140,7 @@ def test_enroll_data_sources(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7115,9 +7185,10 @@ def test_enroll_data_sources_non_empty_request_with_auto_populated_field():
         client.enroll_data_sources(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.EnrollDataSourcesRequest(
+        request_msg = datatransfer.EnrollDataSourcesRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_enroll_data_sources_use_cached_wrapped_rpc():
@@ -7202,9 +7273,14 @@ async def test_enroll_data_sources_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_enroll_data_sources_async(
-    transport: str = "grpc_asyncio", request_type=datatransfer.EnrollDataSourcesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.EnrollDataSourcesRequest(),
+        {},
+    ],
+)
+async def test_enroll_data_sources_async(request_type, transport: str = "grpc_asyncio"):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7212,7 +7288,7 @@ async def test_enroll_data_sources_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7230,11 +7306,6 @@ async def test_enroll_data_sources_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_enroll_data_sources_async_from_dict():
-    await test_enroll_data_sources_async(request_type=dict)
 
 
 def test_enroll_data_sources_field_headers():
@@ -7303,8 +7374,8 @@ async def test_enroll_data_sources_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datatransfer.UnenrollDataSourcesRequest,
-        dict,
+        datatransfer.UnenrollDataSourcesRequest(),
+        {},
     ],
 )
 def test_unenroll_data_sources(request_type, transport: str = "grpc"):
@@ -7315,7 +7386,7 @@ def test_unenroll_data_sources(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7360,9 +7431,10 @@ def test_unenroll_data_sources_non_empty_request_with_auto_populated_field():
         client.unenroll_data_sources(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datatransfer.UnenrollDataSourcesRequest(
+        request_msg = datatransfer.UnenrollDataSourcesRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_unenroll_data_sources_use_cached_wrapped_rpc():
@@ -7448,9 +7520,15 @@ async def test_unenroll_data_sources_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datatransfer.UnenrollDataSourcesRequest(),
+        {},
+    ],
+)
 async def test_unenroll_data_sources_async(
-    transport: str = "grpc_asyncio",
-    request_type=datatransfer.UnenrollDataSourcesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataTransferServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7459,7 +7537,7 @@ async def test_unenroll_data_sources_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7477,11 +7555,6 @@ async def test_unenroll_data_sources_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_unenroll_data_sources_async_from_dict():
-    await test_unenroll_data_sources_async(request_type=dict)
 
 
 def test_unenroll_data_sources_field_headers():
@@ -7975,6 +8048,9 @@ def test_list_data_sources_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_data_sources(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -9020,6 +9096,9 @@ def test_list_transfer_configs_rest_pager(transport: str = "rest"):
 
         pager = client.list_transfer_configs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, transfer.TransferConfig) for i in results)
@@ -9974,6 +10053,9 @@ def test_list_transfer_runs_rest_pager(transport: str = "rest"):
 
         pager = client.list_transfer_runs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, transfer.TransferRun) for i in results)
@@ -10239,6 +10321,9 @@ def test_list_transfer_logs_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_transfer_logs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -10800,7 +10885,6 @@ def test_get_data_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.GetDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10823,7 +10907,6 @@ def test_list_data_sources_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ListDataSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10846,7 +10929,6 @@ def test_create_transfer_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.CreateTransferConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10869,7 +10951,6 @@ def test_update_transfer_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.UpdateTransferConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10892,7 +10973,6 @@ def test_delete_transfer_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.DeleteTransferConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10915,7 +10995,6 @@ def test_get_transfer_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.GetTransferConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10938,7 +11017,6 @@ def test_list_transfer_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ListTransferConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10961,7 +11039,6 @@ def test_schedule_transfer_runs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ScheduleTransferRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10984,7 +11061,6 @@ def test_start_manual_transfer_runs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.StartManualTransferRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11005,7 +11081,6 @@ def test_get_transfer_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.GetTransferRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -11028,7 +11103,6 @@ def test_delete_transfer_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.DeleteTransferRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -11051,7 +11125,6 @@ def test_list_transfer_runs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ListTransferRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11074,7 +11147,6 @@ def test_list_transfer_logs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ListTransferLogsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11097,7 +11169,6 @@ def test_check_valid_creds_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.CheckValidCredsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11120,7 +11191,6 @@ def test_enroll_data_sources_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.EnrollDataSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11143,7 +11213,6 @@ def test_unenroll_data_sources_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.UnenrollDataSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11199,7 +11268,6 @@ async def test_get_data_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.GetDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11228,7 +11296,6 @@ async def test_list_data_sources_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ListDataSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11266,7 +11333,6 @@ async def test_create_transfer_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.CreateTransferConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -11304,7 +11370,6 @@ async def test_update_transfer_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.UpdateTransferConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -11329,7 +11394,6 @@ async def test_delete_transfer_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.DeleteTransferConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -11367,7 +11431,6 @@ async def test_get_transfer_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.GetTransferConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -11396,7 +11459,6 @@ async def test_list_transfer_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ListTransferConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11423,7 +11485,6 @@ async def test_schedule_transfer_runs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ScheduleTransferRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11450,7 +11511,6 @@ async def test_start_manual_transfer_runs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.StartManualTransferRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11482,7 +11542,6 @@ async def test_get_transfer_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.GetTransferRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -11507,7 +11566,6 @@ async def test_delete_transfer_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.DeleteTransferRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -11536,7 +11594,6 @@ async def test_list_transfer_runs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ListTransferRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11565,7 +11622,6 @@ async def test_list_transfer_logs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ListTransferLogsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11594,7 +11650,6 @@ async def test_check_valid_creds_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.CheckValidCredsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11619,7 +11674,6 @@ async def test_enroll_data_sources_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.EnrollDataSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11644,7 +11698,6 @@ async def test_unenroll_data_sources_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.UnenrollDataSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14211,7 +14264,6 @@ def test_get_data_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.GetDataSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -14233,7 +14285,6 @@ def test_list_data_sources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ListDataSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14255,7 +14306,6 @@ def test_create_transfer_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.CreateTransferConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14277,7 +14327,6 @@ def test_update_transfer_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.UpdateTransferConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14299,7 +14348,6 @@ def test_delete_transfer_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.DeleteTransferConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14321,7 +14369,6 @@ def test_get_transfer_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.GetTransferConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14343,7 +14390,6 @@ def test_list_transfer_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ListTransferConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14365,7 +14411,6 @@ def test_schedule_transfer_runs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ScheduleTransferRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14387,7 +14432,6 @@ def test_start_manual_transfer_runs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.StartManualTransferRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14407,7 +14451,6 @@ def test_get_transfer_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.GetTransferRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -14429,7 +14472,6 @@ def test_delete_transfer_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.DeleteTransferRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -14451,7 +14493,6 @@ def test_list_transfer_runs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ListTransferRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14473,7 +14514,6 @@ def test_list_transfer_logs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.ListTransferLogsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14495,7 +14535,6 @@ def test_check_valid_creds_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.CheckValidCredsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14517,7 +14556,6 @@ def test_enroll_data_sources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.EnrollDataSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14539,7 +14577,6 @@ def test_unenroll_data_sources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datatransfer.UnenrollDataSourcesRequest()
-
         assert args[0] == request_msg
 
 

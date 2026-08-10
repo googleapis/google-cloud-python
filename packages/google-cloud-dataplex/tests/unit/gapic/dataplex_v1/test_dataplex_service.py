@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -120,6 +121,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -979,7 +995,14 @@ def test_dataplex_service_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1026,7 +1049,14 @@ def test_dataplex_service_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1335,7 +1365,12 @@ def test_dataplex_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             scopes=None,
             default_host="dataplex.googleapis.com",
             ssl_credentials=None,
@@ -1349,8 +1384,8 @@ def test_dataplex_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateLakeRequest,
-        dict,
+        service.CreateLakeRequest(),
+        {},
     ],
 )
 def test_create_lake(request_type, transport: str = "grpc"):
@@ -1361,7 +1396,7 @@ def test_create_lake(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_lake), "__call__") as call:
@@ -1403,10 +1438,11 @@ def test_create_lake_non_empty_request_with_auto_populated_field():
         client.create_lake(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateLakeRequest(
+        request_msg = service.CreateLakeRequest(
             parent="parent_value",
             lake_id="lake_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_lake_use_cached_wrapped_rpc():
@@ -1497,9 +1533,14 @@ async def test_create_lake_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_lake_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateLakeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateLakeRequest(),
+        {},
+    ],
+)
+async def test_create_lake_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1507,7 +1548,7 @@ async def test_create_lake_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_lake), "__call__") as call:
@@ -1525,11 +1566,6 @@ async def test_create_lake_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_lake_async_from_dict():
-    await test_create_lake_async(request_type=dict)
 
 
 def test_create_lake_field_headers():
@@ -1698,8 +1734,8 @@ async def test_create_lake_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateLakeRequest,
-        dict,
+        service.UpdateLakeRequest(),
+        {},
     ],
 )
 def test_update_lake(request_type, transport: str = "grpc"):
@@ -1710,7 +1746,7 @@ def test_update_lake(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_lake), "__call__") as call:
@@ -1749,7 +1785,8 @@ def test_update_lake_non_empty_request_with_auto_populated_field():
         client.update_lake(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateLakeRequest()
+        request_msg = service.UpdateLakeRequest()
+        assert args[0] == request_msg
 
 
 def test_update_lake_use_cached_wrapped_rpc():
@@ -1840,9 +1877,14 @@ async def test_update_lake_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_lake_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateLakeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateLakeRequest(),
+        {},
+    ],
+)
+async def test_update_lake_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1850,7 +1892,7 @@ async def test_update_lake_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_lake), "__call__") as call:
@@ -1868,11 +1910,6 @@ async def test_update_lake_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_lake_async_from_dict():
-    await test_update_lake_async(request_type=dict)
 
 
 def test_update_lake_field_headers():
@@ -2031,8 +2068,8 @@ async def test_update_lake_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteLakeRequest,
-        dict,
+        service.DeleteLakeRequest(),
+        {},
     ],
 )
 def test_delete_lake(request_type, transport: str = "grpc"):
@@ -2043,7 +2080,7 @@ def test_delete_lake(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_lake), "__call__") as call:
@@ -2084,9 +2121,10 @@ def test_delete_lake_non_empty_request_with_auto_populated_field():
         client.delete_lake(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteLakeRequest(
+        request_msg = service.DeleteLakeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_lake_use_cached_wrapped_rpc():
@@ -2177,9 +2215,14 @@ async def test_delete_lake_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_lake_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteLakeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteLakeRequest(),
+        {},
+    ],
+)
+async def test_delete_lake_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2187,7 +2230,7 @@ async def test_delete_lake_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_lake), "__call__") as call:
@@ -2205,11 +2248,6 @@ async def test_delete_lake_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_lake_async_from_dict():
-    await test_delete_lake_async(request_type=dict)
 
 
 def test_delete_lake_field_headers():
@@ -2358,8 +2396,8 @@ async def test_delete_lake_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListLakesRequest,
-        dict,
+        service.ListLakesRequest(),
+        {},
     ],
 )
 def test_list_lakes(request_type, transport: str = "grpc"):
@@ -2370,7 +2408,7 @@ def test_list_lakes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_lakes), "__call__") as call:
@@ -2419,12 +2457,13 @@ def test_list_lakes_non_empty_request_with_auto_populated_field():
         client.list_lakes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListLakesRequest(
+        request_msg = service.ListLakesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_lakes_use_cached_wrapped_rpc():
@@ -2503,9 +2542,14 @@ async def test_list_lakes_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_lakes_async(
-    transport: str = "grpc_asyncio", request_type=service.ListLakesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListLakesRequest(),
+        {},
+    ],
+)
+async def test_list_lakes_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2513,7 +2557,7 @@ async def test_list_lakes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_lakes), "__call__") as call:
@@ -2536,11 +2580,6 @@ async def test_list_lakes_async(
     assert isinstance(response, pagers.ListLakesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_lakes_async_from_dict():
-    await test_list_lakes_async(request_type=dict)
 
 
 def test_list_lakes_field_headers():
@@ -2735,6 +2774,9 @@ def test_list_lakes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Lake) for i in results)
@@ -2823,6 +2865,8 @@ async def test_list_lakes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2879,8 +2923,8 @@ async def test_list_lakes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetLakeRequest,
-        dict,
+        service.GetLakeRequest(),
+        {},
     ],
 )
 def test_get_lake(request_type, transport: str = "grpc"):
@@ -2891,7 +2935,7 @@ def test_get_lake(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_lake), "__call__") as call:
@@ -2945,9 +2989,10 @@ def test_get_lake_non_empty_request_with_auto_populated_field():
         client.get_lake(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetLakeRequest(
+        request_msg = service.GetLakeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_lake_use_cached_wrapped_rpc():
@@ -3026,9 +3071,14 @@ async def test_get_lake_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_lake_async(
-    transport: str = "grpc_asyncio", request_type=service.GetLakeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetLakeRequest(),
+        {},
+    ],
+)
+async def test_get_lake_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3036,7 +3086,7 @@ async def test_get_lake_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_lake), "__call__") as call:
@@ -3067,11 +3117,6 @@ async def test_get_lake_async(
     assert response.description == "description_value"
     assert response.state == resources.State.ACTIVE
     assert response.service_account == "service_account_value"
-
-
-@pytest.mark.asyncio
-async def test_get_lake_async_from_dict():
-    await test_get_lake_async(request_type=dict)
 
 
 def test_get_lake_field_headers():
@@ -3216,8 +3261,8 @@ async def test_get_lake_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListLakeActionsRequest,
-        dict,
+        service.ListLakeActionsRequest(),
+        {},
     ],
 )
 def test_list_lake_actions(request_type, transport: str = "grpc"):
@@ -3228,7 +3273,7 @@ def test_list_lake_actions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3277,10 +3322,11 @@ def test_list_lake_actions_non_empty_request_with_auto_populated_field():
         client.list_lake_actions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListLakeActionsRequest(
+        request_msg = service.ListLakeActionsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_lake_actions_use_cached_wrapped_rpc():
@@ -3363,9 +3409,14 @@ async def test_list_lake_actions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_lake_actions_async(
-    transport: str = "grpc_asyncio", request_type=service.ListLakeActionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListLakeActionsRequest(),
+        {},
+    ],
+)
+async def test_list_lake_actions_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3373,7 +3424,7 @@ async def test_list_lake_actions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3396,11 +3447,6 @@ async def test_list_lake_actions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLakeActionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_lake_actions_async_from_dict():
-    await test_list_lake_actions_async(request_type=dict)
 
 
 def test_list_lake_actions_field_headers():
@@ -3605,6 +3651,9 @@ def test_list_lake_actions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Action) for i in results)
@@ -3697,6 +3746,8 @@ async def test_list_lake_actions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3755,8 +3806,8 @@ async def test_list_lake_actions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateZoneRequest,
-        dict,
+        service.CreateZoneRequest(),
+        {},
     ],
 )
 def test_create_zone(request_type, transport: str = "grpc"):
@@ -3767,7 +3818,7 @@ def test_create_zone(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_zone), "__call__") as call:
@@ -3809,10 +3860,11 @@ def test_create_zone_non_empty_request_with_auto_populated_field():
         client.create_zone(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateZoneRequest(
+        request_msg = service.CreateZoneRequest(
             parent="parent_value",
             zone_id="zone_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_zone_use_cached_wrapped_rpc():
@@ -3903,9 +3955,14 @@ async def test_create_zone_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_zone_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateZoneRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateZoneRequest(),
+        {},
+    ],
+)
+async def test_create_zone_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3913,7 +3970,7 @@ async def test_create_zone_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_zone), "__call__") as call:
@@ -3931,11 +3988,6 @@ async def test_create_zone_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_zone_async_from_dict():
-    await test_create_zone_async(request_type=dict)
 
 
 def test_create_zone_field_headers():
@@ -4104,8 +4156,8 @@ async def test_create_zone_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateZoneRequest,
-        dict,
+        service.UpdateZoneRequest(),
+        {},
     ],
 )
 def test_update_zone(request_type, transport: str = "grpc"):
@@ -4116,7 +4168,7 @@ def test_update_zone(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_zone), "__call__") as call:
@@ -4155,7 +4207,8 @@ def test_update_zone_non_empty_request_with_auto_populated_field():
         client.update_zone(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateZoneRequest()
+        request_msg = service.UpdateZoneRequest()
+        assert args[0] == request_msg
 
 
 def test_update_zone_use_cached_wrapped_rpc():
@@ -4246,9 +4299,14 @@ async def test_update_zone_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_zone_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateZoneRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateZoneRequest(),
+        {},
+    ],
+)
+async def test_update_zone_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4256,7 +4314,7 @@ async def test_update_zone_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_zone), "__call__") as call:
@@ -4274,11 +4332,6 @@ async def test_update_zone_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_zone_async_from_dict():
-    await test_update_zone_async(request_type=dict)
 
 
 def test_update_zone_field_headers():
@@ -4437,8 +4490,8 @@ async def test_update_zone_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteZoneRequest,
-        dict,
+        service.DeleteZoneRequest(),
+        {},
     ],
 )
 def test_delete_zone(request_type, transport: str = "grpc"):
@@ -4449,7 +4502,7 @@ def test_delete_zone(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_zone), "__call__") as call:
@@ -4490,9 +4543,10 @@ def test_delete_zone_non_empty_request_with_auto_populated_field():
         client.delete_zone(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteZoneRequest(
+        request_msg = service.DeleteZoneRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_zone_use_cached_wrapped_rpc():
@@ -4583,9 +4637,14 @@ async def test_delete_zone_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_zone_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteZoneRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteZoneRequest(),
+        {},
+    ],
+)
+async def test_delete_zone_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4593,7 +4652,7 @@ async def test_delete_zone_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_zone), "__call__") as call:
@@ -4611,11 +4670,6 @@ async def test_delete_zone_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_zone_async_from_dict():
-    await test_delete_zone_async(request_type=dict)
 
 
 def test_delete_zone_field_headers():
@@ -4764,8 +4818,8 @@ async def test_delete_zone_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListZonesRequest,
-        dict,
+        service.ListZonesRequest(),
+        {},
     ],
 )
 def test_list_zones(request_type, transport: str = "grpc"):
@@ -4776,7 +4830,7 @@ def test_list_zones(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_zones), "__call__") as call:
@@ -4823,12 +4877,13 @@ def test_list_zones_non_empty_request_with_auto_populated_field():
         client.list_zones(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListZonesRequest(
+        request_msg = service.ListZonesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_zones_use_cached_wrapped_rpc():
@@ -4907,9 +4962,14 @@ async def test_list_zones_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_zones_async(
-    transport: str = "grpc_asyncio", request_type=service.ListZonesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListZonesRequest(),
+        {},
+    ],
+)
+async def test_list_zones_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4917,7 +4977,7 @@ async def test_list_zones_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_zones), "__call__") as call:
@@ -4938,11 +4998,6 @@ async def test_list_zones_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListZonesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_zones_async_from_dict():
-    await test_list_zones_async(request_type=dict)
 
 
 def test_list_zones_field_headers():
@@ -5137,6 +5192,9 @@ def test_list_zones_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Zone) for i in results)
@@ -5225,6 +5283,8 @@ async def test_list_zones_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5281,8 +5341,8 @@ async def test_list_zones_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetZoneRequest,
-        dict,
+        service.GetZoneRequest(),
+        {},
     ],
 )
 def test_get_zone(request_type, transport: str = "grpc"):
@@ -5293,7 +5353,7 @@ def test_get_zone(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_zone), "__call__") as call:
@@ -5347,9 +5407,10 @@ def test_get_zone_non_empty_request_with_auto_populated_field():
         client.get_zone(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetZoneRequest(
+        request_msg = service.GetZoneRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_zone_use_cached_wrapped_rpc():
@@ -5428,9 +5489,14 @@ async def test_get_zone_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_zone_async(
-    transport: str = "grpc_asyncio", request_type=service.GetZoneRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetZoneRequest(),
+        {},
+    ],
+)
+async def test_get_zone_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5438,7 +5504,7 @@ async def test_get_zone_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_zone), "__call__") as call:
@@ -5469,11 +5535,6 @@ async def test_get_zone_async(
     assert response.description == "description_value"
     assert response.state == resources.State.ACTIVE
     assert response.type_ == resources.Zone.Type.RAW
-
-
-@pytest.mark.asyncio
-async def test_get_zone_async_from_dict():
-    await test_get_zone_async(request_type=dict)
 
 
 def test_get_zone_field_headers():
@@ -5618,8 +5679,8 @@ async def test_get_zone_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListZoneActionsRequest,
-        dict,
+        service.ListZoneActionsRequest(),
+        {},
     ],
 )
 def test_list_zone_actions(request_type, transport: str = "grpc"):
@@ -5630,7 +5691,7 @@ def test_list_zone_actions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5679,10 +5740,11 @@ def test_list_zone_actions_non_empty_request_with_auto_populated_field():
         client.list_zone_actions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListZoneActionsRequest(
+        request_msg = service.ListZoneActionsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_zone_actions_use_cached_wrapped_rpc():
@@ -5765,9 +5827,14 @@ async def test_list_zone_actions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_zone_actions_async(
-    transport: str = "grpc_asyncio", request_type=service.ListZoneActionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListZoneActionsRequest(),
+        {},
+    ],
+)
+async def test_list_zone_actions_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5775,7 +5842,7 @@ async def test_list_zone_actions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5798,11 +5865,6 @@ async def test_list_zone_actions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListZoneActionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_zone_actions_async_from_dict():
-    await test_list_zone_actions_async(request_type=dict)
 
 
 def test_list_zone_actions_field_headers():
@@ -6007,6 +6069,9 @@ def test_list_zone_actions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Action) for i in results)
@@ -6099,6 +6164,8 @@ async def test_list_zone_actions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6157,8 +6224,8 @@ async def test_list_zone_actions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateAssetRequest,
-        dict,
+        service.CreateAssetRequest(),
+        {},
     ],
 )
 def test_create_asset(request_type, transport: str = "grpc"):
@@ -6169,7 +6236,7 @@ def test_create_asset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_asset), "__call__") as call:
@@ -6211,10 +6278,11 @@ def test_create_asset_non_empty_request_with_auto_populated_field():
         client.create_asset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateAssetRequest(
+        request_msg = service.CreateAssetRequest(
             parent="parent_value",
             asset_id="asset_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_asset_use_cached_wrapped_rpc():
@@ -6305,9 +6373,14 @@ async def test_create_asset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_asset_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateAssetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateAssetRequest(),
+        {},
+    ],
+)
+async def test_create_asset_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6315,7 +6388,7 @@ async def test_create_asset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_asset), "__call__") as call:
@@ -6333,11 +6406,6 @@ async def test_create_asset_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_asset_async_from_dict():
-    await test_create_asset_async(request_type=dict)
 
 
 def test_create_asset_field_headers():
@@ -6506,8 +6574,8 @@ async def test_create_asset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateAssetRequest,
-        dict,
+        service.UpdateAssetRequest(),
+        {},
     ],
 )
 def test_update_asset(request_type, transport: str = "grpc"):
@@ -6518,7 +6586,7 @@ def test_update_asset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
@@ -6557,7 +6625,8 @@ def test_update_asset_non_empty_request_with_auto_populated_field():
         client.update_asset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateAssetRequest()
+        request_msg = service.UpdateAssetRequest()
+        assert args[0] == request_msg
 
 
 def test_update_asset_use_cached_wrapped_rpc():
@@ -6648,9 +6717,14 @@ async def test_update_asset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_asset_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateAssetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateAssetRequest(),
+        {},
+    ],
+)
+async def test_update_asset_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6658,7 +6732,7 @@ async def test_update_asset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
@@ -6676,11 +6750,6 @@ async def test_update_asset_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_asset_async_from_dict():
-    await test_update_asset_async(request_type=dict)
 
 
 def test_update_asset_field_headers():
@@ -6839,8 +6908,8 @@ async def test_update_asset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteAssetRequest,
-        dict,
+        service.DeleteAssetRequest(),
+        {},
     ],
 )
 def test_delete_asset(request_type, transport: str = "grpc"):
@@ -6851,7 +6920,7 @@ def test_delete_asset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
@@ -6892,9 +6961,10 @@ def test_delete_asset_non_empty_request_with_auto_populated_field():
         client.delete_asset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteAssetRequest(
+        request_msg = service.DeleteAssetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_asset_use_cached_wrapped_rpc():
@@ -6985,9 +7055,14 @@ async def test_delete_asset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_asset_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteAssetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteAssetRequest(),
+        {},
+    ],
+)
+async def test_delete_asset_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6995,7 +7070,7 @@ async def test_delete_asset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
@@ -7013,11 +7088,6 @@ async def test_delete_asset_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_asset_async_from_dict():
-    await test_delete_asset_async(request_type=dict)
 
 
 def test_delete_asset_field_headers():
@@ -7166,8 +7236,8 @@ async def test_delete_asset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListAssetsRequest,
-        dict,
+        service.ListAssetsRequest(),
+        {},
     ],
 )
 def test_list_assets(request_type, transport: str = "grpc"):
@@ -7178,7 +7248,7 @@ def test_list_assets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -7225,12 +7295,13 @@ def test_list_assets_non_empty_request_with_auto_populated_field():
         client.list_assets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListAssetsRequest(
+        request_msg = service.ListAssetsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_assets_use_cached_wrapped_rpc():
@@ -7311,9 +7382,14 @@ async def test_list_assets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_assets_async(
-    transport: str = "grpc_asyncio", request_type=service.ListAssetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListAssetsRequest(),
+        {},
+    ],
+)
+async def test_list_assets_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7321,7 +7397,7 @@ async def test_list_assets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -7342,11 +7418,6 @@ async def test_list_assets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_assets_async_from_dict():
-    await test_list_assets_async(request_type=dict)
 
 
 def test_list_assets_field_headers():
@@ -7541,6 +7612,9 @@ def test_list_assets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Asset) for i in results)
@@ -7629,6 +7703,8 @@ async def test_list_assets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7685,8 +7761,8 @@ async def test_list_assets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetAssetRequest,
-        dict,
+        service.GetAssetRequest(),
+        {},
     ],
 )
 def test_get_asset(request_type, transport: str = "grpc"):
@@ -7697,7 +7773,7 @@ def test_get_asset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
@@ -7749,9 +7825,10 @@ def test_get_asset_non_empty_request_with_auto_populated_field():
         client.get_asset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetAssetRequest(
+        request_msg = service.GetAssetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_asset_use_cached_wrapped_rpc():
@@ -7830,9 +7907,14 @@ async def test_get_asset_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_asset_async(
-    transport: str = "grpc_asyncio", request_type=service.GetAssetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetAssetRequest(),
+        {},
+    ],
+)
+async def test_get_asset_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7840,7 +7922,7 @@ async def test_get_asset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
@@ -7869,11 +7951,6 @@ async def test_get_asset_async(
     assert response.uid == "uid_value"
     assert response.description == "description_value"
     assert response.state == resources.State.ACTIVE
-
-
-@pytest.mark.asyncio
-async def test_get_asset_async_from_dict():
-    await test_get_asset_async(request_type=dict)
 
 
 def test_get_asset_field_headers():
@@ -8018,8 +8095,8 @@ async def test_get_asset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListAssetActionsRequest,
-        dict,
+        service.ListAssetActionsRequest(),
+        {},
     ],
 )
 def test_list_asset_actions(request_type, transport: str = "grpc"):
@@ -8030,7 +8107,7 @@ def test_list_asset_actions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8079,10 +8156,11 @@ def test_list_asset_actions_non_empty_request_with_auto_populated_field():
         client.list_asset_actions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListAssetActionsRequest(
+        request_msg = service.ListAssetActionsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_asset_actions_use_cached_wrapped_rpc():
@@ -8167,9 +8245,14 @@ async def test_list_asset_actions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_asset_actions_async(
-    transport: str = "grpc_asyncio", request_type=service.ListAssetActionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListAssetActionsRequest(),
+        {},
+    ],
+)
+async def test_list_asset_actions_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8177,7 +8260,7 @@ async def test_list_asset_actions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8200,11 +8283,6 @@ async def test_list_asset_actions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetActionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_asset_actions_async_from_dict():
-    await test_list_asset_actions_async(request_type=dict)
 
 
 def test_list_asset_actions_field_headers():
@@ -8409,6 +8487,9 @@ def test_list_asset_actions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Action) for i in results)
@@ -8501,6 +8582,8 @@ async def test_list_asset_actions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8559,8 +8642,8 @@ async def test_list_asset_actions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateTaskRequest,
-        dict,
+        service.CreateTaskRequest(),
+        {},
     ],
 )
 def test_create_task(request_type, transport: str = "grpc"):
@@ -8571,7 +8654,7 @@ def test_create_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_task), "__call__") as call:
@@ -8613,10 +8696,11 @@ def test_create_task_non_empty_request_with_auto_populated_field():
         client.create_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateTaskRequest(
+        request_msg = service.CreateTaskRequest(
             parent="parent_value",
             task_id="task_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_task_use_cached_wrapped_rpc():
@@ -8707,9 +8791,14 @@ async def test_create_task_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_task_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateTaskRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateTaskRequest(),
+        {},
+    ],
+)
+async def test_create_task_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8717,7 +8806,7 @@ async def test_create_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_task), "__call__") as call:
@@ -8735,11 +8824,6 @@ async def test_create_task_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_task_async_from_dict():
-    await test_create_task_async(request_type=dict)
 
 
 def test_create_task_field_headers():
@@ -8908,8 +8992,8 @@ async def test_create_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateTaskRequest,
-        dict,
+        service.UpdateTaskRequest(),
+        {},
     ],
 )
 def test_update_task(request_type, transport: str = "grpc"):
@@ -8920,7 +9004,7 @@ def test_update_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_task), "__call__") as call:
@@ -8959,7 +9043,8 @@ def test_update_task_non_empty_request_with_auto_populated_field():
         client.update_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateTaskRequest()
+        request_msg = service.UpdateTaskRequest()
+        assert args[0] == request_msg
 
 
 def test_update_task_use_cached_wrapped_rpc():
@@ -9050,9 +9135,14 @@ async def test_update_task_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_task_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateTaskRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateTaskRequest(),
+        {},
+    ],
+)
+async def test_update_task_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9060,7 +9150,7 @@ async def test_update_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_task), "__call__") as call:
@@ -9078,11 +9168,6 @@ async def test_update_task_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_task_async_from_dict():
-    await test_update_task_async(request_type=dict)
 
 
 def test_update_task_field_headers():
@@ -9241,8 +9326,8 @@ async def test_update_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteTaskRequest,
-        dict,
+        service.DeleteTaskRequest(),
+        {},
     ],
 )
 def test_delete_task(request_type, transport: str = "grpc"):
@@ -9253,7 +9338,7 @@ def test_delete_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
@@ -9294,9 +9379,10 @@ def test_delete_task_non_empty_request_with_auto_populated_field():
         client.delete_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteTaskRequest(
+        request_msg = service.DeleteTaskRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_task_use_cached_wrapped_rpc():
@@ -9387,9 +9473,14 @@ async def test_delete_task_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_task_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteTaskRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteTaskRequest(),
+        {},
+    ],
+)
+async def test_delete_task_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9397,7 +9488,7 @@ async def test_delete_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
@@ -9415,11 +9506,6 @@ async def test_delete_task_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_task_async_from_dict():
-    await test_delete_task_async(request_type=dict)
 
 
 def test_delete_task_field_headers():
@@ -9568,8 +9654,8 @@ async def test_delete_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListTasksRequest,
-        dict,
+        service.ListTasksRequest(),
+        {},
     ],
 )
 def test_list_tasks(request_type, transport: str = "grpc"):
@@ -9580,7 +9666,7 @@ def test_list_tasks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -9629,12 +9715,13 @@ def test_list_tasks_non_empty_request_with_auto_populated_field():
         client.list_tasks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListTasksRequest(
+        request_msg = service.ListTasksRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_tasks_use_cached_wrapped_rpc():
@@ -9713,9 +9800,14 @@ async def test_list_tasks_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_tasks_async(
-    transport: str = "grpc_asyncio", request_type=service.ListTasksRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListTasksRequest(),
+        {},
+    ],
+)
+async def test_list_tasks_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9723,7 +9815,7 @@ async def test_list_tasks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -9746,11 +9838,6 @@ async def test_list_tasks_async(
     assert isinstance(response, pagers.ListTasksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_tasks_async_from_dict():
-    await test_list_tasks_async(request_type=dict)
 
 
 def test_list_tasks_field_headers():
@@ -9945,6 +10032,9 @@ def test_list_tasks_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tasks.Task) for i in results)
@@ -10033,6 +10123,8 @@ async def test_list_tasks_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -10089,8 +10181,8 @@ async def test_list_tasks_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetTaskRequest,
-        dict,
+        service.GetTaskRequest(),
+        {},
     ],
 )
 def test_get_task(request_type, transport: str = "grpc"):
@@ -10101,7 +10193,7 @@ def test_get_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_task), "__call__") as call:
@@ -10153,9 +10245,10 @@ def test_get_task_non_empty_request_with_auto_populated_field():
         client.get_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetTaskRequest(
+        request_msg = service.GetTaskRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_task_use_cached_wrapped_rpc():
@@ -10234,9 +10327,14 @@ async def test_get_task_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_task_async(
-    transport: str = "grpc_asyncio", request_type=service.GetTaskRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetTaskRequest(),
+        {},
+    ],
+)
+async def test_get_task_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10244,7 +10342,7 @@ async def test_get_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_task), "__call__") as call:
@@ -10273,11 +10371,6 @@ async def test_get_task_async(
     assert response.description == "description_value"
     assert response.display_name == "display_name_value"
     assert response.state == resources.State.ACTIVE
-
-
-@pytest.mark.asyncio
-async def test_get_task_async_from_dict():
-    await test_get_task_async(request_type=dict)
 
 
 def test_get_task_field_headers():
@@ -10422,8 +10515,8 @@ async def test_get_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListJobsRequest,
-        dict,
+        service.ListJobsRequest(),
+        {},
     ],
 )
 def test_list_jobs(request_type, transport: str = "grpc"):
@@ -10434,7 +10527,7 @@ def test_list_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
@@ -10479,10 +10572,11 @@ def test_list_jobs_non_empty_request_with_auto_populated_field():
         client.list_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListJobsRequest(
+        request_msg = service.ListJobsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_jobs_use_cached_wrapped_rpc():
@@ -10561,9 +10655,14 @@ async def test_list_jobs_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_list_jobs_async(
-    transport: str = "grpc_asyncio", request_type=service.ListJobsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListJobsRequest(),
+        {},
+    ],
+)
+async def test_list_jobs_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10571,7 +10670,7 @@ async def test_list_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
@@ -10592,11 +10691,6 @@ async def test_list_jobs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_jobs_async_from_dict():
-    await test_list_jobs_async(request_type=dict)
 
 
 def test_list_jobs_field_headers():
@@ -10791,6 +10885,9 @@ def test_list_jobs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tasks.Job) for i in results)
@@ -10879,6 +10976,8 @@ async def test_list_jobs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -10935,8 +11034,8 @@ async def test_list_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.RunTaskRequest,
-        dict,
+        service.RunTaskRequest(),
+        {},
     ],
 )
 def test_run_task(request_type, transport: str = "grpc"):
@@ -10947,7 +11046,7 @@ def test_run_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_task), "__call__") as call:
@@ -10988,9 +11087,10 @@ def test_run_task_non_empty_request_with_auto_populated_field():
         client.run_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.RunTaskRequest(
+        request_msg = service.RunTaskRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_run_task_use_cached_wrapped_rpc():
@@ -11069,9 +11169,14 @@ async def test_run_task_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_run_task_async(
-    transport: str = "grpc_asyncio", request_type=service.RunTaskRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RunTaskRequest(),
+        {},
+    ],
+)
+async def test_run_task_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11079,7 +11184,7 @@ async def test_run_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_task), "__call__") as call:
@@ -11097,11 +11202,6 @@ async def test_run_task_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.RunTaskResponse)
-
-
-@pytest.mark.asyncio
-async def test_run_task_async_from_dict():
-    await test_run_task_async(request_type=dict)
 
 
 def test_run_task_field_headers():
@@ -11250,8 +11350,8 @@ async def test_run_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetJobRequest,
-        dict,
+        service.GetJobRequest(),
+        {},
     ],
 )
 def test_get_job(request_type, transport: str = "grpc"):
@@ -11262,7 +11362,7 @@ def test_get_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job), "__call__") as call:
@@ -11320,9 +11420,10 @@ def test_get_job_non_empty_request_with_auto_populated_field():
         client.get_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetJobRequest(
+        request_msg = service.GetJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_job_use_cached_wrapped_rpc():
@@ -11401,9 +11502,14 @@ async def test_get_job_async_use_cached_wrapped_rpc(transport: str = "grpc_async
 
 
 @pytest.mark.asyncio
-async def test_get_job_async(
-    transport: str = "grpc_asyncio", request_type=service.GetJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetJobRequest(),
+        {},
+    ],
+)
+async def test_get_job_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11411,7 +11517,7 @@ async def test_get_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job), "__call__") as call:
@@ -11446,11 +11552,6 @@ async def test_get_job_async(
     assert response.service_job == "service_job_value"
     assert response.message == "message_value"
     assert response.trigger == tasks.Job.Trigger.TASK_CONFIG
-
-
-@pytest.mark.asyncio
-async def test_get_job_async_from_dict():
-    await test_get_job_async(request_type=dict)
 
 
 def test_get_job_field_headers():
@@ -11595,8 +11696,8 @@ async def test_get_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CancelJobRequest,
-        dict,
+        service.CancelJobRequest(),
+        {},
     ],
 )
 def test_cancel_job(request_type, transport: str = "grpc"):
@@ -11607,7 +11708,7 @@ def test_cancel_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_job), "__call__") as call:
@@ -11648,9 +11749,10 @@ def test_cancel_job_non_empty_request_with_auto_populated_field():
         client.cancel_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CancelJobRequest(
+        request_msg = service.CancelJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_job_use_cached_wrapped_rpc():
@@ -11729,9 +11831,14 @@ async def test_cancel_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_cancel_job_async(
-    transport: str = "grpc_asyncio", request_type=service.CancelJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CancelJobRequest(),
+        {},
+    ],
+)
+async def test_cancel_job_async(request_type, transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11739,7 +11846,7 @@ async def test_cancel_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_job), "__call__") as call:
@@ -11755,11 +11862,6 @@ async def test_cancel_job_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_cancel_job_async_from_dict():
-    await test_cancel_job_async(request_type=dict)
 
 
 def test_cancel_job_field_headers():
@@ -12728,6 +12830,9 @@ def test_list_lakes_rest_pager(transport: str = "rest"):
 
         pager = client.list_lakes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Lake) for i in results)
@@ -13158,6 +13263,9 @@ def test_list_lake_actions_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/lakes/sample3"}
 
         pager = client.list_lake_actions(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -14003,6 +14111,9 @@ def test_list_zones_rest_pager(transport: str = "rest"):
 
         pager = client.list_zones(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Zone) for i in results)
@@ -14440,6 +14551,9 @@ def test_list_zone_actions_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_zone_actions(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -15291,6 +15405,9 @@ def test_list_assets_rest_pager(transport: str = "rest"):
 
         pager = client.list_assets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Asset) for i in results)
@@ -15730,6 +15847,9 @@ def test_list_asset_actions_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_asset_actions(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -16575,6 +16695,9 @@ def test_list_tasks_rest_pager(transport: str = "rest"):
 
         pager = client.list_tasks(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tasks.Task) for i in results)
@@ -17008,6 +17131,9 @@ def test_list_jobs_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_jobs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -17672,7 +17798,6 @@ def test_create_lake_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateLakeRequest()
-
         assert args[0] == request_msg
 
 
@@ -17693,7 +17818,6 @@ def test_update_lake_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateLakeRequest()
-
         assert args[0] == request_msg
 
 
@@ -17714,7 +17838,6 @@ def test_delete_lake_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteLakeRequest()
-
         assert args[0] == request_msg
 
 
@@ -17735,7 +17858,6 @@ def test_list_lakes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListLakesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17756,7 +17878,6 @@ def test_get_lake_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetLakeRequest()
-
         assert args[0] == request_msg
 
 
@@ -17779,7 +17900,6 @@ def test_list_lake_actions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListLakeActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17800,7 +17920,6 @@ def test_create_zone_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -17821,7 +17940,6 @@ def test_update_zone_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -17842,7 +17960,6 @@ def test_delete_zone_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -17863,7 +17980,6 @@ def test_list_zones_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListZonesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17884,7 +18000,6 @@ def test_get_zone_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -17907,7 +18022,6 @@ def test_list_zone_actions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListZoneActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17928,7 +18042,6 @@ def test_create_asset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17949,7 +18062,6 @@ def test_update_asset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17970,7 +18082,6 @@ def test_delete_asset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17991,7 +18102,6 @@ def test_list_assets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18012,7 +18122,6 @@ def test_get_asset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -18035,7 +18144,6 @@ def test_list_asset_actions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListAssetActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18056,7 +18164,6 @@ def test_create_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -18077,7 +18184,6 @@ def test_update_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -18098,7 +18204,6 @@ def test_delete_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -18119,7 +18224,6 @@ def test_list_tasks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -18140,7 +18244,6 @@ def test_get_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -18161,7 +18264,6 @@ def test_list_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18182,7 +18284,6 @@ def test_run_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RunTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -18203,7 +18304,6 @@ def test_get_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -18224,7 +18324,6 @@ def test_cancel_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CancelJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -18263,7 +18362,6 @@ async def test_create_lake_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateLakeRequest()
-
         assert args[0] == request_msg
 
 
@@ -18288,7 +18386,6 @@ async def test_update_lake_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateLakeRequest()
-
         assert args[0] == request_msg
 
 
@@ -18313,7 +18410,6 @@ async def test_delete_lake_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteLakeRequest()
-
         assert args[0] == request_msg
 
 
@@ -18341,7 +18437,6 @@ async def test_list_lakes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListLakesRequest()
-
         assert args[0] == request_msg
 
 
@@ -18373,7 +18468,6 @@ async def test_get_lake_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetLakeRequest()
-
         assert args[0] == request_msg
 
 
@@ -18402,7 +18496,6 @@ async def test_list_lake_actions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListLakeActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18427,7 +18520,6 @@ async def test_create_zone_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -18452,7 +18544,6 @@ async def test_update_zone_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -18477,7 +18568,6 @@ async def test_delete_zone_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -18504,7 +18594,6 @@ async def test_list_zones_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListZonesRequest()
-
         assert args[0] == request_msg
 
 
@@ -18536,7 +18625,6 @@ async def test_get_zone_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -18565,7 +18653,6 @@ async def test_list_zone_actions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListZoneActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18590,7 +18677,6 @@ async def test_create_asset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -18615,7 +18701,6 @@ async def test_update_asset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -18640,7 +18725,6 @@ async def test_delete_asset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -18667,7 +18751,6 @@ async def test_list_assets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18698,7 +18781,6 @@ async def test_get_asset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -18727,7 +18809,6 @@ async def test_list_asset_actions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListAssetActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18752,7 +18833,6 @@ async def test_create_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -18777,7 +18857,6 @@ async def test_update_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -18802,7 +18881,6 @@ async def test_delete_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -18830,7 +18908,6 @@ async def test_list_tasks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -18861,7 +18938,6 @@ async def test_get_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -18888,7 +18964,6 @@ async def test_list_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18913,7 +18988,6 @@ async def test_run_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RunTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -18947,7 +19021,6 @@ async def test_get_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -18970,7 +19043,6 @@ async def test_cancel_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CancelJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -23929,7 +24001,6 @@ def test_create_lake_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateLakeRequest()
-
         assert args[0] == request_msg
 
 
@@ -23949,7 +24020,6 @@ def test_update_lake_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateLakeRequest()
-
         assert args[0] == request_msg
 
 
@@ -23969,7 +24039,6 @@ def test_delete_lake_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteLakeRequest()
-
         assert args[0] == request_msg
 
 
@@ -23989,7 +24058,6 @@ def test_list_lakes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListLakesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24009,7 +24077,6 @@ def test_get_lake_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetLakeRequest()
-
         assert args[0] == request_msg
 
 
@@ -24031,7 +24098,6 @@ def test_list_lake_actions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListLakeActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24051,7 +24117,6 @@ def test_create_zone_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -24071,7 +24136,6 @@ def test_update_zone_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -24091,7 +24155,6 @@ def test_delete_zone_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -24111,7 +24174,6 @@ def test_list_zones_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListZonesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24131,7 +24193,6 @@ def test_get_zone_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -24153,7 +24214,6 @@ def test_list_zone_actions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListZoneActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24173,7 +24233,6 @@ def test_create_asset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -24193,7 +24252,6 @@ def test_update_asset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -24213,7 +24271,6 @@ def test_delete_asset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -24233,7 +24290,6 @@ def test_list_assets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24253,7 +24309,6 @@ def test_get_asset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -24275,7 +24330,6 @@ def test_list_asset_actions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListAssetActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24295,7 +24349,6 @@ def test_create_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -24315,7 +24368,6 @@ def test_update_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -24335,7 +24387,6 @@ def test_delete_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -24355,7 +24406,6 @@ def test_list_tasks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -24375,7 +24425,6 @@ def test_get_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -24395,7 +24444,6 @@ def test_list_jobs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24415,7 +24463,6 @@ def test_run_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RunTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -24435,7 +24482,6 @@ def test_get_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -24455,7 +24501,6 @@ def test_cancel_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CancelJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -24586,7 +24631,12 @@ def test_dataplex_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             quota_project_id="octopus",
         )
 
@@ -24612,7 +24662,12 @@ def test_dataplex_service_auth_adc():
         DataplexServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             quota_project_id=None,
         )
 
@@ -24632,7 +24687,12 @@ def test_dataplex_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             quota_project_id="octopus",
         )
 
@@ -24685,7 +24745,12 @@ def test_dataplex_service_transport_create_channel(transport_class, grpc_helpers
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             scopes=["1", "2"],
             default_host="dataplex.googleapis.com",
             ssl_credentials=None,

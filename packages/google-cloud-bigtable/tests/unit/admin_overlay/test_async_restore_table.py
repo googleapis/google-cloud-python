@@ -12,12 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER  # noqa: F401
-except ImportError:  # pragma: NO COVER
-    import mock
+from unittest import mock
 
 import pytest
 from google.api_core import exceptions, operation_async

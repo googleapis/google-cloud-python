@@ -258,28 +258,6 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def conversation_model_path(
-        project: str,
-        location: str,
-        conversation_model: str,
-    ) -> str:
-        """Returns a fully-qualified conversation_model string."""
-        return "projects/{project}/locations/{location}/conversationModels/{conversation_model}".format(
-            project=project,
-            location=location,
-            conversation_model=conversation_model,
-        )
-
-    @staticmethod
-    def parse_conversation_model_path(path: str) -> Dict[str, str]:
-        """Parses a conversation_model path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/conversationModels/(?P<conversation_model>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
     def conversation_profile_path(
         project: str,
         conversation_profile: str,
@@ -2195,8 +2173,6 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("ConversationProfilesClient",)

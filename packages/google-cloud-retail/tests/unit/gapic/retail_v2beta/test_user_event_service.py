@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -126,6 +127,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -986,7 +1002,14 @@ def test_user_event_service_client_get_mtls_endpoint_and_cert_source(client_clas
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1033,7 +1056,14 @@ def test_user_event_service_client_get_mtls_endpoint_and_cert_source(client_clas
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1361,8 +1391,8 @@ def test_user_event_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        user_event_service.WriteUserEventRequest,
-        dict,
+        user_event_service.WriteUserEventRequest(),
+        {},
     ],
 )
 def test_write_user_event(request_type, transport: str = "grpc"):
@@ -1373,7 +1403,7 @@ def test_write_user_event(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
@@ -1445,9 +1475,10 @@ def test_write_user_event_non_empty_request_with_auto_populated_field():
         client.write_user_event(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.WriteUserEventRequest(
+        request_msg = user_event_service.WriteUserEventRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_write_user_event_use_cached_wrapped_rpc():
@@ -1530,10 +1561,14 @@ async def test_write_user_event_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_write_user_event_async(
-    transport: str = "grpc_asyncio",
-    request_type=user_event_service.WriteUserEventRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user_event_service.WriteUserEventRequest(),
+        {},
+    ],
+)
+async def test_write_user_event_async(request_type, transport: str = "grpc_asyncio"):
     client = UserEventServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1541,7 +1576,7 @@ async def test_write_user_event_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
@@ -1590,11 +1625,6 @@ async def test_write_user_event_async(
     assert response.referrer_uri == "referrer_uri_value"
     assert response.page_view_id == "page_view_id_value"
     assert response.entity == "entity_value"
-
-
-@pytest.mark.asyncio
-async def test_write_user_event_async_from_dict():
-    await test_write_user_event_async(request_type=dict)
 
 
 def test_write_user_event_field_headers():
@@ -1661,8 +1691,8 @@ async def test_write_user_event_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        user_event_service.CollectUserEventRequest,
-        dict,
+        user_event_service.CollectUserEventRequest(),
+        {},
     ],
 )
 def test_collect_user_event(request_type, transport: str = "grpc"):
@@ -1673,7 +1703,7 @@ def test_collect_user_event(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1727,13 +1757,14 @@ def test_collect_user_event_non_empty_request_with_auto_populated_field():
         client.collect_user_event(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.CollectUserEventRequest(
+        request_msg = user_event_service.CollectUserEventRequest(
             prebuilt_rule="prebuilt_rule_value",
             parent="parent_value",
             user_event="user_event_value",
             uri="uri_value",
             raw_json="raw_json_value",
         )
+        assert args[0] == request_msg
 
 
 def test_collect_user_event_use_cached_wrapped_rpc():
@@ -1818,10 +1849,14 @@ async def test_collect_user_event_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_collect_user_event_async(
-    transport: str = "grpc_asyncio",
-    request_type=user_event_service.CollectUserEventRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user_event_service.CollectUserEventRequest(),
+        {},
+    ],
+)
+async def test_collect_user_event_async(request_type, transport: str = "grpc_asyncio"):
     client = UserEventServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1829,7 +1864,7 @@ async def test_collect_user_event_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1854,11 +1889,6 @@ async def test_collect_user_event_async(
     assert isinstance(response, httpbody_pb2.HttpBody)
     assert response.content_type == "content_type_value"
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_collect_user_event_async_from_dict():
-    await test_collect_user_event_async(request_type=dict)
 
 
 def test_collect_user_event_field_headers():
@@ -1929,8 +1959,8 @@ async def test_collect_user_event_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        purge_config.PurgeUserEventsRequest,
-        dict,
+        purge_config.PurgeUserEventsRequest(),
+        {},
     ],
 )
 def test_purge_user_events(request_type, transport: str = "grpc"):
@@ -1941,7 +1971,7 @@ def test_purge_user_events(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1987,10 +2017,11 @@ def test_purge_user_events_non_empty_request_with_auto_populated_field():
         client.purge_user_events(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == purge_config.PurgeUserEventsRequest(
+        request_msg = purge_config.PurgeUserEventsRequest(
             parent="parent_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_purge_user_events_use_cached_wrapped_rpc():
@@ -2083,9 +2114,14 @@ async def test_purge_user_events_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_purge_user_events_async(
-    transport: str = "grpc_asyncio", request_type=purge_config.PurgeUserEventsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        purge_config.PurgeUserEventsRequest(),
+        {},
+    ],
+)
+async def test_purge_user_events_async(request_type, transport: str = "grpc_asyncio"):
     client = UserEventServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2093,7 +2129,7 @@ async def test_purge_user_events_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2113,11 +2149,6 @@ async def test_purge_user_events_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_purge_user_events_async_from_dict():
-    await test_purge_user_events_async(request_type=dict)
 
 
 def test_purge_user_events_field_headers():
@@ -2188,8 +2219,8 @@ async def test_purge_user_events_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        import_config.ImportUserEventsRequest,
-        dict,
+        import_config.ImportUserEventsRequest(),
+        {},
     ],
 )
 def test_import_user_events(request_type, transport: str = "grpc"):
@@ -2200,7 +2231,7 @@ def test_import_user_events(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2245,9 +2276,10 @@ def test_import_user_events_non_empty_request_with_auto_populated_field():
         client.import_user_events(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == import_config.ImportUserEventsRequest(
+        request_msg = import_config.ImportUserEventsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_user_events_use_cached_wrapped_rpc():
@@ -2342,9 +2374,14 @@ async def test_import_user_events_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_import_user_events_async(
-    transport: str = "grpc_asyncio", request_type=import_config.ImportUserEventsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        import_config.ImportUserEventsRequest(),
+        {},
+    ],
+)
+async def test_import_user_events_async(request_type, transport: str = "grpc_asyncio"):
     client = UserEventServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2352,7 +2389,7 @@ async def test_import_user_events_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2372,11 +2409,6 @@ async def test_import_user_events_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_user_events_async_from_dict():
-    await test_import_user_events_async(request_type=dict)
 
 
 def test_import_user_events_field_headers():
@@ -2447,8 +2479,8 @@ async def test_import_user_events_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        export_config.ExportUserEventsRequest,
-        dict,
+        export_config.ExportUserEventsRequest(),
+        {},
     ],
 )
 def test_export_user_events(request_type, transport: str = "grpc"):
@@ -2459,7 +2491,7 @@ def test_export_user_events(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2505,10 +2537,11 @@ def test_export_user_events_non_empty_request_with_auto_populated_field():
         client.export_user_events(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == export_config.ExportUserEventsRequest(
+        request_msg = export_config.ExportUserEventsRequest(
             parent="parent_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_user_events_use_cached_wrapped_rpc():
@@ -2603,9 +2636,14 @@ async def test_export_user_events_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_user_events_async(
-    transport: str = "grpc_asyncio", request_type=export_config.ExportUserEventsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        export_config.ExportUserEventsRequest(),
+        {},
+    ],
+)
+async def test_export_user_events_async(request_type, transport: str = "grpc_asyncio"):
     client = UserEventServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2613,7 +2651,7 @@ async def test_export_user_events_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2633,11 +2671,6 @@ async def test_export_user_events_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_user_events_async_from_dict():
-    await test_export_user_events_async(request_type=dict)
 
 
 def test_export_user_events_field_headers():
@@ -2708,8 +2741,8 @@ async def test_export_user_events_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        user_event_service.RejoinUserEventsRequest,
-        dict,
+        user_event_service.RejoinUserEventsRequest(),
+        {},
     ],
 )
 def test_rejoin_user_events(request_type, transport: str = "grpc"):
@@ -2720,7 +2753,7 @@ def test_rejoin_user_events(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2765,9 +2798,10 @@ def test_rejoin_user_events_non_empty_request_with_auto_populated_field():
         client.rejoin_user_events(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.RejoinUserEventsRequest(
+        request_msg = user_event_service.RejoinUserEventsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_rejoin_user_events_use_cached_wrapped_rpc():
@@ -2862,10 +2896,14 @@ async def test_rejoin_user_events_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_rejoin_user_events_async(
-    transport: str = "grpc_asyncio",
-    request_type=user_event_service.RejoinUserEventsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user_event_service.RejoinUserEventsRequest(),
+        {},
+    ],
+)
+async def test_rejoin_user_events_async(request_type, transport: str = "grpc_asyncio"):
     client = UserEventServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2873,7 +2911,7 @@ async def test_rejoin_user_events_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2893,11 +2931,6 @@ async def test_rejoin_user_events_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_rejoin_user_events_async_from_dict():
-    await test_rejoin_user_events_async(request_type=dict)
 
 
 def test_rejoin_user_events_field_headers():
@@ -3912,7 +3945,6 @@ def test_write_user_event_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_event_service.WriteUserEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -3935,7 +3967,6 @@ def test_collect_user_event_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_event_service.CollectUserEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -3958,7 +3989,6 @@ def test_purge_user_events_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = purge_config.PurgeUserEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3981,7 +4011,6 @@ def test_import_user_events_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = import_config.ImportUserEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4004,7 +4033,6 @@ def test_export_user_events_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = export_config.ExportUserEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4027,7 +4055,6 @@ def test_rejoin_user_events_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_event_service.RejoinUserEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4082,7 +4109,6 @@ async def test_write_user_event_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_event_service.WriteUserEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -4112,7 +4138,6 @@ async def test_collect_user_event_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_event_service.CollectUserEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -4139,7 +4164,6 @@ async def test_purge_user_events_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = purge_config.PurgeUserEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4166,7 +4190,6 @@ async def test_import_user_events_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = import_config.ImportUserEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4193,7 +4216,6 @@ async def test_export_user_events_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = export_config.ExportUserEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4220,7 +4242,6 @@ async def test_rejoin_user_events_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_event_service.RejoinUserEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5370,7 +5391,6 @@ def test_write_user_event_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_event_service.WriteUserEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -5392,7 +5412,6 @@ def test_collect_user_event_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_event_service.CollectUserEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -5414,7 +5433,6 @@ def test_purge_user_events_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = purge_config.PurgeUserEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5436,7 +5454,6 @@ def test_import_user_events_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = import_config.ImportUserEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5458,7 +5475,6 @@ def test_export_user_events_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = export_config.ExportUserEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5480,7 +5496,6 @@ def test_rejoin_user_events_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_event_service.RejoinUserEventsRequest()
-
         assert args[0] == request_msg
 
 

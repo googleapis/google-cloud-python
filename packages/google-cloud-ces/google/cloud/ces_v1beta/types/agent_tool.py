@@ -36,11 +36,6 @@ class AgentTool(proto.Message):
             Required. The name of the agent tool.
         description (str):
             Optional. Description of the tool's purpose.
-        root_agent (str):
-            Optional. Deprecated: Use ``agent`` instead. The resource
-            name of the root agent that is the entry point of the tool.
-            Format:
-            ``projects/{project}/locations/{location}/agents/{agent}``
         agent (str):
             Optional. The resource name of the agent that is the entry
             point of the tool. Format:
@@ -54,10 +49,6 @@ class AgentTool(proto.Message):
     description: str = proto.Field(
         proto.STRING,
         number=2,
-    )
-    root_agent: str = proto.Field(
-        proto.STRING,
-        number=3,
     )
     agent: str = proto.Field(
         proto.STRING,

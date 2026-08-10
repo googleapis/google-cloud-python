@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -131,6 +132,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -958,11 +974,19 @@ def test_database_admin_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1005,11 +1029,19 @@ def test_database_admin_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1336,8 +1368,8 @@ def test_database_admin_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_database_admin.ListDatabasesRequest,
-        dict,
+        spanner_database_admin.ListDatabasesRequest(),
+        {},
     ],
 )
 def test_list_databases(request_type, transport: str = "grpc"):
@@ -1348,7 +1380,7 @@ def test_list_databases(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
@@ -1393,10 +1425,11 @@ def test_list_databases_non_empty_request_with_auto_populated_field():
         client.list_databases(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.ListDatabasesRequest(
+        request_msg = spanner_database_admin.ListDatabasesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_databases_use_cached_wrapped_rpc():
@@ -1477,10 +1510,14 @@ async def test_list_databases_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_databases_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_database_admin.ListDatabasesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.ListDatabasesRequest(),
+        {},
+    ],
+)
+async def test_list_databases_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1488,7 +1525,7 @@ async def test_list_databases_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
@@ -1509,11 +1546,6 @@ async def test_list_databases_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatabasesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_databases_async_from_dict():
-    await test_list_databases_async(request_type=dict)
 
 
 def test_list_databases_field_headers():
@@ -1708,6 +1740,9 @@ def test_list_databases_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, spanner_database_admin.Database) for i in results)
@@ -1796,6 +1831,8 @@ async def test_list_databases_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1852,8 +1889,8 @@ async def test_list_databases_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_database_admin.CreateDatabaseRequest,
-        dict,
+        spanner_database_admin.CreateDatabaseRequest(),
+        {},
     ],
 )
 def test_create_database(request_type, transport: str = "grpc"):
@@ -1864,7 +1901,7 @@ def test_create_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_database), "__call__") as call:
@@ -1906,10 +1943,11 @@ def test_create_database_non_empty_request_with_auto_populated_field():
         client.create_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.CreateDatabaseRequest(
+        request_msg = spanner_database_admin.CreateDatabaseRequest(
             parent="parent_value",
             create_statement="create_statement_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_database_use_cached_wrapped_rpc():
@@ -2000,10 +2038,14 @@ async def test_create_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_database_admin.CreateDatabaseRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.CreateDatabaseRequest(),
+        {},
+    ],
+)
+async def test_create_database_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2011,7 +2053,7 @@ async def test_create_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_database), "__call__") as call:
@@ -2029,11 +2071,6 @@ async def test_create_database_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_database_async_from_dict():
-    await test_create_database_async(request_type=dict)
 
 
 def test_create_database_field_headers():
@@ -2192,8 +2229,8 @@ async def test_create_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_database_admin.GetDatabaseRequest,
-        dict,
+        spanner_database_admin.GetDatabaseRequest(),
+        {},
     ],
 )
 def test_get_database(request_type, transport: str = "grpc"):
@@ -2204,7 +2241,7 @@ def test_get_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_database), "__call__") as call:
@@ -2260,9 +2297,10 @@ def test_get_database_non_empty_request_with_auto_populated_field():
         client.get_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.GetDatabaseRequest(
+        request_msg = spanner_database_admin.GetDatabaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_database_use_cached_wrapped_rpc():
@@ -2343,10 +2381,14 @@ async def test_get_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_database_admin.GetDatabaseRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.GetDatabaseRequest(),
+        {},
+    ],
+)
+async def test_get_database_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2354,7 +2396,7 @@ async def test_get_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_database), "__call__") as call:
@@ -2387,11 +2429,6 @@ async def test_get_database_async(
     assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
     assert response.enable_drop_protection is True
     assert response.reconciling is True
-
-
-@pytest.mark.asyncio
-async def test_get_database_async_from_dict():
-    await test_get_database_async(request_type=dict)
 
 
 def test_get_database_field_headers():
@@ -2540,8 +2577,8 @@ async def test_get_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_database_admin.UpdateDatabaseRequest,
-        dict,
+        spanner_database_admin.UpdateDatabaseRequest(),
+        {},
     ],
 )
 def test_update_database(request_type, transport: str = "grpc"):
@@ -2552,7 +2589,7 @@ def test_update_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_database), "__call__") as call:
@@ -2591,7 +2628,8 @@ def test_update_database_non_empty_request_with_auto_populated_field():
         client.update_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.UpdateDatabaseRequest()
+        request_msg = spanner_database_admin.UpdateDatabaseRequest()
+        assert args[0] == request_msg
 
 
 def test_update_database_use_cached_wrapped_rpc():
@@ -2682,10 +2720,14 @@ async def test_update_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_database_admin.UpdateDatabaseRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.UpdateDatabaseRequest(),
+        {},
+    ],
+)
+async def test_update_database_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2693,7 +2735,7 @@ async def test_update_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_database), "__call__") as call:
@@ -2711,11 +2753,6 @@ async def test_update_database_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_database_async_from_dict():
-    await test_update_database_async(request_type=dict)
 
 
 def test_update_database_field_headers():
@@ -2874,8 +2911,8 @@ async def test_update_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_database_admin.UpdateDatabaseDdlRequest,
-        dict,
+        spanner_database_admin.UpdateDatabaseDdlRequest(),
+        {},
     ],
 )
 def test_update_database_ddl(request_type, transport: str = "grpc"):
@@ -2886,7 +2923,7 @@ def test_update_database_ddl(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2932,10 +2969,11 @@ def test_update_database_ddl_non_empty_request_with_auto_populated_field():
         client.update_database_ddl(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.UpdateDatabaseDdlRequest(
+        request_msg = spanner_database_admin.UpdateDatabaseDdlRequest(
             database="database_value",
             operation_id="operation_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_database_ddl_use_cached_wrapped_rpc():
@@ -3030,10 +3068,14 @@ async def test_update_database_ddl_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_database_ddl_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_database_admin.UpdateDatabaseDdlRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.UpdateDatabaseDdlRequest(),
+        {},
+    ],
+)
+async def test_update_database_ddl_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3041,7 +3083,7 @@ async def test_update_database_ddl_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3061,11 +3103,6 @@ async def test_update_database_ddl_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_database_ddl_async_from_dict():
-    await test_update_database_ddl_async(request_type=dict)
 
 
 def test_update_database_ddl_field_headers():
@@ -3232,8 +3269,8 @@ async def test_update_database_ddl_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_database_admin.DropDatabaseRequest,
-        dict,
+        spanner_database_admin.DropDatabaseRequest(),
+        {},
     ],
 )
 def test_drop_database(request_type, transport: str = "grpc"):
@@ -3244,7 +3281,7 @@ def test_drop_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.drop_database), "__call__") as call:
@@ -3285,9 +3322,10 @@ def test_drop_database_non_empty_request_with_auto_populated_field():
         client.drop_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.DropDatabaseRequest(
+        request_msg = spanner_database_admin.DropDatabaseRequest(
             database="database_value",
         )
+        assert args[0] == request_msg
 
 
 def test_drop_database_use_cached_wrapped_rpc():
@@ -3368,10 +3406,14 @@ async def test_drop_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_drop_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_database_admin.DropDatabaseRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.DropDatabaseRequest(),
+        {},
+    ],
+)
+async def test_drop_database_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3379,7 +3421,7 @@ async def test_drop_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.drop_database), "__call__") as call:
@@ -3395,11 +3437,6 @@ async def test_drop_database_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_drop_database_async_from_dict():
-    await test_drop_database_async(request_type=dict)
 
 
 def test_drop_database_field_headers():
@@ -3544,8 +3581,8 @@ async def test_drop_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_database_admin.GetDatabaseDdlRequest,
-        dict,
+        spanner_database_admin.GetDatabaseDdlRequest(),
+        {},
     ],
 )
 def test_get_database_ddl(request_type, transport: str = "grpc"):
@@ -3556,7 +3593,7 @@ def test_get_database_ddl(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_database_ddl), "__call__") as call:
@@ -3602,9 +3639,10 @@ def test_get_database_ddl_non_empty_request_with_auto_populated_field():
         client.get_database_ddl(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.GetDatabaseDdlRequest(
+        request_msg = spanner_database_admin.GetDatabaseDdlRequest(
             database="database_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_database_ddl_use_cached_wrapped_rpc():
@@ -3687,10 +3725,14 @@ async def test_get_database_ddl_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_database_ddl_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_database_admin.GetDatabaseDdlRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.GetDatabaseDdlRequest(),
+        {},
+    ],
+)
+async def test_get_database_ddl_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3698,7 +3740,7 @@ async def test_get_database_ddl_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_database_ddl), "__call__") as call:
@@ -3721,11 +3763,6 @@ async def test_get_database_ddl_async(
     assert isinstance(response, spanner_database_admin.GetDatabaseDdlResponse)
     assert response.statements == ["statements_value"]
     assert response.proto_descriptors == b"proto_descriptors_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_database_ddl_async_from_dict():
-    await test_get_database_ddl_async(request_type=dict)
 
 
 def test_get_database_ddl_field_headers():
@@ -3874,8 +3911,8 @@ async def test_get_database_ddl_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -3886,7 +3923,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -3932,9 +3969,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -4015,9 +4053,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4025,7 +4068,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -4048,11 +4091,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -4215,8 +4253,8 @@ async def test_set_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -4227,7 +4265,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -4273,9 +4311,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -4356,9 +4395,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4366,7 +4410,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -4389,11 +4433,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -4555,8 +4594,8 @@ async def test_get_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -4567,7 +4606,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4615,9 +4654,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -4702,9 +4742,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4713,7 +4759,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4736,11 +4782,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -4926,8 +4967,8 @@ async def test_test_iam_permissions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gsad_backup.CreateBackupRequest,
-        dict,
+        gsad_backup.CreateBackupRequest(),
+        {},
     ],
 )
 def test_create_backup(request_type, transport: str = "grpc"):
@@ -4938,7 +4979,7 @@ def test_create_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
@@ -4980,10 +5021,11 @@ def test_create_backup_non_empty_request_with_auto_populated_field():
         client.create_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsad_backup.CreateBackupRequest(
+        request_msg = gsad_backup.CreateBackupRequest(
             parent="parent_value",
             backup_id="backup_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_backup_use_cached_wrapped_rpc():
@@ -5074,9 +5116,14 @@ async def test_create_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_backup_async(
-    transport: str = "grpc_asyncio", request_type=gsad_backup.CreateBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsad_backup.CreateBackupRequest(),
+        {},
+    ],
+)
+async def test_create_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5084,7 +5131,7 @@ async def test_create_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
@@ -5102,11 +5149,6 @@ async def test_create_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_backup_async_from_dict():
-    await test_create_backup_async(request_type=dict)
 
 
 def test_create_backup_field_headers():
@@ -5275,8 +5317,8 @@ async def test_create_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        backup.CopyBackupRequest,
-        dict,
+        backup.CopyBackupRequest(),
+        {},
     ],
 )
 def test_copy_backup(request_type, transport: str = "grpc"):
@@ -5287,7 +5329,7 @@ def test_copy_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.copy_backup), "__call__") as call:
@@ -5330,11 +5372,12 @@ def test_copy_backup_non_empty_request_with_auto_populated_field():
         client.copy_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.CopyBackupRequest(
+        request_msg = backup.CopyBackupRequest(
             parent="parent_value",
             backup_id="backup_id_value",
             source_backup="source_backup_value",
         )
+        assert args[0] == request_msg
 
 
 def test_copy_backup_use_cached_wrapped_rpc():
@@ -5425,9 +5468,14 @@ async def test_copy_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_copy_backup_async(
-    transport: str = "grpc_asyncio", request_type=backup.CopyBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup.CopyBackupRequest(),
+        {},
+    ],
+)
+async def test_copy_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5435,7 +5483,7 @@ async def test_copy_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.copy_backup), "__call__") as call:
@@ -5453,11 +5501,6 @@ async def test_copy_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_copy_backup_async_from_dict():
-    await test_copy_backup_async(request_type=dict)
 
 
 def test_copy_backup_field_headers():
@@ -5636,8 +5679,8 @@ async def test_copy_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        backup.GetBackupRequest,
-        dict,
+        backup.GetBackupRequest(),
+        {},
     ],
 )
 def test_get_backup(request_type, transport: str = "grpc"):
@@ -5648,7 +5691,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -5712,9 +5755,10 @@ def test_get_backup_non_empty_request_with_auto_populated_field():
         client.get_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.GetBackupRequest(
+        request_msg = backup.GetBackupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_use_cached_wrapped_rpc():
@@ -5793,9 +5837,14 @@ async def test_get_backup_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_backup_async(
-    transport: str = "grpc_asyncio", request_type=backup.GetBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup.GetBackupRequest(),
+        {},
+    ],
+)
+async def test_get_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5803,7 +5852,7 @@ async def test_get_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -5844,11 +5893,6 @@ async def test_get_backup_async(
     assert response.referencing_backups == ["referencing_backups_value"]
     assert response.backup_schedules == ["backup_schedules_value"]
     assert response.incremental_backup_chain_id == "incremental_backup_chain_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_backup_async_from_dict():
-    await test_get_backup_async(request_type=dict)
 
 
 def test_get_backup_field_headers():
@@ -5993,8 +6037,8 @@ async def test_get_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gsad_backup.UpdateBackupRequest,
-        dict,
+        gsad_backup.UpdateBackupRequest(),
+        {},
     ],
 )
 def test_update_backup(request_type, transport: str = "grpc"):
@@ -6005,7 +6049,7 @@ def test_update_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
@@ -6067,7 +6111,8 @@ def test_update_backup_non_empty_request_with_auto_populated_field():
         client.update_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsad_backup.UpdateBackupRequest()
+        request_msg = gsad_backup.UpdateBackupRequest()
+        assert args[0] == request_msg
 
 
 def test_update_backup_use_cached_wrapped_rpc():
@@ -6148,9 +6193,14 @@ async def test_update_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_backup_async(
-    transport: str = "grpc_asyncio", request_type=gsad_backup.UpdateBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsad_backup.UpdateBackupRequest(),
+        {},
+    ],
+)
+async def test_update_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6158,7 +6208,7 @@ async def test_update_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
@@ -6199,11 +6249,6 @@ async def test_update_backup_async(
     assert response.referencing_backups == ["referencing_backups_value"]
     assert response.backup_schedules == ["backup_schedules_value"]
     assert response.incremental_backup_chain_id == "incremental_backup_chain_id_value"
-
-
-@pytest.mark.asyncio
-async def test_update_backup_async_from_dict():
-    await test_update_backup_async(request_type=dict)
 
 
 def test_update_backup_field_headers():
@@ -6358,8 +6403,8 @@ async def test_update_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        backup.DeleteBackupRequest,
-        dict,
+        backup.DeleteBackupRequest(),
+        {},
     ],
 )
 def test_delete_backup(request_type, transport: str = "grpc"):
@@ -6370,7 +6415,7 @@ def test_delete_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -6411,9 +6456,10 @@ def test_delete_backup_non_empty_request_with_auto_populated_field():
         client.delete_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.DeleteBackupRequest(
+        request_msg = backup.DeleteBackupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_backup_use_cached_wrapped_rpc():
@@ -6494,9 +6540,14 @@ async def test_delete_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_backup_async(
-    transport: str = "grpc_asyncio", request_type=backup.DeleteBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup.DeleteBackupRequest(),
+        {},
+    ],
+)
+async def test_delete_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6504,7 +6555,7 @@ async def test_delete_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -6520,11 +6571,6 @@ async def test_delete_backup_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_backup_async_from_dict():
-    await test_delete_backup_async(request_type=dict)
 
 
 def test_delete_backup_field_headers():
@@ -6669,8 +6715,8 @@ async def test_delete_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        backup.ListBackupsRequest,
-        dict,
+        backup.ListBackupsRequest(),
+        {},
     ],
 )
 def test_list_backups(request_type, transport: str = "grpc"):
@@ -6681,7 +6727,7 @@ def test_list_backups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -6727,11 +6773,12 @@ def test_list_backups_non_empty_request_with_auto_populated_field():
         client.list_backups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.ListBackupsRequest(
+        request_msg = backup.ListBackupsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backups_use_cached_wrapped_rpc():
@@ -6812,9 +6859,14 @@ async def test_list_backups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_backups_async(
-    transport: str = "grpc_asyncio", request_type=backup.ListBackupsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup.ListBackupsRequest(),
+        {},
+    ],
+)
+async def test_list_backups_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6822,7 +6874,7 @@ async def test_list_backups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -6843,11 +6895,6 @@ async def test_list_backups_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_backups_async_from_dict():
-    await test_list_backups_async(request_type=dict)
 
 
 def test_list_backups_field_headers():
@@ -7042,6 +7089,9 @@ def test_list_backups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, backup.Backup) for i in results)
@@ -7130,6 +7180,8 @@ async def test_list_backups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7186,8 +7238,8 @@ async def test_list_backups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_database_admin.RestoreDatabaseRequest,
-        dict,
+        spanner_database_admin.RestoreDatabaseRequest(),
+        {},
     ],
 )
 def test_restore_database(request_type, transport: str = "grpc"):
@@ -7198,7 +7250,7 @@ def test_restore_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_database), "__call__") as call:
@@ -7241,11 +7293,12 @@ def test_restore_database_non_empty_request_with_auto_populated_field():
         client.restore_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.RestoreDatabaseRequest(
+        request_msg = spanner_database_admin.RestoreDatabaseRequest(
             parent="parent_value",
             database_id="database_id_value",
             backup="backup_value",
         )
+        assert args[0] == request_msg
 
 
 def test_restore_database_use_cached_wrapped_rpc():
@@ -7338,10 +7391,14 @@ async def test_restore_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_restore_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_database_admin.RestoreDatabaseRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.RestoreDatabaseRequest(),
+        {},
+    ],
+)
+async def test_restore_database_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7349,7 +7406,7 @@ async def test_restore_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_database), "__call__") as call:
@@ -7367,11 +7424,6 @@ async def test_restore_database_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_restore_database_async_from_dict():
-    await test_restore_database_async(request_type=dict)
 
 
 def test_restore_database_field_headers():
@@ -7536,8 +7588,8 @@ async def test_restore_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_database_admin.ListDatabaseOperationsRequest,
-        dict,
+        spanner_database_admin.ListDatabaseOperationsRequest(),
+        {},
     ],
 )
 def test_list_database_operations(request_type, transport: str = "grpc"):
@@ -7548,7 +7600,7 @@ def test_list_database_operations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7598,11 +7650,12 @@ def test_list_database_operations_non_empty_request_with_auto_populated_field():
         client.list_database_operations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.ListDatabaseOperationsRequest(
+        request_msg = spanner_database_admin.ListDatabaseOperationsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_database_operations_use_cached_wrapped_rpc():
@@ -7688,9 +7741,15 @@ async def test_list_database_operations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.ListDatabaseOperationsRequest(),
+        {},
+    ],
+)
 async def test_list_database_operations_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_database_admin.ListDatabaseOperationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7699,7 +7758,7 @@ async def test_list_database_operations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7722,11 +7781,6 @@ async def test_list_database_operations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatabaseOperationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_database_operations_async_from_dict():
-    await test_list_database_operations_async(request_type=dict)
 
 
 def test_list_database_operations_field_headers():
@@ -7933,6 +7987,9 @@ def test_list_database_operations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, operations_pb2.Operation) for i in results)
@@ -8025,6 +8082,8 @@ async def test_list_database_operations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8083,8 +8142,8 @@ async def test_list_database_operations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        backup.ListBackupOperationsRequest,
-        dict,
+        backup.ListBackupOperationsRequest(),
+        {},
     ],
 )
 def test_list_backup_operations(request_type, transport: str = "grpc"):
@@ -8095,7 +8154,7 @@ def test_list_backup_operations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8145,11 +8204,12 @@ def test_list_backup_operations_non_empty_request_with_auto_populated_field():
         client.list_backup_operations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.ListBackupOperationsRequest(
+        request_msg = backup.ListBackupOperationsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backup_operations_use_cached_wrapped_rpc():
@@ -8235,8 +8295,15 @@ async def test_list_backup_operations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup.ListBackupOperationsRequest(),
+        {},
+    ],
+)
 async def test_list_backup_operations_async(
-    transport: str = "grpc_asyncio", request_type=backup.ListBackupOperationsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8245,7 +8312,7 @@ async def test_list_backup_operations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8268,11 +8335,6 @@ async def test_list_backup_operations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupOperationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_backup_operations_async_from_dict():
-    await test_list_backup_operations_async(request_type=dict)
 
 
 def test_list_backup_operations_field_headers():
@@ -8477,6 +8539,9 @@ def test_list_backup_operations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, operations_pb2.Operation) for i in results)
@@ -8569,6 +8634,8 @@ async def test_list_backup_operations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8627,8 +8694,8 @@ async def test_list_backup_operations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_database_admin.ListDatabaseRolesRequest,
-        dict,
+        spanner_database_admin.ListDatabaseRolesRequest(),
+        {},
     ],
 )
 def test_list_database_roles(request_type, transport: str = "grpc"):
@@ -8639,7 +8706,7 @@ def test_list_database_roles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8688,10 +8755,11 @@ def test_list_database_roles_non_empty_request_with_auto_populated_field():
         client.list_database_roles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.ListDatabaseRolesRequest(
+        request_msg = spanner_database_admin.ListDatabaseRolesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_database_roles_use_cached_wrapped_rpc():
@@ -8776,10 +8844,14 @@ async def test_list_database_roles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_database_roles_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_database_admin.ListDatabaseRolesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.ListDatabaseRolesRequest(),
+        {},
+    ],
+)
+async def test_list_database_roles_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8787,7 +8859,7 @@ async def test_list_database_roles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8810,11 +8882,6 @@ async def test_list_database_roles_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatabaseRolesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_database_roles_async_from_dict():
-    await test_list_database_roles_async(request_type=dict)
 
 
 def test_list_database_roles_field_headers():
@@ -9019,6 +9086,9 @@ def test_list_database_roles_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, spanner_database_admin.DatabaseRole) for i in results)
@@ -9111,6 +9181,8 @@ async def test_list_database_roles_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9171,8 +9243,8 @@ async def test_list_database_roles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_database_admin.AddSplitPointsRequest,
-        dict,
+        spanner_database_admin.AddSplitPointsRequest(),
+        {},
     ],
 )
 def test_add_split_points(request_type, transport: str = "grpc"):
@@ -9183,7 +9255,7 @@ def test_add_split_points(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.add_split_points), "__call__") as call:
@@ -9225,10 +9297,11 @@ def test_add_split_points_non_empty_request_with_auto_populated_field():
         client.add_split_points(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.AddSplitPointsRequest(
+        request_msg = spanner_database_admin.AddSplitPointsRequest(
             database="database_value",
             initiator="initiator_value",
         )
+        assert args[0] == request_msg
 
 
 def test_add_split_points_use_cached_wrapped_rpc():
@@ -9311,10 +9384,14 @@ async def test_add_split_points_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_add_split_points_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_database_admin.AddSplitPointsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.AddSplitPointsRequest(),
+        {},
+    ],
+)
+async def test_add_split_points_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9322,7 +9399,7 @@ async def test_add_split_points_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.add_split_points), "__call__") as call:
@@ -9340,11 +9417,6 @@ async def test_add_split_points_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner_database_admin.AddSplitPointsResponse)
-
-
-@pytest.mark.asyncio
-async def test_add_split_points_async_from_dict():
-    await test_add_split_points_async(request_type=dict)
 
 
 def test_add_split_points_field_headers():
@@ -9503,8 +9575,8 @@ async def test_add_split_points_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gsad_backup_schedule.CreateBackupScheduleRequest,
-        dict,
+        gsad_backup_schedule.CreateBackupScheduleRequest(),
+        {},
     ],
 )
 def test_create_backup_schedule(request_type, transport: str = "grpc"):
@@ -9515,7 +9587,7 @@ def test_create_backup_schedule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9564,10 +9636,11 @@ def test_create_backup_schedule_non_empty_request_with_auto_populated_field():
         client.create_backup_schedule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsad_backup_schedule.CreateBackupScheduleRequest(
+        request_msg = gsad_backup_schedule.CreateBackupScheduleRequest(
             parent="parent_value",
             backup_schedule_id="backup_schedule_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_backup_schedule_use_cached_wrapped_rpc():
@@ -9653,9 +9726,15 @@ async def test_create_backup_schedule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsad_backup_schedule.CreateBackupScheduleRequest(),
+        {},
+    ],
+)
 async def test_create_backup_schedule_async(
-    transport: str = "grpc_asyncio",
-    request_type=gsad_backup_schedule.CreateBackupScheduleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9664,7 +9743,7 @@ async def test_create_backup_schedule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9687,11 +9766,6 @@ async def test_create_backup_schedule_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gsad_backup_schedule.BackupSchedule)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_backup_schedule_async_from_dict():
-    await test_create_backup_schedule_async(request_type=dict)
 
 
 def test_create_backup_schedule_field_headers():
@@ -9868,8 +9942,8 @@ async def test_create_backup_schedule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        backup_schedule.GetBackupScheduleRequest,
-        dict,
+        backup_schedule.GetBackupScheduleRequest(),
+        {},
     ],
 )
 def test_get_backup_schedule(request_type, transport: str = "grpc"):
@@ -9880,7 +9954,7 @@ def test_get_backup_schedule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9928,9 +10002,10 @@ def test_get_backup_schedule_non_empty_request_with_auto_populated_field():
         client.get_backup_schedule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_schedule.GetBackupScheduleRequest(
+        request_msg = backup_schedule.GetBackupScheduleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_schedule_use_cached_wrapped_rpc():
@@ -10015,10 +10090,14 @@ async def test_get_backup_schedule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_backup_schedule_async(
-    transport: str = "grpc_asyncio",
-    request_type=backup_schedule.GetBackupScheduleRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup_schedule.GetBackupScheduleRequest(),
+        {},
+    ],
+)
+async def test_get_backup_schedule_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10026,7 +10105,7 @@ async def test_get_backup_schedule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10049,11 +10128,6 @@ async def test_get_backup_schedule_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, backup_schedule.BackupSchedule)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_backup_schedule_async_from_dict():
-    await test_get_backup_schedule_async(request_type=dict)
 
 
 def test_get_backup_schedule_field_headers():
@@ -10210,8 +10284,8 @@ async def test_get_backup_schedule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gsad_backup_schedule.UpdateBackupScheduleRequest,
-        dict,
+        gsad_backup_schedule.UpdateBackupScheduleRequest(),
+        {},
     ],
 )
 def test_update_backup_schedule(request_type, transport: str = "grpc"):
@@ -10222,7 +10296,7 @@ def test_update_backup_schedule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10268,7 +10342,8 @@ def test_update_backup_schedule_non_empty_request_with_auto_populated_field():
         client.update_backup_schedule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsad_backup_schedule.UpdateBackupScheduleRequest()
+        request_msg = gsad_backup_schedule.UpdateBackupScheduleRequest()
+        assert args[0] == request_msg
 
 
 def test_update_backup_schedule_use_cached_wrapped_rpc():
@@ -10354,9 +10429,15 @@ async def test_update_backup_schedule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsad_backup_schedule.UpdateBackupScheduleRequest(),
+        {},
+    ],
+)
 async def test_update_backup_schedule_async(
-    transport: str = "grpc_asyncio",
-    request_type=gsad_backup_schedule.UpdateBackupScheduleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10365,7 +10446,7 @@ async def test_update_backup_schedule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10388,11 +10469,6 @@ async def test_update_backup_schedule_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gsad_backup_schedule.BackupSchedule)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_backup_schedule_async_from_dict():
-    await test_update_backup_schedule_async(request_type=dict)
 
 
 def test_update_backup_schedule_field_headers():
@@ -10559,8 +10635,8 @@ async def test_update_backup_schedule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        backup_schedule.DeleteBackupScheduleRequest,
-        dict,
+        backup_schedule.DeleteBackupScheduleRequest(),
+        {},
     ],
 )
 def test_delete_backup_schedule(request_type, transport: str = "grpc"):
@@ -10571,7 +10647,7 @@ def test_delete_backup_schedule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10616,9 +10692,10 @@ def test_delete_backup_schedule_non_empty_request_with_auto_populated_field():
         client.delete_backup_schedule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_schedule.DeleteBackupScheduleRequest(
+        request_msg = backup_schedule.DeleteBackupScheduleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_backup_schedule_use_cached_wrapped_rpc():
@@ -10704,9 +10781,15 @@ async def test_delete_backup_schedule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup_schedule.DeleteBackupScheduleRequest(),
+        {},
+    ],
+)
 async def test_delete_backup_schedule_async(
-    transport: str = "grpc_asyncio",
-    request_type=backup_schedule.DeleteBackupScheduleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10715,7 +10798,7 @@ async def test_delete_backup_schedule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10733,11 +10816,6 @@ async def test_delete_backup_schedule_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_backup_schedule_async_from_dict():
-    await test_delete_backup_schedule_async(request_type=dict)
 
 
 def test_delete_backup_schedule_field_headers():
@@ -10890,8 +10968,8 @@ async def test_delete_backup_schedule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        backup_schedule.ListBackupSchedulesRequest,
-        dict,
+        backup_schedule.ListBackupSchedulesRequest(),
+        {},
     ],
 )
 def test_list_backup_schedules(request_type, transport: str = "grpc"):
@@ -10902,7 +10980,7 @@ def test_list_backup_schedules(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10951,10 +11029,11 @@ def test_list_backup_schedules_non_empty_request_with_auto_populated_field():
         client.list_backup_schedules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_schedule.ListBackupSchedulesRequest(
+        request_msg = backup_schedule.ListBackupSchedulesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backup_schedules_use_cached_wrapped_rpc():
@@ -11040,9 +11119,15 @@ async def test_list_backup_schedules_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup_schedule.ListBackupSchedulesRequest(),
+        {},
+    ],
+)
 async def test_list_backup_schedules_async(
-    transport: str = "grpc_asyncio",
-    request_type=backup_schedule.ListBackupSchedulesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11051,7 +11136,7 @@ async def test_list_backup_schedules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11074,11 +11159,6 @@ async def test_list_backup_schedules_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupSchedulesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_backup_schedules_async_from_dict():
-    await test_list_backup_schedules_async(request_type=dict)
 
 
 def test_list_backup_schedules_field_headers():
@@ -11283,6 +11363,9 @@ def test_list_backup_schedules_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, backup_schedule.BackupSchedule) for i in results)
@@ -11375,6 +11458,8 @@ async def test_list_backup_schedules_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11433,8 +11518,8 @@ async def test_list_backup_schedules_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        spanner_database_admin.InternalUpdateGraphOperationRequest,
-        dict,
+        spanner_database_admin.InternalUpdateGraphOperationRequest(),
+        {},
     ],
 )
 def test_internal_update_graph_operation(request_type, transport: str = "grpc"):
@@ -11445,7 +11530,7 @@ def test_internal_update_graph_operation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11496,11 +11581,12 @@ def test_internal_update_graph_operation_non_empty_request_with_auto_populated_f
         client.internal_update_graph_operation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.InternalUpdateGraphOperationRequest(
+        request_msg = spanner_database_admin.InternalUpdateGraphOperationRequest(
             database="database_value",
             operation_id="operation_id_value",
             vm_identity_token="vm_identity_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_internal_update_graph_operation_use_cached_wrapped_rpc():
@@ -11586,9 +11672,15 @@ async def test_internal_update_graph_operation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.InternalUpdateGraphOperationRequest(),
+        {},
+    ],
+)
 async def test_internal_update_graph_operation_async(
-    transport: str = "grpc_asyncio",
-    request_type=spanner_database_admin.InternalUpdateGraphOperationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatabaseAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11597,7 +11689,7 @@ async def test_internal_update_graph_operation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11619,11 +11711,6 @@ async def test_internal_update_graph_operation_async(
     assert isinstance(
         response, spanner_database_admin.InternalUpdateGraphOperationResponse
     )
-
-
-@pytest.mark.asyncio
-async def test_internal_update_graph_operation_async_from_dict():
-    await test_internal_update_graph_operation_async(request_type=dict)
 
 
 def test_internal_update_graph_operation_flattened():
@@ -11971,6 +12058,9 @@ def test_list_databases_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/instances/sample2"}
 
         pager = client.list_databases(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -14844,6 +14934,9 @@ def test_list_backups_rest_pager(transport: str = "rest"):
 
         pager = client.list_backups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, backup.Backup) for i in results)
@@ -15307,6 +15400,9 @@ def test_list_database_operations_rest_pager(transport: str = "rest"):
 
         pager = client.list_database_operations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, operations_pb2.Operation) for i in results)
@@ -15569,6 +15665,9 @@ def test_list_backup_operations_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/instances/sample2"}
 
         pager = client.list_backup_operations(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -15836,6 +15935,9 @@ def test_list_database_roles_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_database_roles(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -17070,6 +17172,9 @@ def test_list_backup_schedules_rest_pager(transport: str = "rest"):
 
         pager = client.list_backup_schedules(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, backup_schedule.BackupSchedule) for i in results)
@@ -17226,7 +17331,6 @@ def test_list_databases_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.ListDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17247,7 +17351,6 @@ def test_create_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.CreateDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -17268,7 +17371,6 @@ def test_get_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.GetDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -17289,7 +17391,6 @@ def test_update_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.UpdateDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -17312,7 +17413,6 @@ def test_update_database_ddl_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.UpdateDatabaseDdlRequest()
-
         assert args[0] == request_msg
 
 
@@ -17333,7 +17433,6 @@ def test_drop_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.DropDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -17354,7 +17453,6 @@ def test_get_database_ddl_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.GetDatabaseDdlRequest()
-
         assert args[0] == request_msg
 
 
@@ -17375,7 +17473,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -17396,7 +17493,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -17419,7 +17515,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17440,7 +17535,6 @@ def test_create_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsad_backup.CreateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -17461,7 +17555,6 @@ def test_copy_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.CopyBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -17482,7 +17575,6 @@ def test_get_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -17503,7 +17595,6 @@ def test_update_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsad_backup.UpdateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -17524,7 +17615,6 @@ def test_delete_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -17545,7 +17635,6 @@ def test_list_backups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17566,7 +17655,6 @@ def test_restore_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.RestoreDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -17589,7 +17677,6 @@ def test_list_database_operations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.ListDatabaseOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17612,7 +17699,6 @@ def test_list_backup_operations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.ListBackupOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17635,7 +17721,6 @@ def test_list_database_roles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.ListDatabaseRolesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17656,7 +17741,6 @@ def test_add_split_points_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.AddSplitPointsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17679,7 +17763,6 @@ def test_create_backup_schedule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsad_backup_schedule.CreateBackupScheduleRequest()
-
         assert args[0] == request_msg
 
 
@@ -17702,7 +17785,6 @@ def test_get_backup_schedule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup_schedule.GetBackupScheduleRequest()
-
         assert args[0] == request_msg
 
 
@@ -17725,7 +17807,6 @@ def test_update_backup_schedule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsad_backup_schedule.UpdateBackupScheduleRequest()
-
         assert args[0] == request_msg
 
 
@@ -17748,7 +17829,6 @@ def test_delete_backup_schedule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup_schedule.DeleteBackupScheduleRequest()
-
         assert args[0] == request_msg
 
 
@@ -17771,7 +17851,6 @@ def test_list_backup_schedules_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup_schedule.ListBackupSchedulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17796,7 +17875,6 @@ def test_internal_update_graph_operation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.InternalUpdateGraphOperationRequest()
-
         assert args[0] == request_msg
 
 
@@ -17837,7 +17915,6 @@ async def test_list_databases_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.ListDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17862,7 +17939,6 @@ async def test_create_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.CreateDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -17895,7 +17971,6 @@ async def test_get_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.GetDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -17920,7 +17995,6 @@ async def test_update_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.UpdateDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -17947,7 +18021,6 @@ async def test_update_database_ddl_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.UpdateDatabaseDdlRequest()
-
         assert args[0] == request_msg
 
 
@@ -17970,7 +18043,6 @@ async def test_drop_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.DropDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -17998,7 +18070,6 @@ async def test_get_database_ddl_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.GetDatabaseDdlRequest()
-
         assert args[0] == request_msg
 
 
@@ -18026,7 +18097,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -18054,7 +18124,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -18083,7 +18152,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18108,7 +18176,6 @@ async def test_create_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsad_backup.CreateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18133,7 +18200,6 @@ async def test_copy_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.CopyBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18170,7 +18236,6 @@ async def test_get_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18207,7 +18272,6 @@ async def test_update_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsad_backup.UpdateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18230,7 +18294,6 @@ async def test_delete_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -18257,7 +18320,6 @@ async def test_list_backups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18282,7 +18344,6 @@ async def test_restore_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.RestoreDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -18311,7 +18372,6 @@ async def test_list_database_operations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.ListDatabaseOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18340,7 +18400,6 @@ async def test_list_backup_operations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.ListBackupOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18369,7 +18428,6 @@ async def test_list_database_roles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.ListDatabaseRolesRequest()
-
         assert args[0] == request_msg
 
 
@@ -18394,7 +18452,6 @@ async def test_add_split_points_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.AddSplitPointsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18423,7 +18480,6 @@ async def test_create_backup_schedule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsad_backup_schedule.CreateBackupScheduleRequest()
-
         assert args[0] == request_msg
 
 
@@ -18452,7 +18508,6 @@ async def test_get_backup_schedule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup_schedule.GetBackupScheduleRequest()
-
         assert args[0] == request_msg
 
 
@@ -18481,7 +18536,6 @@ async def test_update_backup_schedule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsad_backup_schedule.UpdateBackupScheduleRequest()
-
         assert args[0] == request_msg
 
 
@@ -18506,7 +18560,6 @@ async def test_delete_backup_schedule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup_schedule.DeleteBackupScheduleRequest()
-
         assert args[0] == request_msg
 
 
@@ -18535,7 +18588,6 @@ async def test_list_backup_schedules_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup_schedule.ListBackupSchedulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -18562,7 +18614,6 @@ async def test_internal_update_graph_operation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.InternalUpdateGraphOperationRequest()
-
         assert args[0] == request_msg
 
 
@@ -22780,7 +22831,6 @@ def test_list_databases_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.ListDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -22800,7 +22850,6 @@ def test_create_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.CreateDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -22820,7 +22869,6 @@ def test_get_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.GetDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -22840,7 +22888,6 @@ def test_update_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.UpdateDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -22862,7 +22909,6 @@ def test_update_database_ddl_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.UpdateDatabaseDdlRequest()
-
         assert args[0] == request_msg
 
 
@@ -22882,7 +22928,6 @@ def test_drop_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.DropDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -22902,7 +22947,6 @@ def test_get_database_ddl_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.GetDatabaseDdlRequest()
-
         assert args[0] == request_msg
 
 
@@ -22922,7 +22966,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -22942,7 +22985,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -22964,7 +23006,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22984,7 +23025,6 @@ def test_create_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsad_backup.CreateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -23004,7 +23044,6 @@ def test_copy_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.CopyBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -23024,7 +23063,6 @@ def test_get_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -23044,7 +23082,6 @@ def test_update_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsad_backup.UpdateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -23064,7 +23101,6 @@ def test_delete_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -23084,7 +23120,6 @@ def test_list_backups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23104,7 +23139,6 @@ def test_restore_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.RestoreDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -23126,7 +23160,6 @@ def test_list_database_operations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.ListDatabaseOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23148,7 +23181,6 @@ def test_list_backup_operations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup.ListBackupOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23170,7 +23202,6 @@ def test_list_database_roles_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.ListDatabaseRolesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23190,7 +23221,6 @@ def test_add_split_points_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.AddSplitPointsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23212,7 +23242,6 @@ def test_create_backup_schedule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsad_backup_schedule.CreateBackupScheduleRequest()
-
         assert args[0] == request_msg
 
 
@@ -23234,7 +23263,6 @@ def test_get_backup_schedule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup_schedule.GetBackupScheduleRequest()
-
         assert args[0] == request_msg
 
 
@@ -23256,7 +23284,6 @@ def test_update_backup_schedule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsad_backup_schedule.UpdateBackupScheduleRequest()
-
         assert args[0] == request_msg
 
 
@@ -23278,7 +23305,6 @@ def test_delete_backup_schedule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup_schedule.DeleteBackupScheduleRequest()
-
         assert args[0] == request_msg
 
 
@@ -23300,7 +23326,6 @@ def test_list_backup_schedules_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup_schedule.ListBackupSchedulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23322,7 +23347,6 @@ def test_internal_update_graph_operation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = spanner_database_admin.InternalUpdateGraphOperationRequest()
-
         assert args[0] == request_msg
 
 

@@ -88,10 +88,10 @@ def scalars_dfs(
 def test_pd_col_unary_operators(scalars_dfs, op):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_kwargs = {
-        "result": op(bpd.col("float64_col")),
+        "result": op(bpd.col("bool_col")),
     }
     pd_kwargs = {
-        "result": op(pd.col("float64_col")),  # type: ignore
+        "result": op(pd.col("bool_col")),  # type: ignore
     }
     df = scalars_df.assign(**bf_kwargs)
 

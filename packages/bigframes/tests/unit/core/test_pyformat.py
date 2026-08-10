@@ -62,6 +62,72 @@ def test_parse_fields(sql_template: str, expected: List[str]):
     assert fields == expected
 
 
+def test_get_error_context_at_pos_invalid_pos():
+    assert pyformat.get_error_context_at_pos("SELECT 1", -1) == ""
+    assert pyformat.get_error_context_at_pos("SELECT 1", 100) == ""
+
+
+def test_get_error_context_at_pos_single_line():
+    sql = "SELECT {foo}"
+    # pos of '{' is 7
+    context = pyformat.get_error_context_at_pos(sql, 7)
+    expected = "   1: SELECT {foo}\n             ^"
+    assert context == expected
+
+
+def test_get_error_context_at_pos_multi_line():
+    sql = "SELECT 1\nFROM my_table\nWHERE col = {foo}\nAND active = True\nLIMIT 10"
+    # Lines:
+    # 1: SELECT 1 (len 9 including \n)
+    # 2: FROM my_table (len 14 including \n) -> total 23
+    # 3: WHERE col = {foo} -> '{' is at 23 + 12 = 35
+
+    context = pyformat.get_error_context_at_pos(sql, 35)
+    expected = (
+        "   1: SELECT 1\n"
+        "   2: FROM my_table\n"
+        "   3: WHERE col = {foo}\n"
+        "                  ^\n"
+        "   4: AND active = True\n"
+        "   5: LIMIT 10"
+    )
+    assert context == expected
+
+
+def test_get_error_context_at_pos_multi_line_limits():
+    # Test that it only shows at most 2 lines before and 2 lines after
+    sql = (
+        "LINE 1\n"
+        "LINE 2\n"
+        "LINE 3\n"
+        "LINE 4\n"
+        "LINE 5\n"
+        "TARGET {foo}\n"
+        "LINE 7\n"
+        "LINE 8\n"
+        "LINE 9\n"
+        "LINE 10"
+    )
+    # Line lengths:
+    # LINE 1\n (7)
+    # LINE 2\n (7) -> 14
+    # LINE 3\n (7) -> 21
+    # LINE 4\n (7) -> 28
+    # LINE 5\n (7) -> 35
+    # TARGET {foo}\n -> '{' is at 35 + 7 = 42
+
+    context = pyformat.get_error_context_at_pos(sql, 42)
+    expected = (
+        "   4: LINE 4\n"
+        "   5: LINE 5\n"
+        "   6: TARGET {foo}\n"
+        "             ^\n"
+        "   7: LINE 7\n"
+        "   8: LINE 8"
+    )
+    assert context == expected
+
+
 def test_pyformat_with_unsupported_type_raises_typeerror(session):
     pyformat_args = {"my_object": object()}
     sql = "SELECT {my_object}"
@@ -70,12 +136,74 @@ def test_pyformat_with_unsupported_type_raises_typeerror(session):
         pyformat.pyformat(sql, pyformat_args=pyformat_args, session=session)
 
 
-def test_pyformat_with_missing_variable_raises_keyerror(session):
+def test_pyformat_with_missing_variable_raises_valueerror(session):
     pyformat_args: Dict[str, Any] = {}
     sql = "SELECT {my_object}"
 
-    with pytest.raises(KeyError, match="my_object"):
+    with pytest.raises(ValueError) as exc_info:
         pyformat.pyformat(sql, pyformat_args=pyformat_args, session=session)
+
+    err_msg = str(exc_info.value)
+    assert "Undetected variable 'my_object' in SQL template" in err_msg
+    assert "Did you mean to escape '{' and '}'" in err_msg
+    assert "   1: SELECT {my_object}" in err_msg
+    assert "             ^" in err_msg
+
+
+def test_pyformat_with_unescaped_braces_raises_valueerror_with_context(session):
+    pyformat_args = {"active": True}
+    sql = """SELECT * FROM my_table
+WHERE json_col = { "generation_config": { "temperature": 0.9 } }
+AND active = {active}
+"""
+
+    with pytest.raises(ValueError) as exc_info:
+        pyformat.pyformat(sql, pyformat_args=pyformat_args, session=session)
+
+    err_msg = str(exc_info.value)
+    assert "Undetected variable ' \"generation_config\"' in SQL template" in err_msg
+    assert "Did you mean to escape '{' and '}'" in err_msg
+    # The triple quote string starts with SELECT immediately, so lines are:
+    # 1: SELECT * FROM my_table
+    # 2: WHERE json_col = { "generation_config": { "temperature": 0.9 } }
+    # 3: AND active = {active}
+    assert "   1: SELECT * FROM my_table" in err_msg
+    assert (
+        '   2: WHERE json_col = { "generation_config": { "temperature": 0.9 } }'
+        in err_msg
+    )
+    assert "                       ^" in err_msg
+    assert "   3: AND active = {active}" in err_msg
+
+
+@pytest.mark.parametrize(
+    ("sql_template", "expected_error"),
+    (
+        pytest.param(
+            "SELECT {foo",
+            "expected '}' before end of string",
+            id="missing_closing_brace",
+        ),
+        pytest.param(
+            "SELECT foo}",
+            "Single '}' encountered in format string",
+            id="missing_opening_brace",
+        ),
+    ),
+)
+def test_pyformat_with_malformed_template_raises_valueerror(
+    session, sql_template: str, expected_error: str
+):
+    pyformat_args: Dict[str, Any] = {}
+
+    # Case 1: Single '{' (unmatched)
+    with pytest.raises(ValueError) as exc_info:
+        pyformat.pyformat(sql_template, pyformat_args=pyformat_args, session=session)
+
+    error_message = str(exc_info.value)
+    assert "Failed to parse SQL template" in error_message
+    assert "Did you mean to escape '{' and '}'" in error_message
+    assert expected_error in error_message
 
 
 def test_pyformat_with_no_variables(session):

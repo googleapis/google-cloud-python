@@ -131,7 +131,7 @@ class ProductAccount(proto.Message):
             Required. The ID of the account. For example,
             your Google Ads account ID.
         account_type (google.ads.datamanager_v1.types.ProductAccount.AccountType):
-            Optional. The type of the account. For example,
+            Required. The type of the account. For example,
             ``GOOGLE_ADS``. Either ``account_type`` or the deprecated
             ``product`` is required. If both are set, the values must
             match.
@@ -156,6 +156,8 @@ class ProductAccount(proto.Message):
                 Google Analytics.
             GOOGLE_AD_MANAGER_AUDIENCE_LINK (6):
                 Google Ad Manager audience link.
+            FLOODLIGHT_CONFIG (7):
+                Floodlight configuration.
         """
 
         ACCOUNT_TYPE_UNSPECIFIED = 0
@@ -165,6 +167,7 @@ class ProductAccount(proto.Message):
         DATA_PARTNER = 4
         GOOGLE_ANALYTICS_PROPERTY = 5
         GOOGLE_AD_MANAGER_AUDIENCE_LINK = 6
+        FLOODLIGHT_CONFIG = 7
 
     product: "Product" = proto.Field(
         proto.ENUM,

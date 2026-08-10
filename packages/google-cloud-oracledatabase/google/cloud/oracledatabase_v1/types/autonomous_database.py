@@ -229,22 +229,30 @@ class AutonomousDatabase(proto.Message):
             the following format:
             projects/{project}/locations/{region}/autonomousDatabases/{autonomous_database}
         database (str):
-            Optional. The name of the Autonomous
-            Database. The database name must be unique in
-            the project. The name must begin with a letter
-            and can contain a maximum of 30 alphanumeric
-            characters.
+            Optional. Immutable. The name of the
+            Autonomous Database. The database name must be
+            unique in the project. The name must begin with
+            a letter and can contain a maximum of 30
+            alphanumeric characters.
         display_name (str):
-            Optional. The display name for the Autonomous
-            Database. The name does not have to be unique
-            within your project.
+            Optional. Immutable. The display name for the
+            Autonomous Database. The name does not have to
+            be unique within your project.
         entitlement_id (str):
             Output only. The ID of the subscription
             entitlement associated with the Autonomous
             Database.
         admin_password (str):
-            Optional. The password for the default ADMIN
-            user.
+            Optional. Immutable. The password for the default ADMIN
+            user. Note: Only one of ``admin_password_secret_version`` or
+            ``admin_password`` can be populated.
+        admin_password_secret_version (str):
+            Optional. Immutable. The resource name of a secret version
+            in Secret Manager which contains the database admin user's
+            password. Format:
+            projects/{project}/secrets/{secret}/versions/{version}.
+            Note: Only one of ``admin_password_secret_version`` or
+            ``admin_password`` can be populated.
         properties (google.cloud.oracledatabase_v1.types.AutonomousDatabaseProperties):
             Optional. The properties of the Autonomous
             Database.
@@ -252,28 +260,31 @@ class AutonomousDatabase(proto.Message):
             Optional. The labels or tags associated with
             the Autonomous Database.
         network (str):
-            Optional. The name of the VPC network used by
-            the Autonomous Database in the following format:
+            Optional. Immutable. The name of the VPC
+            network used by the Autonomous Database in the
+            following format:
+
             projects/{project}/global/networks/{network}
         cidr (str):
-            Optional. The subnet CIDR range for the
-            Autonomous Database.
+            Optional. Immutable. The subnet CIDR range
+            for the Autonomous Database.
         odb_network (str):
-            Optional. The name of the OdbNetwork associated with the
-            Autonomous Database. Format:
+            Optional. Immutable. The name of the OdbNetwork associated
+            with the Autonomous Database. Format:
             projects/{project}/locations/{location}/odbNetworks/{odb_network}
             It is optional but if specified, this should match the
             parent ODBNetwork of the OdbSubnet.
         odb_subnet (str):
-            Optional. The name of the OdbSubnet associated with the
-            Autonomous Database. Format:
+            Optional. Immutable. The name of the OdbSubnet associated
+            with the Autonomous Database. Format:
             projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
         source_config (google.cloud.oracledatabase_v1.types.SourceConfig):
-            Optional. The source Autonomous Database
-            configuration for the standby Autonomous
-            Database. The source Autonomous Database is
-            configured while creating the Peer Autonomous
-            Database and can't be updated after creation.
+            Optional. Immutable. The source Autonomous
+            Database configuration for the standby
+            Autonomous Database. The source Autonomous
+            Database is configured while creating the Peer
+            Autonomous Database and can't be updated after
+            creation.
         peer_autonomous_databases (MutableSequence[str]):
             Output only. The peer Autonomous Database
             names of the given Autonomous Database.
@@ -305,6 +316,10 @@ class AutonomousDatabase(proto.Message):
     admin_password: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    admin_password_secret_version: str = proto.Field(
+        proto.STRING,
+        number=18,
     )
     properties: "AutonomousDatabaseProperties" = proto.Field(
         proto.MESSAGE,
@@ -386,68 +401,72 @@ class AutonomousDatabaseProperties(proto.Message):
             Output only. OCID of the Autonomous Database.
             https://docs.oracle.com/en-us/iaas/Content/General/Concepts/identifiers.htm#Oracle
         compute_count (float):
-            Optional. The number of compute servers for
-            the Autonomous Database.
+            Optional. Immutable. The number of compute
+            servers for the Autonomous Database.
         cpu_core_count (int):
-            Optional. The number of CPU cores to be made
-            available to the database.
+            Optional. Immutable. The number of CPU cores
+            to be made available to the database.
         data_storage_size_tb (int):
-            Optional. The size of the data stored in the
-            database, in terabytes.
+            Optional. Immutable. The size of the data
+            stored in the database, in terabytes.
         data_storage_size_gb (int):
-            Optional. The size of the data stored in the
-            database, in gigabytes.
+            Optional. Immutable. The size of the data
+            stored in the database, in gigabytes.
         db_workload (google.cloud.oracledatabase_v1.types.DBWorkload):
-            Required. The workload type of the Autonomous
-            Database.
+            Required. Immutable. The workload type of the
+            Autonomous Database.
         db_edition (google.cloud.oracledatabase_v1.types.AutonomousDatabaseProperties.DatabaseEdition):
-            Optional. The edition of the Autonomous
-            Databases.
+            Optional. Immutable. The edition of the
+            Autonomous Databases.
         character_set (str):
-            Optional. The character set for the
-            Autonomous Database. The default is AL32UTF8.
+            Optional. Immutable. The character set for
+            the Autonomous Database. The default is
+            AL32UTF8.
         n_character_set (str):
-            Optional. The national character set for the
-            Autonomous Database. The default is AL16UTF16.
+            Optional. Immutable. The national character
+            set for the Autonomous Database. The default is
+            AL16UTF16.
         private_endpoint_ip (str):
-            Optional. The private endpoint IP address for
-            the Autonomous Database.
+            Optional. Immutable. The private endpoint IP
+            address for the Autonomous Database.
         private_endpoint_label (str):
-            Optional. The private endpoint label for the
-            Autonomous Database.
+            Optional. Immutable. The private endpoint
+            label for the Autonomous Database.
         db_version (str):
-            Optional. The Oracle Database version for the
-            Autonomous Database.
+            Optional. Immutable. The Oracle Database
+            version for the Autonomous Database.
         is_auto_scaling_enabled (bool):
-            Optional. This field indicates if auto
-            scaling is enabled for the Autonomous Database
-            CPU core count.
+            Optional. Immutable. This field indicates if
+            auto scaling is enabled for the Autonomous
+            Database CPU core count.
         is_storage_auto_scaling_enabled (bool):
-            Optional. This field indicates if auto
-            scaling is enabled for the Autonomous Database
-            storage.
+            Optional. Immutable. This field indicates if
+            auto scaling is enabled for the Autonomous
+            Database storage.
         license_type (google.cloud.oracledatabase_v1.types.AutonomousDatabaseProperties.LicenseType):
-            Required. The license type used for the
-            Autonomous Database.
+            Required. Immutable. The license type used
+            for the Autonomous Database.
         customer_contacts (MutableSequence[google.cloud.oracledatabase_v1.types.CustomerContact]):
-            Optional. The list of customer contacts.
+            Optional. Immutable. The list of customer
+            contacts.
         secret_id (str):
-            Optional. The ID of the Oracle Cloud
-            Infrastructure vault secret.
+            Optional. Immutable. The ID of the Oracle
+            Cloud Infrastructure vault secret.
         vault_id (str):
-            Optional. The ID of the Oracle Cloud
-            Infrastructure vault.
+            Optional. Immutable. The ID of the Oracle
+            Cloud Infrastructure vault.
         maintenance_schedule_type (google.cloud.oracledatabase_v1.types.AutonomousDatabaseProperties.MaintenanceScheduleType):
-            Optional. The maintenance schedule of the
-            Autonomous Database.
+            Optional. Immutable. The maintenance schedule
+            of the Autonomous Database.
         mtls_connection_required (bool):
-            Optional. This field specifies if the
-            Autonomous Database requires mTLS connections.
+            Optional. Immutable. This field specifies if
+            the Autonomous Database requires mTLS
+            connections.
         backup_retention_period_days (int):
-            Optional. The retention period for the
-            Autonomous Database. This field is specified in
-            days, can range from 1 day to 60 days, and has a
-            default value of 60 days.
+            Optional. Immutable. The retention period for
+            the Autonomous Database. This field is specified
+            in days, can range from 1 day to 60 days, and
+            has a default value of 60 days.
         actual_used_data_storage_size_tb (float):
             Output only. The amount of storage currently
             being used for user and system data, in
@@ -501,13 +520,15 @@ class AutonomousDatabaseProperties(proto.Message):
             Output only. The memory assigned to in-memory
             tables in an Autonomous Database.
         is_local_data_guard_enabled (bool):
-            Output only. This field indicates whether the
-            Autonomous Database has local (in-region) Data
+            Output only. Deprecated: Please use
+            ``local_data_guard_enabled`` instead. This field indicates
+            whether the Autonomous Database has local (in-region) Data
             Guard enabled.
         local_adg_auto_failover_max_data_loss_limit (int):
-            Output only. This field indicates the maximum
-            data loss limit for an Autonomous Database, in
-            seconds.
+            Output only. Deprecated: Please use
+            ``local_adg_auto_failover_max_data_loss_limit_duration``
+            instead. This field indicates the maximum data loss limit
+            for an Autonomous Database, in seconds.
         local_standby_db (google.cloud.oracledatabase_v1.types.AutonomousDatabaseStandbySummary):
             Output only. The details of the Autonomous
             Data Guard standby database.
@@ -588,8 +609,8 @@ class AutonomousDatabaseProperties(proto.Message):
             Output only. The date and time when
             maintenance will end.
         allowlisted_ips (MutableSequence[str]):
-            Optional. The list of allowlisted IP
-            addresses for the Autonomous Database.
+            Optional. Immutable. The list of allowlisted
+            IP addresses for the Autonomous Database.
         encryption_key (google.cloud.oracledatabase_v1.types.EncryptionKey):
             Optional. The encryption key used to encrypt the Autonomous
             Database. Updating this field will add a new entry in the
@@ -603,6 +624,19 @@ class AutonomousDatabaseProperties(proto.Message):
             service account on which customers can grant
             roles to access resources in the customer
             project.
+        local_data_guard_enabled (bool):
+            Optional. Indicates whether the Autonomous
+            Database has a local (in-region) standby
+            database. Not applicable to cross-region Data
+            Guard or dedicated Exadata infrastructure.
+
+            This field is a member of `oneof`_ ``_local_data_guard_enabled``.
+        local_adg_auto_failover_max_data_loss_limit_duration (int):
+            Optional. This field indicates the maximum
+            data loss limit for an Autonomous Database, in
+            seconds.
+
+            This field is a member of `oneof`_ ``_local_adg_auto_failover_max_data_loss_limit_duration``.
     """
 
     class DatabaseEdition(proto.Enum):
@@ -668,11 +702,14 @@ class AutonomousDatabaseProperties(proto.Message):
                 Autonomous Data Guard recovery.
             BACKUP_BASED (2):
                 Backup based recovery.
+            NOT_AVAILABLE (3):
+                Local disaster recovery is not available.
         """
 
         LOCAL_DISASTER_RECOVERY_TYPE_UNSPECIFIED = 0
         ADG = 1
         BACKUP_BASED = 2
+        NOT_AVAILABLE = 3
 
     class DataSafeState(proto.Enum):
         r"""Varies states of the Data Safe registration for the
@@ -1107,6 +1144,16 @@ class AutonomousDatabaseProperties(proto.Message):
     service_agent_email: str = proto.Field(
         proto.STRING,
         number=70,
+    )
+    local_data_guard_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=71,
+        optional=True,
+    )
+    local_adg_auto_failover_max_data_loss_limit_duration: int = proto.Field(
+        proto.INT32,
+        number=72,
+        optional=True,
     )
 
 

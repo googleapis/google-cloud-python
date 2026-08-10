@@ -15,10 +15,7 @@
 import functools
 import logging
 
-from google.cloud.ndb import exceptions
-from google.cloud.ndb import _retry
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import utils
+from google.cloud.ndb import _retry, exceptions, tasklets, utils
 
 log = logging.getLogger(__name__)
 
@@ -50,8 +47,9 @@ class _Propagation(object):
             self.propagation = propagation
         else:
             raise ValueError(
-                "Unexpected value for propagation. Got: {}. Expected one of: "
-                "{}".format(propagation, propagation_options)
+                "Unexpected value for propagation. Got: {}. Expected one of: {}".format(
+                    propagation, propagation_options
+                )
             )
 
         propagation_names = context_module.TransactionOptions._INT_TO_NAME

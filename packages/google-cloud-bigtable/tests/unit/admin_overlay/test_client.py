@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock
+from unittest import mock
 
 import pytest
 from google.api_core import exceptions, gapic_v1
@@ -68,10 +64,7 @@ def test_bigtable_table_admin_client_client_version(transport_class, transport_n
         patched.return_value = None
         _make_client(transport=transport_name)
 
-        # call_args.kwargs is not supported in Python 3.7, so find them from the tuple
-        # instead. It's always the last item in the call_args tuple.
-        transport_init_call_kwargs = patched.call_args[-1]
-        assert transport_init_call_kwargs["client_info"] == DEFAULT_CLIENT_INFO
+        assert patched.call_args.kwargs["client_info"] == DEFAULT_CLIENT_INFO
 
     assert (
         DEFAULT_CLIENT_INFO.client_library_version

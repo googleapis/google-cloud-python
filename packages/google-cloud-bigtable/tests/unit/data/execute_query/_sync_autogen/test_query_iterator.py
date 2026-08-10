@@ -17,6 +17,7 @@
 
 import concurrent.futures
 import gc
+from unittest import mock
 
 import pytest
 
@@ -27,11 +28,6 @@ from google.cloud.bigtable.data.execute_query.metadata import (
 )
 
 from ..sql_helpers import chunked_responses, column, int64_type, int_val, metadata
-
-try:
-    from unittest import mock
-except ImportError:
-    import mock
 
 
 class MockIterator:

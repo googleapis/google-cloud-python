@@ -13,11 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .ad_event import (
+    AdEvent,
+    AdFormat,
+    AdPlacement,
+    AdType,
+    AttributionHint,
+    Platform,
+    PlatformType,
+    TargetingType,
+)
 from .age_range import (
     AgeRange,
 )
 from .audience import (
     AudienceMember,
+    CompositeData,
+    IpData,
     MobileData,
     PairData,
     PpidData,
@@ -40,8 +52,12 @@ from .destination import (
 from .device_info import (
     DeviceInfo,
 )
+from .encrypted_user_id import (
+    EncryptedUserId,
+)
 from .encryption_info import (
     AwsWrappedKeyInfo,
+    CoordinatorKeyInfo,
     EncryptionInfo,
     GcpWrappedKeyInfo,
 )
@@ -64,6 +80,8 @@ from .gender import (
 )
 from .ingestion_service import (
     Encoding,
+    IngestAdEventsRequest,
+    IngestAdEventsResponse,
     IngestAudienceMembersRequest,
     IngestAudienceMembersResponse,
     IngestEventsRequest,
@@ -87,7 +105,10 @@ from .match_rate import (
 from .partner_link_service import (
     CreatePartnerLinkRequest,
     DeletePartnerLinkRequest,
+    FeatureSet,
+    PartnerCustomerAccount,
     PartnerLink,
+    PartnerLinkMetadata,
     SearchPartnerLinksRequest,
     SearchPartnerLinksResponse,
 )
@@ -176,10 +197,25 @@ from .user_properties import (
     UserProperties,
     UserProperty,
 )
+from .viewability_info import (
+    MediaQuartile,
+    ViewabilityInfo,
+    ViewType,
+)
 
 __all__ = (
+    "AdEvent",
+    "AdFormat",
+    "AdPlacement",
+    "AdType",
+    "AttributionHint",
+    "Platform",
+    "PlatformType",
+    "TargetingType",
     "AgeRange",
     "AudienceMember",
+    "CompositeData",
+    "IpData",
     "MobileData",
     "PairData",
     "PpidData",
@@ -193,7 +229,9 @@ __all__ = (
     "ProductAccount",
     "Product",
     "DeviceInfo",
+    "EncryptedUserId",
     "AwsWrappedKeyInfo",
+    "CoordinatorKeyInfo",
     "EncryptionInfo",
     "GcpWrappedKeyInfo",
     "ErrorReason",
@@ -205,6 +243,8 @@ __all__ = (
     "EventSource",
     "ExperimentalField",
     "Gender",
+    "IngestAdEventsRequest",
+    "IngestAdEventsResponse",
     "IngestAudienceMembersRequest",
     "IngestAudienceMembersResponse",
     "IngestEventsRequest",
@@ -221,9 +261,12 @@ __all__ = (
     "MatchRateRange",
     "CreatePartnerLinkRequest",
     "DeletePartnerLinkRequest",
+    "PartnerCustomerAccount",
     "PartnerLink",
+    "PartnerLinkMetadata",
     "SearchPartnerLinksRequest",
     "SearchPartnerLinksResponse",
+    "FeatureSet",
     "ErrorCount",
     "ErrorInfo",
     "WarningCount",
@@ -277,4 +320,7 @@ __all__ = (
     "UserProperty",
     "CustomerType",
     "CustomerValueBucket",
+    "ViewabilityInfo",
+    "MediaQuartile",
+    "ViewType",
 )

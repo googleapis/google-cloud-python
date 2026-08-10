@@ -43,6 +43,17 @@ from google.apps.chat_v1.types.attachment import (
     UploadAttachmentRequest,
     UploadAttachmentResponse,
 )
+from google.apps.chat_v1.types.audience import Audience
+from google.apps.chat_v1.types.availability import (
+    Availability,
+    CustomStatus,
+    DoNotDisturbMetadata,
+    GetAvailabilityRequest,
+    MarkAsActiveRequest,
+    MarkAsAwayRequest,
+    MarkAsDoNotDisturbRequest,
+    UpdateAvailabilityRequest,
+)
 from google.apps.chat_v1.types.contextual_addon import ContextualAddOnMarkup
 from google.apps.chat_v1.types.deletion_metadata import DeletionMetadata
 from google.apps.chat_v1.types.event_payload import (
@@ -189,6 +200,15 @@ __all__ = (
     "GetAttachmentRequest",
     "UploadAttachmentRequest",
     "UploadAttachmentResponse",
+    "Audience",
+    "Availability",
+    "CustomStatus",
+    "DoNotDisturbMetadata",
+    "GetAvailabilityRequest",
+    "MarkAsActiveRequest",
+    "MarkAsAwayRequest",
+    "MarkAsDoNotDisturbRequest",
+    "UpdateAvailabilityRequest",
     "ContextualAddOnMarkup",
     "DeletionMetadata",
     "MembershipBatchCreatedEventData",

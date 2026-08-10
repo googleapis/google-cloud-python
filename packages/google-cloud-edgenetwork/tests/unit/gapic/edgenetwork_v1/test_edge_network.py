@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -114,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -925,7 +941,14 @@ def test_edge_network_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -972,7 +995,14 @@ def test_edge_network_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1281,8 +1311,8 @@ def test_edge_network_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.InitializeZoneRequest,
-        dict,
+        service.InitializeZoneRequest(),
+        {},
     ],
 )
 def test_initialize_zone(request_type, transport: str = "grpc"):
@@ -1293,7 +1323,7 @@ def test_initialize_zone(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.initialize_zone), "__call__") as call:
@@ -1334,9 +1364,10 @@ def test_initialize_zone_non_empty_request_with_auto_populated_field():
         client.initialize_zone(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.InitializeZoneRequest(
+        request_msg = service.InitializeZoneRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_initialize_zone_use_cached_wrapped_rpc():
@@ -1417,9 +1448,14 @@ async def test_initialize_zone_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_initialize_zone_async(
-    transport: str = "grpc_asyncio", request_type=service.InitializeZoneRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.InitializeZoneRequest(),
+        {},
+    ],
+)
+async def test_initialize_zone_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1427,7 +1463,7 @@ async def test_initialize_zone_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.initialize_zone), "__call__") as call:
@@ -1445,11 +1481,6 @@ async def test_initialize_zone_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.InitializeZoneResponse)
-
-
-@pytest.mark.asyncio
-async def test_initialize_zone_async_from_dict():
-    await test_initialize_zone_async(request_type=dict)
 
 
 def test_initialize_zone_field_headers():
@@ -1598,8 +1629,8 @@ async def test_initialize_zone_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListZonesRequest,
-        dict,
+        service.ListZonesRequest(),
+        {},
     ],
 )
 def test_list_zones(request_type, transport: str = "grpc"):
@@ -1610,7 +1641,7 @@ def test_list_zones(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_zones), "__call__") as call:
@@ -1659,12 +1690,13 @@ def test_list_zones_non_empty_request_with_auto_populated_field():
         client.list_zones(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListZonesRequest(
+        request_msg = service.ListZonesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_zones_use_cached_wrapped_rpc():
@@ -1743,9 +1775,14 @@ async def test_list_zones_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_zones_async(
-    transport: str = "grpc_asyncio", request_type=service.ListZonesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListZonesRequest(),
+        {},
+    ],
+)
+async def test_list_zones_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1753,7 +1790,7 @@ async def test_list_zones_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_zones), "__call__") as call:
@@ -1776,11 +1813,6 @@ async def test_list_zones_async(
     assert isinstance(response, pagers.ListZonesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_zones_async_from_dict():
-    await test_list_zones_async(request_type=dict)
 
 
 def test_list_zones_field_headers():
@@ -1975,6 +2007,9 @@ def test_list_zones_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Zone) for i in results)
@@ -2063,6 +2098,8 @@ async def test_list_zones_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2119,8 +2156,8 @@ async def test_list_zones_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetZoneRequest,
-        dict,
+        service.GetZoneRequest(),
+        {},
     ],
 )
 def test_get_zone(request_type, transport: str = "grpc"):
@@ -2131,7 +2168,7 @@ def test_get_zone(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_zone), "__call__") as call:
@@ -2177,9 +2214,10 @@ def test_get_zone_non_empty_request_with_auto_populated_field():
         client.get_zone(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetZoneRequest(
+        request_msg = service.GetZoneRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_zone_use_cached_wrapped_rpc():
@@ -2258,9 +2296,14 @@ async def test_get_zone_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_zone_async(
-    transport: str = "grpc_asyncio", request_type=service.GetZoneRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetZoneRequest(),
+        {},
+    ],
+)
+async def test_get_zone_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2268,7 +2311,7 @@ async def test_get_zone_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_zone), "__call__") as call:
@@ -2291,11 +2334,6 @@ async def test_get_zone_async(
     assert isinstance(response, resources.Zone)
     assert response.name == "name_value"
     assert response.layout_name == "layout_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_zone_async_from_dict():
-    await test_get_zone_async(request_type=dict)
 
 
 def test_get_zone_field_headers():
@@ -2440,8 +2478,8 @@ async def test_get_zone_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListNetworksRequest,
-        dict,
+        service.ListNetworksRequest(),
+        {},
     ],
 )
 def test_list_networks(request_type, transport: str = "grpc"):
@@ -2452,7 +2490,7 @@ def test_list_networks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
@@ -2501,12 +2539,13 @@ def test_list_networks_non_empty_request_with_auto_populated_field():
         client.list_networks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListNetworksRequest(
+        request_msg = service.ListNetworksRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_networks_use_cached_wrapped_rpc():
@@ -2587,9 +2626,14 @@ async def test_list_networks_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_networks_async(
-    transport: str = "grpc_asyncio", request_type=service.ListNetworksRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListNetworksRequest(),
+        {},
+    ],
+)
+async def test_list_networks_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2597,7 +2641,7 @@ async def test_list_networks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
@@ -2620,11 +2664,6 @@ async def test_list_networks_async(
     assert isinstance(response, pagers.ListNetworksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_networks_async_from_dict():
-    await test_list_networks_async(request_type=dict)
 
 
 def test_list_networks_field_headers():
@@ -2819,6 +2858,9 @@ def test_list_networks_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Network) for i in results)
@@ -2907,6 +2949,8 @@ async def test_list_networks_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2963,8 +3007,8 @@ async def test_list_networks_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetNetworkRequest,
-        dict,
+        service.GetNetworkRequest(),
+        {},
     ],
 )
 def test_get_network(request_type, transport: str = "grpc"):
@@ -2975,7 +3019,7 @@ def test_get_network(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_network), "__call__") as call:
@@ -3023,9 +3067,10 @@ def test_get_network_non_empty_request_with_auto_populated_field():
         client.get_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetNetworkRequest(
+        request_msg = service.GetNetworkRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_network_use_cached_wrapped_rpc():
@@ -3106,9 +3151,14 @@ async def test_get_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_network_async(
-    transport: str = "grpc_asyncio", request_type=service.GetNetworkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetNetworkRequest(),
+        {},
+    ],
+)
+async def test_get_network_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3116,7 +3166,7 @@ async def test_get_network_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_network), "__call__") as call:
@@ -3141,11 +3191,6 @@ async def test_get_network_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.mtu == 342
-
-
-@pytest.mark.asyncio
-async def test_get_network_async_from_dict():
-    await test_get_network_async(request_type=dict)
 
 
 def test_get_network_field_headers():
@@ -3290,8 +3335,8 @@ async def test_get_network_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DiagnoseNetworkRequest,
-        dict,
+        service.DiagnoseNetworkRequest(),
+        {},
     ],
 )
 def test_diagnose_network(request_type, transport: str = "grpc"):
@@ -3302,7 +3347,7 @@ def test_diagnose_network(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.diagnose_network), "__call__") as call:
@@ -3343,9 +3388,10 @@ def test_diagnose_network_non_empty_request_with_auto_populated_field():
         client.diagnose_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DiagnoseNetworkRequest(
+        request_msg = service.DiagnoseNetworkRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_diagnose_network_use_cached_wrapped_rpc():
@@ -3428,9 +3474,14 @@ async def test_diagnose_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_diagnose_network_async(
-    transport: str = "grpc_asyncio", request_type=service.DiagnoseNetworkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DiagnoseNetworkRequest(),
+        {},
+    ],
+)
+async def test_diagnose_network_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3438,7 +3489,7 @@ async def test_diagnose_network_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.diagnose_network), "__call__") as call:
@@ -3456,11 +3507,6 @@ async def test_diagnose_network_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.DiagnoseNetworkResponse)
-
-
-@pytest.mark.asyncio
-async def test_diagnose_network_async_from_dict():
-    await test_diagnose_network_async(request_type=dict)
 
 
 def test_diagnose_network_field_headers():
@@ -3609,8 +3655,8 @@ async def test_diagnose_network_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateNetworkRequest,
-        dict,
+        service.CreateNetworkRequest(),
+        {},
     ],
 )
 def test_create_network(request_type, transport: str = "grpc"):
@@ -3621,7 +3667,7 @@ def test_create_network(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_network), "__call__") as call:
@@ -3664,11 +3710,12 @@ def test_create_network_non_empty_request_with_auto_populated_field():
         client.create_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateNetworkRequest(
+        request_msg = service.CreateNetworkRequest(
             parent="parent_value",
             network_id="network_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_network_use_cached_wrapped_rpc():
@@ -3759,9 +3806,14 @@ async def test_create_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_network_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateNetworkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateNetworkRequest(),
+        {},
+    ],
+)
+async def test_create_network_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3769,7 +3821,7 @@ async def test_create_network_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_network), "__call__") as call:
@@ -3787,11 +3839,6 @@ async def test_create_network_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_network_async_from_dict():
-    await test_create_network_async(request_type=dict)
 
 
 def test_create_network_field_headers():
@@ -3960,8 +4007,8 @@ async def test_create_network_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteNetworkRequest,
-        dict,
+        service.DeleteNetworkRequest(),
+        {},
     ],
 )
 def test_delete_network(request_type, transport: str = "grpc"):
@@ -3972,7 +4019,7 @@ def test_delete_network(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_network), "__call__") as call:
@@ -4014,10 +4061,11 @@ def test_delete_network_non_empty_request_with_auto_populated_field():
         client.delete_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteNetworkRequest(
+        request_msg = service.DeleteNetworkRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_network_use_cached_wrapped_rpc():
@@ -4108,9 +4156,14 @@ async def test_delete_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_network_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteNetworkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteNetworkRequest(),
+        {},
+    ],
+)
+async def test_delete_network_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4118,7 +4171,7 @@ async def test_delete_network_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_network), "__call__") as call:
@@ -4136,11 +4189,6 @@ async def test_delete_network_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_network_async_from_dict():
-    await test_delete_network_async(request_type=dict)
 
 
 def test_delete_network_field_headers():
@@ -4289,8 +4337,8 @@ async def test_delete_network_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListSubnetsRequest,
-        dict,
+        service.ListSubnetsRequest(),
+        {},
     ],
 )
 def test_list_subnets(request_type, transport: str = "grpc"):
@@ -4301,7 +4349,7 @@ def test_list_subnets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subnets), "__call__") as call:
@@ -4350,12 +4398,13 @@ def test_list_subnets_non_empty_request_with_auto_populated_field():
         client.list_subnets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSubnetsRequest(
+        request_msg = service.ListSubnetsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_subnets_use_cached_wrapped_rpc():
@@ -4436,9 +4485,14 @@ async def test_list_subnets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_subnets_async(
-    transport: str = "grpc_asyncio", request_type=service.ListSubnetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListSubnetsRequest(),
+        {},
+    ],
+)
+async def test_list_subnets_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4446,7 +4500,7 @@ async def test_list_subnets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subnets), "__call__") as call:
@@ -4469,11 +4523,6 @@ async def test_list_subnets_async(
     assert isinstance(response, pagers.ListSubnetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_subnets_async_from_dict():
-    await test_list_subnets_async(request_type=dict)
 
 
 def test_list_subnets_field_headers():
@@ -4668,6 +4717,9 @@ def test_list_subnets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Subnet) for i in results)
@@ -4756,6 +4808,8 @@ async def test_list_subnets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4812,8 +4866,8 @@ async def test_list_subnets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetSubnetRequest,
-        dict,
+        service.GetSubnetRequest(),
+        {},
     ],
 )
 def test_get_subnet(request_type, transport: str = "grpc"):
@@ -4824,7 +4878,7 @@ def test_get_subnet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_subnet), "__call__") as call:
@@ -4882,9 +4936,10 @@ def test_get_subnet_non_empty_request_with_auto_populated_field():
         client.get_subnet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetSubnetRequest(
+        request_msg = service.GetSubnetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_subnet_use_cached_wrapped_rpc():
@@ -4963,9 +5018,14 @@ async def test_get_subnet_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_subnet_async(
-    transport: str = "grpc_asyncio", request_type=service.GetSubnetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetSubnetRequest(),
+        {},
+    ],
+)
+async def test_get_subnet_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4973,7 +5033,7 @@ async def test_get_subnet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_subnet), "__call__") as call:
@@ -5008,11 +5068,6 @@ async def test_get_subnet_async(
     assert response.vlan_id == 733
     assert response.bonding_type == resources.Subnet.BondingType.BONDED
     assert response.state == resources.ResourceState.STATE_PENDING
-
-
-@pytest.mark.asyncio
-async def test_get_subnet_async_from_dict():
-    await test_get_subnet_async(request_type=dict)
 
 
 def test_get_subnet_field_headers():
@@ -5157,8 +5212,8 @@ async def test_get_subnet_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateSubnetRequest,
-        dict,
+        service.CreateSubnetRequest(),
+        {},
     ],
 )
 def test_create_subnet(request_type, transport: str = "grpc"):
@@ -5169,7 +5224,7 @@ def test_create_subnet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_subnet), "__call__") as call:
@@ -5212,11 +5267,12 @@ def test_create_subnet_non_empty_request_with_auto_populated_field():
         client.create_subnet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateSubnetRequest(
+        request_msg = service.CreateSubnetRequest(
             parent="parent_value",
             subnet_id="subnet_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_subnet_use_cached_wrapped_rpc():
@@ -5307,9 +5363,14 @@ async def test_create_subnet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_subnet_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateSubnetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateSubnetRequest(),
+        {},
+    ],
+)
+async def test_create_subnet_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5317,7 +5378,7 @@ async def test_create_subnet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_subnet), "__call__") as call:
@@ -5335,11 +5396,6 @@ async def test_create_subnet_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_subnet_async_from_dict():
-    await test_create_subnet_async(request_type=dict)
 
 
 def test_create_subnet_field_headers():
@@ -5508,8 +5564,8 @@ async def test_create_subnet_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateSubnetRequest,
-        dict,
+        service.UpdateSubnetRequest(),
+        {},
     ],
 )
 def test_update_subnet(request_type, transport: str = "grpc"):
@@ -5520,7 +5576,7 @@ def test_update_subnet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_subnet), "__call__") as call:
@@ -5561,9 +5617,10 @@ def test_update_subnet_non_empty_request_with_auto_populated_field():
         client.update_subnet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateSubnetRequest(
+        request_msg = service.UpdateSubnetRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_subnet_use_cached_wrapped_rpc():
@@ -5654,9 +5711,14 @@ async def test_update_subnet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_subnet_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateSubnetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateSubnetRequest(),
+        {},
+    ],
+)
+async def test_update_subnet_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5664,7 +5726,7 @@ async def test_update_subnet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_subnet), "__call__") as call:
@@ -5682,11 +5744,6 @@ async def test_update_subnet_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_subnet_async_from_dict():
-    await test_update_subnet_async(request_type=dict)
 
 
 def test_update_subnet_field_headers():
@@ -5845,8 +5902,8 @@ async def test_update_subnet_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteSubnetRequest,
-        dict,
+        service.DeleteSubnetRequest(),
+        {},
     ],
 )
 def test_delete_subnet(request_type, transport: str = "grpc"):
@@ -5857,7 +5914,7 @@ def test_delete_subnet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_subnet), "__call__") as call:
@@ -5899,10 +5956,11 @@ def test_delete_subnet_non_empty_request_with_auto_populated_field():
         client.delete_subnet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteSubnetRequest(
+        request_msg = service.DeleteSubnetRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_subnet_use_cached_wrapped_rpc():
@@ -5993,9 +6051,14 @@ async def test_delete_subnet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_subnet_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteSubnetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteSubnetRequest(),
+        {},
+    ],
+)
+async def test_delete_subnet_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6003,7 +6066,7 @@ async def test_delete_subnet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_subnet), "__call__") as call:
@@ -6021,11 +6084,6 @@ async def test_delete_subnet_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_subnet_async_from_dict():
-    await test_delete_subnet_async(request_type=dict)
 
 
 def test_delete_subnet_field_headers():
@@ -6174,8 +6232,8 @@ async def test_delete_subnet_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListInterconnectsRequest,
-        dict,
+        service.ListInterconnectsRequest(),
+        {},
     ],
 )
 def test_list_interconnects(request_type, transport: str = "grpc"):
@@ -6186,7 +6244,7 @@ def test_list_interconnects(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6239,12 +6297,13 @@ def test_list_interconnects_non_empty_request_with_auto_populated_field():
         client.list_interconnects(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListInterconnectsRequest(
+        request_msg = service.ListInterconnectsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_interconnects_use_cached_wrapped_rpc():
@@ -6329,9 +6388,14 @@ async def test_list_interconnects_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_interconnects_async(
-    transport: str = "grpc_asyncio", request_type=service.ListInterconnectsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListInterconnectsRequest(),
+        {},
+    ],
+)
+async def test_list_interconnects_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6339,7 +6403,7 @@ async def test_list_interconnects_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6364,11 +6428,6 @@ async def test_list_interconnects_async(
     assert isinstance(response, pagers.ListInterconnectsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_interconnects_async_from_dict():
-    await test_list_interconnects_async(request_type=dict)
 
 
 def test_list_interconnects_field_headers():
@@ -6573,6 +6632,9 @@ def test_list_interconnects_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Interconnect) for i in results)
@@ -6665,6 +6727,8 @@ async def test_list_interconnects_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6723,8 +6787,8 @@ async def test_list_interconnects_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetInterconnectRequest,
-        dict,
+        service.GetInterconnectRequest(),
+        {},
     ],
 )
 def test_get_interconnect(request_type, transport: str = "grpc"):
@@ -6735,7 +6799,7 @@ def test_get_interconnect(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_interconnect), "__call__") as call:
@@ -6796,9 +6860,10 @@ def test_get_interconnect_non_empty_request_with_auto_populated_field():
         client.get_interconnect(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetInterconnectRequest(
+        request_msg = service.GetInterconnectRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_interconnect_use_cached_wrapped_rpc():
@@ -6881,9 +6946,14 @@ async def test_get_interconnect_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_interconnect_async(
-    transport: str = "grpc_asyncio", request_type=service.GetInterconnectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetInterconnectRequest(),
+        {},
+    ],
+)
+async def test_get_interconnect_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6891,7 +6961,7 @@ async def test_get_interconnect_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_interconnect), "__call__") as call:
@@ -6929,11 +6999,6 @@ async def test_get_interconnect_async(
         response.remote_peering_network_type
         == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
     )
-
-
-@pytest.mark.asyncio
-async def test_get_interconnect_async_from_dict():
-    await test_get_interconnect_async(request_type=dict)
 
 
 def test_get_interconnect_field_headers():
@@ -7082,8 +7147,8 @@ async def test_get_interconnect_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DiagnoseInterconnectRequest,
-        dict,
+        service.DiagnoseInterconnectRequest(),
+        {},
     ],
 )
 def test_diagnose_interconnect(request_type, transport: str = "grpc"):
@@ -7094,7 +7159,7 @@ def test_diagnose_interconnect(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7139,9 +7204,10 @@ def test_diagnose_interconnect_non_empty_request_with_auto_populated_field():
         client.diagnose_interconnect(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DiagnoseInterconnectRequest(
+        request_msg = service.DiagnoseInterconnectRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_diagnose_interconnect_use_cached_wrapped_rpc():
@@ -7227,8 +7293,15 @@ async def test_diagnose_interconnect_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DiagnoseInterconnectRequest(),
+        {},
+    ],
+)
 async def test_diagnose_interconnect_async(
-    transport: str = "grpc_asyncio", request_type=service.DiagnoseInterconnectRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7237,7 +7310,7 @@ async def test_diagnose_interconnect_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7257,11 +7330,6 @@ async def test_diagnose_interconnect_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.DiagnoseInterconnectResponse)
-
-
-@pytest.mark.asyncio
-async def test_diagnose_interconnect_async_from_dict():
-    await test_diagnose_interconnect_async(request_type=dict)
 
 
 def test_diagnose_interconnect_field_headers():
@@ -7418,8 +7486,8 @@ async def test_diagnose_interconnect_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListInterconnectAttachmentsRequest,
-        dict,
+        service.ListInterconnectAttachmentsRequest(),
+        {},
     ],
 )
 def test_list_interconnect_attachments(request_type, transport: str = "grpc"):
@@ -7430,7 +7498,7 @@ def test_list_interconnect_attachments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7483,12 +7551,13 @@ def test_list_interconnect_attachments_non_empty_request_with_auto_populated_fie
         client.list_interconnect_attachments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListInterconnectAttachmentsRequest(
+        request_msg = service.ListInterconnectAttachmentsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_interconnect_attachments_use_cached_wrapped_rpc():
@@ -7574,9 +7643,15 @@ async def test_list_interconnect_attachments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListInterconnectAttachmentsRequest(),
+        {},
+    ],
+)
 async def test_list_interconnect_attachments_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.ListInterconnectAttachmentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7585,7 +7660,7 @@ async def test_list_interconnect_attachments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7610,11 +7685,6 @@ async def test_list_interconnect_attachments_async(
     assert isinstance(response, pagers.ListInterconnectAttachmentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_interconnect_attachments_async_from_dict():
-    await test_list_interconnect_attachments_async(request_type=dict)
 
 
 def test_list_interconnect_attachments_field_headers():
@@ -7821,6 +7891,9 @@ def test_list_interconnect_attachments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.InterconnectAttachment) for i in results)
@@ -7913,6 +7986,8 @@ async def test_list_interconnect_attachments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7973,8 +8048,8 @@ async def test_list_interconnect_attachments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetInterconnectAttachmentRequest,
-        dict,
+        service.GetInterconnectAttachmentRequest(),
+        {},
     ],
 )
 def test_get_interconnect_attachment(request_type, transport: str = "grpc"):
@@ -7985,7 +8060,7 @@ def test_get_interconnect_attachment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8050,9 +8125,10 @@ def test_get_interconnect_attachment_non_empty_request_with_auto_populated_field
         client.get_interconnect_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetInterconnectAttachmentRequest(
+        request_msg = service.GetInterconnectAttachmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_interconnect_attachment_use_cached_wrapped_rpc():
@@ -8138,9 +8214,15 @@ async def test_get_interconnect_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetInterconnectAttachmentRequest(),
+        {},
+    ],
+)
 async def test_get_interconnect_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.GetInterconnectAttachmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8149,7 +8231,7 @@ async def test_get_interconnect_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8189,11 +8271,6 @@ async def test_get_interconnect_attachment_async(
         response.peering_type
         == resources.RemotePeeringNetworkType.REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL
     )
-
-
-@pytest.mark.asyncio
-async def test_get_interconnect_attachment_async_from_dict():
-    await test_get_interconnect_attachment_async(request_type=dict)
 
 
 def test_get_interconnect_attachment_field_headers():
@@ -8350,8 +8427,8 @@ async def test_get_interconnect_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateInterconnectAttachmentRequest,
-        dict,
+        service.CreateInterconnectAttachmentRequest(),
+        {},
     ],
 )
 def test_create_interconnect_attachment(request_type, transport: str = "grpc"):
@@ -8362,7 +8439,7 @@ def test_create_interconnect_attachment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8409,11 +8486,12 @@ def test_create_interconnect_attachment_non_empty_request_with_auto_populated_fi
         client.create_interconnect_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateInterconnectAttachmentRequest(
+        request_msg = service.CreateInterconnectAttachmentRequest(
             parent="parent_value",
             interconnect_attachment_id="interconnect_attachment_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_interconnect_attachment_use_cached_wrapped_rpc():
@@ -8509,9 +8587,15 @@ async def test_create_interconnect_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateInterconnectAttachmentRequest(),
+        {},
+    ],
+)
 async def test_create_interconnect_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.CreateInterconnectAttachmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8520,7 +8604,7 @@ async def test_create_interconnect_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8540,11 +8624,6 @@ async def test_create_interconnect_attachment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_interconnect_attachment_async_from_dict():
-    await test_create_interconnect_attachment_async(request_type=dict)
 
 
 def test_create_interconnect_attachment_field_headers():
@@ -8721,8 +8800,8 @@ async def test_create_interconnect_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteInterconnectAttachmentRequest,
-        dict,
+        service.DeleteInterconnectAttachmentRequest(),
+        {},
     ],
 )
 def test_delete_interconnect_attachment(request_type, transport: str = "grpc"):
@@ -8733,7 +8812,7 @@ def test_delete_interconnect_attachment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8779,10 +8858,11 @@ def test_delete_interconnect_attachment_non_empty_request_with_auto_populated_fi
         client.delete_interconnect_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteInterconnectAttachmentRequest(
+        request_msg = service.DeleteInterconnectAttachmentRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_interconnect_attachment_use_cached_wrapped_rpc():
@@ -8878,9 +8958,15 @@ async def test_delete_interconnect_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteInterconnectAttachmentRequest(),
+        {},
+    ],
+)
 async def test_delete_interconnect_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.DeleteInterconnectAttachmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8889,7 +8975,7 @@ async def test_delete_interconnect_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8909,11 +8995,6 @@ async def test_delete_interconnect_attachment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_interconnect_attachment_async_from_dict():
-    await test_delete_interconnect_attachment_async(request_type=dict)
 
 
 def test_delete_interconnect_attachment_field_headers():
@@ -9070,8 +9151,8 @@ async def test_delete_interconnect_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListRoutersRequest,
-        dict,
+        service.ListRoutersRequest(),
+        {},
     ],
 )
 def test_list_routers(request_type, transport: str = "grpc"):
@@ -9082,7 +9163,7 @@ def test_list_routers(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_routers), "__call__") as call:
@@ -9131,12 +9212,13 @@ def test_list_routers_non_empty_request_with_auto_populated_field():
         client.list_routers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListRoutersRequest(
+        request_msg = service.ListRoutersRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_routers_use_cached_wrapped_rpc():
@@ -9217,9 +9299,14 @@ async def test_list_routers_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_routers_async(
-    transport: str = "grpc_asyncio", request_type=service.ListRoutersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListRoutersRequest(),
+        {},
+    ],
+)
+async def test_list_routers_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9227,7 +9314,7 @@ async def test_list_routers_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_routers), "__call__") as call:
@@ -9250,11 +9337,6 @@ async def test_list_routers_async(
     assert isinstance(response, pagers.ListRoutersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_routers_async_from_dict():
-    await test_list_routers_async(request_type=dict)
 
 
 def test_list_routers_field_headers():
@@ -9449,6 +9531,9 @@ def test_list_routers_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Router) for i in results)
@@ -9537,6 +9622,8 @@ async def test_list_routers_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9593,8 +9680,8 @@ async def test_list_routers_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetRouterRequest,
-        dict,
+        service.GetRouterRequest(),
+        {},
     ],
 )
 def test_get_router(request_type, transport: str = "grpc"):
@@ -9605,7 +9692,7 @@ def test_get_router(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_router), "__call__") as call:
@@ -9657,9 +9744,10 @@ def test_get_router_non_empty_request_with_auto_populated_field():
         client.get_router(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetRouterRequest(
+        request_msg = service.GetRouterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_router_use_cached_wrapped_rpc():
@@ -9738,9 +9826,14 @@ async def test_get_router_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_router_async(
-    transport: str = "grpc_asyncio", request_type=service.GetRouterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetRouterRequest(),
+        {},
+    ],
+)
+async def test_get_router_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9748,7 +9841,7 @@ async def test_get_router_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_router), "__call__") as call:
@@ -9777,11 +9870,6 @@ async def test_get_router_async(
     assert response.network == "network_value"
     assert response.state == resources.ResourceState.STATE_PENDING
     assert response.route_advertisements == ["route_advertisements_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_router_async_from_dict():
-    await test_get_router_async(request_type=dict)
 
 
 def test_get_router_field_headers():
@@ -9926,8 +10014,8 @@ async def test_get_router_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DiagnoseRouterRequest,
-        dict,
+        service.DiagnoseRouterRequest(),
+        {},
     ],
 )
 def test_diagnose_router(request_type, transport: str = "grpc"):
@@ -9938,7 +10026,7 @@ def test_diagnose_router(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.diagnose_router), "__call__") as call:
@@ -9979,9 +10067,10 @@ def test_diagnose_router_non_empty_request_with_auto_populated_field():
         client.diagnose_router(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DiagnoseRouterRequest(
+        request_msg = service.DiagnoseRouterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_diagnose_router_use_cached_wrapped_rpc():
@@ -10062,9 +10151,14 @@ async def test_diagnose_router_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_diagnose_router_async(
-    transport: str = "grpc_asyncio", request_type=service.DiagnoseRouterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DiagnoseRouterRequest(),
+        {},
+    ],
+)
+async def test_diagnose_router_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10072,7 +10166,7 @@ async def test_diagnose_router_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.diagnose_router), "__call__") as call:
@@ -10090,11 +10184,6 @@ async def test_diagnose_router_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.DiagnoseRouterResponse)
-
-
-@pytest.mark.asyncio
-async def test_diagnose_router_async_from_dict():
-    await test_diagnose_router_async(request_type=dict)
 
 
 def test_diagnose_router_field_headers():
@@ -10243,8 +10332,8 @@ async def test_diagnose_router_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateRouterRequest,
-        dict,
+        service.CreateRouterRequest(),
+        {},
     ],
 )
 def test_create_router(request_type, transport: str = "grpc"):
@@ -10255,7 +10344,7 @@ def test_create_router(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_router), "__call__") as call:
@@ -10298,11 +10387,12 @@ def test_create_router_non_empty_request_with_auto_populated_field():
         client.create_router(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateRouterRequest(
+        request_msg = service.CreateRouterRequest(
             parent="parent_value",
             router_id="router_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_router_use_cached_wrapped_rpc():
@@ -10393,9 +10483,14 @@ async def test_create_router_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_router_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateRouterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateRouterRequest(),
+        {},
+    ],
+)
+async def test_create_router_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10403,7 +10498,7 @@ async def test_create_router_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_router), "__call__") as call:
@@ -10421,11 +10516,6 @@ async def test_create_router_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_router_async_from_dict():
-    await test_create_router_async(request_type=dict)
 
 
 def test_create_router_field_headers():
@@ -10594,8 +10684,8 @@ async def test_create_router_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateRouterRequest,
-        dict,
+        service.UpdateRouterRequest(),
+        {},
     ],
 )
 def test_update_router(request_type, transport: str = "grpc"):
@@ -10606,7 +10696,7 @@ def test_update_router(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_router), "__call__") as call:
@@ -10647,9 +10737,10 @@ def test_update_router_non_empty_request_with_auto_populated_field():
         client.update_router(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateRouterRequest(
+        request_msg = service.UpdateRouterRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_router_use_cached_wrapped_rpc():
@@ -10740,9 +10831,14 @@ async def test_update_router_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_router_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateRouterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateRouterRequest(),
+        {},
+    ],
+)
+async def test_update_router_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10750,7 +10846,7 @@ async def test_update_router_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_router), "__call__") as call:
@@ -10768,11 +10864,6 @@ async def test_update_router_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_router_async_from_dict():
-    await test_update_router_async(request_type=dict)
 
 
 def test_update_router_field_headers():
@@ -10931,8 +11022,8 @@ async def test_update_router_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteRouterRequest,
-        dict,
+        service.DeleteRouterRequest(),
+        {},
     ],
 )
 def test_delete_router(request_type, transport: str = "grpc"):
@@ -10943,7 +11034,7 @@ def test_delete_router(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_router), "__call__") as call:
@@ -10985,10 +11076,11 @@ def test_delete_router_non_empty_request_with_auto_populated_field():
         client.delete_router(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteRouterRequest(
+        request_msg = service.DeleteRouterRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_router_use_cached_wrapped_rpc():
@@ -11079,9 +11171,14 @@ async def test_delete_router_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_router_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteRouterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteRouterRequest(),
+        {},
+    ],
+)
+async def test_delete_router_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeNetworkAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11089,7 +11186,7 @@ async def test_delete_router_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_router), "__call__") as call:
@@ -11107,11 +11204,6 @@ async def test_delete_router_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_router_async_from_dict():
-    await test_delete_router_async(request_type=dict)
 
 
 def test_delete_router_field_headers():
@@ -11682,6 +11774,9 @@ def test_list_zones_rest_pager(transport: str = "rest"):
 
         pager = client.list_zones(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Zone) for i in results)
@@ -12112,6 +12207,9 @@ def test_list_networks_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
 
         pager = client.list_networks(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -13121,6 +13219,9 @@ def test_list_subnets_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
 
         pager = client.list_subnets(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -14152,6 +14253,9 @@ def test_list_interconnects_rest_pager(transport: str = "rest"):
 
         pager = client.list_interconnects(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Interconnect) for i in results)
@@ -14785,6 +14889,9 @@ def test_list_interconnect_attachments_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
 
         pager = client.list_interconnect_attachments(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -15643,6 +15750,9 @@ def test_list_routers_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/zones/sample3"}
 
         pager = client.list_routers(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -16724,7 +16834,6 @@ def test_initialize_zone_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.InitializeZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -16745,7 +16854,6 @@ def test_list_zones_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListZonesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16766,7 +16874,6 @@ def test_get_zone_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -16787,7 +16894,6 @@ def test_list_networks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListNetworksRequest()
-
         assert args[0] == request_msg
 
 
@@ -16808,7 +16914,6 @@ def test_get_network_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -16829,7 +16934,6 @@ def test_diagnose_network_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DiagnoseNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -16850,7 +16954,6 @@ def test_create_network_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -16871,7 +16974,6 @@ def test_delete_network_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -16892,7 +16994,6 @@ def test_list_subnets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListSubnetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16913,7 +17014,6 @@ def test_get_subnet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -16934,7 +17034,6 @@ def test_create_subnet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -16955,7 +17054,6 @@ def test_update_subnet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -16976,7 +17074,6 @@ def test_delete_subnet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -16999,7 +17096,6 @@ def test_list_interconnects_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListInterconnectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17020,7 +17116,6 @@ def test_get_interconnect_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetInterconnectRequest()
-
         assert args[0] == request_msg
 
 
@@ -17043,7 +17138,6 @@ def test_diagnose_interconnect_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DiagnoseInterconnectRequest()
-
         assert args[0] == request_msg
 
 
@@ -17066,7 +17160,6 @@ def test_list_interconnect_attachments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListInterconnectAttachmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17089,7 +17182,6 @@ def test_get_interconnect_attachment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetInterconnectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -17112,7 +17204,6 @@ def test_create_interconnect_attachment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateInterconnectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -17135,7 +17226,6 @@ def test_delete_interconnect_attachment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteInterconnectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -17156,7 +17246,6 @@ def test_list_routers_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListRoutersRequest()
-
         assert args[0] == request_msg
 
 
@@ -17177,7 +17266,6 @@ def test_get_router_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17198,7 +17286,6 @@ def test_diagnose_router_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DiagnoseRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17219,7 +17306,6 @@ def test_create_router_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17240,7 +17326,6 @@ def test_update_router_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17261,7 +17346,6 @@ def test_delete_router_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17300,7 +17384,6 @@ async def test_initialize_zone_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.InitializeZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -17328,7 +17411,6 @@ async def test_list_zones_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListZonesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17356,7 +17438,6 @@ async def test_get_zone_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -17384,7 +17465,6 @@ async def test_list_networks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListNetworksRequest()
-
         assert args[0] == request_msg
 
 
@@ -17413,7 +17493,6 @@ async def test_get_network_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -17438,7 +17517,6 @@ async def test_diagnose_network_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DiagnoseNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -17463,7 +17541,6 @@ async def test_create_network_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -17488,7 +17565,6 @@ async def test_delete_network_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -17516,7 +17592,6 @@ async def test_list_subnets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListSubnetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17550,7 +17625,6 @@ async def test_get_subnet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17575,7 +17649,6 @@ async def test_create_subnet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17600,7 +17673,6 @@ async def test_update_subnet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17625,7 +17697,6 @@ async def test_delete_subnet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17655,7 +17726,6 @@ async def test_list_interconnects_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListInterconnectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17688,7 +17758,6 @@ async def test_get_interconnect_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetInterconnectRequest()
-
         assert args[0] == request_msg
 
 
@@ -17715,7 +17784,6 @@ async def test_diagnose_interconnect_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DiagnoseInterconnectRequest()
-
         assert args[0] == request_msg
 
 
@@ -17745,7 +17813,6 @@ async def test_list_interconnect_attachments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListInterconnectAttachmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17781,7 +17848,6 @@ async def test_get_interconnect_attachment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetInterconnectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -17808,7 +17874,6 @@ async def test_create_interconnect_attachment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateInterconnectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -17835,7 +17900,6 @@ async def test_delete_interconnect_attachment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteInterconnectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -17863,7 +17927,6 @@ async def test_list_routers_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListRoutersRequest()
-
         assert args[0] == request_msg
 
 
@@ -17894,7 +17957,6 @@ async def test_get_router_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17919,7 +17981,6 @@ async def test_diagnose_router_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DiagnoseRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17944,7 +18005,6 @@ async def test_create_router_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17969,7 +18029,6 @@ async def test_update_router_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17994,7 +18053,6 @@ async def test_delete_router_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22339,7 +22397,6 @@ def test_initialize_zone_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.InitializeZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -22359,7 +22416,6 @@ def test_list_zones_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListZonesRequest()
-
         assert args[0] == request_msg
 
 
@@ -22379,7 +22435,6 @@ def test_get_zone_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetZoneRequest()
-
         assert args[0] == request_msg
 
 
@@ -22399,7 +22454,6 @@ def test_list_networks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListNetworksRequest()
-
         assert args[0] == request_msg
 
 
@@ -22419,7 +22473,6 @@ def test_get_network_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -22439,7 +22492,6 @@ def test_diagnose_network_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DiagnoseNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -22459,7 +22511,6 @@ def test_create_network_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -22479,7 +22530,6 @@ def test_delete_network_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -22499,7 +22549,6 @@ def test_list_subnets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListSubnetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22519,7 +22568,6 @@ def test_get_subnet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -22539,7 +22587,6 @@ def test_create_subnet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -22559,7 +22606,6 @@ def test_update_subnet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -22579,7 +22625,6 @@ def test_delete_subnet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -22601,7 +22646,6 @@ def test_list_interconnects_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListInterconnectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22621,7 +22665,6 @@ def test_get_interconnect_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetInterconnectRequest()
-
         assert args[0] == request_msg
 
 
@@ -22643,7 +22686,6 @@ def test_diagnose_interconnect_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DiagnoseInterconnectRequest()
-
         assert args[0] == request_msg
 
 
@@ -22665,7 +22707,6 @@ def test_list_interconnect_attachments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListInterconnectAttachmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22687,7 +22728,6 @@ def test_get_interconnect_attachment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetInterconnectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -22709,7 +22749,6 @@ def test_create_interconnect_attachment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateInterconnectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -22731,7 +22770,6 @@ def test_delete_interconnect_attachment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteInterconnectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -22751,7 +22789,6 @@ def test_list_routers_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListRoutersRequest()
-
         assert args[0] == request_msg
 
 
@@ -22771,7 +22808,6 @@ def test_get_router_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22791,7 +22827,6 @@ def test_diagnose_router_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DiagnoseRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22811,7 +22846,6 @@ def test_create_router_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22831,7 +22865,6 @@ def test_update_router_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22851,7 +22884,6 @@ def test_delete_router_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteRouterRequest()
-
         assert args[0] == request_msg
 
 

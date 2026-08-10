@@ -37,9 +37,7 @@ from google.cloud.workstations_v1beta.types import workstations
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class WorkstationsTransport(abc.ABC):
@@ -329,6 +327,11 @@ class WorkstationsTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.push_credentials: gapic_v1.method.wrap_method(
+                self.push_credentials,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
                 default_timeout=None,
@@ -579,6 +582,15 @@ class WorkstationsTransport(abc.ABC):
             workstations.GenerateAccessTokenResponse,
             Awaitable[workstations.GenerateAccessTokenResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def push_credentials(
+        self,
+    ) -> Callable[
+        [workstations.PushCredentialsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

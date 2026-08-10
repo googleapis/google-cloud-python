@@ -39,7 +39,12 @@ async def sample_update_rollout():
     client = saasplatform_saasservicemgmt_v1beta1.SaasRolloutsAsyncClient()
 
     # Initialize request argument(s)
-    request = saasplatform_saasservicemgmt_v1beta1.UpdateRolloutRequest()
+    rollout = saasplatform_saasservicemgmt_v1beta1.Rollout()
+    rollout.rollout_kind = "rollout_kind_value"
+
+    request = saasplatform_saasservicemgmt_v1beta1.UpdateRolloutRequest(
+        rollout=rollout,
+    )
 
     # Make the request
     response = await client.update_rollout(request=request)

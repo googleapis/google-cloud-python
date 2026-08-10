@@ -765,6 +765,11 @@
                 "update_reporting_data_annotation"
               ]
             },
+            "UpdateReportingIdentitySettings": {
+              "methods": [
+                "update_reporting_identity_settings"
+              ]
+            },
             "UpdateSKAdNetworkConversionValueSchema": {
               "methods": [
                 "update_sk_ad_network_conversion_value_schema"
@@ -1545,6 +1550,11 @@
                 "update_reporting_data_annotation"
               ]
             },
+            "UpdateReportingIdentitySettings": {
+              "methods": [
+                "update_reporting_identity_settings"
+              ]
+            },
             "UpdateSKAdNetworkConversionValueSchema": {
               "methods": [
                 "update_sk_ad_network_conversion_value_schema"
@@ -2323,6 +2333,11 @@
             "UpdateReportingDataAnnotation": {
               "methods": [
                 "update_reporting_data_annotation"
+              ]
+            },
+            "UpdateReportingIdentitySettings": {
+              "methods": [
+                "update_reporting_identity_settings"
               ]
             },
             "UpdateSKAdNetworkConversionValueSchema": {

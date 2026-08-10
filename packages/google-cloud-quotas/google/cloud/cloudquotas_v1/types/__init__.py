@@ -23,6 +23,11 @@ from .cloudquotas import (
     ListQuotaPreferencesResponse,
     UpdateQuotaPreferenceRequest,
 )
+from .quota_adjuster_settings import (
+    GetQuotaAdjusterSettingsRequest,
+    QuotaAdjusterSettings,
+    UpdateQuotaAdjusterSettingsRequest,
+)
 from .resources import (
     DimensionsInfo,
     QuotaConfig,
@@ -43,6 +48,9 @@ __all__ = (
     "ListQuotaPreferencesRequest",
     "ListQuotaPreferencesResponse",
     "UpdateQuotaPreferenceRequest",
+    "GetQuotaAdjusterSettingsRequest",
+    "QuotaAdjusterSettings",
+    "UpdateQuotaAdjusterSettingsRequest",
     "DimensionsInfo",
     "QuotaConfig",
     "QuotaDetails",

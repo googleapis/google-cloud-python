@@ -71,7 +71,6 @@ from google.cloud.eventarc_v1.types import google_channel_config as gce_google_c
 from google.cloud.eventarc_v1.types import logging_config
 from google.cloud.eventarc_v1.types import message_bus
 from google.cloud.eventarc_v1.types import message_bus as gce_message_bus
-from google.cloud.eventarc_v1.types import network_config
 from google.cloud.eventarc_v1.types import pipeline
 from google.cloud.eventarc_v1.types import pipeline as gce_pipeline
 from google.cloud.eventarc_v1.types import trigger
@@ -84,10 +83,8 @@ from google.longrunning import operations_pb2 # type: ignore
 from google.oauth2 import service_account
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
-import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-import google.rpc.code_pb2 as code_pb2  # type: ignore
 
 
 
@@ -97,6 +94,18 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -142,150 +151,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert EventarcClient._get_default_mtls_endpoint(None) is None
-    assert EventarcClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert EventarcClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    assert EventarcClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
-    assert EventarcClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
-    assert EventarcClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
-    assert EventarcClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
-
-def test__read_environment_variables():
-    assert EventarcClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert EventarcClient._read_environment_variables() == (True, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert EventarcClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                EventarcClient._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert EventarcClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert EventarcClient._read_environment_variables() == (False, "never", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert EventarcClient._read_environment_variables() == (False, "always", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert EventarcClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            EventarcClient._read_environment_variables()
-    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert EventarcClient._read_environment_variables() == (False, "auto", "foo.com")
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
-            assert EventarcClient._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
-            assert EventarcClient._use_client_cert_effective() is False
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert EventarcClient._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-            assert EventarcClient._use_client_cert_effective() is False
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert EventarcClient._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
-            assert EventarcClient._use_client_cert_effective() is False
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert EventarcClient._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
-            assert EventarcClient._use_client_cert_effective() is False
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert EventarcClient._use_client_cert_effective() is False
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
-            with pytest.raises(ValueError):
-                EventarcClient._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if  hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
-            assert EventarcClient._use_client_cert_effective() is False
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if  hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert EventarcClient._use_client_cert_effective() is False
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -299,40 +164,6 @@ def test__get_client_cert_source():
             assert EventarcClient._get_client_cert_source(None, True) is mock_default_cert_source
             assert EventarcClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
-@mock.patch.object(EventarcClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EventarcClient))
-@mock.patch.object(EventarcAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EventarcAsyncClient))
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = EventarcClient._DEFAULT_UNIVERSE
-    default_endpoint = EventarcClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
-    mock_universe = "bar.com"
-    mock_endpoint = EventarcClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
-
-    assert EventarcClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
-    assert EventarcClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == EventarcClient.DEFAULT_MTLS_ENDPOINT
-    assert EventarcClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
-    assert EventarcClient._get_api_endpoint(None, None, default_universe, "always") == EventarcClient.DEFAULT_MTLS_ENDPOINT
-    assert EventarcClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == EventarcClient.DEFAULT_MTLS_ENDPOINT
-    assert EventarcClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
-    assert EventarcClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        EventarcClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
-    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert EventarcClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
-    assert EventarcClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
-    assert EventarcClient._get_universe_domain(None, None) == EventarcClient._DEFAULT_UNIVERSE
-
-    with pytest.raises(ValueError) as excinfo:
-        EventarcClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 @pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
     (401, CRED_INFO_JSON, True),
@@ -717,11 +548,12 @@ def test_eventarc_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):
@@ -764,11 +596,12 @@ def test_eventarc_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):
@@ -1002,10 +835,8 @@ def test_eventarc_client_create_channel_credentials_file(client_class, transport
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetTriggerRequest({
-  }),
-  {
-  },
+  eventarc.GetTriggerRequest(),
+  {},
 ])
 def test_get_trigger(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -1146,8 +977,8 @@ async def test_get_trigger_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetTriggerRequest({  }),
-  {  },
+  eventarc.GetTriggerRequest(),
+  {},
 ])
 async def test_get_trigger_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -1337,10 +1168,8 @@ async def test_get_trigger_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListTriggersRequest({
-  }),
-  {
-  },
+  eventarc.ListTriggersRequest(),
+  {},
 ])
 def test_list_triggers(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -1477,8 +1306,8 @@ async def test_list_triggers_async_use_cached_wrapped_rpc(transport: str = "grpc
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListTriggersRequest({  }),
-  {  },
+  eventarc.ListTriggersRequest(),
+  {},
 ])
 async def test_list_triggers_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -1710,6 +1539,9 @@ def test_list_triggers_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, trigger.Trigger)
@@ -1796,6 +1628,8 @@ async def test_list_triggers_async_pager():
         )
         async_pager = await client.list_triggers(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -1852,10 +1686,8 @@ async def test_list_triggers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateTriggerRequest({
-  }),
-  {
-  },
+  eventarc.CreateTriggerRequest(),
+  {},
 ])
 def test_create_trigger(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -1993,8 +1825,8 @@ async def test_create_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateTriggerRequest({  }),
-  {  },
+  eventarc.CreateTriggerRequest(),
+  {},
 ])
 async def test_create_trigger_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -2193,10 +2025,8 @@ async def test_create_trigger_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateTriggerRequest({
-  }),
-  {
-  },
+  eventarc.UpdateTriggerRequest(),
+  {},
 ])
 def test_update_trigger(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -2330,8 +2160,8 @@ async def test_update_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateTriggerRequest({  }),
-  {  },
+  eventarc.UpdateTriggerRequest(),
+  {},
 ])
 async def test_update_trigger_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -2530,10 +2360,8 @@ async def test_update_trigger_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteTriggerRequest({
-  }),
-  {
-  },
+  eventarc.DeleteTriggerRequest(),
+  {},
 ])
 def test_delete_trigger(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -2671,8 +2499,8 @@ async def test_delete_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteTriggerRequest({  }),
-  {  },
+  eventarc.DeleteTriggerRequest(),
+  {},
 ])
 async def test_delete_trigger_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -2861,10 +2689,8 @@ async def test_delete_trigger_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetChannelRequest({
-  }),
-  {
-  },
+  eventarc.GetChannelRequest(),
+  {},
 ])
 def test_get_channel(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -3006,8 +2832,8 @@ async def test_get_channel_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetChannelRequest({  }),
-  {  },
+  eventarc.GetChannelRequest(),
+  {},
 ])
 async def test_get_channel_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -3197,10 +3023,8 @@ async def test_get_channel_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListChannelsRequest({
-  }),
-  {
-  },
+  eventarc.ListChannelsRequest(),
+  {},
 ])
 def test_list_channels(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -3335,8 +3159,8 @@ async def test_list_channels_async_use_cached_wrapped_rpc(transport: str = "grpc
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListChannelsRequest({  }),
-  {  },
+  eventarc.ListChannelsRequest(),
+  {},
 ])
 async def test_list_channels_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -3568,6 +3392,9 @@ def test_list_channels_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, channel.Channel)
@@ -3654,6 +3481,8 @@ async def test_list_channels_async_pager():
         )
         async_pager = await client.list_channels(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -3710,10 +3539,8 @@ async def test_list_channels_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateChannelRequest({
-  }),
-  {
-  },
+  eventarc.CreateChannelRequest(),
+  {},
 ])
 def test_create_channel(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -3851,8 +3678,8 @@ async def test_create_channel_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateChannelRequest({  }),
-  {  },
+  eventarc.CreateChannelRequest(),
+  {},
 ])
 async def test_create_channel_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -4051,10 +3878,8 @@ async def test_create_channel_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateChannelRequest({
-  }),
-  {
-  },
+  eventarc.UpdateChannelRequest(),
+  {},
 ])
 def test_update_channel(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -4188,8 +4013,8 @@ async def test_update_channel_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateChannelRequest({  }),
-  {  },
+  eventarc.UpdateChannelRequest(),
+  {},
 ])
 async def test_update_channel_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -4378,10 +4203,8 @@ async def test_update_channel_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteChannelRequest({
-  }),
-  {
-  },
+  eventarc.DeleteChannelRequest(),
+  {},
 ])
 def test_delete_channel(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -4517,8 +4340,8 @@ async def test_delete_channel_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteChannelRequest({  }),
-  {  },
+  eventarc.DeleteChannelRequest(),
+  {},
 ])
 async def test_delete_channel_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -4697,10 +4520,8 @@ async def test_delete_channel_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetProviderRequest({
-  }),
-  {
-  },
+  eventarc.GetProviderRequest(),
+  {},
 ])
 def test_get_provider(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -4831,8 +4652,8 @@ async def test_get_provider_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetProviderRequest({  }),
-  {  },
+  eventarc.GetProviderRequest(),
+  {},
 ])
 async def test_get_provider_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -5012,10 +4833,8 @@ async def test_get_provider_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListProvidersRequest({
-  }),
-  {
-  },
+  eventarc.ListProvidersRequest(),
+  {},
 ])
 def test_list_providers(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -5152,8 +4971,8 @@ async def test_list_providers_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListProvidersRequest({  }),
-  {  },
+  eventarc.ListProvidersRequest(),
+  {},
 ])
 async def test_list_providers_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -5385,6 +5204,9 @@ def test_list_providers_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, discovery.Provider)
@@ -5471,6 +5293,8 @@ async def test_list_providers_async_pager():
         )
         async_pager = await client.list_providers(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -5527,10 +5351,8 @@ async def test_list_providers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetChannelConnectionRequest({
-  }),
-  {
-  },
+  eventarc.GetChannelConnectionRequest(),
+  {},
 ])
 def test_get_channel_connection(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -5665,8 +5487,8 @@ async def test_get_channel_connection_async_use_cached_wrapped_rpc(transport: st
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetChannelConnectionRequest({  }),
-  {  },
+  eventarc.GetChannelConnectionRequest(),
+  {},
 ])
 async def test_get_channel_connection_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -5850,10 +5672,8 @@ async def test_get_channel_connection_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListChannelConnectionsRequest({
-  }),
-  {
-  },
+  eventarc.ListChannelConnectionsRequest(),
+  {},
 ])
 def test_list_channel_connections(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -5986,8 +5806,8 @@ async def test_list_channel_connections_async_use_cached_wrapped_rpc(transport: 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListChannelConnectionsRequest({  }),
-  {  },
+  eventarc.ListChannelConnectionsRequest(),
+  {},
 ])
 async def test_list_channel_connections_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -6219,6 +6039,9 @@ def test_list_channel_connections_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, channel_connection.ChannelConnection)
@@ -6305,6 +6128,8 @@ async def test_list_channel_connections_async_pager():
         )
         async_pager = await client.list_channel_connections(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -6361,10 +6186,8 @@ async def test_list_channel_connections_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateChannelConnectionRequest({
-  }),
-  {
-  },
+  eventarc.CreateChannelConnectionRequest(),
+  {},
 ])
 def test_create_channel_connection(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -6502,8 +6325,8 @@ async def test_create_channel_connection_async_use_cached_wrapped_rpc(transport:
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateChannelConnectionRequest({  }),
-  {  },
+  eventarc.CreateChannelConnectionRequest(),
+  {},
 ])
 async def test_create_channel_connection_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -6702,10 +6525,8 @@ async def test_create_channel_connection_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteChannelConnectionRequest({
-  }),
-  {
-  },
+  eventarc.DeleteChannelConnectionRequest(),
+  {},
 ])
 def test_delete_channel_connection(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -6841,8 +6662,8 @@ async def test_delete_channel_connection_async_use_cached_wrapped_rpc(transport:
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteChannelConnectionRequest({  }),
-  {  },
+  eventarc.DeleteChannelConnectionRequest(),
+  {},
 ])
 async def test_delete_channel_connection_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -7021,10 +6842,8 @@ async def test_delete_channel_connection_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetGoogleChannelConfigRequest({
-  }),
-  {
-  },
+  eventarc.GetGoogleChannelConfigRequest(),
+  {},
 ])
 def test_get_google_channel_config(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -7155,8 +6974,8 @@ async def test_get_google_channel_config_async_use_cached_wrapped_rpc(transport:
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetGoogleChannelConfigRequest({  }),
-  {  },
+  eventarc.GetGoogleChannelConfigRequest(),
+  {},
 ])
 async def test_get_google_channel_config_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -7336,10 +7155,8 @@ async def test_get_google_channel_config_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateGoogleChannelConfigRequest({
-  }),
-  {
-  },
+  eventarc.UpdateGoogleChannelConfigRequest(),
+  {},
 ])
 def test_update_google_channel_config(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -7468,8 +7285,8 @@ async def test_update_google_channel_config_async_use_cached_wrapped_rpc(transpo
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateGoogleChannelConfigRequest({  }),
-  {  },
+  eventarc.UpdateGoogleChannelConfigRequest(),
+  {},
 ])
 async def test_update_google_channel_config_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -7659,10 +7476,8 @@ async def test_update_google_channel_config_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetMessageBusRequest({
-  }),
-  {
-  },
+  eventarc.GetMessageBusRequest(),
+  {},
 ])
 def test_get_message_bus(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -7799,8 +7614,8 @@ async def test_get_message_bus_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetMessageBusRequest({  }),
-  {  },
+  eventarc.GetMessageBusRequest(),
+  {},
 ])
 async def test_get_message_bus_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -7986,10 +7801,8 @@ async def test_get_message_bus_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListMessageBusesRequest({
-  }),
-  {
-  },
+  eventarc.ListMessageBusesRequest(),
+  {},
 ])
 def test_list_message_buses(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -8126,8 +7939,8 @@ async def test_list_message_buses_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListMessageBusesRequest({  }),
-  {  },
+  eventarc.ListMessageBusesRequest(),
+  {},
 ])
 async def test_list_message_buses_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -8359,6 +8172,9 @@ def test_list_message_buses_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, message_bus.MessageBus)
@@ -8445,6 +8261,8 @@ async def test_list_message_buses_async_pager():
         )
         async_pager = await client.list_message_buses(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -8501,10 +8319,8 @@ async def test_list_message_buses_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListMessageBusEnrollmentsRequest({
-  }),
-  {
-  },
+  eventarc.ListMessageBusEnrollmentsRequest(),
+  {},
 ])
 def test_list_message_bus_enrollments(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -8639,8 +8455,8 @@ async def test_list_message_bus_enrollments_async_use_cached_wrapped_rpc(transpo
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListMessageBusEnrollmentsRequest({  }),
-  {  },
+  eventarc.ListMessageBusEnrollmentsRequest(),
+  {},
 ])
 async def test_list_message_bus_enrollments_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -8874,6 +8690,9 @@ def test_list_message_bus_enrollments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, str)
@@ -8960,6 +8779,8 @@ async def test_list_message_bus_enrollments_async_pager():
         )
         async_pager = await client.list_message_bus_enrollments(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -9016,10 +8837,8 @@ async def test_list_message_bus_enrollments_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateMessageBusRequest({
-  }),
-  {
-  },
+  eventarc.CreateMessageBusRequest(),
+  {},
 ])
 def test_create_message_bus(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -9157,8 +8976,8 @@ async def test_create_message_bus_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateMessageBusRequest({  }),
-  {  },
+  eventarc.CreateMessageBusRequest(),
+  {},
 ])
 async def test_create_message_bus_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -9357,10 +9176,8 @@ async def test_create_message_bus_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateMessageBusRequest({
-  }),
-  {
-  },
+  eventarc.UpdateMessageBusRequest(),
+  {},
 ])
 def test_update_message_bus(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -9494,8 +9311,8 @@ async def test_update_message_bus_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateMessageBusRequest({  }),
-  {  },
+  eventarc.UpdateMessageBusRequest(),
+  {},
 ])
 async def test_update_message_bus_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -9684,10 +9501,8 @@ async def test_update_message_bus_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteMessageBusRequest({
-  }),
-  {
-  },
+  eventarc.DeleteMessageBusRequest(),
+  {},
 ])
 def test_delete_message_bus(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -9825,8 +9640,8 @@ async def test_delete_message_bus_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteMessageBusRequest({  }),
-  {  },
+  eventarc.DeleteMessageBusRequest(),
+  {},
 ])
 async def test_delete_message_bus_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -10015,10 +9830,8 @@ async def test_delete_message_bus_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetEnrollmentRequest({
-  }),
-  {
-  },
+  eventarc.GetEnrollmentRequest(),
+  {},
 ])
 def test_get_enrollment(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -10159,8 +9972,8 @@ async def test_get_enrollment_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetEnrollmentRequest({  }),
-  {  },
+  eventarc.GetEnrollmentRequest(),
+  {},
 ])
 async def test_get_enrollment_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -10350,10 +10163,8 @@ async def test_get_enrollment_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListEnrollmentsRequest({
-  }),
-  {
-  },
+  eventarc.ListEnrollmentsRequest(),
+  {},
 ])
 def test_list_enrollments(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -10490,8 +10301,8 @@ async def test_list_enrollments_async_use_cached_wrapped_rpc(transport: str = "g
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListEnrollmentsRequest({  }),
-  {  },
+  eventarc.ListEnrollmentsRequest(),
+  {},
 ])
 async def test_list_enrollments_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -10723,6 +10534,9 @@ def test_list_enrollments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, enrollment.Enrollment)
@@ -10809,6 +10623,8 @@ async def test_list_enrollments_async_pager():
         )
         async_pager = await client.list_enrollments(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -10865,10 +10681,8 @@ async def test_list_enrollments_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateEnrollmentRequest({
-  }),
-  {
-  },
+  eventarc.CreateEnrollmentRequest(),
+  {},
 ])
 def test_create_enrollment(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -11006,8 +10820,8 @@ async def test_create_enrollment_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateEnrollmentRequest({  }),
-  {  },
+  eventarc.CreateEnrollmentRequest(),
+  {},
 ])
 async def test_create_enrollment_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -11206,10 +11020,8 @@ async def test_create_enrollment_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateEnrollmentRequest({
-  }),
-  {
-  },
+  eventarc.UpdateEnrollmentRequest(),
+  {},
 ])
 def test_update_enrollment(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -11343,8 +11155,8 @@ async def test_update_enrollment_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateEnrollmentRequest({  }),
-  {  },
+  eventarc.UpdateEnrollmentRequest(),
+  {},
 ])
 async def test_update_enrollment_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -11533,10 +11345,8 @@ async def test_update_enrollment_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteEnrollmentRequest({
-  }),
-  {
-  },
+  eventarc.DeleteEnrollmentRequest(),
+  {},
 ])
 def test_delete_enrollment(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -11674,8 +11484,8 @@ async def test_delete_enrollment_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteEnrollmentRequest({  }),
-  {  },
+  eventarc.DeleteEnrollmentRequest(),
+  {},
 ])
 async def test_delete_enrollment_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -11864,10 +11674,8 @@ async def test_delete_enrollment_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetPipelineRequest({
-  }),
-  {
-  },
+  eventarc.GetPipelineRequest(),
+  {},
 ])
 def test_get_pipeline(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -12006,8 +11814,8 @@ async def test_get_pipeline_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetPipelineRequest({  }),
-  {  },
+  eventarc.GetPipelineRequest(),
+  {},
 ])
 async def test_get_pipeline_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -12195,10 +12003,8 @@ async def test_get_pipeline_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListPipelinesRequest({
-  }),
-  {
-  },
+  eventarc.ListPipelinesRequest(),
+  {},
 ])
 def test_list_pipelines(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -12335,8 +12141,8 @@ async def test_list_pipelines_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListPipelinesRequest({  }),
-  {  },
+  eventarc.ListPipelinesRequest(),
+  {},
 ])
 async def test_list_pipelines_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -12568,6 +12374,9 @@ def test_list_pipelines_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, pipeline.Pipeline)
@@ -12654,6 +12463,8 @@ async def test_list_pipelines_async_pager():
         )
         async_pager = await client.list_pipelines(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -12710,10 +12521,8 @@ async def test_list_pipelines_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreatePipelineRequest({
-  }),
-  {
-  },
+  eventarc.CreatePipelineRequest(),
+  {},
 ])
 def test_create_pipeline(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -12851,8 +12660,8 @@ async def test_create_pipeline_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreatePipelineRequest({  }),
-  {  },
+  eventarc.CreatePipelineRequest(),
+  {},
 ])
 async def test_create_pipeline_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -13051,10 +12860,8 @@ async def test_create_pipeline_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdatePipelineRequest({
-  }),
-  {
-  },
+  eventarc.UpdatePipelineRequest(),
+  {},
 ])
 def test_update_pipeline(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -13188,8 +12995,8 @@ async def test_update_pipeline_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdatePipelineRequest({  }),
-  {  },
+  eventarc.UpdatePipelineRequest(),
+  {},
 ])
 async def test_update_pipeline_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -13378,10 +13185,8 @@ async def test_update_pipeline_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeletePipelineRequest({
-  }),
-  {
-  },
+  eventarc.DeletePipelineRequest(),
+  {},
 ])
 def test_delete_pipeline(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -13519,8 +13324,8 @@ async def test_delete_pipeline_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeletePipelineRequest({  }),
-  {  },
+  eventarc.DeletePipelineRequest(),
+  {},
 ])
 async def test_delete_pipeline_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -13709,10 +13514,8 @@ async def test_delete_pipeline_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetGoogleApiSourceRequest({
-  }),
-  {
-  },
+  eventarc.GetGoogleApiSourceRequest(),
+  {},
 ])
 def test_get_google_api_source(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -13851,8 +13654,8 @@ async def test_get_google_api_source_async_use_cached_wrapped_rpc(transport: str
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetGoogleApiSourceRequest({  }),
-  {  },
+  eventarc.GetGoogleApiSourceRequest(),
+  {},
 ])
 async def test_get_google_api_source_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -14040,10 +13843,8 @@ async def test_get_google_api_source_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListGoogleApiSourcesRequest({
-  }),
-  {
-  },
+  eventarc.ListGoogleApiSourcesRequest(),
+  {},
 ])
 def test_list_google_api_sources(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -14180,8 +13981,8 @@ async def test_list_google_api_sources_async_use_cached_wrapped_rpc(transport: s
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListGoogleApiSourcesRequest({  }),
-  {  },
+  eventarc.ListGoogleApiSourcesRequest(),
+  {},
 ])
 async def test_list_google_api_sources_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -14413,6 +14214,9 @@ def test_list_google_api_sources_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, google_api_source.GoogleApiSource)
@@ -14499,6 +14303,8 @@ async def test_list_google_api_sources_async_pager():
         )
         async_pager = await client.list_google_api_sources(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -14555,10 +14361,8 @@ async def test_list_google_api_sources_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateGoogleApiSourceRequest({
-  }),
-  {
-  },
+  eventarc.CreateGoogleApiSourceRequest(),
+  {},
 ])
 def test_create_google_api_source(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -14696,8 +14500,8 @@ async def test_create_google_api_source_async_use_cached_wrapped_rpc(transport: 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateGoogleApiSourceRequest({  }),
-  {  },
+  eventarc.CreateGoogleApiSourceRequest(),
+  {},
 ])
 async def test_create_google_api_source_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -14896,10 +14700,8 @@ async def test_create_google_api_source_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateGoogleApiSourceRequest({
-  }),
-  {
-  },
+  eventarc.UpdateGoogleApiSourceRequest(),
+  {},
 ])
 def test_update_google_api_source(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -15033,8 +14835,8 @@ async def test_update_google_api_source_async_use_cached_wrapped_rpc(transport: 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateGoogleApiSourceRequest({  }),
-  {  },
+  eventarc.UpdateGoogleApiSourceRequest(),
+  {},
 ])
 async def test_update_google_api_source_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -15223,10 +15025,8 @@ async def test_update_google_api_source_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteGoogleApiSourceRequest({
-  }),
-  {
-  },
+  eventarc.DeleteGoogleApiSourceRequest(),
+  {},
 ])
 def test_delete_google_api_source(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -15364,8 +15164,8 @@ async def test_delete_google_api_source_async_use_cached_wrapped_rpc(transport: 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteGoogleApiSourceRequest({  }),
-  {  },
+  eventarc.DeleteGoogleApiSourceRequest(),
+  {},
 ])
 async def test_delete_google_api_source_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
@@ -15601,15 +15401,17 @@ def test_get_trigger_rest_required_fields(request_type=eventarc.GetTriggerReques
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_trigger._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetTrigger,
+        "_BaseGetTrigger__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_trigger._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -15656,13 +15458,6 @@ def test_get_trigger_rest_required_fields(request_type=eventarc.GetTriggerReques
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_trigger_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_trigger._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_trigger_rest_flattened():
@@ -15767,17 +15562,20 @@ def test_list_triggers_rest_required_fields(request_type=eventarc.ListTriggersRe
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_triggers._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListTriggers,
+        "_BaseListTriggers__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_triggers._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("filter", "orderBy", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -15824,13 +15622,6 @@ def test_list_triggers_rest_required_fields(request_type=eventarc.ListTriggersRe
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_triggers_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_triggers._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("filter", "orderBy", "pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_triggers_rest_flattened():
@@ -15939,6 +15730,9 @@ def test_list_triggers_rest_pager(transport: str = 'rest'):
 
         pager = client.list_triggers(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, trigger.Trigger)
@@ -16003,7 +15797,12 @@ def test_create_trigger_rest_required_fields(request_type=eventarc.CreateTrigger
     # verify fields with default values are dropped
     assert "triggerId" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_trigger._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateTrigger,
+        "_BaseCreateTrigger__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -16013,10 +15812,8 @@ def test_create_trigger_rest_required_fields(request_type=eventarc.CreateTrigger
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["triggerId"] = 'trigger_id_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_trigger._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("trigger_id", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("triggerId", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -16067,13 +15864,6 @@ def test_create_trigger_rest_required_fields(request_type=eventarc.CreateTrigger
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_trigger_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_trigger._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("triggerId", "validateOnly", )) & set(("parent", "trigger", "triggerId", )))
 
 
 def test_create_trigger_rest_flattened():
@@ -16278,17 +16068,20 @@ def test_delete_trigger_rest_required_fields(request_type=eventarc.DeleteTrigger
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_trigger._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteTrigger,
+        "_BaseDeleteTrigger__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_trigger._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("allow_missing", "etag", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("allowMissing", "etag", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -16332,13 +16125,6 @@ def test_delete_trigger_rest_required_fields(request_type=eventarc.DeleteTrigger
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_trigger_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_trigger._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("allowMissing", "etag", "validateOnly", )) & set(("name", )))
 
 
 def test_delete_trigger_rest_flattened():
@@ -16443,15 +16229,17 @@ def test_get_channel_rest_required_fields(request_type=eventarc.GetChannelReques
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_channel._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetChannel,
+        "_BaseGetChannel__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_channel._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -16498,13 +16286,6 @@ def test_get_channel_rest_required_fields(request_type=eventarc.GetChannelReques
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_channel_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_channel._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_channel_rest_flattened():
@@ -16609,17 +16390,20 @@ def test_list_channels_rest_required_fields(request_type=eventarc.ListChannelsRe
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_channels._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListChannels,
+        "_BaseListChannels__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_channels._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("order_by", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("orderBy", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -16666,13 +16450,6 @@ def test_list_channels_rest_required_fields(request_type=eventarc.ListChannelsRe
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_channels_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_channels._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("orderBy", "pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_channels_rest_flattened():
@@ -16781,6 +16558,9 @@ def test_list_channels_rest_pager(transport: str = 'rest'):
 
         pager = client.list_channels(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, channel.Channel)
@@ -16845,7 +16625,12 @@ def test_create_channel_rest_required_fields(request_type=eventarc.CreateChannel
     # verify fields with default values are dropped
     assert "channelId" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_channel_._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateChannel,
+        "_BaseCreateChannel__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -16855,10 +16640,8 @@ def test_create_channel_rest_required_fields(request_type=eventarc.CreateChannel
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["channelId"] = 'channel_id_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_channel_._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("channel_id", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("channelId", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -16909,13 +16692,6 @@ def test_create_channel_rest_required_fields(request_type=eventarc.CreateChannel
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_channel_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_channel_._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("channelId", "validateOnly", )) & set(("parent", "channel", "channelId", )))
 
 
 def test_create_channel_rest_flattened():
@@ -17118,17 +16894,20 @@ def test_delete_channel_rest_required_fields(request_type=eventarc.DeleteChannel
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_channel._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteChannel,
+        "_BaseDeleteChannel__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_channel._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("validateOnly", ))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -17172,13 +16951,6 @@ def test_delete_channel_rest_required_fields(request_type=eventarc.DeleteChannel
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_channel_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_channel._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("validateOnly", )) & set(("name", )))
 
 
 def test_delete_channel_rest_flattened():
@@ -17281,15 +17053,17 @@ def test_get_provider_rest_required_fields(request_type=eventarc.GetProviderRequ
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_provider._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetProvider,
+        "_BaseGetProvider__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_provider._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -17336,13 +17110,6 @@ def test_get_provider_rest_required_fields(request_type=eventarc.GetProviderRequ
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_provider_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_provider._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_provider_rest_flattened():
@@ -17447,17 +17214,20 @@ def test_list_providers_rest_required_fields(request_type=eventarc.ListProviders
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_providers._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListProviders,
+        "_BaseListProviders__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_providers._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("filter", "orderBy", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -17504,13 +17274,6 @@ def test_list_providers_rest_required_fields(request_type=eventarc.ListProviders
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_providers_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_providers._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("filter", "orderBy", "pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_providers_rest_flattened():
@@ -17619,6 +17382,9 @@ def test_list_providers_rest_pager(transport: str = 'rest'):
 
         pager = client.list_providers(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, discovery.Provider)
@@ -17677,15 +17443,17 @@ def test_get_channel_connection_rest_required_fields(request_type=eventarc.GetCh
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_channel_connection._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetChannelConnection,
+        "_BaseGetChannelConnection__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_channel_connection._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -17732,13 +17500,6 @@ def test_get_channel_connection_rest_required_fields(request_type=eventarc.GetCh
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_channel_connection_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_channel_connection._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_channel_connection_rest_flattened():
@@ -17843,17 +17604,20 @@ def test_list_channel_connections_rest_required_fields(request_type=eventarc.Lis
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_channel_connections._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListChannelConnections,
+        "_BaseListChannelConnections__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_channel_connections._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -17900,13 +17664,6 @@ def test_list_channel_connections_rest_required_fields(request_type=eventarc.Lis
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_channel_connections_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_channel_connections._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_channel_connections_rest_flattened():
@@ -18015,6 +17772,9 @@ def test_list_channel_connections_rest_pager(transport: str = 'rest'):
 
         pager = client.list_channel_connections(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, channel_connection.ChannelConnection)
@@ -18079,7 +17839,12 @@ def test_create_channel_connection_rest_required_fields(request_type=eventarc.Cr
     # verify fields with default values are dropped
     assert "channelConnectionId" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_channel_connection._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateChannelConnection,
+        "_BaseCreateChannelConnection__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -18089,10 +17854,8 @@ def test_create_channel_connection_rest_required_fields(request_type=eventarc.Cr
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["channelConnectionId"] = 'channel_connection_id_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_channel_connection._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("channel_connection_id", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("channelConnectionId", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -18143,13 +17906,6 @@ def test_create_channel_connection_rest_required_fields(request_type=eventarc.Cr
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_channel_connection_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_channel_connection._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("channelConnectionId", )) & set(("parent", "channelConnection", "channelConnectionId", )))
 
 
 def test_create_channel_connection_rest_flattened():
@@ -18260,15 +18016,17 @@ def test_delete_channel_connection_rest_required_fields(request_type=eventarc.De
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_channel_connection._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteChannelConnection,
+        "_BaseDeleteChannelConnection__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_channel_connection._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -18312,13 +18070,6 @@ def test_delete_channel_connection_rest_required_fields(request_type=eventarc.De
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_channel_connection_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_channel_connection._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_delete_channel_connection_rest_flattened():
@@ -18421,15 +18172,17 @@ def test_get_google_channel_config_rest_required_fields(request_type=eventarc.Ge
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_google_channel_config._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetGoogleChannelConfig,
+        "_BaseGetGoogleChannelConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_google_channel_config._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -18476,13 +18229,6 @@ def test_get_google_channel_config_rest_required_fields(request_type=eventarc.Ge
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_google_channel_config_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_google_channel_config._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_google_channel_config_rest_flattened():
@@ -18586,15 +18332,18 @@ def test_update_google_channel_config_rest_required_fields(request_type=eventarc
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_google_channel_config._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateGoogleChannelConfig,
+        "_BaseUpdateGoogleChannelConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_google_channel_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask", ))
 
     # verify required fields with non-default values are left alone
 
@@ -18640,13 +18389,6 @@ def test_update_google_channel_config_rest_required_fields(request_type=eventarc
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_google_channel_config_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.update_google_channel_config._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask", )) & set(("googleChannelConfig", )))
 
 
 def test_update_google_channel_config_rest_flattened():
@@ -18753,15 +18495,17 @@ def test_get_message_bus_rest_required_fields(request_type=eventarc.GetMessageBu
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_message_bus._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetMessageBus,
+        "_BaseGetMessageBus__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_message_bus._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -18808,13 +18552,6 @@ def test_get_message_bus_rest_required_fields(request_type=eventarc.GetMessageBu
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_message_bus_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_message_bus._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_message_bus_rest_flattened():
@@ -18919,17 +18656,20 @@ def test_list_message_buses_rest_required_fields(request_type=eventarc.ListMessa
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_message_buses._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListMessageBuses,
+        "_BaseListMessageBuses__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_message_buses._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("filter", "orderBy", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -18976,13 +18716,6 @@ def test_list_message_buses_rest_required_fields(request_type=eventarc.ListMessa
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_message_buses_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_message_buses._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("filter", "orderBy", "pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_message_buses_rest_flattened():
@@ -19091,6 +18824,9 @@ def test_list_message_buses_rest_pager(transport: str = 'rest'):
 
         pager = client.list_message_buses(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, message_bus.MessageBus)
@@ -19149,17 +18885,20 @@ def test_list_message_bus_enrollments_rest_required_fields(request_type=eventarc
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_message_bus_enrollments._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListMessageBusEnrollments,
+        "_BaseListMessageBusEnrollments__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_message_bus_enrollments._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -19206,13 +18945,6 @@ def test_list_message_bus_enrollments_rest_required_fields(request_type=eventarc
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_message_bus_enrollments_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_message_bus_enrollments._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_message_bus_enrollments_rest_flattened():
@@ -19321,6 +19053,9 @@ def test_list_message_bus_enrollments_rest_pager(transport: str = 'rest'):
 
         pager = client.list_message_bus_enrollments(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, str)
@@ -19385,7 +19120,12 @@ def test_create_message_bus_rest_required_fields(request_type=eventarc.CreateMes
     # verify fields with default values are dropped
     assert "messageBusId" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_message_bus._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateMessageBus,
+        "_BaseCreateMessageBus__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -19395,10 +19135,8 @@ def test_create_message_bus_rest_required_fields(request_type=eventarc.CreateMes
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["messageBusId"] = 'message_bus_id_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_message_bus._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("message_bus_id", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("messageBusId", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -19449,13 +19187,6 @@ def test_create_message_bus_rest_required_fields(request_type=eventarc.CreateMes
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_message_bus_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_message_bus._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("messageBusId", "validateOnly", )) & set(("parent", "messageBus", "messageBusId", )))
 
 
 def test_create_message_bus_rest_flattened():
@@ -19565,15 +19296,18 @@ def test_update_message_bus_rest_required_fields(request_type=eventarc.UpdateMes
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_message_bus._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateMessageBus,
+        "_BaseUpdateMessageBus__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_message_bus._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("allow_missing", "update_mask", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("allowMissing", "updateMask", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
 
@@ -19616,13 +19350,6 @@ def test_update_message_bus_rest_required_fields(request_type=eventarc.UpdateMes
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_message_bus_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.update_message_bus._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("allowMissing", "updateMask", "validateOnly", )) & set(("messageBus", )))
 
 
 def test_update_message_bus_rest_flattened():
@@ -19731,17 +19458,20 @@ def test_delete_message_bus_rest_required_fields(request_type=eventarc.DeleteMes
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_message_bus._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteMessageBus,
+        "_BaseDeleteMessageBus__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_message_bus._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("allow_missing", "etag", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("allowMissing", "etag", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -19785,13 +19515,6 @@ def test_delete_message_bus_rest_required_fields(request_type=eventarc.DeleteMes
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_message_bus_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_message_bus._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("allowMissing", "etag", "validateOnly", )) & set(("name", )))
 
 
 def test_delete_message_bus_rest_flattened():
@@ -19896,15 +19619,17 @@ def test_get_enrollment_rest_required_fields(request_type=eventarc.GetEnrollment
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_enrollment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetEnrollment,
+        "_BaseGetEnrollment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_enrollment._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -19951,13 +19676,6 @@ def test_get_enrollment_rest_required_fields(request_type=eventarc.GetEnrollment
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_enrollment_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_enrollment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_enrollment_rest_flattened():
@@ -20062,17 +19780,20 @@ def test_list_enrollments_rest_required_fields(request_type=eventarc.ListEnrollm
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_enrollments._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListEnrollments,
+        "_BaseListEnrollments__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_enrollments._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("filter", "orderBy", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -20119,13 +19840,6 @@ def test_list_enrollments_rest_required_fields(request_type=eventarc.ListEnrollm
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_enrollments_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_enrollments._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("filter", "orderBy", "pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_enrollments_rest_flattened():
@@ -20234,6 +19948,9 @@ def test_list_enrollments_rest_pager(transport: str = 'rest'):
 
         pager = client.list_enrollments(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, enrollment.Enrollment)
@@ -20298,7 +20015,12 @@ def test_create_enrollment_rest_required_fields(request_type=eventarc.CreateEnro
     # verify fields with default values are dropped
     assert "enrollmentId" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_enrollment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateEnrollment,
+        "_BaseCreateEnrollment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -20308,10 +20030,8 @@ def test_create_enrollment_rest_required_fields(request_type=eventarc.CreateEnro
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["enrollmentId"] = 'enrollment_id_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_enrollment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("enrollment_id", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("enrollmentId", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -20362,13 +20082,6 @@ def test_create_enrollment_rest_required_fields(request_type=eventarc.CreateEnro
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_enrollment_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_enrollment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("enrollmentId", "validateOnly", )) & set(("parent", "enrollment", "enrollmentId", )))
 
 
 def test_create_enrollment_rest_flattened():
@@ -20478,15 +20191,18 @@ def test_update_enrollment_rest_required_fields(request_type=eventarc.UpdateEnro
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_enrollment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateEnrollment,
+        "_BaseUpdateEnrollment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_enrollment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("allow_missing", "update_mask", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("allowMissing", "updateMask", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
 
@@ -20529,13 +20245,6 @@ def test_update_enrollment_rest_required_fields(request_type=eventarc.UpdateEnro
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_enrollment_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.update_enrollment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("allowMissing", "updateMask", "validateOnly", )) & set(("enrollment", )))
 
 
 def test_update_enrollment_rest_flattened():
@@ -20644,17 +20353,20 @@ def test_delete_enrollment_rest_required_fields(request_type=eventarc.DeleteEnro
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_enrollment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteEnrollment,
+        "_BaseDeleteEnrollment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_enrollment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("allow_missing", "etag", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("allowMissing", "etag", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -20698,13 +20410,6 @@ def test_delete_enrollment_rest_required_fields(request_type=eventarc.DeleteEnro
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_enrollment_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_enrollment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("allowMissing", "etag", "validateOnly", )) & set(("name", )))
 
 
 def test_delete_enrollment_rest_flattened():
@@ -20809,15 +20514,17 @@ def test_get_pipeline_rest_required_fields(request_type=eventarc.GetPipelineRequ
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_pipeline._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetPipeline,
+        "_BaseGetPipeline__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_pipeline._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -20864,13 +20571,6 @@ def test_get_pipeline_rest_required_fields(request_type=eventarc.GetPipelineRequ
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_pipeline_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_pipeline._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_pipeline_rest_flattened():
@@ -20975,17 +20675,20 @@ def test_list_pipelines_rest_required_fields(request_type=eventarc.ListPipelines
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_pipelines._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListPipelines,
+        "_BaseListPipelines__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_pipelines._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("filter", "orderBy", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -21032,13 +20735,6 @@ def test_list_pipelines_rest_required_fields(request_type=eventarc.ListPipelines
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_pipelines_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_pipelines._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("filter", "orderBy", "pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_pipelines_rest_flattened():
@@ -21147,6 +20843,9 @@ def test_list_pipelines_rest_pager(transport: str = 'rest'):
 
         pager = client.list_pipelines(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, pipeline.Pipeline)
@@ -21211,7 +20910,12 @@ def test_create_pipeline_rest_required_fields(request_type=eventarc.CreatePipeli
     # verify fields with default values are dropped
     assert "pipelineId" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_pipeline._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreatePipeline,
+        "_BaseCreatePipeline__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -21221,10 +20925,8 @@ def test_create_pipeline_rest_required_fields(request_type=eventarc.CreatePipeli
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["pipelineId"] = 'pipeline_id_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_pipeline._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("pipeline_id", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("pipelineId", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -21275,13 +20977,6 @@ def test_create_pipeline_rest_required_fields(request_type=eventarc.CreatePipeli
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_pipeline_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_pipeline._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("pipelineId", "validateOnly", )) & set(("parent", "pipeline", "pipelineId", )))
 
 
 def test_create_pipeline_rest_flattened():
@@ -21391,15 +21086,18 @@ def test_update_pipeline_rest_required_fields(request_type=eventarc.UpdatePipeli
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_pipeline._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdatePipeline,
+        "_BaseUpdatePipeline__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_pipeline._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("allow_missing", "update_mask", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("allowMissing", "updateMask", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
 
@@ -21442,13 +21140,6 @@ def test_update_pipeline_rest_required_fields(request_type=eventarc.UpdatePipeli
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_pipeline_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.update_pipeline._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("allowMissing", "updateMask", "validateOnly", )) & set(("pipeline", )))
 
 
 def test_update_pipeline_rest_flattened():
@@ -21557,17 +21248,20 @@ def test_delete_pipeline_rest_required_fields(request_type=eventarc.DeletePipeli
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_pipeline._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeletePipeline,
+        "_BaseDeletePipeline__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_pipeline._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("allow_missing", "etag", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("allowMissing", "etag", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -21611,13 +21305,6 @@ def test_delete_pipeline_rest_required_fields(request_type=eventarc.DeletePipeli
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_pipeline_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_pipeline._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("allowMissing", "etag", "validateOnly", )) & set(("name", )))
 
 
 def test_delete_pipeline_rest_flattened():
@@ -21722,15 +21409,17 @@ def test_get_google_api_source_rest_required_fields(request_type=eventarc.GetGoo
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_google_api_source._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetGoogleApiSource,
+        "_BaseGetGoogleApiSource__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_google_api_source._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -21777,13 +21466,6 @@ def test_get_google_api_source_rest_required_fields(request_type=eventarc.GetGoo
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_google_api_source_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_google_api_source._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name", )))
 
 
 def test_get_google_api_source_rest_flattened():
@@ -21888,17 +21570,20 @@ def test_list_google_api_sources_rest_required_fields(request_type=eventarc.List
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_google_api_sources._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListGoogleApiSources,
+        "_BaseListGoogleApiSources__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = 'parent_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_google_api_sources._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("filter", "order_by", "page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("filter", "orderBy", "pageSize", "pageToken", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -21945,13 +21630,6 @@ def test_list_google_api_sources_rest_required_fields(request_type=eventarc.List
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_google_api_sources_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_google_api_sources._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("filter", "orderBy", "pageSize", "pageToken", )) & set(("parent", )))
 
 
 def test_list_google_api_sources_rest_flattened():
@@ -22060,6 +21738,9 @@ def test_list_google_api_sources_rest_pager(transport: str = 'rest'):
 
         pager = client.list_google_api_sources(request=sample_request)
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, google_api_source.GoogleApiSource)
@@ -22124,7 +21805,12 @@ def test_create_google_api_source_rest_required_fields(request_type=eventarc.Cre
     # verify fields with default values are dropped
     assert "googleApiSourceId" not in jsonified_request
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_google_api_source._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateGoogleApiSource,
+        "_BaseCreateGoogleApiSource__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -22134,10 +21820,8 @@ def test_create_google_api_source_rest_required_fields(request_type=eventarc.Cre
     jsonified_request["parent"] = 'parent_value'
     jsonified_request["googleApiSourceId"] = 'google_api_source_id_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_google_api_source._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("google_api_source_id", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("googleApiSourceId", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -22188,13 +21872,6 @@ def test_create_google_api_source_rest_required_fields(request_type=eventarc.Cre
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_google_api_source_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_google_api_source._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("googleApiSourceId", "validateOnly", )) & set(("parent", "googleApiSource", "googleApiSourceId", )))
 
 
 def test_create_google_api_source_rest_flattened():
@@ -22304,15 +21981,18 @@ def test_update_google_api_source_rest_required_fields(request_type=eventarc.Upd
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_google_api_source._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateGoogleApiSource,
+        "_BaseUpdateGoogleApiSource__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_google_api_source._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("allow_missing", "update_mask", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("allowMissing", "updateMask", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
 
@@ -22355,13 +22035,6 @@ def test_update_google_api_source_rest_required_fields(request_type=eventarc.Upd
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_google_api_source_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.update_google_api_source._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("allowMissing", "updateMask", "validateOnly", )) & set(("googleApiSource", )))
 
 
 def test_update_google_api_source_rest_flattened():
@@ -22470,17 +22143,20 @@ def test_delete_google_api_source_rest_required_fields(request_type=eventarc.Del
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_google_api_source._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteGoogleApiSource,
+        "_BaseDeleteGoogleApiSource__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = 'name_value'
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_google_api_source._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("allow_missing", "etag", "validate_only", ))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("allowMissing", "etag", "validateOnly", ))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -22524,13 +22200,6 @@ def test_delete_google_api_source_rest_required_fields(request_type=eventarc.Del
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_google_api_source_rest_unset_required_fields():
-    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_google_api_source._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("allowMissing", "etag", "validateOnly", )) & set(("name", )))
 
 
 def test_delete_google_api_source_rest_flattened():

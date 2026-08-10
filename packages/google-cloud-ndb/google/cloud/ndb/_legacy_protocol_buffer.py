@@ -16,7 +16,6 @@
 import array
 import struct
 
-
 # Python 3 doesn't have "long" anymore
 long = int
 

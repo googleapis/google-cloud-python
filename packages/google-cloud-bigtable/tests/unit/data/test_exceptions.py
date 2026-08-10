@@ -14,16 +14,11 @@
 
 import sys
 import unittest
+from unittest import mock
 
 import pytest
 
 import google.cloud.bigtable.data.exceptions as bigtable_exceptions
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock  # type: ignore
 
 
 class TracebackTests311:

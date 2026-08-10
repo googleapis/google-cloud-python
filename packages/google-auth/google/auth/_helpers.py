@@ -28,6 +28,8 @@ import urllib
 from google.auth import exceptions
 
 
+DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
+
 # _BASE_LOGGER_NAME is the base logger for all google-based loggers.
 _BASE_LOGGER_NAME = "google"
 

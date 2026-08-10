@@ -154,6 +154,21 @@ def test_before_request_with_regional_access_boundary():
     assert headers["x-allowed-locations"] == DUMMY_BOUNDARY
 
 
+def test_copy_regional_access_boundary_manager_state_and_config():
+    creds = CredentialsImpl()
+    creds._rab_manager._data = mock.sentinel.rab_data
+    creds._rab_manager._use_blocking_regional_access_boundary_lookup = True
+
+    new_creds = creds._make_copy()
+
+    # Verify references to immutable boundary data are shared
+    assert new_creds._rab_manager._data == mock.sentinel.rab_data
+    # Verify blocking config flag is preserved
+    assert new_creds._rab_manager._use_blocking_regional_access_boundary_lookup is True
+    # Verify target manager object is isolated (kept from constructor, not replaced)
+    assert new_creds._rab_manager is not creds._rab_manager
+
+
 def test_before_request_metrics():
     credentials = CredentialsImplWithMetrics()
     request = "token"
@@ -392,35 +407,42 @@ def test_credentials_with_trust_boundary_bridge():
 
 
 def test_before_request_triggers_rab_refresh():
-    with mock.patch(
-        "google.auth._regional_access_boundary_utils."
-        "is_regional_access_boundary_enabled",
-        return_value=True,
-    ):
-        with mock.patch(
-            "google.oauth2._client._lookup_regional_access_boundary"
-        ) as lookup:
-            lookup.return_value = {"encodedLocations": "0xA30"}
+    with mock.patch("google.oauth2._client._lookup_regional_access_boundary") as lookup:
+        lookup.return_value = {"encodedLocations": "0xA30"}
 
-            creds = CredentialsImpl()
-            creds = creds._set_blocking_regional_access_boundary_lookup()
+        creds = CredentialsImpl()
+        creds = creds._set_blocking_regional_access_boundary_lookup()
 
-            request = mock.Mock()
-            headers = {}
+        request = mock.Mock()
+        headers = {}
 
-            # Initial state: no token
-            assert creds.token is None
+        # Initial state: no token
+        assert creds.token is None
 
-            # before_request should trigger token refresh and THEN RAB refresh.
-            # We verify this by checking that the RAB lookup was called with
-            # the URL containing the refreshed token.
-            creds.before_request(request, "GET", "http://example.com", headers)
+        # before_request should trigger token refresh and THEN RAB refresh.
+        # We verify this by checking that the RAB lookup was called with
+        # the URL containing the refreshed token.
+        creds.before_request(request, "GET", "http://example.com", headers)
 
-            assert creds.token == "refreshed-token"
-            assert headers["authorization"] == "Bearer refreshed-token"
-            assert headers["x-allowed-locations"] == "0xA30"
+        assert creds.token == "refreshed-token"
+        assert headers["authorization"] == "Bearer refreshed-token"
+        assert headers["x-allowed-locations"] == "0xA30"
 
-            # Verify lookup was called with the refreshed token's URL
-            lookup.assert_called_once()
-            args, kwargs = lookup.call_args
-            assert args[1] == "http://mock.url/lookup_for_refreshed-token"
+        # Verify lookup was called with the refreshed token's URL
+        lookup.assert_called_once()
+        args, kwargs = lookup.call_args
+        assert args[1] == "http://mock.url/lookup_for_refreshed-token"
+
+
+def test_maybe_start_regional_access_boundary_refresh_invalid_url():
+    credentials_instance = CredentialsImpl()
+    request = mock.Mock()
+
+    # Verifies that passing invalid/non-string URLs synchronously fails safe without crashing.
+    credentials_instance._maybe_start_regional_access_boundary_refresh(
+        request, url=None
+    )
+    credentials_instance._maybe_start_regional_access_boundary_refresh(request, url=123)
+    credentials_instance._maybe_start_regional_access_boundary_refresh(
+        request, url=object()
+    )

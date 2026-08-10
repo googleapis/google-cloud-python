@@ -24,6 +24,7 @@ import numpy
 import pandas
 
 import bigframes.core.block_transforms as block_ops
+import bigframes.core.block_transforms as block_transforms
 import bigframes.core.blocks as blocks
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
@@ -258,18 +259,27 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         return self._aggregate(agg_ops.product_op)
 
     def agg(self, func=None) -> typing.Union[df.DataFrame, series.Series]:
-        column_names: list[str] = []
         if utils.is_dict_like(func):
             raise NotImplementedError(
                 f"Aggregate with {func} not supported. {constants.FEEDBACK_LINK}"
             )
-        if not utils.is_list_like(func):
+        is_single_func = not utils.is_list_like(func)
+        if is_single_func:
             func = [func]
 
-        aggregations = [
-            aggs.agg(self._value_column, agg_ops.lookup_agg_func(f)[0]) for f in func
-        ]
-        column_names = [agg_ops.lookup_agg_func(f)[1] for f in func]
+        aggregations = []
+        column_labels = []
+        for f in func:
+            if block_transforms.is_transpiler_eligible(f):
+                expr, name = block_transforms.compile_column_udf(
+                    self._block, f, self._value_column
+                )
+                aggregations.append(expr)
+                column_labels.append(self._value_name if is_single_func else name)
+            else:
+                agg_op, label = agg_ops.lookup_agg_func(f)
+                aggregations.append(aggs.agg(self._value_column, agg_op))
+                column_labels.append(label if not is_single_func else self._value_name)
 
         agg_block = self._block.aggregate(
             by_column_ids=self._by_col_ids,
@@ -277,14 +287,37 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
             dropna=self._dropna,
         )
 
-        if column_names:
-            agg_block = agg_block.with_column_labels(column_names)
+        if column_labels:
+            agg_block = agg_block.with_column_labels(column_labels)
 
         if len(aggregations) == 1:
             return series.Series(agg_block)
         return df.DataFrame(agg_block)
 
     aggregate = agg
+
+    def transform(self, func, *args, **kwargs) -> series.Series:
+        if block_transforms.is_transpiler_eligible(func):
+            window_spec = window_specs.unbound(grouping_keys=tuple(self._by_col_ids))
+            expr, _ = block_transforms.compile_column_udf(
+                self._block,
+                func,
+                self._value_column,
+                args=args,
+                kwargs=kwargs,
+                window_spec=window_spec,
+            )
+
+            block = self._block.project_block_exprs(
+                [expr],
+                labels=[self._value_name],
+                drop=True,
+            )
+            return series.Series(block)
+
+        raise NotImplementedError(
+            "SeriesGroupBy.transform is only supported when experiments.enable_python_transpiler is True and a transpiler-compatible python function is provided."
+        )
 
     def value_counts(
         self,

@@ -16,12 +16,9 @@ from unittest import mock
 
 import google.cloud.bigquery as bigquery
 import google.cloud.exceptions
-import pyarrow as pa
 import pytest
 
 import bigframes
-import bigframes.core.nodes as nodes
-import bigframes.core.schema as schemata
 from bigframes.session.proxy_executor import DualCompilerProxyExecutor
 
 
@@ -33,14 +30,21 @@ def mock_executor():
     bqstoragereadclient = mock.Mock()
     loader = mock.Mock()
     publisher = mock.Mock()
+    function_manager = mock.Mock()
     return DualCompilerProxyExecutor(
-        bqclient, storage_manager, bqstoragereadclient, loader, publisher=publisher
+        bqclient,
+        storage_manager,
+        bqstoragereadclient,
+        loader,
+        publisher=publisher,
+        function_manager=function_manager,
     )
 
 
 def test_execute_legacy_routes_to_ibis(mock_executor, monkeypatch):
     array_value = mock.Mock(spec=bigframes.core.ArrayValue)
     execution_spec = mock.Mock(spec=bigframes.session.execution_spec.ExecutionSpec)
+    execution_spec.with_bq_labels.return_value = execution_spec
 
     mock_executor._ibis_executor = mock.Mock()
     mock_executor._sqlglot_executor = mock.Mock()
@@ -48,6 +52,9 @@ def test_execute_legacy_routes_to_ibis(mock_executor, monkeypatch):
     monkeypatch.setattr(bigframes.options.experiments, "sql_compiler", "legacy")
     mock_executor.execute(array_value, execution_spec)
 
+    execution_spec.with_bq_labels.assert_called_once_with(
+        {"bigframes-compiler": "ibis"}
+    )
     mock_executor._ibis_executor.execute.assert_called_once_with(
         array_value, execution_spec
     )

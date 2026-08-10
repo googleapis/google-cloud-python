@@ -23,6 +23,43 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.run_v2.services.builds",
+    "google.cloud.run_v2.services.executions",
+    "google.cloud.run_v2.services.instances",
+    "google.cloud.run_v2.services.jobs",
+    "google.cloud.run_v2.services.revisions",
+    "google.cloud.run_v2.services.services",
+    "google.cloud.run_v2.services.tasks",
+    "google.cloud.run_v2.services.worker_pools",
+    "google.cloud.run_v2.types.build",
+    "google.cloud.run_v2.types.condition",
+    "google.cloud.run_v2.types.container_status",
+    "google.cloud.run_v2.types.execution",
+    "google.cloud.run_v2.types.execution_template",
+    "google.cloud.run_v2.types.instance",
+    "google.cloud.run_v2.types.instance_split",
+    "google.cloud.run_v2.types.job",
+    "google.cloud.run_v2.types.k8s_min",
+    "google.cloud.run_v2.types.revision",
+    "google.cloud.run_v2.types.revision_template",
+    "google.cloud.run_v2.types.service",
+    "google.cloud.run_v2.types.status",
+    "google.cloud.run_v2.types.task",
+    "google.cloud.run_v2.types.task_template",
+    "google.cloud.run_v2.types.traffic_target",
+    "google.cloud.run_v2.types.vendor_settings",
+    "google.cloud.run_v2.types.worker_pool",
+    "google.cloud.run_v2.types.worker_pool_revision_template",
+}
+
+
 from .services.builds import BuildsAsyncClient, BuildsClient
 from .services.executions import ExecutionsAsyncClient, ExecutionsClient
 from .services.instances import InstancesAsyncClient, InstancesClient
@@ -172,7 +209,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -201,9 +238,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(

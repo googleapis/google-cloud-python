@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -110,6 +111,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -974,7 +990,14 @@ def test_managed_identities_service_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1021,7 +1044,14 @@ def test_managed_identities_service_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1347,8 +1377,8 @@ def test_managed_identities_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_identities_service.CreateMicrosoftAdDomainRequest,
-        dict,
+        managed_identities_service.CreateMicrosoftAdDomainRequest(),
+        {},
     ],
 )
 def test_create_microsoft_ad_domain(request_type, transport: str = "grpc"):
@@ -1359,7 +1389,7 @@ def test_create_microsoft_ad_domain(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1405,10 +1435,11 @@ def test_create_microsoft_ad_domain_non_empty_request_with_auto_populated_field(
         client.create_microsoft_ad_domain(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.CreateMicrosoftAdDomainRequest(
+        request_msg = managed_identities_service.CreateMicrosoftAdDomainRequest(
             parent="parent_value",
             domain_name="domain_name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_microsoft_ad_domain_use_cached_wrapped_rpc():
@@ -1504,9 +1535,15 @@ async def test_create_microsoft_ad_domain_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_identities_service.CreateMicrosoftAdDomainRequest(),
+        {},
+    ],
+)
 async def test_create_microsoft_ad_domain_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_identities_service.CreateMicrosoftAdDomainRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedIdentitiesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1515,7 +1552,7 @@ async def test_create_microsoft_ad_domain_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1535,11 +1572,6 @@ async def test_create_microsoft_ad_domain_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_microsoft_ad_domain_async_from_dict():
-    await test_create_microsoft_ad_domain_async(request_type=dict)
 
 
 def test_create_microsoft_ad_domain_field_headers():
@@ -1716,8 +1748,8 @@ async def test_create_microsoft_ad_domain_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_identities_service.ResetAdminPasswordRequest,
-        dict,
+        managed_identities_service.ResetAdminPasswordRequest(),
+        {},
     ],
 )
 def test_reset_admin_password(request_type, transport: str = "grpc"):
@@ -1728,7 +1760,7 @@ def test_reset_admin_password(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1776,9 +1808,10 @@ def test_reset_admin_password_non_empty_request_with_auto_populated_field():
         client.reset_admin_password(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.ResetAdminPasswordRequest(
+        request_msg = managed_identities_service.ResetAdminPasswordRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reset_admin_password_use_cached_wrapped_rpc():
@@ -1863,9 +1896,15 @@ async def test_reset_admin_password_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_identities_service.ResetAdminPasswordRequest(),
+        {},
+    ],
+)
 async def test_reset_admin_password_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_identities_service.ResetAdminPasswordRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedIdentitiesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1874,7 +1913,7 @@ async def test_reset_admin_password_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1897,11 +1936,6 @@ async def test_reset_admin_password_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, managed_identities_service.ResetAdminPasswordResponse)
     assert response.password == "password_value"
-
-
-@pytest.mark.asyncio
-async def test_reset_admin_password_async_from_dict():
-    await test_reset_admin_password_async(request_type=dict)
 
 
 def test_reset_admin_password_field_headers():
@@ -2058,8 +2092,8 @@ async def test_reset_admin_password_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_identities_service.ListDomainsRequest,
-        dict,
+        managed_identities_service.ListDomainsRequest(),
+        {},
     ],
 )
 def test_list_domains(request_type, transport: str = "grpc"):
@@ -2070,7 +2104,7 @@ def test_list_domains(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_domains), "__call__") as call:
@@ -2119,12 +2153,13 @@ def test_list_domains_non_empty_request_with_auto_populated_field():
         client.list_domains(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.ListDomainsRequest(
+        request_msg = managed_identities_service.ListDomainsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_domains_use_cached_wrapped_rpc():
@@ -2205,10 +2240,14 @@ async def test_list_domains_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_domains_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_identities_service.ListDomainsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_identities_service.ListDomainsRequest(),
+        {},
+    ],
+)
+async def test_list_domains_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedIdentitiesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2216,7 +2255,7 @@ async def test_list_domains_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_domains), "__call__") as call:
@@ -2239,11 +2278,6 @@ async def test_list_domains_async(
     assert isinstance(response, pagers.ListDomainsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_domains_async_from_dict():
-    await test_list_domains_async(request_type=dict)
 
 
 def test_list_domains_field_headers():
@@ -2438,6 +2472,9 @@ def test_list_domains_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resource.Domain) for i in results)
@@ -2526,6 +2563,8 @@ async def test_list_domains_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2582,8 +2621,8 @@ async def test_list_domains_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_identities_service.GetDomainRequest,
-        dict,
+        managed_identities_service.GetDomainRequest(),
+        {},
     ],
 )
 def test_get_domain(request_type, transport: str = "grpc"):
@@ -2594,7 +2633,7 @@ def test_get_domain(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_domain), "__call__") as call:
@@ -2652,9 +2691,10 @@ def test_get_domain_non_empty_request_with_auto_populated_field():
         client.get_domain(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.GetDomainRequest(
+        request_msg = managed_identities_service.GetDomainRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_domain_use_cached_wrapped_rpc():
@@ -2733,10 +2773,14 @@ async def test_get_domain_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_domain_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_identities_service.GetDomainRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_identities_service.GetDomainRequest(),
+        {},
+    ],
+)
+async def test_get_domain_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedIdentitiesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2744,7 +2788,7 @@ async def test_get_domain_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_domain), "__call__") as call:
@@ -2779,11 +2823,6 @@ async def test_get_domain_async(
     assert response.fqdn == "fqdn_value"
     assert response.state == resource.Domain.State.CREATING
     assert response.status_message == "status_message_value"
-
-
-@pytest.mark.asyncio
-async def test_get_domain_async_from_dict():
-    await test_get_domain_async(request_type=dict)
 
 
 def test_get_domain_field_headers():
@@ -2928,8 +2967,8 @@ async def test_get_domain_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_identities_service.UpdateDomainRequest,
-        dict,
+        managed_identities_service.UpdateDomainRequest(),
+        {},
     ],
 )
 def test_update_domain(request_type, transport: str = "grpc"):
@@ -2940,7 +2979,7 @@ def test_update_domain(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_domain), "__call__") as call:
@@ -2979,7 +3018,8 @@ def test_update_domain_non_empty_request_with_auto_populated_field():
         client.update_domain(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.UpdateDomainRequest()
+        request_msg = managed_identities_service.UpdateDomainRequest()
+        assert args[0] == request_msg
 
 
 def test_update_domain_use_cached_wrapped_rpc():
@@ -3070,10 +3110,14 @@ async def test_update_domain_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_domain_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_identities_service.UpdateDomainRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_identities_service.UpdateDomainRequest(),
+        {},
+    ],
+)
+async def test_update_domain_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedIdentitiesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3081,7 +3125,7 @@ async def test_update_domain_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_domain), "__call__") as call:
@@ -3099,11 +3143,6 @@ async def test_update_domain_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_domain_async_from_dict():
-    await test_update_domain_async(request_type=dict)
 
 
 def test_update_domain_field_headers():
@@ -3262,8 +3301,8 @@ async def test_update_domain_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_identities_service.DeleteDomainRequest,
-        dict,
+        managed_identities_service.DeleteDomainRequest(),
+        {},
     ],
 )
 def test_delete_domain(request_type, transport: str = "grpc"):
@@ -3274,7 +3313,7 @@ def test_delete_domain(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_domain), "__call__") as call:
@@ -3315,9 +3354,10 @@ def test_delete_domain_non_empty_request_with_auto_populated_field():
         client.delete_domain(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.DeleteDomainRequest(
+        request_msg = managed_identities_service.DeleteDomainRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_domain_use_cached_wrapped_rpc():
@@ -3408,10 +3448,14 @@ async def test_delete_domain_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_domain_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_identities_service.DeleteDomainRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_identities_service.DeleteDomainRequest(),
+        {},
+    ],
+)
+async def test_delete_domain_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedIdentitiesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3419,7 +3463,7 @@ async def test_delete_domain_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_domain), "__call__") as call:
@@ -3437,11 +3481,6 @@ async def test_delete_domain_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_domain_async_from_dict():
-    await test_delete_domain_async(request_type=dict)
 
 
 def test_delete_domain_field_headers():
@@ -3590,8 +3629,8 @@ async def test_delete_domain_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_identities_service.AttachTrustRequest,
-        dict,
+        managed_identities_service.AttachTrustRequest(),
+        {},
     ],
 )
 def test_attach_trust(request_type, transport: str = "grpc"):
@@ -3602,7 +3641,7 @@ def test_attach_trust(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.attach_trust), "__call__") as call:
@@ -3643,9 +3682,10 @@ def test_attach_trust_non_empty_request_with_auto_populated_field():
         client.attach_trust(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.AttachTrustRequest(
+        request_msg = managed_identities_service.AttachTrustRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_attach_trust_use_cached_wrapped_rpc():
@@ -3736,10 +3776,14 @@ async def test_attach_trust_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_attach_trust_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_identities_service.AttachTrustRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_identities_service.AttachTrustRequest(),
+        {},
+    ],
+)
+async def test_attach_trust_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedIdentitiesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3747,7 +3791,7 @@ async def test_attach_trust_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.attach_trust), "__call__") as call:
@@ -3765,11 +3809,6 @@ async def test_attach_trust_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_attach_trust_async_from_dict():
-    await test_attach_trust_async(request_type=dict)
 
 
 def test_attach_trust_field_headers():
@@ -3928,8 +3967,8 @@ async def test_attach_trust_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_identities_service.ReconfigureTrustRequest,
-        dict,
+        managed_identities_service.ReconfigureTrustRequest(),
+        {},
     ],
 )
 def test_reconfigure_trust(request_type, transport: str = "grpc"):
@@ -3940,7 +3979,7 @@ def test_reconfigure_trust(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3986,10 +4025,11 @@ def test_reconfigure_trust_non_empty_request_with_auto_populated_field():
         client.reconfigure_trust(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.ReconfigureTrustRequest(
+        request_msg = managed_identities_service.ReconfigureTrustRequest(
             name="name_value",
             target_domain_name="target_domain_name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reconfigure_trust_use_cached_wrapped_rpc():
@@ -4082,10 +4122,14 @@ async def test_reconfigure_trust_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_reconfigure_trust_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_identities_service.ReconfigureTrustRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_identities_service.ReconfigureTrustRequest(),
+        {},
+    ],
+)
+async def test_reconfigure_trust_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedIdentitiesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4093,7 +4137,7 @@ async def test_reconfigure_trust_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4113,11 +4157,6 @@ async def test_reconfigure_trust_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_reconfigure_trust_async_from_dict():
-    await test_reconfigure_trust_async(request_type=dict)
 
 
 def test_reconfigure_trust_field_headers():
@@ -4294,8 +4333,8 @@ async def test_reconfigure_trust_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_identities_service.DetachTrustRequest,
-        dict,
+        managed_identities_service.DetachTrustRequest(),
+        {},
     ],
 )
 def test_detach_trust(request_type, transport: str = "grpc"):
@@ -4306,7 +4345,7 @@ def test_detach_trust(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.detach_trust), "__call__") as call:
@@ -4347,9 +4386,10 @@ def test_detach_trust_non_empty_request_with_auto_populated_field():
         client.detach_trust(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.DetachTrustRequest(
+        request_msg = managed_identities_service.DetachTrustRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_detach_trust_use_cached_wrapped_rpc():
@@ -4440,10 +4480,14 @@ async def test_detach_trust_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_detach_trust_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_identities_service.DetachTrustRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_identities_service.DetachTrustRequest(),
+        {},
+    ],
+)
+async def test_detach_trust_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedIdentitiesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4451,7 +4495,7 @@ async def test_detach_trust_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.detach_trust), "__call__") as call:
@@ -4469,11 +4513,6 @@ async def test_detach_trust_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_detach_trust_async_from_dict():
-    await test_detach_trust_async(request_type=dict)
 
 
 def test_detach_trust_field_headers():
@@ -4632,8 +4671,8 @@ async def test_detach_trust_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        managed_identities_service.ValidateTrustRequest,
-        dict,
+        managed_identities_service.ValidateTrustRequest(),
+        {},
     ],
 )
 def test_validate_trust(request_type, transport: str = "grpc"):
@@ -4644,7 +4683,7 @@ def test_validate_trust(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.validate_trust), "__call__") as call:
@@ -4685,9 +4724,10 @@ def test_validate_trust_non_empty_request_with_auto_populated_field():
         client.validate_trust(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_identities_service.ValidateTrustRequest(
+        request_msg = managed_identities_service.ValidateTrustRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_validate_trust_use_cached_wrapped_rpc():
@@ -4778,10 +4818,14 @@ async def test_validate_trust_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_validate_trust_async(
-    transport: str = "grpc_asyncio",
-    request_type=managed_identities_service.ValidateTrustRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_identities_service.ValidateTrustRequest(),
+        {},
+    ],
+)
+async def test_validate_trust_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedIdentitiesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4789,7 +4833,7 @@ async def test_validate_trust_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.validate_trust), "__call__") as call:
@@ -4807,11 +4851,6 @@ async def test_validate_trust_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_validate_trust_async_from_dict():
-    await test_validate_trust_async(request_type=dict)
 
 
 def test_validate_trust_field_headers():
@@ -5091,7 +5130,6 @@ def test_create_microsoft_ad_domain_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.CreateMicrosoftAdDomainRequest()
-
         assert args[0] == request_msg
 
 
@@ -5114,7 +5152,6 @@ def test_reset_admin_password_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.ResetAdminPasswordRequest()
-
         assert args[0] == request_msg
 
 
@@ -5135,7 +5172,6 @@ def test_list_domains_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.ListDomainsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5156,7 +5192,6 @@ def test_get_domain_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.GetDomainRequest()
-
         assert args[0] == request_msg
 
 
@@ -5177,7 +5212,6 @@ def test_update_domain_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.UpdateDomainRequest()
-
         assert args[0] == request_msg
 
 
@@ -5198,7 +5232,6 @@ def test_delete_domain_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.DeleteDomainRequest()
-
         assert args[0] == request_msg
 
 
@@ -5219,7 +5252,6 @@ def test_attach_trust_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.AttachTrustRequest()
-
         assert args[0] == request_msg
 
 
@@ -5242,7 +5274,6 @@ def test_reconfigure_trust_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.ReconfigureTrustRequest()
-
         assert args[0] == request_msg
 
 
@@ -5263,7 +5294,6 @@ def test_detach_trust_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.DetachTrustRequest()
-
         assert args[0] == request_msg
 
 
@@ -5284,7 +5314,6 @@ def test_validate_trust_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.ValidateTrustRequest()
-
         assert args[0] == request_msg
 
 
@@ -5325,7 +5354,6 @@ async def test_create_microsoft_ad_domain_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.CreateMicrosoftAdDomainRequest()
-
         assert args[0] == request_msg
 
 
@@ -5354,7 +5382,6 @@ async def test_reset_admin_password_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.ResetAdminPasswordRequest()
-
         assert args[0] == request_msg
 
 
@@ -5382,7 +5409,6 @@ async def test_list_domains_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.ListDomainsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5416,7 +5442,6 @@ async def test_get_domain_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.GetDomainRequest()
-
         assert args[0] == request_msg
 
 
@@ -5441,7 +5466,6 @@ async def test_update_domain_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.UpdateDomainRequest()
-
         assert args[0] == request_msg
 
 
@@ -5466,7 +5490,6 @@ async def test_delete_domain_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.DeleteDomainRequest()
-
         assert args[0] == request_msg
 
 
@@ -5491,7 +5514,6 @@ async def test_attach_trust_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.AttachTrustRequest()
-
         assert args[0] == request_msg
 
 
@@ -5518,7 +5540,6 @@ async def test_reconfigure_trust_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.ReconfigureTrustRequest()
-
         assert args[0] == request_msg
 
 
@@ -5543,7 +5564,6 @@ async def test_detach_trust_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.DetachTrustRequest()
-
         assert args[0] == request_msg
 
 
@@ -5568,7 +5588,6 @@ async def test_validate_trust_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = managed_identities_service.ValidateTrustRequest()
-
         assert args[0] == request_msg
 
 

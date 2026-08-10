@@ -53,12 +53,6 @@ from google.longrunning import operations_pb2 # type: ignore
 from google.oauth2 import service_account
 import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
 import google.auth
-import google.logging.type.http_request_pb2 as http_request_pb2  # type: ignore
-import google.logging.type.log_severity_pb2 as log_severity_pb2  # type: ignore
-import google.protobuf.any_pb2 as any_pb2  # type: ignore
-import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
-import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 
@@ -68,6 +62,18 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -113,150 +119,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert LoggingServiceV2Client._get_default_mtls_endpoint(None) is None
-    assert LoggingServiceV2Client._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert LoggingServiceV2Client._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    assert LoggingServiceV2Client._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
-    assert LoggingServiceV2Client._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
-    assert LoggingServiceV2Client._get_default_mtls_endpoint(non_googleapi) == non_googleapi
-    assert LoggingServiceV2Client._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
-
-def test__read_environment_variables():
-    assert LoggingServiceV2Client._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert LoggingServiceV2Client._read_environment_variables() == (True, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert LoggingServiceV2Client._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                LoggingServiceV2Client._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert LoggingServiceV2Client._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert LoggingServiceV2Client._read_environment_variables() == (False, "never", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert LoggingServiceV2Client._read_environment_variables() == (False, "always", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert LoggingServiceV2Client._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            LoggingServiceV2Client._read_environment_variables()
-    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert LoggingServiceV2Client._read_environment_variables() == (False, "auto", "foo.com")
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
-            assert LoggingServiceV2Client._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
-            assert LoggingServiceV2Client._use_client_cert_effective() is False
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert LoggingServiceV2Client._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-            assert LoggingServiceV2Client._use_client_cert_effective() is False
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert LoggingServiceV2Client._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
-            assert LoggingServiceV2Client._use_client_cert_effective() is False
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert LoggingServiceV2Client._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
-            assert LoggingServiceV2Client._use_client_cert_effective() is False
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert LoggingServiceV2Client._use_client_cert_effective() is False
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
-            with pytest.raises(ValueError):
-                LoggingServiceV2Client._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if  hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
-            assert LoggingServiceV2Client._use_client_cert_effective() is False
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if  hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert LoggingServiceV2Client._use_client_cert_effective() is False
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -270,40 +132,6 @@ def test__get_client_cert_source():
             assert LoggingServiceV2Client._get_client_cert_source(None, True) is mock_default_cert_source
             assert LoggingServiceV2Client._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
-@mock.patch.object(LoggingServiceV2Client, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(LoggingServiceV2Client))
-@mock.patch.object(LoggingServiceV2AsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(LoggingServiceV2AsyncClient))
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = LoggingServiceV2Client._DEFAULT_UNIVERSE
-    default_endpoint = LoggingServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
-    mock_universe = "bar.com"
-    mock_endpoint = LoggingServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
-
-    assert LoggingServiceV2Client._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
-    assert LoggingServiceV2Client._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == LoggingServiceV2Client.DEFAULT_MTLS_ENDPOINT
-    assert LoggingServiceV2Client._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
-    assert LoggingServiceV2Client._get_api_endpoint(None, None, default_universe, "always") == LoggingServiceV2Client.DEFAULT_MTLS_ENDPOINT
-    assert LoggingServiceV2Client._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == LoggingServiceV2Client.DEFAULT_MTLS_ENDPOINT
-    assert LoggingServiceV2Client._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
-    assert LoggingServiceV2Client._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        LoggingServiceV2Client._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
-    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert LoggingServiceV2Client._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
-    assert LoggingServiceV2Client._get_universe_domain(None, universe_domain_env) == universe_domain_env
-    assert LoggingServiceV2Client._get_universe_domain(None, None) == LoggingServiceV2Client._DEFAULT_UNIVERSE
-
-    with pytest.raises(ValueError) as excinfo:
-        LoggingServiceV2Client._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 @pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
     (401, CRED_INFO_JSON, True),
@@ -675,11 +503,12 @@ def test_logging_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):
@@ -722,11 +551,12 @@ def test_logging_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):
@@ -962,10 +792,8 @@ def test_logging_service_v2_client_create_channel_credentials_file(client_class,
 
 
 @pytest.mark.parametrize("request_type", [
-  logging.DeleteLogRequest({
-  }),
-  {
-  },
+  logging.DeleteLogRequest(),
+  {},
 ])
 def test_delete_log(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -1091,8 +919,8 @@ async def test_delete_log_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.DeleteLogRequest({  }),
-  {  },
+  logging.DeleteLogRequest(),
+  {},
 ])
 async def test_delete_log_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -1267,10 +1095,8 @@ async def test_delete_log_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging.WriteLogEntriesRequest({
-  }),
-  {
-  },
+  logging.WriteLogEntriesRequest(),
+  {},
 ])
 def test_write_log_entries(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -1397,8 +1223,8 @@ async def test_write_log_entries_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.WriteLogEntriesRequest({  }),
-  {  },
+  logging.WriteLogEntriesRequest(),
+  {},
 ])
 async def test_write_log_entries_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -1542,10 +1368,8 @@ async def test_write_log_entries_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogEntriesRequest({
-  }),
-  {
-  },
+  logging.ListLogEntriesRequest(),
+  {},
 ])
 def test_list_log_entries(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -1678,8 +1502,8 @@ async def test_list_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogEntriesRequest({  }),
-  {  },
+  logging.ListLogEntriesRequest(),
+  {},
 ])
 async def test_list_log_entries_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -1862,6 +1686,9 @@ def test_list_log_entries_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, log_entry.LogEntry)
@@ -1948,6 +1775,8 @@ async def test_list_log_entries_async_pager():
         )
         async_pager = await client.list_log_entries(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -2004,10 +1833,8 @@ async def test_list_log_entries_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging.ListMonitoredResourceDescriptorsRequest({
-  }),
-  {
-  },
+  logging.ListMonitoredResourceDescriptorsRequest(),
+  {},
 ])
 def test_list_monitored_resource_descriptors(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -2136,8 +1963,8 @@ async def test_list_monitored_resource_descriptors_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.ListMonitoredResourceDescriptorsRequest({  }),
-  {  },
+  logging.ListMonitoredResourceDescriptorsRequest(),
+  {},
 ])
 async def test_list_monitored_resource_descriptors_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -2217,6 +2044,9 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
         assert pager._timeout == timeout
+
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
 
         results = list(pager)
         assert len(results) == 6
@@ -2304,6 +2134,8 @@ async def test_list_monitored_resource_descriptors_async_pager():
         )
         async_pager = await client.list_monitored_resource_descriptors(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -2360,10 +2192,8 @@ async def test_list_monitored_resource_descriptors_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogsRequest({
-  }),
-  {
-  },
+  logging.ListLogsRequest(),
+  {},
 ])
 def test_list_logs(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -2496,8 +2326,8 @@ async def test_list_logs_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogsRequest({  }),
-  {  },
+  logging.ListLogsRequest(),
+  {},
 ])
 async def test_list_logs_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -2729,6 +2559,9 @@ def test_list_logs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, str)
@@ -2815,6 +2648,8 @@ async def test_list_logs_async_pager():
         )
         async_pager = await client.list_logs(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -2871,10 +2706,8 @@ async def test_list_logs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging.TailLogEntriesRequest({
-  }),
-  {
-  },
+  logging.TailLogEntriesRequest(),
+  {},
 ])
 def test_tail_log_entries(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -2972,8 +2805,8 @@ async def test_tail_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.TailLogEntriesRequest({  }),
-  {  },
+  logging.TailLogEntriesRequest(),
+  {},
 ])
 async def test_tail_log_entries_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(

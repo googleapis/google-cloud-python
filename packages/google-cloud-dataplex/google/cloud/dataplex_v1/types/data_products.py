@@ -21,6 +21,8 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dataplex_v1.types import approval_workflow
+
 __protobuf__ = proto.module(
     package="google.cloud.dataplex.v1",
     manifest={
@@ -32,6 +34,8 @@ __protobuf__ = proto.module(
         "ListDataProductsRequest",
         "ListDataProductsResponse",
         "UpdateDataProductRequest",
+        "RequestDataProductAccessRequest",
+        "RequestDataProductAccessResponse",
         "CreateDataAssetRequest",
         "UpdateDataAssetRequest",
         "DeleteDataAssetRequest",
@@ -46,6 +50,9 @@ class DataProduct(proto.Message):
     r"""A data product is a curated collection of data assets,
     packaged to address specific use cases. It's a way to manage and
     share data in a more organized, product-like manner.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -119,6 +126,11 @@ class DataProduct(proto.Message):
                    }
                  }
                }
+        access_approval_config (google.cloud.dataplex_v1.types.DataProduct.AccessApprovalConfig):
+            Optional. Configuration for access approval
+            for the data product.
+
+            This field is a member of `oneof`_ ``_access_approval_config``.
     """
 
     class Principal(proto.Message):
@@ -135,12 +147,23 @@ class DataProduct(proto.Message):
                 https://cloud.google.com/iam/docs/principals-overview#google-group.
 
                 This field is a member of `oneof`_ ``type``.
+            service_account (str):
+                Optional. Specifies the email of the producer
+                service account, as per
+                https://cloud.google.com/iam/docs/principals-overview#service-account.
+
+                This field is a member of `oneof`_ ``_service_account``.
         """
 
         google_group: str = proto.Field(
             proto.STRING,
             number=1,
             oneof="type",
+        )
+        service_account: str = proto.Field(
+            proto.STRING,
+            number=2,
+            optional=True,
         )
 
     class AccessGroup(proto.Message):
@@ -179,6 +202,23 @@ class DataProduct(proto.Message):
             proto.MESSAGE,
             number=4,
             message="DataProduct.Principal",
+        )
+
+    class AccessApprovalConfig(proto.Message):
+        r"""Configuration for access approval for the data product.
+
+        Attributes:
+            approver_emails (MutableSequence[str]):
+                Optional. Specifies the email addresses of
+                users who are potential approvers and are
+                notified when an access request is made for the
+                data product. The maximum number of emails
+                allowed is 10.
+        """
+
+        approver_emails: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
         )
 
     name: str = proto.Field(
@@ -233,6 +273,12 @@ class DataProduct(proto.Message):
         proto.MESSAGE,
         number=14,
         message=AccessGroup,
+    )
+    access_approval_config: AccessApprovalConfig = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        optional=True,
+        message=AccessApprovalConfig,
     )
 
 
@@ -591,6 +637,52 @@ class UpdateDataProductRequest(proto.Message):
     validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+
+
+class RequestDataProductAccessRequest(proto.Message):
+    r"""Message for requesting access to a Data Product.
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the data product. Format:
+            projects/{project_number}/locations/{location_id}/dataProducts/{data_product_id}
+        change_request (google.cloud.dataplex_v1.types.ChangeRequest):
+            Required. The change request for the data
+            product access request.
+        validate_only (bool):
+            Optional. Validates the request without
+            actually creating the access change request.
+            Defaults to false.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    change_request: approval_workflow.ChangeRequest = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=approval_workflow.ChangeRequest,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class RequestDataProductAccessResponse(proto.Message):
+    r"""Response message for requesting access to a Data Product.
+
+    Attributes:
+        change_request_name (str):
+            The resource name of the created ChangeRequest. Format:
+            projects/{project_number}/locations/{location_id}/changeRequests/{change_request_id}
+    """
+
+    change_request_name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

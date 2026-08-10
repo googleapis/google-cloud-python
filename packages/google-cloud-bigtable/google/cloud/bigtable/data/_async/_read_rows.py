@@ -15,16 +15,17 @@
 
 from __future__ import annotations
 
+import time
 from typing import TYPE_CHECKING, Sequence
 
 from google.api_core import retry as retries
-from google.api_core.retry import exponential_sleep_generator
+from grpc import StatusCode
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     _attempt_timeout_generator,
-    _retry_exception_factory,
 )
+from google.cloud.bigtable.data._metrics import tracked_retry
 from google.cloud.bigtable.data.exceptions import (
     InvalidChunk,
     _ResetRow,
@@ -38,6 +39,8 @@ from google.cloud.bigtable_v2.types import RowRange as RowRangePB
 from google.cloud.bigtable_v2.types import RowSet as RowSetPB
 
 if TYPE_CHECKING:
+    from google.cloud.bigtable.data._metrics import ActiveOperationMetric
+
     if CrossSync.is_async:
         from google.cloud.bigtable.data._async.client import (
             _DataApiTargetAsync as TargetType,
@@ -68,6 +71,7 @@ class _ReadRowsOperationAsync:
         target: The table or view to send the request to
         operation_timeout: The total time to allow for the operation, in seconds
         attempt_timeout: The time to allow for each individual attempt, in seconds
+        metric: the metric object representing the active operation
         retryable_exceptions: A list of exceptions that should trigger a retry
     """
 
@@ -79,6 +83,7 @@ class _ReadRowsOperationAsync:
         "_predicate",
         "_last_yielded_row_key",
         "_remaining_count",
+        "_operation_metric",
     )
 
     def __init__(
@@ -87,6 +92,7 @@ class _ReadRowsOperationAsync:
         target: TargetType,
         operation_timeout: float,
         attempt_timeout: float,
+        metric: ActiveOperationMetric,
         retryable_exceptions: Sequence[type[Exception]] = (),
     ):
         self.attempt_timeout_gen = _attempt_timeout_generator(
@@ -105,6 +111,7 @@ class _ReadRowsOperationAsync:
         self._predicate = retries.if_exception_type(*retryable_exceptions)
         self._last_yielded_row_key: bytes | None = None
         self._remaining_count: int | None = self.request.rows_limit or None
+        self._operation_metric = metric
 
     def start_operation(self) -> CrossSync.Iterable[Row]:
         """
@@ -113,12 +120,12 @@ class _ReadRowsOperationAsync:
         Yields:
             Row: The next row in the stream
         """
-        return CrossSync.retry_target_stream(
-            self._read_rows_attempt,
-            self._predicate,
-            exponential_sleep_generator(0.01, 60, multiplier=2),
-            self.operation_timeout,
-            exception_factory=_retry_exception_factory,
+        return tracked_retry(
+            retry_fn=CrossSync.retry_target_stream,
+            operation=self._operation_metric,
+            target=self._read_rows_attempt,
+            predicate=self._predicate,
+            timeout=self.operation_timeout,
         )
 
     def _read_rows_attempt(self) -> CrossSync.Iterable[Row]:
@@ -131,6 +138,7 @@ class _ReadRowsOperationAsync:
         Yields:
             Row: The next row in the stream
         """
+        self._operation_metric.start_attempt()
         # revise request keys and ranges between attempts
         if self._last_yielded_row_key is not None:
             # if this is a retry, try to trim down the request to avoid ones we've already processed
@@ -208,12 +216,11 @@ class _ReadRowsOperationAsync:
                             raise InvalidChunk("emit count exceeds row limit")
                     current_key = None
 
-    @staticmethod
     @CrossSync.convert(
         replace_symbols={"__aiter__": "__iter__", "__anext__": "__next__"},
     )
     async def merge_rows(
-        chunks: CrossSync.Iterable[ReadRowsResponsePB.CellChunk] | None,
+        self, chunks: CrossSync.Iterable[ReadRowsResponsePB.CellChunk] | None
     ) -> CrossSync.Iterable[Row]:
         """
         Merge chunks into rows
@@ -223,108 +230,125 @@ class _ReadRowsOperationAsync:
         Yields:
             Row: the next row in the stream
         """
-        if chunks is None:
-            return
-        it = chunks.__aiter__()
-        # For each row
-        while True:
-            try:
-                c = await it.__anext__()
-            except CrossSync.StopIteration:
-                # stream complete
+        try:
+            if chunks is None:
+                self._operation_metric.end_with_success()
                 return
-            row_key = c.row_key
-
-            if not row_key:
-                raise InvalidChunk("first row chunk is missing key")
-
-            cells = []
-
-            # shared per cell storage
-            family: str | None = None
-            qualifier: bytes | None = None
-
-            try:
-                # for each cell
-                while True:
-                    if c.reset_row:
-                        raise _ResetRow(c)
-                    k = c.row_key
-                    f = c.family_name.value
-                    q = c.qualifier.value if c.HasField("qualifier") else None
-                    if k and k != row_key:
-                        raise InvalidChunk("unexpected new row key")
-                    if f:
-                        family = f
-                        if q is not None:
-                            qualifier = q
-                        else:
-                            raise InvalidChunk("new family without qualifier")
-                    elif family is None:
-                        raise InvalidChunk("missing family")
-                    elif q is not None:
-                        if family is None:
-                            raise InvalidChunk("new qualifier without family")
-                        qualifier = q
-                    elif qualifier is None:
-                        raise InvalidChunk("missing qualifier")
-
-                    ts = c.timestamp_micros
-                    labels = c.labels if c.labels else []
-                    value = c.value
-
-                    # merge split cells
-                    if c.value_size > 0:
-                        buffer = [value]
-                        while c.value_size > 0:
-                            # throws when premature end
-                            c = await it.__anext__()
-
-                            t = c.timestamp_micros
-                            cl = c.labels
-                            k = c.row_key
-                            if (
-                                c.HasField("family_name")
-                                and c.family_name.value != family
-                            ):
-                                raise InvalidChunk("family changed mid cell")
-                            if (
-                                c.HasField("qualifier")
-                                and c.qualifier.value != qualifier
-                            ):
-                                raise InvalidChunk("qualifier changed mid cell")
-                            if t and t != ts:
-                                raise InvalidChunk("timestamp changed mid cell")
-                            if cl and cl != labels:
-                                raise InvalidChunk("labels changed mid cell")
-                            if k and k != row_key:
-                                raise InvalidChunk("row key changed mid cell")
-
-                            if c.reset_row:
-                                raise _ResetRow(c)
-                            buffer.append(c.value)
-                        value = b"".join(buffer)
-                    cells.append(
-                        Cell(value, row_key, family, qualifier, ts, list(labels))
-                    )
-                    if c.commit_row:
-                        yield Row(row_key, cells)
-                        break
+            it = chunks.__aiter__()
+            # For each row
+            while True:
+                try:
                     c = await it.__anext__()
-            except _ResetRow as e:
-                c = e.chunk
-                if (
-                    c.row_key
-                    or c.HasField("family_name")
-                    or c.HasField("qualifier")
-                    or c.timestamp_micros
-                    or c.labels
-                    or c.value
-                ):
-                    raise InvalidChunk("reset row with data")
-                continue
-            except CrossSync.StopIteration:
-                raise InvalidChunk("premature end of stream")
+                except CrossSync.StopIteration:
+                    # stream complete
+                    self._operation_metric.end_with_success()
+                    return
+                row_key = c.row_key
+
+                if not row_key:
+                    raise InvalidChunk("first row chunk is missing key")
+
+                cells = []
+
+                # shared per cell storage
+                family: str | None = None
+                qualifier: bytes | None = None
+
+                try:
+                    # for each cell
+                    while True:
+                        if c.reset_row:
+                            raise _ResetRow(c)
+                        k = c.row_key
+                        f = c.family_name.value
+                        q = c.qualifier.value if c.HasField("qualifier") else None
+                        if k and k != row_key:
+                            raise InvalidChunk("unexpected new row key")
+                        if f:
+                            family = f
+                            if q is not None:
+                                qualifier = q
+                            else:
+                                raise InvalidChunk("new family without qualifier")
+                        elif family is None:
+                            raise InvalidChunk("missing family")
+                        elif q is not None:
+                            if family is None:
+                                raise InvalidChunk("new qualifier without family")
+                            qualifier = q
+                        elif qualifier is None:
+                            raise InvalidChunk("missing qualifier")
+
+                        ts = c.timestamp_micros
+                        labels = c.labels if c.labels else []
+                        value = c.value
+
+                        # merge split cells
+                        if c.value_size > 0:
+                            buffer = [value]
+                            while c.value_size > 0:
+                                # throws when premature end
+                                c = await it.__anext__()
+
+                                t = c.timestamp_micros
+                                cl = c.labels
+                                k = c.row_key
+                                if (
+                                    c.HasField("family_name")
+                                    and c.family_name.value != family
+                                ):
+                                    raise InvalidChunk("family changed mid cell")
+                                if (
+                                    c.HasField("qualifier")
+                                    and c.qualifier.value != qualifier
+                                ):
+                                    raise InvalidChunk("qualifier changed mid cell")
+                                if t and t != ts:
+                                    raise InvalidChunk("timestamp changed mid cell")
+                                if cl and cl != labels:
+                                    raise InvalidChunk("labels changed mid cell")
+                                if k and k != row_key:
+                                    raise InvalidChunk("row key changed mid cell")
+
+                                if c.reset_row:
+                                    raise _ResetRow(c)
+                                buffer.append(c.value)
+                            value = b"".join(buffer)
+                        cells.append(
+                            Cell(value, row_key, family, qualifier, ts, list(labels))
+                        )
+                        if c.commit_row:
+                            block_time = time.monotonic_ns()
+                            yield Row(row_key, cells)
+                            # most metric operations use setters, but this one updates
+                            # the value directly to avoid extra overhead
+                            if self._operation_metric.active_attempt is not None:
+                                self._operation_metric.active_attempt.application_blocking_time_ns += (  # type: ignore
+                                    time.monotonic_ns() - block_time
+                                )
+                            break
+                        c = await it.__anext__()
+                except _ResetRow as e:
+                    c = e.chunk
+                    if (
+                        c.row_key
+                        or c.HasField("family_name")
+                        or c.HasField("qualifier")
+                        or c.timestamp_micros
+                        or c.labels
+                        or c.value
+                    ):
+                        raise InvalidChunk("reset row with data")
+                    continue
+                except CrossSync.StopIteration:
+                    raise InvalidChunk("premature end of stream")
+        except GeneratorExit as close_exception:
+            # handle aclose()
+            self._operation_metric.end_with_status(StatusCode.CANCELLED)
+            raise close_exception
+        except Exception as generic_exception:
+            # handle exceptions in retry wrapper
+            raise generic_exception
 
     @staticmethod
     def _revise_request_rowset(

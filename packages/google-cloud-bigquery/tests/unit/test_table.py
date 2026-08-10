@@ -79,6 +79,82 @@ class TestEncryptionConfiguration(unittest.TestCase):
         self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
 
 
+class TestPropertyGraphReference(unittest.TestCase):
+    PROJECT = "my-project"
+    DATASET_ID = "my_dataset"
+    PROPERTY_GRAPH_ID = "my_pg"
+
+    def _get_target_class(self):
+        from google.cloud.bigquery.table import PropertyGraphReference
+
+        return PropertyGraphReference
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor(self):
+        dataset_ref = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref = self._make_one(dataset_ref, self.PROPERTY_GRAPH_ID)
+        self.assertEqual(ref.project, self.PROJECT)
+        self.assertEqual(ref.dataset_id, self.DATASET_ID)
+        self.assertEqual(ref.property_graph_id, self.PROPERTY_GRAPH_ID)
+
+    def test_from_api_repr(self):
+        resource = {
+            "projectId": self.PROJECT,
+            "datasetId": self.DATASET_ID,
+            "propertyGraphId": self.PROPERTY_GRAPH_ID,
+        }
+        ref = self._get_target_class().from_api_repr(resource)
+        self.assertEqual(ref.project, self.PROJECT)
+        self.assertEqual(ref.dataset_id, self.DATASET_ID)
+        self.assertEqual(ref.property_graph_id, self.PROPERTY_GRAPH_ID)
+
+    def test_to_api_repr(self):
+        dataset_ref = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref = self._make_one(dataset_ref, self.PROPERTY_GRAPH_ID)
+        resource = ref.to_api_repr()
+        expected = {
+            "projectId": self.PROJECT,
+            "datasetId": self.DATASET_ID,
+            "propertyGraphId": self.PROPERTY_GRAPH_ID,
+        }
+        self.assertEqual(resource, expected)
+
+    def test___str__(self):
+        dataset_ref = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref = self._make_one(dataset_ref, self.PROPERTY_GRAPH_ID)
+        self.assertEqual(
+            str(ref), f"{self.PROJECT}.{self.DATASET_ID}.{self.PROPERTY_GRAPH_ID}"
+        )
+
+    def test___repr__(self):
+        dataset_ref = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref = self._make_one(dataset_ref, self.PROPERTY_GRAPH_ID)
+        expected = (
+            f"PropertyGraphReference({dataset_ref!r}, '{self.PROPERTY_GRAPH_ID}')"
+        )
+        self.assertEqual(repr(ref), expected)
+
+    def test___eq__(self):
+        dataset_ref1 = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref1 = self._make_one(dataset_ref1, self.PROPERTY_GRAPH_ID)
+        dataset_ref2 = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref2 = self._make_one(dataset_ref2, self.PROPERTY_GRAPH_ID)
+        self.assertEqual(ref1, ref2)
+
+        ref3 = self._make_one(dataset_ref1, "other_pg")
+        self.assertNotEqual(ref1, ref3)
+        self.assertNotEqual(ref1, object())
+
+    def test___hash__(self):
+        dataset_ref1 = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref1 = self._make_one(dataset_ref1, self.PROPERTY_GRAPH_ID)
+        dataset_ref2 = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref2 = self._make_one(dataset_ref2, self.PROPERTY_GRAPH_ID)
+        self.assertEqual(hash(ref1), hash(ref2))
+
+
 class TestTableBase:
     @staticmethod
     def _get_target_class():
@@ -3048,7 +3124,7 @@ class TestRowIterator(unittest.TestCase):
             self.assertEqual(record_batch, expected_record_batch)
 
         # Don't close the client if it was passed in.
-        bqstorage_client._transport.grpc_channel.close.assert_not_called()
+        bqstorage_client._transport.close.assert_not_called()
 
     def test_to_arrow(self):
         pytest.importorskip("numpy")
@@ -3424,7 +3500,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(actual_tbl.num_rows, total_rows)
 
         # Don't close the client if it was passed in.
-        bqstorage_client._transport.grpc_channel.close.assert_not_called()
+        bqstorage_client._transport.close.assert_not_called()
 
     def test_to_arrow_w_bqstorage_creates_client(self):
         pytest.importorskip("numpy")
@@ -3458,7 +3534,7 @@ class TestRowIterator(unittest.TestCase):
         )
         row_iterator.to_arrow(create_bqstorage_client=True)
         mock_client._ensure_bqstorage_client.assert_called_once()
-        bqstorage_client._transport.grpc_channel.close.assert_called_once()
+        bqstorage_client._transport.close.assert_called_once()
 
     def test_to_arrow_ensure_bqstorage_client_wo_bqstorage(self):
         pytest.importorskip("numpy")
@@ -3741,7 +3817,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(len(got), total_pages)
 
         # Don't close the client if it was passed in.
-        bqstorage_client._transport.grpc_channel.close.assert_not_called()
+        bqstorage_client._transport.close.assert_not_called()
 
     def test_to_dataframe_iterable_w_bqstorage_max_results_warning(self):
         pytest.importorskip("numpy")
@@ -4807,7 +4883,7 @@ class TestRowIterator(unittest.TestCase):
         )
         row_iterator.to_dataframe(create_bqstorage_client=True)
         mock_client._ensure_bqstorage_client.assert_called_once()
-        bqstorage_client._transport.grpc_channel.close.assert_called_once()
+        bqstorage_client._transport.close.assert_called_once()
 
     def test_to_dataframe_w_bqstorage_no_streams(self):
         pytest.importorskip("numpy")
@@ -4999,7 +5075,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(len(got.index), total_rows)
 
         # Don't close the client if it was passed in.
-        bqstorage_client._transport.grpc_channel.close.assert_not_called()
+        bqstorage_client._transport.close.assert_not_called()
 
     def test_to_dataframe_w_bqstorage_multiple_streams_return_unique_index(self):
         pytest.importorskip("numpy")
@@ -5421,7 +5497,7 @@ class TestRowIterator(unittest.TestCase):
         )
 
         # Don't close the client if it was passed in.
-        bqstorage_client._transport.grpc_channel.close.assert_not_called()
+        bqstorage_client._transport.close.assert_not_called()
 
     def test_to_dataframe_geography_as_object(self):
         pandas = pytest.importorskip("pandas")

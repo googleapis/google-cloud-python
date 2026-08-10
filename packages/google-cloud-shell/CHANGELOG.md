@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-shell/#history
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-shell-v1.15.0...google-cloud-shell-v1.16.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-s packages (#17086) ([40b522a8473dec7ade45113ddd44ccd960803c45](https://github.com/googleapis/google-cloud-python/commit/40b522a8473dec7ade45113ddd44ccd960803c45))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-shell-v1.14.0...google-cloud-shell-v1.15.0) (2026-03-26)
 
 

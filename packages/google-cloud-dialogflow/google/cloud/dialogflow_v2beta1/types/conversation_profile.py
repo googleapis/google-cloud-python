@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
         "HumanAgentHandoffConfig",
         "NotificationConfig",
         "LoggingConfig",
+        "SipConfig",
         "ListConversationProfilesRequest",
         "ListConversationProfilesResponse",
         "GetConversationProfileRequest",
@@ -110,6 +111,8 @@ class ConversationProfile(proto.Message):
             languages. This should be a
             `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
             language tag. Example: "en-US".
+        sip_config (google.cloud.dialogflow_v2beta1.types.SipConfig):
+            Optional. Configuration for SIP connections.
         time_zone (str):
             The time zone of this conversational profile from the `time
             zone database <https://www.iana.org/time-zones>`__, e.g.,
@@ -194,6 +197,11 @@ class ConversationProfile(proto.Message):
         proto.STRING,
         number=10,
     )
+    sip_config: "SipConfig" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message="SipConfig",
+    )
     time_zone: str = proto.Field(
         proto.STRING,
         number=14,
@@ -214,7 +222,8 @@ class AutomatedAgentConfig(proto.Message):
 
     Attributes:
         agent (str):
-            Required. ID of the Dialogflow agent environment to use.
+            Required. The resource name of the Dialogflow agent
+            environment to use.
 
             This project needs to either be the same project as the
             conversation or you need to grant
@@ -335,6 +344,20 @@ class HumanAgentAssistantConfig(proto.Message):
             rai_settings (google.cloud.dialogflow_v2beta1.types.RaiSettings):
                 Optional. Settings for Responsible AI checks. Supported
                 features: KNOWLEDGE_ASSIST
+            suggestion_trigger_event (google.cloud.dialogflow_v2beta1.types.TriggerEvent):
+                Optional. The trigger event for suggestion. If unspecified,
+                it will be ``CUSTOMER_MESSAGE``. Supported features:
+                KNOWLEDGE_ASSIST For KNOWLEDGE_ASSIST, these four trigger
+                events are supported:
+
+                1. TRIGGER_EVENT_UNSPECIFIED
+                2. END_OF_UTTERANCE
+                3. CUSTOMER_MESSAGE
+                4. AGENT_MESSAGE
+            disable_query_search_context (bool):
+                Optional. If true, disable appending available search
+                context to the search query. Supported features:
+                KNOWLEDGE_ASSIST
             suggestion_trigger_settings (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionTriggerSettings):
                 Settings of suggestion trigger.
 
@@ -342,8 +365,6 @@ class HumanAgentAssistantConfig(proto.Message):
                 DIALOGFLOW_ASSIST will use this field.
             query_config (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionQueryConfig):
                 Configs of query.
-            conversation_model_config (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.ConversationModelConfig):
-                Configs of custom conversation model.
             conversation_process_config (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.ConversationProcessConfig):
                 Configs for processing conversation.
         """
@@ -382,6 +403,15 @@ class HumanAgentAssistantConfig(proto.Message):
             number=19,
             message=generator.RaiSettings,
         )
+        suggestion_trigger_event: generator.TriggerEvent = proto.Field(
+            proto.ENUM,
+            number=20,
+            enum=generator.TriggerEvent,
+        )
+        disable_query_search_context: bool = proto.Field(
+            proto.BOOL,
+            number=21,
+        )
         suggestion_trigger_settings: "HumanAgentAssistantConfig.SuggestionTriggerSettings" = proto.Field(
             proto.MESSAGE,
             number=10,
@@ -391,11 +421,6 @@ class HumanAgentAssistantConfig(proto.Message):
             proto.MESSAGE,
             number=6,
             message="HumanAgentAssistantConfig.SuggestionQueryConfig",
-        )
-        conversation_model_config: "HumanAgentAssistantConfig.ConversationModelConfig" = proto.Field(
-            proto.MESSAGE,
-            number=7,
-            message="HumanAgentAssistantConfig.ConversationModelConfig",
         )
         conversation_process_config: "HumanAgentAssistantConfig.ConversationProcessConfig" = proto.Field(
             proto.MESSAGE,
@@ -769,40 +794,6 @@ class HumanAgentAssistantConfig(proto.Message):
             number=9,
         )
 
-    class ConversationModelConfig(proto.Message):
-        r"""Custom conversation models used in agent assist feature.
-
-        Supported feature: ARTICLE_SUGGESTION, SMART_COMPOSE, SMART_REPLY,
-        CONVERSATION_SUMMARIZATION.
-
-        Attributes:
-            model (str):
-                Conversation model resource name. Format:
-                ``projects/<Project ID>/conversationModels/<Model ID>``.
-            baseline_model_version (str):
-                Version of current baseline model. It will be ignored if
-                [model][google.cloud.dialogflow.v2beta1.HumanAgentAssistantConfig.ConversationModelConfig.model]
-                is set. Valid versions are:
-
-                - Article Suggestion baseline model:
-
-                  - 0.9
-                  - 1.0 (default)
-
-                - Summarization baseline model:
-
-                  - 1.0
-        """
-
-        model: str = proto.Field(
-            proto.STRING,
-            number=1,
-        )
-        baseline_model_version: str = proto.Field(
-            proto.STRING,
-            number=8,
-        )
-
     class ConversationProcessConfig(proto.Message):
         r"""Config to process conversation.
 
@@ -1075,6 +1066,67 @@ class LoggingConfig(proto.Message):
     enable_stackdriver_logging: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+
+
+class SipConfig(proto.Message):
+    r"""Defines the SIP configuration.
+
+    Attributes:
+        create_conversation_on_the_fly (bool):
+            Asks Dialogflow Telephony to create the
+            conversation provided in the SIP header on the
+            fly when the call comes in.
+        inactive_start (bool):
+            Starts the conversation with inactive SDP
+            directives
+        max_audio_recording_duration (google.protobuf.duration_pb2.Duration):
+            Max duration for audio recording.
+            Overrides the default value of 15 min.
+            Max value is 8 hours.
+        allow_virtual_agent_interaction (bool):
+            Allows interactions with a Dialogflow virtual
+            agent even if the call is connected for SIPREC
+            purposes.
+        keep_conversation_running (bool):
+            Keeps the conversation running even if the
+            call is disconnected.
+        copy_inbound_call_leg_headers (MutableSequence[str]):
+            List of inbound call leg headers to be copied
+            to outbound call legs created later.
+        ignore_reinvite_media_direction (bool):
+            Ignores any media direction in the reINVITE
+            SDP offer. Reuse the previous media direction.
+    """
+
+    create_conversation_on_the_fly: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    inactive_start: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    max_audio_recording_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
+    )
+    allow_virtual_agent_interaction: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    keep_conversation_running: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    copy_inbound_call_leg_headers: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=8,
+    )
+    ignore_reinvite_media_direction: bool = proto.Field(
+        proto.BOOL,
+        number=9,
     )
 
 

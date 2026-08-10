@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -116,6 +117,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -899,7 +915,14 @@ def test_folders_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -946,7 +969,14 @@ def test_folders_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1254,8 +1284,8 @@ def test_folders_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        folders.GetFolderRequest,
-        dict,
+        folders.GetFolderRequest(),
+        {},
     ],
 )
 def test_get_folder(request_type, transport: str = "grpc"):
@@ -1266,7 +1296,7 @@ def test_get_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_folder), "__call__") as call:
@@ -1318,9 +1348,10 @@ def test_get_folder_non_empty_request_with_auto_populated_field():
         client.get_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == folders.GetFolderRequest(
+        request_msg = folders.GetFolderRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_folder_use_cached_wrapped_rpc():
@@ -1399,9 +1430,14 @@ async def test_get_folder_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_folder_async(
-    transport: str = "grpc_asyncio", request_type=folders.GetFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        folders.GetFolderRequest(),
+        {},
+    ],
+)
+async def test_get_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = FoldersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1409,7 +1445,7 @@ async def test_get_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_folder), "__call__") as call:
@@ -1438,11 +1474,6 @@ async def test_get_folder_async(
     assert response.display_name == "display_name_value"
     assert response.state == folders.Folder.State.ACTIVE
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_folder_async_from_dict():
-    await test_get_folder_async(request_type=dict)
 
 
 def test_get_folder_field_headers():
@@ -1587,8 +1618,8 @@ async def test_get_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        folders.ListFoldersRequest,
-        dict,
+        folders.ListFoldersRequest(),
+        {},
     ],
 )
 def test_list_folders(request_type, transport: str = "grpc"):
@@ -1599,7 +1630,7 @@ def test_list_folders(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_folders), "__call__") as call:
@@ -1644,10 +1675,11 @@ def test_list_folders_non_empty_request_with_auto_populated_field():
         client.list_folders(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == folders.ListFoldersRequest(
+        request_msg = folders.ListFoldersRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_folders_use_cached_wrapped_rpc():
@@ -1728,9 +1760,14 @@ async def test_list_folders_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_folders_async(
-    transport: str = "grpc_asyncio", request_type=folders.ListFoldersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        folders.ListFoldersRequest(),
+        {},
+    ],
+)
+async def test_list_folders_async(request_type, transport: str = "grpc_asyncio"):
     client = FoldersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1738,7 +1775,7 @@ async def test_list_folders_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_folders), "__call__") as call:
@@ -1759,11 +1796,6 @@ async def test_list_folders_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFoldersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_folders_async_from_dict():
-    await test_list_folders_async(request_type=dict)
 
 
 def test_list_folders_flattened():
@@ -1894,6 +1926,9 @@ def test_list_folders_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, folders.Folder) for i in results)
@@ -1982,6 +2017,8 @@ async def test_list_folders_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2038,8 +2075,8 @@ async def test_list_folders_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        folders.SearchFoldersRequest,
-        dict,
+        folders.SearchFoldersRequest(),
+        {},
     ],
 )
 def test_search_folders(request_type, transport: str = "grpc"):
@@ -2050,7 +2087,7 @@ def test_search_folders(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_folders), "__call__") as call:
@@ -2095,10 +2132,11 @@ def test_search_folders_non_empty_request_with_auto_populated_field():
         client.search_folders(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == folders.SearchFoldersRequest(
+        request_msg = folders.SearchFoldersRequest(
             page_token="page_token_value",
             query="query_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_folders_use_cached_wrapped_rpc():
@@ -2179,9 +2217,14 @@ async def test_search_folders_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_folders_async(
-    transport: str = "grpc_asyncio", request_type=folders.SearchFoldersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        folders.SearchFoldersRequest(),
+        {},
+    ],
+)
+async def test_search_folders_async(request_type, transport: str = "grpc_asyncio"):
     client = FoldersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2189,7 +2232,7 @@ async def test_search_folders_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_folders), "__call__") as call:
@@ -2210,11 +2253,6 @@ async def test_search_folders_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchFoldersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_folders_async_from_dict():
-    await test_search_folders_async(request_type=dict)
 
 
 def test_search_folders_flattened():
@@ -2345,6 +2383,9 @@ def test_search_folders_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, folders.Folder) for i in results)
@@ -2433,6 +2474,8 @@ async def test_search_folders_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2489,8 +2532,8 @@ async def test_search_folders_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        folders.CreateFolderRequest,
-        dict,
+        folders.CreateFolderRequest(),
+        {},
     ],
 )
 def test_create_folder(request_type, transport: str = "grpc"):
@@ -2501,7 +2544,7 @@ def test_create_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_folder), "__call__") as call:
@@ -2540,7 +2583,8 @@ def test_create_folder_non_empty_request_with_auto_populated_field():
         client.create_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == folders.CreateFolderRequest()
+        request_msg = folders.CreateFolderRequest()
+        assert args[0] == request_msg
 
 
 def test_create_folder_use_cached_wrapped_rpc():
@@ -2631,9 +2675,14 @@ async def test_create_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_folder_async(
-    transport: str = "grpc_asyncio", request_type=folders.CreateFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        folders.CreateFolderRequest(),
+        {},
+    ],
+)
+async def test_create_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = FoldersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2641,7 +2690,7 @@ async def test_create_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_folder), "__call__") as call:
@@ -2659,11 +2708,6 @@ async def test_create_folder_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_folder_async_from_dict():
-    await test_create_folder_async(request_type=dict)
 
 
 def test_create_folder_flattened():
@@ -2751,8 +2795,8 @@ async def test_create_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        folders.UpdateFolderRequest,
-        dict,
+        folders.UpdateFolderRequest(),
+        {},
     ],
 )
 def test_update_folder(request_type, transport: str = "grpc"):
@@ -2763,7 +2807,7 @@ def test_update_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_folder), "__call__") as call:
@@ -2802,7 +2846,8 @@ def test_update_folder_non_empty_request_with_auto_populated_field():
         client.update_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == folders.UpdateFolderRequest()
+        request_msg = folders.UpdateFolderRequest()
+        assert args[0] == request_msg
 
 
 def test_update_folder_use_cached_wrapped_rpc():
@@ -2893,9 +2938,14 @@ async def test_update_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_folder_async(
-    transport: str = "grpc_asyncio", request_type=folders.UpdateFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        folders.UpdateFolderRequest(),
+        {},
+    ],
+)
+async def test_update_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = FoldersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2903,7 +2953,7 @@ async def test_update_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_folder), "__call__") as call:
@@ -2921,11 +2971,6 @@ async def test_update_folder_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_folder_async_from_dict():
-    await test_update_folder_async(request_type=dict)
 
 
 def test_update_folder_field_headers():
@@ -3084,8 +3129,8 @@ async def test_update_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        folders.MoveFolderRequest,
-        dict,
+        folders.MoveFolderRequest(),
+        {},
     ],
 )
 def test_move_folder(request_type, transport: str = "grpc"):
@@ -3096,7 +3141,7 @@ def test_move_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_folder), "__call__") as call:
@@ -3138,10 +3183,11 @@ def test_move_folder_non_empty_request_with_auto_populated_field():
         client.move_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == folders.MoveFolderRequest(
+        request_msg = folders.MoveFolderRequest(
             name="name_value",
             destination_parent="destination_parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_move_folder_use_cached_wrapped_rpc():
@@ -3232,9 +3278,14 @@ async def test_move_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_move_folder_async(
-    transport: str = "grpc_asyncio", request_type=folders.MoveFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        folders.MoveFolderRequest(),
+        {},
+    ],
+)
+async def test_move_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = FoldersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3242,7 +3293,7 @@ async def test_move_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_folder), "__call__") as call:
@@ -3260,11 +3311,6 @@ async def test_move_folder_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_move_folder_async_from_dict():
-    await test_move_folder_async(request_type=dict)
 
 
 def test_move_folder_field_headers():
@@ -3423,8 +3469,8 @@ async def test_move_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        folders.DeleteFolderRequest,
-        dict,
+        folders.DeleteFolderRequest(),
+        {},
     ],
 )
 def test_delete_folder(request_type, transport: str = "grpc"):
@@ -3435,7 +3481,7 @@ def test_delete_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_folder), "__call__") as call:
@@ -3476,9 +3522,10 @@ def test_delete_folder_non_empty_request_with_auto_populated_field():
         client.delete_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == folders.DeleteFolderRequest(
+        request_msg = folders.DeleteFolderRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_folder_use_cached_wrapped_rpc():
@@ -3569,9 +3616,14 @@ async def test_delete_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_folder_async(
-    transport: str = "grpc_asyncio", request_type=folders.DeleteFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        folders.DeleteFolderRequest(),
+        {},
+    ],
+)
+async def test_delete_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = FoldersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3579,7 +3631,7 @@ async def test_delete_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_folder), "__call__") as call:
@@ -3597,11 +3649,6 @@ async def test_delete_folder_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_folder_async_from_dict():
-    await test_delete_folder_async(request_type=dict)
 
 
 def test_delete_folder_field_headers():
@@ -3750,8 +3797,8 @@ async def test_delete_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        folders.UndeleteFolderRequest,
-        dict,
+        folders.UndeleteFolderRequest(),
+        {},
     ],
 )
 def test_undelete_folder(request_type, transport: str = "grpc"):
@@ -3762,7 +3809,7 @@ def test_undelete_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.undelete_folder), "__call__") as call:
@@ -3803,9 +3850,10 @@ def test_undelete_folder_non_empty_request_with_auto_populated_field():
         client.undelete_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == folders.UndeleteFolderRequest(
+        request_msg = folders.UndeleteFolderRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_undelete_folder_use_cached_wrapped_rpc():
@@ -3896,9 +3944,14 @@ async def test_undelete_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_undelete_folder_async(
-    transport: str = "grpc_asyncio", request_type=folders.UndeleteFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        folders.UndeleteFolderRequest(),
+        {},
+    ],
+)
+async def test_undelete_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = FoldersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3906,7 +3959,7 @@ async def test_undelete_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.undelete_folder), "__call__") as call:
@@ -3924,11 +3977,6 @@ async def test_undelete_folder_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_undelete_folder_async_from_dict():
-    await test_undelete_folder_async(request_type=dict)
 
 
 def test_undelete_folder_field_headers():
@@ -4077,8 +4125,8 @@ async def test_undelete_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -4089,7 +4137,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -4135,9 +4183,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -4218,9 +4267,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = FoldersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4228,7 +4282,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -4251,11 +4305,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -4417,8 +4466,8 @@ async def test_get_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -4429,7 +4478,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -4475,9 +4524,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -4558,9 +4608,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = FoldersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4568,7 +4623,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -4591,11 +4646,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -4758,8 +4808,8 @@ async def test_set_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -4770,7 +4820,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4818,9 +4868,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -4905,9 +4956,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FoldersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4916,7 +4973,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4939,11 +4996,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -5552,6 +5604,9 @@ def test_list_folders_rest_pager(transport: str = "rest"):
 
         pager = client.list_folders(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, folders.Folder) for i in results)
@@ -5704,6 +5759,9 @@ def test_search_folders_rest_pager(transport: str = "rest"):
         sample_request = {}
 
         pager = client.search_folders(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -7268,7 +7326,6 @@ def test_get_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.GetFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -7289,7 +7346,6 @@ def test_list_folders_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.ListFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -7310,7 +7366,6 @@ def test_search_folders_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.SearchFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -7331,7 +7386,6 @@ def test_create_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.CreateFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -7352,7 +7406,6 @@ def test_update_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.UpdateFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -7373,7 +7426,6 @@ def test_move_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.MoveFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -7394,7 +7446,6 @@ def test_delete_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.DeleteFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -7415,7 +7466,6 @@ def test_undelete_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.UndeleteFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -7436,7 +7486,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7457,7 +7506,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7480,7 +7528,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7525,7 +7572,6 @@ async def test_get_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.GetFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -7552,7 +7598,6 @@ async def test_list_folders_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.ListFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -7579,7 +7624,6 @@ async def test_search_folders_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.SearchFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -7604,7 +7648,6 @@ async def test_create_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.CreateFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -7629,7 +7672,6 @@ async def test_update_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.UpdateFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -7654,7 +7696,6 @@ async def test_move_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.MoveFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -7679,7 +7720,6 @@ async def test_delete_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.DeleteFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -7704,7 +7744,6 @@ async def test_undelete_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.UndeleteFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -7732,7 +7771,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7760,7 +7798,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7789,7 +7826,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9387,7 +9423,6 @@ def test_get_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.GetFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -9407,7 +9442,6 @@ def test_list_folders_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.ListFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -9427,7 +9461,6 @@ def test_search_folders_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.SearchFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -9447,7 +9480,6 @@ def test_create_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.CreateFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -9467,7 +9499,6 @@ def test_update_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.UpdateFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -9487,7 +9518,6 @@ def test_move_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.MoveFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -9507,7 +9537,6 @@ def test_delete_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.DeleteFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -9527,7 +9556,6 @@ def test_undelete_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = folders.UndeleteFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -9547,7 +9575,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9567,7 +9594,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9589,7 +9615,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 

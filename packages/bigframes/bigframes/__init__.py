@@ -42,6 +42,7 @@ import bigframes.operations  # noqa: E402 # isort: skip
 
 # Register pandas extensions
 import bigframes.extensions.pandas.dataframe_accessor  # noqa: F401, E402
+import bigframes.extensions.pandas.series_accessor  # noqa: F401, E402
 from bigframes._config.bigquery_options import BigQueryOptions  # noqa: E402
 from bigframes.core.global_session import (  # noqa: E402
     close_session,

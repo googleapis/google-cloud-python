@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -125,6 +126,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1007,7 +1023,14 @@ def test_reachability_service_client_get_mtls_endpoint_and_cert_source(client_cl
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1054,7 +1077,14 @@ def test_reachability_service_client_get_mtls_endpoint_and_cert_source(client_cl
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1390,8 +1420,8 @@ def test_reachability_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        reachability.ListConnectivityTestsRequest,
-        dict,
+        reachability.ListConnectivityTestsRequest(),
+        {},
     ],
 )
 def test_list_connectivity_tests(request_type, transport: str = "grpc"):
@@ -1402,7 +1432,7 @@ def test_list_connectivity_tests(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1455,12 +1485,13 @@ def test_list_connectivity_tests_non_empty_request_with_auto_populated_field():
         client.list_connectivity_tests(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.ListConnectivityTestsRequest(
+        request_msg = reachability.ListConnectivityTestsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_connectivity_tests_use_cached_wrapped_rpc():
@@ -1546,9 +1577,15 @@ async def test_list_connectivity_tests_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reachability.ListConnectivityTestsRequest(),
+        {},
+    ],
+)
 async def test_list_connectivity_tests_async(
-    transport: str = "grpc_asyncio",
-    request_type=reachability.ListConnectivityTestsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReachabilityServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1557,7 +1594,7 @@ async def test_list_connectivity_tests_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1582,11 +1619,6 @@ async def test_list_connectivity_tests_async(
     assert isinstance(response, pagers.ListConnectivityTestsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_connectivity_tests_async_from_dict():
-    await test_list_connectivity_tests_async(request_type=dict)
 
 
 def test_list_connectivity_tests_field_headers():
@@ -1791,6 +1823,9 @@ def test_list_connectivity_tests_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, connectivity_test.ConnectivityTest) for i in results)
@@ -1883,6 +1918,8 @@ async def test_list_connectivity_tests_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1941,8 +1978,8 @@ async def test_list_connectivity_tests_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reachability.GetConnectivityTestRequest,
-        dict,
+        reachability.GetConnectivityTestRequest(),
+        {},
     ],
 )
 def test_get_connectivity_test(request_type, transport: str = "grpc"):
@@ -1953,7 +1990,7 @@ def test_get_connectivity_test(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2013,9 +2050,10 @@ def test_get_connectivity_test_non_empty_request_with_auto_populated_field():
         client.get_connectivity_test(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.GetConnectivityTestRequest(
+        request_msg = reachability.GetConnectivityTestRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_connectivity_test_use_cached_wrapped_rpc():
@@ -2101,9 +2139,15 @@ async def test_get_connectivity_test_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reachability.GetConnectivityTestRequest(),
+        {},
+    ],
+)
 async def test_get_connectivity_test_async(
-    transport: str = "grpc_asyncio",
-    request_type=reachability.GetConnectivityTestRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReachabilityServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2112,7 +2156,7 @@ async def test_get_connectivity_test_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2147,11 +2191,6 @@ async def test_get_connectivity_test_async(
     assert response.display_name == "display_name_value"
     assert response.round_trip is True
     assert response.bypass_firewall_checks is True
-
-
-@pytest.mark.asyncio
-async def test_get_connectivity_test_async_from_dict():
-    await test_get_connectivity_test_async(request_type=dict)
 
 
 def test_get_connectivity_test_field_headers():
@@ -2308,8 +2347,8 @@ async def test_get_connectivity_test_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reachability.CreateConnectivityTestRequest,
-        dict,
+        reachability.CreateConnectivityTestRequest(),
+        {},
     ],
 )
 def test_create_connectivity_test(request_type, transport: str = "grpc"):
@@ -2320,7 +2359,7 @@ def test_create_connectivity_test(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2366,10 +2405,11 @@ def test_create_connectivity_test_non_empty_request_with_auto_populated_field():
         client.create_connectivity_test(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.CreateConnectivityTestRequest(
+        request_msg = reachability.CreateConnectivityTestRequest(
             parent="parent_value",
             test_id="test_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_connectivity_test_use_cached_wrapped_rpc():
@@ -2465,9 +2505,15 @@ async def test_create_connectivity_test_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reachability.CreateConnectivityTestRequest(),
+        {},
+    ],
+)
 async def test_create_connectivity_test_async(
-    transport: str = "grpc_asyncio",
-    request_type=reachability.CreateConnectivityTestRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReachabilityServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2476,7 +2522,7 @@ async def test_create_connectivity_test_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2496,11 +2542,6 @@ async def test_create_connectivity_test_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_connectivity_test_async_from_dict():
-    await test_create_connectivity_test_async(request_type=dict)
 
 
 def test_create_connectivity_test_field_headers():
@@ -2677,8 +2718,8 @@ async def test_create_connectivity_test_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reachability.UpdateConnectivityTestRequest,
-        dict,
+        reachability.UpdateConnectivityTestRequest(),
+        {},
     ],
 )
 def test_update_connectivity_test(request_type, transport: str = "grpc"):
@@ -2689,7 +2730,7 @@ def test_update_connectivity_test(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2732,7 +2773,8 @@ def test_update_connectivity_test_non_empty_request_with_auto_populated_field():
         client.update_connectivity_test(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.UpdateConnectivityTestRequest()
+        request_msg = reachability.UpdateConnectivityTestRequest()
+        assert args[0] == request_msg
 
 
 def test_update_connectivity_test_use_cached_wrapped_rpc():
@@ -2828,9 +2870,15 @@ async def test_update_connectivity_test_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reachability.UpdateConnectivityTestRequest(),
+        {},
+    ],
+)
 async def test_update_connectivity_test_async(
-    transport: str = "grpc_asyncio",
-    request_type=reachability.UpdateConnectivityTestRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReachabilityServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2839,7 +2887,7 @@ async def test_update_connectivity_test_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2859,11 +2907,6 @@ async def test_update_connectivity_test_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_connectivity_test_async_from_dict():
-    await test_update_connectivity_test_async(request_type=dict)
 
 
 def test_update_connectivity_test_field_headers():
@@ -3030,8 +3073,8 @@ async def test_update_connectivity_test_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reachability.RerunConnectivityTestRequest,
-        dict,
+        reachability.RerunConnectivityTestRequest(),
+        {},
     ],
 )
 def test_rerun_connectivity_test(request_type, transport: str = "grpc"):
@@ -3042,7 +3085,7 @@ def test_rerun_connectivity_test(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3087,9 +3130,10 @@ def test_rerun_connectivity_test_non_empty_request_with_auto_populated_field():
         client.rerun_connectivity_test(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.RerunConnectivityTestRequest(
+        request_msg = reachability.RerunConnectivityTestRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_rerun_connectivity_test_use_cached_wrapped_rpc():
@@ -3185,9 +3229,15 @@ async def test_rerun_connectivity_test_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reachability.RerunConnectivityTestRequest(),
+        {},
+    ],
+)
 async def test_rerun_connectivity_test_async(
-    transport: str = "grpc_asyncio",
-    request_type=reachability.RerunConnectivityTestRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReachabilityServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3196,7 +3246,7 @@ async def test_rerun_connectivity_test_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3216,11 +3266,6 @@ async def test_rerun_connectivity_test_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_rerun_connectivity_test_async_from_dict():
-    await test_rerun_connectivity_test_async(request_type=dict)
 
 
 def test_rerun_connectivity_test_field_headers():
@@ -3291,8 +3336,8 @@ async def test_rerun_connectivity_test_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reachability.DeleteConnectivityTestRequest,
-        dict,
+        reachability.DeleteConnectivityTestRequest(),
+        {},
     ],
 )
 def test_delete_connectivity_test(request_type, transport: str = "grpc"):
@@ -3303,7 +3348,7 @@ def test_delete_connectivity_test(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3348,9 +3393,10 @@ def test_delete_connectivity_test_non_empty_request_with_auto_populated_field():
         client.delete_connectivity_test(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reachability.DeleteConnectivityTestRequest(
+        request_msg = reachability.DeleteConnectivityTestRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_connectivity_test_use_cached_wrapped_rpc():
@@ -3446,9 +3492,15 @@ async def test_delete_connectivity_test_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reachability.DeleteConnectivityTestRequest(),
+        {},
+    ],
+)
 async def test_delete_connectivity_test_async(
-    transport: str = "grpc_asyncio",
-    request_type=reachability.DeleteConnectivityTestRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReachabilityServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3457,7 +3509,7 @@ async def test_delete_connectivity_test_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3477,11 +3529,6 @@ async def test_delete_connectivity_test_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_connectivity_test_async_from_dict():
-    await test_delete_connectivity_test_async(request_type=dict)
 
 
 def test_delete_connectivity_test_field_headers():
@@ -3890,6 +3937,9 @@ def test_list_connectivity_tests_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/global"}
 
         pager = client.list_connectivity_tests(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -4926,7 +4976,6 @@ def test_list_connectivity_tests_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.ListConnectivityTestsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4949,7 +4998,6 @@ def test_get_connectivity_test_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.GetConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 
@@ -4972,7 +5020,6 @@ def test_create_connectivity_test_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.CreateConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 
@@ -4995,7 +5042,6 @@ def test_update_connectivity_test_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.UpdateConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 
@@ -5018,7 +5064,6 @@ def test_rerun_connectivity_test_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.RerunConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 
@@ -5041,7 +5086,6 @@ def test_delete_connectivity_test_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.DeleteConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 
@@ -5085,7 +5129,6 @@ async def test_list_connectivity_tests_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.ListConnectivityTestsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5120,7 +5163,6 @@ async def test_get_connectivity_test_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.GetConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 
@@ -5147,7 +5189,6 @@ async def test_create_connectivity_test_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.CreateConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 
@@ -5174,7 +5215,6 @@ async def test_update_connectivity_test_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.UpdateConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 
@@ -5201,7 +5241,6 @@ async def test_rerun_connectivity_test_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.RerunConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 
@@ -5228,7 +5267,6 @@ async def test_delete_connectivity_test_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.DeleteConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 
@@ -5584,12 +5622,14 @@ def test_create_connectivity_test_rest_call_success(request_type):
             "redis_instance": "redis_instance_value",
             "redis_cluster": "redis_cluster_value",
             "gke_pod": "gke_pod_value",
+            "dms_private_connection": "dms_private_connection_value",
             "cloud_function": {"uri": "uri_value"},
             "app_engine_version": {"uri": "uri_value"},
             "cloud_run_revision": {
                 "uri": "uri_value",
                 "service_uri": "service_uri_value",
             },
+            "cloud_run_job": "cloud_run_job_value",
             "network": "network_value",
             "network_type": 1,
             "project_id": "project_id_value",
@@ -5894,6 +5934,11 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "location": "location_value",
                                 "service_uri": "service_uri_value",
                             },
+                            "cloud_run_job": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                            },
                             "nat": {
                                 "type_": 1,
                                 "protocol": "protocol_value",
@@ -5940,6 +5985,7 @@ def test_create_connectivity_test_rest_call_success(request_type):
                             "ngfw_packet_inspection": {
                                 "security_profile_group_uri": "security_profile_group_uri_value"
                             },
+                            "dms_private_connection": {"uri": "uri_value"},
                         }
                     ],
                     "forward_trace_id": 1679,
@@ -6196,12 +6242,14 @@ def test_update_connectivity_test_rest_call_success(request_type):
             "redis_instance": "redis_instance_value",
             "redis_cluster": "redis_cluster_value",
             "gke_pod": "gke_pod_value",
+            "dms_private_connection": "dms_private_connection_value",
             "cloud_function": {"uri": "uri_value"},
             "app_engine_version": {"uri": "uri_value"},
             "cloud_run_revision": {
                 "uri": "uri_value",
                 "service_uri": "service_uri_value",
             },
+            "cloud_run_job": "cloud_run_job_value",
             "network": "network_value",
             "network_type": 1,
             "project_id": "project_id_value",
@@ -6506,6 +6554,11 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "location": "location_value",
                                 "service_uri": "service_uri_value",
                             },
+                            "cloud_run_job": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                            },
                             "nat": {
                                 "type_": 1,
                                 "protocol": "protocol_value",
@@ -6552,6 +6605,7 @@ def test_update_connectivity_test_rest_call_success(request_type):
                             "ngfw_packet_inspection": {
                                 "security_profile_group_uri": "security_profile_group_uri_value"
                             },
+                            "dms_private_connection": {"uri": "uri_value"},
                         }
                     ],
                     "forward_trace_id": 1679,
@@ -7603,7 +7657,6 @@ def test_list_connectivity_tests_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.ListConnectivityTestsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7625,7 +7678,6 @@ def test_get_connectivity_test_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.GetConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 
@@ -7647,7 +7699,6 @@ def test_create_connectivity_test_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.CreateConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 
@@ -7669,7 +7720,6 @@ def test_update_connectivity_test_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.UpdateConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 
@@ -7691,7 +7741,6 @@ def test_rerun_connectivity_test_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.RerunConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 
@@ -7713,7 +7762,6 @@ def test_delete_connectivity_test_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reachability.DeleteConnectivityTestRequest()
-
         assert args[0] == request_msg
 
 

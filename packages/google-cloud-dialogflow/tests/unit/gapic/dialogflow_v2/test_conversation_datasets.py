@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -116,6 +117,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -998,7 +1014,14 @@ def test_conversation_datasets_client_get_mtls_endpoint_and_cert_source(client_c
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1045,7 +1068,14 @@ def test_conversation_datasets_client_get_mtls_endpoint_and_cert_source(client_c
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1384,8 +1414,8 @@ def test_conversation_datasets_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_conversation_dataset.CreateConversationDatasetRequest,
-        dict,
+        gcd_conversation_dataset.CreateConversationDatasetRequest(),
+        {},
     ],
 )
 def test_create_conversation_dataset(request_type, transport: str = "grpc"):
@@ -1396,7 +1426,7 @@ def test_create_conversation_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1441,9 +1471,10 @@ def test_create_conversation_dataset_non_empty_request_with_auto_populated_field
         client.create_conversation_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation_dataset.CreateConversationDatasetRequest(
+        request_msg = gcd_conversation_dataset.CreateConversationDatasetRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_conversation_dataset_use_cached_wrapped_rpc():
@@ -1539,9 +1570,15 @@ async def test_create_conversation_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_conversation_dataset.CreateConversationDatasetRequest(),
+        {},
+    ],
+)
 async def test_create_conversation_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_conversation_dataset.CreateConversationDatasetRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationDatasetsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1550,7 +1587,7 @@ async def test_create_conversation_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1570,11 +1607,6 @@ async def test_create_conversation_dataset_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_conversation_dataset_async_from_dict():
-    await test_create_conversation_dataset_async(request_type=dict)
 
 
 def test_create_conversation_dataset_field_headers():
@@ -1749,8 +1781,8 @@ async def test_create_conversation_dataset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_dataset.GetConversationDatasetRequest,
-        dict,
+        conversation_dataset.GetConversationDatasetRequest(),
+        {},
     ],
 )
 def test_get_conversation_dataset(request_type, transport: str = "grpc"):
@@ -1761,7 +1793,7 @@ def test_get_conversation_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1819,9 +1851,10 @@ def test_get_conversation_dataset_non_empty_request_with_auto_populated_field():
         client.get_conversation_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_dataset.GetConversationDatasetRequest(
+        request_msg = conversation_dataset.GetConversationDatasetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_conversation_dataset_use_cached_wrapped_rpc():
@@ -1907,9 +1940,15 @@ async def test_get_conversation_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_dataset.GetConversationDatasetRequest(),
+        {},
+    ],
+)
 async def test_get_conversation_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_dataset.GetConversationDatasetRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationDatasetsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1918,7 +1957,7 @@ async def test_get_conversation_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1951,11 +1990,6 @@ async def test_get_conversation_dataset_async(
     assert response.conversation_count == 1955
     assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
-
-
-@pytest.mark.asyncio
-async def test_get_conversation_dataset_async_from_dict():
-    await test_get_conversation_dataset_async(request_type=dict)
 
 
 def test_get_conversation_dataset_field_headers():
@@ -2112,8 +2146,8 @@ async def test_get_conversation_dataset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_dataset.ListConversationDatasetsRequest,
-        dict,
+        conversation_dataset.ListConversationDatasetsRequest(),
+        {},
     ],
 )
 def test_list_conversation_datasets(request_type, transport: str = "grpc"):
@@ -2124,7 +2158,7 @@ def test_list_conversation_datasets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2173,10 +2207,11 @@ def test_list_conversation_datasets_non_empty_request_with_auto_populated_field(
         client.list_conversation_datasets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_dataset.ListConversationDatasetsRequest(
+        request_msg = conversation_dataset.ListConversationDatasetsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_conversation_datasets_use_cached_wrapped_rpc():
@@ -2262,9 +2297,15 @@ async def test_list_conversation_datasets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_dataset.ListConversationDatasetsRequest(),
+        {},
+    ],
+)
 async def test_list_conversation_datasets_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_dataset.ListConversationDatasetsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationDatasetsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2273,7 +2314,7 @@ async def test_list_conversation_datasets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2296,11 +2337,6 @@ async def test_list_conversation_datasets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConversationDatasetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_conversation_datasets_async_from_dict():
-    await test_list_conversation_datasets_async(request_type=dict)
 
 
 def test_list_conversation_datasets_field_headers():
@@ -2507,6 +2543,9 @@ def test_list_conversation_datasets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -2601,6 +2640,8 @@ async def test_list_conversation_datasets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2661,8 +2702,8 @@ async def test_list_conversation_datasets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_dataset.DeleteConversationDatasetRequest,
-        dict,
+        conversation_dataset.DeleteConversationDatasetRequest(),
+        {},
     ],
 )
 def test_delete_conversation_dataset(request_type, transport: str = "grpc"):
@@ -2673,7 +2714,7 @@ def test_delete_conversation_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2718,9 +2759,10 @@ def test_delete_conversation_dataset_non_empty_request_with_auto_populated_field
         client.delete_conversation_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_dataset.DeleteConversationDatasetRequest(
+        request_msg = conversation_dataset.DeleteConversationDatasetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_conversation_dataset_use_cached_wrapped_rpc():
@@ -2816,9 +2858,15 @@ async def test_delete_conversation_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_dataset.DeleteConversationDatasetRequest(),
+        {},
+    ],
+)
 async def test_delete_conversation_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_dataset.DeleteConversationDatasetRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationDatasetsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2827,7 +2875,7 @@ async def test_delete_conversation_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2847,11 +2895,6 @@ async def test_delete_conversation_dataset_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_conversation_dataset_async_from_dict():
-    await test_delete_conversation_dataset_async(request_type=dict)
 
 
 def test_delete_conversation_dataset_field_headers():
@@ -3008,8 +3051,8 @@ async def test_delete_conversation_dataset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_dataset.ImportConversationDataRequest,
-        dict,
+        conversation_dataset.ImportConversationDataRequest(),
+        {},
     ],
 )
 def test_import_conversation_data(request_type, transport: str = "grpc"):
@@ -3020,7 +3063,7 @@ def test_import_conversation_data(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3065,9 +3108,10 @@ def test_import_conversation_data_non_empty_request_with_auto_populated_field():
         client.import_conversation_data(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_dataset.ImportConversationDataRequest(
+        request_msg = conversation_dataset.ImportConversationDataRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_conversation_data_use_cached_wrapped_rpc():
@@ -3163,9 +3207,15 @@ async def test_import_conversation_data_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_dataset.ImportConversationDataRequest(),
+        {},
+    ],
+)
 async def test_import_conversation_data_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_dataset.ImportConversationDataRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationDatasetsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3174,7 +3224,7 @@ async def test_import_conversation_data_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3194,11 +3244,6 @@ async def test_import_conversation_data_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_conversation_data_async_from_dict():
-    await test_import_conversation_data_async(request_type=dict)
 
 
 def test_import_conversation_data_field_headers():
@@ -3901,6 +3946,9 @@ def test_list_conversation_datasets_rest_pager(transport: str = "rest"):
 
         pager = client.list_conversation_datasets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -4356,7 +4404,6 @@ def test_create_conversation_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_dataset.CreateConversationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4379,7 +4426,6 @@ def test_get_conversation_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_dataset.GetConversationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4402,7 +4448,6 @@ def test_list_conversation_datasets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_dataset.ListConversationDatasetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4425,7 +4470,6 @@ def test_delete_conversation_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_dataset.DeleteConversationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4448,7 +4492,6 @@ def test_import_conversation_data_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_dataset.ImportConversationDataRequest()
-
         assert args[0] == request_msg
 
 
@@ -4489,7 +4532,6 @@ async def test_create_conversation_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_dataset.CreateConversationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4523,7 +4565,6 @@ async def test_get_conversation_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_dataset.GetConversationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4552,7 +4593,6 @@ async def test_list_conversation_datasets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_dataset.ListConversationDatasetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4579,7 +4619,6 @@ async def test_delete_conversation_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_dataset.DeleteConversationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4606,7 +4645,6 @@ async def test_import_conversation_data_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_dataset.ImportConversationDataRequest()
-
         assert args[0] == request_msg
 
 
@@ -5709,7 +5747,6 @@ def test_create_conversation_dataset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_dataset.CreateConversationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5731,7 +5768,6 @@ def test_get_conversation_dataset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_dataset.GetConversationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5753,7 +5789,6 @@ def test_list_conversation_datasets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_dataset.ListConversationDatasetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5775,7 +5810,6 @@ def test_delete_conversation_dataset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_dataset.DeleteConversationDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5797,7 +5831,6 @@ def test_import_conversation_data_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_dataset.ImportConversationDataRequest()
-
         assert args[0] == request_msg
 
 

@@ -20,7 +20,8 @@ import os
 from unittest import mock
 import urllib
 
-from OpenSSL import crypto
+from cryptography import x509
+from cryptography.hazmat.primitives import serialization
 import pytest  # type: ignore
 
 from google.auth import _helpers, external_account
@@ -69,17 +70,15 @@ with open(SUBJECT_TOKEN_JSON_FILE) as fh:
     JSON_FILE_SUBJECT_TOKEN = JSON_FILE_CONTENT.get(SUBJECT_TOKEN_FIELD_NAME)
 
 with open(CERT_FILE, "rb") as f:
+    cert = x509.load_pem_x509_certificate(f.read())
     CERT_FILE_CONTENT = base64.b64encode(
-        crypto.dump_certificate(
-            crypto.FILETYPE_ASN1, crypto.load_certificate(crypto.FILETYPE_PEM, f.read())
-        )
+        cert.public_bytes(serialization.Encoding.DER)
     ).decode("utf-8")
 
 with open(OTHER_CERT_FILE, "rb") as f:
+    cert = x509.load_pem_x509_certificate(f.read())
     OTHER_CERT_FILE_CONTENT = base64.b64encode(
-        crypto.dump_certificate(
-            crypto.FILETYPE_ASN1, crypto.load_certificate(crypto.FILETYPE_PEM, f.read())
-        )
+        cert.public_bytes(serialization.Encoding.DER)
     ).decode("utf-8")
 
 TOKEN_URL = "https://sts.googleapis.com/v1/token"
@@ -368,9 +367,7 @@ class TestCredentials(object):
                 json.dumps({"userProject": workforce_pool_user_project})
             )
 
-        metrics_header_value = (
-            "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
-        )
+        metrics_header_value = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
         if service_account_impersonation_url:
             # Service account impersonation request/response.
             expire_time = (
@@ -603,6 +600,21 @@ class TestCredentials(object):
             universe_domain=DEFAULT_UNIVERSE_DOMAIN,
             trust_boundary=None,
         )
+
+    @mock.patch.object(identity_pool.Credentials, "__init__", return_value=None)
+    def test_from_info_programmatic_supplier_keyword(self, mock_init):
+        supplier = TestSubjectTokenSupplier()
+        info = {
+            "audience": AUDIENCE,
+            "subject_token_type": SUBJECT_TOKEN_TYPE,
+            "token_url": TOKEN_URL,
+        }
+        credentials = identity_pool.Credentials.from_info(
+            info, subject_token_supplier=supplier
+        )
+
+        assert isinstance(credentials, identity_pool.Credentials)
+        assert mock_init.call_args[1]["subject_token_supplier"] == supplier
 
     @mock.patch.object(identity_pool.Credentials, "__init__", return_value=None)
     def test_from_file_full_options(self, mock_init, tmpdir):

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-workloadmanager/#history
 
+## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workloadmanager-v0.2.0...google-cloud-workloadmanager-v0.2.1) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[t-w] packages ([#17076](https://github.com/googleapis/google-cloud-python/issues/17076)) ([928a03c](https://github.com/googleapis/google-cloud-python/commit/928a03ce41fbcb82398636e89f840c00c7749cf8))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workloadmanager-v0.1.0...google-cloud-workloadmanager-v0.2.0) (2026-03-26)
 
 

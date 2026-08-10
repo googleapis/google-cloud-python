@@ -2582,7 +2582,8 @@ class Series(NDFrame):  # type: ignore[misc]
             ... }
             >>> s = bpd.DataFrame(data).set_index("timestamp_col")
             >>> s.resample(rule="7s", origin="epoch").min()
-                                int64_col
+                                 int64_col
+            timestamp_col
             2021-01-01 12:59:56          0
             2021-01-01 13:00:03          3
             2021-01-01 13:00:10         10
@@ -5449,7 +5450,7 @@ class Series(NDFrame):  # type: ignore[misc]
             <Axes: title={'center': 'My plot'}, ylabel='Frequency'>
 
         Returns:
-            bigframes.operations.plotting.PlotAccessor:
+            bigframes.pandas.api.typing.PlotAccessor:
                 An accessor making plots.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
@@ -5630,6 +5631,17 @@ class Series(NDFrame):  # type: ignore[misc]
             3    rAbbIt
             dtype: string
 
+        With experimental Python Transpiler enabled, you can use some lambda functions without
+        deploying them as remote functions:
+
+            >>> bpd.options.experiments.enable_python_transpiler = True
+            >>> s.map(lambda val: val + "fish")
+            0       catfish
+            1       dogfish
+            2          <NA>
+            3    rabbitfish
+            dtype: string
+
         Args:
             arg (function, Mapping, Series):
                 remote function, collections.abc.Mapping subclass or Series
@@ -5674,8 +5686,8 @@ class Series(NDFrame):  # type: ignore[misc]
 
         With a scalar integer.
 
-            >>> type(df.iloc[0])
-            <class 'pandas.core.series.Series'>
+            >>> type(df.iloc[0]) # doctest: +ELLIPSIS
+            <class 'pandas...Series'>
 
             >>> df.iloc[0]
             a    1

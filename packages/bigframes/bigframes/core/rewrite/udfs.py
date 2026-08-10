@@ -32,7 +32,6 @@ class LowerRemoteFunctionRule(op_lowering.OpLoweringRule):
         func_def = expr.op.function_def
         devirtualized_expr = ops.RemoteFunctionOp(
             func_def.with_devirtualize(),
-            apply_on_null=expr.op.apply_on_null,
         ).as_expr(*expr.children)
         if isinstance(func_def.signature.output, udf_def.VirtualListTypeV1):
             return func_def.signature.output.out_expr(devirtualized_expr)
@@ -40,47 +39,7 @@ class LowerRemoteFunctionRule(op_lowering.OpLoweringRule):
             return devirtualized_expr
 
 
-@dataclasses.dataclass
-class LowerBinaryRemoteFunctionRule(op_lowering.OpLoweringRule):
-    @property
-    def op(self) -> type[ops.ScalarOp]:
-        return ops.BinaryRemoteFunctionOp
-
-    def lower(self, expr: expression.OpExpression) -> expression.Expression:
-        assert isinstance(expr.op, ops.BinaryRemoteFunctionOp)
-        func_def = expr.op.function_def
-        devirtualized_expr = ops.BinaryRemoteFunctionOp(
-            func_def.with_devirtualize(),
-        ).as_expr(*expr.children)
-        if isinstance(func_def.signature.output, udf_def.VirtualListTypeV1):
-            return func_def.signature.output.out_expr(devirtualized_expr)
-        else:
-            return devirtualized_expr
-
-
-@dataclasses.dataclass
-class LowerNaryRemoteFunctionRule(op_lowering.OpLoweringRule):
-    @property
-    def op(self) -> type[ops.ScalarOp]:
-        return ops.NaryRemoteFunctionOp
-
-    def lower(self, expr: expression.OpExpression) -> expression.Expression:
-        assert isinstance(expr.op, ops.NaryRemoteFunctionOp)
-        func_def = expr.op.function_def
-        devirtualized_expr = ops.NaryRemoteFunctionOp(
-            func_def.with_devirtualize(),
-        ).as_expr(*expr.children)
-        if isinstance(func_def.signature.output, udf_def.VirtualListTypeV1):
-            return func_def.signature.output.out_expr(devirtualized_expr)
-        else:
-            return devirtualized_expr
-
-
-UDF_LOWERING_RULES = (
-    LowerRemoteFunctionRule(),
-    LowerBinaryRemoteFunctionRule(),
-    LowerNaryRemoteFunctionRule(),
-)
+UDF_LOWERING_RULES = (LowerRemoteFunctionRule(),)
 
 
 def lower_udfs(root: bigframe_node.BigFrameNode) -> bigframe_node.BigFrameNode:

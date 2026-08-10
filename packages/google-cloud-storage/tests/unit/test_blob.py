@@ -1374,6 +1374,218 @@ class Test_Blob(unittest.TestCase):
             w_range=True, raw_download=True, headers={"If-Match": "kittens"}
         )
 
+    @mock.patch("google.cloud.storage.blob._logger")
+    def test__do_download_log_extra_bytes_singleshot(self, mock_logger):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        blob.chunk_size = None
+
+        transport = object()
+        file_obj = io.BytesIO()
+        download_url = "http://test.invalid"
+
+        patch = mock.patch("google.cloud.storage.blob.Download")
+        with patch as patched:
+            download = patched.return_value
+            download._bytes_downloaded = 10
+
+            mock_response = mock.Mock()
+            mock_response.headers = {}
+            download.consume.return_value = mock_response
+            download._get_headers.return_value = {}
+
+            blob._do_download(
+                transport,
+                file_obj,
+                download_url,
+                {},
+                start=0,
+                end=4,
+            )
+
+        mock_logger.warning.assert_called_once_with(
+            "storage: received %d more bytes than requested from GCS for bucket %r, object %r",
+            5,
+            "name",
+            "blob-name",
+        )
+
+    @mock.patch("google.cloud.storage.blob._logger")
+    def test__do_download_log_extra_bytes_chunked(self, mock_logger):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        blob.chunk_size = 262144
+
+        transport = object()
+        file_obj = io.BytesIO()
+        download_url = "http://test.invalid"
+
+        patch = mock.patch("google.cloud.storage.blob.ChunkedDownload")
+        with patch as patched:
+            download = patched.return_value
+            download._bytes_downloaded = 10
+            type(download).finished = mock.PropertyMock(side_effect=[False, True])
+
+            mock_response = mock.Mock()
+            mock_response.headers = {}
+            download.consume_next_chunk.return_value = mock_response
+            download._get_headers.return_value = {}
+
+            blob._do_download(
+                transport,
+                file_obj,
+                download_url,
+                {},
+                start=0,
+                end=4,
+            )
+
+        mock_logger.warning.assert_called_once_with(
+            "storage: received %d more bytes than requested from GCS for bucket %r, object %r",
+            5,
+            "name",
+            "blob-name",
+        )
+
+    @mock.patch("google.cloud.storage.blob._logger")
+    def test__do_download_log_extra_bytes_positive_start(self, mock_logger):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        blob.chunk_size = None
+
+        transport = object()
+        file_obj = io.BytesIO()
+        download_url = "http://test.invalid"
+
+        patch = mock.patch("google.cloud.storage.blob.Download")
+        with patch as patched:
+            download = patched.return_value
+            download._bytes_downloaded = 310
+            download.total_bytes = 500
+
+            mock_response = mock.Mock()
+            mock_response.headers = {}
+            download.consume.return_value = mock_response
+            download._get_headers.return_value = {}
+
+            blob._do_download(
+                transport,
+                file_obj,
+                download_url,
+                {},
+                start=200,
+                end=None,
+            )
+
+        mock_logger.warning.assert_not_called()
+
+    @mock.patch("google.cloud.storage.blob._logger")
+    def test__do_download_log_extra_bytes_negative_start(self, mock_logger):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        blob.chunk_size = None
+
+        transport = object()
+        file_obj = io.BytesIO()
+        download_url = "http://test.invalid"
+
+        patch = mock.patch("google.cloud.storage.blob.Download")
+        with patch as patched:
+            download = patched.return_value
+            download._bytes_downloaded = 15
+
+            mock_response = mock.Mock()
+            mock_response.headers = {}
+            download.consume.return_value = mock_response
+            download._get_headers.return_value = {}
+
+            blob._do_download(
+                transport,
+                file_obj,
+                download_url,
+                {},
+                start=-10,
+                end=None,
+            )
+
+        mock_logger.warning.assert_not_called()
+
+    @mock.patch("google.cloud.storage.blob._logger")
+    def test__do_download_log_extra_bytes_whole_file(self, mock_logger):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        blob.chunk_size = None
+
+        transport = object()
+        file_obj = io.BytesIO()
+        download_url = "http://test.invalid"
+
+        patch = mock.patch("google.cloud.storage.blob.Download")
+        with patch as patched:
+            download = patched.return_value
+            download._bytes_downloaded = 550
+            download.total_bytes = 500
+
+            mock_response = mock.Mock()
+            mock_response.headers = {}
+            download.consume.return_value = mock_response
+            download._get_headers.return_value = {}
+
+            blob._do_download(
+                transport,
+                file_obj,
+                download_url,
+                {},
+                start=None,
+                end=None,
+            )
+
+        mock_logger.warning.assert_not_called()
+
+    @mock.patch("google.cloud.storage.blob._logger")
+    def test__do_download_no_log_exact_bytes(self, mock_logger):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        blob.chunk_size = None
+
+        transport = object()
+        file_obj = io.BytesIO()
+        download_url = "http://test.invalid"
+
+        patch = mock.patch("google.cloud.storage.blob.Download")
+        with patch as patched:
+            download = patched.return_value
+            download._bytes_downloaded = 300
+            download.total_bytes = 500
+
+            mock_response = mock.Mock()
+            mock_response.headers = {}
+            download.consume.return_value = mock_response
+            download._get_headers.return_value = {}
+
+            blob._do_download(
+                transport,
+                file_obj,
+                download_url,
+                {},
+                start=200,
+                end=None,
+            )
+
+        mock_logger.warning.assert_not_called()
+
     def test__do_download_wo_chunks_w_custom_timeout(self):
         self._do_download_helper_wo_chunks(
             w_range=False, raw_download=False, timeout=9.58

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.26.0...google-cloud-translate-v3.27.0) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[t-w] packages ([#17076](https://github.com/googleapis/google-cloud-python/issues/17076)) ([928a03c](https://github.com/googleapis/google-cloud-python/commit/928a03ce41fbcb82398636e89f840c00c7749cf8))
+
 ## [3.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.25.0...google-cloud-translate-v3.26.0) (2026-04-09)
 
 
