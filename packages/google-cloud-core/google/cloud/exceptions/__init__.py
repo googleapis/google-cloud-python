@@ -21,11 +21,32 @@
 # Avoid the grpc and google.cloud.grpc collision.
 from __future__ import absolute_import
 
-from google.api_core import exceptions
+import importlib.util
+from typing import Set
 
-try:
-    from grpc._channel import _Rendezvous
-except ImportError:  # pragma: NO COVER
+_has_grpc = importlib.util.find_spec("grpc") is not None
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__: Set[str] = {
+    "google.api_core.exceptions",
+}
+
+if _has_grpc:
+    __lazy_modules__.update({"grpc", "grpc._channel"})
+
+from google.api_core import exceptions  # noqa: E402
+
+if _has_grpc:
+    try:
+        from grpc._channel import _Rendezvous  # noqa: E402
+    except ImportError:  # pragma: NO COVER
+        _Rendezvous = None
+else:
     _Rendezvous = None
 
 GrpcRendezvous = _Rendezvous

@@ -14,28 +14,56 @@
 
 """Base classes for client used to interact with Google Cloud APIs."""
 
+import importlib.util
 import io
 import json
 import os
 from pickle import PicklingError
-from typing import Tuple
-from typing import Union
+from typing import Set, Tuple, Union
 
-import google.api_core.client_options
-import google.api_core.exceptions
-import google.auth
-from google.auth import environment_vars
-import google.auth.credentials
-import google.auth.transport.requests
-from google.cloud._helpers import _determine_default_project
-from google.oauth2 import service_account
+_has_google_auth_api_key = (
+    importlib.util.find_spec("google.auth.api_key") is not None
+)
 
-try:
-    import google.auth.api_key
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__: Set[str] = {
+    "google.api_core.client_options",
+    "google.api_core.exceptions",
+    "google.auth",
+    "google.auth.environment_vars",
+    "google.auth.credentials",
+    "google.auth.transport.requests",
+    "google.cloud._helpers",
+    "google.oauth2",
+    "google.oauth2.service_account",
+}
 
-    HAS_GOOGLE_AUTH_API_KEY = True
-except ImportError:  # pragma: NO COVER
-    HAS_GOOGLE_AUTH_API_KEY = False  # pragma: NO COVER
+if _has_google_auth_api_key:
+    __lazy_modules__.add("google.auth.api_key")
+
+import google.api_core.client_options  # noqa: E402
+import google.api_core.exceptions  # noqa: E402
+import google.auth  # noqa: E402
+from google.auth import environment_vars  # noqa: E402
+import google.auth.credentials  # noqa: E402
+import google.auth.transport.requests  # noqa: E402
+from google.cloud._helpers import _determine_default_project  # noqa: E402
+from google.oauth2 import service_account  # noqa: E402
+
+if _has_google_auth_api_key:
+    try:
+        import google.auth.api_key  # noqa: E402
+
+        HAS_GOOGLE_AUTH_API_KEY = True
+    except ImportError:  # pragma: NO COVER
+        HAS_GOOGLE_AUTH_API_KEY = False  # pragma: NO COVER
+else:
+    HAS_GOOGLE_AUTH_API_KEY = False
     # TODO: Investigate adding a test for google.auth.api_key ImportError (https://github.com/googleapis/python-cloud-core/issues/334)
 
 

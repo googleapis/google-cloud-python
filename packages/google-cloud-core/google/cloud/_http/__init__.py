@@ -19,13 +19,25 @@ import collections.abc
 import json
 import os
 import platform
-from typing import Optional
+from typing import Optional, Set
 from urllib.parse import urlencode
 import warnings
 
-from google.api_core.client_info import ClientInfo
-from google.cloud import exceptions
-from google.cloud import version
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__: Set[str] = {
+    "google.api_core.client_info",
+    "google.cloud.exceptions",
+    "google.cloud.version",
+}
+
+from google.api_core.client_info import ClientInfo  # noqa: E402
+from google.cloud import exceptions  # noqa: E402
+from google.cloud import version  # noqa: E402
 
 
 API_BASE_URL = "https://www.googleapis.com"

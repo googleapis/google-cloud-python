@@ -22,20 +22,47 @@ from __future__ import absolute_import
 import calendar
 import datetime
 import http.client
+import importlib.util
 import os
 import re
 from threading import local as Local
-from typing import Union
+from typing import Set, Union
 
-import google.auth
-import google.auth.transport.requests
-from google.protobuf import duration_pb2
-from google.protobuf import timestamp_pb2
+_has_grpc = importlib.util.find_spec("grpc") is not None
 
-try:
-    import grpc
-    import google.auth.transport.grpc
-except ImportError:  # pragma: NO COVER
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__: Set[str] = {
+    "google.auth",
+    "google.auth.transport.requests",
+    "google.protobuf.duration_pb2",
+    "google.protobuf.timestamp_pb2",
+}
+
+if _has_grpc:
+    __lazy_modules__.update(
+        {
+            "grpc",
+            "google.auth.transport.grpc",
+        }
+    )
+
+import google.auth  # noqa: E402
+import google.auth.transport.requests  # noqa: E402
+from google.protobuf import duration_pb2  # noqa: E402
+from google.protobuf import timestamp_pb2  # noqa: E402
+
+if _has_grpc:
+    try:
+        import grpc  # noqa: E402
+        import google.auth.transport.grpc  # noqa: E402
+    except ImportError:  # pragma: NO COVER
+        grpc = None
+else:
     grpc = None
 
 # `google.cloud._helpers._NOW` is deprecated
