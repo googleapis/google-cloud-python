@@ -667,11 +667,62 @@ def test_find_module_from_package_setuptools_not_file_and_exception():
         res = find_module_from_package("my-pkg")
         assert res == "my_pkg"
 
+def test_find_module_from_package_oserror_handling(capsys):
+    sys.modules.setdefault("setuptools", MagicMock())
+    def mock_isfile(path):
+        if "bad_pkg" in path:
+            raise OSError("Permission denied")
+        return False
+
+    def mock_listdir(path):
+        if "bad_pkg" in path:
+            raise OSError("Access denied")
+        return ["mod.py"]
+
     with patch("importlib.metadata.files", side_effect=Exception), \
          patch("os.path.exists", return_value=True), \
-         patch("setuptools.find_namespace_packages", side_effect=RuntimeError("setuptools fail")):
+         patch("os.path.isdir", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["bad_pkg", "good_pkg"]), \
+         patch("os.path.isfile", side_effect=mock_isfile), \
+         patch("os.listdir", side_effect=mock_listdir), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("my-pkg")
+        assert res == "good_pkg"
+
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("setuptools.find_namespace_packages", side_effect=RuntimeError("setuptools failure")):
         res = find_module_from_package("my-pkg")
         assert res == "my.pkg"
+        captured = capsys.readouterr()
+        assert "WARNING: Package discovery failed: setuptools failure" in captured.err
+
+
+def test_find_module_from_package_namespace_package_no_init():
+    sys.modules.setdefault("setuptools", MagicMock())
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("os.path.isdir", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["google.api"]), \
+         patch("os.path.isfile", return_value=False), \
+         patch("os.listdir", return_value=["http_pb2.py"]), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("googleapis-common-protos")
+        assert res == "google.api"
+
+
+def test_find_module_from_package_src_layout():
+    sys.modules.setdefault("setuptools", MagicMock())
+    def mock_isdir(path):
+        return path == "src" or path == "."
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("os.path.isdir", side_effect=mock_isdir), \
+         patch("setuptools.find_namespace_packages", return_value=["google_crc32c"]), \
+         patch("os.path.isfile", return_value=True), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("google-crc32c")
+        assert res == "google_crc32c"
 
 
 def test_find_module_from_package_exception_in_find_spec():
@@ -679,8 +730,29 @@ def test_find_module_from_package_exception_in_find_spec():
     def mock_find_spec(mod):
         raise Exception("Find spec error")
 
+    # Exception during metadata lookup falls back
+    with patch("importlib.metadata.files", return_value=["foo/bar/__init__.py"]), \
+         patch("importlib.util.find_spec", side_effect=mock_find_spec), \
+         patch("setuptools.find_namespace_packages", side_effect=Exception):
+        res = find_module_from_package("foo-bar")
+        assert res == "foo.bar"
+
+    # Exception during setuptools __init__.py lookup falls back
     with patch("importlib.metadata.files", side_effect=Exception), \
-         patch("setuptools.find_namespace_packages", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["foo_bar"]), \
+         patch("os.path.isfile", return_value=True), \
+         patch("importlib.util.find_spec", side_effect=mock_find_spec):
+        res = find_module_from_package("foo-bar")
+        assert res == "foo.bar"
+
+    # Exception during setuptools namespace package lookup falls back
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("os.path.isdir", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["foo_bar"]), \
+         patch("os.path.isfile", return_value=False), \
+         patch("os.listdir", return_value=["mod.py"]), \
          patch("importlib.util.find_spec", side_effect=mock_find_spec):
         res = find_module_from_package("foo-bar")
         assert res == "foo.bar"

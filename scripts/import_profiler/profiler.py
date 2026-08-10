@@ -385,14 +385,18 @@ def find_module_from_package(pkg):
     try:
         files = importlib.metadata.files(pkg)
         if files:
-            init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not str(f).startswith('tests/')]
+            ignored_parts = ('tests', 'testing', 'samples', 'examples', 'benchmark', 'benchmarks')
+            init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not any(part in ignored_parts for part in str(f).replace('\\', '/').split('/'))]
             if init_files:
                 from pathlib import Path
                 shortest_init = min(init_files, key=lambda p: len(Path(p).parts))
                 parts = Path(shortest_init).parent.parts
                 mod = '.'.join(parts)
-                if importlib.util.find_spec(mod):
-                    return mod
+                try:
+                    if importlib.util.find_spec(mod):
+                        return mod
+                except Exception:
+                    pass
     except Exception:
         pass
 
@@ -401,16 +405,44 @@ def find_module_from_package(pkg):
         import setuptools
         import os
         if os.path.exists('setup.py') or os.path.exists('pyproject.toml'):
-            pkgs = setuptools.find_namespace_packages(where='.')
-            for p in sorted(pkgs, key=len):
-                if p in ("google", "google.cloud") or p.startswith("tests"):
+            where_dir = "src" if os.path.isdir("src") else "."
+            pkgs = setuptools.find_namespace_packages(where=where_dir)
+            ignored_prefixes = ("tests", "samples", "examples", "benchmark", "benchmarks", "third_party", "testing", "test_utils", "docs", "build", "dist", "bin", "ci", "scripts", "cloudbuild", "notebooks", "assets", "scratch", "specs")
+            
+            filtered = []
+            for p in pkgs:
+                top = p.split(".")[0]
+                if top in ignored_prefixes or top.startswith(("test_", "sample_", "bench_", "example_", "doc_", "notebook_")) or p in ("google", "google.cloud"):
                     continue
-                path = p.replace('.', os.sep)
-                if os.path.isfile(os.path.join(path, '__init__.py')):
-                    if importlib.util.find_spec(p):
-                        return p
-    except Exception:
-        pass
+                filtered.append(p)
+
+            # First preference: packages containing __init__.py
+            for p in sorted(filtered, key=len):
+                path = os.path.join(where_dir, p.replace('.', os.sep))
+                try:
+                    if os.path.isfile(os.path.join(path, '__init__.py')):
+                        try:
+                            if importlib.util.find_spec(p):
+                                return p
+                        except Exception:
+                            pass
+                except OSError:
+                    continue
+
+            # Second preference: namespace packages containing .py files (e.g. googleapis-common-protos -> google.api)
+            for p in sorted(filtered, key=len):
+                path = os.path.join(where_dir, p.replace('.', os.sep))
+                try:
+                    if os.path.isdir(path) and any(f.endswith('.py') for f in os.listdir(path)):
+                        try:
+                            if importlib.util.find_spec(p):
+                                return p
+                        except Exception:
+                            pass
+                except OSError:
+                    continue
+    except Exception as e:
+        print(f"WARNING: Package discovery failed: {e}", file=sys.stderr)
 
     # 3. Fallback to basic string manipulation heuristics
     candidates = [
