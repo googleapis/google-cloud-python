@@ -25,6 +25,9 @@ from google.api_core._python_package_support import (
     warn_deprecation_for_versions_less_than,
 )
 from google.cloud.ndb import version
+
+__version__: str = version.__version__
+
 from google.cloud.ndb._datastore_api import EVENTUAL, EVENTUAL_CONSISTENCY, STRONG
 from google.cloud.ndb._datastore_query import Cursor, QueryIterator
 from google.cloud.ndb._transaction import (
@@ -134,8 +137,6 @@ from google.cloud.ndb.tasklets import (
     wait_all,
     wait_any,
 )
-
-__version__: str = version.__version__
 
 _PQC_GRPC_WARNING_TEMPLATE = (
     "Package {consumer_package} depends on {dependency_package}, currently installed at version {version_used_string}. "
