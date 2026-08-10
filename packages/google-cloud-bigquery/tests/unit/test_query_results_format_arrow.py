@@ -194,6 +194,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow:
             mock_pyarrow.py_buffer = lambda x: x
             batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
+            self.assertEqual(batches, [])
 
             expected_stream_name = "projects/test-proj/locations/US/jobs/test-job-456/streams/_default"
             mock_bqstorage.read_rows.assert_called_once_with(expected_stream_name, offset=0, timeout=5.0)
@@ -468,4 +469,3 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

@@ -3197,7 +3197,7 @@ class _EmptyRowIterator(RowIterator):
             schema=schema,
             query_results_format=query_results_format,
             *args,
-            **kwargs,
+            **kwargs,  # type: ignore[misc]
         )
         self._total_rows = 0
         self._query_results_format = query_results_format
