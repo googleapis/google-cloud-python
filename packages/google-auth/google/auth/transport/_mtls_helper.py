@@ -488,7 +488,7 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
         return None, None
     workload = cert_configs["workload"]
 
-    if "cert_path" not in workload or "key_path" not in workload:
+    if not isinstance(workload, dict) or "cert_path" not in workload or "key_path" not in workload:
         raise exceptions.ClientCertError(
             'Workload certificate configuration is missing "cert_path" or "key_path" in {}'.format(
                 absolute_path
