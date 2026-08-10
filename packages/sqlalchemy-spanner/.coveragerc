@@ -4,4 +4,3 @@ source = google/cloud/sqlalchemy_spanner
 
 [report]
 fail_under = 30
-
