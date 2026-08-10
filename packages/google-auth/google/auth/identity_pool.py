@@ -574,9 +574,10 @@ class Credentials(external_account.Credentials):
         if self._credential_source_certificate is not None:
             try:
                 cert_bytes = self._get_cert_bytes()
-            except exceptions.ClientCertError as e:
+            except (exceptions.ClientCertError, OSError) as e:
                 raise exceptions.RefreshError(
-                    "Failed to retrieve certificate bytes for external account credentials"
+                    "Failed to retrieve certificate bytes for external"
+                    " account credentials"
                 ) from e
             cert = _agent_identity_utils.parse_certificate(cert_bytes)
             if _agent_identity_utils.should_request_bound_token(cert):

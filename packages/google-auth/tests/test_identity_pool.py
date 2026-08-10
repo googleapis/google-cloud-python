@@ -1819,6 +1819,22 @@ class TestCredentials(object):
             "Failed to retrieve certificate bytes for external account credentials"
         )
 
+    @mock.patch.object(
+        identity_pool.Credentials,
+        "_get_cert_bytes",
+        side_effect=OSError("mock os error"),
+    )
+    def test_refresh_os_error_raises_refresh_error(self, mock_get_cert_bytes):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE.copy()
+        )
+
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            credentials.refresh(None)
+
+        msg = "Failed to retrieve certificate bytes for external"
+        assert excinfo.match(msg + " account credentials")
+
     @mock.patch("google.auth._agent_identity_utils.parse_certificate")
     @mock.patch(
         "google.auth._agent_identity_utils.should_request_bound_token",
