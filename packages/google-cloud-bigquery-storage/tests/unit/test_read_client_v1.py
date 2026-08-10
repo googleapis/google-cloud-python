@@ -166,6 +166,6 @@ def test_init_default_client_info(module_under_test):
 
         assert mock_wrap.call_count > 0
         for call in mock_wrap.call_args_list:
-            client_info = call.kwargs.get("client_info")
-            assert client_info is not None
-            assert expected_client_info in client_info.to_user_agent()
+            c_info = call.kwargs.get("client_info")
+            assert c_info is not None
+            assert expected_client_info in c_info.to_user_agent()
