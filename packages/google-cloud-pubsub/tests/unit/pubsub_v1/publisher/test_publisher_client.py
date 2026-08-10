@@ -27,8 +27,6 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core.gapic_v1.client_info import METRICS_METADATA_KEY
 from google.api_core.timeout import ConstantTimeout
-from opentelemetry import trace
-
 from google.cloud.pubsub_v1 import publisher, types
 from google.cloud.pubsub_v1.open_telemetry.context_propagation import (
     OpenTelemetryContextSetter,
@@ -41,6 +39,7 @@ from google.cloud.pubsub_v1.publisher._sequencer import ordered_sequencer
 from google.pubsub_v1 import types as gapic_types
 from google.pubsub_v1.services.publisher import client as publisher_client
 from google.pubsub_v1.services.publisher.transports.grpc import PublisherGrpcTransport
+from opentelemetry import trace
 
 C = TypeVar("C", bound=Callable[..., Any])
 typed_flaky = cast(Callable[[C], C], flaky(max_runs=5, min_passes=1))
@@ -119,10 +118,16 @@ def test_init_default_client_info(creds):
     expected_client_info = f"gccl/{installed_version}"
 
     for wrapped_method in client.transport._wrapped_methods.values():
+        # Handle internal changes in google-api-core _GapicCallable
+        metadata = getattr(
+            wrapped_method,
+            "_metadata",
+            getattr(wrapped_method, "_default_metadata", []),
+        )
         user_agent = next(
             (
                 header_value
-                for header, header_value in wrapped_method._metadata
+                for header, header_value in metadata
                 if header == METRICS_METADATA_KEY
             ),
             None,  # pragma: NO COVER
