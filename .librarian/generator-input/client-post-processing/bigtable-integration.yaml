@@ -314,7 +314,14 @@ replacements:
   - paths: [
       packages/google-cloud-bigtable/docs/index.rst
     ]
-    before: '(?s)This package includes clients for multiple versions.*'
+    before: |
+      API Reference
+      -------------
+      .. toctree::
+          :maxdepth: 2
+
+          bigtable_v2/services_
+          bigtable_v2/types_
     after: |
       Client Types
       -------------
@@ -324,20 +331,6 @@ replacements:
          data_client/data_client_usage
          classic_client/usage
          admin_client/admin_client_usage
-
-
-      Changelog
-      ---------
-
-      For a list of all ``google-cloud-bigtable`` releases:
-
-      .. toctree::
-          :maxdepth: 2
-
-          CHANGELOG
-
-      .. toctree::
-        :hidden:
 
         summary_overview.md
     count: 1
