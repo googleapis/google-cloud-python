@@ -314,7 +314,7 @@ replacements:
   - paths: [
       packages/google-cloud-bigtable/docs/index.rst
     ]
-    before: '(?s)This package includes clients for multiple versions of Google Cloud Bigtable\..*'
+    before: '(?s)This package includes clients for multiple versions.*'
     after: |
       Client Types
       -------------
