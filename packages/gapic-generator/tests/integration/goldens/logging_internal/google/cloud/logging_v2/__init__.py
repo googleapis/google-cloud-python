@@ -123,29 +123,26 @@ from .types.logging_metrics import UpdateLogMetricRequest
 api_core.check_python_version("google.cloud.logging_v2")
 api_core.check_dependency_versions("google.cloud.logging_v2")
 
-try:
-    from google.api_core._python_package_support import (
-        warn_deprecation_for_versions_less_than,
-    )
+from google.api_core._python_package_support import (
+    warn_deprecation_for_versions_less_than,
+)
 
-    _PQC_GRPC_WARNING_TEMPLATE = (
-        "Package {consumer_package} depends on {dependency_package}, currently installed at version {version_used_string}. "
-        "grpcio < 1.83.0 does not support Post-Quantum Cryptography (PQC). "
-        "Support for non-PQC environments is deprecated. In October 2026, "
-        "Google Cloud Python client libraries will raise their minimum requirements "
-        "(including google-api-core, grpcio, and grpcio-status) to enforce grpcio >= 1.83.0. "
-        "For more details on Google Cloud's post-quantum security migration, visit: "
-        "https://cloud.google.com/security/resources/post-quantum-cryptography"
-    )
+_PQC_GRPC_WARNING_TEMPLATE = (
+    "Package {consumer_package} depends on {dependency_package}, currently installed at version {version_used_string}. "
+    "grpcio < 1.83.0 does not support Post-Quantum Cryptography (PQC). "
+    "Support for non-PQC environments is deprecated. In October 2026, "
+    "Google Cloud Python client libraries will raise their minimum requirements "
+    "(including google-api-core, grpcio, and grpcio-status) to enforce grpcio >= 1.83.0. "
+    "For more details on Google Cloud's post-quantum security migration, visit: "
+    "https://cloud.google.com/security/resources/post-quantum-cryptography"
+)
 
-    warn_deprecation_for_versions_less_than(
-        "google.cloud.logging_v2",
-        "grpcio",
-        "1.83.0",
-        message_template=_PQC_GRPC_WARNING_TEMPLATE,
-    )
-except Exception:
-    pass
+warn_deprecation_for_versions_less_than(
+    "google.cloud.logging_v2",
+    "grpcio",
+    "1.83.0",
+    message_template=_PQC_GRPC_WARNING_TEMPLATE,
+)
 
 __all__ = (
     'BaseConfigServiceV2AsyncClient',
