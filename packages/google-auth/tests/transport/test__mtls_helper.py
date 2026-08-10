@@ -543,7 +543,9 @@ class TestGetWorkloadCertAndKey(object):
         mock_load_json_file,
     ):
         ecp_path = "/etc/gcloud/certificate_config.json"
-        home_path = os.path.expanduser("~/.config/gcloud/certificate_config.json")
+        home_path = os.path.join(
+            _mtls_helper._cloud_sdk.get_config_path(), "certificate_config.json"
+        )
         mock_get_cert_config_path.return_value = ecp_path
 
         def exists_side_effect(path):

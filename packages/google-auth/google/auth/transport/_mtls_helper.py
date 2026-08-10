@@ -473,7 +473,9 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
     # like SecureConnect instead of throwing an exception.
 
     if (not isinstance(cert_configs, dict) or "workload" not in cert_configs) and config_path is None:
-        default_home_path = path.expanduser(CERTIFICATE_CONFIGURATION_DEFAULT_PATH)
+        default_home_path = os.path.join(
+            _cloud_sdk.get_config_path(), "certificate_config.json"
+        )
         if path.exists(default_home_path) and default_home_path != absolute_path:
             home_data = _load_json_file(default_home_path)
             if isinstance(home_data, dict):
