@@ -85,7 +85,7 @@ filterwarnings = [
   "error",
   # Prevent Python version warnings from interfering with tests
   "ignore:.* Python version .*:FutureWarning",
-  # TODO: Remove once https://github.com/googleapis/google-cloud-python/issues/XXXXX is resolved (when grpcio >= 1.83.0 is enforced)
+  # TODO: Remove once b/544782314 is resolved (when grpcio >= 1.83.0 is enforced)
   "ignore:.*does not support Post-Quantum Cryptography.*:FutureWarning",
   # Remove once https://github.com/pytest-dev/pytest-cov/issues/621 is fixed
   "ignore:.*The --rsyncdir command line argument and rsyncdirs config variable are deprecated:DeprecationWarning",

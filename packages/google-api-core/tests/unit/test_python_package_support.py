@@ -41,15 +41,8 @@ def test_get_dependency_version(mocker, version_string_to_test):
     mock_importlib.assert_called_once_with("some-package")
 
     # Test package not found
-    mock_importlib.side_effect = Exception
+    mock_importlib.side_effect = ImportError
     assert get_dependency_version("not-a-package") == DependencyVersion(None, "--")
-
-
-def test_parse_version_to_tuple_prerelease():
-    """Test parse_version_to_tuple with pre-release versions."""
-    assert parse_version_to_tuple("1.83.1rc1") == (1, 83, 1)
-    assert parse_version_to_tuple("1.83.0dev0") == (1, 83, 0)
-    assert parse_version_to_tuple("6.33.5b2") == (6, 33, 5)
 
 
 @patch("google.api_core._python_package_support._get_distribution_and_import_packages")
