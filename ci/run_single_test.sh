@@ -147,6 +147,10 @@ case ${TEST_TYPE} in
                             cd "${WORKTREE_DIR}/${REPO_PREFIX}"
                             if [ -f setup.py ] || [ -f pyproject.toml ]; then
                                 if pip install -e . ; then
+                                    # Install framework peer dependencies for packages that omit them from install_requires
+                                    if [ "${PACKAGE_NAME}" = "django-google-spanner" ]; then
+                                        pip install "django~=5.2"
+                                    fi
                                     echo "INFO: Successfully installed baseline dependencies for ${PACKAGE_NAME}."
                                     python "${PROFILER_SCRIPT}" --package "${PACKAGE_NAME}" --iterations 11 --csv "${BASELINE_CSV}"
                                     if [ $? -eq 0 ]; then
@@ -183,6 +187,10 @@ case ${TEST_TYPE} in
                     retval=1
                 fi
             else
+                # Install framework peer dependencies for packages that omit them from install_requires
+                if [ "${PACKAGE_NAME}" = "django-google-spanner" ]; then
+                    pip install "django~=5.2"
+                fi
                 echo "INFO: Successfully installed dependencies for ${PACKAGE_NAME} on Python ${PY_VERSION}."
                 if [ -f "${BASELINE_CSV}" ]; then
                     python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000 --diff-baseline "${BASELINE_CSV}" --diff-threshold 100
