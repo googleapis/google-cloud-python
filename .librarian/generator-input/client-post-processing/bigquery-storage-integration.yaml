@@ -464,7 +464,7 @@ replacements:
   - paths: [
       packages/google-cloud-bigquery-storage/docs/index.rst,
     ]
-    before: '(?s)This package includes clients for multiple versions of Google Cloud Bigquery Storage\..*'
+    before: '(?s)This package includes clients for multiple versions.*'
     after: |
       Example Usage
       -------------
