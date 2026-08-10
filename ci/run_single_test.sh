@@ -149,7 +149,7 @@ case ${TEST_TYPE} in
                                 if pip install -e . ; then
                                     # Install framework peer dependencies for packages that omit them from install_requires
                                     if [ "${PACKAGE_NAME}" = "django-google-spanner" ]; then
-                                        pip install "django~=5.2"
+                                        pip install "django"
                                     fi
                                     echo "INFO: Successfully installed baseline dependencies for ${PACKAGE_NAME}."
                                     python "${PROFILER_SCRIPT}" --package "${PACKAGE_NAME}" --iterations 11 --csv "${BASELINE_CSV}"
@@ -189,7 +189,7 @@ case ${TEST_TYPE} in
             else
                 # Install framework peer dependencies for packages that omit them from install_requires
                 if [ "${PACKAGE_NAME}" = "django-google-spanner" ]; then
-                    pip install "django~=5.2"
+                    pip install "django"
                 fi
                 echo "INFO: Successfully installed dependencies for ${PACKAGE_NAME} on Python ${PY_VERSION}."
                 if [ -f "${BASELINE_CSV}" ]; then
