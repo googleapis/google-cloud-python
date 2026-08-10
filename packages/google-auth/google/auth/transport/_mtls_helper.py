@@ -459,7 +459,7 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
 
     data = _load_json_file(absolute_path)
 
-    if not isinstance(data, dict) or "cert_configs" not in data:
+    if not isinstance(data, dict) or "cert_configs" not in data or not isinstance(data["cert_configs"], dict):
         raise exceptions.ClientCertError(
             'Certificate config file {} is in an invalid format, a "cert configs" object is expected'.format(
                 absolute_path
