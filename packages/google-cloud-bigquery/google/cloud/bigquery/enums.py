@@ -512,4 +512,3 @@ class QueryResultsCompressionCodec(str, enum.Enum):
 
     ZSTD = "ZSTD"
     """Specifies ZSTD compression codec."""
-

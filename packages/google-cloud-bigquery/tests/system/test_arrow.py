@@ -272,4 +272,3 @@ def test_query_and_wait_arrow_format_to_dataframe_iterable(bigquery_client):
     concat_df = pandas.concat(dfs, ignore_index=True)
     assert concat_df.columns.tolist() == ["num", "text"]
     assert concat_df.to_dict(orient="records") == [{"num": 200, "text": "python"}]
-

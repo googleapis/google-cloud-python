@@ -90,9 +90,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
         with mock.patch.object(
             _job_helpers, "_to_query_request", return_value=unsupported_body
-        ), mock.patch.object(
-            _job_helpers, "query_jobs_insert", return_value=job_mock
-        ):
+        ), mock.patch.object(_job_helpers, "query_jobs_insert", return_value=job_mock):
             res_iterator = _job_helpers.query_and_wait(
                 client=client,
                 query="SELECT 1",
@@ -164,7 +162,9 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         )
 
         with mock.patch.object(
-            iterator, "_download_arrow_from_job_id", return_value=iter(["batch1", "batch2"])
+            iterator,
+            "_download_arrow_from_job_id",
+            return_value=iter(["batch1", "batch2"]),
         ) as mock_download:
             res = list(iterator.to_arrow_iterable(timeout=10.0))
             self.assertEqual(res, ["batch1", "batch2"])
@@ -196,8 +196,12 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
             self.assertEqual(batches, [])
 
-            expected_stream_name = "projects/test-proj/locations/US/jobs/test-job-456/streams/_default"
-            mock_bqstorage.read_rows.assert_called_once_with(expected_stream_name, offset=0, timeout=5.0)
+            expected_stream_name = (
+                "projects/test-proj/locations/US/jobs/test-job-456/streams/_default"
+            )
+            mock_bqstorage.read_rows.assert_called_once_with(
+                expected_stream_name, offset=0, timeout=5.0
+            )
 
     def test_download_arrow_from_job_id_with_first_page_response(self):
         mock_client = mock.MagicMock()
@@ -313,9 +317,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             mock_pyarrow.ipc.read_record_batch.assert_called_once_with(
                 b"stream_batch_bytes", "deserialized_schema"
             )
-            expected_stream_name = (
-                "projects/test-proj/locations/US/jobs/test-job-schema-only/streams/_default"
-            )
+            expected_stream_name = "projects/test-proj/locations/US/jobs/test-job-schema-only/streams/_default"
             mock_bqstorage.read_rows.assert_called_once_with(
                 expected_stream_name, offset=0, timeout=5.0
             )
@@ -338,7 +340,10 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         with mock.patch("google.cloud.bigquery.table.pyarrow"):
             with self.assertRaises(ValueError) as ctx:
                 list(iterator._download_arrow_from_job_id())
-            self.assertIn("The google-cloud-bigquery-storage library is required", str(ctx.exception))
+            self.assertIn(
+                "The google-cloud-bigquery-storage library is required",
+                str(ctx.exception),
+            )
 
     def test_download_arrow_from_job_id_with_schema_and_batch(self):
         mock_client = mock.MagicMock()
@@ -375,7 +380,9 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
             self.assertEqual(batches, ["fake_batch"])
             mock_pyarrow.ipc.read_schema.assert_called_once_with(b"schema_bytes")
-            mock_pyarrow.ipc.read_record_batch.assert_called_once_with(b"batch_bytes", "fake_schema")
+            mock_pyarrow.ipc.read_record_batch.assert_called_once_with(
+                b"batch_bytes", "fake_schema"
+            )
 
     def test_empty_row_iterator_to_arrow_iterable_checks_pyarrow(self):
         iterator = _EmptyRowIterator(query_results_format="ARROW")
@@ -464,17 +471,25 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             self.assertEqual(batches, [mock_first_batch])
             mock_client._ensure_bqstorage_client.assert_called_once()
             expected_stream = "projects/test-proj/locations/US/jobs/test-job-incomplete/streams/_default"
-            mock_bqstorage.read_rows.assert_called_once_with(expected_stream, offset=10, timeout=5.0)
+            mock_bqstorage.read_rows.assert_called_once_with(
+                expected_stream, offset=10, timeout=5.0
+            )
 
     def test_enums_values(self):
-        from google.cloud.bigquery.enums import QueryResultsFormat, QueryResultsCompressionCodec
+        from google.cloud.bigquery.enums import (
+            QueryResultsFormat,
+            QueryResultsCompressionCodec,
+        )
 
         self.assertEqual(QueryResultsFormat.ARROW, "ARROW")
         self.assertEqual(QueryResultsCompressionCodec.LZ4_FRAME, "LZ4_FRAME")
         self.assertEqual(QueryResultsCompressionCodec.ZSTD, "ZSTD")
 
     def test_job_helpers_query_and_wait_accepts_enums(self):
-        from google.cloud.bigquery.enums import QueryResultsFormat, QueryResultsCompressionCodec
+        from google.cloud.bigquery.enums import (
+            QueryResultsFormat,
+            QueryResultsCompressionCodec,
+        )
 
         client = mock.MagicMock(spec=Client)
         client._call_api.return_value = {
@@ -500,7 +515,9 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         call_args = client._call_api.call_args
         self.assertEqual(call_args.kwargs["data"]["queryResultsFormat"], "ARROW")
         self.assertEqual(
-            call_args.kwargs["data"]["formatOptions"]["arrowSerializationOptions"]["bufferCompression"],
+            call_args.kwargs["data"]["formatOptions"]["arrowSerializationOptions"][
+                "bufferCompression"
+            ],
             "LZ4_FRAME",
         )
 
@@ -519,7 +536,9 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         mock_batch = mock.MagicMock()
         mock_batch.to_pandas.return_value = "df_chunk"
 
-        with mock.patch.object(iterator, "to_arrow_iterable", return_value=[mock_batch]):
+        with mock.patch.object(
+            iterator, "to_arrow_iterable", return_value=[mock_batch]
+        ):
             with mock.patch("google.cloud.bigquery.table._pandas_helpers"):
                 dfs = list(iterator.to_dataframe_iterable())
                 self.assertEqual(dfs, ["df_chunk"])
@@ -548,5 +567,3 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-

@@ -2357,9 +2357,7 @@ class RowIterator(HTTPIterator):
                 if schema_bytes:
                     if isinstance(schema_bytes, str):
                         schema_bytes = base64.b64decode(schema_bytes)
-                    pa_schema = pyarrow.ipc.read_schema(
-                        pyarrow.py_buffer(schema_bytes)
-                    )
+                    pa_schema = pyarrow.ipc.read_schema(pyarrow.py_buffer(schema_bytes))
 
             arrow_batch_json = first_page.get("arrowRecordBatch")
             if isinstance(arrow_batch_json, dict) and pa_schema is not None:
@@ -2381,12 +2379,8 @@ class RowIterator(HTTPIterator):
         # Step 4: Stream remaining Arrow record batches from the job default stream.
         project = self._project or (self.client.project if self.client else None)
         location = self._location or (self.client.location if self.client else None)
-        stream_name = (
-            f"projects/{project}/locations/{location}/jobs/{self._job_id}/streams/_default"
-        )
-        reader = bqstorage_client.read_rows(
-            stream_name, offset=offset, timeout=timeout
-        )
+        stream_name = f"projects/{project}/locations/{location}/jobs/{self._job_id}/streams/_default"
+        reader = bqstorage_client.read_rows(stream_name, offset=offset, timeout=timeout)
         for response in reader:
             if (
                 response.arrow_schema
@@ -2402,7 +2396,9 @@ class RowIterator(HTTPIterator):
                 and pa_schema is not None
             ):
                 batch = pyarrow.ipc.read_record_batch(
-                    pyarrow.py_buffer(response.arrow_record_batch.serialized_record_batch),
+                    pyarrow.py_buffer(
+                        response.arrow_record_batch.serialized_record_batch
+                    ),
                     pa_schema,
                 )
                 yield batch
@@ -2604,6 +2600,7 @@ class RowIterator(HTTPIterator):
             dtypes = {}
 
         if self._query_results_format == QueryResultsFormat.ARROW.value:
+
             def _batch_to_dataframe(batch):
                 df = batch.to_pandas()
                 if dtypes:
@@ -2987,7 +2984,9 @@ class RowIterator(HTTPIterator):
 
         if (
             self._query_results_format != QueryResultsFormat.ARROW.value
-            and not self._should_use_bqstorage(bqstorage_client, create_bqstorage_client)
+            and not self._should_use_bqstorage(
+                bqstorage_client, create_bqstorage_client
+            )
         ):
             create_bqstorage_client = False
             bqstorage_client = None
@@ -3239,7 +3238,14 @@ class _EmptyRowIterator(RowIterator):
     """
 
     def __init__(
-        self, client=None, api_request=None, path=None, schema=(), *args, query_results_format: Optional[str] = None, **kwargs
+        self,
+        client=None,
+        api_request=None,
+        path=None,
+        schema=(),
+        *args,
+        query_results_format: Optional[str] = None,
+        **kwargs,
     ):
         super().__init__(
             client=client,
