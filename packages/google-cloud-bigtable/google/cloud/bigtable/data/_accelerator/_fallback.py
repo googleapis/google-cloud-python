@@ -125,6 +125,9 @@ def handle_accelerator_error(
     * any other gRPC error -> reset the counter, translate and raise
     * a non-gRPC exception -> re-raise unchanged (never masked as a fallback)
     """
+    # TODO(accelerator): emit a metric here (e.g. a fallback/error counter keyed
+    # by reason: dead-daemon / unimplemented / translated-error) once client-side
+    # accelerator metrics are wired up.
     # A dead subprocess can surface as a channel error under any status code, so
     # check liveness first: the "daemon died mid-flight" case always wins and is
     # never recoverable.
