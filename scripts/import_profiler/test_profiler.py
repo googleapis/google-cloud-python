@@ -641,6 +641,13 @@ def test_find_module_from_package_metadata_init():
         assert res == "foo.bar"
 
 
+def test_find_module_from_package_metadata_test_utils():
+    with patch("importlib.metadata.files", return_value=["test_utils/__init__.py"]), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("google-cloud-testutils")
+        assert res == "test_utils"
+
+
 def test_find_module_from_package_setuptools():
     sys.modules.setdefault("setuptools", MagicMock())
     with patch("importlib.metadata.files", side_effect=Exception), \
@@ -650,6 +657,19 @@ def test_find_module_from_package_setuptools():
          patch("importlib.util.find_spec", return_value=True):
         res = find_module_from_package("my-pkg")
         assert res == "my_pkg"
+
+
+def test_find_module_from_package_setuptools_test_utils():
+    sys.modules.setdefault("setuptools", MagicMock())
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("profiler.os.path.exists", return_value=True), \
+         patch("profiler.os.path.isdir", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["test_utils", "tests"]) as mock_find, \
+         patch("profiler.os.path.isfile", return_value=True), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("google-cloud-testutils")
+        assert res == "test_utils"
+        mock_find.assert_called_once_with(where="src")
 
 
 def test_find_module_from_package_setuptools_not_file_and_exception():
