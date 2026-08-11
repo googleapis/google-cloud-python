@@ -149,6 +149,19 @@ class AsyncAuthorizedSession:
             )
         self._auth_request = _auth_request
 
+    def _is_mtls_configured(self) -> bool:
+        """Check if mTLS is currently active based on flag, connector SSL context, or cached cert."""
+        if self._is_mtls:
+            return True
+        if self._cached_cert is not None:
+            return True
+        session = getattr(self._auth_request, "session", None)
+        connector = getattr(session, "connector", None)
+        ssl_ctx = getattr(connector, "_ssl", getattr(connector, "ssl", None))
+        if ssl_ctx is not None and not isinstance(ssl_ctx, bool):
+            return True
+        return False
+
     async def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
 
@@ -183,11 +196,11 @@ class AsyncAuthorizedSession:
                 )
                 if not use_client_cert:
                     # Dynamically disabling mTLS on an active session is unsafe in concurrent
-                    # environments and can cause a zombie state mismatch where mTLS contexts
+                    # environments and can cause a state mismatch where mTLS contexts
                     # remain attached while auth checks believe mTLS is disabled.
-                    if getattr(self, "_is_mtls", False):
+                    if self._is_mtls_configured():
                         raise exceptions.MutualTLSChannelError(
-                            "Cannot disable mTLS on an active session. A new AuthorizedSession must be created."
+                            "Cannot disable mTLS on an active session. A new AsyncAuthorizedSession must be created."
                         )
                     return
 
@@ -199,9 +212,9 @@ class AsyncAuthorizedSession:
                     ) = await mtls.get_client_cert_and_key(client_cert_callback)
 
                     # Prevent mid-lifecycle transition from mTLS-enabled to mTLS-disabled state.
-                    if getattr(self, "_is_mtls", False) and not is_mtls:
+                    if self._is_mtls_configured() and not is_mtls:
                         raise exceptions.MutualTLSChannelError(
-                            "Cannot disable mTLS on an active session. A new AuthorizedSession must be created."
+                            "Cannot disable mTLS on an active session. A new AsyncAuthorizedSession must be created."
                         )
 
                     if is_mtls:

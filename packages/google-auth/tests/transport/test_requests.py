@@ -1075,6 +1075,27 @@ class TestAuthorizedSession(object):
             google.auth.transport.requests._MutualTlsAdapter,
         )
 
+    def test_configure_mtls_channel_desynchronized_state_raises(self):
+        auth_session = google.auth.transport.requests.AuthorizedSession(
+            credentials=mock.Mock()
+        )
+        # Mount an mTLS adapter manually, leaving _is_mtls False
+        auth_session.mount(
+            "https://",
+            google.auth.transport.requests._MutualTlsAdapter(
+                pytest.public_cert_bytes, pytest.private_key_bytes
+            ),
+        )
+        assert not auth_session.is_mtls
+        assert auth_session._is_mtls_configured()
+
+        # Calling configure_mtls_channel with mTLS disabled in env should raise
+        with pytest.raises(exceptions.MutualTLSChannelError):
+            with mock.patch.dict(
+                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "false"}
+            ):
+                auth_session.configure_mtls_channel()
+
 
 class TestMutualTlsOffloadAdapter(object):
     @mock.patch.object(requests.adapters.HTTPAdapter, "init_poolmanager")

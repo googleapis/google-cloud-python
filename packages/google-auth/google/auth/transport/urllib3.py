@@ -319,6 +319,21 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
         super(AuthorizedHttp, self).__init__()
 
+    def _is_mtls_configured(self) -> bool:
+        """Check if mTLS is currently active based on flag, pool ssl_context, or cached cert."""
+        if self._is_mtls:
+            return True
+        if getattr(self, "_cached_cert", None) is not None:
+            return True
+        if (
+            not self._has_user_provided_http
+            and hasattr(self.http, "connection_pool_kw")
+            and isinstance(self.http.connection_pool_kw, dict)
+            and self.http.connection_pool_kw.get("ssl_context") is not None
+        ):
+            return True
+        return False
+
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configures mutual TLS channel using the given client_cert_callback or
         application default SSL credentials.
@@ -351,9 +366,9 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         use_client_cert = transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
             # Dynamically disabling mTLS on an active session is unsafe in concurrent
-            # environments and can cause a zombie state mismatch where mTLS connection
+            # environments and can cause a state mismatch where mTLS connection
             # pools remain attached while auth checks believe mTLS is disabled.
-            if getattr(self, "_is_mtls", False):
+            if self._is_mtls_configured():
                 raise exceptions.MutualTLSChannelError(
                     "Cannot disable mTLS on an active session. A new AuthorizedHttp must be created."
                 )
@@ -365,7 +380,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             )
 
             # Prevent mid-lifecycle transition from mTLS-enabled to mTLS-disabled state.
-            if getattr(self, "_is_mtls", False) and not found_cert_key:
+            if self._is_mtls_configured() and not found_cert_key:
                 raise exceptions.MutualTLSChannelError(
                     "Cannot disable mTLS on an active session. A new AuthorizedHttp must be created."
                 )

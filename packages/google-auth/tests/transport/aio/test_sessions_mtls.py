@@ -426,3 +426,19 @@ class TestSessionsMtls:
             assert session._auth_request is first_auth_request
             await session.close()
 
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_desynchronized_state_raises(self):
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        session = sessions.AsyncAuthorizedSession(mock_creds)
+        # Directly set cached cert, leaving _is_mtls False
+        session._cached_cert = b"fake_cert_data"
+        assert not session._is_mtls
+        assert session._is_mtls_configured()
+
+        with pytest.raises(exceptions.MutualTLSChannelError):
+            with mock.patch.dict(
+                os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
+            ):
+                await session.configure_mtls_channel()
+        await session.close()
+
