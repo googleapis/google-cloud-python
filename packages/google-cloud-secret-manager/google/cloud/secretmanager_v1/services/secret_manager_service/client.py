@@ -771,6 +771,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 client_info=client_info,
                 always_use_jwt_access=True,
                 api_audience=self._client_options.api_audience,
+                configuration=self._client_options,
             )
 
         if "async" not in str(self._transport):
@@ -1901,6 +1902,10 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "SecretManagerServiceClient.access_secret_version"
             ) as span:
                 span.set_attribute("gcp.secretmanager.secret.name", request.name)
+                span.set_attribute("gcp.client.service", "secretmanager")
+                span.set_attribute("gcp.client.version", package_version.__version__)
+                span.set_attribute("gcp.client.repo", "googleapis/google-cloud-python")
+                span.set_attribute("gcp.client.artifact", "google-cloud-secret-manager")
                 response = rpc(
                     request,
                     retry=retry,
