@@ -875,3 +875,38 @@ def test_unary_response_future_cancelled(mock_should_retry):
 
     assert future.done() is True
     assert len(callbacks_fired) == 1
+
+@mock.patch("google.auth.transport.grpc._MTLSCallInterceptor._should_retry")
+def test_unary_response_future_no_retry_but_refresh(mock_should_retry):
+    import google.auth.transport.grpc as transport_grpc
+
+    interceptor = transport_grpc._MTLSCallInterceptor()
+    interceptor._wrapper = mock.Mock()
+    interceptor._wrapper._cached_cert = "cert"
+
+    # Mock RpcError exception for the future
+    mock_err = transport_grpc.grpc.RpcError()
+    mock_err.code = lambda: transport_grpc.grpc.StatusCode.UNAUTHENTICATED
+
+    inner_future = mock.Mock()
+    inner_future.cancelled.return_value = False
+    inner_future.exception.return_value = mock_err
+
+    mock_should_retry.return_value = True
+
+    # Set can_replay=False by mocking the payload's can_replay logic
+    payload = mock.Mock()
+    payload.can_replay.return_value = False
+
+    call_details = mock.Mock()
+    future = transport_grpc._RetryableUnaryResponseFuture(
+        continuation=lambda cd, pl: inner_future,
+        client_call_details=call_details,
+        request_or_iterator=payload,
+        interceptor=interceptor,
+        is_client_stream=True,
+    )
+
+    future._on_inner_future_done(inner_future)
+
+    interceptor._wrapper.refresh_logic.assert_called_once_with(1)
