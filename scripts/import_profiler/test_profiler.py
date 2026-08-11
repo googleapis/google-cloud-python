@@ -650,10 +650,13 @@ def test_find_module_from_package_metadata_test_utils():
 
 def test_find_module_from_package_setuptools():
     sys.modules.setdefault("setuptools", MagicMock())
+    def mock_isfile(path):
+        return "my_pkg" in path
     with patch("importlib.metadata.files", side_effect=Exception), \
-         patch("os.path.exists", return_value=True), \
+         patch("profiler.os.path.exists", return_value=True), \
+         patch("profiler.os.path.isdir", return_value=True), \
          patch("setuptools.find_namespace_packages", return_value=["google", "google.cloud", "tests.dummy", "my_pkg"]), \
-         patch("os.path.isfile", return_value=True), \
+         patch("profiler.os.path.isfile", side_effect=mock_isfile), \
          patch("importlib.util.find_spec", return_value=True):
         res = find_module_from_package("my-pkg")
         assert res == "my_pkg"
@@ -833,32 +836,30 @@ def test_cli_main_options():
 def test_should_ignore_namespace_package():
     from profiler import _should_ignore_namespace_package
 
-    # Parent namespace roots should be ignored
-    assert _should_ignore_namespace_package("google", "google", "google-cloud-storage") is True
-    assert _should_ignore_namespace_package("google", "google.cloud", "google-cloud-storage") is True
-
     # Standard non-library top-level directories should be ignored
-    assert _should_ignore_namespace_package("tests", "tests", "google-cloud-storage") is True
-    assert _should_ignore_namespace_package("samples", "samples", "google-cloud-storage") is True
-    assert _should_ignore_namespace_package("test_utils", "test_utils", "google-cloud-storage") is True
-    assert _should_ignore_namespace_package("test_helpers", "test_helpers", "google-cloud-storage") is True
+    assert _should_ignore_namespace_package("tests", "google-cloud-storage") is True
+    assert _should_ignore_namespace_package("samples", "google-cloud-storage") is True
+    assert _should_ignore_namespace_package("test_utils", "google-cloud-storage") is True
+    assert _should_ignore_namespace_package("test_helpers", "google-cloud-storage") is True
 
     # Exception: Target package explicitly contains the top-level directory name (e.g. google-cloud-testutils -> test_utils)
-    assert _should_ignore_namespace_package("test_utils", "test_utils", "google-cloud-testutils") is False
+    assert _should_ignore_namespace_package("test_utils", "google-cloud-testutils") is False
 
-    # Valid library package should not be ignored
-    assert _should_ignore_namespace_package("google", "google.cloud.storage", "google-cloud-storage") is False
-    assert _should_ignore_namespace_package("my_library", "my_library", "my-library") is False
+    # Valid library package top-level should not be ignored
+    assert _should_ignore_namespace_package("google", "google-cloud-storage") is False
+    assert _should_ignore_namespace_package("my_library", "my-library") is False
 
 
 def test_find_module_from_package_testutils():
     """Verifies that google-cloud-testutils correctly resolves to test_utils namespace package."""
     sys.modules.setdefault("setuptools", MagicMock())
+    def mock_isfile(path):
+        return "test_utils" in path
     with patch("importlib.metadata.files", side_effect=Exception), \
          patch("profiler.os.path.exists", return_value=True), \
          patch("profiler.os.path.isdir", return_value=True), \
          patch("setuptools.find_namespace_packages", return_value=["google", "google.cloud", "tests", "test_utils"]) as mock_find, \
-         patch("profiler.os.path.isfile", return_value=True), \
+         patch("profiler.os.path.isfile", side_effect=mock_isfile), \
          patch("importlib.util.find_spec", return_value=True):
         res = find_module_from_package("google-cloud-testutils")
         assert res == "test_utils"

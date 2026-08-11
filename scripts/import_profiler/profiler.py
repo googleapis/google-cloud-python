@@ -377,7 +377,6 @@ def validate_module_name(module_name):
         raise argparse.ArgumentTypeError(f"'{module_name}' is not a valid Python module identifier.")
     return module_name
 
-PARENT_NAMESPACES = ("google", "google.cloud")
 IGNORED_TOP_LEVEL_NAMES = {
     "tests", "samples", "examples", "benchmark", "benchmarks", "third_party",
     "testing", "test_utils", "docs", "build", "dist", "bin", "ci", "scripts",
@@ -389,22 +388,16 @@ IGNORED_NAME_PREFIXES = (
 )
 
 
-def _should_ignore_namespace_package(top_level, full_package, target_pkg):
-    """Determines if a discovered package path should be excluded from module selection.
+def _should_ignore_namespace_package(top_level, target_pkg):
+    """Determines if a discovered top-level directory should be excluded from module selection.
 
     Args:
         top_level: Top-level directory component of the package (e.g. 'tests' or 'google').
-        full_package: Full namespace package path (e.g. 'google.cloud.storage' or 'google').
         target_pkg: The distribution package being profiled (e.g. 'google-cloud-storage' or 'google-cloud-testutils').
 
     Returns:
-        True if the namespace package should be ignored, False otherwise.
+        True if the top-level directory represents a non-library folder, False otherwise.
     """
-    # Parent namespace containers (e.g. 'google', 'google.cloud') are non-leaf packages, not concrete library modules.
-    if full_package in PARENT_NAMESPACES:
-        return True
-
-    # Check if the top-level directory matches non-library folders (exact match) or prefixes (e.g. test_*)
     is_non_library_dir = (
         top_level in IGNORED_TOP_LEVEL_NAMES
         or top_level.startswith(IGNORED_NAME_PREFIXES)
@@ -469,7 +462,7 @@ def find_module_from_package(pkg):
             filtered = []
             for p in pkgs:
                 top = p.split(".")[0]
-                if _should_ignore_namespace_package(top, p, pkg):
+                if _should_ignore_namespace_package(top, pkg):
                     continue
                 filtered.append(p)
 
