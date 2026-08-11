@@ -247,3 +247,29 @@ def test_query_and_wait_arrow_format_with_compression_codec(bigquery_client):
     assert isinstance(table, pyarrow.Table)
     assert table.column_names == ["val"]
     assert table.to_pydict() == {"val": [42]}
+
+
+def test_query_and_wait_arrow_format_to_dataframe(bigquery_client):
+    pandas = pytest.importorskip("pandas")
+    iterator = bigquery_client.query_and_wait(
+        "SELECT 100 AS num, 'world' AS text",
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    df = iterator.to_dataframe()
+    assert isinstance(df, pandas.DataFrame)
+    assert df.columns.tolist() == ["num", "text"]
+    assert df.to_dict(orient="records") == [{"num": 100, "text": "world"}]
+
+
+def test_query_and_wait_arrow_format_to_dataframe_iterable(bigquery_client):
+    pandas = pytest.importorskip("pandas")
+    iterator = bigquery_client.query_and_wait(
+        "SELECT 200 AS num, 'python' AS text",
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    dfs = list(iterator.to_dataframe_iterable())
+    assert len(dfs) >= 1
+    concat_df = pandas.concat(dfs, ignore_index=True)
+    assert concat_df.columns.tolist() == ["num", "text"]
+    assert concat_df.to_dict(orient="records") == [{"num": 200, "text": "python"}]
+

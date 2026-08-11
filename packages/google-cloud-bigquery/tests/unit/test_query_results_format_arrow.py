@@ -504,7 +504,49 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             "LZ4_FRAME",
         )
 
+    def test_row_iterator_to_dataframe_iterable_when_format_is_arrow(self):
+        mock_client = mock.MagicMock()
+        mock_client._ensure_bqstorage_client.return_value = mock.MagicMock()
+
+        iterator = RowIterator(
+            client=mock_client,
+            api_request=mock.MagicMock(),
+            path=None,
+            schema=(),
+            query_results_format="ARROW",
+        )
+
+        mock_batch = mock.MagicMock()
+        mock_batch.to_pandas.return_value = "df_chunk"
+
+        with mock.patch.object(iterator, "to_arrow_iterable", return_value=[mock_batch]):
+            with mock.patch("google.cloud.bigquery.table._pandas_helpers"):
+                dfs = list(iterator.to_dataframe_iterable())
+                self.assertEqual(dfs, ["df_chunk"])
+
+    def test_row_iterator_to_dataframe_when_format_is_arrow(self):
+        mock_client = mock.MagicMock()
+        mock_client._ensure_bqstorage_client.return_value = mock.MagicMock()
+
+        iterator = RowIterator(
+            client=mock_client,
+            api_request=mock.MagicMock(),
+            path=None,
+            schema=(),
+            query_results_format="ARROW",
+        )
+
+        mock_table = mock.MagicMock()
+        mock_table.__iter__.return_value = iter([])
+        mock_table.to_pandas.return_value = "full_df"
+
+        with mock.patch.object(iterator, "to_arrow", return_value=mock_table):
+            with mock.patch("google.cloud.bigquery.table._pandas_helpers"):
+                df = iterator.to_dataframe()
+                self.assertEqual(df, "full_df")
+
 
 if __name__ == "__main__":
     unittest.main()
+
 

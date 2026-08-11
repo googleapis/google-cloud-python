@@ -69,7 +69,7 @@ from google.cloud.bigquery import exceptions as bq_exceptions
 from google.cloud.bigquery import schema as _schema
 from google.cloud.bigquery._tqdm_helpers import get_progress_bar
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
-from google.cloud.bigquery.enums import DefaultPandasDTypes
+from google.cloud.bigquery.enums import DefaultPandasDTypes, QueryResultsFormat
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.schema import (
     _build_schema_resource,
@@ -188,7 +188,7 @@ def _disallow_when_arrow(func):
 
     @functools.wraps(func)
     def wrapper(self, *args, **kwargs):
-        if self._query_results_format == "ARROW":
+        if self._query_results_format == QueryResultsFormat.ARROW.value:
             raise ValueError(_CANNOT_ITERATE_ARROW_ERROR)
         return func(self, *args, **kwargs)
 
@@ -2272,7 +2272,7 @@ class RowIterator(HTTPIterator):
 
         .. versionadded:: 2.31.0
         """
-        if self._query_results_format == "ARROW":
+        if self._query_results_format == QueryResultsFormat.ARROW.value:
             return self._download_arrow_from_job_id(
                 bqstorage_client=bqstorage_client,
                 timeout=timeout,
@@ -2519,7 +2519,10 @@ class RowIterator(HTTPIterator):
                 # but mypy cannot infer this correlation. We ignore the union-attr error here.
                 bqstorage_client._transport.close()  # type: ignore[union-attr]
 
-        if record_batches and (bqstorage_client is not None or self._query_results_format == "ARROW"):
+        if record_batches and (
+            bqstorage_client is not None
+            or self._query_results_format == QueryResultsFormat.ARROW.value
+        ):
             return pyarrow.Table.from_batches(record_batches)
         else:
             # No records (not record_batches), use schema based on BigQuery schema
@@ -2599,6 +2602,23 @@ class RowIterator(HTTPIterator):
 
         if dtypes is None:
             dtypes = {}
+
+        if self._query_results_format == QueryResultsFormat.ARROW.value:
+            def _batch_to_dataframe(batch):
+                df = batch.to_pandas()
+                if dtypes:
+                    for col, dtype in dtypes.items():
+                        if col in df.columns:
+                            df[col] = df[col].astype(dtype)
+                return df
+
+            return (
+                _batch_to_dataframe(batch)
+                for batch in self.to_arrow_iterable(
+                    bqstorage_client=bqstorage_client,
+                    timeout=timeout,
+                )
+            )
 
         self._maybe_warn_max_results(bqstorage_client)
 
@@ -2965,7 +2985,10 @@ class RowIterator(HTTPIterator):
 
         self._maybe_warn_max_results(bqstorage_client)
 
-        if not self._should_use_bqstorage(bqstorage_client, create_bqstorage_client):
+        if (
+            self._query_results_format != QueryResultsFormat.ARROW.value
+            and not self._should_use_bqstorage(bqstorage_client, create_bqstorage_client)
+        ):
             create_bqstorage_client = False
             bqstorage_client = None
 
