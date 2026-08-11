@@ -225,7 +225,9 @@ def test_to_arrow_query_with_empty_results(bigquery_client):
     assert struct_type.get_field_index("int_field") == 1
 
 
-def test_query_and_wait_arrow_format_to_arrow_iterable(bigquery_client):
+def test_query_and_wait_arrow_format_with_compression_codec_to_arrow_iterable(
+    bigquery_client,
+):
     iterator = bigquery_client.query_and_wait(
         "SELECT 1 AS num, 'hello' AS msg",
         query_results_format="ARROW",
@@ -238,7 +240,7 @@ def test_query_and_wait_arrow_format_to_arrow_iterable(bigquery_client):
     assert table.to_pydict() == {"num": [1], "msg": ["hello"]}
 
 
-def test_query_and_wait_arrow_format_with_compression_codec(bigquery_client):
+def test_query_and_wait_arrow_format_to_arrow(bigquery_client):
     iterator = bigquery_client.query_and_wait(
         "SELECT 42 AS val",
         query_results_format=enums.QueryResultsFormat.ARROW,
