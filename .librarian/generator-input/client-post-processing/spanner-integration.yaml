@@ -254,7 +254,7 @@ replacements:
   - paths: [packages/google-cloud-spanner/google/cloud/spanner_v1/__init__.py]
     before: |
       from google.cloud.spanner_v1 import gapic_version as package_version
-      [\s\S]*?"TransactionSelector",\n\)
+      [\s\S]*?__all__ = \([\s\S]*?\n\)
     after: |
       from __future__ import absolute_import
 
