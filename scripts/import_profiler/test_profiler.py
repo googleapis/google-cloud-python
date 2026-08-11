@@ -862,7 +862,7 @@ def test_find_module_from_package_testutils():
          patch("importlib.util.find_spec", return_value=True):
         res = find_module_from_package("google-cloud-testutils")
         assert res == "test_utils"
-        mock_find.assert_called_once_with(where=".")
+        mock_find.assert_called_once_with(where="src")
 
 
 
