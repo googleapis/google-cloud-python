@@ -322,12 +322,10 @@ def _find_session(*args, **kwargs):
     for arg in args:
         if isinstance(arg, Session) and _is_session_initialized(arg):
             return arg
-        session = getattr(arg, "_session", None)
-        if isinstance(session, Session) and _is_session_initialized(session):
-            return session
-        session = getattr(arg, "session", None)
-        if isinstance(session, Session) and _is_session_initialized(session):
-            return session
+        for attr in ("_session", "session"):
+            session = getattr(arg, attr, None)
+            if isinstance(session, Session) and _is_session_initialized(session):
+                return session
 
     session = kwargs.get("session")
     if (
