@@ -8,9 +8,6 @@
     "packages/google-crc32c": {
       "component": "google-crc32c"
     },
-    "packages/pandas-gbq": {
-      "component": "pandas-gbq"
-    },
     "preview-packages/google-cloud-compute": {
       "package-name": "google-cloud-compute",
       "versioning": "prerelease",

@@ -3911,6 +3911,9 @@
     "packages/grpc-google-iam-v1": {
       "component": "grpc-google-iam-v1"
     },
+    "packages/pandas-gbq": {
+      "component": "pandas-gbq"
+    },
     "packages/proto-plus": {
       "component": "proto-plus"
     },

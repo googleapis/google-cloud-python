@@ -90,6 +90,11 @@ case ${TEST_TYPE} in
             nox -s unit-3.14
             retval=$?
             ;;
+        "3.15")
+            # This is needed to speed up builds
+            nox --force-venv-backend uv -s unit-3.15
+            retval=$?
+            ;;
         *)
             echo "unsupported PY_VERSION"
             exit 1
@@ -98,13 +103,35 @@ case ${TEST_TYPE} in
         ;;
     import_profile)
         if [ -f setup.py ] || [ -f pyproject.toml ]; then
+            PACKAGE_NAME=$(basename $(pwd))
+
+            # TODO(https://github.com/googleapis/google-cloud-python/issues/18035):
+            # Remove this skip once Python 3.15 is officially released and upstream binary wheels
+            # (e.g. numpy, pyarrow, pandas, geopandas, pikepdf) are published on PyPI.
+            # Packages with heavy C/Rust dependencies attempt full source compilation on pre-release Python,
+            # taking 5-10+ minutes before failing due to unreleased CPython 3.15 C-API changes.
+            if [[ "${PY_VERSION}" == "3.15"* ]]; then
+                UNSUPPORTED_PRE_RELEASE_PACKAGES=(
+                    "bigframes"
+                    "pandas-gbq"
+                    "google-cloud-documentai-toolbox"
+                    "db-dtypes"
+                    "bigquery-magics"
+                )
+                for unsupported in "${UNSUPPORTED_PRE_RELEASE_PACKAGES[@]}"; do
+                    if [ "${PACKAGE_NAME}" = "${unsupported}" ]; then
+                        echo "WARNING: Skipping import_profile for ${PACKAGE_NAME}: package has heavy C/Rust dependencies not yet supported on pre-release Python ${PY_VERSION}."
+                        exit 0
+                    fi
+                done
+            fi
+
             echo "Creating temporary virtualenv for import profile..."
             python3 -m venv .venv-profiler
             source .venv-profiler/bin/activate
             export PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1
             python -m pip install --upgrade pip setuptools
             
-            PACKAGE_NAME=$(basename $(pwd))
             PROFILER_TEMP_DIR=$(mktemp -d)
             cp ../../scripts/import_profiler/profiler.py "${PROFILER_TEMP_DIR}/profiler.py"
             PROFILER_SCRIPT="${PROFILER_TEMP_DIR}/profiler.py"
@@ -121,13 +148,26 @@ case ${TEST_TYPE} in
                     WORKTREE_DIR=$(mktemp -d)
                     rmdir "${WORKTREE_DIR}"
                     if git worktree add "${WORKTREE_DIR}" "${BASELINE_COMMIT}" 2>/dev/null; then
-                        (
+                        if ! (
                             cd "${WORKTREE_DIR}/${REPO_PREFIX}"
                             if [ -f setup.py ] || [ -f pyproject.toml ]; then
-                                pip install -e .
-                                python "${PROFILER_SCRIPT}" --package "${PACKAGE_NAME}" --iterations 11 --csv "${BASELINE_CSV}"
+                                if pip install -e . ; then
+                                    echo "INFO: Successfully installed baseline dependencies for ${PACKAGE_NAME}."
+                                    python "${PROFILER_SCRIPT}" --package "${PACKAGE_NAME}" --iterations 11 --csv "${BASELINE_CSV}"
+                                    if [ $? -eq 0 ]; then
+                                        echo "INFO: Successfully ran baseline profiler for ${PACKAGE_NAME}."
+                                    fi
+                                elif [[ "${PY_VERSION}" != "3.15"* ]]; then
+                                    exit 1
+                                fi
                             fi
-                        )
+                        ); then
+                            git worktree remove -f "${WORKTREE_DIR}"
+                            deactivate
+                            rm -rf .venv-profiler
+                            rm -rf "${PROFILER_TEMP_DIR}"
+                            exit 1
+                        fi
                         git worktree remove -f "${WORKTREE_DIR}"
                     else
                         echo "Failed to create git worktree for baseline. Skipping baseline generation."
@@ -137,14 +177,28 @@ case ${TEST_TYPE} in
                 fi
             fi
             
-            pip install -e .
-            
-            if [ -f "${BASELINE_CSV}" ]; then
-                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000 --diff-baseline "${BASELINE_CSV}" --diff-threshold 100
+            # TODO(https://github.com/googleapis/google-cloud-python/issues/18035):
+            # Clean up this fallback once Python 3.15 is officially released and upstream binary wheels are available on PyPI.
+            # On pre-release Python versions, packages with complex C/Rust dependencies (e.g. bigframes) fail during pip install due to missing pre-built wheels.
+            if ! pip install -e . ; then
+                if [[ "${PY_VERSION}" == "3.15"* ]]; then
+                    echo "WARNING: Could not install dependencies for ${PACKAGE_NAME} on Python ${PY_VERSION} (missing pre-built binary wheels for pre-release Python). Skipping import_profile."
+                    retval=0
+                else
+                    retval=1
+                fi
             else
-                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000
+                echo "INFO: Successfully installed dependencies for ${PACKAGE_NAME} on Python ${PY_VERSION}."
+                if [ -f "${BASELINE_CSV}" ]; then
+                    python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000 --diff-baseline "${BASELINE_CSV}" --diff-threshold 100
+                else
+                    python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000
+                fi
+                retval=$?
+                if [ $retval -eq 0 ]; then
+                    echo "INFO: Successfully completed import_profile for ${PACKAGE_NAME}."
+                fi
             fi
-            retval=$?
             deactivate
             rm -rf .venv-profiler
             rm -rf "${PROFILER_TEMP_DIR}"

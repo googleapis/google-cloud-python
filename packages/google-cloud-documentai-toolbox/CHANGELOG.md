@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-documentai-toolbox/#history
 
+## [0.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-toolbox-v0.17.1...google-cloud-documentai-toolbox-v0.17.2) (2026-08-06)
+
+
+### Bug Fixes
+
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
 ## [0.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-toolbox-v0.17.0...google-cloud-documentai-toolbox-v0.17.1) (2026-07-13)
 
 

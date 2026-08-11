@@ -26,6 +26,7 @@ MAX_JOBS=$(nproc)
 
 mkdir -p "${LOG_DIR}"
 
+# Identify modified packages
 BUILD_TYPE="${BUILD_TYPE:-presubmit}"
 TARGET_BRANCH="${TARGET_BRANCH:-main}"
 PACKAGE_DIRS="${PACKAGE_DIRS:-packages preview-packages}"
@@ -50,10 +51,23 @@ if [ -z "${modified_packages}" ]; then
     echo "============================================================"
     exit 0
 fi
-
-if [ ! -d "${RESULTS_DIR}" ]; then
-    echo "Error: No coverage results found in ${RESULTS_DIR}."
-    exit 1
+# Check if any modified package requires coverage
+requires_coverage=false
+for pkg in ${modified_packages}; do
+    if [ -f "${pkg}/.coveragerc" ] && grep -Eq "fail_under\s*=\s*0" "${pkg}/.coveragerc"; then
+        continue
+    fi
+    requires_coverage=true
+    break
+done
+if [ ! -d "${RESULTS_DIR}" ] || [ -z "$(ls -A "${RESULTS_DIR}" 2>/dev/null)" ]; then
+    if [ "${requires_coverage}" = "true" ]; then
+        echo "Error: No coverage results found in ${RESULTS_DIR}, but some modified packages require coverage."
+        exit 1
+    else
+        echo "No coverage results found, but no modified packages require coverage."
+        exit 0
+    fi
 fi
 
 # Unzip any zipped coverage results
@@ -65,7 +79,7 @@ report_package_coverage() {
     local pkg_name_clean=$(echo "${pkg}" | sed 's|/$||' | sed 's|/|_|g')
     local pkg_log="${LOG_DIR}/${pkg_name_clean}.log"
     local pkg_status="${LOG_DIR}/${pkg_name_clean}.status"
-    
+
     # Use /dev/shm for the combined coverage file to reduce disk I/O
     local pkg_coverage_db="/dev/shm/.coverage.${pkg_name_clean}"
 
@@ -112,7 +126,7 @@ report_package_coverage() {
             echo "No .coveragerc found for ${pkg}, enforcing default" >> "${pkg_log}"
             COVERAGE_FILE="${pkg_coverage_db}" coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
         fi
-        
+
         echo $? > "${pkg_status}"
         popd > /dev/null
     )
