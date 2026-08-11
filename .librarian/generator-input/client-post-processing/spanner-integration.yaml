@@ -409,7 +409,6 @@ replacements:
           "BatchTransactionId",
           "DefaultTransactionOptions",
       )
-    count: 1
   - paths: [packages/google-cloud-spanner/google/cloud/spanner/__init__.py]
     before: '(?s)from google.cloud.spanner import gapic_version as package_version.*'
     after: |
