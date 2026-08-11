@@ -29,10 +29,9 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
+from google.cloud.secretmanager_v1.types import resources, service
 from google.protobuf import json_format
 from requests import __version__ as requests_version
-
-from google.cloud.secretmanager_v1.types import resources, service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseSecretManagerServiceRestTransport
@@ -1071,6 +1070,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
         url_scheme: str = "https",
         interceptor: Optional[SecretManagerServiceRestInterceptor] = None,
         api_audience: Optional[str] = None,
+        configuration=None,
     ) -> None:
         """Instantiate the transport.
 

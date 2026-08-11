@@ -30,9 +30,8 @@ from google.api_core import gapic_v1, grpc_helpers
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
-
 from google.cloud.secretmanager_v1.types import resources, service
+from google.protobuf.json_format import MessageToJson
 
 from .base import DEFAULT_CLIENT_INFO, SecretManagerServiceTransport
 
@@ -148,6 +147,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         api_audience: Optional[str] = None,
+        configuration=None,
     ) -> None:
         """Instantiate the transport.
 
@@ -272,6 +272,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
                     ("grpc.max_send_message_length", -1),
                     ("grpc.max_receive_message_length", -1),
                 ],
+                configuration=configuration,
             )
 
         self._interceptor = _LoggingClientInterceptor()
