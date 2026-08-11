@@ -151,7 +151,8 @@ def test_create_job_configs_labels_length_limit_met():
 
 
 def test_add_and_trim_labels_length_limit_met():
-    log_adapter.get_and_reset_api_methods()
+    session = mocks.create_bigquery_session()
+    log_adapter.get_and_reset_api_methods(session=session)
     cur_labels = {
         "bigframes-api": "read_pandas",
         "source": "bigquery-dataframes-temp",
@@ -161,18 +162,14 @@ def test_add_and_trim_labels_length_limit_met():
         value = f"test{i}"
         cur_labels[key] = value
 
-    df = bpd.DataFrame(
-        {"col1": [1, 2], "col2": [3, 4]}, session=mocks.create_bigquery_session()
-    )
-
     job_config = google.cloud.bigquery.job.QueryJobConfig()
     job_config.labels = cur_labels
 
-    df.max()
+    log_adapter.add_api_method("dataframe-max", session=session)
     for _ in range(52):
-        df.head()
+        log_adapter.add_api_method("dataframe-head", session=session)
 
-    io_bq.add_and_trim_labels(job_config=job_config, session=df._session)
+    io_bq.add_and_trim_labels(job_config=job_config, session=session)
     assert job_config.labels is not None
     assert len(job_config.labels) == 56
     assert "dataframe-max" not in job_config.labels.values()
@@ -189,6 +186,8 @@ def test_start_query_with_job_labels_length_limit_met(
     mock_bq_client: bigquery.Client, timeout: Optional[float], api_name
 ):
     sql = "select * from abc"
+    session = mocks.create_bigquery_session()
+    log_adapter.get_and_reset_api_methods(session=session)
     cur_labels = {
         "bigframes-api": "read_pandas",
         "source": "bigquery-dataframes-temp",
@@ -198,16 +197,12 @@ def test_start_query_with_job_labels_length_limit_met(
         value = f"test{i}"
         cur_labels[key] = value
 
-    df = bpd.DataFrame(
-        {"col1": [1, 2], "col2": [3, 4]}, session=mocks.create_bigquery_session()
-    )
-
     job_config = google.cloud.bigquery.job.QueryJobConfig()
     job_config.labels = cur_labels
 
-    df.max()
+    log_adapter.add_api_method("dataframe-max", session=session)
     for _ in range(52):
-        df.head()
+        log_adapter.add_api_method("dataframe-head", session=session)
 
     io_bq.start_query_with_job(
         mock_bq_client,
@@ -218,7 +213,7 @@ def test_start_query_with_job_labels_length_limit_met(
         timeout=timeout,
         metrics=None,
         publisher=bigframes.core.events.Publisher(),
-        session=df._session,
+        session=session,
     )
 
     assert job_config.labels is not None
