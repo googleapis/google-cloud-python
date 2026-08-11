@@ -305,7 +305,7 @@ def create_channel(
     # NOTE: 'configuration' is popped to prevent a TypeError.
     # Generated async transports (like those in google-cloud-* libs) pass 'configuration'
     # down to this helper via **kwargs to support tracing in sync transports.
-    # However, 'aio.secure_channel' does not recognize this parameter and will
+    # However, 'aio.secure_channel' does not recognize this parameter yet and will
     # crash if it is passed through.
     # Async gRPC tracing is deferred to a future phase/PR, so we simply discard
     # this parameter for now to ensure generated async code doesn't fail at runtime.
