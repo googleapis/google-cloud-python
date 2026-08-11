@@ -837,3 +837,41 @@ def test_unary_response_future_deadline_exceeded_on_retry(mock_should_retry):
     assert len(callbacks_fired) == 1
     with pytest.raises(transport_grpc.grpc.RpcError):
         future.result(timeout=1)
+
+
+@mock.patch("google.auth.transport.grpc._MTLSCallInterceptor._should_retry")
+def test_unary_response_future_cancelled(mock_should_retry):
+    import google.auth.transport.grpc as transport_grpc
+
+    interceptor = transport_grpc._MTLSCallInterceptor()
+    interceptor._wrapper = mock.Mock()
+    interceptor._wrapper._cached_cert = "cert"
+
+    # Mock an incoming cancelled inner_future
+    inner_future = mock.Mock()
+    inner_future.cancelled.return_value = True
+
+    callbacks_fired = []
+
+    def callback(f):
+        callbacks_fired.append(f)
+
+    # Throw an exception inside the callback execution to cover the newly added except branch
+    def failing_callback(f):
+        raise Exception("Deliberate failure to test exception catching")
+
+    call_details = mock.Mock()
+    future = transport_grpc._RetryableUnaryResponseFuture(
+        continuation=lambda cd, pl: inner_future,
+        client_call_details=call_details,
+        request_or_iterator=b"request",
+        interceptor=interceptor,
+        is_client_stream=False,
+    )
+    future.add_done_callback(callback)
+    future.add_done_callback(failing_callback)
+
+    future._on_inner_future_done(inner_future)
+
+    assert future.done() is True
+    assert len(callbacks_fired) == 1
