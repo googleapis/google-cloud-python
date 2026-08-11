@@ -14,12 +14,11 @@
 #
 """Client-side fallback policy for accelerator-routed RPCs.
 
-Mirrors the Go client's ``session.UnimplementedErrorInterceptor``: a daemon that
-cannot open any sessions replies ``UNIMPLEMENTED``, and the routing layer
-transparently retries the call on the native client. A sticky breaker trips
-after enough consecutive ``UNIMPLEMENTED`` replies so a persistently-degraded
-daemon stops being dialed at all. A daemon whose subprocess has died mid-flight
-trips the breaker immediately — it will never recover.
+A daemon that cannot open any sessions replies ``UNIMPLEMENTED``, and the routing
+layer transparently retries the call on the native client. A sticky breaker
+trips after enough consecutive ``UNIMPLEMENTED`` replies so a persistently-
+degraded daemon stops being dialed at all. A daemon whose subprocess has died
+mid-flight trips the breaker immediately — it will never recover.
 
 Any other gRPC error is a real, daemon-served result the native client would
 reproduce (the daemon owns retries, so it has already exhausted them), so it is
@@ -44,8 +43,7 @@ if TYPE_CHECKING:
     from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon
 
 # Consecutive ``UNIMPLEMENTED`` replies that trip the sticky breaker, after which
-# the accelerator is bypassed for the lifetime of the Table. Matches the Go
-# client's ``session.DefaultUnimplementedThreshold``.
+# the accelerator is bypassed for the lifetime of the Table.
 DEFAULT_UNIMPLEMENTED_THRESHOLD = 30
 
 
@@ -67,8 +65,8 @@ class AcceleratorBreaker:
       the RPC shape but has no working sessions), and
     * an explicit :meth:`trip` when the daemon subprocess is found dead.
 
-    Any non-``UNIMPLEMENTED`` outcome resets the consecutive count, matching the
-    Go interceptor: a normal reply proves the daemon is healthy again.
+    Any non-``UNIMPLEMENTED`` outcome resets the consecutive count: a normal
+    reply proves the daemon is healthy again.
     """
 
     def __init__(self, threshold: int = DEFAULT_UNIMPLEMENTED_THRESHOLD):
