@@ -2688,7 +2688,7 @@ class Test_Blob(unittest.TestCase):
                 **custom_headers,
             }
         self.assertEqual(
-            headers["X-Goog-API-Client"],
+            headers["x-goog-api-client"],
             f"{client._connection.user_agent} {GCCL_INVOCATION_TEST_CONST} gccl-gcs-cmd/{COMMAND}",
         )
         self.assertEqual(headers, expected_headers)
