@@ -23,7 +23,6 @@ import warnings
 import mock
 import pytest
 from google.api_core import exceptions
-
 from google.cloud.storage._helpers import _base64_md5hash
 from google.cloud.storage.exceptions import DataCorruption
 
@@ -1350,10 +1349,11 @@ def test_blob_contexts_custom_setter(shared_bucket, blobs_to_delete):
 def test_upload_from_file_streaming_with_trailing_checksum_validation(
     shared_bucket, blobs_to_delete
 ):
+    import base64
     import io
     import os
+
     import google_crc32c
-    import base64
 
     blob_name = f"StreamingTrailingChecksum-{uuid.uuid4().hex}"
     blob = shared_bucket.blob(blob_name)
@@ -1383,6 +1383,7 @@ def test_upload_from_file_streaming_corrupted_checksum_rejection(
 ):
     import io
     import os
+
     import pytest
     from google.api_core.exceptions import BadRequest
 

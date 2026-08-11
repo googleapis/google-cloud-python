@@ -18,9 +18,8 @@ import json
 import tempfile
 from unittest import mock
 
-import pytest  # type: ignore
-
 import google.cloud.storage._media.requests.upload as upload_mod
+import pytest  # type: ignore
 
 URL_PREFIX = "https://www.googleapis.com/upload/storage/v1/b/{BUCKET}/o"
 SIMPLE_URL = URL_PREFIX + "?uploadType=media&name={OBJECT}"
@@ -363,12 +362,11 @@ class TestResumableUpload(object):
 
     def test_transmit_next_chunk_streaming_final_chunk_attaches_checksum(self):
         import base64
+
         import google_crc32c
 
         data = b"Streaming payload that finishes in one chunk."
-        upload = upload_mod.ResumableUpload(
-            RESUMABLE_URL, ONE_MB, checksum="crc32c"
-        )
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB, checksum="crc32c")
         upload._stream = io.BytesIO(data)
         upload._content_type = BASIC_CONTENT
         upload._total_bytes = None  # Unknown initial size (streaming write)
@@ -395,9 +393,7 @@ class TestResumableUpload(object):
 
     def test_transmit_next_chunk_streaming_no_checksum_requested(self):
         data = b"Streaming payload without checksum."
-        upload = upload_mod.ResumableUpload(
-            RESUMABLE_URL, ONE_MB, checksum=None
-        )
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB, checksum=None)
         upload._stream = io.BytesIO(data)
         upload._content_type = BASIC_CONTENT
         upload._total_bytes = None
