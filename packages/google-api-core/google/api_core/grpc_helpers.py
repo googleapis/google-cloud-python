@@ -383,6 +383,8 @@ def create_channel(
     if attempt_direct_path:
         target = _modify_target_for_direct_path(target)
 
+    configuration = kwargs.pop("configuration", None)
+
     channel = grpc.secure_channel(
         target, composite_credentials, compression=compression, **kwargs
     )
@@ -390,16 +392,23 @@ def create_channel(
     is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_CLOUD_PYTHON_TRACING_ENABLED",
         feature_key="tracer_provider",
-        configuration=None,
+        configuration=configuration,
     )
 
     if is_tracing_enabled:
         try:
             import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
-            interceptor = otel_grpc.client_interceptor()
+            tracer_provider = None
+            if configuration is not None:
+                if isinstance(configuration, dict):
+                    tracer_provider = configuration.get("tracer_provider")
+                else:
+                    tracer_provider = getattr(configuration, "tracer_provider", None)
+
+            interceptor = otel_grpc.client_interceptor(tracer_provider=tracer_provider)
             channel = otel_grpc.intercept_channel(channel, interceptor)
         except ImportError:
-            # If grpc dependency is missing, this should simply NOOP and fail open rather than failing import.
+            # If OpenTelemetry gRPC instrumentation is missing, this should simply NOOP and fail open rather than failing import.
             pass
 
     return channel
