@@ -786,3 +786,24 @@ class TestGraphServerHostHeader(unittest.TestCase):
             route, json={"data": "ping"}, headers={"Host": "evil.example:1234"}
         )
         self.assertEqual(response.status_code, 403)
+
+    @pytest.mark.skipif(
+        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
+    )
+    def test_missing_host_rejected(self):
+        handler = mock.Mock(spec=graph_server.GraphServerHandler)
+        handler.headers = {}
+        self.assertFalse(
+            graph_server.GraphServerHandler._host_is_loopback(handler)
+        )
+
+    @pytest.mark.skipif(
+        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
+    )
+    def test_malformed_host_rejected(self):
+        # An unterminated IPv6 literal makes urlsplit raise ValueError.
+        handler = mock.Mock(spec=graph_server.GraphServerHandler)
+        handler.headers = {"Host": "[::1"}
+        self.assertFalse(
+            graph_server.GraphServerHandler._host_is_loopback(handler)
+        )
