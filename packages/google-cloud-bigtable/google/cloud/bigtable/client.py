@@ -40,10 +40,6 @@ from google.cloud.environment_vars import BIGTABLE_EMULATOR  # type: ignore
 
 from google.cloud import bigtable, bigtable_admin_v2
 from google.cloud.bigtable.cluster import _CLUSTER_NAME_RE, Cluster
-from google.cloud.bigtable.data import BigtableDataClient
-from google.cloud.bigtable.data._helpers import (
-    _DEFAULT_BIGTABLE_EMULATOR_CLIENT,
-)
 from google.cloud.bigtable.instance import Instance
 from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin.transports import (
     BigtableInstanceAdminGrpcTransport,
@@ -70,6 +66,8 @@ _GRPC_CHANNEL_OPTIONS = (
     ("grpc.keepalive_time_ms", 30000),
     ("grpc.keepalive_timeout_ms", 10000),
 )
+
+_DEFAULT_BIGTABLE_EMULATOR_CLIENT = "google-cloud-bigtable-emulator"
 
 
 def _create_gapic_client(client_class, client_options=None, transport=None):
@@ -359,6 +357,8 @@ class Client(ClientWithProject):
     def _veneer_data_client(self):
         """Getter for the new Data Table API."""
         if self._table_data_client is None:
+            from google.cloud.bigtable.data import BigtableDataClient
+
             client_info = copy.copy(self._client_info)
             client_info.client_library_version = f"{bigtable.__version__}-data-shim"
             self._table_data_client = BigtableDataClient(

@@ -68,8 +68,8 @@ from google.cloud.bigtable.data._metrics import (
     ActiveOperationMetric,
     BigtableClientSideMetricsController,
     OperationType,
-    tracked_retry,
 )
+from google.cloud.bigtable.data._metrics.tracked_retry import tracked_retry
 from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
 from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
     BigtableMetricsExporter,

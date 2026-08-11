@@ -26,7 +26,7 @@ from grpc import StatusCode
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import _attempt_timeout_generator
-from google.cloud.bigtable.data._metrics import tracked_retry
+from google.cloud.bigtable.data._metrics.tracked_retry import tracked_retry
 from google.cloud.bigtable.data.exceptions import (
     InvalidChunk,
     _ResetRow,
