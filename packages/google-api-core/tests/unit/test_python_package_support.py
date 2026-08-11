@@ -126,9 +126,7 @@ def test_warn_deprecation_for_versions_less_than(mock_get_version, mock_get_pack
             "my.package", "dep.package", "2.0.0", recommended_version="3.0.0"
         )
     assert len(record) == 1
-    assert "version 2.0.0 or higher (we recommend 3.0.0)." in str(
-        record[0].message
-    )
+    assert "version 2.0.0 or higher (we recommend 3.0.0)." in str(record[0].message)
 
 
 @patch(
