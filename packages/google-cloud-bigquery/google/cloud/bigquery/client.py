@@ -163,6 +163,16 @@ _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS = "jobReference,totalRows,pageToken,rows"
 # https://github.com/googleapis/python-bigquery/issues/438
 _MIN_GET_QUERY_RESULTS_TIMEOUT = 120
 
+_LOAD_TABLE_FROM_DATAFRAME_DEPRECATED = (
+    "Loading DataFrames via google-cloud-bigquery is deprecated. "
+    "For direct, optimized loading, please call 'pandas_gbq.to_gbq()' directly."
+)
+
+_INSERT_ROWS_FROM_DATAFRAME_DEPRECATED = (
+    "Inserting rows from DataFrames via google-cloud-bigquery is deprecated. "
+    "For direct, optimized access, please call 'pandas_gbq.to_gbq()' directly."
+)
+
 TIMEOUT_HEADER = "X-Server-Timeout"
 
 
@@ -2830,6 +2840,12 @@ class Client(ClientWithProject):
                 If ``job_config`` is not an instance of
                 :class:`~google.cloud.bigquery.job.LoadJobConfig` class.
         """
+        warnings.warn(
+            _LOAD_TABLE_FROM_DATAFRAME_DEPRECATED,
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
+
         job_id = _make_job_id(job_id, job_id_prefix)
 
         if job_config is not None:
@@ -3900,6 +3916,12 @@ class Client(ClientWithProject):
         Raises:
             ValueError: if table's schema is not set
         """
+        warnings.warn(
+            _INSERT_ROWS_FROM_DATAFRAME_DEPRECATED,
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
+
         insert_results = []
 
         chunk_count = int(math.ceil(len(dataframe) / chunk_size))
