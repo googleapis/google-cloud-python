@@ -309,7 +309,9 @@ def _is_session_initialized(session):
     Because the method logger could get called before Session.__init__ has a
     chance to run, we use the globals in that case.
     """
-    return hasattr(session, "_api_methods_lock") and hasattr(session, "_api_methods")
+    return hasattr(session, "_api_methods_lock") and isinstance(
+        getattr(session, "_api_methods", None), list
+    )
 
 
 def _find_session(*args, **kwargs):
@@ -317,13 +319,15 @@ def _find_session(*args, **kwargs):
     # imports log_adapter.
     from bigframes.session import Session
 
-    session = args[0] if args else None
-    if (
-        session is not None
-        and isinstance(session, Session)
-        and _is_session_initialized(session)
-    ):
-        return session
+    for arg in args:
+        if isinstance(arg, Session) and _is_session_initialized(arg):
+            return arg
+        session = getattr(arg, "_session", None)
+        if isinstance(session, Session) and _is_session_initialized(session):
+            return session
+        session = getattr(arg, "session", None)
+        if isinstance(session, Session) and _is_session_initialized(session):
+            return session
 
     session = kwargs.get("session")
     if (
