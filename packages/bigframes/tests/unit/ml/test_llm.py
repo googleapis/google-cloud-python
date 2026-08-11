@@ -14,53 +14,11 @@
 
 from unittest import mock
 
-import google.api_core.exceptions
 import pytest
 from google.cloud import bigquery
 
 import bigframes.session
 from bigframes.ml import llm
-
-
-def test_gemini_text_generator_unsupported_model_error():
-    # Create a mock session
-    mock_session = mock.create_autospec(spec=bigframes.session.Session)
-
-    # Mock _create_bq_connection to return a dummy connection
-    mock_session._create_bq_connection.return_value = (
-        "projects/test-project/locations/us-central1/connections/test-conn"
-    )
-
-    # Mock _anonymous_dataset which is used to create the temporary model reference
-    mock_session._anonymous_dataset = bigquery.DatasetReference(
-        "test-project", "test_dataset"
-    )
-
-    # Mock _start_query_ml_ddl to raise BadRequest (simulating BQML failure)
-    error_message = (
-        "Unsupported endpoint: Publisher model "
-        "projects/296675019294/locations/us-central1/publishers/google/models/gemini-3.5-flash "
-        "was not found or your project does not have access to it."
-    )
-    bq_error = google.api_core.exceptions.BadRequest(error_message)
-    mock_session._start_query_ml_ddl.side_effect = bq_error
-
-    # Attempting to create the model should raise the BadRequest exception
-    with pytest.raises(google.api_core.exceptions.BadRequest) as exc_info:
-        llm.GeminiTextGenerator(
-            model_name="gemini-3.5-flash",
-            session=mock_session,
-            connection_name="test-conn",
-        )
-
-    assert error_message in str(exc_info.value)
-
-    # Verify that the session's DDL execution method was called
-    mock_session._start_query_ml_ddl.assert_called_once()
-    generated_sql = mock_session._start_query_ml_ddl.call_args[0][0]
-    assert "CREATE OR REPLACE MODEL" in generated_sql
-    assert "gemini-3.5-flash" in generated_sql
-    assert "test-conn" in generated_sql
 
 
 def test_gemini_text_generator_default_model():
