@@ -15,6 +15,7 @@
 """Tests for OpenTelemetry gRPC interceptor integration in google-api-core."""
 
 import sys
+import types
 from unittest import mock
 
 import pytest
@@ -27,23 +28,15 @@ except ImportError:
     HAS_GRPC_HELPERS = False
 
 
-# Removed clean_sys_modules fixture as it causes issues in no-grpc environments
-# when tests are collected.
-
-
-@pytest.mark.skipif(not HAS_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
-def test_create_channel_otel_installed_and_enabled(monkeypatch):
-    """Verify that create_channel wraps the channel with OTel interceptor when installed and enabled."""
-
-    # Build a hierarchy of mocks to simulate the nested OpenTelemetry modules.
-    # MagicMock automatically creates child mocks on attribute access.
+@pytest.fixture
+def mock_otel_grpc(monkeypatch):
+    """Fixture to mock OpenTelemetry gRPC hierarchy."""
     mock_otel = mock.Mock()
     mock_otel_grpc = mock_otel.instrumentation.grpc
     mock_interceptor = mock.Mock()
     mock_otel_grpc.client_interceptor.return_value = mock_interceptor
     mock_otel_grpc.intercept_channel.side_effect = lambda ch, inc: f"wrapped_{ch}"
 
-    # Inject the mocks into sys.modules so Python's import system uses them.
     modules = {
         "opentelemetry": mock_otel,
         "opentelemetry.instrumentation": mock_otel.instrumentation,
@@ -52,6 +45,13 @@ def test_create_channel_otel_installed_and_enabled(monkeypatch):
 
     for name, mod in modules.items():
         monkeypatch.setitem(sys.modules, name, mod)
+
+    return mock_otel_grpc
+
+
+@pytest.mark.skipif(not HAS_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
+def test_create_channel_otel_installed_and_enabled(monkeypatch, mock_otel_grpc):
+    """Verify that create_channel wraps the channel with OTel interceptor when installed and enabled."""
 
     # Enable tracing
     monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "true")
@@ -74,7 +74,7 @@ def test_create_channel_otel_installed_and_enabled(monkeypatch):
             # Verify OTel interceptor was fetched and channel was wrapped
             mock_otel_grpc.client_interceptor.assert_called_once()
             mock_otel_grpc.intercept_channel.assert_called_once_with(
-                mock_channel, mock_interceptor
+                mock_channel, mock_otel_grpc.client_interceptor.return_value
             )
 
             # Verify returned channel is the wrapped one
@@ -82,13 +82,8 @@ def test_create_channel_otel_installed_and_enabled(monkeypatch):
 
 
 @pytest.mark.skipif(not HAS_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
-def test_create_channel_otel_installed_but_disabled(monkeypatch):
+def test_create_channel_otel_installed_but_disabled(monkeypatch, mock_otel_grpc):
     """Verify that create_channel does NOT wrap the channel if tracing is disabled."""
-
-    mock_otel_grpc = mock.Mock()
-    monkeypatch.setitem(
-        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
-    )
 
     # Disable tracing (or leave unset, default should be false/disabled)
     monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "false")
@@ -139,3 +134,26 @@ def test_create_channel_otel_not_installed_fails_open(monkeypatch):
 
             # Verify returned channel is the raw one
             assert channel == mock_channel
+
+
+@pytest.mark.parametrize(
+    "config_factory",
+    [
+        lambda tp: {"tracer_provider": tp},
+        lambda tp: types.SimpleNamespace(tracer_provider=tp),
+    ],
+    ids=["dict", "object"],
+)
+@pytest.mark.skipif(not HAS_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
+def test_create_channel_with_custom_tracer_provider(monkeypatch, mock_otel_grpc, config_factory):
+    """Verify that create_channel passes custom tracer_provider to OTel interceptor."""
+
+    mock_tracer_provider = mock.Mock()
+    config = config_factory(mock_tracer_provider)
+
+    mock_channel = "raw_channel"
+    with mock.patch("grpc.secure_channel", return_value=mock_channel):
+        with mock.patch("google.api_core.grpc_helpers._create_composite_credentials", return_value=mock.Mock()):
+            grpc_helpers.create_channel("localhost:1234", configuration=config)
+
+            mock_otel_grpc.client_interceptor.assert_called_once_with(tracer_provider=mock_tracer_provider)
