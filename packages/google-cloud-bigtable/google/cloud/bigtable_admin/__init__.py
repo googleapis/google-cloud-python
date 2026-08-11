@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import google.cloud.bigtable_admin_v2.overlay  # noqa: F401
 from google.cloud.bigtable_admin import gapic_version as package_version
+from google.cloud.bigtable_admin_v2.overlay import *  # noqa: F401, F403
 
 __version__ = package_version.__version__
 
@@ -286,8 +288,5 @@ __all__ = (
     "RestoreSourceType",
     "Type",
 )
-
-import google.cloud.bigtable_admin_v2.overlay  # noqa: F401
-from google.cloud.bigtable_admin_v2.overlay import *  # noqa: F401, F403
 
 __all__ += google.cloud.bigtable_admin_v2.overlay.__all__

@@ -1,5 +1,7 @@
 .. include:: README.rst
 
+.. include:: README.rst
+
 .. note::
 
    Because the Datastore client uses the :mod:`grpcio` library by default

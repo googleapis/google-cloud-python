@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.oracledatabase_v1._compat import transcode_request
 from google.cloud.oracledatabase_v1.types import (
     autonomous_database,
     database,
@@ -4992,23 +4993,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseConfigureExascaleCloudExadataInfrastructure._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_configure_exascale_cloud_exadata_infrastructure(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseConfigureExascaleCloudExadataInfrastructure._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseConfigureExascaleCloudExadataInfrastructure._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseConfigureExascaleCloudExadataInfrastructure._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseConfigureExascaleCloudExadataInfrastructure,
+                    "_BaseConfigureExascaleCloudExadataInfrastructure__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5153,21 +5151,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_create_autonomous_database(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase,
+                    "_BaseCreateAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5308,23 +5303,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_create_cloud_exadata_infrastructure(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure,
+                    "_BaseCreateCloudExadataInfrastructure__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5464,21 +5456,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_http_options()
-
             request, metadata = self._interceptor.pre_create_cloud_vm_cluster(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster,
+                    "_BaseCreateCloudVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5617,21 +5606,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseCreateDbSystem._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_db_system(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateDbSystem._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseCreateDbSystem._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateDbSystem._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseCreateDbSystem,
+                    "_BaseCreateDbSystem__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5769,21 +5755,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_http_options()
-
             request, metadata = self._interceptor.pre_create_exadb_vm_cluster(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster,
+                    "_BaseCreateExadbVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5922,21 +5905,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_http_options()
-
             request, metadata = self._interceptor.pre_create_exascale_db_storage_vault(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault,
+                    "_BaseCreateExascaleDbStorageVault__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6079,21 +6059,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseCreateGoldengateConnection._get_http_options()
-
             request, metadata = self._interceptor.pre_create_goldengate_connection(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateGoldengateConnection._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseCreateGoldengateConnection._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateGoldengateConnection._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseCreateGoldengateConnection,
+                    "_BaseCreateGoldengateConnection__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6237,23 +6214,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseCreateGoldengateConnectionAssignment._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_create_goldengate_connection_assignment(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateGoldengateConnectionAssignment._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseCreateGoldengateConnectionAssignment._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateGoldengateConnectionAssignment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseCreateGoldengateConnectionAssignment,
+                    "_BaseCreateGoldengateConnectionAssignment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6394,21 +6368,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseCreateGoldengateDeployment._get_http_options()
-
             request, metadata = self._interceptor.pre_create_goldengate_deployment(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateGoldengateDeployment._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseCreateGoldengateDeployment._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateGoldengateDeployment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseCreateGoldengateDeployment,
+                    "_BaseCreateGoldengateDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6547,21 +6518,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_http_options()
-
             request, metadata = self._interceptor.pre_create_odb_network(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork,
+                    "_BaseCreateOdbNetwork__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6698,21 +6666,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_http_options()
-
             request, metadata = self._interceptor.pre_create_odb_subnet(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet,
+                    "_BaseCreateOdbSubnet__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6850,17 +6815,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_autonomous_database(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase,
+                    "_BaseDeleteAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6999,19 +6965,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_delete_cloud_exadata_infrastructure(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure,
+                    "_BaseDeleteCloudExadataInfrastructure__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7149,17 +7116,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_cloud_vm_cluster(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster,
+                    "_BaseDeleteCloudVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7296,17 +7264,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseDeleteDbSystem._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_db_system(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteDbSystem._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteDbSystem._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseDeleteDbSystem,
+                    "_BaseDeleteDbSystem__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7442,17 +7411,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_exadb_vm_cluster(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster,
+                    "_BaseDeleteExadbVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7590,17 +7560,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_exascale_db_storage_vault(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault,
+                    "_BaseDeleteExascaleDbStorageVault__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7741,17 +7712,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseDeleteGoldengateConnection._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_goldengate_connection(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteGoldengateConnection._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteGoldengateConnection._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseDeleteGoldengateConnection,
+                    "_BaseDeleteGoldengateConnection__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7893,19 +7865,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseDeleteGoldengateConnectionAssignment._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_delete_goldengate_connection_assignment(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteGoldengateConnectionAssignment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteGoldengateConnectionAssignment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseDeleteGoldengateConnectionAssignment,
+                    "_BaseDeleteGoldengateConnectionAssignment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8044,17 +8017,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseDeleteGoldengateDeployment._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_goldengate_deployment(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteGoldengateDeployment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteGoldengateDeployment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseDeleteGoldengateDeployment,
+                    "_BaseDeleteGoldengateDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8191,17 +8165,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_odb_network(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork,
+                    "_BaseDeleteOdbNetwork__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8336,17 +8311,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_odb_subnet(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet,
+                    "_BaseDeleteOdbSubnet__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8485,21 +8461,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_failover_autonomous_database(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase,
+                    "_BaseFailoverAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8637,23 +8610,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_generate_autonomous_database_wallet(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet,
+                    "_BaseGenerateAutonomousDatabaseWallet__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8798,17 +8768,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_get_autonomous_database(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase,
+                    "_BaseGetAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8949,17 +8920,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_http_options()
-
             request, metadata = self._interceptor.pre_get_cloud_exadata_infrastructure(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure,
+                    "_BaseGetCloudExadataInfrastructure__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9100,17 +9072,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_http_options()
-
             request, metadata = self._interceptor.pre_get_cloud_vm_cluster(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster,
+                    "_BaseGetCloudVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9248,15 +9221,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseGetDatabase._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_database(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetDatabase,
+                    "_BaseGetDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9395,15 +9369,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseGetDbSystem._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_db_system(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetDbSystem._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetDbSystem._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetDbSystem,
+                    "_BaseGetDbSystem__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9541,17 +9516,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster._get_http_options()
-
             request, metadata = self._interceptor.pre_get_exadb_vm_cluster(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster,
+                    "_BaseGetExadbVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9690,17 +9666,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault._get_http_options()
-
             request, metadata = self._interceptor.pre_get_exascale_db_storage_vault(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault,
+                    "_BaseGetExascaleDbStorageVault__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9845,17 +9822,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseGetGoldengateConnection._get_http_options()
-
             request, metadata = self._interceptor.pre_get_goldengate_connection(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetGoldengateConnection._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetGoldengateConnection._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetGoldengateConnection,
+                    "_BaseGetGoldengateConnection__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9998,19 +9976,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseGetGoldengateConnectionAssignment._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_get_goldengate_connection_assignment(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetGoldengateConnectionAssignment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetGoldengateConnectionAssignment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetGoldengateConnectionAssignment,
+                    "_BaseGetGoldengateConnectionAssignment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10153,17 +10132,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeployment._get_http_options()
-
             request, metadata = self._interceptor.pre_get_goldengate_deployment(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeployment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeployment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeployment,
+                    "_BaseGetGoldengateDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10303,15 +10283,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseGetOdbNetwork._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_odb_network(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetOdbNetwork._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetOdbNetwork._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetOdbNetwork,
+                    "_BaseGetOdbNetwork__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10447,15 +10428,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseGetOdbSubnet._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_odb_subnet(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetOdbSubnet._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetOdbSubnet._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetOdbSubnet,
+                    "_BaseGetOdbSubnet__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10592,17 +10574,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_get_pluggable_database(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase,
+                    "_BaseGetPluggableDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10740,17 +10723,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_http_options()
-
             request, metadata = self._interceptor.pre_list_autonomous_database_backups(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups,
+                    "_BaseListAutonomousDatabaseBackups__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10896,19 +10880,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_list_autonomous_database_character_sets(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets,
+                    "_BaseListAutonomousDatabaseCharacterSets__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11049,17 +11034,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_http_options()
-
             request, metadata = self._interceptor.pre_list_autonomous_databases(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases,
+                    "_BaseListAutonomousDatabases__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11199,17 +11185,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_http_options()
-
             request, metadata = self._interceptor.pre_list_autonomous_db_versions(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions,
+                    "_BaseListAutonomousDbVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11351,19 +11338,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_list_cloud_exadata_infrastructures(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures,
+                    "_BaseListCloudExadataInfrastructures__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11504,17 +11492,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_http_options()
-
             request, metadata = self._interceptor.pre_list_cloud_vm_clusters(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters,
+                    "_BaseListCloudVmClusters__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11652,17 +11641,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets._get_http_options()
-
             request, metadata = self._interceptor.pre_list_database_character_sets(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets,
+                    "_BaseListDatabaseCharacterSets__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11802,15 +11792,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListDatabases._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_databases(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDatabases._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDatabases._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListDatabases,
+                    "_BaseListDatabases__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11946,15 +11937,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_db_nodes(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListDbNodes,
+                    "_BaseListDbNodes__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12092,15 +12084,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListDbServers._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_db_servers(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbServers._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDbServers._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListDbServers,
+                    "_BaseListDbServers__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12238,19 +12231,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_list_db_system_initial_storage_sizes(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes,
+                    "_BaseListDbSystemInitialStorageSizes__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12394,15 +12388,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListDbSystems._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_db_systems(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbSystems._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDbSystems._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListDbSystems,
+                    "_BaseListDbSystems__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12536,17 +12531,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_http_options()
-
             request, metadata = self._interceptor.pre_list_db_system_shapes(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes,
+                    "_BaseListDbSystemShapes__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12684,17 +12680,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListDbVersions._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_db_versions(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbVersions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDbVersions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListDbVersions,
+                    "_BaseListDbVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12830,17 +12827,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_http_options()
-
             request, metadata = self._interceptor.pre_list_entitlements(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListEntitlements,
+                    "_BaseListEntitlements__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12977,17 +12975,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListExadbVmClusters._get_http_options()
-
             request, metadata = self._interceptor.pre_list_exadb_vm_clusters(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListExadbVmClusters._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListExadbVmClusters._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListExadbVmClusters,
+                    "_BaseListExadbVmClusters__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13125,17 +13124,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults._get_http_options()
-
             request, metadata = self._interceptor.pre_list_exascale_db_storage_vaults(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults,
+                    "_BaseListExascaleDbStorageVaults__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13279,17 +13279,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_gi_versions(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListGiVersions,
+                    "_BaseListGiVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13434,19 +13435,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListGoldengateConnectionAssignments._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_list_goldengate_connection_assignments(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListGoldengateConnectionAssignments._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListGoldengateConnectionAssignments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListGoldengateConnectionAssignments,
+                    "_BaseListGoldengateConnectionAssignments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13588,17 +13590,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListGoldengateConnections._get_http_options()
-
             request, metadata = self._interceptor.pre_list_goldengate_connections(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListGoldengateConnections._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListGoldengateConnections._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListGoldengateConnections,
+                    "_BaseListGoldengateConnections__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13743,17 +13746,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListGoldengateConnectionTypes._get_http_options()
-
             request, metadata = self._interceptor.pre_list_goldengate_connection_types(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListGoldengateConnectionTypes._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListGoldengateConnectionTypes._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListGoldengateConnectionTypes,
+                    "_BaseListGoldengateConnectionTypes__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13902,19 +13906,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListGoldengateDeploymentEnvironments._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_list_goldengate_deployment_environments(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListGoldengateDeploymentEnvironments._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListGoldengateDeploymentEnvironments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListGoldengateDeploymentEnvironments,
+                    "_BaseListGoldengateDeploymentEnvironments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14056,17 +14061,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListGoldengateDeployments._get_http_options()
-
             request, metadata = self._interceptor.pre_list_goldengate_deployments(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListGoldengateDeployments._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListGoldengateDeployments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListGoldengateDeployments,
+                    "_BaseListGoldengateDeployments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14211,17 +14217,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListGoldengateDeploymentTypes._get_http_options()
-
             request, metadata = self._interceptor.pre_list_goldengate_deployment_types(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListGoldengateDeploymentTypes._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListGoldengateDeploymentTypes._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListGoldengateDeploymentTypes,
+                    "_BaseListGoldengateDeploymentTypes__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14368,19 +14375,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListGoldengateDeploymentVersions._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_list_goldengate_deployment_versions(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListGoldengateDeploymentVersions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListGoldengateDeploymentVersions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListGoldengateDeploymentVersions,
+                    "_BaseListGoldengateDeploymentVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14522,17 +14530,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListMinorVersions._get_http_options()
-
             request, metadata = self._interceptor.pre_list_minor_versions(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListMinorVersions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListMinorVersions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListMinorVersions,
+                    "_BaseListMinorVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14668,17 +14677,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListOdbNetworks._get_http_options()
-
             request, metadata = self._interceptor.pre_list_odb_networks(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListOdbNetworks._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListOdbNetworks._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListOdbNetworks,
+                    "_BaseListOdbNetworks__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14816,17 +14826,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListOdbSubnets._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_odb_subnets(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListOdbSubnets._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListOdbSubnets._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListOdbSubnets,
+                    "_BaseListOdbSubnets__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14963,17 +14974,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseListPluggableDatabases._get_http_options()
-
             request, metadata = self._interceptor.pre_list_pluggable_databases(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListPluggableDatabases._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListPluggableDatabases._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListPluggableDatabases,
+                    "_BaseListPluggableDatabases__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -15121,23 +15133,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_remove_virtual_machine_exadb_vm_cluster(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster,
+                    "_BaseRemoveVirtualMachineExadbVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -15278,21 +15287,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_restart_autonomous_database(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase,
+                    "_BaseRestartAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -15433,21 +15439,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_restore_autonomous_database(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase,
+                    "_BaseRestoreAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -15587,21 +15590,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_start_autonomous_database(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase,
+                    "_BaseStartAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -15742,21 +15742,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseStartGoldengateDeployment._get_http_options()
-
             request, metadata = self._interceptor.pre_start_goldengate_deployment(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseStartGoldengateDeployment._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseStartGoldengateDeployment._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseStartGoldengateDeployment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseStartGoldengateDeployment,
+                    "_BaseStartGoldengateDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -15896,21 +15893,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_stop_autonomous_database(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase,
+                    "_BaseStopAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -16051,21 +16045,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseStopGoldengateDeployment._get_http_options()
-
             request, metadata = self._interceptor.pre_stop_goldengate_deployment(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseStopGoldengateDeployment._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseStopGoldengateDeployment._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseStopGoldengateDeployment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseStopGoldengateDeployment,
+                    "_BaseStopGoldengateDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -16207,21 +16198,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_switchover_autonomous_database(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase,
+                    "_BaseSwitchoverAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -16370,23 +16358,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseTestGoldengateConnectionAssignment._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_test_goldengate_connection_assignment(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseTestGoldengateConnectionAssignment._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseTestGoldengateConnectionAssignment._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseTestGoldengateConnectionAssignment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseTestGoldengateConnectionAssignment,
+                    "_BaseTestGoldengateConnectionAssignment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -16533,21 +16518,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_update_autonomous_database(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase,
+                    "_BaseUpdateAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -16690,21 +16672,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_http_options()
-
             request, metadata = self._interceptor.pre_update_exadb_vm_cluster(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster,
+                    "_BaseUpdateExadbVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -17734,15 +17713,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseGetLocation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -17874,15 +17854,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListLocations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -18010,21 +17991,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -18127,17 +18105,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             """
 
             http_options = _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -18244,15 +18223,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -18384,15 +18364,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListOperations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOracleDatabaseRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

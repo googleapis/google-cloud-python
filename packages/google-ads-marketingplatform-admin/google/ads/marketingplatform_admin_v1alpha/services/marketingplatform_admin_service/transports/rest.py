@@ -29,6 +29,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.ads.marketingplatform_admin_v1alpha._compat import transcode_request
 from google.ads.marketingplatform_admin_v1alpha.types import (
     marketingplatform_admin,
     resources,
@@ -678,21 +679,18 @@ class MarketingplatformAdminServiceRestTransport(
             """
 
             http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_http_options()
-
             request, metadata = self._interceptor.pre_create_analytics_account_link(
                 request, metadata
             )
-            transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink,
+                    "_BaseCreateAnalyticsAccountLink__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -830,17 +828,18 @@ class MarketingplatformAdminServiceRestTransport(
             """
 
             http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_analytics_account_link(
                 request, metadata
             )
-            transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink,
+                    "_BaseDeleteAnalyticsAccountLink__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -948,23 +947,20 @@ class MarketingplatformAdminServiceRestTransport(
             """
 
             http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_find_sales_partner_managed_clients(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients,
+                    "_BaseFindSalesPartnerManagedClients__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1109,17 +1105,18 @@ class MarketingplatformAdminServiceRestTransport(
             """
 
             http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization._get_http_options()
-
             request, metadata = self._interceptor.pre_get_organization(
                 request, metadata
             )
-            transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization,
+                    "_BaseGetOrganization__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1260,17 +1257,18 @@ class MarketingplatformAdminServiceRestTransport(
             """
 
             http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks._get_http_options()
-
             request, metadata = self._interceptor.pre_list_analytics_account_links(
                 request, metadata
             )
-            transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks,
+                    "_BaseListAnalyticsAccountLinks__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1410,17 +1408,18 @@ class MarketingplatformAdminServiceRestTransport(
             """
 
             http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseListOrganizations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_organizations(
                 request, metadata
             )
-            transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseListOrganizations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseListOrganizations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMarketingplatformAdminServiceRestTransport._BaseListOrganizations,
+                    "_BaseListOrganizations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1565,21 +1564,18 @@ class MarketingplatformAdminServiceRestTransport(
             """
 
             http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage._get_http_options()
-
             request, metadata = self._interceptor.pre_report_property_usage(
                 request, metadata
             )
-            transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage,
+                    "_BaseReportPropertyUsage__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1726,21 +1722,18 @@ class MarketingplatformAdminServiceRestTransport(
             """
 
             http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_http_options()
-
             request, metadata = self._interceptor.pre_set_property_service_level(
                 request, metadata
             )
-            transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel,
+                    "_BaseSetPropertyServiceLevel__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
