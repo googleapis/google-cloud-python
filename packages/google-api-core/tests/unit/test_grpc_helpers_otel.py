@@ -35,7 +35,6 @@ def mock_otel_grpc(monkeypatch):
     mock_otel_grpc = mock_otel.instrumentation.grpc
     mock_interceptor = mock.Mock()
     mock_otel_grpc.client_interceptor.return_value = mock_interceptor
-    mock_otel_grpc.intercept_channel.side_effect = lambda ch, inc: f"wrapped_{ch}"
 
     modules = {
         "opentelemetry": mock_otel,
@@ -75,7 +74,9 @@ def test_create_channel_otel_combos(
     mock_channel = "raw_channel"
     with mock.patch(
         "grpc.secure_channel", return_value=mock_channel
-    ) as mock_secure_channel:
+    ) as mock_secure_channel, mock.patch(
+        "grpc.intercept_channel", side_effect=lambda ch, inc: f"wrapped_{ch}"
+    ) as mock_intercept_channel:
         with mock.patch(
             "google.api_core.grpc_helpers._create_composite_credentials",
             return_value=mock.Mock(),
@@ -87,13 +88,13 @@ def test_create_channel_otel_combos(
 
             if expect_otel_interceptor:
                 mock_otel_grpc.client_interceptor.assert_called_once()
-                mock_otel_grpc.intercept_channel.assert_called_once_with(
+                mock_intercept_channel.assert_called_once_with(
                     mock_channel, mock_otel_grpc.client_interceptor.return_value
                 )
                 assert channel == f"wrapped_{mock_channel}"
             else:
                 # OTel should NOT have been called
-                mock_otel_grpc.intercept_channel.assert_not_called()
+                mock_intercept_channel.assert_not_called()
                 assert channel == mock_channel
 
 
@@ -113,7 +114,9 @@ def test_create_channel_with_custom_tracer_provider(monkeypatch, mock_otel_grpc,
     config = config_factory(mock_tracer_provider)
 
     mock_channel = "raw_channel"
-    with mock.patch("grpc.secure_channel", return_value=mock_channel):
+    with mock.patch("grpc.secure_channel", return_value=mock_channel), mock.patch(
+        "grpc.intercept_channel", side_effect=lambda ch, inc: f"wrapped_{ch}"
+    ):
         with mock.patch("google.api_core.grpc_helpers._create_composite_credentials", return_value=mock.Mock()):
             grpc_helpers.create_channel("localhost:1234", configuration=config)
 
