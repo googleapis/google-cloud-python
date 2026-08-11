@@ -303,7 +303,7 @@ def create_channel(
         target = grpc_helpers._modify_target_for_direct_path(target)
 
     # NOTE: 'configuration' is popped to prevent a TypeError.
-    # Generated async transports (like those in secretmanager) pass 'configuration'
+    # Generated async transports (like those in google-cloud-* libs) pass 'configuration'
     # down to this helper via **kwargs to support tracing in sync transports.
     # However, 'aio.secure_channel' does not recognize this parameter and will
     # crash if it is passed through.
