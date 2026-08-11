@@ -385,7 +385,9 @@ def find_module_from_package(pkg):
     try:
         files = importlib.metadata.files(pkg)
         if files:
-            ignored_parts = ('tests', 'testing', 'samples', 'examples', 'benchmark', 'benchmarks')
+            ignored_parts = {'tests', 'testing', 'samples', 'examples', 'benchmark', 'benchmarks', 'third_party', 'test_utils', 'docs', 'build', 'dist', 'bin', 'ci', 'scripts', 'cloudbuild', 'notebooks', 'assets', 'scratch', 'specs'}
+            if pkg == "google-cloud-testutils":
+                ignored_parts.discard('test_utils')
             init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not any(part in ignored_parts for part in str(f).replace('\\', '/').split('/'))]
             if init_files:
                 from pathlib import Path
@@ -406,13 +408,20 @@ def find_module_from_package(pkg):
         import os
         if os.path.exists('setup.py') or os.path.exists('pyproject.toml'):
             where_dir = "src" if os.path.isdir("src") else "."
+            abs_where_dir = os.path.abspath(where_dir)
+            if abs_where_dir not in sys.path:
+                sys.path.insert(0, abs_where_dir)
             pkgs = setuptools.find_namespace_packages(where=where_dir)
             ignored_prefixes = ("tests", "samples", "examples", "benchmark", "benchmarks", "third_party", "testing", "test_utils", "docs", "build", "dist", "bin", "ci", "scripts", "cloudbuild", "notebooks", "assets", "scratch", "specs")
+            ignored_starts = ("test_", "tests_", "sample_", "samples_", "bench_", "benchmarks_", "example_", "examples_", "doc_", "docs_", "notebook_", "notebooks_")
             
             filtered = []
             for p in pkgs:
                 top = p.split(".")[0]
-                if top in ignored_prefixes or top.startswith(("test_", "sample_", "bench_", "example_", "doc_", "notebook_")) or p in ("google", "google.cloud"):
+                is_ignored_top = top in ignored_prefixes or top.startswith(ignored_starts)
+                if is_ignored_top and pkg == "google-cloud-testutils" and top == "test_utils":
+                    is_ignored_top = False
+                if is_ignored_top or p in ("google", "google.cloud"):
                     continue
                 filtered.append(p)
 

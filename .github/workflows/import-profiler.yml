@@ -13,19 +13,62 @@ permissions:
   contents: read
 
 jobs:
+  initialize:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      is_full_run: ${{ steps.check-label.outputs.is_full_run }}
+    env:
+      MAX_SHARDS: 8
+    steps:
+    - name: Checkout
+      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
+      # See https://github.com/googleapis/google-cloud-python/issues/12013
+      # and https://github.com/actions/checkout#checkout-head.
+      with:
+        fetch-depth: 2
+        persist-credentials: false
+    - name: Check for unit_test:all_packages label
+      id: check-label
+      run: |
+        if [[ "${{ contains(github.event.pull_request.labels.*.name, 'unit_test:all_packages') }}" == "true" ]]; then
+          echo "is_full_run=true" >> $GITHUB_OUTPUT
+        else
+          echo "is_full_run=false" >> $GITHUB_OUTPUT
+        fi
+    - name: Setup Python
+      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+      with:
+        python-version: "3.10"
+    - name: Get package shards
+      id: set-matrix
+      env:
+        BUILD_TYPE: presubmit
+        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
+        TEST_ALL_PACKAGES: ${{ steps.check-label.outputs.is_full_run }}
+        MAX_SHARDS: ${{ env.MAX_SHARDS }}
+      run: |
+        if [ -n "$TARGET_BRANCH" ]; then
+          git fetch origin "$TARGET_BRANCH" --depth=1 || true
+        fi
+        python3 ci/get_package_shards.py
+
   import-profile:
+    needs: initialize
+    if: needs.initialize.outputs.matrix != '[]' && needs.initialize.outputs.matrix != ''
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
-        shard: [0, 1, 2, 3, 4, 5, 6, 7] # 8 parallel shards
-    name: import-profile (Shard ${{ matrix.shard }})
+        package_shard: ${{ fromJson(needs.initialize.outputs.matrix) }}
+    name: ${{ matrix.package_shard.is_sharded && format('import-profile ({0})', matrix.package_shard.name) || format('import-profile ({0})', matrix.package_shard.description) }}
     steps:
     - name: Checkout
-      uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
       with:
-        fetch-depth: 0 # Fetch git history to find changed packages
+        fetch-depth: 0 # Fetch git history to find changed packages / baseline
         persist-credentials: false
     - name: Setup Python
       uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
@@ -38,7 +81,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest pytest-cov setuptools
         pytest scripts/import_profiler/test_profiler.py --cov=profiler --cov-report=term-missing --cov-fail-under=100
-    - name: Run import profiler
+    - name: Run import profiler for ${{ matrix.package_shard.description }}
       env:
         BUILD_TYPE: presubmit
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
@@ -46,43 +89,22 @@ jobs:
         PY_VERSION: "3.15"
         # Workaround: Allows libcst to compile on Python 3.15+ while PyO3 catches up
         PYO3_USE_ABI3_FORWARD_COMPATIBILITY: "1"
-        SHARD_INDEX: ${{ matrix.shard }}
-        TOTAL_SHARDS: 8
+        PACKAGE_LIST: ${{ matrix.package_shard.packages }}
       run: |
-        TARGET_BRANCH=${TARGET_BRANCH:-main}
-        git fetch origin "${TARGET_BRANCH}" --deepen=200 || true
-        
-        # Get unique list of modified packages under packages/
-        modified_packages=$(git diff --name-only origin/"${TARGET_BRANCH}"... | grep '^packages/' | cut -d/ -f1,2 | sort -u)
-        
-        # Filter packages assigned to this specific shard index
-        idx=0
-        packages_to_test=""
-        for pkg in $modified_packages; do
-          if [ -d "$pkg" ]; then
-            if [ "$((idx % TOTAL_SHARDS))" -eq "${SHARD_INDEX}" ]; then
-              packages_to_test="$packages_to_test $pkg"
-            fi
-            idx=$((idx + 1))
-          fi
-        done
-        
-        # Run tests on the assigned packages
-        if [ -n "$packages_to_test" ]; then
-          echo "Shard ${{ matrix.shard }} running packages: $packages_to_test"
-          PACKAGE_LIST="$packages_to_test" ci/run_conditional_tests.sh
-        else
-          echo "No packages assigned to Shard ${{ matrix.shard }}."
-        fi
+        ci/run_conditional_tests.sh
 
   all-import-profiles:
-    needs: import-profile
+    needs: [initialize, import-profile]
     if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Check import profile results
         run: |
-          if [[ "${{ needs.import-profile.result }}" != "success" && "${{ needs.import-profile.result }}" != "skipped" ]]; then
+          if [[ "${{ needs.initialize.result }}" != "success" ]]; then
+            echo "Error: The initialize job status was: ${{ needs.initialize.result }}"
+            exit 1
+          fi
+          if [[ "${{ needs['import-profile'].result }}" != "success" && "${{ needs['import-profile'].result }}" != "skipped" ]]; then
             echo "Import profiles failed"
             exit 1
           fi
