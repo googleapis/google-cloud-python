@@ -50,10 +50,10 @@ from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 from google.protobuf.message import Message
 from grpc import Channel
 
-from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     _CONCURRENCY_LIMIT,
+    _DEFAULT_BIGTABLE_EMULATOR_CLIENT,
     TABLE_DEFAULT,
     _align_timeouts,
     _attempt_timeout_generator,
