@@ -375,7 +375,8 @@ class TestResumableUpload(object):
         upload._resumable_url = "http://test.invalid?upload_id=not-none"
 
         crc32c_int = google_crc32c.value(data)
-        crc32c_b64 = base64.b64encode(crc32c_int.to_bytes(4, "big")).decode("utf-8")
+        crc32c_bytes = crc32c_int.to_bytes(4, "big")
+        crc32c_b64 = base64.b64encode(crc32c_bytes).decode("utf-8")
 
         transport = mock.Mock(spec=["request"])
         put_response = mock.Mock(

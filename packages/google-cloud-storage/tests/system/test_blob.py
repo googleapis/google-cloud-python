@@ -1369,7 +1369,8 @@ def test_upload_from_file_streaming_with_trailing_checksum_validation(
         expected_crc32c_int.to_bytes(4, "big")
     ).decode("utf-8")
 
-    # Upload from stream WITHOUT passing size (routes to resumable upload with total_bytes=None)
+    # Upload from stream WITHOUT passing size parameter
+    # (routes to resumable upload with total_bytes=None)
     blob.upload_from_file(io_stream, checksum="crc32c")
 
     blob.reload()
@@ -1384,7 +1385,6 @@ def test_upload_from_file_streaming_corrupted_checksum_rejection(
     import os
     import pytest
     from google.api_core.exceptions import BadRequest
-    from google.cloud.storage.exceptions import DataCorruption
 
     blob_name = f"StreamingCorruptedChecksum-{uuid.uuid4().hex}"
     blob = shared_bucket.blob(blob_name)
@@ -1402,4 +1402,3 @@ def test_upload_from_file_streaming_corrupted_checksum_rejection(
             checksum="crc32c",
             crc32c_checksum_value=bad_crc32c_b64,
         )
-
