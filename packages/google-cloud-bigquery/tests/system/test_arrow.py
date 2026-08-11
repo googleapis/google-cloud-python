@@ -223,3 +223,27 @@ def test_to_arrow_query_with_empty_results(bigquery_client):
     struct_type = table.field("struct_col").type
     assert struct_type.get_field_index("json_field") == 0
     assert struct_type.get_field_index("int_field") == 1
+
+
+def test_query_and_wait_arrow_format_to_arrow_iterable(bigquery_client):
+    iterator = bigquery_client.query_and_wait(
+        "SELECT 1 AS num, 'hello' AS msg",
+        query_results_format="ARROW",
+        compression_codec=enums.QueryResultsCompressionCodec.LZ4_FRAME,
+    )
+    batches = list(iterator.to_arrow_iterable())
+    assert len(batches) >= 1
+    table = pyarrow.Table.from_batches(batches)
+    assert table.column_names == ["num", "msg"]
+    assert table.to_pydict() == {"num": [1], "msg": ["hello"]}
+
+
+def test_query_and_wait_arrow_format_with_compression_codec(bigquery_client):
+    iterator = bigquery_client.query_and_wait(
+        "SELECT 42 AS val",
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    table = iterator.to_arrow()
+    assert isinstance(table, pyarrow.Table)
+    assert table.column_names == ["val"]
+    assert table.to_pydict() == {"val": [42]}

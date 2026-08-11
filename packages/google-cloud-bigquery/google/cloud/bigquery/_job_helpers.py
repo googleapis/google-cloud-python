@@ -475,10 +475,10 @@ def query_and_wait(
         page_size (Optional[int]):
             The maximum number of rows in each page of results from this
             request. Non-positive values are ignored.
-        query_results_format (Optional[str]):
-            [Beta] The format for query results (e.g. "ARROW").
-        compression_codec (Optional[str]):
-            [Beta] Compression codec for Arrow serialization (e.g. "LZ4_FRAME").
+        query_results_format (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsFormat]]):
+            [Beta] The format for query results (e.g. "ARROW" or :class:`~google.cloud.bigquery.enums.QueryResultsFormat.ARROW`).
+        compression_codec (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsCompressionCodec]]):
+            [Beta] Compression codec for Arrow serialization (e.g. "LZ4_FRAME" or :class:`~google.cloud.bigquery.enums.QueryResultsCompressionCodec.LZ4_FRAME`).
         callback (Callable):
             A callback function used by bigframes to report query progress.
 

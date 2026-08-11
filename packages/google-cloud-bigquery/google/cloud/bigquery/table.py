@@ -124,6 +124,11 @@ _TO_ARROW_DEPRECATED = (
     "or 'pandas_gbq.arrow.read_bigquery_query()' directly."
 )
 
+_CANNOT_ITERATE_ARROW_ERROR = (
+    "Cannot iterate over non-arrow results when queryResultsFormat is ARROW. "
+    "Use to_arrow_iterable() or to_arrow() instead."
+)
+
 # How many of the total rows need to be downloaded already for us to skip
 # calling the BQ Storage API?
 #
@@ -176,6 +181,18 @@ def _view_use_legacy_sql_getter(
         # The server-side default for useLegacySql is True.
         return True
     return None  # explicit return statement to appease mypy
+
+
+def _disallow_when_arrow(func):
+    """Decorator that disallows iteration/access when queryResultsFormat is ARROW."""
+
+    @functools.wraps(func)
+    def wrapper(self, *args, **kwargs):
+        if self._query_results_format == "ARROW":
+            raise ValueError(_CANNOT_ITERATE_ARROW_ERROR)
+        return func(self, *args, **kwargs)
+
+    return wrapper
 
 
 class _TableBase:
@@ -1963,25 +1980,16 @@ class RowIterator(HTTPIterator):
         self._query_results_format = query_results_format
 
     @property
+    @_disallow_when_arrow
     def pages(self):
-        if self._query_results_format == "ARROW":
-            raise ValueError(
-                "Cannot iterate over non-arrow results when queryResultsFormat is ARROW. Use to_arrow_iterable() or to_arrow() instead."
-            )
         return super().pages
 
+    @_disallow_when_arrow
     def __iter__(self):
-        if self._query_results_format == "ARROW":
-            raise ValueError(
-                "Cannot iterate over non-arrow results when queryResultsFormat is ARROW. Use to_arrow_iterable() or to_arrow() instead."
-            )
         return super().__iter__()
 
+    @_disallow_when_arrow
     def __next__(self):
-        if self._query_results_format == "ARROW":
-            raise ValueError(
-                "Cannot iterate over non-arrow results when queryResultsFormat is ARROW. Use to_arrow_iterable() or to_arrow() instead."
-            )
         return super().__next__()
 
     @property
@@ -2300,14 +2308,41 @@ class RowIterator(HTTPIterator):
         bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
         timeout: Optional[float] = None,
     ) -> Iterator["pyarrow.RecordBatch"]:
+        """Yield Arrow record batches for query results formatted as ARROW.
+
+        First processes inline Arrow data in the initial page response (if present),
+        updating row offset and total row counts. If more rows remain, streams
+        remaining batches using the BigQuery Read API default job stream
+        (``projects/.../locations/.../jobs/.../streams/_default``).
+
+        Args:
+            bqstorage_client (Optional[bigquery_storage.BigQueryReadClient]):
+                Client for BigQuery Storage Read API. If None, one will be created.
+            timeout (Optional[float]):
+                Timeout in seconds for read operations.
+
+        Yields:
+            pyarrow.RecordBatch: Record batches generated from the query result.
+        """
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
+
+        # Step 1: Ensure BigQuery Read API client is available upfront.
+        if bqstorage_client is None:
+            if self.client is None:
+                raise ValueError("RowIterator client is None.")
+            bqstorage_client = self.client._ensure_bqstorage_client()
+            if bqstorage_client is None:
+                raise ValueError(
+                    "The google-cloud-bigquery-storage library is required to read Arrow results."
+                )
 
         offset = 0
         pa_schema = None
         total_rows = self.total_rows
         job_complete = False
 
+        # Step 2: Process initial inline Arrow response from jobs.query if available.
         if self._first_page_response:
             first_page = self._first_page_response
             self._first_page_response = None
@@ -2339,18 +2374,11 @@ class RowIterator(HTTPIterator):
                     offset += batch.num_rows
                     yield batch
 
+        # Step 3: Return early if all results were delivered in the first page response.
         if job_complete and offset >= total_rows:
             return
 
-        if bqstorage_client is None:
-            if self.client is None:
-                raise ValueError("RowIterator client is None.")
-            bqstorage_client = self.client._ensure_bqstorage_client()
-            if bqstorage_client is None:
-                raise ValueError(
-                    "The google-cloud-bigquery-storage library is required to read Arrow results."
-                )
-
+        # Step 4: Stream remaining Arrow record batches from the job default stream.
         project = self._project or (self.client.project if self.client else None)
         location = self._location or (self.client.location if self.client else None)
         stream_name = (
@@ -3200,28 +3228,13 @@ class _EmptyRowIterator(RowIterator):
             **kwargs,  # type: ignore[misc]
         )
         self._total_rows = 0
-        self._query_results_format = query_results_format
 
-    @property
-    def pages(self):
-        if self._query_results_format == "ARROW":
-            raise ValueError(
-                "Cannot iterate over non-arrow results when queryResultsFormat is ARROW. Use to_arrow_iterable() or to_arrow() instead."
-            )
-        return super().pages
-
+    @_disallow_when_arrow
     def __iter__(self):
-        if self._query_results_format == "ARROW":
-            raise ValueError(
-                "Cannot iterate over non-arrow results when queryResultsFormat is ARROW. Use to_arrow_iterable() or to_arrow() instead."
-            )
         return iter(())
 
+    @_disallow_when_arrow
     def __next__(self):
-        if self._query_results_format == "ARROW":
-            raise ValueError(
-                "Cannot iterate over non-arrow results when queryResultsFormat is ARROW. Use to_arrow_iterable() or to_arrow() instead."
-            )
         raise StopIteration
 
     def to_arrow(

@@ -3712,10 +3712,10 @@ class Client(ClientWithProject):
                 jobs.getQueryResults API calls. Large results downloaded with
                 the BigQuery Storage Read API are intentionally unaffected
                 by this parameter.
-            query_results_format (Optional[str]):
-                [Beta] The format for query results (e.g. "ARROW").
-            compression_codec (Optional[str]):
-                [Beta] Compression codec for Arrow serialization (e.g. "LZ4_FRAME").
+            query_results_format (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsFormat]]):
+                [Beta] The format for query results (e.g. "ARROW" or :class:`~google.cloud.bigquery.enums.QueryResultsFormat.ARROW`).
+            compression_codec (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsCompressionCodec]]):
+                [Beta] Compression codec for Arrow serialization (e.g. "LZ4_FRAME" or :class:`~google.cloud.bigquery.enums.QueryResultsCompressionCodec.LZ4_FRAME`).
 
         Returns:
             google.cloud.bigquery.table.RowIterator:

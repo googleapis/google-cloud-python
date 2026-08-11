@@ -420,7 +420,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
             batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
             self.assertEqual(batches, [mock_first_batch])
-            mock_client._ensure_bqstorage_client.assert_not_called()
+            mock_client._ensure_bqstorage_client.assert_called_once()
 
     def test_download_arrow_from_job_id_calls_read_rows_when_job_not_complete(self):
         mock_client = mock.MagicMock()
@@ -466,6 +466,45 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             expected_stream = "projects/test-proj/locations/US/jobs/test-job-incomplete/streams/_default"
             mock_bqstorage.read_rows.assert_called_once_with(expected_stream, offset=10, timeout=5.0)
 
+    def test_enums_values(self):
+        from google.cloud.bigquery.enums import QueryResultsFormat, QueryResultsCompressionCodec
+
+        self.assertEqual(QueryResultsFormat.ARROW, "ARROW")
+        self.assertEqual(QueryResultsCompressionCodec.LZ4_FRAME, "LZ4_FRAME")
+        self.assertEqual(QueryResultsCompressionCodec.ZSTD, "ZSTD")
+
+    def test_job_helpers_query_and_wait_accepts_enums(self):
+        from google.cloud.bigquery.enums import QueryResultsFormat, QueryResultsCompressionCodec
+
+        client = mock.MagicMock(spec=Client)
+        client._call_api.return_value = {
+            "jobReference": {"projectId": "p", "jobId": "j", "location": "us"},
+            "jobComplete": True,
+            "rows": [],
+            "schema": {"fields": []},
+        }
+
+        row_iterator = _job_helpers.query_and_wait(
+            client=client,
+            query="SELECT 1",
+            project="p",
+            location="us",
+            job_config=None,
+            retry=None,
+            job_retry=None,
+            query_results_format=QueryResultsFormat.ARROW,
+            compression_codec=QueryResultsCompressionCodec.LZ4_FRAME,
+        )
+        self.assertEqual(row_iterator._query_results_format, "ARROW")
+
+        call_args = client._call_api.call_args
+        self.assertEqual(call_args.kwargs["data"]["queryResultsFormat"], "ARROW")
+        self.assertEqual(
+            call_args.kwargs["data"]["formatOptions"]["arrowSerializationOptions"]["bufferCompression"],
+            "LZ4_FRAME",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
+
