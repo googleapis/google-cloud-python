@@ -139,12 +139,11 @@ class AcceleratorDaemon:
         # subprocess.PIPE. Nothing drains those pipes for the daemon's
         # lifetime, so a PIPE's fixed OS buffer would eventually fill and
         # block (deadlock) the daemon on its next write. A regular file has no
-        # such limit and stays on disk for post-mortem debugging. stdin stays a
-        # PIPE — closing it is how close() signals the daemon to shut down.
-        self._log_path = os.path.join(
-            tempfile.gettempdir(),
-            f"accelerator-daemon-{os.path.basename(self._tempdir)}.log",
-        )
+        # such limit. The log lives alongside the socket in the daemon's
+        # tempdir so it's cleaned up with everything else in close(). stdin
+        # stays a PIPE — closing it is how close() signals the daemon to shut
+        # down.
+        self._log_path = os.path.join(self._tempdir, "daemon.log")
         self._log_file = open(self._log_path, "wb")
         argv = [self._binary_path, "--uds-path", self._uds_path, *self._cli_flags]
         try:
