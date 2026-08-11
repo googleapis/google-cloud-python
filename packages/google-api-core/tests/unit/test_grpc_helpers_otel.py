@@ -49,44 +49,28 @@ def mock_otel_grpc(monkeypatch):
     return mock_otel_grpc
 
 
+@pytest.mark.parametrize(
+    "is_otel_installed, tracing_env_var_value, expect_otel_interceptor",
+    [
+        pytest.param(True, "true", True, id="installed_and_enabled"),
+        pytest.param(True, "false", False, id="installed_but_disabled"),
+        pytest.param(False, "true", False, id="not_installed_fails_open"),
+    ],
+)
 @pytest.mark.skipif(not HAS_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
-def test_create_channel_otel_installed_and_enabled(monkeypatch, mock_otel_grpc):
-    """Verify that create_channel wraps the channel with OTel interceptor when installed and enabled."""
+def test_create_channel_otel_combos(
+    monkeypatch,
+    mock_otel_grpc,
+    is_otel_installed,
+    tracing_env_var_value,
+    expect_otel_interceptor,
+):
+    """Verify create_channel behavior with various OTel installation and enablement states."""
 
-    # Enable tracing
-    monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "true")
+    monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", tracing_env_var_value)
 
-    # Mock grpc.secure_channel
-    mock_channel = "raw_channel"
-    with mock.patch(
-        "grpc.secure_channel", return_value=mock_channel
-    ) as mock_secure_channel:
-        # We need to mock credentials setup to avoid external calls
-        with mock.patch(
-            "google.api_core.grpc_helpers._create_composite_credentials",
-            return_value=mock.Mock(),
-        ):
-            channel = grpc_helpers.create_channel("localhost:1234")
-
-            # Verify raw channel was created
-            mock_secure_channel.assert_called_once()
-
-            # Verify OTel interceptor was fetched and channel was wrapped
-            mock_otel_grpc.client_interceptor.assert_called_once()
-            mock_otel_grpc.intercept_channel.assert_called_once_with(
-                mock_channel, mock_otel_grpc.client_interceptor.return_value
-            )
-
-            # Verify returned channel is the wrapped one
-            assert channel == f"wrapped_{mock_channel}"
-
-
-@pytest.mark.skipif(not HAS_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
-def test_create_channel_otel_installed_but_disabled(monkeypatch, mock_otel_grpc):
-    """Verify that create_channel does NOT wrap the channel if tracing is disabled."""
-
-    # Disable tracing (or leave unset, default should be false/disabled)
-    monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "false")
+    if not is_otel_installed:
+        monkeypatch.setitem(sys.modules, "opentelemetry.instrumentation.grpc", None)
 
     mock_channel = "raw_channel"
     with mock.patch(
@@ -98,42 +82,19 @@ def test_create_channel_otel_installed_but_disabled(monkeypatch, mock_otel_grpc)
         ):
             channel = grpc_helpers.create_channel("localhost:1234")
 
-            # Verify raw channel was created
+            # Always expect raw channel creation
             mock_secure_channel.assert_called_once()
 
-            # Verify OTel was NOT used
-            mock_otel_grpc.intercept_channel.assert_not_called()
-
-            # Verify returned channel is the raw one
-            assert channel == mock_channel
-
-
-@pytest.mark.skipif(not HAS_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
-def test_create_channel_otel_not_installed_fails_open(monkeypatch):
-    """Verify that create_channel fails open if OTel is not installed, even if enabled."""
-
-    # Simulate missing module
-    monkeypatch.setitem(sys.modules, "opentelemetry.instrumentation.grpc", None)
-
-    # Enable tracing
-    monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "true")
-
-    mock_channel = "raw_channel"
-    with mock.patch(
-        "grpc.secure_channel", return_value=mock_channel
-    ) as mock_secure_channel:
-        with mock.patch(
-            "google.api_core.grpc_helpers._create_composite_credentials",
-            return_value=mock.Mock(),
-        ):
-            # This should NOT raise ImportError
-            channel = grpc_helpers.create_channel("localhost:1234")
-
-            # Verify raw channel was created
-            mock_secure_channel.assert_called_once()
-
-            # Verify returned channel is the raw one
-            assert channel == mock_channel
+            if expect_otel_interceptor:
+                mock_otel_grpc.client_interceptor.assert_called_once()
+                mock_otel_grpc.intercept_channel.assert_called_once_with(
+                    mock_channel, mock_otel_grpc.client_interceptor.return_value
+                )
+                assert channel == f"wrapped_{mock_channel}"
+            else:
+                # OTel should NOT have been called
+                mock_otel_grpc.intercept_channel.assert_not_called()
+                assert channel == mock_channel
 
 
 @pytest.mark.parametrize(
