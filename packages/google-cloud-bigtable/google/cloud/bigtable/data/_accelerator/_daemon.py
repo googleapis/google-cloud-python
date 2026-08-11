@@ -30,6 +30,7 @@ import socket
 import subprocess
 import tempfile
 import time
+import typing
 from typing import Sequence
 
 # Environment variable that overrides the bundled binary location. Primarily
@@ -102,6 +103,8 @@ class AcceleratorDaemon:
         self._startup_timeout = startup_timeout
         self._tempdir: str | None = None
         self._uds_path: str | None = None
+        self._log_path: str | None = None
+        self._log_file: "typing.IO[bytes] | None" = None
         self._proc: subprocess.Popen[bytes] | None = None
 
     @property
@@ -109,6 +112,12 @@ class AcceleratorDaemon:
         if self._uds_path is None:
             raise RuntimeError("AcceleratorDaemon has not been started")
         return self._uds_path
+
+    @property
+    def log_path(self) -> str:
+        if self._log_path is None:
+            raise RuntimeError("AcceleratorDaemon has not been started")
+        return self._log_path
 
     @property
     def pid(self) -> int:
@@ -126,20 +135,35 @@ class AcceleratorDaemon:
             raise RuntimeError("AcceleratorDaemon.start() called twice")
         self._tempdir = tempfile.mkdtemp(prefix="bt-accel-")
         self._uds_path = os.path.join(self._tempdir, "sock")
+        # Redirect the daemon's stdout/stderr to a log file rather than
+        # subprocess.PIPE. Nothing drains those pipes for the daemon's
+        # lifetime, so a PIPE's fixed OS buffer would eventually fill and
+        # block (deadlock) the daemon on its next write. A regular file has no
+        # such limit and stays on disk for post-mortem debugging. stdin stays a
+        # PIPE — closing it is how close() signals the daemon to shut down.
+        self._log_path = os.path.join(
+            tempfile.gettempdir(),
+            f"accelerator-daemon-{os.path.basename(self._tempdir)}.log",
+        )
+        self._log_file = open(self._log_path, "wb")
         argv = [self._binary_path, "--uds-path", self._uds_path, *self._cli_flags]
         try:
             self._proc = subprocess.Popen(
                 argv,
                 stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                stdout=self._log_file,
+                stderr=subprocess.STDOUT,
                 close_fds=True,
             )
         except OSError as exc:
+            self._close_log_file()
             self._cleanup_tempdir()
             raise RuntimeError(
                 f"Failed to spawn accelerator daemon at {self._binary_path}: {exc}"
             ) from exc
+        # The child inherited its own dup of the log fd; the parent no longer
+        # needs its copy. Startup failures read the tail back from the path.
+        self._close_log_file()
         try:
             self._wait_until_ready()
         except BaseException:
@@ -168,14 +192,9 @@ class AcceleratorDaemon:
                         # Step 3: SIGKILL.
                         proc.kill()
                         proc.wait()
-            for stream in (proc.stdout, proc.stderr):
-                if stream is not None:
-                    try:
-                        stream.close()
-                    except OSError:
-                        pass
         finally:
             self._proc = None
+            self._close_log_file()
             self._cleanup_tempdir()
 
     def _wait_until_ready(self) -> None:
@@ -184,10 +203,10 @@ class AcceleratorDaemon:
         while time.monotonic() < deadline:
             exit_code = self._proc.poll()
             if exit_code is not None:
-                stderr_tail = self._read_stderr_tail()
+                log_tail = self._read_log_tail()
                 raise RuntimeError(
                     "Accelerator daemon exited during startup "
-                    f"(exit code {exit_code}). stderr: {stderr_tail!r}"
+                    f"(exit code {exit_code}). log: {log_tail!r}"
                 )
             if os.path.exists(self._uds_path):
                 with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as probe:
@@ -198,43 +217,41 @@ class AcceleratorDaemon:
                     except (ConnectionRefusedError, FileNotFoundError, OSError):
                         pass
             time.sleep(0.05)
-        stderr_tail = self._read_stderr_tail()
+        log_tail = self._read_log_tail()
         raise RuntimeError(
             "Accelerator daemon did not become ready within "
-            f"{self._startup_timeout}s. stderr: {stderr_tail!r}"
+            f"{self._startup_timeout}s. log: {log_tail!r}"
         )
 
-    def _read_stderr_tail(self, max_bytes: int = 4096) -> str:
-        """Best-effort, non-blocking read of the daemon's buffered stderr.
+    def _read_log_tail(self, max_bytes: int = 4096) -> str:
+        """Best-effort read of the tail of the daemon's log file.
 
-        Used only to enrich startup-failure error messages. This is reached both
-        when the daemon has already exited and, critically, on the startup
-        *timeout* path where the process may still be alive. stderr is a blocking
-        pipe, so a plain ``read()`` would only return at EOF and would therefore
-        hang forever on an alive-but-silent daemon. Switch the fd to non-blocking
-        and read whatever is already buffered, returning "" if nothing is
-        available.
+        Used only to enrich startup-failure error messages with whatever the
+        daemon wrote to stdout/stderr (both are redirected to the log file).
+        The log is a regular file, so this is a plain bounded read with no risk
+        of blocking on an alive-but-silent daemon. Returns "" if the log is
+        unavailable.
         """
-        if self._proc is None or self._proc.stderr is None:
+        if self._log_path is None:
             return ""
         try:
-            fd = self._proc.stderr.fileno()
-        except (OSError, ValueError):
+            with open(self._log_path, "rb") as fh:
+                try:
+                    fh.seek(-max_bytes, os.SEEK_END)
+                except OSError:
+                    fh.seek(0)
+                data = fh.read()
+        except OSError:
             return ""
-        try:
-            os.set_blocking(fd, False)
-        except (OSError, ValueError):
-            return ""
-        try:
-            data = os.read(fd, max_bytes)
-        except (BlockingIOError, OSError):
-            data = b""
-        finally:
-            try:
-                os.set_blocking(fd, True)
-            except (OSError, ValueError):
-                pass
         return data.decode("utf-8", errors="replace")
+
+    def _close_log_file(self) -> None:
+        if self._log_file is not None:
+            try:
+                self._log_file.close()
+            except OSError:
+                pass
+            self._log_file = None
 
     def _wait_for_exit(self, timeout: float) -> bool:
         assert self._proc is not None
