@@ -58,6 +58,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "pytest-asyncio==0.21.2",
+    "pytest-order==1.3.0",
     RUFF_VERSION,
     "pyyaml==6.0.2",
 ]
@@ -77,7 +78,6 @@ MYPY_CONFIG_FILE = next(
     ),
     str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
 )
-
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
@@ -188,7 +188,10 @@ def mypy(session):
     )
     session.install("google-cloud-testutils")
     session.run(
-        "mypy", f"--config-file={MYPY_CONFIG_FILE}", "-p", "google.cloud.bigtable.data"
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "google.cloud.bigtable.data",
     )
 
 

@@ -37,6 +37,9 @@ import bigframes.pandas
 )
 def _cell_magic(line, cell):
     ipython = get_ipython()
+    if ipython is None:
+        raise RuntimeError("BigQuery magic must be run in an IPython environment.")
+
     args = magic_arguments.parse_argstring(_cell_magic, line)
     if not cell:
         print("Query is missing.")

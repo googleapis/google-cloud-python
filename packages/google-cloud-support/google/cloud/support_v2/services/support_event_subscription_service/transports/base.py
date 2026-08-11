@@ -19,6 +19,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 import google.api_core
 import google.auth  # type: ignore
 import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -37,9 +38,7 @@ from google.cloud.support_v2.types import (
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class SupportEventSubscriptionServiceTransport(abc.ABC):
@@ -178,6 +177,11 @@ class SupportEventSubscriptionServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.expunge_support_event_subscription: gapic_v1.method.wrap_method(
+                self.expunge_support_event_subscription,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -260,6 +264,15 @@ class SupportEventSubscriptionServiceTransport(abc.ABC):
             support_event_subscription.SupportEventSubscription,
             Awaitable[support_event_subscription.SupportEventSubscription],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def expunge_support_event_subscription(
+        self,
+    ) -> Callable[
+        [support_event_subscription_service.ExpungeSupportEventSubscriptionRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

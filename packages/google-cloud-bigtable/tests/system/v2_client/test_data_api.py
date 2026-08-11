@@ -262,7 +262,8 @@ def _add_test_error_handler(retry):
                 retry._initial * retry._multiplier**times_triggered,
                 retry._maximum,
             )
-            assert gap <= max_gap
+            # Allow a small tolerance margin (1.0s) for OS sleep scheduling latency
+            assert gap <= max_gap + 1.0
         times_triggered += 1
         curr_time = next_time
 

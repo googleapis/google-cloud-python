@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -136,7 +137,7 @@ class ClientLibrarySettings(_message.Message):
         self,
         version: _Optional[str] = ...,
         launch_stage: _Optional[_Union[_launch_stage_pb2.LaunchStage, str]] = ...,
-        rest_numeric_enums: bool = ...,
+        rest_numeric_enums: _Optional[bool] = ...,
         java_settings: _Optional[_Union[JavaSettings, _Mapping]] = ...,
         cpp_settings: _Optional[_Union[CppSettings, _Mapping]] = ...,
         php_settings: _Optional[_Union[PhpSettings, _Mapping]] = ...,
@@ -261,9 +262,9 @@ class PythonSettings(_message.Message):
         unversioned_package_disabled: bool
         def __init__(
             self,
-            rest_async_io_enabled: bool = ...,
-            protobuf_pythonic_types_enabled: bool = ...,
-            unversioned_package_disabled: bool = ...,
+            rest_async_io_enabled: _Optional[bool] = ...,
+            protobuf_pythonic_types_enabled: _Optional[bool] = ...,
+            unversioned_package_disabled: _Optional[bool] = ...,
         ) -> None: ...
 
     COMMON_FIELD_NUMBER: _ClassVar[int]
@@ -387,12 +388,14 @@ class MethodSettings(_message.Message):
         def __init__(
             self,
             initial_poll_delay: _Optional[
-                _Union[_duration_pb2.Duration, _Mapping]
+                _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
             ] = ...,
             poll_delay_multiplier: _Optional[float] = ...,
-            max_poll_delay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...,
+            max_poll_delay: _Optional[
+                _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+            ] = ...,
             total_poll_timeout: _Optional[
-                _Union[_duration_pb2.Duration, _Mapping]
+                _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
             ] = ...,
         ) -> None: ...
 
@@ -421,7 +424,7 @@ class SelectiveGapicGeneration(_message.Message):
     def __init__(
         self,
         methods: _Optional[_Iterable[str]] = ...,
-        generate_omitted_as_internal: bool = ...,
+        generate_omitted_as_internal: _Optional[bool] = ...,
     ) -> None: ...
 
 class BatchingConfigProto(_message.Message):
@@ -467,7 +470,9 @@ class BatchingSettingsProto(_message.Message):
         self,
         element_count_threshold: _Optional[int] = ...,
         request_byte_threshold: _Optional[int] = ...,
-        delay_threshold: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...,
+        delay_threshold: _Optional[
+            _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+        ] = ...,
         element_count_limit: _Optional[int] = ...,
         request_byte_limit: _Optional[int] = ...,
         flow_control_element_limit: _Optional[int] = ...,
