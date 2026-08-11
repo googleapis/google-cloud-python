@@ -34,7 +34,7 @@ API_BASE_URL = "https://www.googleapis.com"
 DEFAULT_USER_AGENT = "gcloud-python/{0}".format(version.__version__)
 """The user agent for google-cloud-python requests."""
 
-CLIENT_INFO_HEADER = "X-Goog-API-Client"
+CLIENT_INFO_HEADER = "x-goog-api-client"
 CLIENT_INFO_TEMPLATE = "gl-python/" + platform.python_version() + " gccl/{}"
 
 _USER_AGENT_ALL_CAPS_DEPRECATED = """\
