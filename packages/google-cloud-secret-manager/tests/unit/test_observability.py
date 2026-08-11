@@ -97,6 +97,10 @@ def test_access_secret_version_custom_span(setup_otel, monkeypatch):
         attributes.get("gcp.secretmanager.secret.name")
         == "projects/test-project/secrets/test-secret/versions/1"
     )
+    assert attributes.get("gcp.client.service") == "secretmanager"
+    assert attributes.get("gcp.client.repo") == "googleapis/google-cloud-python"
+    assert attributes.get("gcp.client.artifact") == "google-cloud-secret-manager"
+    assert "gcp.client.version" in attributes
 
 
 @pytest.mark.skipif(

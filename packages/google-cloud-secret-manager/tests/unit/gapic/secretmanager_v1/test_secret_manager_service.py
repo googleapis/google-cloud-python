@@ -61,8 +61,6 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
-from google.oauth2 import service_account
-
 from google.cloud.secretmanager_v1.services.secret_manager_service import (
     SecretManagerServiceAsyncClient,
     SecretManagerServiceClient,
@@ -70,6 +68,7 @@ from google.cloud.secretmanager_v1.services.secret_manager_service import (
     transports,
 )
 from google.cloud.secretmanager_v1.types import resources, service
+from google.oauth2 import service_account
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -680,6 +679,7 @@ def test_secret_manager_service_client_client_options(
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience=None,
+            configuration=options,
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -700,6 +700,7 @@ def test_secret_manager_service_client_client_options(
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
                 api_audience=None,
+                configuration=mock.ANY,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -718,6 +719,7 @@ def test_secret_manager_service_client_client_options(
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
                 api_audience=None,
+                configuration=mock.ANY,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
@@ -747,6 +749,7 @@ def test_secret_manager_service_client_client_options(
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience=None,
+            configuration=options,
         )
     # Check the case api_endpoint is provided
     options = client_options.ClientOptions(
@@ -767,6 +770,7 @@ def test_secret_manager_service_client_client_options(
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience="https://language.googleapis.com",
+            configuration=options,
         )
 
 
@@ -859,6 +863,7 @@ def test_secret_manager_service_client_mtls_env_auto(
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
                 api_audience=None,
+                configuration=options,
             )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
@@ -896,6 +901,7 @@ def test_secret_manager_service_client_mtls_env_auto(
                         client_info=transports.base.DEFAULT_CLIENT_INFO,
                         always_use_jwt_access=True,
                         api_audience=None,
+                        configuration=mock.ANY,
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
@@ -921,6 +927,7 @@ def test_secret_manager_service_client_mtls_env_auto(
                     client_info=transports.base.DEFAULT_CLIENT_INFO,
                     always_use_jwt_access=True,
                     api_audience=None,
+                    configuration=mock.ANY,
                 )
 
 
@@ -1268,6 +1275,7 @@ def test_secret_manager_service_client_client_options_scopes(
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience=None,
+            configuration=options,
         )
 
 
@@ -1315,6 +1323,7 @@ def test_secret_manager_service_client_client_options_credentials_file(
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience=None,
+            configuration=options,
         )
 
 
@@ -1336,6 +1345,7 @@ def test_secret_manager_service_client_client_options_from_dict():
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience=None,
+            configuration=client._client_options,
         )
 
 
@@ -1377,6 +1387,7 @@ def test_secret_manager_service_client_create_channel_credentials_file(
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience=None,
+            configuration=options,
         )
 
     # test that the credentials from file are saved and used as the credentials.
@@ -1405,6 +1416,7 @@ def test_secret_manager_service_client_create_channel_credentials_file(
                 ("grpc.max_send_message_length", -1),
                 ("grpc.max_receive_message_length", -1),
             ],
+            configuration=options,
         )
 
 
@@ -14683,6 +14695,7 @@ def test_secret_manager_service_transport_create_channel(transport_class, grpc_h
                 ("grpc.max_send_message_length", -1),
                 ("grpc.max_receive_message_length", -1),
             ],
+            configuration=None,
         )
 
 
@@ -14717,6 +14730,7 @@ def test_secret_manager_service_grpc_transport_client_cert_source_for_mtls(
                 ("grpc.max_send_message_length", -1),
                 ("grpc.max_receive_message_length", -1),
             ],
+            configuration=None,
         )
 
     # Check if ssl_channel_credentials is not provided, then client_cert_source_for_mtls
@@ -14936,6 +14950,7 @@ def test_secret_manager_service_transport_channel_mtls_with_client_cert_source(
                     ("grpc.max_send_message_length", -1),
                     ("grpc.max_receive_message_length", -1),
                 ],
+                configuration=None,
             )
             assert transport.grpc_channel == mock_grpc_channel
             assert transport._ssl_channel_credentials == mock_ssl_cred
@@ -14983,6 +14998,7 @@ def test_secret_manager_service_transport_channel_mtls_with_adc(transport_class)
                     ("grpc.max_send_message_length", -1),
                     ("grpc.max_receive_message_length", -1),
                 ],
+                configuration=None,
             )
             assert transport.grpc_channel == mock_grpc_channel
 
@@ -15630,4 +15646,5 @@ def test_api_key_credentials(client_class, transport_class):
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
                 api_audience=None,
+                configuration=options,
             )
