@@ -390,13 +390,15 @@ def test_client_project_path():
 
 
 def test_client_veneer_data_client_not_initialized():
+    import copy
+
     from google.cloud.bigtable import __version__
     from google.cloud.bigtable.data import BigtableDataClient
 
     credentials = _make_credentials()
     client = _make_client(project=PROJECT, credentials=credentials)
 
-    with mock.patch("copy.copy") as copy_mock:
+    with mock.patch("copy.copy", wraps=copy.copy) as copy_mock:
         data_client = client._veneer_data_client
 
         assert isinstance(data_client, BigtableDataClient)
@@ -411,6 +413,7 @@ def test_client_veneer_data_client_not_initialized():
 
 
 def test_client_veneer_data_client_not_initialized_w_client_info():
+    import copy
     from google.api_core.gapic_v1.client_info import ClientInfo
 
     from google.cloud.bigtable import __version__
@@ -421,13 +424,16 @@ def test_client_veneer_data_client_not_initialized_w_client_info():
         project=PROJECT, credentials=credentials, client_info=client_info
     )
 
-    with mock.patch("copy.copy") as copy_mock:
+    with mock.patch("copy.copy", wraps=copy.copy) as copy_mock:
         data_client = client._veneer_data_client
 
         assert client._table_data_client is data_client
 
     assert client._client_info is client_info
-    assert client._table_data_client.client_info is copy_mock.return_value
+    assert client._table_data_client.client_info is not client_info
+    assert (
+        client._table_data_client.client_info.gapic_version == client_info.gapic_version
+    )
     assert client._table_data_client._disable_background_refresh
     assert (
         client._table_data_client.client_info.client_library_version
