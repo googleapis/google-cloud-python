@@ -58,6 +58,7 @@ from google.cloud.bigquery.external_config import GoogleSheetsOptions
 from google.cloud.bigquery.external_config import ExternalSourceFormat
 from google.cloud.bigquery.external_config import HivePartitioningOptions
 from google.cloud.bigquery.format_options import AvroOptions
+from google.cloud.bigquery.format_options import ParquetOptions
 from google.cloud.bigquery.enums import QueryResultsCompressionCodec
 from google.cloud.bigquery.enums import QueryResultsFormat
 from google.cloud.bigquery.job.base import SessionInfo
