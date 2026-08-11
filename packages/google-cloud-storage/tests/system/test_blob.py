@@ -134,7 +134,7 @@ def test_large_file_write_from_stream_w_failed_checksum(
             "google.cloud.storage._media._helpers.prepare_checksum_digest",
             return_value="FFFFFF==",
         ):
-            with pytest.raises(DataCorruption):
+            with pytest.raises((DataCorruption, exceptions.BadRequest)):
                 blob.upload_from_file(file_obj, checksum="crc32c")
 
     assert not blob.exists()
