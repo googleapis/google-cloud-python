@@ -319,14 +319,6 @@ def _find_session(*args, **kwargs):
     # imports log_adapter.
     from bigframes.session import Session
 
-    for arg in args:
-        if isinstance(arg, Session) and _is_session_initialized(arg):
-            return arg
-        for attr in ("_session", "session"):
-            session = getattr(arg, attr, None)
-            if isinstance(session, Session) and _is_session_initialized(session):
-                return session
-
     session = kwargs.get("session")
     if (
         session is not None
@@ -334,5 +326,13 @@ def _find_session(*args, **kwargs):
         and _is_session_initialized(session)
     ):
         return session
+
+    for arg in args:
+        if isinstance(arg, Session) and _is_session_initialized(arg):
+            return arg
+        if hasattr(arg, "__dict__") and "_block" in arg.__dict__:
+            session = getattr(arg, "_session", None)
+            if isinstance(session, Session) and _is_session_initialized(session):
+                return session
 
     return None
