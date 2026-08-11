@@ -377,6 +377,53 @@ def validate_module_name(module_name):
         raise argparse.ArgumentTypeError(f"'{module_name}' is not a valid Python module identifier.")
     return module_name
 
+PARENT_NAMESPACES = ("google", "google.cloud")
+IGNORED_TOP_LEVEL_NAMES = {
+    "tests", "samples", "examples", "benchmark", "benchmarks", "third_party",
+    "testing", "test_utils", "docs", "build", "dist", "bin", "ci", "scripts",
+    "cloudbuild", "notebooks", "assets", "scratch", "specs"
+}
+IGNORED_NAME_PREFIXES = (
+    "test_", "tests_", "sample_", "samples_", "bench_", "benchmarks_",
+    "example_", "examples_", "doc_", "docs_", "notebook_", "notebooks_"
+)
+
+
+def _should_ignore_namespace_package(top_level, full_package, target_pkg):
+    """Determines if a discovered package path should be excluded from module selection.
+
+    Args:
+        top_level: Top-level directory component of the package (e.g. 'tests' or 'google').
+        full_package: Full namespace package path (e.g. 'google.cloud.storage' or 'google').
+        target_pkg: The distribution package being profiled (e.g. 'google-cloud-storage' or 'google-cloud-testutils').
+
+    Returns:
+        True if the namespace package should be ignored, False otherwise.
+    """
+    # Parent namespace containers (e.g. 'google', 'google.cloud') are non-leaf packages, not concrete library modules.
+    if full_package in PARENT_NAMESPACES:
+        return True
+
+    # Check if the top-level directory matches non-library folders (exact match) or prefixes (e.g. test_*)
+    is_non_library_dir = (
+        top_level in IGNORED_TOP_LEVEL_NAMES
+        or top_level.startswith(IGNORED_NAME_PREFIXES)
+    )
+
+    if not is_non_library_dir:
+        return False
+
+    # Exception: If the top-level folder name is part of the target package name 
+    # (e.g. top_level='test_utils' when target_pkg='google-cloud-testutils'), do not ignore it.
+    normalized_target_pkg = target_pkg.replace("-", "").replace("_", "").lower()
+    normalized_top_level = top_level.replace("-", "").replace("_", "").lower()
+
+    if normalized_top_level in normalized_target_pkg:
+        return False
+
+    return True
+
+
 def find_module_from_package(pkg):
     import importlib.metadata
     import importlib.util
@@ -385,10 +432,17 @@ def find_module_from_package(pkg):
     try:
         files = importlib.metadata.files(pkg)
         if files:
-            ignored_parts = {'tests', 'testing', 'samples', 'examples', 'benchmark', 'benchmarks', 'third_party', 'test_utils', 'docs', 'build', 'dist', 'bin', 'ci', 'scripts', 'cloudbuild', 'notebooks', 'assets', 'scratch', 'specs'}
-            if pkg == "google-cloud-testutils":
-                ignored_parts.discard('test_utils')
-            init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not any(part in ignored_parts for part in str(f).replace('\\', '/').split('/'))]
+            pkg_norm = pkg.replace("-", "").replace("_", "").lower()
+            init_files = [
+                str(f) for f in files
+                if str(f).endswith('__init__.py')
+                and '__pycache__' not in str(f)
+                and not any(
+                    part in IGNORED_TOP_LEVEL_NAMES
+                    and part.replace("-", "").replace("_", "").lower() not in pkg_norm
+                    for part in str(f).replace('\\', '/').split('/')
+                )
+            ]
             if init_files:
                 from pathlib import Path
                 shortest_init = min(init_files, key=lambda p: len(Path(p).parts))
@@ -412,16 +466,10 @@ def find_module_from_package(pkg):
             if abs_where_dir not in sys.path:
                 sys.path.insert(0, abs_where_dir)
             pkgs = setuptools.find_namespace_packages(where=where_dir)
-            ignored_prefixes = ("tests", "samples", "examples", "benchmark", "benchmarks", "third_party", "testing", "test_utils", "docs", "build", "dist", "bin", "ci", "scripts", "cloudbuild", "notebooks", "assets", "scratch", "specs")
-            ignored_starts = ("test_", "tests_", "sample_", "samples_", "bench_", "benchmarks_", "example_", "examples_", "doc_", "docs_", "notebook_", "notebooks_")
-            
             filtered = []
             for p in pkgs:
                 top = p.split(".")[0]
-                is_ignored_top = top in ignored_prefixes or top.startswith(ignored_starts)
-                if is_ignored_top and pkg == "google-cloud-testutils" and top == "test_utils":
-                    is_ignored_top = False
-                if is_ignored_top or p in ("google", "google.cloud"):
+                if _should_ignore_namespace_package(top, p, pkg):
                     continue
                 filtered.append(p)
 
