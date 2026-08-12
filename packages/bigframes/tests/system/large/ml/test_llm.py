@@ -43,7 +43,7 @@ def test_create_load_gemini_text_generator_model(
     assert gemini_text_generator_model._bqml_model is not None
 
     # save, load to ensure configuration was kept
-    sanitized_model_name = model_name.replace("-", "_").replace(".", "_")
+    sanitized_model_name = model_name.replace("-", "_").replace(".", "_").replace("@", "_")
     target_model_name = f"{dataset_id}.temp_gemini_text_model_{sanitized_model_name}"
     reloaded_model = gemini_text_generator_model.to_gbq(
         target_model_name, replace=True
