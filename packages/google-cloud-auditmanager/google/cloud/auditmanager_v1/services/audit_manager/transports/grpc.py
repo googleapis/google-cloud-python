@@ -350,14 +350,12 @@ class AuditManagerGrpcTransport(AuditManagerTransport):
     ) -> Callable[[auditmanager.EnrollResourceRequest], auditmanager.Enrollment]:
         r"""Return a callable for the enroll resource method over gRPC.
 
-        Enrolls the customer
-        resource(folder/project/organization) to the audit
-        manager service by creating the audit managers Service
-        Agent in customers workload and granting required
-        permissions to the Service Agent. Please note that if
-        enrollment request is made on the already enrolled
-        workload then enrollment is executed overriding the
-        existing set of destinations.
+        Adds your project, folder, or organization to Audit
+        Manager. This method creates the Audit Manager service
+        agent in your workload and grants required permissions
+        to the service agent. If you make this request on a
+        workload that's already enrolled, then this method
+        overrides the existing set of destinations.
 
         Returns:
             Callable[[~.EnrollResourceRequest],
@@ -385,10 +383,14 @@ class AuditManagerGrpcTransport(AuditManagerTransport):
     ]:
         r"""Return a callable for the generate audit scope report method over gRPC.
 
-        Generates a demo report highlighting different
-        responsibilities (Google/Customer/ shared) required to
-        be fulfilled for the customer's workload to be compliant
-        with the given standard.
+        Generates an audit scope report for the given standard.
+
+        The report includes the following:
+
+        - The technical attributes and constraints that Audit Manager
+          uses to verify your compliance with a framework.
+        - A list of Google Cloud services and resources that are within
+          the scope of the framework.
 
         Returns:
             Callable[[~.GenerateAuditScopeReportRequest],
@@ -416,9 +418,9 @@ class AuditManagerGrpcTransport(AuditManagerTransport):
     ) -> Callable[[auditmanager.GenerateAuditReportRequest], operations_pb2.Operation]:
         r"""Return a callable for the generate audit report method over gRPC.
 
-        Register the Audit Report generation requests and
-        returns the OperationId using which the customer can
-        track the report generation progress.
+        Registers audit report generation requests. This
+        method returns the operation identifier that you can use
+        to track the report generation progress.
 
         Returns:
             Callable[[~.GenerateAuditReportRequest],
@@ -446,7 +448,8 @@ class AuditManagerGrpcTransport(AuditManagerTransport):
     ]:
         r"""Return a callable for the list audit reports method over gRPC.
 
-        Lists audit reports in the selected parent scope
+        Lists the audit reports for the organization, folder,
+        or project that you specify as the parent scope.
 
         Returns:
             Callable[[~.ListAuditReportsRequest],
@@ -472,7 +475,8 @@ class AuditManagerGrpcTransport(AuditManagerTransport):
     ) -> Callable[[auditmanager.GetAuditReportRequest], auditmanager.AuditReport]:
         r"""Return a callable for the get audit report method over gRPC.
 
-        Get the overall audit report
+        Gets the full metadata and findings for an audit
+        report.
 
         Returns:
             Callable[[~.GetAuditReportRequest],
@@ -501,7 +505,7 @@ class AuditManagerGrpcTransport(AuditManagerTransport):
     ]:
         r"""Return a callable for the get resource enrollment status method over gRPC.
 
-        Get a resource along with its enrollment status.
+        Gets a resource and its enrollment status.
 
         Returns:
             Callable[[~.GetResourceEnrollmentStatusRequest],
@@ -533,8 +537,8 @@ class AuditManagerGrpcTransport(AuditManagerTransport):
         r"""Return a callable for the list resource enrollment
         statuses method over gRPC.
 
-        Fetches all resources under the parent along with
-        their enrollment.
+        Lists all the folders and projects in an organization
+        or folder, along with their enrollments.
 
         Returns:
             Callable[[~.ListResourceEnrollmentStatusesRequest],
@@ -564,8 +568,8 @@ class AuditManagerGrpcTransport(AuditManagerTransport):
     ]:
         r"""Return a callable for the list controls method over gRPC.
 
-        Gets controls needed to be implemented to be
-        compliant to a standard.
+        Lists the controls that you must implement to become
+        compliant to a regulatory standard.
 
         Returns:
             Callable[[~.ListControlsRequest],

@@ -379,6 +379,14 @@ class ChatServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_search_messages(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_search_messages(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_search_spaces(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -2090,6 +2098,52 @@ class ChatServiceRestInterceptor:
         `post_position_section` interceptor. The (possibly modified) response returned by
         `post_position_section` will be passed to
         `post_position_section_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_search_messages(
+        self,
+        request: message.SearchMessagesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[message.SearchMessagesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for search_messages
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_search_messages(
+        self, response: message.SearchMessagesResponse
+    ) -> message.SearchMessagesResponse:
+        """Post-rpc interceptor for search_messages
+
+        DEPRECATED. Please use the `post_search_messages_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_search_messages` interceptor runs
+        before the `post_search_messages_with_metadata` interceptor.
+        """
+        return response
+
+    def post_search_messages_with_metadata(
+        self,
+        response: message.SearchMessagesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[message.SearchMessagesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for search_messages
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_search_messages_with_metadata`
+        interceptor in new development instead of the `post_search_messages` interceptor.
+        When both interceptors are used, this `post_search_messages_with_metadata` interceptor runs after the
+        `post_search_messages` interceptor. The (possibly modified) response returned by
+        `post_search_messages` will be passed to
+        `post_search_messages_with_metadata`.
         """
         return response, metadata
 
@@ -8251,6 +8305,159 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 )
             return resp
 
+    class _SearchMessages(
+        _BaseChatServiceRestTransport._BaseSearchMessages, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.SearchMessages")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: message.SearchMessagesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> message.SearchMessagesResponse:
+            r"""Call the search messages method over HTTP.
+
+            Args:
+                request (~.message.SearchMessagesRequest):
+                    The request object. Request message for searching
+                messages.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.message.SearchMessagesResponse:
+                    Response message for searching
+                messages.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseSearchMessages._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_search_messages(request, metadata)
+            transcoded_request = _BaseChatServiceRestTransport._BaseSearchMessages._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseChatServiceRestTransport._BaseSearchMessages._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseChatServiceRestTransport._BaseSearchMessages._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.SearchMessages",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "SearchMessages",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._SearchMessages._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = message.SearchMessagesResponse()
+            pb_resp = message.SearchMessagesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_search_messages(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_messages_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = message.SearchMessagesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.search_messages",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "SearchMessages",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _SearchSpaces(
         _BaseChatServiceRestTransport._BaseSearchSpaces, ChatServiceRestStub
     ):
@@ -10150,6 +10357,14 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PositionSection(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def search_messages(
+        self,
+    ) -> Callable[[message.SearchMessagesRequest], message.SearchMessagesResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SearchMessages(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def search_spaces(
