@@ -79,9 +79,7 @@ class TestComputeSmoke(TestBase):
         with self.assertRaises(expected_exception=TypeError) as ex:
             self.client.get(instance=self.name, zone=0)
         self.assertIn(
-            (
-                "bad argument type for built-in operation"
-            ),
+            ("bad argument type for built-in operation"),
             str(ex.exception.args),
         )
 
