@@ -54,9 +54,13 @@ dependencies = [
     "protobuf >= 6.33.5, < 8.0.0",
 ]
 extras = {
-    "pandas": ["pandas>=1.1.3"],
-    "fastavro": ["fastavro>=1.1.0"],
-    "pyarrow": ["pyarrow>=3.0.0"],
+    "pandas": [
+        "pandas >= 1.1.3, < 3.0.0",
+        "pyarrow >= 3.0.0",
+        "pandas-gbq >= 0.35.1, < 2.0.0",
+    ],
+    "fastavro": ["fastavro >= 1.1.0, < 2.0.0"],
+    "pyarrow": ["pyarrow >= 3.0.0"],
 }
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-storage"
 
