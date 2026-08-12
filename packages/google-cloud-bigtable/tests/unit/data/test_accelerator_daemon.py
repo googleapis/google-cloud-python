@@ -14,6 +14,7 @@
 
 import json
 import os
+import time
 import unittest.mock
 
 import pytest
@@ -650,3 +651,71 @@ class TestResolveStartupTimeout:
         monkeypatch.setenv(_STARTUP_TIMEOUT_ENV_VAR, "xyz")
         with pytest.raises(ValueError, match="not a valid number of seconds"):
             _make_daemon(tmp_path)
+
+
+class TestSweepStaleTempdirs:
+    """_sweep_stale_tempdirs reaps leftover daemon tempdirs, keyed on the
+    daemon.log marker, without touching live or too-young ones."""
+
+    @staticmethod
+    def _make_leftover(root, name, *, with_log=True, age_seconds=0.0):
+        d = root / name
+        d.mkdir()
+        if with_log:
+            log = d / _daemon._LOG_FILENAME
+            log.write_bytes(b"hi")
+            if age_seconds:
+                past = time.time() - age_seconds
+                os.utime(log, (past, past))
+        return d
+
+    @pytest.fixture
+    def tmp_root(self, tmp_path, monkeypatch):
+        # Point the sweep's tempdir root at an isolated dir under pytest's tmp.
+        root = tmp_path / "tmproot"
+        root.mkdir()
+        monkeypatch.setattr(_daemon.tempfile, "gettempdir", lambda: str(root))
+        return root
+
+    def test_removes_stale_dir(self, tmp_root):
+        d = self._make_leftover(tmp_root, "bt-accel-dead", age_seconds=120)
+        _daemon._sweep_stale_tempdirs()
+        assert not d.exists()
+
+    def test_keeps_young_dir(self, tmp_root):
+        # Younger than the grace window: a daemon may still be mid-startup.
+        d = self._make_leftover(tmp_root, "bt-accel-young", age_seconds=0)
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_ignores_dir_without_log_marker(self, tmp_root):
+        # Prefix matches but there's no daemon.log, so it isn't one of ours.
+        d = tmp_root / "bt-accel-foreign"
+        d.mkdir()
+        (d / "something-else").write_bytes(b"x")
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_keeps_dir_with_live_socket(self, tmp_root, monkeypatch):
+        d = self._make_leftover(tmp_root, "bt-accel-live", age_seconds=120)
+        expected = str(d / _daemon._SOCKET_FILENAME)
+        # Patch _socket_is_live to avoid binding a real socket: macOS limits
+        # UDS paths to 104 chars and pytest's tmp_path is frequently longer.
+        monkeypatch.setattr(_daemon, "_socket_is_live", lambda p: p == expected)
+        _daemon._sweep_stale_tempdirs()
+        assert d.exists()
+
+    def test_start_invokes_sweep(self, tmp_path, monkeypatch):
+        called = []
+        monkeypatch.setattr(
+            _daemon, "_sweep_stale_tempdirs", lambda: called.append(True)
+        )
+
+        def boom(*args, **kwargs):
+            raise OSError("refusing to spawn in test")
+
+        monkeypatch.setattr(_daemon.subprocess, "Popen", boom)
+        daemon = _make_daemon(tmp_path)
+        with pytest.raises(RuntimeError):
+            daemon.start()
+        assert called == [True]
