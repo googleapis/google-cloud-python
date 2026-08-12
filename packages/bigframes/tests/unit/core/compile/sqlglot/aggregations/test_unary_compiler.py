@@ -63,12 +63,22 @@ def _apply_unary_window_op(
 
 
 def test_all(scalar_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalar_types_df[["bool_col", "int64_col"]]
+    bf_df = scalar_types_df[["bool_col", "int64_col", "string_col"]]
     ops_map = {
         "bool_col": agg_ops.AllOp().as_expr("bool_col"),
         "int64_col": agg_ops.AllOp().as_expr("int64_col"),
+        "string_col": agg_ops.AllOp().as_expr("string_col"),
     }
     sql = _apply_unary_agg_ops(bf_df, list(ops_map.values()), list(ops_map.keys()))
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_all_w_array(repeated_types_df: bpd.DataFrame, snapshot):
+    col_name = "int_list_col"
+    bf_df = repeated_types_df[[col_name]]
+    agg_expr = agg_ops.AllOp().as_expr(col_name)
+    sql = _apply_unary_agg_ops(bf_df, [agg_expr], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -85,12 +95,22 @@ def test_all_w_window(scalar_types_df: bpd.DataFrame, snapshot):
 
 
 def test_any(scalar_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalar_types_df[["bool_col", "int64_col"]]
+    bf_df = scalar_types_df[["bool_col", "int64_col", "string_col"]]
     ops_map = {
         "bool_col": agg_ops.AnyOp().as_expr("bool_col"),
         "int64_col": agg_ops.AnyOp().as_expr("int64_col"),
+        "string_col": agg_ops.AnyOp().as_expr("string_col"),
     }
     sql = _apply_unary_agg_ops(bf_df, list(ops_map.values()), list(ops_map.keys()))
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_any_w_array(repeated_types_df: bpd.DataFrame, snapshot):
+    col_name = "int_list_col"
+    bf_df = repeated_types_df[[col_name]]
+    agg_expr = agg_ops.AnyOp().as_expr(col_name)
+    sql = _apply_unary_agg_ops(bf_df, [agg_expr], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
 

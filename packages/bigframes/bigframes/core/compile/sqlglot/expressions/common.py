@@ -15,6 +15,8 @@
 from __future__ import annotations
 
 import bigframes_vendored.sqlglot.expressions as sge
+from bigframes.core.compile.sqlglot.expressions import typed_expr
+from bigframes import dtypes
 
 
 def round_towards_zero(expr: sge.Expression):
@@ -30,4 +32,26 @@ def round_towards_zero(expr: sge.Expression):
             false=sge.Ceil(this=expr),
         ),
         to="INT64",
+    )
+
+
+def _to_nullable_bool(expr: typed_expr.TypedExpr) -> sge.Expression:
+    """
+    Cast the value of an expression to bool based on its truthiness. If the value is null, the result is null.
+    """
+    from_type = expr.dtype
+    sg_expr = expr.expr
+
+    if from_type == dtypes.BOOL_DTYPE:
+        return sg_expr
+    elif dtypes.is_numeric(from_type):
+        return sge.NEQ(this=sg_expr, expression=sge.convert(0))
+    elif dtypes.is_string_like(from_type):
+        return sge.GT(this=sge.func("LENGTH", sg_expr), expression=sge.convert(0))
+    elif dtypes.is_array_like(from_type):
+        return sge.GT(this=sge.func("ARRAY_LENGTH", sg_expr), expression=sge.convert(0))
+
+    return sge.Is(
+        this=sge.paren(sg_expr, copy=False),
+        expression=sg.not_(sge.Null(), copy=False),
     )

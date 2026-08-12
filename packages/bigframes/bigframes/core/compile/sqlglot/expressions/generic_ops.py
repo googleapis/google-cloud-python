@@ -22,6 +22,7 @@ from bigframes import dtypes
 from bigframes import operations as ops
 from bigframes.core.compile.sqlglot import sql, sqlglot_types
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
+from bigframes.core.compile.sqlglot.expressions import common
 
 register_unary_op = expression_compiler.expression_compiler.register_unary_op
 register_binary_op = expression_compiler.expression_compiler.register_binary_op
@@ -150,24 +151,9 @@ def _(expr: TypedExpr) -> sge.Expression:
 
 @register_unary_op(ops.coerce_to_bool_op)
 def _(expr: TypedExpr) -> sge.Expression:
-    from_type = expr.dtype
-    sg_expr = expr.expr
-
-    if from_type == dtypes.BOOL_DTYPE:
-        res = sg_expr
-    elif dtypes.is_numeric(from_type):
-        res = sge.NEQ(this=sg_expr, expression=sge.convert(0))
-    elif dtypes.is_string_like(from_type):
-        res = sge.GT(this=sge.func("LENGTH", sg_expr), expression=sge.convert(0))
-    elif dtypes.is_array_like(from_type):
-        res = sge.GT(this=sge.func("ARRAY_LENGTH", sg_expr), expression=sge.convert(0))
-    else:
-        res = sge.Is(
-            this=sge.paren(sg_expr, copy=False),
-            expression=sg.not_(sge.Null(), copy=False),
-        )
-
-    return sge.Coalesce(this=res, expressions=[sge.convert(False)])
+    return sge.Coalesce(
+        this=common._to_nullable_bool(expr), expressions=[sge.convert(False)]
+    )
 
 
 @register_ternary_op(ops.where_op)
