@@ -26,7 +26,7 @@ from bigframes import dtypes
 from bigframes.core import window_spec
 from bigframes.core.compile.sqlglot import sql
 from bigframes.core.compile.sqlglot.aggregations.windows import apply_window_if_present
-from bigframes.core.compile.sqlglot.expressions import constants, common
+from bigframes.core.compile.sqlglot.expressions import common, constants
 from bigframes.operations import aggregations as agg_ops
 
 UNARY_OP_REGISTRATION = reg.OpRegistration()

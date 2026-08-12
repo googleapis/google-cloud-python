@@ -14,9 +14,11 @@
 
 from __future__ import annotations
 
+import bigframes_vendored.sqlglot as sg
 import bigframes_vendored.sqlglot.expressions as sge
-from bigframes.core.compile.sqlglot.expressions import typed_expr
+
 from bigframes import dtypes
+from bigframes.core.compile.sqlglot.expressions import typed_expr
 
 
 def round_towards_zero(expr: sge.Expression):
