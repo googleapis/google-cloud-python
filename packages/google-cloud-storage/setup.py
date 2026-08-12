@@ -43,7 +43,7 @@ else:
 
 dependencies = [
     "google-auth >= 2.26.1, < 3.0.0",
-    "google-api-core >= 2.27.0, < 3.0.0",
+    "google-api-core >= 2.28.0, < 3.0.0",
     "google-cloud-core >= 2.4.2, < 3.0.0",
     # The dependency "google-resumable-media" is no longer used. However, the
     # dependency is still included here to accommodate users who may be
@@ -60,7 +60,7 @@ extras = {
     # TODO: Make these extra dependencies as mandatory once gRPC out of
     # experimental in this SDK. More info in b/465352227
     "grpc": [
-        "google-api-core[grpc] >= 2.27.0, < 3.0.0",
+        "google-api-core[grpc] >= 2.28.0, < 3.0.0",
         "grpcio >= 1.59.0, < 2.0.0",
         "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
         "grpcio-status >= 1.59.0, < 2.0.0",

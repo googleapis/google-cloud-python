@@ -579,7 +579,7 @@ replacements:
     after: |
       dependencies = [
           "google-auth >= 2.26.1, < 3.0.0",
-          "google-api-core >= 2.27.0, < 3.0.0",
+          "google-api-core >= 2.28.0, < 3.0.0",
           "google-cloud-core >= 2.4.2, < 3.0.0",
           # The dependency "google-resumable-media" is no longer used. However, the
           # dependency is still included here to accommodate users who may be
@@ -596,7 +596,7 @@ replacements:
           # TODO: Make these extra dependencies as mandatory once gRPC out of
           # experimental in this SDK. More info in b/465352227
           "grpc": [
-              "google-api-core[grpc] >= 2.27.0, < 3.0.0",
+              "google-api-core[grpc] >= 2.28.0, < 3.0.0",
               "grpcio >= 1.59.0, < 2.0.0",
               "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
               "grpcio-status >= 1.59.0, < 2.0.0",
@@ -639,7 +639,7 @@ replacements:
       packages/google-cloud-storage/testing/constraints-3.10.txt
     ]
     before: |
-      google-api-core==2.25.0
+      google-api-core==2.28.0
       google-auth==2.14.1
       grpcio==1.59.0
       proto-plus==1.26.1
@@ -649,7 +649,7 @@ replacements:
       google-auth==2.26.1
       # cryptography is a direct dependency of google-auth
       cryptography==38.0.0
-      google-api-core==2.27.0
+      google-api-core==2.28.0
       google-cloud-core==2.4.2
       google-resumable-media==2.7.2
       grpcio==1.59.0
@@ -833,4 +833,18 @@ replacements:
                   "Skipping 3.15 until compatible wheels are available for google-crc32c"
               )
           constraints_path = str(
+    count: 1
+  # Temporary workaround to add missing options_pb2 import in google-cloud-storage unit tests
+  # See https://github.com/googleapis/google-cloud-python/pull/18088
+  # Can be removed after gapic-generator is bumped to 1.39 or newer.
+  - paths: [
+      packages/google-cloud-storage/tests/unit/gapic/_storage_v2/test_storage.py
+    ]
+    before: |
+      import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+      import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+    after: |
+      import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+      import google.iam.v1.options_pb2 as options_pb2  # type: ignore
+      import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
     count: 1
