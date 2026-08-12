@@ -700,7 +700,7 @@ def test_pipeline_max_abs_scaler_to_gbq(penguins_df_default_index, dataset_id):
     pl.fit(X_train, y_train)
 
     pl_loaded = pl.to_gbq(
-        f"{dataset_id}.test_penguins_pipeline_min_max_scaler", replace=True
+        f"{dataset_id}.test_penguins_pipeline_max_abs_scaler", replace=True
     )
     assert isinstance(pl_loaded._transform, preprocessing.MaxAbsScaler)
 
