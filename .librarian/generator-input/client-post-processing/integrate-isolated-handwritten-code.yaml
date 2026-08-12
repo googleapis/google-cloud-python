@@ -60,14 +60,14 @@ replacements:
     ]
     before: |
       dependencies = \[
-          "google-api-core\[grpc\] >= 2.25.0, <3.0.0",
+          "google-api-core\[grpc\] >= 2.28.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
           "grpcio >= 1.59.0, < 2.0.0",
     after: |
       dependencies = [
-          "google-api-core[grpc] >= 2.25.0, <3.0.0",
+          "google-api-core[grpc] >= 2.28.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
@@ -129,7 +129,7 @@ replacements:
   - paths: [
       packages/google-cloud-speech/google/cloud/speech_v1/__init__.py,
       packages/google-cloud-speech/google/cloud/speech_v1p1beta1/__init__.py,
-    ]    
+    ]
     before: |
       \)
 
@@ -137,7 +137,9 @@ replacements:
     after: |
       )
 
-      from google.cloud.speech_v1.helpers import SpeechHelpers\n\n
+      # Ignore E402 because api_core.check_python_version() executable statements precede this import.
+      from google.cloud.speech_v1.helpers import SpeechHelpers  # noqa: E402
+
       # This class merges the auto-generated GAPIC client with handwritten helper methods.
       # We ignore [misc] because mypy is flagging that both parent classes have a method
       # named `streaming_recognize`,
@@ -145,7 +147,8 @@ replacements:
       # We ignore [no-redef] because of the name shadow with SpeechClient. We don't want
       # to expose the GAPIC client without the helpers.
       class SpeechClient(SpeechHelpers, SpeechClient):  # type: ignore[no-redef, misc]
-          __doc__ = SpeechClient.__doc__\n\n
+          __doc__ = SpeechClient.__doc__
+
       __all__ = (
     count: 2
   - paths: [
@@ -210,10 +213,10 @@ replacements:
       packages/google-cloud-automl/testing/constraints-3.10.txt,
     ]
     before: |
-      google-api-core==2.25.0
+      google-api-core==2.28.0
       google-auth==2.14.1
     after: |
-      google-api-core==2.25.0
+      google-api-core==2.28.0
       google-cloud-storage==2.14.0
       libcst==0.2.5
       pandas==1.3.4
@@ -424,10 +427,10 @@ replacements:
       "packages/google-cloud-monitoring/testing/constraints-3.10.txt",
     ]
     before: |
-      google-api-core==2.25.0
+      google-api-core==2.28.0
       google-auth==2.14.1
     after: |
-      google-api-core==2.25.0
+      google-api-core==2.28.0
       pandas==1.3.4
       numpy==1.21.3
       google-auth==2.14.1
@@ -455,4 +458,31 @@ replacements:
       google-cloud-logging>=3
       grpcio>=1
     count: 2
+
+  # Note: Temporary workaround for missing timestamp_pb2 import (https://github.com/googleapis/google-cloud-python/pull/18088).
+  # This workaround can be removed after gapic-generator is bumped to 1.39 or newer.
+  - paths: [
+      packages/google-cloud-error-reporting/tests/unit/gapic/errorreporting_v1beta1/test_report_errors_service.py,
+    ]
+    before: |
+      import google.auth
+      from google.api_core import \(
+    after: |
+      import google.auth
+      import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+      from google.api_core import (
+    count: 1
+  # Note: Temporary workaround for missing timestamp_pb2 import (https://github.com/googleapis/google-cloud-python/pull/18088).
+  # This workaround can be removed after gapic-generator is bumped to 1.39 or newer.
+  - paths: [
+      packages/google-cloud-monitoring/tests/unit/gapic/monitoring_v3/test_metric_service.py,
+    ]
+    before: |
+      import google.auth
+      from google.api_core import \(
+    after: |
+      import google.auth
+      import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+      from google.api_core import (
+    count: 1
 
