@@ -23,7 +23,7 @@ import google.auth.transport.mtls
 
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
 from {{package_path}}._compat import transcode_request
-from {{package_path}}._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert
+from {{package_path}}._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
 {% if has_auto_populated_fields %}
 from {{package_path}}._compat import setup_request_id
 {% endif %}
@@ -248,9 +248,6 @@ class MockRequest:
         for k, v in kwargs.items():
             setattr(self, k, v)
 
-    def __contains__(self, key):
-        return hasattr(self, key)
-
 
 class MockProtoRequest:
     def __init__(self, **kwargs):
@@ -261,12 +258,23 @@ class MockProtoRequest:
         return hasattr(self, key)
 
 
+class MockProtoPlusRequest:
+    def __init__(self, **kwargs):
+        self._pb = MockProtoRequest(**kwargs)
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+
 class MockValueErrorRequest:
     def HasField(self, key):
         raise ValueError("Mismatched field")
 
-    def __contains__(self, key):
-        return hasattr(self, key)
+
+class MockProtoPlusValueErrorRequest:
+    def __init__(self, **kwargs):
+        self._pb = MockValueErrorRequest()
+        for k, v in kwargs.items():
+            setattr(self, k, v)
 
 UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
 
@@ -275,14 +283,21 @@ UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
     [
         (MockRequest(), True, "uuid"),
         (MockRequest(request_id="already_set"), True, "already_set"),
+        (MockRequest(request_id=""), True, ""),
         (MockRequest(request_id=""), False, "uuid"),
         (MockRequest(request_id="already_set"), False, "already_set"),
         (MockProtoRequest(), True, "uuid"),
         (MockProtoRequest(request_id="already_set"), True, "already_set"),
+        (MockProtoRequest(request_id=""), True, ""),
+        (MockProtoPlusRequest(), True, "uuid"),
+        (MockProtoPlusRequest(request_id="already_set"), True, "already_set"),
+        (MockProtoPlusRequest(request_id=""), True, ""),
         (MockValueErrorRequest(), True, "uuid"),
+        (MockProtoPlusValueErrorRequest(), True, "uuid"),
         ({}, True, "uuid"),
         ({"request_id": None}, True, "uuid"),
         ({"request_id": "already_set"}, True, "already_set"),
+        ({"request_id": ""}, True, ""),
         ({"request_id": ""}, False, "uuid"),
         ({"request_id": None}, False, "uuid"),
         ({"request_id": "already_set"}, False, "already_set"),
@@ -291,14 +306,21 @@ UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
     ids=[
         "proto3_optional_not_in_request",
         "proto3_optional_already_in_request",
+        "proto3_optional_explicit_empty",
         "non_proto3_optional_empty",
         "non_proto3_optional_already_set",
         "proto3_optional_not_in_request_proto",
         "proto3_optional_already_in_request_proto",
+        "proto3_optional_explicit_empty_proto",
+        "proto3_optional_not_in_request_proto_plus",
+        "proto3_optional_already_in_request_proto_plus",
+        "proto3_optional_explicit_empty_proto_plus",
         "value_error_fallback",
+        "proto3_optional_value_error_fallback_proto_plus",
         "dict_proto3_optional_not_in_request",
         "dict_proto3_optional_value_none",
         "dict_proto3_optional_already_in_request",
+        "dict_proto3_optional_explicit_empty",
         "dict_non_proto3_optional_empty",
         "dict_non_proto3_optional_value_none",
         "dict_non_proto3_optional_already_set",
@@ -496,5 +518,17 @@ def test_transcode_request_proto_plus_wrapper():
 
     transcoded, _, _ = transcode_request(http_options, mock_proto_plus)
     assert transcoded["uri"] == "/v1/test/proto-plus-field"
+
+
+def test_read_environment_variables():
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true", "GOOGLE_API_USE_MTLS_ENDPOINT": "always", "GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
+        use_cert, mtls_endpoint, universe_domain = read_environment_variables()
+        assert use_cert is True
+        assert mtls_endpoint == "always"
+        assert universe_domain == "foo.com"
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "invalid"}):
+        with pytest.raises(MutualTLSChannelError):
+            read_environment_variables()
 
 {% endblock %}

@@ -2169,8 +2169,8 @@ class TestClient(unittest.TestCase):
         client.download_blob_to_file(blob, file_obj)
 
         self.assertNotEqual(
-            blob._do_download.call_args_list[0][0][3]["X-Goog-API-Client"],
-            blob._do_download.call_args_list[1][0][3]["X-Goog-API-Client"],
+            blob._do_download.call_args_list[0][0][3]["x-goog-api-client"],
+            blob._do_download.call_args_list[1][0][3]["x-goog-api-client"],
         )
 
     def test_list_blobs_w_defaults_w_bucket_obj(self):
