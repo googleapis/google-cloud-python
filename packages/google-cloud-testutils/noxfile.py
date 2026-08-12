@@ -33,7 +33,7 @@ nox.options.sessions = [
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
 
-ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
 DEFAULT_PYTHON_VERSION = "3.14"
 BLACK_VERSION = "black==23.7.0"
 RUFF_VERSION = "ruff==0.14.14"

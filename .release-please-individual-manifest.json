@@ -1,8 +1,5 @@
 {
   "packages/bigframes": "2.47.0",
-  "packages/google-cloud-bigtable": "2.41.0",
   "packages/google-crc32c": "1.8.0",
-  "packages/pandas-gbq": "0.35.1",
-  "preview-packages/google-cloud-compute": "1.51.0-preview.1",
-  "packages/sqlalchemy-spanner": "1.19.0"
+  "preview-packages/google-cloud-compute": "1.51.0-preview.1"
 }

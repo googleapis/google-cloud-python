@@ -65,6 +65,7 @@
   "packages/google-cloud-bigquery-migration": "0.15.0",
   "packages/google-cloud-bigquery-reservation": "1.25.0",
   "packages/google-cloud-bigquery-storage": "2.40.0",
+  "packages/google-cloud-bigtable": "2.41.0",
   "packages/google-cloud-billing": "1.20.0",
   "packages/google-cloud-billing-budgets": "1.21.0",
   "packages/google-cloud-binary-authorization": "1.19.1",
@@ -276,6 +277,8 @@
   "packages/googleapis-common-protos": "1.75.1",
   "packages/grafeas": "1.24.0",
   "packages/grpc-google-iam-v1": "0.14.5",
+  "packages/pandas-gbq": "0.35.1",
   "packages/proto-plus": "1.28.3",
-  "packages/sqlalchemy-bigquery": "1.17.2"
+  "packages/sqlalchemy-bigquery": "1.17.2",
+  "packages/sqlalchemy-spanner": "1.19.0"
 }
