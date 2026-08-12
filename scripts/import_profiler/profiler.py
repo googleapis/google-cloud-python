@@ -377,6 +377,40 @@ def validate_module_name(module_name):
         raise argparse.ArgumentTypeError(f"'{module_name}' is not a valid Python module identifier.")
     return module_name
 
+IGNORED_TOP_LEVEL_NAMES = {
+    "tests", "samples", "examples", "benchmark", "benchmarks", "third_party",
+    "testing", "test_utils", "docs", "build", "dist", "bin", "ci", "scripts",
+    "cloudbuild", "notebooks", "assets", "scratch", "specs"
+}
+IGNORED_NAME_PREFIXES = (
+    "test_", "tests_", "sample_", "samples_", "bench_", "benchmarks_",
+    "example_", "examples_", "doc_", "docs_", "notebook_", "notebooks_"
+)
+
+
+def _should_process_namespace_package(top_level: str, target_pkg: str) -> bool:
+    """Determines if a discovered top-level directory should be processed.
+
+    Args:
+        top_level: Top-level directory component of the package (e.g. 'tests' or 'google').
+        target_pkg: The distribution package being profiled (e.g. 'google-cloud-storage').
+
+    Returns:
+        True if the top-level directory should be processed, False otherwise.
+    """
+    is_excluded_candidate = (
+        top_level in IGNORED_TOP_LEVEL_NAMES
+        or top_level.startswith(IGNORED_NAME_PREFIXES)
+    )
+    if is_excluded_candidate:
+        normalized_target_pkg = target_pkg.replace("-", "").replace("_", "").lower()
+        normalized_top_level = top_level.replace("-", "").replace("_", "").lower()
+        # Note: If the top-level folder name is part of the target package name
+        # (e.g. top_level='test_utils' when target_pkg='google-cloud-testutils'), then it should be processed.
+        return normalized_top_level in normalized_target_pkg
+    return True
+
+
 def find_module_from_package(pkg):
     import importlib.metadata
     import importlib.util
