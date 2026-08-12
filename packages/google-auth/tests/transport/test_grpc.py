@@ -13,9 +13,11 @@
 # limitations under the License.
 
 import datetime
+import importlib
 import os
 import time
 from unittest import mock
+import warnings
 
 import pytest  # type: ignore
 
@@ -678,3 +680,25 @@ class TestSslCredentials(object):
         mock_ssl_channel_credentials.assert_called_once_with(
             certificate_chain=PUBLIC_CERT_BYTES, private_key=PRIVATE_KEY_BYTES
         )
+
+
+def test_grpc_version_warning_for_older_version(monkeypatch):
+    monkeypatch.setattr(grpc, "__version__", "1.80.0")
+    with pytest.warns(
+        FutureWarning, match="does not support Post-Quantum Cryptography"
+    ):
+        importlib.reload(google.auth.transport.grpc)
+
+
+def test_grpc_version_warning_not_emitted_for_supported_version(monkeypatch):
+    monkeypatch.setattr(grpc, "__version__", "1.83.0")
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", FutureWarning)
+        importlib.reload(google.auth.transport.grpc)
+
+
+def test_grpc_version_warning_not_emitted_when_no_version(monkeypatch):
+    monkeypatch.delattr(grpc, "__version__", raising=False)
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", FutureWarning)
+        importlib.reload(google.auth.transport.grpc)
