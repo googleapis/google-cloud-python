@@ -43,11 +43,11 @@ def test_create_load_gemini_text_generator_model(
     assert gemini_text_generator_model._bqml_model is not None
 
     # save, load to ensure configuration was kept
-    sanitized_model_name = model_name.replace("-", "_").replace(".", "_").replace("@", "_")
-    target_model_name = f"{dataset_id}.temp_gemini_text_model_{sanitized_model_name}"
-    reloaded_model = gemini_text_generator_model.to_gbq(
-        target_model_name, replace=True
+    sanitized_model_name = (
+        model_name.replace("-", "_").replace(".", "_").replace("@", "_")
     )
+    target_model_name = f"{dataset_id}.temp_gemini_text_model_{sanitized_model_name}"
+    reloaded_model = gemini_text_generator_model.to_gbq(target_model_name, replace=True)
     assert target_model_name == reloaded_model._bqml_model.model_name
     assert reloaded_model.connection_name == bq_connection
     assert reloaded_model.model_name == model_name
@@ -237,10 +237,10 @@ def test_create_load_text_embedding_generator_model(
     assert text_embedding_model._bqml_model is not None
 
     # save, load to ensure configuration was kept
-    sanitized_model_name = model_name.replace("-", "_").replace(".", "_").replace("@", "_")
-    target_model_name = (
-        f"{dataset_id}.temp_text_embedding_model_{sanitized_model_name}"
+    sanitized_model_name = (
+        model_name.replace("-", "_").replace(".", "_").replace("@", "_")
     )
+    target_model_name = f"{dataset_id}.temp_text_embedding_model_{sanitized_model_name}"
     reloaded_model = text_embedding_model.to_gbq(target_model_name, replace=True)
     assert target_model_name == reloaded_model._bqml_model.model_name
     assert reloaded_model.connection_name == bq_connection
