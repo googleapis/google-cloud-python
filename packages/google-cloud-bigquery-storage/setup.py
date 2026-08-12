@@ -57,7 +57,7 @@ extras = {
     "pandas": [
         "pandas >= 1.1.3, < 3.0.0",
         "pyarrow >= 3.0.0",
-        "pandas-gbq >= 0.35.1, < 1.0.0",
+        "pandas-gbq >= 0.35.1, < 2.0.0",
     ],
     "fastavro": ["fastavro >= 1.1.0, < 2.0.0"],
     "pyarrow": ["pyarrow >= 3.0.0"],
