@@ -168,6 +168,9 @@ def test_get_cert():
 
 
 def test_custom_tls_signer():
+    urllib3_pyopenssl = pytest.importorskip("urllib3.contrib.pyopenssl")
+    urllib3_pyopenssl.inject_into_urllib3()
+
     offload_lib = mock.MagicMock()
     signer_lib = mock.MagicMock()
 
@@ -238,7 +241,9 @@ def test_custom_tls_signer_failed_to_attach():
         signer_object._sign_callback = mock.MagicMock()
         signer_object._cert = b"mock cert"
         signer_object._offload_lib.ConfigureSslContext.return_value = False
-        signer_object.attach_to_ssl_context(ssl.SSLContext())
+        ctx = mock.Mock()
+        ctx._ctx._context = 123456
+        signer_object.attach_to_ssl_context(ctx)
     assert excinfo.match("failed to configure ECP Offload SSL context")
 
 
@@ -366,3 +371,12 @@ def test_cast_ssl_ctx_to_void_p_stdlib_mock_error():
         TypeError, match="context must be an instance of ssl.SSLContext, not a mock"
     ):
         _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+
+
+def test_cast_ssl_ctx_to_void_p_pyopenssl():
+    urllib3_pyopenssl = pytest.importorskip("urllib3.contrib.pyopenssl")
+    urllib3_pyopenssl.inject_into_urllib3()
+
+    context = create_urllib3_context()
+    res = _custom_tls_signer._cast_ssl_ctx_to_void_p_pyopenssl(context._ctx._context)
+    assert isinstance(res, ctypes.c_void_p)

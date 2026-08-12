@@ -46,6 +46,18 @@ SIGN_CALLBACK_CTYPE = ctypes.CFUNCTYPE(
 
 
 # Cast SSL_CTX* to void*
+def _cast_ssl_ctx_to_void_p_pyopenssl(ssl_ctx):
+    try:
+        import cffi
+    except ImportError as caught_exc:
+        raise exceptions.MutualTLSChannelError(
+            "cffi is required for pyOpenSSL ECP support."
+        ) from caught_exc
+
+    return ctypes.cast(int(cffi.FFI().cast("intptr_t", ssl_ctx)), ctypes.c_void_p)
+
+
+# Cast SSL_CTX* to void*
 def _cast_ssl_ctx_to_void_p_stdlib(context):
     if not issubclass(type(context), ssl.SSLContext):
         raise TypeError("context must be an instance of ssl.SSLContext, not a mock")
@@ -281,7 +293,7 @@ class CustomTlsSigner(object):
             if not self._offload_lib.ConfigureSslContext(
                 self._sign_callback,
                 ctypes.c_char_p(self._cert),
-                _cast_ssl_ctx_to_void_p_stdlib(ctx),
+                _cast_ssl_ctx_to_void_p_pyopenssl(ctx._ctx._context),
             ):
                 raise exceptions.MutualTLSChannelError(
                     "failed to configure ECP Offload SSL context"

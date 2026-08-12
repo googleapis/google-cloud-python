@@ -39,7 +39,7 @@ pyjwt_extra_require = ["pyjwt>=2.0"]
 
 reauth_extra_require = ["pyu2f>=0.1.5"]
 
-enterprise_cert_extra_require = cryptography_base_require
+enterprise_cert_extra_require = ["pyopenssl>=20.0.0", "cffi>=1.0.0"]
 
 urllib3_extra_require = [
     "urllib3 >= 1.26.15, < 3.0.0",
@@ -65,6 +65,7 @@ testing_extra_require = [
     *reauth_extra_require,
     "responses",
     *urllib3_extra_require,
+    *enterprise_cert_extra_require,
     # Async Dependencies
     *aiohttp_extra_require,
     "aioresponses",

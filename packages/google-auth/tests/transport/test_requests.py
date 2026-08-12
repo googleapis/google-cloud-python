@@ -1061,6 +1061,7 @@ class TestMutualTlsOffloadAdapter(object):
         mock_proxy_manager_for,
         mock_init_poolmanager,
     ):
+        pytest.importorskip("urllib3.contrib.pyopenssl")
         enterprise_cert_file_path = "/path/to/enterprise/cert/json"
         adapter = google.auth.transport.requests._MutualTlsOffloadAdapter(
             enterprise_cert_file_path

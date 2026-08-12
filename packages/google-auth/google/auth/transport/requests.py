@@ -278,7 +278,7 @@ class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
                 }
 
     Raises:
-        ImportError: if certifi is not installed
+        ImportError: if certifi or pyOpenSSL is not installed
         google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
             creation failed for any reason.
     """
@@ -289,6 +289,11 @@ class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
 
         self.signer = _custom_tls_signer.CustomTlsSigner(enterprise_cert_file_path)
         self.signer.load_libraries()
+
+        if not self.signer.should_use_provider():
+            import urllib3.contrib.pyopenssl
+
+            urllib3.contrib.pyopenssl.inject_into_urllib3()
 
         poolmanager = create_urllib3_context()
         poolmanager.load_verify_locations(cafile=certifi.where())
