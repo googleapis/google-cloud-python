@@ -108,7 +108,7 @@ def get_packages_to_test():
         return all_packages
 
     if build_type == 'presubmit':
-        git_diff_arg = f"origin/{target_branch}"
+        git_diff_arg = f"origin/{target_branch}..."
     elif build_type == 'continuous':
         git_diff_arg = "HEAD~1.."
     else:
@@ -227,7 +227,13 @@ if __name__ == "__main__":
     shards_json = json.dumps(shards)
     print(shards_json)
 
+    all_paths = []
+    for paths in packages.values():
+        all_paths.extend(paths)
+    packages_str = " ".join(all_paths)
+
     github_output = os.environ.get("GITHUB_OUTPUT")
     if github_output:
         with open(github_output, "a") as f:
             f.write(f"matrix={shards_json}\n")
+            f.write(f"packages={packages_str}\n")

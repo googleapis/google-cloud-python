@@ -753,7 +753,7 @@ class DataFrame:
         # https://github.com/googleapis/python-bigquery-dataframes/issues/728
         # and
         # https://nedbatchelder.com/blog/201010/surprising_getattr_recursion.html
-        if key == "_block":
+        if "_block" not in self.__dict__ or key == "_block":
             raise AttributeError(key)
 
         if key in self._block.column_labels:

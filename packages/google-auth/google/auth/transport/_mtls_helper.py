@@ -459,7 +459,11 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
 
     data = _load_json_file(absolute_path)
 
-    if "cert_configs" not in data:
+    if (
+        not isinstance(data, dict)
+        or "cert_configs" not in data
+        or not isinstance(data["cert_configs"], dict)
+    ):
         raise exceptions.ClientCertError(
             'Certificate config file {} is in an invalid format, a "cert configs" object is expected'.format(
                 absolute_path
@@ -472,11 +476,40 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
     # and we want to gracefully fallback to testing other mTLS configurations
     # like SecureConnect instead of throwing an exception.
 
-    if "workload" not in cert_configs:
+    if (
+        not isinstance(cert_configs, dict) or "workload" not in cert_configs
+    ) and config_path is None:
+        default_home_path = path.expanduser(
+            os.path.join(
+                _cloud_sdk.get_config_path(),
+                "certificate_config.json",
+            )
+        )
+        if path.exists(default_home_path) and os.path.normpath(
+            default_home_path
+        ) != os.path.normpath(absolute_path):
+            try:
+                home_data = _load_json_file(default_home_path)
+                if isinstance(home_data, dict):
+                    home_cert_configs = home_data.get("cert_configs")
+                    if (
+                        isinstance(home_cert_configs, dict)
+                        and "workload" in home_cert_configs
+                    ):
+                        cert_configs = home_cert_configs
+                        absolute_path = default_home_path
+            except (exceptions.ClientCertError, OSError):
+                pass
+
+    if not isinstance(cert_configs, dict) or "workload" not in cert_configs:
         return None, None
     workload = cert_configs["workload"]
 
-    if "cert_path" not in workload or "key_path" not in workload:
+    if (
+        not isinstance(workload, dict)
+        or "cert_path" not in workload
+        or "key_path" not in workload
+    ):
         raise exceptions.ClientCertError(
             'Workload certificate configuration is missing "cert_path" or "key_path" in {}'.format(
                 absolute_path

@@ -13,9 +13,11 @@
 # limitations under the License.
 
 import datetime
+import importlib
 import os
 import time
 from unittest import mock
+import warnings
 
 import grpc
 import pytest  # type: ignore
@@ -689,7 +691,6 @@ class TestSslCredentials(object):
             certificate_chain=PUBLIC_CERT_BYTES, private_key=PRIVATE_KEY_BYTES
         )
 
-
 @mock.patch("google.auth.transport.grpc._ReplayableIterator")
 def test_interceptor_uses_factory_if_callable(mock_replayable):
     import google.auth.transport.grpc as transport_grpc
@@ -1262,3 +1263,25 @@ def test_retryable_stream_response_iterator_methods():
     iterator.is_active()
     iterator.time_remaining()
     iterator.add_done_callback(lambda x: None)
+
+def test_grpc_version_warning_for_older_version(monkeypatch):
+    monkeypatch.setattr(grpc, "__version__", "1.80.0")
+    with pytest.warns(
+        FutureWarning, match="does not support Post-Quantum Cryptography"
+    ):
+        importlib.reload(google.auth.transport.grpc)
+
+
+def test_grpc_version_warning_not_emitted_for_supported_version(monkeypatch):
+    monkeypatch.setattr(grpc, "__version__", "1.83.0")
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", FutureWarning)
+        importlib.reload(google.auth.transport.grpc)
+
+
+def test_grpc_version_warning_not_emitted_when_no_version(monkeypatch):
+    monkeypatch.delattr(grpc, "__version__", raising=False)
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", FutureWarning)
+        importlib.reload(google.auth.transport.grpc)
+
