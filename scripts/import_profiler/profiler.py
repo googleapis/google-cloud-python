@@ -411,6 +411,15 @@ def _should_process_namespace_package(top_level: str, target_pkg: str) -> bool:
     return True
 
 
+def _is_path_allowed(path_obj, pkg_norm: str) -> bool:
+    """Checks if a path object is allowed based on ignored directory rules."""
+    return all(
+        part not in IGNORED_TOP_LEVEL_NAMES
+        or part.replace("-", "").replace("_", "").lower() in pkg_norm
+        for part in path_obj.parts
+    )
+
+
 def find_module_from_package(pkg):
     import importlib.metadata
     import importlib.util
@@ -419,8 +428,13 @@ def find_module_from_package(pkg):
     try:
         files = importlib.metadata.files(pkg)
         if files:
-            ignored_parts = ('tests', 'testing', 'samples', 'examples', 'benchmark', 'benchmarks')
-            init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not any(part in ignored_parts for part in str(f).replace('\\', '/').split('/'))]
+            pkg_norm = pkg.replace("-", "").replace("_", "").lower()
+            init_files = [
+                str(f) for f in files
+                if f.name == '__init__.py'
+                and '__pycache__' not in f.parts
+                and _is_path_allowed(f, pkg_norm)
+            ]
             if init_files:
                 from pathlib import Path
                 shortest_init = min(init_files, key=lambda p: len(Path(p).parts))
