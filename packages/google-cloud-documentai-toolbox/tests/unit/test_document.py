@@ -790,6 +790,37 @@ def test_split_pdf_with_non_splitter(get_bytes_classifier_mock):
     get_bytes_classifier_mock.assert_called_once()
 
 
+@mock.patch("google.cloud.documentai_toolbox.wrappers.document.Pdf")
+def test_split_pdf_sanitizes_entity_type_path_traversal(
+    mock_Pdf, get_bytes_splitter_mock
+):
+    doc = document.Document.from_gcs(
+        gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0"
+    )
+    mock_output_file = mock.Mock()
+    mock_Pdf.new.return_value = mock_output_file
+
+    # Entity types are read from the parsed Document and may carry path
+    # separators or traversal sequences.
+    doc.entities[0].type_ = "../../../../etc:passwd"
+
+    output_path = "splitter/output/"
+    actual = doc.split_pdf(
+        pdf_path="procurement_multi_document.pdf", output_path=output_path
+    )
+
+    get_bytes_splitter_mock.assert_called_once()
+
+    resolved_output = os.path.realpath(output_path)
+    for call in mock_output_file.save.call_args_list:
+        written_path = os.path.realpath(call.args[0])
+        assert written_path == resolved_output or written_path.startswith(
+            resolved_output + os.sep
+        )
+
+    assert actual[0] == "procurement_multi_document_pg1_.._.._.._.._etc_passwd.pdf"
+
+
 def test_convert_document_to_annotate_file_response():
     doc = document.Document.from_document_path(
         document_path="tests/unit/resources/0/toolbox_invoice_test-0.json"
