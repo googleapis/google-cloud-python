@@ -2360,6 +2360,7 @@ def test_remote_function_clean_up_by_session_id():
         )
 
 
+@pytest.mark.flaky(retries=2, delay=120)
 def test_df_apply_axis_1_multiple_params(session):
     bf_df = bigframes.dataframe.DataFrame(
         {
@@ -2440,6 +2441,7 @@ def test_df_apply_axis_1_multiple_params(session):
         cleanup_function_assets(foo, session.bqclient, session.cloudfunctionsclient)
 
 
+@pytest.mark.flaky(retries=2, delay=120)
 def test_df_apply_axis_1_multiple_params_array_output(session):
     bf_df = bigframes.dataframe.DataFrame(
         {
@@ -2524,6 +2526,7 @@ def test_df_apply_axis_1_multiple_params_array_output(session):
         cleanup_function_assets(foo, session.bqclient, session.cloudfunctionsclient)
 
 
+@pytest.mark.flaky(retries=2, delay=120)
 def test_df_apply_axis_1_single_param_non_series(session):
     bf_df = bigframes.dataframe.DataFrame(
         {

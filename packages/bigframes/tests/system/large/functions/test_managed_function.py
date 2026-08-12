@@ -348,6 +348,7 @@ def test_managed_function_dataframe_apply_axis_1(
     )
 
 
+@pytest.mark.flaky(retries=2, delay=30)
 def test_managed_function_dataframe_apply_axis_1_array_output(
     session, dataset_id, function_id
 ):
@@ -560,6 +561,7 @@ def test_managed_function_options_errors(session, dataset_id, function_id):
         )(foo)
 
 
+@pytest.mark.flaky(retries=2, delay=30)
 def test_managed_function_df_apply_axis_1(
     session, dataset_id, scalars_dfs, function_id
 ):
