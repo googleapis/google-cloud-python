@@ -36,7 +36,6 @@ jobs:
       # Each weight is roughly 1 minute of expected execution time
       # Default for unset packages is 1
       PACKAGE_WEIGHTS: |
-        bigframes: 6
         google-ai-generativelanguage: 4
         google-auth: 5
         google-cloud-compute: 12
