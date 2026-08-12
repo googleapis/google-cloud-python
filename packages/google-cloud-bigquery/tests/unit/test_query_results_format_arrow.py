@@ -16,6 +16,8 @@ import base64
 import unittest
 from unittest import mock
 
+import pytest
+
 from google.cloud.bigquery import _job_helpers
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.table import RowIterator, _EmptyRowIterator
@@ -522,6 +524,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
         )
 
     def test_row_iterator_to_dataframe_iterable_when_format_is_arrow(self):
+        pytest.importorskip("pandas")
         mock_client = mock.MagicMock()
         mock_client._ensure_bqstorage_client.return_value = mock.MagicMock()
 
@@ -544,6 +547,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
                 self.assertEqual(dfs, ["df_chunk"])
 
     def test_row_iterator_to_dataframe_when_format_is_arrow(self):
+        pytest.importorskip("pandas")
         mock_client = mock.MagicMock()
         mock_client._ensure_bqstorage_client.return_value = mock.MagicMock()
 
