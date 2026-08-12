@@ -133,7 +133,7 @@ jobs:
           pip install nox
           cd packages/gapic-generator
           for pkg in credentials eventarc logging redis; do
-            nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${LATEST_STABLE_PYTHON}
+            nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${LATEST_STABLE_PYTHON} core_deps_from_source
           done
       # Run pylint (errors-only) over the goldens so generator regressions
       # like undefined names or import-time breakage that ruff/flake8 do
@@ -171,7 +171,7 @@ jobs:
           pip install nox
           cd packages/gapic-generator
           for pkg in credentials eventarc logging redis; do
-            nox -f tests/integration/goldens/$pkg/noxfile.py -s core_deps_from_source prerelease_deps
+            nox -f tests/integration/goldens/$pkg/noxfile.py -s prerelease_deps
           done
 
   fragment-snippet:
