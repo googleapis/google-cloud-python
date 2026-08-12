@@ -14,7 +14,7 @@
 
 import uuid
 from concurrent import futures
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Generator
 
 import pytest
@@ -59,7 +59,7 @@ def pubsub_topic_subscription_ids(
     subscriber.delete_subscription(subscription=subscription_name)
 
 
-@pytest.mark.flaky(retries=3, delay=10)
+@pytest.mark.flaky(retries=3, delay=30)
 def test_streaming_df_to_pubsub(
     session_load: bigframes.Session, pubsub_topic_subscription_ids: tuple[str, str]
 ):
@@ -100,7 +100,7 @@ def test_streaming_df_to_pubsub(
             service_account_email="streaming-testing@bigframes-load-testing.iam.gserviceaccount.com",
             job_id=None,
             job_id_prefix=job_id_prefix,
-            start_timestamp=datetime.now() - timedelta(days=1),
+            start_timestamp=datetime.now(timezone.utc) - timedelta(days=1),
         )
         try:
             # wait 200 seconds in order to ensure the query doesn't stop

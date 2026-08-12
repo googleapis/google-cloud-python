@@ -14,7 +14,7 @@
 
 import time
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Generator
 
 import pytest
@@ -68,7 +68,7 @@ def bigtable_table(
     bt_table.delete()
 
 
-@pytest.mark.flaky(retries=3, delay=10)
+@pytest.mark.flaky(retries=3, delay=30)
 def test_streaming_df_to_bigtable(
     session_load: bigframes.Session, bigtable_table: table.Table
 ):
@@ -92,7 +92,7 @@ def test_streaming_df_to_bigtable(
             bigtable_options={},
             job_id=None,
             job_id_prefix=job_id_prefix,
-            start_timestamp=datetime.now() - timedelta(days=1),
+            start_timestamp=datetime.now(timezone.utc) - timedelta(days=1),
         )
 
         # wait 200 seconds in order to ensure the query doesn't stop
