@@ -6579,6 +6579,26 @@ class TestClient(unittest.TestCase):
             timeout=DEFAULT_TIMEOUT,
         )
 
+    def test_insert_rows_from_dataframe_emits_pending_deprecation_warning(self):
+        pandas = pytest.importorskip("pandas")
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        client._connection = make_connection({}, {})
+
+        schema = [SchemaField("name", "STRING", mode="REQUIRED")]
+        table = Table(self.TABLE_REF, schema=schema)
+        dataframe = pandas.DataFrame([{"name": "Alice"}])
+
+        with pytest.warns(
+            PendingDeprecationWarning,
+            match="Inserting rows from DataFrames via google-cloud-bigquery is deprecated",
+        ):
+            client.insert_rows_from_dataframe(table, dataframe)
+
     def test_insert_rows_json_default_behavior(self):
         from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.schema import SchemaField
@@ -6841,10 +6861,10 @@ class TestClient(unittest.TestCase):
             client.insert_rows_json(table, ROW)
 
     def test_insert_rows_json_w_ssl_error(self):
+        import requests.exceptions
         from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table
-        import requests.exceptions
 
         PROJECT = "PROJECT"
         DS_ID = "DS_ID"
@@ -9389,6 +9409,25 @@ class TestClientUpload(object):
         assert tuple(sent_config.schema) == (
             SchemaField("x", "BIGNUMERIC", "NULLABLE", None),
         )
+
+    def test_load_table_from_dataframe_emits_pending_deprecation_warning(self):
+        pandas = pytest.importorskip("pandas")
+        pytest.importorskip("pyarrow")
+
+        client = self._make_client()
+        dataframe = pandas.DataFrame({"x": [1, 2, 3]})
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table", autospec=True
+        )
+        with load_patch, get_table_patch, pytest.warns(
+            PendingDeprecationWarning,
+            match="Loading DataFrames via google-cloud-bigquery is deprecated",
+        ):
+            client.load_table_from_dataframe(dataframe, self.TABLE_REF)
 
     # With autodetect specified, we pass the value as is. For more info, see
     # https://github.com/googleapis/python-bigquery/issues/1228#issuecomment-1910946297

@@ -412,6 +412,10 @@ class Credentials(external_account.Credentials):
 
     def _get_cert_bytes(self):
         cert_path, _ = self._get_mtls_cert_and_key_paths()
+        if cert_path is None:
+            raise exceptions.ClientCertError(
+                "Workload certificate configuration could not be found or does not contain workload certificate paths."
+            )
         return _mtls_helper._read_cert_file(cert_path)
 
     def _mtls_required(self):
@@ -568,7 +572,13 @@ class Credentials(external_account.Credentials):
         cert_fingerprint = None
         # Check if the credential is X.509 based.
         if self._credential_source_certificate is not None:
-            cert_bytes = self._get_cert_bytes()
+            try:
+                cert_bytes = self._get_cert_bytes()
+            except (exceptions.ClientCertError, OSError) as e:
+                raise exceptions.RefreshError(
+                    "Failed to retrieve certificate bytes for external"
+                    " account credentials"
+                ) from e
             cert = _agent_identity_utils.parse_certificate(cert_bytes)
             if _agent_identity_utils.should_request_bound_token(cert):
                 cert_fingerprint = (
