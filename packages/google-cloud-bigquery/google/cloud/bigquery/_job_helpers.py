@@ -475,6 +475,8 @@ def query_and_wait(
         page_size (Optional[int]):
             The maximum number of rows in each page of results from this
             request. Non-positive values are ignored.
+        max_results (Optional[int]):
+            The maximum total number of rows from this request.
         query_results_format (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsFormat]]):
             [Beta] The format for query results (e.g. "ARROW" or :class:`~google.cloud.bigquery.enums.QueryResultsFormat.ARROW`).
         compression_codec (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsCompressionCodec]]):

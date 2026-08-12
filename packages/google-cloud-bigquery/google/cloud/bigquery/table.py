@@ -2349,7 +2349,7 @@ class RowIterator(HTTPIterator):
 
             job_complete = bool(first_page.get("jobComplete", False))
             if job_complete:
-                total_rows = int(first_page["totalRows"])
+                total_rows = int(first_page.get("totalRows", 0))
 
             arrow_schema_json = first_page.get("arrowSchema")
             if isinstance(arrow_schema_json, dict):
@@ -3238,23 +3238,15 @@ class _EmptyRowIterator(RowIterator):
     """
 
     def __init__(
-        self,
-        client=None,
-        api_request=None,
-        path=None,
-        schema=(),
-        *args,
-        query_results_format: Optional[str] = None,
-        **kwargs,
+        self, client=None, api_request=None, path=None, schema=(), *args, **kwargs
     ):
         super().__init__(
             client=client,
             api_request=api_request,
             path=path,
             schema=schema,
-            query_results_format=query_results_format,
             *args,
-            **kwargs,  # type: ignore[misc]
+            **kwargs,
         )
         self._total_rows = 0
 
