@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.35.0
+version: v0.36.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
@@ -74,7 +74,7 @@ default:
     library_type: GAPIC_AUTO
 libraries:
   - name: bigframes
-    version: 2.47.0
+    version: 2.48.0
     python:
       library_type: INTEGRATION
   - name: bigquery-magics
