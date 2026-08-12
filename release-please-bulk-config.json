@@ -653,6 +653,9 @@
         }
       ]
     },
+    "packages/google-cloud-bigquery": {
+      "component": "google-cloud-bigquery"
+    },
     "packages/google-cloud-bigquery-analyticshub": {
       "component": "google-cloud-bigquery-analyticshub",
       "extra-files": [
@@ -3907,6 +3910,9 @@
     },
     "packages/grpc-google-iam-v1": {
       "component": "grpc-google-iam-v1"
+    },
+    "packages/pandas-gbq": {
+      "component": "pandas-gbq"
     },
     "packages/proto-plus": {
       "component": "proto-plus"

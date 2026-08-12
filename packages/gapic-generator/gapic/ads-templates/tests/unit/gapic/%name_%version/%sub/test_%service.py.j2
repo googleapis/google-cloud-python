@@ -57,7 +57,7 @@ from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 from google.api_core import gapic_v1
 {% for method in service.methods.values() %}
-{% for ref_type in method.flat_ref_types
+{% for ref_type in method.ref_types
    if not ((ref_type.ident.python_import.package == ('google', 'api_core') and ref_type.ident.python_import.module == 'operation')
            or ref_type.ident.python_import.package == ('google', 'protobuf') and ref_type.ident.python_import.module == 'empty_pb2') %}
 {{ ref_type.ident.python_import }}
@@ -668,7 +668,10 @@ def test_{{ method_name }}_api_version_header(transport_name):
 
         # Establish that the api version header was sent.
         _, _, kw = call.mock_calls[0]
-        assert kw['metadata'][0] == (version_header.API_VERSION_METADATA_KEY, "{{ service.version }}")
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "{{ service.version }}",
+        ) in kw['metadata']
     else:
         pytest.skip("google-api-core>=2.19.0 is required for `google.api_core.version_header`")
 {% endif %}{# service.version #}

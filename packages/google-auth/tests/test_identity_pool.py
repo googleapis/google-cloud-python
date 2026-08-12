@@ -1784,6 +1784,57 @@ class TestCredentials(object):
             'The credential is not configured to use mtls requests. The credential should include a "certificate" section in the credential source.'
         )
 
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
+        return_value=(None, None),
+    )
+    def test_get_cert_bytes_none_raises_error(
+        self, mock_get_workload_cert_and_key_paths
+    ):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE.copy()
+        )
+
+        with pytest.raises(exceptions.ClientCertError) as excinfo:
+            credentials._get_cert_bytes()
+
+        assert excinfo.match(
+            "Workload certificate configuration could not be found or does not contain workload certificate paths."
+        )
+
+    @mock.patch.object(
+        identity_pool.Credentials,
+        "_get_cert_bytes",
+        side_effect=exceptions.ClientCertError("mock error"),
+    )
+    def test_refresh_cert_error_raises_refresh_error(self, mock_get_cert_bytes):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE.copy()
+        )
+
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            credentials.refresh(None)
+
+        assert excinfo.match(
+            "Failed to retrieve certificate bytes for external account credentials"
+        )
+
+    @mock.patch.object(
+        identity_pool.Credentials,
+        "_get_cert_bytes",
+        side_effect=OSError("mock os error"),
+    )
+    def test_refresh_os_error_raises_refresh_error(self, mock_get_cert_bytes):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE.copy()
+        )
+
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            credentials.refresh(None)
+
+        msg = "Failed to retrieve certificate bytes for external"
+        assert excinfo.match(msg + " account credentials")
+
     @mock.patch("google.auth._agent_identity_utils.parse_certificate")
     @mock.patch(
         "google.auth._agent_identity_utils.should_request_bound_token",

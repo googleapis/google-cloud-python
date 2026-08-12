@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
+
 import uuid
 from unittest import mock
 
@@ -24,6 +26,16 @@ import bigframes.bigquery as bbq
 import bigframes.pandas as bpd
 from bigframes import dataframe, dtypes, series
 from bigframes.testing import utils as test_utils
+
+
+@pytest.fixture
+def use_ibis_compiler():
+    original_setting = bpd.options.experiments.sql_compiler
+    bpd.options.experiments.sql_compiler = "legacy"
+    try:
+        yield
+    finally:
+        bpd.options.experiments.sql_compiler = original_setting
 
 
 def _create_mock_obj_ref_df(session, uris, name="image", connection=None):
@@ -146,6 +158,19 @@ def test_ai_generate(session):
     )
 
 
+def test_ai_generate_access_full_response_with_ibis(session, use_ibis_compiler):
+    country = bpd.Series(["Japan", "Canada"], session=session)
+    prompt = ("What's the capital city of ", country, "? one word only")
+
+    result = (
+        bbq.ai.generate(prompt, endpoint="gemini-2.5-flash")
+        .struct.field("full_response")
+        .to_pandas()
+    )
+
+    assert _contains_no_nulls(result)
+
+
 def test_ai_generate_with_output_schema(session):
     country = bpd.Series(["Japan", "Canada"], session=session)
     prompt = ("Describe ", country)
@@ -200,6 +225,20 @@ def test_ai_generate_bool(session):
     )
 
 
+def test_ai_generate_bool_access_full_response_with_ibis(session, use_ibis_compiler):
+    s1 = bpd.Series(["apple", "bear"], session=session)
+    s2 = bpd.Series(["fruit", "tree"], session=session)
+    prompt = (s1, " is a ", s2)
+
+    result = (
+        bbq.ai.generate_bool(prompt, endpoint="gemini-2.5-flash")
+        .struct.field("full_response")
+        .to_pandas()
+    )
+
+    assert _contains_no_nulls(result)
+
+
 def test_ai_generate_bool_multi_model(session, bq_connection):
     df = _create_mock_obj_ref_df(
         session,
@@ -239,6 +278,19 @@ def test_ai_generate_int(session):
             )
         )
     )
+
+
+def test_ai_generate_int_access_full_response_with_ibis(session, use_ibis_compiler):
+    s = bpd.Series(["Cat"], session=session)
+    prompt = ("How many legs does a ", s, " have?")
+
+    result = (
+        bbq.ai.generate_int(prompt, endpoint="gemini-2.5-flash")
+        .struct.field("full_response")
+        .to_pandas()
+    )
+
+    assert _contains_no_nulls(result)
 
 
 def test_ai_generate_int_multi_model(session, bq_connection):
@@ -282,6 +334,19 @@ def test_ai_generate_double(session):
             )
         )
     )
+
+
+def test_ai_generate_double_access_full_response_with_ibis(session, use_ibis_compiler):
+    s = bpd.Series(["Cat"], session=session)
+    prompt = ("How many legs does a ", s, " have?")
+
+    result = (
+        bbq.ai.generate_double(prompt, endpoint="gemini-2.5-flash")
+        .struct.field("full_response")
+        .to_pandas()
+    )
+
+    assert _contains_no_nulls(result)
 
 
 def test_ai_generate_double_multi_model(session, bq_connection):
@@ -521,5 +586,5 @@ def test_ai_similarity_both_contents_are_string_literals(session):
     assert result.dtype == dtypes.FLOAT_DTYPE
 
 
-def _contains_no_nulls(s: series.Series) -> bool:
+def _contains_no_nulls(s: series.Series | pd.Series) -> bool:
     return len(s) == s.count()

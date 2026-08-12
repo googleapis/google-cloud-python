@@ -263,16 +263,25 @@ for path in `find 'packages' \
     files_to_check=("${package_path}")
   fi
 
-  echo "checking changes with 'git diff ${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT} -- ${files_to_check[*]}'"
   set +e
-  # Passing the array expanded as arguments to git diff
+  # Passing the array expanded as arguments to git diff.
   package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- "${files_to_check[@]}" | wc -l)
   set -e
 
-  if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
+  states=()
+  [[ "${package_modified}" -gt 0 ]] && states+=("changed")
+  [[ "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]] && states+=("continuous")
+
+  # Join states with a comma
+  state_str=$(IFS=, ; echo "${states[*]}")
+
+  commit_hash="${KOKORO_GITHUB_PULL_REQUEST_COMMIT:-HEAD}"
+
+  if [[ ${#states[@]} -gt 0 ]]; then
+      printf "TEST %-20s %-40s %s\n" "[${state_str}]" "${package_name}" "${commit_hash}"
       PACKAGES_TO_TEST+=("$package_name")
   else
-      echo "No changes in ${package_name} and not a continuous build, skipping."
+      printf "SKIP %-20s %-40s %s\n" "[no_changes]" "${package_name}" "${commit_hash}"
   fi
 done
 

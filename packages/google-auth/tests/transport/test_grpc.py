@@ -13,9 +13,11 @@
 # limitations under the License.
 
 import datetime
+import importlib
 import os
 import time
 from unittest import mock
+import warnings
 
 import pytest  # type: ignore
 
@@ -131,6 +133,35 @@ class TestAuthMetadataPlugin(object):
         credentials._create_self_signed_jwt.assert_called_once_with(
             "https://{}/".format(default_host)
         )
+
+    def test_suppress_metrics_header(self):
+        credentials = mock.create_autospec(service_account.Credentials)
+
+        # Mock credentials before_request that adds metric and authorization
+        def mock_before_request(request, method, url, headers):
+            headers["x-goog-api-client"] = "foo"
+            headers["authorization"] = "Bearer token"
+
+        credentials.before_request.side_effect = mock_before_request
+        request = mock.create_autospec(transport.Request)
+
+        # By default, suppress_metrics_header=False
+        plugin = google.auth.transport.grpc.AuthMetadataPlugin(credentials, request)
+        context = mock.create_autospec(grpc.AuthMetadataContext, instance=True)
+        context.method_name = "methodName"
+        context.service_url = "https://pubsub.googleapis.com/methodName"
+
+        headers = dict(plugin._get_authorization_headers(context))
+        assert "x-goog-api-client" in headers
+        assert headers["x-goog-api-client"] == "foo"
+
+        # With suppress_metrics_header=True
+        plugin_suppressed = google.auth.transport.grpc.AuthMetadataPlugin(
+            credentials, request, suppress_metrics_header=True
+        )
+        headers_suppressed = dict(plugin_suppressed._get_authorization_headers(context))
+        assert "x-goog-api-client" not in headers_suppressed
+        assert headers_suppressed["authorization"] == "Bearer token"
 
 
 @mock.patch(
@@ -649,3 +680,25 @@ class TestSslCredentials(object):
         mock_ssl_channel_credentials.assert_called_once_with(
             certificate_chain=PUBLIC_CERT_BYTES, private_key=PRIVATE_KEY_BYTES
         )
+
+
+def test_grpc_version_warning_for_older_version(monkeypatch):
+    monkeypatch.setattr(grpc, "__version__", "1.80.0")
+    with pytest.warns(
+        FutureWarning, match="does not support Post-Quantum Cryptography"
+    ):
+        importlib.reload(google.auth.transport.grpc)
+
+
+def test_grpc_version_warning_not_emitted_for_supported_version(monkeypatch):
+    monkeypatch.setattr(grpc, "__version__", "1.83.0")
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", FutureWarning)
+        importlib.reload(google.auth.transport.grpc)
+
+
+def test_grpc_version_warning_not_emitted_when_no_version(monkeypatch):
+    monkeypatch.delattr(grpc, "__version__", raising=False)
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", FutureWarning)
+        importlib.reload(google.auth.transport.grpc)
