@@ -223,24 +223,3 @@ def test_dataframe_drop_columns_returns_new_dataframe(monkeypatch: pytest.Monkey
     new_dataframe = dataframe.drop(columns=["col1", "col3"])
     assert dataframe.columns.to_list() == ["col1", "col2", "col3"]
     assert new_dataframe.columns.to_list() == ["col2"]
-
-
-def test_dataframe_semantics_property_future_warning(
-    monkeypatch: pytest.MonkeyPatch,
-):
-    dataframe = mocks.create_dataframe(monkeypatch)
-
-    with (
-        bigframes.option_context("experiments.semantic_operators", True),
-        pytest.warns(FutureWarning),
-    ):
-        dataframe.semantics
-
-
-def test_dataframe_ai_property_future_warning(
-    monkeypatch: pytest.MonkeyPatch,
-):
-    dataframe = mocks.create_dataframe(monkeypatch)
-
-    with pytest.warns(FutureWarning):
-        dataframe.ai

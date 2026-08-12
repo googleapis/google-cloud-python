@@ -251,6 +251,11 @@ class IcebergCatalog(proto.Message):
                 Catalog.
 
                 This field is a member of `oneof`_ ``remote_catalog_info``.
+            snowflake_catalog_info (google.cloud.biglake_v1.types.IcebergCatalog.FederatedCatalogOptions.SnowflakeCatalogInfo):
+                Optional. Info specific to a Snowflake
+                Catalog.
+
+                This field is a member of `oneof`_ ``remote_catalog_info``.
             secret_name (str):
                 Optional. The secret resource name in Secret Manager, in the
                 format
@@ -263,7 +268,10 @@ class IcebergCatalog(proto.Message):
                 specified, the latest version will be used.
 
                 This field is not used when
-                ``service_principal_application_id`` is set.
+                [google.cloud.biglake.v1main.IcebergCatalog.FederatedCatalogOptions.UnityCatalogInfo.service_principal_application_id][google.cloud.biglake.v1main.IcebergCatalog.FederatedCatalogOptions.UnityCatalogInfo.service_principal_application_id]
+                or
+                [google.cloud.biglake.v1main.IcebergCatalog.FederatedCatalogOptions.SnowflakeCatalogInfo.snowflake_role][google.cloud.biglake.v1main.IcebergCatalog.FederatedCatalogOptions.SnowflakeCatalogInfo.snowflake_role]
+                is set.
 
                 This field is a member of `oneof`_ ``_secret_name``.
             service_directory_name (str):
@@ -299,10 +307,10 @@ class IcebergCatalog(proto.Message):
 
                     This field is a member of `oneof`_ ``_catalog_name``.
                 service_principal_application_id (str):
-                    Optional. The application ID of the Databricks service
-                    principal that will be used to access the Unity Catalog in
-                    the OIDC authentication flow. With OIDC, the secret_name
-                    field is not used.
+                    Optional. The application ID of the
+                    Databricks service principal that will be used
+                    to access the Unity Catalog in the OIDC
+                    authentication flow.
 
                     This field is a member of `oneof`_ ``_service_principal_application_id``.
             """
@@ -369,6 +377,61 @@ class IcebergCatalog(proto.Message):
                 optional=True,
             )
             aws_role_arn: str = proto.Field(
+                proto.STRING,
+                number=3,
+                optional=True,
+            )
+
+        class SnowflakeCatalogInfo(proto.Message):
+            r"""Snowflake Catalog info.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                account_identifier (str):
+                    Required. The account identifier in Snowflake (See:
+                    https://docs.snowflake.com/en/user-guide/admin-account-identifier).
+                    It is the prefix to log into your Snowflake deployment URL.
+                    For example:
+                    https://<account_identifier>.snowflakecomputing.com.
+
+                    This field is a member of `oneof`_ ``_account_identifier``.
+                warehouse (str):
+                    Required. The warehouse to connect to in Snowflake REST
+                    Catalog.
+                    https://<account_identifier>.snowflakecomputing.com/polaris/api/catalog/v1/config?warehouse=<database_name>.
+
+                    This is the Snowflake database name containing the Iceberg
+                    metadata to be federated.
+
+                    Must be non-empty.
+
+                    This field is a member of `oneof`_ ``_warehouse``.
+                snowflake_role (str):
+                    Optional. The specific Snowflake role name to request in the
+                    OAuth token scope (via session:role:$ROLE) for the Iceberg
+                    REST Catalog session. This role grants the GCP BigLake
+                    service account the necessary permissions to interact with
+                    the Iceberg catalog, namespaces, and tables.
+
+                    Note: The role provided here must be the DEFAULT_ROLE or be
+                    granted to, the Snowflake service user mapped to the BigLake
+                    service account.
+
+                    This field is a member of `oneof`_ ``_snowflake_role``.
+            """
+
+            account_identifier: str = proto.Field(
+                proto.STRING,
+                number=1,
+                optional=True,
+            )
+            warehouse: str = proto.Field(
+                proto.STRING,
+                number=2,
+                optional=True,
+            )
+            snowflake_role: str = proto.Field(
                 proto.STRING,
                 number=3,
                 optional=True,
@@ -500,6 +563,12 @@ class IcebergCatalog(proto.Message):
                 oneof="remote_catalog_info",
                 message="IcebergCatalog.FederatedCatalogOptions.GlueCatalogInfo",
             )
+        )
+        snowflake_catalog_info: "IcebergCatalog.FederatedCatalogOptions.SnowflakeCatalogInfo" = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            oneof="remote_catalog_info",
+            message="IcebergCatalog.FederatedCatalogOptions.SnowflakeCatalogInfo",
         )
         secret_name: str = proto.Field(
             proto.STRING,
@@ -693,6 +762,17 @@ class ListIcebergCatalogsRequest(proto.Message):
             Optional. The page token, received from a previous
             ``ListIcebergCatalogs`` call. Provide this to retrieve the
             subsequent page.
+        filter (str):
+            Optional. The filter expression. The only parameter
+            currently supported is filtering based on the
+            ``IcebergCatalog.catalog_type`` field.
+
+            Examples:
+
+            - ``catalog_type = CATALOG_TYPE_BIGLAKE``
+            - ``catalog_type != CATALOG_TYPE_GCS_BUCKET``
+            - ``catalog_type = CATALOG_TYPE_BIGLAKE OR catalog_type = CATALOG_TYPE_GCS_BUCKET``
+            - ``NOT catalog_type = CATALOG_TYPE_GCS_BUCKET``
     """
 
     class CatalogView(proto.Enum):
@@ -727,6 +807,10 @@ class ListIcebergCatalogsRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 

@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 from .developerknowledge import (
+    Answer,
+    AnswerQueryRequest,
+    AnswerQueryResponse,
     BatchGetDocumentsRequest,
     BatchGetDocumentsResponse,
     Document,
@@ -25,6 +28,9 @@ from .developerknowledge import (
 )
 
 __all__ = (
+    "Answer",
+    "AnswerQueryRequest",
+    "AnswerQueryResponse",
     "BatchGetDocumentsRequest",
     "BatchGetDocumentsResponse",
     "Document",

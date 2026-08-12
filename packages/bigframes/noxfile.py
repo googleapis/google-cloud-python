@@ -60,7 +60,7 @@ LINT_PATHS = [
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     PYTEST_VERSION,
@@ -283,6 +283,10 @@ def run_unit(session, install_test_extra):
 @nox.session(python=ALL_PYTHON)
 @nox.parametrize("test_extra", [True, False])
 def unit(session, test_extra):
+    if session.python == "3.15":
+        session.skip(
+            "Skipping 3.15 until wheels are available for pyarrow. Also pyproj wheels are needed for dependency geopandas."
+        )
     if test_extra:
         run_unit(session, install_test_extra=test_extra)
     else:
@@ -333,9 +337,6 @@ def run_system(
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-
-    if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
-        session.skip("Credentials must be set via environment variable")
 
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
@@ -595,9 +596,6 @@ def docfx(session):
 
 
 def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=()):
-    if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
-        session.skip("Credentials must be set via environment variable")
-
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )

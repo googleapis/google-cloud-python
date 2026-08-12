@@ -39,7 +39,7 @@ class AIGenerate(Value):
         pyarrow_output_type = pa.struct(
             (
                 *output_pa_fields,
-                pa.field("full_resposne", pa.string()),
+                pa.field("full_response", pa.string()),
                 pa.field("status", pa.string()),
             )
         )
@@ -62,7 +62,7 @@ class AIGenerateBool(Value):
     @attribute
     def dtype(self) -> dt.Struct:
         return dt.Struct.from_tuples(
-            (("result", dt.bool), ("full_resposne", dt.string), ("status", dt.string))
+            (("result", dt.bool), ("full_response", dt.string), ("status", dt.string))
         )
 
 
@@ -81,7 +81,7 @@ class AIGenerateInt(Value):
     @attribute
     def dtype(self) -> dt.Struct:
         return dt.Struct.from_tuples(
-            (("result", dt.int64), ("full_resposne", dt.string), ("status", dt.string))
+            (("result", dt.int64), ("full_response", dt.string), ("status", dt.string))
         )
 
 
@@ -102,7 +102,7 @@ class AIGenerateDouble(Value):
         return dt.Struct.from_tuples(
             (
                 ("result", dt.float64),
-                ("full_resposne", dt.string),
+                ("full_response", dt.string),
                 ("status", dt.string),
             )
         )

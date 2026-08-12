@@ -14,7 +14,7 @@
 
 # Helpful notes for local usage:
 #   unset PYENV_VERSION
-#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12 3.9.17
+#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12
 #   PIP_INDEX_URL=https://pypi.org/simple nox
 
 from __future__ import absolute_import
@@ -70,7 +70,6 @@ NEWEST_PYTHON = ALL_PYTHON[-2]
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
-
     session.install(
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2478):
         # Temporarily pin coverage to 7.11.0
@@ -498,9 +497,7 @@ def showcase_pqc(
     """Run the Showcase PQC verification test suite against grpcio 1.83+ over standard TLS."""
     with showcase_library(session, templates=templates, other_opts=other_opts):
         session.install("pytest", "pytest-asyncio")
-        # TODO(https://github.com/googleapis/google-cloud-python/issues/17751):
-        # Update the version below to `1.83.0` once released, and remove `--pre`.
-        session.install("--pre", "--upgrade", "grpcio>=1.83.0rc0", "grpcio-status>=1.83.0rc0")
+        session.install("--upgrade", "grpcio>=1.83.0", "grpcio-status>=1.83.0")
         session.run("py.test", "--quiet", "--tls", *(session.posargs or ["tests/system/test_pqc.py"]), env=env)
 
 

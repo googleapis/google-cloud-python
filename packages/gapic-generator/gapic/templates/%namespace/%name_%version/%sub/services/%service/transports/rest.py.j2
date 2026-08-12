@@ -13,6 +13,8 @@ from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
+{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
+from {{package_path}}._compat import transcode_request
 import google.protobuf
 
 from google.protobuf import json_format
@@ -245,7 +247,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {% endif %}
             """
 
-            {{ shared_macros.rest_call_method_common(body_spec, method.name, service, False, method.input.ident.is_proto_plus_type)|indent(8) }}
+            {{ shared_macros.rest_call_method_common(body_spec, method.name, service, False, method.input.ident.is_proto_plus_type, opts.rest_numeric_enums)|indent(8) }}
 
             {% if not method.void %}
             # Return the response

@@ -14,7 +14,7 @@ concurrency:
 
 env:
   SHOWCASE_VERSION: 0.35.0
-  PROTOC_VERSION: 3.20.2
+  PROTOC_VERSION: 33.5
   LATEST_STABLE_PYTHON: 3.14
   PRERELEASE_PYTHON: 3.15
   ALL_PYTHON: "['3.10', '3.11', '3.12', '3.13', '3.14', '3.15']"
@@ -31,10 +31,10 @@ jobs:
     outputs:
       run_generator: ${{ steps.filter.outputs.generator }}
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
-      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4
+      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
         id: filter
         with:
           filters: |
@@ -65,7 +65,7 @@ jobs:
         logging_scope: ["", "google"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
       - name: Set up Python
@@ -98,7 +98,7 @@ jobs:
     needs: python_config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
       - name: Set up Python
@@ -117,7 +117,7 @@ jobs:
     needs: python_config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
       - name: Set up Python
@@ -133,7 +133,7 @@ jobs:
           pip install nox
           cd packages/gapic-generator
           for pkg in credentials eventarc logging redis; do
-            nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${LATEST_STABLE_PYTHON}
+            nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${LATEST_STABLE_PYTHON} core_deps_from_source
           done
       # Run pylint (errors-only) over the goldens so generator regressions
       # like undefined names or import-time breakage that ruff/flake8 do
@@ -151,7 +151,7 @@ jobs:
     needs: python_config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
       - name: Set up Python ${{ needs.python_config.outputs.prerelease_python }}
@@ -171,7 +171,7 @@ jobs:
           pip install nox
           cd packages/gapic-generator
           for pkg in credentials eventarc logging redis; do
-            nox -f tests/integration/goldens/$pkg/noxfile.py -s core_deps_from_source prerelease_deps
+            nox -f tests/integration/goldens/$pkg/noxfile.py -s prerelease_deps
           done
 
   fragment-snippet:
@@ -181,7 +181,7 @@ jobs:
         python: ${{ fromJSON(needs.python_config.outputs.trimmed_python) }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
       - name: Set up Python
@@ -221,7 +221,7 @@ jobs:
     runs-on: ubuntu-latest
     container: gcr.io/gapic-images/googleapis # zizmor: ignore[unpinned-images]
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
       - name: Cache Bazel files
