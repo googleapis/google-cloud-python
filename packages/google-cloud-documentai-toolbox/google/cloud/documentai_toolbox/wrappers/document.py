@@ -826,9 +826,13 @@ class Document:
                 # Entity types come from the parsed Document and may contain
                 # path separators (e.g. "vat/tax_amount") or traversal
                 # sequences. Flatten them so the split file stays inside
-                # output_path.
+                # output_path. ":" is also flattened since it is not a valid
+                # filename character on Windows.
                 subdoc_type = (
-                    (entity.type_ or "subdoc").replace("/", "_").replace("\\", "_")
+                    (entity.type_ or "subdoc")
+                    .replace("/", "_")
+                    .replace("\\", "_")
+                    .replace(":", "_")
                 )
                 page_range = (
                     f"pg{entity.start_page + 1}"

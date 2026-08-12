@@ -802,7 +802,7 @@ def test_split_pdf_sanitizes_entity_type_path_traversal(
 
     # Entity types are read from the parsed Document and may carry path
     # separators or traversal sequences.
-    doc.entities[0].type_ = "../../../../etc/passwd"
+    doc.entities[0].type_ = "../../../../etc:passwd"
 
     output_path = "splitter/output/"
     actual = doc.split_pdf(
