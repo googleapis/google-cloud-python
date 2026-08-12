@@ -55,12 +55,12 @@ dependencies = [
 ]
 extras = {
     "pandas": [
-        "pandas>=1.1.3",
-        "pyarrow>=3.0.0",
-        "pandas-gbq>=0.35.1",
+        "pandas >= 1.1.3, < 3.0.0",
+        "pyarrow >= 3.0.0",
+        "pandas-gbq >= 0.35.1, < 1.0.0",
     ],
-    "fastavro": ["fastavro>=1.1.0"],
-    "pyarrow": ["pyarrow>=3.0.0"],
+    "fastavro": ["fastavro >= 1.1.0, < 2.0.0"],
+    "pyarrow": ["pyarrow >= 3.0.0"],
 }
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-storage"
 
