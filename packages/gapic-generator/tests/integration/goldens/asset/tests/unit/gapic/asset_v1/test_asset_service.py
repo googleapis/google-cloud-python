@@ -62,6 +62,7 @@ from google.longrunning import operations_pb2 # type: ignore
 from google.oauth2 import service_account
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
