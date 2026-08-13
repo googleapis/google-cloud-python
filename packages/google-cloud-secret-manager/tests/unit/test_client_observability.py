@@ -14,6 +14,7 @@
 
 from unittest import mock
 
+import google.cloud.secretmanager_v1.services.secret_manager_service.client as client_module
 import pytest
 from google.auth import credentials as ga_credentials
 from google.cloud import secretmanager_v1
@@ -38,13 +39,21 @@ def setup_otel():
     span_processor = SimpleSpanProcessor(memory_exporter)
     tracer_provider.add_span_processor(span_processor)
 
-    # Override internal global var to inject our provider
+    # Inject our test tracer directly into the client module to bypass ProxyTracer caching issues
+    orig_tracer = getattr(client_module, "tracer", None)
+    client_module.tracer = tracer_provider.get_tracer(__name__)
+
+    # Also set global just in case
     orig_trace_provider = trace._TRACER_PROVIDER
     trace._TRACER_PROVIDER = tracer_provider
 
     yield memory_exporter
 
     trace._TRACER_PROVIDER = orig_trace_provider
+    if orig_tracer is not None:
+        client_module.tracer = orig_tracer
+    else:
+        delattr(client_module, "tracer")
 
 
 @pytest.mark.skipif(
@@ -135,3 +144,46 @@ def test_access_secret_version_custom_span_disabled(setup_otel, monkeypatch):
     # We expect NO spans
     assert len(exported_spans) == 0
     # We might also expect standard attributes like service.name etc, but let's focus on custom ones.
+
+
+@pytest.mark.skipif(
+    not HAS_FEATURE_GATING or not HAS_OTEL,
+    reason="Requires feature gating and OpenTelemetry",
+)
+def test_access_secret_version_custom_span_error(setup_otel, monkeypatch):
+    """Verify that calling access_secret_version produces custom span with error attributes on failure."""
+
+    monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "true")
+
+    client = secretmanager_v1.SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    request = service.AccessSecretVersionRequest(
+        name="projects/test-project/secrets/test-secret/versions/1"
+    )
+
+    error_message = "Permission denied"
+    with mock.patch.object(
+        type(client.transport.access_secret_version), "__call__"
+    ) as call:
+        call.side_effect = Exception(error_message)
+
+        with pytest.raises(Exception, match=error_message):
+            client.access_secret_version(request)
+
+    exported_spans = setup_otel.get_finished_spans()
+    assert len(exported_spans) >= 1
+
+    t3_span = None
+    for span in exported_spans:
+        if "access_secret_version" in span.name:
+            t3_span = span
+            break
+
+    assert t3_span is not None, "T3 span not found"
+
+    attributes = t3_span.attributes
+    assert attributes.get("exception.type") == "Exception"
+    assert attributes.get("status.message") == error_message
+    assert t3_span.status.status_code == trace.StatusCode.ERROR

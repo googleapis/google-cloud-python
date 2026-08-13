@@ -1906,12 +1906,18 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 span.set_attribute("gcp.client.version", package_version.__version__)
                 span.set_attribute("gcp.client.repo", "googleapis/google-cloud-python")
                 span.set_attribute("gcp.client.artifact", "google-cloud-secret-manager")
-                response = rpc(
-                    request,
-                    retry=retry,
-                    timeout=timeout,
-                    metadata=metadata,
-                )
+                try:
+                    response = rpc(
+                        request,
+                        retry=retry,
+                        timeout=timeout,
+                        metadata=metadata,
+                    )
+                except Exception as e:
+                    span.set_attribute("exception.type", type(e).__name__)
+                    span.set_attribute("status.message", str(e))
+                    span.set_status(trace.Status(trace.StatusCode.ERROR))
+                    raise
         else:
             response = rpc(
                 request,
@@ -1919,8 +1925,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 timeout=timeout,
                 metadata=metadata,
             )
-
-        return response
 
         # Done; return the response.
         return response
