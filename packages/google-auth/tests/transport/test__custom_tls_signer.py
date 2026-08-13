@@ -167,10 +167,15 @@ def test_get_cert():
     assert len(mock_cert) == mock_cert_len
 
 
-def test_custom_tls_signer():
+@pytest.fixture
+def inject_pyopenssl():
     urllib3_pyopenssl = pytest.importorskip("urllib3.contrib.pyopenssl")
     urllib3_pyopenssl.inject_into_urllib3()
+    yield
+    urllib3_pyopenssl.extract_from_urllib3()
 
+
+def test_custom_tls_signer(inject_pyopenssl):
     offload_lib = mock.MagicMock()
     signer_lib = mock.MagicMock()
 
@@ -373,10 +378,7 @@ def test_cast_ssl_ctx_to_void_p_stdlib_mock_error():
         _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
 
 
-def test_cast_ssl_ctx_to_void_p_pyopenssl():
-    urllib3_pyopenssl = pytest.importorskip("urllib3.contrib.pyopenssl")
-    urllib3_pyopenssl.inject_into_urllib3()
-
+def test_cast_ssl_ctx_to_void_p_pyopenssl(inject_pyopenssl):
     context = create_urllib3_context()
     res = _custom_tls_signer._cast_ssl_ctx_to_void_p_pyopenssl(context._ctx._context)
     assert isinstance(res, ctypes.c_void_p)

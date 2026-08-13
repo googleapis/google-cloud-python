@@ -694,8 +694,11 @@ class TestAuthorizedSession(object):
             "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
         },
     )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path", return_value=None
+    )
     def test_configure_mtls_channel_without_client_cert_env(
-        self, get_client_cert_and_key
+        self, mock_get_cert_config_path, get_client_cert_and_key
     ):
         env_to_patch = {
             environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "",
@@ -1063,6 +1066,16 @@ class TestAuthorizedSession(object):
 
 
 class TestMutualTlsOffloadAdapter(object):
+    @pytest.fixture(autouse=True)
+    def teardown_pyopenssl(self):
+        yield
+        try:
+            from urllib3.contrib.pyopenssl import extract_from_urllib3
+
+            extract_from_urllib3()
+        except ImportError:
+            pass
+
     @mock.patch.object(requests.adapters.HTTPAdapter, "init_poolmanager")
     @mock.patch.object(requests.adapters.HTTPAdapter, "proxy_manager_for")
     @mock.patch.object(

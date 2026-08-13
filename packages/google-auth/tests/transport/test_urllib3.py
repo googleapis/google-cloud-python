@@ -418,8 +418,11 @@ class TestAuthorizedHttp(object):
             "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
         },
     )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path", return_value=None
+    )
     def test_configure_mtls_channel_without_client_cert_env(
-        self, get_client_cert_and_key
+        self, mock_get_cert_config_path, get_client_cert_and_key
     ):
         callback = mock.Mock()
 

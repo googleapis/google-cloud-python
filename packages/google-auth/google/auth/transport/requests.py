@@ -478,7 +478,7 @@ class AuthorizedSession(requests.Session):
                 creation failed for any reason. The existing session state (such
                 as adapter mounts) remains unmodified if this error is raised.
         """
-        use_client_cert = google.auth.transport._mtls_helper.check_use_client_cert()
+        use_client_cert = _mtls_helper.check_use_client_cert()
         if not use_client_cert:
             return
 
@@ -487,9 +487,7 @@ class AuthorizedSession(requests.Session):
                 is_mtls,
                 cert,
                 key,
-            ) = google.auth.transport._mtls_helper.get_client_cert_and_key(
-                client_cert_callback
-            )
+            ) = _mtls_helper.get_client_cert_and_key(client_cert_callback)
 
             old_adapter = self.adapters.get("https://")
 
