@@ -22,6 +22,7 @@ import warnings
 from collections import OrderedDict
 from http import HTTPStatus
 from typing import (
+    Any,
     Callable,
     Dict,
     Mapping,
@@ -49,10 +50,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.pubsub_v1 import gapic_version as package_version
 
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -1062,7 +1060,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
 
     def publish(
         self,
-        request: Optional[Union[pubsub.PublishRequest, dict]] = None,
+        request: Optional[Union[pubsub.PublishRequest, Dict[str, Any]]] = None,
         *,
         topic: Optional[str] = None,
         messages: Optional[MutableSequence[pubsub.PubsubMessage]] = None,
