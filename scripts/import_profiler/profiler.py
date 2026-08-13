@@ -413,9 +413,21 @@ def _should_process_namespace_package(top_level: str, target_pkg: str) -> bool:
     return True  # Not a candidate for exclusion, process it.
 
 
+def _is_path_allowed(path_obj, pkg_norm: str) -> bool:
+    """Checks if a path object is allowed based on ignored directory rules."""
+    from pathlib import Path
+    parts = Path(path_obj).parts
+    return all(
+        part not in IGNORED_TOP_LEVEL_NAMES
+        or part.replace("-", "").replace("_", "").lower() in pkg_norm
+        for part in parts
+    )
+
+
 def find_module_from_package(pkg):
     import importlib.metadata
     import importlib.util
+    from pathlib import Path
 
     # 1. Try to use importlib.metadata.files (works for standard installations from PyPI/wheels)
     try:
@@ -424,13 +436,9 @@ def find_module_from_package(pkg):
             pkg_norm = pkg.replace("-", "").replace("_", "").lower()
             init_files = [
                 str(f) for f in files
-                if str(f).endswith('__init__.py')
-                and '__pycache__' not in str(f)
-                and not any(
-                    part in IGNORED_TOP_LEVEL_NAMES
-                    and part.replace("-", "").replace("_", "").lower() not in pkg_norm
-                    for part in str(f).replace('\\', '/').split('/')
-                )
+                if Path(f).name == '__init__.py'
+                and '__pycache__' not in Path(f).parts
+                and _is_path_allowed(f, pkg_norm)
             ]
             if init_files:
                 from pathlib import Path
