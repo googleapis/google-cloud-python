@@ -2250,7 +2250,7 @@ libraries:
       metadata_name_override: workflows
       default_version: v1
   - name: google-cloud-workloadidentity
-    version: 0.0.0
+    version: 0.1.0
     apis:
       - path: google/cloud/workloadidentity/v1
     copyright_year: "2026"
