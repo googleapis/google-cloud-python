@@ -72,11 +72,14 @@ def test_create_channel_otel_combos(
         monkeypatch.setitem(sys.modules, "opentelemetry.instrumentation.grpc", None)
 
     mock_channel = "raw_channel"
-    with mock.patch(
-        "grpc.secure_channel", return_value=mock_channel
-    ) as mock_secure_channel, mock.patch(
-        "grpc.intercept_channel", side_effect=lambda ch, inc: f"wrapped_{ch}"
-    ) as mock_intercept_channel:
+    with (
+        mock.patch(
+            "grpc.secure_channel", return_value=mock_channel
+        ) as mock_secure_channel,
+        mock.patch(
+            "grpc.intercept_channel", side_effect=lambda ch, inc: f"wrapped_{ch}"
+        ) as mock_intercept_channel,
+    ):
         with mock.patch(
             "google.api_core.grpc_helpers._create_composite_credentials",
             return_value=mock.Mock(),
@@ -107,17 +110,27 @@ def test_create_channel_otel_combos(
     ids=["dict", "object"],
 )
 @pytest.mark.skipif(not HAS_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
-def test_create_channel_with_custom_tracer_provider(monkeypatch, mock_otel_grpc, config_factory):
+def test_create_channel_with_custom_tracer_provider(
+    monkeypatch, mock_otel_grpc, config_factory
+):
     """Verify that create_channel passes custom tracer_provider to OTel interceptor."""
 
     mock_tracer_provider = mock.Mock()
     config = config_factory(mock_tracer_provider)
 
     mock_channel = "raw_channel"
-    with mock.patch("grpc.secure_channel", return_value=mock_channel), mock.patch(
-        "grpc.intercept_channel", side_effect=lambda ch, inc: f"wrapped_{ch}"
+    with (
+        mock.patch("grpc.secure_channel", return_value=mock_channel),
+        mock.patch(
+            "grpc.intercept_channel", side_effect=lambda ch, inc: f"wrapped_{ch}"
+        ),
     ):
-        with mock.patch("google.api_core.grpc_helpers._create_composite_credentials", return_value=mock.Mock()):
+        with mock.patch(
+            "google.api_core.grpc_helpers._create_composite_credentials",
+            return_value=mock.Mock(),
+        ):
             grpc_helpers.create_channel("localhost:1234", configuration=config)
 
-            mock_otel_grpc.client_interceptor.assert_called_once_with(tracer_provider=mock_tracer_provider)
+            mock_otel_grpc.client_interceptor.assert_called_once_with(
+                tracer_provider=mock_tracer_provider
+            )
