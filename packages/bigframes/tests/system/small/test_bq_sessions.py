@@ -44,7 +44,7 @@ def session_resource_manager(
     )
 
 
-@pytest.mark.flaky(retries=2, delay=10)
+@pytest.mark.flaky(reruns=2, reruns_delay=10)
 def test_bq_session_create_temp_table_clustered(bigquery_client: bigquery.Client):
     session_resource_manager = bigquery_session.SessionResourceManager(
         bigquery_client, "US", publisher=bigframes.core.events.Publisher()
