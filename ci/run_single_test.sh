@@ -138,9 +138,12 @@ case ${TEST_TYPE} in
             BASELINE_CSV="${PROFILER_TEMP_DIR}/baseline_${PACKAGE_NAME}.csv"
             
             if [ -n "${TARGET_BRANCH}" ]; then
-                # Fetch history for origin/${TARGET_BRANCH} without --depth=1 in case it was shallowly fetched
+                # Fetch history for the target branch without --depth=1 in case it was shallowly fetched
                 if [ -f "$(git rev-parse --git-dir)/shallow" ]; then
-                    git fetch origin "${TARGET_BRANCH}" --unshallow 2>/dev/null || git fetch origin "${TARGET_BRANCH}" 2>/dev/null || true
+                    git fetch upstream "${TARGET_BRANCH}" --unshallow 2>/dev/null || \
+                    git fetch origin "${TARGET_BRANCH}" --unshallow 2>/dev/null || \
+                    git fetch upstream "${TARGET_BRANCH}" 2>/dev/null || \
+                    git fetch origin "${TARGET_BRANCH}" 2>/dev/null || true
                 fi
                 # Try upstream first (for forks), then origin
                 BASELINE_COMMIT=$(git merge-base HEAD "upstream/${TARGET_BRANCH}" 2>/dev/null || \

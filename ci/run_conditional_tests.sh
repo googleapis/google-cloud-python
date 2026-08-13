@@ -55,9 +55,9 @@ elif [[ ${BUILD_TYPE} == "presubmit" ]]; then
     # common commit in the target branch.
     if [ -n "${TARGET_BRANCH}" ]; then
         if [[ "${TEST_TYPE}" == "import_profile" ]]; then
-            git fetch origin "${TARGET_BRANCH}" || true
+            git fetch upstream "${TARGET_BRANCH}" 2>/dev/null || git fetch origin "${TARGET_BRANCH}" || true
         else
-            git fetch origin "${TARGET_BRANCH}" --depth=200 || true
+            git fetch upstream "${TARGET_BRANCH}" --depth=200 2>/dev/null || git fetch origin "${TARGET_BRANCH}" --depth=200 || true
         fi
     fi
     GIT_DIFF_ARG="origin/${TARGET_BRANCH}..."
