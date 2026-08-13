@@ -1195,6 +1195,13 @@ libraries:
           - python-gapic-name=firestore
       metadata_name_override: firestore
       default_version: v1
+  - name: google-cloud-ftp
+    version: 0.0.0
+    apis:
+      - path: google/cloud/ftp/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-cloud-functions
     version: 1.24.0
     apis:
