@@ -21,6 +21,7 @@ sources:
 tools:
   protoc:
     version: "33.5"
+    sha256: 24e58fb231d50306ee28491f33a170301e99540f7e29ca461e0e80fd1239f8d1
   pip:
     - name: black
       version: 23.7.0
