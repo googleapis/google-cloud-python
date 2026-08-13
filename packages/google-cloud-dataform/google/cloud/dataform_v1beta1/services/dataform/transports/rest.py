@@ -37,6 +37,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.dataform_v1beta1._compat import transcode_request
 from google.cloud.dataform_v1beta1.types import dataform
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -4328,21 +4329,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_workflow_invocation(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseCancelWorkflowInvocation,
+                    "_BaseCancelWorkflowInvocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4480,21 +4478,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_http_options()
-
             request, metadata = self._interceptor.pre_commit_repository_changes(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseCommitRepositoryChanges,
+                    "_BaseCommitRepositoryChanges__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4632,21 +4627,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_http_options()
-
             request, metadata = self._interceptor.pre_commit_workspace_changes(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseCommitWorkspaceChanges,
+                    "_BaseCommitWorkspaceChanges__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4785,19 +4777,20 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_compute_repository_access_token_status(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus,
+                    "_BaseComputeRepositoryAccessTokenStatus__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4942,21 +4935,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseCreateCompilationResult._get_http_options()
-
             request, metadata = self._interceptor.pre_create_compilation_result(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseCreateCompilationResult._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataformRestTransport._BaseCreateCompilationResult._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseCreateCompilationResult._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseCreateCompilationResult,
+                    "_BaseCreateCompilationResult__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5096,23 +5086,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseCreateFolder._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_folder(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseCreateFolder._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseDataformRestTransport._BaseCreateFolder._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseCreateFolder._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseCreateFolder,
+                    "_BaseCreateFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5252,21 +5235,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseCreateReleaseConfig._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_release_config(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseCreateReleaseConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataformRestTransport._BaseCreateReleaseConfig._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseCreateReleaseConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseCreateReleaseConfig,
+                    "_BaseCreateReleaseConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5404,25 +5384,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseCreateRepository._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_repository(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseCreateRepository._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseDataformRestTransport._BaseCreateRepository._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseCreateRepository._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseCreateRepository,
+                    "_BaseCreateRepository__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5567,25 +5540,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseCreateTeamFolder._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_team_folder(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseCreateTeamFolder._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseDataformRestTransport._BaseCreateTeamFolder._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseCreateTeamFolder._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseCreateTeamFolder,
+                    "_BaseCreateTeamFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5725,21 +5691,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_workflow_config(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseCreateWorkflowConfig,
+                    "_BaseCreateWorkflowConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5878,21 +5841,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_http_options()
-
             request, metadata = self._interceptor.pre_create_workflow_invocation(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseCreateWorkflowInvocation,
+                    "_BaseCreateWorkflowInvocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6030,27 +5990,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseCreateWorkspace._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_workspace(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseCreateWorkspace._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseDataformRestTransport._BaseCreateWorkspace._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseCreateWorkspace._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseCreateWorkspace,
+                    "_BaseCreateWorkspace__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6181,19 +6132,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseDeleteFolder._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_folder(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseDeleteFolder._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseDeleteFolder._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseDeleteFolder,
+                    "_BaseDeleteFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6299,25 +6247,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseDeleteFolderTree._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_folder_tree(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseDeleteFolderTree._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseDataformRestTransport._BaseDeleteFolderTree._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseDeleteFolderTree._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseDeleteFolderTree,
+                    "_BaseDeleteFolderTree__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6448,17 +6389,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseDeleteReleaseConfig._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_release_config(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseDeleteReleaseConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseDeleteReleaseConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseDeleteReleaseConfig,
+                    "_BaseDeleteReleaseConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6556,19 +6498,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseDeleteRepository._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_repository(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseDeleteRepository._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseDeleteRepository._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseDeleteRepository,
+                    "_BaseDeleteRepository__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6673,21 +6614,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseDeleteRepositoryLongRunning._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_repository_long_running(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseDeleteRepositoryLongRunning._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataformRestTransport._BaseDeleteRepositoryLongRunning._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseDeleteRepositoryLongRunning._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseDeleteRepositoryLongRunning,
+                    "_BaseDeleteRepositoryLongRunning__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6820,19 +6758,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseDeleteTeamFolder._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_team_folder(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseDeleteTeamFolder._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseDeleteTeamFolder._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseDeleteTeamFolder,
+                    "_BaseDeleteTeamFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6938,21 +6875,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseDeleteTeamFolderTree._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_team_folder_tree(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseDeleteTeamFolderTree._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataformRestTransport._BaseDeleteTeamFolderTree._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseDeleteTeamFolderTree._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseDeleteTeamFolderTree,
+                    "_BaseDeleteTeamFolderTree__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7083,17 +7017,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseDeleteWorkflowConfig._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_workflow_config(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseDeleteWorkflowConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseDeleteWorkflowConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseDeleteWorkflowConfig,
+                    "_BaseDeleteWorkflowConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7190,17 +7125,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseDeleteWorkflowInvocation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_workflow_invocation(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseDeleteWorkflowInvocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseDeleteWorkflowInvocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseDeleteWorkflowInvocation,
+                    "_BaseDeleteWorkflowInvocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7298,21 +7234,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseDeleteWorkspace._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_workspace(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseDeleteWorkspace._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseDeleteWorkspace._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseDeleteWorkspace,
+                    "_BaseDeleteWorkspace__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7414,19 +7347,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseFetchFileDiff._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_fetch_file_diff(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseFetchFileDiff._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseFetchFileDiff._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseFetchFileDiff,
+                    "_BaseFetchFileDiff__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7562,17 +7492,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseFetchFileGitStatuses._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_fetch_file_git_statuses(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseFetchFileGitStatuses._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseFetchFileGitStatuses._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseFetchFileGitStatuses,
+                    "_BaseFetchFileGitStatuses__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7710,17 +7641,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseFetchGitAheadBehind._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_fetch_git_ahead_behind(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseFetchGitAheadBehind._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseFetchGitAheadBehind._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseFetchGitAheadBehind,
+                    "_BaseFetchGitAheadBehind__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7858,17 +7790,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseFetchRemoteBranches._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_fetch_remote_branches(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseFetchRemoteBranches._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseFetchRemoteBranches._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseFetchRemoteBranches,
+                    "_BaseFetchRemoteBranches__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8004,17 +7937,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseFetchRepositoryHistory._get_http_options()
-
             request, metadata = self._interceptor.pre_fetch_repository_history(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseFetchRepositoryHistory._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseFetchRepositoryHistory._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseFetchRepositoryHistory,
+                    "_BaseFetchRepositoryHistory__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8154,17 +8088,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseGetCompilationResult._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_compilation_result(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseGetCompilationResult._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseGetCompilationResult._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseGetCompilationResult,
+                    "_BaseGetCompilationResult__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8298,19 +8233,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseGetConfig._get_http_options()
-
             request, metadata = self._interceptor.pre_get_config(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseGetConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetConfig._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseGetConfig,
+                    "_BaseGetConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8446,19 +8378,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseGetFolder._get_http_options()
-
             request, metadata = self._interceptor.pre_get_folder(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseGetFolder._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetFolder._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseGetFolder,
+                    "_BaseGetFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8667,19 +8596,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseGetIamPolicy._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseGetIamPolicy,
+                    "_BaseGetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8817,19 +8743,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseGetReleaseConfig._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_release_config(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseGetReleaseConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetReleaseConfig._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseGetReleaseConfig,
+                    "_BaseGetReleaseConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8965,19 +8890,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseGetRepository._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_repository(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseGetRepository._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetRepository._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseGetRepository,
+                    "_BaseGetRepository__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9120,19 +9042,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseGetTeamFolder._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_team_folder(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseGetTeamFolder._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetTeamFolder._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseGetTeamFolder,
+                    "_BaseGetTeamFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9270,17 +9189,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseGetWorkflowConfig._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_workflow_config(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseGetWorkflowConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseGetWorkflowConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseGetWorkflowConfig,
+                    "_BaseGetWorkflowConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9416,17 +9336,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseGetWorkflowInvocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_workflow_invocation(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseGetWorkflowInvocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseGetWorkflowInvocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseGetWorkflowInvocation,
+                    "_BaseGetWorkflowInvocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9560,19 +9481,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseGetWorkspace._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_workspace(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseGetWorkspace._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetWorkspace._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseGetWorkspace,
+                    "_BaseGetWorkspace__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9709,21 +9627,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseInstallNpmPackages._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_install_npm_packages(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseInstallNpmPackages._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataformRestTransport._BaseInstallNpmPackages._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseInstallNpmPackages._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseInstallNpmPackages,
+                    "_BaseInstallNpmPackages__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9860,17 +9775,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseListCompilationResults._get_http_options()
-
             request, metadata = self._interceptor.pre_list_compilation_results(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseListCompilationResults._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseListCompilationResults._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseListCompilationResults,
+                    "_BaseListCompilationResults__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10008,17 +9924,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseListReleaseConfigs._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_release_configs(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseListReleaseConfigs._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseListReleaseConfigs._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseListReleaseConfigs,
+                    "_BaseListReleaseConfigs__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10156,19 +10073,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseListRepositories._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_repositories(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseListRepositories._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseListRepositories._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseListRepositories,
+                    "_BaseListRepositories__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10306,17 +10222,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseListWorkflowConfigs._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_workflow_configs(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseListWorkflowConfigs._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseListWorkflowConfigs._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseListWorkflowConfigs,
+                    "_BaseListWorkflowConfigs__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10452,17 +10369,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseListWorkflowInvocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_workflow_invocations(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseListWorkflowInvocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseListWorkflowInvocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseListWorkflowInvocations,
+                    "_BaseListWorkflowInvocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10600,19 +10518,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseListWorkspaces._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_workspaces(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseListWorkspaces._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseListWorkspaces._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseListWorkspaces,
+                    "_BaseListWorkspaces__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10749,23 +10664,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseMakeDirectory._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_make_directory(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseMakeDirectory._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseDataformRestTransport._BaseMakeDirectory._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseMakeDirectory._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseMakeDirectory,
+                    "_BaseMakeDirectory__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10903,23 +10811,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseMoveDirectory._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_move_directory(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseMoveDirectory._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseDataformRestTransport._BaseMoveDirectory._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseMoveDirectory._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseMoveDirectory,
+                    "_BaseMoveDirectory__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11053,23 +10954,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseMoveFile._get_http_options()
-
             request, metadata = self._interceptor.pre_move_file(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseMoveFile._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseDataformRestTransport._BaseMoveFile._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseMoveFile._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseMoveFile,
+                    "_BaseMoveFile__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11208,23 +11102,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseMoveFolder._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_move_folder(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseMoveFolder._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseDataformRestTransport._BaseMoveFolder._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseMoveFolder._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseMoveFolder,
+                    "_BaseMoveFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11363,25 +11250,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseMoveRepository._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_move_repository(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseMoveRepository._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseDataformRestTransport._BaseMoveRepository._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseMoveRepository._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseMoveRepository,
+                    "_BaseMoveRepository__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11517,27 +11395,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BasePullGitCommits._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_pull_git_commits(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseDataformRestTransport._BasePullGitCommits._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseDataformRestTransport._BasePullGitCommits._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BasePullGitCommits._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BasePullGitCommits,
+                    "_BasePullGitCommits__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11675,27 +11544,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BasePushGitCommits._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_push_git_commits(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseDataformRestTransport._BasePushGitCommits._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseDataformRestTransport._BasePushGitCommits._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BasePushGitCommits._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BasePushGitCommits,
+                    "_BasePushGitCommits__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11831,17 +11691,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseQueryCompilationResultActions._get_http_options()
-
             request, metadata = self._interceptor.pre_query_compilation_result_actions(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseQueryCompilationResultActions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseQueryCompilationResultActions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseQueryCompilationResultActions,
+                    "_BaseQueryCompilationResultActions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11981,17 +11842,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseQueryDirectoryContents._get_http_options()
-
             request, metadata = self._interceptor.pre_query_directory_contents(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseQueryDirectoryContents._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseQueryDirectoryContents._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseQueryDirectoryContents,
+                    "_BaseQueryDirectoryContents__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12129,17 +11991,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseQueryFolderContents._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_query_folder_contents(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseQueryFolderContents._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseQueryFolderContents._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseQueryFolderContents,
+                    "_BaseQueryFolderContents__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12277,19 +12140,20 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_query_repository_directory_contents(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents,
+                    "_BaseQueryRepositoryDirectoryContents__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12432,17 +12296,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseQueryTeamFolderContents._get_http_options()
-
             request, metadata = self._interceptor.pre_query_team_folder_contents(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseQueryTeamFolderContents._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseQueryTeamFolderContents._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseQueryTeamFolderContents,
+                    "_BaseQueryTeamFolderContents__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12578,17 +12443,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseQueryUserRootContents._get_http_options()
-
             request, metadata = self._interceptor.pre_query_user_root_contents(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseQueryUserRootContents._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseQueryUserRootContents._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseQueryUserRootContents,
+                    "_BaseQueryUserRootContents__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12725,17 +12591,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions._get_http_options()
-
             request, metadata = self._interceptor.pre_query_workflow_invocation_actions(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions,
+                    "_BaseQueryWorkflowInvocationActions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12875,19 +12742,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseReadFile._get_http_options()
-
             request, metadata = self._interceptor.pre_read_file(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseReadFile._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseReadFile._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseReadFile,
+                    "_BaseReadFile__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13023,17 +12887,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseReadRepositoryFile._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_read_repository_file(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseReadRepositoryFile._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseReadRepositoryFile._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseReadRepositoryFile,
+                    "_BaseReadRepositoryFile__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13172,27 +13037,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseRemoveDirectory._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_remove_directory(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseRemoveDirectory._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseDataformRestTransport._BaseRemoveDirectory._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseRemoveDirectory._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseRemoveDirectory,
+                    "_BaseRemoveDirectory__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13330,23 +13186,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseRemoveFile._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_remove_file(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseRemoveFile._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseDataformRestTransport._BaseRemoveFile._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseRemoveFile._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseRemoveFile,
+                    "_BaseRemoveFile__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13482,21 +13331,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_http_options()
-
             request, metadata = self._interceptor.pre_reset_workspace_changes(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseResetWorkspaceChanges,
+                    "_BaseResetWorkspaceChanges__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13636,19 +13482,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseSearchFiles._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_search_files(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseSearchFiles._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseSearchFiles._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseSearchFiles,
+                    "_BaseSearchFiles__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13784,17 +13627,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseSearchTeamFolders._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_search_team_folders(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseSearchTeamFolders._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseSearchTeamFolders._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseSearchTeamFolders,
+                    "_BaseSearchTeamFolders__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14006,23 +13850,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseSetIamPolicy._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseDataformRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseSetIamPolicy,
+                    "_BaseSetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14160,21 +13997,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseTestIamPermissions._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataformRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseTestIamPermissions,
+                    "_BaseTestIamPermissions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14312,23 +14146,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseUpdateConfig._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_config(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseUpdateConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseDataformRestTransport._BaseUpdateConfig._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseUpdateConfig._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseUpdateConfig,
+                    "_BaseUpdateConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14468,23 +14295,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseUpdateFolder._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_folder(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseUpdateFolder._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseDataformRestTransport._BaseUpdateFolder._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseUpdateFolder._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseUpdateFolder,
+                    "_BaseUpdateFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14624,21 +14444,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_release_config(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseUpdateReleaseConfig,
+                    "_BaseUpdateReleaseConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14776,25 +14593,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseUpdateRepository._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_repository(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseUpdateRepository._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseDataformRestTransport._BaseUpdateRepository._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseUpdateRepository._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseUpdateRepository,
+                    "_BaseUpdateRepository__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14939,25 +14749,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseUpdateTeamFolder._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_team_folder(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseUpdateTeamFolder._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseDataformRestTransport._BaseUpdateTeamFolder._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseUpdateTeamFolder._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseUpdateTeamFolder,
+                    "_BaseUpdateTeamFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -15097,21 +14900,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_workflow_config(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseUpdateWorkflowConfig,
+                    "_BaseUpdateWorkflowConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -15245,23 +15045,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             """
 
             http_options = _BaseDataformRestTransport._BaseWriteFile._get_http_options()
-
             request, metadata = self._interceptor.pre_write_file(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseWriteFile._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseDataformRestTransport._BaseWriteFile._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseWriteFile._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseWriteFile,
+                    "_BaseWriteFile__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -16088,19 +15881,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseGetLocation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -16232,19 +16022,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseListLocations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -16374,27 +16161,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseCancelOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseDataformRestTransport._BaseCancelOperation._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -16499,21 +16277,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseDeleteOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseDeleteOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -16618,19 +16393,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -16762,19 +16534,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = (
                 _BaseDataformRestTransport._BaseListOperations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDataformRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
