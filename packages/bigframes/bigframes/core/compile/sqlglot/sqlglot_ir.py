@@ -583,7 +583,7 @@ def _and(conditions: tuple[sge.Expression, ...]) -> typing.Optional[sge.Expressi
 
     def check_and_parenthesize(expr: sge.Expression) -> sge.Expression:
         if isinstance(expr, sge.Or):
-            return sge.paren(expr, copy=False)
+            return sge.paren(expr)
         return expr
 
     return functools.reduce(
