@@ -65,6 +65,10 @@ grpc = [
   "grpcio-status >= 1.59.0, < 2.0.0",
   "grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
 ]
+tracing = [
+  "opentelemetry-instrumentation-grpc >= 0.46b0, < 1.0.0",
+]
+
 
 
 [tool.setuptools.dynamic]
