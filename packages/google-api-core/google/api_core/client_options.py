@@ -99,7 +99,7 @@ class ClientOptions(object):
             then `api_endpoint` is used as the service endpoint. If `api_endpoint` is
             not specified, the format will be `{service}.{universe_domain}`.
         tracer_provider (Optional[object]): The OpenTelemetry TracerProvider to use
-            for tracing. If not set, the global tracer provider is used, if 
+            for tracing. If not set, the global tracer provider is used, if
             available.
 
     Raises:
