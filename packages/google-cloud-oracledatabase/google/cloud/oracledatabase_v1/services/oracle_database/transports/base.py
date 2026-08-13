@@ -480,6 +480,16 @@ class OracleDatabaseTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.refresh_autonomous_database: gapic_v1.method.wrap_method(
+                self.refresh_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_autonomous_database_refreshable_clones: gapic_v1.method.wrap_method(
+                self.get_autonomous_database_refreshable_clones,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_odb_networks: gapic_v1.method.wrap_method(
                 self.list_odb_networks,
                 default_retry=retries.Retry(
@@ -1348,6 +1358,27 @@ class OracleDatabaseTransport(abc.ABC):
     ) -> Callable[
         [oracledatabase.FailoverAutonomousDatabaseRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def refresh_autonomous_database(
+        self,
+    ) -> Callable[
+        [oracledatabase.RefreshAutonomousDatabaseRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_autonomous_database_refreshable_clones(
+        self,
+    ) -> Callable[
+        [oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest],
+        Union[
+            oracledatabase.AutonomousDatabaseRefreshableClones,
+            Awaitable[oracledatabase.AutonomousDatabaseRefreshableClones],
+        ],
     ]:
         raise NotImplementedError()
 

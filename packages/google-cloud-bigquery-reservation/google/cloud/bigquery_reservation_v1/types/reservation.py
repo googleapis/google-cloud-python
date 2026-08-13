@@ -20,6 +20,7 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -1418,6 +1419,23 @@ class Assignment(proto.Message):
             - The special value ``unknown_or_deleted_user`` represents
               principals which cannot be read from the user info
               service, for example deleted users.
+        precedence (int):
+            Optional. Specifies the priority precedence
+            for this assignment. Used to resolve ambiguity
+            when multiple assignments match a single job.
+            Higher numerical values represent higher
+            priority (e.g., 20 is higher than 10). If
+            unspecified, it defaults to 0. Multiple
+            assignments can share the same precedence, but
+            it is recommended to use unique precedence
+            values for assignments within the same assignee
+            scope.
+        condition (google.type.expr_pb2.Expr):
+            Optional. Common Expression Language (CEL)
+            condition that defines the matching criteria for
+            this assignment. The condition must resolve to a
+            boolean value. Supported variables will be added
+            later.
     """
 
     class JobType(proto.Enum):
@@ -1526,6 +1544,15 @@ class Assignment(proto.Message):
     principal: str = proto.Field(
         proto.STRING,
         number=12,
+    )
+    precedence: int = proto.Field(
+        proto.INT64,
+        number=13,
+    )
+    condition: expr_pb2.Expr = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=expr_pb2.Expr,
     )
 
 

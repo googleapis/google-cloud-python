@@ -1871,7 +1871,7 @@ def test_batch_approve_suggested_ad_units_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=networks/*}/suggestedAdUnit:batchApprove"
+            "%s/v1/{parent=networks/*}/suggestedAdUnits:batchApprove"
             % client.transport._host,
             args[1],
         )

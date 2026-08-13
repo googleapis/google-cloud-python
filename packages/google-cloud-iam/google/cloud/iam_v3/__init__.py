@@ -30,8 +30,11 @@ from importlib import metadata
 # https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
 # Older Python versions safely ignore this variable.
 __lazy_modules__ = {
+    "google.cloud.iam_v3.services.access_policies",
     "google.cloud.iam_v3.services.policy_bindings",
     "google.cloud.iam_v3.services.principal_access_boundary_policies",
+    "google.cloud.iam_v3.types.access_policies_service",
+    "google.cloud.iam_v3.types.access_policy_resources",
     "google.cloud.iam_v3.types.operation_metadata",
     "google.cloud.iam_v3.types.policy_binding_resources",
     "google.cloud.iam_v3.types.policy_bindings_service",
@@ -40,10 +43,26 @@ __lazy_modules__ = {
 }
 
 
+from .services.access_policies import AccessPoliciesAsyncClient, AccessPoliciesClient
 from .services.policy_bindings import PolicyBindingsAsyncClient, PolicyBindingsClient
 from .services.principal_access_boundary_policies import (
     PrincipalAccessBoundaryPoliciesAsyncClient,
     PrincipalAccessBoundaryPoliciesClient,
+)
+from .types.access_policies_service import (
+    CreateAccessPolicyRequest,
+    DeleteAccessPolicyRequest,
+    GetAccessPolicyRequest,
+    ListAccessPoliciesRequest,
+    ListAccessPoliciesResponse,
+    SearchAccessPolicyBindingsRequest,
+    SearchAccessPolicyBindingsResponse,
+    UpdateAccessPolicyRequest,
+)
+from .types.access_policy_resources import (
+    AccessPolicy,
+    AccessPolicyDetails,
+    AccessPolicyRule,
 )
 from .types.operation_metadata import OperationMetadata
 from .types.policy_binding_resources import PolicyBinding
@@ -157,14 +176,24 @@ else:  # pragma: NO COVER
         )
 
 __all__ = (
+    "AccessPoliciesAsyncClient",
     "PolicyBindingsAsyncClient",
     "PrincipalAccessBoundaryPoliciesAsyncClient",
+    "AccessPoliciesClient",
+    "AccessPolicy",
+    "AccessPolicyDetails",
+    "AccessPolicyRule",
+    "CreateAccessPolicyRequest",
     "CreatePolicyBindingRequest",
     "CreatePrincipalAccessBoundaryPolicyRequest",
+    "DeleteAccessPolicyRequest",
     "DeletePolicyBindingRequest",
     "DeletePrincipalAccessBoundaryPolicyRequest",
+    "GetAccessPolicyRequest",
     "GetPolicyBindingRequest",
     "GetPrincipalAccessBoundaryPolicyRequest",
+    "ListAccessPoliciesRequest",
+    "ListAccessPoliciesResponse",
     "ListPolicyBindingsRequest",
     "ListPolicyBindingsResponse",
     "ListPrincipalAccessBoundaryPoliciesRequest",
@@ -176,10 +205,13 @@ __all__ = (
     "PrincipalAccessBoundaryPolicy",
     "PrincipalAccessBoundaryPolicyDetails",
     "PrincipalAccessBoundaryPolicyRule",
+    "SearchAccessPolicyBindingsRequest",
+    "SearchAccessPolicyBindingsResponse",
     "SearchPrincipalAccessBoundaryPolicyBindingsRequest",
     "SearchPrincipalAccessBoundaryPolicyBindingsResponse",
     "SearchTargetPolicyBindingsRequest",
     "SearchTargetPolicyBindingsResponse",
+    "UpdateAccessPolicyRequest",
     "UpdatePolicyBindingRequest",
     "UpdatePrincipalAccessBoundaryPolicyRequest",
 )

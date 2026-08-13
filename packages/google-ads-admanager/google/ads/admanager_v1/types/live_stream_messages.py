@@ -103,6 +103,19 @@ class LiveStream(proto.Message):
             live stream master playlist URL.
 
             This field is a member of `oneof`_ ``_asset_key``.
+        slate (str):
+            Optional. The slate to use for this live stream. If not set,
+            network default slate will be used. Format:
+            "networks/{network_code}/slates/{slate_id}".
+
+            This field is a member of `oneof`_ ``_slate``.
+        dvr_window_duration (google.protobuf.duration_pb2.Duration):
+            Optional. The duration of the DVR window. If
+            unset the default window as provided by the
+            input encoder will be used. Modifying this value
+            for an active live stream can impact traffic.
+
+            This field is a member of `oneof`_ ``_dvr_window_duration``.
         enable_dai_authentication_keys (bool):
             Optional. Whether the live stream's requests
             to the IMA SDK API will be authenticated using
@@ -169,6 +182,12 @@ class LiveStream(proto.Message):
             not specify a duration. Defaults to 0.
 
             This field is a member of `oneof`_ ``_default_ad_break_duration``.
+        dai_authentication_keys (MutableSequence[str]):
+            Optional. The list of DaiAuthenticationKey objects used to
+            authenticate stream create requests for this live stream.
+            Modifying settings for an active live stream may break the
+            stream for some users. Exercise caution. Format:
+            "networks/{network_code}/daiAuthenticationKeys/{dai_authentication_key_id}".
         source_content_configurations (MutableSequence[str]):
             Optional. The list of CdnConfigurations that provide
             settings for ingesting and delivering the videos associated
@@ -254,6 +273,15 @@ class LiveStream(proto.Message):
             ;, ^, (, ), <, >, [, ], the white space character.
 
             This field is a member of `oneof`_ ``_custom_asset_key``.
+        dai_encoding_profiles (MutableSequence[str]):
+            Optional. The list of DaiEncodingProfiles that will be used
+            for this live stream event. Format:
+            "networks/{network_code}/daiEncodingProfiles/{dai_encoding_profile_id}".
+        segment_url_authentication_keys (MutableSequence[str]):
+            Optional. The list of DaiAuthenticationKeys used to
+            authenticate ad segment url requests for this live stream.
+            Format:
+            "networks/{network_code}/daiAuthenticationKeys/{dai_authentication_key_id}".
         ad_break_markups (MutableSequence[google.ads.admanager_v1.types.AdBreakMarkupTypeEnum.AdBreakMarkupType]):
             Optional. The formats that will be recognized as ad break
             start/end markers. This field is ignored if
@@ -342,6 +370,17 @@ class LiveStream(proto.Message):
         number=11,
         optional=True,
     )
+    slate: str = proto.Field(
+        proto.STRING,
+        number=12,
+        optional=True,
+    )
+    dvr_window_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=59,
+        optional=True,
+        message=duration_pb2.Duration,
+    )
     enable_dai_authentication_keys: bool = proto.Field(
         proto.BOOL,
         number=14,
@@ -394,6 +433,10 @@ class LiveStream(proto.Message):
         number=22,
         optional=True,
         message=duration_pb2.Duration,
+    )
+    dai_authentication_keys: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=24,
     )
     source_content_configurations: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -460,6 +503,14 @@ class LiveStream(proto.Message):
         proto.STRING,
         number=39,
         optional=True,
+    )
+    dai_encoding_profiles: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=40,
+    )
+    segment_url_authentication_keys: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=41,
     )
     ad_break_markups: MutableSequence[
         live_stream_event_enums.AdBreakMarkupTypeEnum.AdBreakMarkupType
