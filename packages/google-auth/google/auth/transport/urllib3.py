@@ -56,6 +56,13 @@ from google.auth import transport
 from google.auth.transport import _mtls_helper
 from google.oauth2 import service_account
 
+try:
+    import OpenSSL.SSL  # type: ignore
+
+    _OPENSSL_SSL_ERROR = (OpenSSL.SSL.Error,)
+except ImportError:
+    _OPENSSL_SSL_ERROR = ()  # type: ignore
+
 if version.parse(urllib3.__version__) >= version.parse("2.0.0"):  # pragma: NO COVER
     RequestMethods = urllib3._request_methods.RequestMethods  # type: ignore
 else:  # pragma: NO COVER
@@ -194,7 +201,14 @@ def _make_mutual_tls_http(cert, key):
                 keyfile=key_path,
                 password=password,
             )
-    except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError, TypeError) as exc:
+    except (
+        ssl.SSLError,
+        OSError,
+        IOError,
+        ValueError,
+        RuntimeError,
+        TypeError,
+    ) + _OPENSSL_SSL_ERROR as exc:
         raise exceptions.MutualTLSChannelError(
             "Failed to configure client certificate and key for mTLS."
         ) from exc
@@ -368,7 +382,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             ImportError,
             OSError,
             ValueError,
-        ) as caught_exc:
+        ) + _OPENSSL_SSL_ERROR as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 

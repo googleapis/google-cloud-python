@@ -39,8 +39,14 @@ from google.auth import _helpers
 from google.auth import exceptions
 from google.auth import transport
 from google.auth.transport import _mtls_helper
-import google.auth.transport._mtls_helper
 from google.oauth2 import service_account
+
+try:
+    import OpenSSL.SSL  # type: ignore
+
+    _OPENSSL_SSL_ERROR = (OpenSSL.SSL.Error,)
+except ImportError:
+    _OPENSSL_SSL_ERROR = ()  # type: ignore
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -242,7 +248,7 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
             ValueError,
             RuntimeError,
             TypeError,
-        ) as exc:
+        ) + _OPENSSL_SSL_ERROR as exc:
             raise exceptions.MutualTLSChannelError(
                 "Failed to configure client certificate and key for mTLS."
             ) from exc
@@ -542,7 +548,7 @@ class AuthorizedSession(requests.Session):
             ImportError,
             OSError,
             ValueError,
-        ) as caught_exc:
+        ) + _OPENSSL_SSL_ERROR as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 

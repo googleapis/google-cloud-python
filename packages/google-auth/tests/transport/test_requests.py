@@ -203,6 +203,24 @@ class TestMutualTlsAdapter(object):
         assert "Failed to configure client certificate" in str(exc_info.value)
         assert isinstance(exc_info.value.__cause__, OSError)
 
+    @mock.patch("google.auth.transport.requests.create_urllib3_context")
+    def test_pyopenssl_error_raises_mtls_error(self, mock_create_context):
+        try:
+            import OpenSSL.SSL  # type: ignore
+        except ImportError:
+            pytest.skip("pyOpenSSL not installed")
+
+        mock_context = mock.MagicMock()
+        mock_context.load_cert_chain.side_effect = OpenSSL.SSL.Error(
+            "OpenSSL cert load failure"
+        )
+        mock_create_context.return_value = mock_context
+
+        with pytest.raises(exceptions.MutualTLSChannelError) as exc_info:
+            google.auth.transport.requests._MutualTlsAdapter(b"cert", b"key")
+        assert "Failed to configure client certificate" in str(exc_info.value)
+        assert isinstance(exc_info.value.__cause__, OpenSSL.SSL.Error)
+
 
 def make_response(status=http_client.OK, data=None):
     response = requests.Response()

@@ -158,6 +158,7 @@ def mypy(session):
     session.install(
         "mypy",
         "types-certifi",
+        "types-cffi",
         "types-freezegun",
         "types-requests",
         "types-setuptools",
