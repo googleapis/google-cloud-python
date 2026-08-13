@@ -2249,6 +2249,13 @@ libraries:
           - python-gapic-name=executions
       metadata_name_override: workflows
       default_version: v1
+  - name: google-cloud-workloadidentity
+    version: 0.0.0
+    apis:
+      - path: google/cloud/workloadidentity/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-cloud-workloadmanager
     version: 0.2.1
     apis:
