@@ -51,13 +51,19 @@ def sample_ingest_ad_events():
     ad_events.event_type = "EVENT_TYPE_CLICK"
     ad_events.campaign_id = "campaign_id_value"
     ad_events.campaign_name = "campaign_name_value"
-    ad_events.region_code = "region_code_value"
     ad_events.source = "source_value"
     ad_events.medium = "medium_value"
     ad_events.viewability_info.view_type = "VIEW_TYPE_MRC_RENDERED"
 
+    encryption_info = datamanager_v1.EncryptionInfo()
+    encryption_info.gcp_wrapped_key_info.key_type = "XCHACHA20_POLY1305"
+    encryption_info.gcp_wrapped_key_info.wip_provider = "wip_provider_value"
+    encryption_info.gcp_wrapped_key_info.kek_uri = "kek_uri_value"
+    encryption_info.gcp_wrapped_key_info.encrypted_dek = "encrypted_dek_value"
+
     request = datamanager_v1.IngestAdEventsRequest(
         ad_events=ad_events,
+        encryption_info=encryption_info,
     )
 
     # Make the request

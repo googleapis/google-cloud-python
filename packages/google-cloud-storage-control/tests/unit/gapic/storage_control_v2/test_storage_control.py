@@ -44,6 +44,7 @@ import google.auth
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 import google.iam.v1.options_pb2 as options_pb2  # type: ignore
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
@@ -14555,6 +14556,316 @@ async def test_list_intelligence_finding_revisions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ViewObjectFullContextRequest(),
+        {},
+    ],
+)
+def test_view_object_full_context(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ObjectFullContext(
+            type_=storage_control.ObjectFullContext.Type.CUSTOM,
+            key="key_value",
+            value="value_value",
+        )
+        response = client.view_object_full_context(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ViewObjectFullContextRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.ObjectFullContext)
+    assert response.type_ == storage_control.ObjectFullContext.Type.CUSTOM
+    assert response.key == "key_value"
+    assert response.value == "value_value"
+
+
+def test_view_object_full_context_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.ViewObjectFullContextRequest(
+        context_key="context_key_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.view_object_full_context(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ViewObjectFullContextRequest(
+            context_key="context_key_value",
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_view_object_full_context_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.view_object_full_context
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.view_object_full_context
+        ] = mock_rpc
+        request = {}
+        client.view_object_full_context(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.view_object_full_context(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_view_object_full_context_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.view_object_full_context
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.view_object_full_context
+        ] = mock_rpc
+
+        request = {}
+        await client.view_object_full_context(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.view_object_full_context(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ViewObjectFullContextRequest(),
+        {},
+    ],
+)
+async def test_view_object_full_context_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ObjectFullContext(
+                type_=storage_control.ObjectFullContext.Type.CUSTOM,
+                key="key_value",
+                value="value_value",
+            )
+        )
+        response = await client.view_object_full_context(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ViewObjectFullContextRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.ObjectFullContext)
+    assert response.type_ == storage_control.ObjectFullContext.Type.CUSTOM
+    assert response.key == "key_value"
+    assert response.value == "value_value"
+
+
+def test_view_object_full_context_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ObjectFullContext()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.view_object_full_context(
+            name="name_value",
+            context_key="context_key_value",
+            generation=1068,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].context_key
+        mock_val = "context_key_value"
+        assert arg == mock_val
+        arg = args[0].generation
+        mock_val = 1068
+        assert arg == mock_val
+
+
+def test_view_object_full_context_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.view_object_full_context(
+            storage_control.ViewObjectFullContextRequest(),
+            name="name_value",
+            context_key="context_key_value",
+            generation=1068,
+        )
+
+
+@pytest.mark.asyncio
+async def test_view_object_full_context_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ObjectFullContext()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ObjectFullContext()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.view_object_full_context(
+            name="name_value",
+            context_key="context_key_value",
+            generation=1068,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].context_key
+        mock_val = "context_key_value"
+        assert arg == mock_val
+        arg = args[0].generation
+        mock_val = 1068
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_view_object_full_context_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.view_object_full_context(
+            storage_control.ViewObjectFullContextRequest(),
+            name="name_value",
+            context_key="context_key_value",
+            generation=1068,
+        )
+
+
 def test_create_folder_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -18632,6 +18943,226 @@ def test_list_intelligence_finding_revisions_rest_pager(transport: str = "rest")
             assert page_.raw_page.next_page_token == token
 
 
+def test_view_object_full_context_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.view_object_full_context
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.view_object_full_context
+        ] = mock_rpc
+
+        request = {}
+        client.view_object_full_context(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.view_object_full_context(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_view_object_full_context_rest_required_fields(
+    request_type=storage_control.ViewObjectFullContextRequest,
+):
+    transport_class = transports.StorageControlRestTransport
+
+    request_init = {}
+    request_init["context_key"] = ""
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "contextKey" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).view_object_full_context._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "contextKey" in jsonified_request
+    assert jsonified_request["contextKey"] == request_init["context_key"]
+
+    jsonified_request["contextKey"] = "context_key_value"
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).view_object_full_context._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "context_key",
+            "generation",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "contextKey" in jsonified_request
+    assert jsonified_request["contextKey"] == "context_key_value"
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = storage_control.ObjectFullContext()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = storage_control.ObjectFullContext.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.view_object_full_context(request)
+
+            expected_params = [
+                (
+                    "contextKey",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_view_object_full_context_rest_unset_required_fields():
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.view_object_full_context._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "contextKey",
+                "generation",
+            )
+        )
+        & set(
+            (
+                "contextKey",
+                "name",
+            )
+        )
+    )
+
+
+def test_view_object_full_context_rest_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.ObjectFullContext()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/buckets/sample2/objects/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            context_key="context_key_value",
+            generation=1068,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = storage_control.ObjectFullContext.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.view_object_full_context(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/buckets/*/objects/**}:viewFullContext"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_view_object_full_context_rest_flattened_error(transport: str = "rest"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.view_object_full_context(
+            storage_control.ViewObjectFullContextRequest(),
+            name="name_value",
+            context_key="context_key_value",
+            generation=1068,
+        )
+
+
 def test_create_managed_folder_rest_error():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -19834,6 +20365,28 @@ def test_list_intelligence_finding_revisions_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_view_object_full_context_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        call.return_value = storage_control.ObjectFullContext()
+        client.view_object_full_context(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ViewObjectFullContextRequest()
+        assert args[0] == request_msg
+
+
 def test_create_folder_routing_parameters_request_1_grpc():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20694,6 +21247,35 @@ def test_test_iam_permissions_routing_parameters_request_3_grpc():
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/managedFolders/sample3"}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_view_object_full_context_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        call.return_value = storage_control.ObjectFullContext()
+        client.view_object_full_context(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.ViewObjectFullContextRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
         assert args[0] == request_msg
 
@@ -21814,6 +22396,36 @@ async def test_list_intelligence_finding_revisions_empty_call_grpc_asyncio():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_view_object_full_context_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ObjectFullContext(
+                type_=storage_control.ObjectFullContext.Type.CUSTOM,
+                key="key_value",
+                value="value_value",
+            )
+        )
+        await client.view_object_full_context(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ViewObjectFullContextRequest()
+        assert args[0] == request_msg
+
+
 @pytest.mark.asyncio
 async def test_create_folder_routing_parameters_request_1_grpc_asyncio():
     client = StorageControlAsyncClient(
@@ -22872,6 +23484,43 @@ async def test_test_iam_permissions_routing_parameters_request_3_grpc_asyncio():
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/managedFolders/sample3"}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_view_object_full_context_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ObjectFullContext(
+                type_=storage_control.ObjectFullContext.Type.CUSTOM,
+                key="key_value",
+                value="value_value",
+            )
+        )
+        await client.view_object_full_context(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.ViewObjectFullContextRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
         assert args[0] == request_msg
 
@@ -25951,6 +26600,143 @@ def test_list_intelligence_finding_revisions_rest_interceptors(null_interceptor)
         post_with_metadata.assert_called_once()
 
 
+def test_view_object_full_context_rest_bad_request(
+    request_type=storage_control.ViewObjectFullContextRequest,
+):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/buckets/sample2/objects/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.view_object_full_context(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ViewObjectFullContextRequest,
+        dict,
+    ],
+)
+def test_view_object_full_context_rest_call_success(request_type):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/buckets/sample2/objects/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.ObjectFullContext(
+            type_=storage_control.ObjectFullContext.Type.CUSTOM,
+            key="key_value",
+            value="value_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = storage_control.ObjectFullContext.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.view_object_full_context(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.ObjectFullContext)
+    assert response.type_ == storage_control.ObjectFullContext.Type.CUSTOM
+    assert response.key == "key_value"
+    assert response.value == "value_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_view_object_full_context_rest_interceptors(null_interceptor):
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageControlRestInterceptor(),
+    )
+    client = StorageControlClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "post_view_object_full_context"
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_view_object_full_context_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "pre_view_object_full_context"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storage_control.ViewObjectFullContextRequest.pb(
+            storage_control.ViewObjectFullContextRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = storage_control.ObjectFullContext.to_json(
+            storage_control.ObjectFullContext()
+        )
+        req.return_value.content = return_value
+
+        request = storage_control.ViewObjectFullContextRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = storage_control.ObjectFullContext()
+        post_with_metadata.return_value = storage_control.ObjectFullContext(), metadata
+
+        client.view_object_full_context(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_initialize_client_w_rest():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -26767,6 +27553,27 @@ def test_list_intelligence_finding_revisions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.ListIntelligenceFindingRevisionsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_view_object_full_context_empty_call_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        client.view_object_full_context(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ViewObjectFullContextRequest()
         assert args[0] == request_msg
 
 
@@ -27609,6 +28416,34 @@ def test_test_iam_permissions_routing_parameters_request_3_rest():
         )
 
 
+def test_view_object_full_context_routing_parameters_request_1_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        client.view_object_full_context(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.ViewObjectFullContextRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
 def test_storage_control_rest_lro_client():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -27696,6 +28531,7 @@ def test_storage_control_base_transport():
         "summarize_intelligence_findings",
         "get_intelligence_finding_revision",
         "list_intelligence_finding_revisions",
+        "view_object_full_context",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -28101,6 +28937,9 @@ def test_storage_control_client_transport_session_collision(transport_name):
     session1 = client1.transport.list_intelligence_finding_revisions._session
     session2 = client2.transport.list_intelligence_finding_revisions._session
     assert session1 != session2
+    session1 = client1.transport.view_object_full_context._session
+    session2 = client2.transport.view_object_full_context._session
+    assert session1 != session2
 
 
 def test_storage_control_grpc_transport_channel():
@@ -28451,10 +29290,36 @@ def test_parse_managed_folder_path():
     assert expected == actual
 
 
-def test_rapid_cache_path():
+def test_object_path():
     project = "oyster"
     bucket = "nudibranch"
-    rapid_cache = "cuttlefish"
+    object = "cuttlefish"
+    expected = "projects/{project}/buckets/{bucket}/objects/{object}".format(
+        project=project,
+        bucket=bucket,
+        object=object,
+    )
+    actual = StorageControlClient.object_path(project, bucket, object)
+    assert expected == actual
+
+
+def test_parse_object_path():
+    expected = {
+        "project": "mussel",
+        "bucket": "winkle",
+        "object": "nautilus",
+    }
+    path = StorageControlClient.object_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = StorageControlClient.parse_object_path(path)
+    assert expected == actual
+
+
+def test_rapid_cache_path():
+    project = "scallop"
+    bucket = "abalone"
+    rapid_cache = "squid"
     expected = "projects/{project}/buckets/{bucket}/rapidCaches/{rapid_cache}".format(
         project=project,
         bucket=bucket,
@@ -28466,9 +29331,9 @@ def test_rapid_cache_path():
 
 def test_parse_rapid_cache_path():
     expected = {
-        "project": "mussel",
-        "bucket": "winkle",
-        "rapid_cache": "nautilus",
+        "project": "clam",
+        "bucket": "whelk",
+        "rapid_cache": "octopus",
     }
     path = StorageControlClient.rapid_cache_path(**expected)
 
@@ -28478,8 +29343,8 @@ def test_parse_rapid_cache_path():
 
 
 def test_storage_layout_path():
-    project = "scallop"
-    bucket = "abalone"
+    project = "oyster"
+    bucket = "nudibranch"
     expected = "projects/{project}/buckets/{bucket}/storageLayout".format(
         project=project,
         bucket=bucket,
@@ -28490,8 +29355,8 @@ def test_storage_layout_path():
 
 def test_parse_storage_layout_path():
     expected = {
-        "project": "squid",
-        "bucket": "clam",
+        "project": "cuttlefish",
+        "bucket": "mussel",
     }
     path = StorageControlClient.storage_layout_path(**expected)
 
@@ -28501,7 +29366,7 @@ def test_parse_storage_layout_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -28511,7 +29376,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = StorageControlClient.common_billing_account_path(**expected)
 
@@ -28521,7 +29386,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -28531,7 +29396,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = StorageControlClient.common_folder_path(**expected)
 
@@ -28541,7 +29406,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -28551,7 +29416,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = StorageControlClient.common_organization_path(**expected)
 
@@ -28561,7 +29426,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -28571,7 +29436,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = StorageControlClient.common_project_path(**expected)
 
@@ -28581,8 +29446,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -28593,8 +29458,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = StorageControlClient.common_location_path(**expected)
 

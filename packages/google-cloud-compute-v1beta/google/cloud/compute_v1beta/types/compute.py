@@ -1972,6 +1972,8 @@ __protobuf__ = proto.module(
         "StoragePoolListDisks",
         "StoragePoolParams",
         "StoragePoolResourceStatus",
+        "StoragePoolShareSettings",
+        "StoragePoolShareSettingsProjectConfig",
         "StoragePoolType",
         "StoragePoolTypeAggregatedList",
         "StoragePoolTypeList",
@@ -4866,34 +4868,34 @@ class Address(proto.Message):
 
             It supports the following cases:
 
-               -
-                 Case 1: PublicDelegatedPrefix (PDP) for
-            BYOIP external IPv4      addresses. The PDP must
-            support enhanced IPv4 allocations.    -
-                 Case 2: Internal Range for global internal
-            addresses.
+            ::
 
-            Use one of the following formats to specify the
-            resource:
+               -
+                 Case 1: PublicDelegatedPrefix (PDP) for BYOIP external
+                 addresses. If an IPv4 PDP is used, the PDP must support enhanced IPv4
+                 allocations. If an IPv6 PDP is used, the PDP must be in
+                 EXTERNAL_IPV6_FORWARDING_RULE_CREATION mode.
+               -
+                 Case 2: Internal Range for global internal addresses.
+
+            Use one of the following formats to specify the resource:
 
             For a Public Delegated Prefix:
 
-               -
-               Full resource
-            URL:https://www.googleapis.com/compute/v1/projects/projectId/regions/region/publicDelegatedPrefixes/pdp
-               - Partial URL:
+            ::
 
-                  -
-              projects/projectId/regions/region/publicDelegatedPrefixes/pdp-name
-                  -
-              regions/region/publicDelegatedPrefixes/pdp-name
+               -
+               Full resource URL:https://www.googleapis.com/compute/v1/projects/projectId/regions/region/publicDelegatedPrefixes/pdp
+               - Partial URL:
+                  - projects/projectId/regions/region/publicDelegatedPrefixes/pdp-name
+                  - regions/region/publicDelegatedPrefixes/pdp-name
 
             For an Internal Range:
 
-               - Full
-              URL:https://networkconnectivity.googleapis.com/v1/projects/project/locations/global/internalRanges/internal-range
-               - Partial
-              URL:projects/project/locations/global/internalRanges/internal-range
+            ::
+
+               - Full URL:https://networkconnectivity.googleapis.com/v1/projects/project/locations/global/internalRanges/internal-range
+               - Partial URL:projects/project/locations/global/internalRanges/internal-range
 
             This field is a member of `oneof`_ ``_ip_collection``.
         ip_version (str):
@@ -5002,6 +5004,12 @@ class Address(proto.Message):
                  - `PRIVATE_SERVICE_CONNECT` for a private network address that is
                  used to configure Private Service Connect. Only global internal addresses
                  can use this purpose.
+                 - `PASSTHROUGH_LOAD_BALANCER_AVAILABILITY_GROUP0` for addresses
+                 that can only be assigned to global external Passthrough Network Load
+                 Balancer forwarding rules, as an Availability Group 0 address.
+                 - `PASSTHROUGH_LOAD_BALANCER_AVAILABILITY_GROUP1` for addresses that
+                 can only be assigned to global external Passthrough Network Load Balancer
+                 forwarding rules, as an Availability Group 1 address.
 
             Check the Purpose enum for the list of possible values.
 
@@ -5163,6 +5171,12 @@ class Address(proto.Message):
              - `PRIVATE_SERVICE_CONNECT` for a private network address that is
              used to configure Private Service Connect. Only global internal addresses
              can use this purpose.
+             - `PASSTHROUGH_LOAD_BALANCER_AVAILABILITY_GROUP0` for addresses
+             that can only be assigned to global external Passthrough Network Load
+             Balancer forwarding rules, as an Availability Group 0 address.
+             - `PASSTHROUGH_LOAD_BALANCER_AVAILABILITY_GROUP1` for addresses that
+             can only be assigned to global external Passthrough Network Load Balancer
+             forwarding rules, as an Availability Group 1 address.
 
         Values:
             UNDEFINED_PURPOSE (0):
@@ -5183,7 +5197,7 @@ class Address(proto.Message):
                 attachment is created with the reserved IP
                 address range, when creating a new VPN gateway,
                 its interface IP address is allocated from the
-                associated VLAN attachment’s IP address range.
+                associated VLAN attachment's IP address range.
             NAT_AUTO (163666477):
                 External IP automatically reserved for Cloud
                 NAT.
@@ -17745,6 +17759,56 @@ class AttachedDiskInitializeParams(proto.Message):
 
             This field is a member of `oneof`_ ``_disk_size_gb``.
         disk_type (str):
+            Specifies the disk type used for the boot
+            disk or an additional data disk. For valid disk
+            type values, see Supported types for Hyperdisk
+            volumes and
+            Persistent Disk type variables.
+
+            When creating a single instance, you must
+            provide either the full or partial URL of the
+            disk type. For example, the following values are
+            valid:
+
+
+                 -
+              https://www.googleapis.com/compute/v1/projects/project/zones/zone/diskTypes/diskType
+                 -
+              projects/project/zones/zone/diskTypes/diskType
+                 - zones/zone/diskTypes/diskType
+
+            When creating an instance template, instance
+            flexibility policy, or when creating or updating
+            an all-instances configuration, you specify the
+            disk type without a URL, for example,
+            hyperdisk-balanced.
+
+            If you omit this field for a disk, the default
+            disk type depends on the instance's machine
+            series, as follows.
+
+
+                - For first- and second-generation machine
+              series like N1, N2, T2, and     M1, the
+                   default disk type is Standard Persistent
+            Disk        (pd-standard).
+                - For C3, C3D, and M3 the default is
+              Balanced Persistent Disk     (pd-balanced).
+               - For other third-generation machine
+                series like A3, H3, Z3, all
+                    fourth-generation types like C4, N4, M4,
+            and newer machine series,         the default is
+            Hyperdisk Balanced
+                    (hyperdisk-balanced).
+
+            The disk type you specify must be compatible
+            with the instance's machine series. For a list
+            of machine series that support Persistent Disk,
+            see Machine series support for Persistent Disk.
+
+            For a list of machine series that support
+            Hyperdisk, seeMachine series support for
+            Hyperdisk.
 
             This field is a member of `oneof`_ ``_disk_type``.
         enable_confidential_compute (bool):
@@ -21500,7 +21564,11 @@ class BackendService(proto.Message):
 
             Can only be set if load balancing scheme is
             EXTERNAL_MANAGED, INTERNAL_MANAGED or INTERNAL_SELF_MANAGED
-            and the scope is global.
+            for a global backend service, and EXTERNAL_MANAGED or
+            INTERNAL_MANAGED for a regional backend service. For a
+            global backend service, the service lb policy must be
+            global. For a regional backend service, the service lb
+            policy must be regional and in the same region.
 
             This field is a member of `oneof`_ ``_service_lb_policy``.
         session_affinity (str):
@@ -28377,6 +28445,8 @@ class Commitment(proto.Message):
             MEMORY_OPTIMIZED_X4_960_16T (424752534):
                 CUD bucket for X4 machine with 960 vCPUs and
                 16TB of memory.
+            NETWORK_OPTIMIZED_C4N (147027572):
+                CUD bucket for C4N (dual Diorite) machines.
             STORAGE_OPTIMIZED_Z3 (316796085):
                 No description available.
             TYPE_UNSPECIFIED (437714322):
@@ -28425,6 +28495,7 @@ class Commitment(proto.Message):
         MEMORY_OPTIMIZED_X4_480_8T = 478547804
         MEMORY_OPTIMIZED_X4_960_12T = 424752410
         MEMORY_OPTIMIZED_X4_960_16T = 424752534
+        NETWORK_OPTIMIZED_C4N = 147027572
         STORAGE_OPTIMIZED_Z3 = 316796085
         TYPE_UNSPECIFIED = 437714322
 
@@ -30272,45 +30343,44 @@ class CustomerEncryptionKey(proto.Message):
 
             This field is a member of `oneof`_ ``_kms_key_service_account``.
         raw_key (str):
-            Specifies a 256-bit customer-supplied
-            encryption key, encoded in RFC
-            4648 base64 to either encrypt or decrypt this
+            [DEPRECATED] CSEK is no longer supported. Use CMEK instead.
+            Specifies a 256-bit customer-supplied encryption key,
+            encoded in RFC 4648 base64 to either encrypt or decrypt this
             resource. You can provide either the rawKey or
             thersaEncryptedKey. For example:
 
-            "rawKey":
-
-            "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0=".
+            "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0=".
 
             This field is a member of `oneof`_ ``_raw_key``.
         rsa_encrypted_key (str):
-            Specifies an RFC 4648 base64 encoded,
-            RSA-wrapped 2048-bit customer-supplied
-            encryption key to either encrypt or decrypt this
-            resource. You can provide either the rawKey or
+            [DEPRECATED] CSEK is no longer supported. Use CMEK instead.
+            Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit
+            customer-supplied encryption key to either encrypt or
+            decrypt this resource. You can provide either the rawKey or
             thersaEncryptedKey. For example:
 
             "rsaEncryptedKey":
-
             "ieCx/NcW06PcT7Ep1X6LUTc/hLvUDYyzSZPPVCVPTVEohpeHASqC8uw5TzyO9U+Fka9JFH
             z0mBibXUInrC/jEk014kCK/NPjYgEMOyssZ4ZINPKxlUh2zn1bV+MCaTICrdmuSBTWlUUiFoD
             D6PYznLwh8ZNdaheCeZ8ewEXgFQ8V+sDroLaN3Xs3MDTXQEMMoNUXMCZEIpg9Vtp9x2oe=="
 
-            The key must meet the following requirements
-            before you can provide it to Compute Engine:
+            The key must meet the following requirements before you can
+            provide it to Compute Engine:
 
-               1. The key is wrapped using a RSA public key
-                certificate provided by    Google.
-               2. After being wrapped, the key must be
-                encoded in RFC 4648 base64    encoding.
+            ::
 
-            Gets the RSA public key certificate provided by
-            Google at:
+               1. The key is wrapped using a RSA public key certificate provided by
+               Google.
+               2. After being wrapped, the key must be encoded in RFC 4648 base64
+               encoding.
+
+            Gets the RSA public key certificate provided by Google at:
 
             https://cloud-certs.storage.googleapis.com/google-cloud-csek-ingress.pem
 
             This field is a member of `oneof`_ ``_rsa_encrypted_key``.
         sha256 (str):
+            [DEPRECATED] CSEK is no longer supported. Use CMEK instead.
             [Output only] TheRFC 4648 base64 encoded SHA-256 hash of the
             customer-supplied encryption key that protects this
             resource.
@@ -39860,21 +39930,31 @@ class Error(proto.Message):
 
 
 class ErrorDetails(proto.Message):
-    r"""
+    r"""Container for structured error details providing additional
+    context specific to the encountered error code.
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         error_info (google.cloud.compute_v1beta.types.ErrorInfo):
+            Error information containing structured
+            domain, reason, and metadata.
 
             This field is a member of `oneof`_ ``_error_info``.
         help_ (google.cloud.compute_v1beta.types.Help):
+            Links and information to help the user
+            resolve the error.
 
             This field is a member of `oneof`_ ``_help``.
         localized_message (google.cloud.compute_v1beta.types.LocalizedMessage):
+            A localized human-readable error message
+            intended for end users.
 
             This field is a member of `oneof`_ ``_localized_message``.
         quota_info (google.cloud.compute_v1beta.types.QuotaExceededInfo):
+            Details about quota limits and metrics when a
+            quota is exceeded.
 
             This field is a member of `oneof`_ ``_quota_info``.
     """
@@ -39993,7 +40073,9 @@ class ErrorInfo(proto.Message):
 
 
 class Errors(proto.Message):
-    r"""
+    r"""Represents a single error encountered during the processing
+    of an operation.
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -55038,26 +55120,24 @@ class HealthCheck(proto.Message):
 
             This field is a member of `oneof`_ ``_self_link``.
         source_regions (MutableSequence[str]):
-            The list of cloud regions from which health
-            checks are performed. If any regions are
-            specified, then exactly 3 regions should be
-            specified. The region names must be valid names
-            of Google Cloud regions. This can only be set
-            for global health check. If this list is
-            non-empty, then there are restrictions on what
-            other health check fields are supported and what
-            other resources can use this health check:
+            The list of cloud regions from which health checks are
+            performed. If any regions are specified, then exactly 3
+            regions should be specified. The region names must be valid
+            names of Google Cloud regions. This can only be set for
+            global health check. If this list is non-empty, then there
+            are restrictions on what other health check fields are
+            supported and what other resources can use this health
+            check:
 
-               - SSL, HTTP2, and GRPC protocols are not
-              supported.
+            ::
+
+               - SSL, HTTP2, GRPC, and GRPC_WITH_TLS protocols are not supported.
                - The TCP request field is not supported.
-               - The proxyHeader field for HTTP, HTTPS, and
-              TCP is not    supported.
-               - The checkIntervalSec field must be at least
-              30.
-               - The health check cannot be used with
-              BackendService nor with managed    instance
-              group auto-healing.
+               - The proxyHeader field for HTTP, HTTPS, and TCP is not
+               supported.
+               - The checkIntervalSec field must be at least 30.
+               - The health check cannot be used with BackendService nor with managed
+               instance group auto-healing.
         ssl_health_check (google.cloud.compute_v1beta.types.SSLHealthCheck):
 
             This field is a member of `oneof`_ ``_ssl_health_check``.
@@ -55072,12 +55152,11 @@ class HealthCheck(proto.Message):
 
             This field is a member of `oneof`_ ``_timeout_sec``.
         type_ (str):
-            Specifies the type of the healthCheck, either
-            TCP,SSL, HTTP, HTTPS,HTTP2 or GRPC. Exactly one
-            of the protocol-specific health check fields
-            must be specified, which must matchtype field.
-            Check the Type enum for the list of possible
-            values.
+            Specifies the type of the healthCheck, either TCP,SSL, HTTP,
+            HTTPS,HTTP2, GRPC or GRPC_WITH_TLS. Exactly one of the
+            protocol-specific health check fields must be specified,
+            which must match type field. Check the Type enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
         unhealthy_threshold (int):
@@ -55090,8 +55169,9 @@ class HealthCheck(proto.Message):
 
     class Type(proto.Enum):
         r"""Specifies the type of the healthCheck, either TCP,SSL, HTTP,
-        HTTPS,HTTP2 or GRPC. Exactly one of the protocol-specific health
-        check fields must be specified, which must matchtype field.
+        HTTPS,HTTP2, GRPC or GRPC_WITH_TLS. Exactly one of the
+        protocol-specific health check fields must be specified, which must
+        match type field.
 
         Values:
             UNDEFINED_TYPE (0):
@@ -69124,7 +69204,7 @@ class InstanceGroupManagersApplyUpdatesRequest(proto.Message):
     Attributes:
         all_instances (bool):
             Flag to update all instances instead of
-            specified list of “instances”. If the flag is
+            specified list of "instances". If the flag is
             set to true then the instances may not be
             specified in the request.
 
@@ -69681,15 +69761,17 @@ class InstanceGroupManagersListErrorsResponse(proto.Message):
 
     Attributes:
         items (MutableSequence[google.cloud.compute_v1beta.types.InstanceManagedByIgmError]):
-            Output only. [Output Only] The list of errors of the managed
-            instance group.
+            Output only. The list of errors of the
+            managed instance group.
         next_page_token (str):
-            Output only. [Output Only] This token allows you to get the
-            next page of results for list requests. If the number of
-            results is larger thanmaxResults, use the nextPageToken as a
-            value for the query parameter pageToken in the next list
-            request. Subsequent list requests will have their own
-            nextPageToken to continue paging through the results.
+            Output only. This token allows you to get the
+            next page of results for list requests. If the
+            number of results is larger than maxResults ,
+            then use the nextPageToken as a value for
+            the query parameter pageToken in the next list
+            request. Subsequent list requests will have
+            their own nextPageToken to continue paging
+            through the results.
 
             This field is a member of `oneof`_ ``_next_page_token``.
     """
@@ -113313,7 +113395,7 @@ class NetworkProfileNetworkFeatures(proto.Message):
                 attachment is created with the reserved IP
                 address range, when creating a new VPN gateway,
                 its interface IP address is allocated from the
-                associated VLAN attachment’s IP address range.
+                associated VLAN attachment's IP address range.
             NAT_AUTO (163666477):
                 External IP automatically reserved for Cloud
                 NAT.
@@ -117196,11 +117278,12 @@ class Operation(proto.Message):
                 A value indicating that the enum field is not
                 set.
             DONE (2104194):
-                No description available.
+                The operation has completed processing
+                successfully or with an error.
             PENDING (35394935):
-                No description available.
+                The operation is waiting to be processed.
             RUNNING (121282975):
-                No description available.
+                The operation is actively being processed.
         """
 
         UNDEFINED_STATUS = 0
@@ -125482,7 +125565,12 @@ class ProjectView(proto.Message):
 
     Attributes:
         project (google.cloud.compute_v1beta.types.Project):
-            The project data.
+            The project data. The returned Project data does not contain
+            regional or zonal quota usage data. Global quota limits are
+            present. For accurate, real-time quota usage numbers, query
+            the global
+            `projects.get <https://cloud.google.com/compute/docs/reference/rest/v1/projects/get>`__
+            endpoint.
 
             This field is a member of `oneof`_ ``_project``.
     """
@@ -125812,6 +125900,16 @@ class PublicAdvertisedPrefix(proto.Message):
             except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
+        network_tier (str):
+            Network tier to be used for this prefix. All
+            child delegated prefixes will inherit this
+            field. If this field is not specified, it
+            defaults to the network tier of the project that
+            the PublicAdvertisedPrefix belongs to. Check the
+            NetworkTier enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_network_tier``.
         pdp_scope (str):
             Specifies how child public delegated prefix will be scoped.
             It could be one of following values:
@@ -125909,6 +126007,35 @@ class PublicAdvertisedPrefix(proto.Message):
         UNDEFINED_IPV6_ACCESS_TYPE = 0
         EXTERNAL = 35607499
         INTERNAL = 279295677
+
+    class NetworkTier(proto.Enum):
+        r"""Network tier to be used for this prefix. All child delegated
+        prefixes will inherit this field. If this field is not
+        specified, it defaults to the network tier of the project that
+        the PublicAdvertisedPrefix belongs to.
+
+        Values:
+            UNDEFINED_NETWORK_TIER (0):
+                A value indicating that the enum field is not
+                set.
+            FIXED_STANDARD (310464328):
+                Public internet quality with fixed bandwidth.
+            PREMIUM (399530551):
+                High quality, Google-grade network tier,
+                support for all networking products.
+            STANDARD (484642493):
+                Public internet quality, only limited support
+                for other networking products.
+            STANDARD_OVERRIDES_FIXED_STANDARD (465847234):
+                (Output only) Temporary tier for FIXED_STANDARD when fixed
+                standard tier is expired or not configured.
+        """
+
+        UNDEFINED_NETWORK_TIER = 0
+        FIXED_STANDARD = 310464328
+        PREMIUM = 399530551
+        STANDARD = 484642493
+        STANDARD_OVERRIDES_FIXED_STANDARD = 465847234
 
     class PdpScope(proto.Enum):
         r"""Specifies how child public delegated prefix will be scoped. It could
@@ -126043,6 +126170,11 @@ class PublicAdvertisedPrefix(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=3373707,
+        optional=True,
+    )
+    network_tier: str = proto.Field(
+        proto.STRING,
+        number=517397843,
         optional=True,
     )
     pdp_scope: str = proto.Field(
@@ -126313,6 +126445,16 @@ class PublicDelegatedPrefix(proto.Message):
             except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
+        network_tier (str):
+            Network tier of the public delegated prefix.
+            If populated, it must match the network tier of
+            the parent public advertised prefix. If not
+            populated, it defaults to the network tier of
+            the parent public advertised prefix. Check the
+            NetworkTier enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_network_tier``.
         parent_prefix (str):
             The URL of parent prefix. Either
             PublicAdvertisedPrefix or PublicDelegatedPrefix.
@@ -126470,6 +126612,35 @@ class PublicDelegatedPrefix(proto.Message):
         EXTERNAL_IPV6_FORWARDING_RULE_CREATION = 398684356
         EXTERNAL_IPV6_SUBNETWORK_CREATION = 61198284
         INTERNAL_IPV6_SUBNETWORK_CREATION = 153239834
+
+    class NetworkTier(proto.Enum):
+        r"""Network tier of the public delegated prefix. If populated, it
+        must match the network tier of the parent public advertised
+        prefix. If not populated, it defaults to the network tier of the
+        parent public advertised prefix.
+
+        Values:
+            UNDEFINED_NETWORK_TIER (0):
+                A value indicating that the enum field is not
+                set.
+            FIXED_STANDARD (310464328):
+                Public internet quality with fixed bandwidth.
+            PREMIUM (399530551):
+                High quality, Google-grade network tier,
+                support for all networking products.
+            STANDARD (484642493):
+                Public internet quality, only limited support
+                for other networking products.
+            STANDARD_OVERRIDES_FIXED_STANDARD (465847234):
+                (Output only) Temporary tier for FIXED_STANDARD when fixed
+                standard tier is expired or not configured.
+        """
+
+        UNDEFINED_NETWORK_TIER = 0
+        FIXED_STANDARD = 310464328
+        PREMIUM = 399530551
+        STANDARD = 484642493
+        STANDARD_OVERRIDES_FIXED_STANDARD = 465847234
 
     class Purpose(proto.Enum):
         r"""Immutable. The purpose of the public delegated prefix.
@@ -126637,6 +126808,11 @@ class PublicDelegatedPrefix(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=3373707,
+        optional=True,
+    )
+    network_tier: str = proto.Field(
+        proto.STRING,
+        number=517397843,
         optional=True,
     )
     parent_prefix: str = proto.Field(
@@ -129073,7 +129249,7 @@ class RegionInstanceGroupManagersApplyUpdatesRequest(proto.Message):
     Attributes:
         all_instances (bool):
             Flag to update all instances instead of
-            specified list of “instances”. If the flag is
+            specified list of "instances". If the flag is
             set to true then the instances may not be
             specified in the request.
 
@@ -130269,6 +130445,7 @@ class ReliabilityRisksListResponse(proto.Message):
 
     Attributes:
         etag (str):
+            [Output Only] An ETag of the resource.
 
             This field is a member of `oneof`_ ``_etag``.
         id (str):
@@ -136362,12 +136539,23 @@ class ResourceStatusPhysicalHostTopologyAdditionalAttributes(proto.Message):
             The key will be topologies like "4x4", "2x2x2"
             and the value will be the location ID of the
             topologies.
+        network_topology_ids (MutableMapping[str, str]):
+            Output only. Key-value store for arbitrary
+            network topology identifiers defined by the
+            underlying infrastructure. The key will be the
+            topology label and the value will be the
+            location ID for the topology.
     """
 
     accelerator_topology_ids: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=338216508,
+    )
+    network_topology_ids: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=133972825,
     )
 
 
@@ -136427,6 +136615,12 @@ class ResourceStatusScheduling(proto.Message):
             attached to the instance.
 
             This field is a member of `oneof`_ ``_availability_domain``.
+        graceful_shutdown_timestamp (str):
+            Output only. Specifies the timestamp, when
+            the instance will start graceful shutdown
+            process, in RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_graceful_shutdown_timestamp``.
         termination_timestamp (str):
             Time in future when the instance will be
             terminated inRFC3339 text format.
@@ -136437,6 +136631,11 @@ class ResourceStatusScheduling(proto.Message):
     availability_domain: int = proto.Field(
         proto.INT32,
         number=252514344,
+        optional=True,
+    )
+    graceful_shutdown_timestamp: str = proto.Field(
+        proto.STRING,
+        number=403022375,
         optional=True,
     )
     termination_timestamp: str = proto.Field(
@@ -141162,6 +141361,11 @@ class RouterStatusBgpPeerStatus(proto.Message):
         bfd_status (google.cloud.compute_v1beta.types.BfdStatus):
 
             This field is a member of `oneof`_ ``_bfd_status``.
+        depreferenced (bool):
+            Output only. [Output Only] Indicates whether the BGP peer is
+            in a depreferenced state.
+
+            This field is a member of `oneof`_ ``_depreferenced``.
         enable_ipv4 (bool):
             Output only. Enable IPv4 traffic over BGP
             Peer. It is enabled by default if the
@@ -141324,6 +141528,11 @@ class RouterStatusBgpPeerStatus(proto.Message):
         number=395631729,
         optional=True,
         message="BfdStatus",
+    )
+    depreferenced: bool = proto.Field(
+        proto.BOOL,
+        number=182429640,
+        optional=True,
     )
     enable_ipv4: bool = proto.Field(
         proto.BOOL,
@@ -142675,10 +142884,10 @@ class Scheduling(proto.Message):
             This field is a member of `oneof`_ ``_preemptible``.
         preemption_notice_duration (google.cloud.compute_v1beta.types.Duration):
             Specifies the Metadata Service preemption
-            notice duration before the  GCE ACPI G2 Soft
-            Off signal is triggered for Spot  VMs only. If
-            not specified, there will be no wait before the
-            G2 Soft  Off signal is triggered.
+            notice duration before the GCE ACPI G2 Soft Off
+            signal is triggered for Spot VMs only. If not
+            specified, there will be no wait before the G2
+            Soft Off signal is triggered.
 
             This field is a member of `oneof`_ ``_preemption_notice_duration``.
         provisioning_model (str):
@@ -156602,8 +156811,8 @@ class StoragePool(proto.Message):
 
             This field is a member of `oneof`_ ``_description``.
         exapool_provisioned_capacity_gb (google.cloud.compute_v1beta.types.StoragePoolExapoolProvisionedCapacityGb):
-            Output only. [Output Only] Provisioned capacities for each
-            SKU for this Exapool in GiB
+            Provisioned capacities for each SKU for this
+            Exapool in GiB
 
             This field is a member of `oneof`_ ``_exapool_provisioned_capacity_gb``.
         id (int):
@@ -156691,6 +156900,10 @@ class StoragePool(proto.Message):
             resource's resource id.
 
             This field is a member of `oneof`_ ``_self_link_with_id``.
+        share_settings (google.cloud.compute_v1beta.types.StoragePoolShareSettings):
+            Share settings for the storage pool.
+
+            This field is a member of `oneof`_ ``_share_settings``.
         state (str):
             Output only. [Output Only] The status of storage pool
             creation.
@@ -156879,6 +157092,12 @@ class StoragePool(proto.Message):
         proto.STRING,
         number=44520962,
         optional=True,
+    )
+    share_settings: "StoragePoolShareSettings" = proto.Field(
+        proto.MESSAGE,
+        number=266668163,
+        optional=True,
+        message="StoragePoolShareSettings",
     )
     state: str = proto.Field(
         proto.STRING,
@@ -157525,6 +157744,44 @@ class StoragePoolResourceStatus(proto.Message):
     total_provisioned_disk_throughput: int = proto.Field(
         proto.INT64,
         number=447677830,
+        optional=True,
+    )
+
+
+class StoragePoolShareSettings(proto.Message):
+    r"""Share settings for the storage pool.
+
+    Attributes:
+        project_map (MutableMapping[str, google.cloud.compute_v1beta.types.StoragePoolShareSettingsProjectConfig]):
+            A map of project id and project config.
+    """
+
+    project_map: MutableMapping[str, "StoragePoolShareSettingsProjectConfig"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=134212406,
+            message="StoragePoolShareSettingsProjectConfig",
+        )
+    )
+
+
+class StoragePoolShareSettingsProjectConfig(proto.Message):
+    r"""Config for each project in the share settings.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project_id (str):
+            The project ID, should be same as the key of
+            this project config in the parent map.
+
+            This field is a member of `oneof`_ ``_project_id``.
+    """
+
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=177513473,
         optional=True,
     )
 
