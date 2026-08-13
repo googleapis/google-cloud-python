@@ -6389,6 +6389,7 @@ def test_get_document_rest_required_fields(request_type=firestore.GetDocumentReq
         (
             "mask",
             "read_time",
+            "request_options",
             "transaction",
         )
     )
@@ -6451,6 +6452,7 @@ def test_get_document_rest_unset_required_fields():
             (
                 "mask",
                 "readTime",
+                "requestOptions",
                 "transaction",
             )
         )
@@ -6529,6 +6531,7 @@ def test_list_documents_rest_required_fields(
             "page_size",
             "page_token",
             "read_time",
+            "request_options",
             "show_missing",
             "transaction",
         )
@@ -6595,6 +6598,7 @@ def test_list_documents_rest_unset_required_fields():
                 "pageSize",
                 "pageToken",
                 "readTime",
+                "requestOptions",
                 "showMissing",
                 "transaction",
             )
@@ -6735,6 +6739,7 @@ def test_update_document_rest_required_fields(
         (
             "current_document",
             "mask",
+            "request_options",
             "update_mask",
         )
     )
@@ -6796,6 +6801,7 @@ def test_update_document_rest_unset_required_fields():
             (
                 "currentDocument",
                 "mask",
+                "requestOptions",
                 "updateMask",
             )
         )
@@ -6931,7 +6937,12 @@ def test_delete_document_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_document._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("current_document",))
+    assert not set(unset_fields) - set(
+        (
+            "current_document",
+            "request_options",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -6983,7 +6994,15 @@ def test_delete_document_rest_unset_required_fields():
     )
 
     unset_fields = transport.delete_document._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("currentDocument",)) & set(("name",)))
+    assert set(unset_fields) == (
+        set(
+            (
+                "currentDocument",
+                "requestOptions",
+            )
+        )
+        & set(("name",))
+    )
 
 
 def test_delete_document_rest_flattened():
@@ -8740,6 +8759,7 @@ def test_create_document_rest_required_fields(
         (
             "document_id",
             "mask",
+            "request_options",
         )
     )
     jsonified_request.update(unset_fields)
@@ -8804,6 +8824,7 @@ def test_create_document_rest_unset_required_fields():
             (
                 "documentId",
                 "mask",
+                "requestOptions",
             )
         )
         & set(

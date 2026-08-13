@@ -759,7 +759,7 @@ class AudienceSegmentServiceClient(metaclass=AudienceSegmentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> audience_segment_messages.AudienceSegment:
-        r"""API to retrieve an ``AudienceSegment`` object.
+        r"""Retrieves an ``AudienceSegment`` object.
 
         .. code-block:: python
 
@@ -867,7 +867,7 @@ class AudienceSegmentServiceClient(metaclass=AudienceSegmentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAudienceSegmentsPager:
-        r"""API to retrieve a list of ``AudienceSegment`` objects.
+        r"""Lists ``AudienceSegment`` objects.
 
         .. code-block:: python
 

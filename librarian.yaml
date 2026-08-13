@@ -16,8 +16,8 @@ version: v0.36.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: b8486a2f44f15dc578a9dc1e17b144253079d5c1
-    sha256: 12411ca5cb6c70d7c873d7058c5182a8d23fa88af8d984b0e73b1c3ad1d83766
+    commit: 240b58fe7058f6fff77cba02f51d600170b6c421
+    sha256: ca03f2c93b8f1e92fd75c87b2568992c96a2ecc37fde750c5bf83129fa17b407
 tools:
   pip:
     - name: black

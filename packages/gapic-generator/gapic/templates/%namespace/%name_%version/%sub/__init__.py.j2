@@ -60,9 +60,6 @@ from .types.{{ proto.module_name }} import {{ enum.name }}
 {% endfor %}
 {% endfor %}
 
-api_core.check_python_version("{{package_path}}")
-api_core.check_dependency_versions("{{package_path}}")
-
 {#  Define __all__.
     This requires the full set of imported names, so we iterate over
     them again.
@@ -90,4 +87,8 @@ __all__ = (
     {% endfor -%}
     {% endfilter %}
 )
+
+api_core.check_python_version("{{package_path}}")
+api_core.check_dependency_versions("{{package_path}}")
+
 {% endblock %}
