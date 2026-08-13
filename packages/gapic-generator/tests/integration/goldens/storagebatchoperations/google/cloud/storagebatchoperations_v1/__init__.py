@@ -64,9 +64,6 @@ from .types.storage_batch_operations_types import PutObjectHold
 from .types.storage_batch_operations_types import RewriteObject
 from .types.storage_batch_operations_types import UpdateObjectCustomContext
 
-api_core.check_python_version("google.cloud.storagebatchoperations_v1")
-api_core.check_dependency_versions("google.cloud.storagebatchoperations_v1")
-
 __all__ = (
     'StorageBatchOperationsAsyncClient',
 'BucketList',
@@ -99,3 +96,6 @@ __all__ = (
 'StorageBatchOperationsClient',
 'UpdateObjectCustomContext',
 )
+
+api_core.check_python_version("google.cloud.storagebatchoperations_v1")
+api_core.check_dependency_versions("google.cloud.storagebatchoperations_v1")

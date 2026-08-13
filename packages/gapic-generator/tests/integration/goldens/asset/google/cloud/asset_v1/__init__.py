@@ -118,9 +118,6 @@ from .types.assets import TemporalAsset
 from .types.assets import TimeWindow
 from .types.assets import VersionedResource
 
-api_core.check_python_version("google.cloud.asset_v1")
-api_core.check_dependency_versions("google.cloud.asset_v1")
-
 __all__ = (
     'AssetServiceAsyncClient',
 'AnalyzeIamPolicyLongrunningMetadata',
@@ -206,3 +203,6 @@ __all__ = (
 'UpdateSavedQueryRequest',
 'VersionedResource',
 )
+
+api_core.check_python_version("google.cloud.asset_v1")
+api_core.check_dependency_versions("google.cloud.asset_v1")
