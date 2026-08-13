@@ -388,33 +388,29 @@ IGNORED_NAME_PREFIXES = (
 )
 
 
-def _should_ignore_namespace_package(top_level, target_pkg):
-    """Determines if a discovered top-level directory should be excluded from module selection.
+def _should_process_namespace_package(top_level: str, target_pkg: str) -> bool:
+    """Determines if a discovered top-level directory should be processed.
 
     Args:
         top_level: Top-level directory component of the package (e.g. 'tests' or 'google').
-        target_pkg: The distribution package being profiled (e.g. 'google-cloud-storage' or 'google-cloud-testutils').
+        target_pkg: The distribution package being profiled (e.g. 'google-cloud-storage').
 
     Returns:
-        True if the top-level directory represents a non-library folder, False otherwise.
+        True if the top-level directory should be processed, False otherwise.
     """
-    is_non_library_dir = (
+    is_excluded_candidate = (
         top_level in IGNORED_TOP_LEVEL_NAMES
         or top_level.startswith(IGNORED_NAME_PREFIXES)
     )
 
-    if not is_non_library_dir:
-        return False
+    if is_excluded_candidate:
+        normalized_target_pkg = target_pkg.replace("-", "").replace("_", "").lower()
+        normalized_top_level = top_level.replace("-", "").replace("_", "").lower()
+        # Note: If the top-level folder name is part of the target package name
+        # (e.g. top_level='test_utils' when target_pkg='google-cloud-testutils'), then it should be processed.
+        return normalized_top_level in normalized_target_pkg
 
-    # Exception: If the top-level folder name is part of the target package name 
-    # (e.g. top_level='test_utils' when target_pkg='google-cloud-testutils'), do not ignore it.
-    normalized_target_pkg = target_pkg.replace("-", "").replace("_", "").lower()
-    normalized_top_level = top_level.replace("-", "").replace("_", "").lower()
-
-    if normalized_top_level in normalized_target_pkg:
-        return False
-
-    return True
+    return True  # Not a candidate for exclusion, process it.
 
 
 def find_module_from_package(pkg):
@@ -462,9 +458,8 @@ def find_module_from_package(pkg):
             filtered = []
             for p in pkgs:
                 top = p.split(".")[0]
-                if _should_ignore_namespace_package(top, pkg):
-                    continue
-                filtered.append(p)
+                if _should_process_namespace_package(top, pkg):
+                    filtered.append(p)
 
             # First preference: packages containing __init__.py
             for p in sorted(filtered, key=len):

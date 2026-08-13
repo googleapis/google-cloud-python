@@ -833,21 +833,21 @@ def test_cli_main_options():
         runpy.run_path(profiler_path, run_name="__main__")
 
 
-def test_should_ignore_namespace_package():
-    from profiler import _should_ignore_namespace_package
+def test_should_process_namespace_package():
+    from profiler import _should_process_namespace_package
 
-    # Standard non-library top-level directories should be ignored
-    assert _should_ignore_namespace_package("tests", "google-cloud-storage") is True
-    assert _should_ignore_namespace_package("samples", "google-cloud-storage") is True
-    assert _should_ignore_namespace_package("test_utils", "google-cloud-storage") is True
-    assert _should_ignore_namespace_package("test_helpers", "google-cloud-storage") is True
+    # Standard non-library top-level directories should NOT be processed
+    assert _should_process_namespace_package("tests", "google-cloud-storage") is False
+    assert _should_process_namespace_package("samples", "google-cloud-storage") is False
+    assert _should_process_namespace_package("test_utils", "google-cloud-storage") is False
+    assert _should_process_namespace_package("test_helpers", "google-cloud-storage") is False
 
     # Exception: Target package explicitly contains the top-level directory name (e.g. google-cloud-testutils -> test_utils)
-    assert _should_ignore_namespace_package("test_utils", "google-cloud-testutils") is False
+    assert _should_process_namespace_package("test_utils", "google-cloud-testutils") is True
 
-    # Valid library package top-level should not be ignored
-    assert _should_ignore_namespace_package("google", "google-cloud-storage") is False
-    assert _should_ignore_namespace_package("my_library", "my-library") is False
+    # Valid library package top-level should be processed
+    assert _should_process_namespace_package("google", "google-cloud-storage") is True
+    assert _should_process_namespace_package("my_library", "my-library") is True
 
 
 def test_find_module_from_package_testutils():
