@@ -581,8 +581,16 @@ def _and(conditions: tuple[sge.Expression, ...]) -> typing.Optional[sge.Expressi
     if not conditions:
         return None
 
+    def check_and_parenthesize(expr: sge.Expression) -> sge.Expression:
+        if isinstance(expr, sge.Or):
+            return sge.paren(expr, copy=False)
+        return expr
+
     return functools.reduce(
-        lambda left, right: sge.And(this=left, expression=right), conditions
+        lambda left, right: sge.And(
+            this=check_and_parenthesize(left), expression=check_and_parenthesize(right)
+        ),
+        conditions,
     )
 
 

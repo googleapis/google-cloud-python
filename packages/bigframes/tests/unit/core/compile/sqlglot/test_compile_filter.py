@@ -22,4 +22,29 @@ pytest.importorskip("pytest_snapshot")
 def test_compile_filter(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["rowindex", "int64_col"]]
     bf_filter = bf_df[bf_df["rowindex"] >= 1]
+
     snapshot.assert_match(bf_filter.sql, "out.sql")
+
+
+def test_compile_filter_w_or_first(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["rowindex", "int64_col", "string_col"]]
+    filtered = bf_df[(bf_df["rowindex"] == 1) | (bf_df["int64_col"] == 2)]
+    filtered = filtered[filtered["string_col"].str.startswith("H")]
+
+    snapshot.assert_match(filtered.sql, "out.sql")
+
+
+def test_compile_filter_w_or_second(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["rowindex", "int64_col", "string_col"]]
+    filtered = bf_df[bf_df["string_col"].str.startswith("H")]
+    filtered = filtered[(filtered["rowindex"] == 1) | (filtered["int64_col"] == 2)]
+
+    snapshot.assert_match(filtered.sql, "out.sql")
+
+
+def test_compile_filter_w_multiple_or(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["rowindex", "int64_col", "float64_col", "string_col"]]
+    filtered = bf_df[(bf_df["rowindex"] == 1) | (bf_df["int64_col"] == 2)]
+    filtered = filtered[(filtered["float64_col"] > 0) | (bf_df["string_col"] == "a")]
+
+    snapshot.assert_match(filtered.sql, "out.sql")
