@@ -140,15 +140,12 @@ case ${TEST_TYPE} in
             if [ -n "${TARGET_BRANCH}" ]; then
                 # Fetch history for the target branch without --depth=1 in case it was shallowly fetched
                 if [ -f "$(git rev-parse --git-dir)/shallow" ]; then
-                    git fetch upstream "${TARGET_BRANCH}" --unshallow 2>/dev/null || \
-                    git fetch origin "${TARGET_BRANCH}" --unshallow 2>/dev/null || \
-                    git fetch upstream "${TARGET_BRANCH}" 2>/dev/null || \
-                    git fetch origin "${TARGET_BRANCH}" 2>/dev/null || true
+                    git fetch origin "${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}" --unshallow 2>/dev/null || \
+                    git fetch origin "${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}" 2>/dev/null || true
                 fi
-                # Try upstream first (for forks), then origin
-                BASELINE_COMMIT=$(git merge-base HEAD "upstream/${TARGET_BRANCH}" 2>/dev/null || \
-                                 git merge-base HEAD "origin/${TARGET_BRANCH}" 2>/dev/null || \
-                                 git merge-base HEAD "${TARGET_BRANCH}" 2>/dev/null || true)
+                # Try origin first, then fallback to HEAD if everything else fails
+                BASELINE_COMMIT=$(git merge-base HEAD "origin/${TARGET_BRANCH}" 2>/dev/null || \
+                                 git rev-parse HEAD)
                 if [ -n "${BASELINE_COMMIT}" ]; then
                     echo "Checking out baseline commit ${BASELINE_COMMIT} in a temporary worktree..."
                     REPO_PREFIX=$(git rev-parse --show-prefix)
