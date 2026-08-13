@@ -19,6 +19,8 @@ sources:
     commit: 240b58fe7058f6fff77cba02f51d600170b6c421
     sha256: ca03f2c93b8f1e92fd75c87b2568992c96a2ecc37fde750c5bf83129fa17b407
 tools:
+  protoc:
+    version: "33.5"
   pip:
     - name: black
       version: 23.7.0
