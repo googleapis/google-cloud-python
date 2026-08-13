@@ -246,10 +246,14 @@ class Table(proto.Message):
             MILLIS (1):
                 The table keeps data versioned at a
                 granularity of 1ms.
+            MICROS (2):
+                The table keeps data versioned at a
+                granularity of 1us.
         """
 
         TIMESTAMP_GRANULARITY_UNSPECIFIED = 0
         MILLIS = 1
+        MICROS = 2
 
     class View(proto.Enum):
         r"""Defines a view over a table's fields.

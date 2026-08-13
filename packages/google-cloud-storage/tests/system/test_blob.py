@@ -23,6 +23,7 @@ import warnings
 import mock
 import pytest
 from google.api_core import exceptions
+
 from google.cloud.storage._helpers import _base64_md5hash
 from google.cloud.storage.exceptions import DataCorruption
 
