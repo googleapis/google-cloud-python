@@ -17,6 +17,18 @@
         }
       ]
     },
+    "packages/google-cloud-ftp": {
+      "component": "google-cloud-ftp",
+      "extra-files": [
+        "google/cloud/ftp/gapic_version.py",
+        "google/cloud/ftp_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.ftp.v1.json",
+          "type": "json"
+        }
+      ]
+    },
     "packages/google-crc32c": {
       "component": "google-crc32c"
     },

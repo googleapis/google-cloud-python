@@ -430,6 +430,8 @@ def query_and_wait(
     job_retry: Optional[retries.Retry],
     page_size: Optional[int] = None,
     max_results: Optional[int] = None,
+    query_results_format: Optional[str] = None,
+    compression_codec: Optional[str] = None,
     callback: Callable = lambda _: None,
 ) -> table.RowIterator:
     """Run the query, wait for it to finish, and return the results.
@@ -475,6 +477,10 @@ def query_and_wait(
             request. Non-positive values are ignored.
         max_results (Optional[int]):
             The maximum total number of rows from this request.
+        query_results_format (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsFormat]]):
+            [Beta] The format for query results (e.g. "ARROW" or :class:`~google.cloud.bigquery.enums.QueryResultsFormat.ARROW`).
+        compression_codec (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsCompressionCodec]]):
+            [Beta] Compression codec for Arrow serialization (e.g. "LZ4_FRAME" or :class:`~google.cloud.bigquery.enums.QueryResultsCompressionCodec.LZ4_FRAME`).
         callback (Callable):
             A callback function used by bigframes to report query progress.
 
@@ -499,6 +505,13 @@ def query_and_wait(
     request_body = _to_query_request(
         query=query, job_config=job_config, location=location, timeout=api_timeout
     )
+    if query_results_format is not None:
+        request_body["queryResultsFormat"] = query_results_format
+    if compression_codec is not None:
+        request_body.setdefault("formatOptions", {})
+        request_body["formatOptions"]["arrowSerializationOptions"] = {
+            "bufferCompression": compression_codec
+        }
 
     # Some API parameters aren't supported by the jobs.query API. In these
     # cases, fallback to a jobs.insert call.
@@ -522,6 +535,7 @@ def query_and_wait(
             retry=retry,
             page_size=page_size,
             max_results=max_results,
+            query_results_format=query_results_format,
             callback=callback,
         )
 
@@ -594,6 +608,7 @@ def query_and_wait(
                 retry=retry,
                 page_size=page_size,
                 max_results=max_results,
+                query_results_format=query_results_format,
                 callback=callback,
             )
 
@@ -633,6 +648,7 @@ def query_and_wait(
             created=query_results.created,
             started=query_results.started,
             ended=query_results.ended,
+            query_results_format=query_results_format,
         )
 
     if job_retry is not None:
@@ -673,6 +689,7 @@ def _supported_by_jobs_query(request_body: Dict[str, Any]) -> bool:
         "jobTimeoutMs",
         "reservation",
         "maxSlots",
+        "queryResultsFormat",
     }
 
     unsupported_keys = request_keys - keys_allowlist
@@ -687,6 +704,7 @@ def _wait_or_cancel(
     page_size: Optional[int],
     max_results: Optional[int],
     *,
+    query_results_format: Optional[str] = None,
     callback: Callable = lambda _: None,
 ) -> table.RowIterator:
     """Wait for a job to complete and return the results.
@@ -731,6 +749,7 @@ def _wait_or_cancel(
                     ended=job.ended,
                 )
             )
+        query_results._query_results_format = query_results_format
         return query_results
     except Exception:
         # Attempt to cancel the job since we can't return the results.

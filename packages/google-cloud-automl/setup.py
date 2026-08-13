@@ -52,7 +52,6 @@ dependencies = [
     "protobuf >= 6.33.5, < 8.0.0",
 ]
 extras = {
-    "libcst": "libcst >= 0.2.5",
     "pandas": ["pandas>=1.3.4"],
     "storage": [
         "google-cloud-storage >=2.14.0, <4.0.0",

@@ -1117,7 +1117,7 @@ def test_supported_by_jobs_query_from_queryjobconfig(
 
 def test_wait_or_cancel_no_exception():
     job = mock.create_autospec(job_query.QueryJob, instance=True)
-    expected_rows = object()
+    expected_rows = mock.MagicMock()
     job.result.return_value = expected_rows
     retry = retries.Retry()
 
