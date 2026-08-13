@@ -76,6 +76,7 @@ from google.cloud.ces_v1beta.types import (
     evaluation_metrics_config,
     evaluation_service,
     golden_run,
+    session_service,
 )
 from google.cloud.ces_v1beta.types import evaluation as gcc_evaluation
 
